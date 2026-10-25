@@ -1,6 +1,11 @@
 /*
- * This file is part of Notepad Next.
- * Copyright 2020 Justin Dailey
+ *
+ * This file is part of SparkNotepad.
+ *
+ * Copyright 2018-2026 Justin Dailey
+ * Copyright 2025-2026 Harry Dertin Sutisna Alsyundawy <alsyundawy@gmail.com>
+ * https://github.com/alsyundawy/SparkNotePad
+ * ALSYUNDAWY IT SOLUTION <https://alsyundawy.com>
  *
  * Notepad Next is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
