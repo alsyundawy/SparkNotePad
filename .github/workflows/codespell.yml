@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -24,4 +25,4 @@ jobs:
           check_filenames: true
           path: ./src
           skip: "*.lua,*.ui"
-          ignore_words_list: doubleclick,msdos,prevEnd,curren,notin,nd,vai,thirdparty,onTop,ontop,currentY
+          ignore_words_list: doubleclick,msdos,prevEnd,curren,notin,nd,vai,thirdparty,onTop,ontop,currentY,uptodate

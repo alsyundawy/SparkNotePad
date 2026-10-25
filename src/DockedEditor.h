@@ -28,6 +28,7 @@
 #include <QObject>
 
 #include <QPointer>
+#include "DockAreaWidget.h"
 #include "DockManager.h"
 #include "ScintillaNext.h"
 
