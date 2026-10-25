@@ -1,7 +1,11 @@
 /*
- * This file is part of SparkNotePad.
- * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
- * Copyright 2019 Justin Dailey
+ *
+ * This file is part of SparkNotepad.
+ *
+ * Copyright 2018-2026 Justin Dailey
+ * Copyright 2025-2026 Harry Dertin Sutisna Alsyundawy <alsyundawy@gmail.com>
+ * https://github.com/alsyundawy/SparkNotePad
+ * ALSYUNDAWY IT SOLUTION <https://alsyundawy.com>
  *
  * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
