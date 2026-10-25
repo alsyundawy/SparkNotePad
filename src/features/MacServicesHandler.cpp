@@ -9,6 +9,8 @@
  */
 
 #include "MacServicesHandler.h"
+#include "dialogs/MainWindow.h"
+#include "SparkNotePadApplication.h"
 
 MacServicesHandler *MacServicesHandler::instance() {
     static MacServicesHandler s_instance;

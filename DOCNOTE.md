@@ -154,6 +154,7 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **Zero-Error `clangd --check` Verification**: Tested all 135 translation units (`src/*.cpp` and `src/*/*.cpp`) with 0 AST/compiler errors.
     - **Cppcheck Hardening**: Resolved performance warnings by returning `const QString &` from `Macro::getName()` and `const QStringList &` from `RecentFilesListManager::fileList()`. Initialized `FieldMeta::id` default member value in `StatusBarCustomizerDialog.cpp` to prevent `uninitMemberVarNoCtor`. Added explicit cppcheck suppression for intentional non-virtual method override `ScintillaNext::cutAllowLine()`.
     - **Compilation Database Fix**: Resolved whitespace argument splitting on preprocessor defines in `scripts/generate_compilation_database.py` with `shlex.join()` and standard LLVM `"arguments": [...]` array.
+    - **Linux GCC Cross-Platform Portability**: Resolved GCC compilation error in `src/features/MacServicesHandler.cpp` by including `dialogs/MainWindow.h` and `SparkNotePadApplication.h` to complete type requirements during `QPointer` template instantiation on Linux runners.
 
 ---
 

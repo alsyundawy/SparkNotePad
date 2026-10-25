@@ -25,6 +25,7 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
   - Initialized `FieldMeta::id` default member value in `StatusBarCustomizerDialog.cpp` to resolve `uninitMemberVarNoCtor`.
   - Added explicit suppression annotations for intentional non-virtual method overrides (`ScintillaNext::cutAllowLine`).
   - Repaired `scripts/generate_compilation_database.py` with `shlex.join()` and standard LLVM `"arguments": [...]` array to eliminate white-space argument splitting on preprocessor defines.
+  - Resolved GCC/Linux cross-platform compilation error in `src/features/MacServicesHandler.cpp` by including `dialogs/MainWindow.h` and `SparkNotePadApplication.h` to satisfy incomplete type requirements during `QPointer` template instantiation.
   - Eliminated static member function access through instance objects in `src/main.cpp` (`SparkNotePadApplication::exec()` and `SparkNotePadApplication::exit(0)`), resolving SonarQube rule `cpp:S2695`.
   - Configured `PROPERTIES GENERATED TRUE` on `${CMAKE_BINARY_DIR}/version.rc` in `src/CMakeLists.txt`, eliminating CMake IntelliSense missing file diagnostics.
   - Repaired `clangd.fallbackFlags` in `.vscode/settings.json` by removing a stray `-isystem` argument before `-isysroot`, restoring correct header search paths for standalone header files.
