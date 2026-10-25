@@ -108,6 +108,7 @@ public:
 
     void deleteLine(int line);
 
+    // cppcheck-suppress duplInheritedMember
     void cutAllowLine();  // NOLINT // NOSONAR(cpp:S5495)
 
     Sci_CharacterRange getContextText();

@@ -201,6 +201,7 @@ void ScintillaNext::deleteLine(int line) {
     deleteRange(positionFromLine(line), lineLength(line));
 }
 
+// cppcheck-suppress duplInheritedMember
 void ScintillaNext::cutAllowLine() {  // NOSONAR(cpp:S5495)
     if (selectionEmpty()) {
         copyAllowLine();

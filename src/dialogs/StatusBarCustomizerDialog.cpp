@@ -40,7 +40,7 @@ void StatusBarCustomizerDialog::setupUi() {
     groupLayout->setContentsMargins(14, 16, 14, 14);
 
     struct FieldMeta {
-        EditorInfoStatusBar::Field id;
+        EditorInfoStatusBar::Field id = EditorInfoStatusBar::FieldLanguage;
         QString name;
         QString description;
     };

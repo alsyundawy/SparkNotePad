@@ -114,7 +114,7 @@ void Macro::replayTillEndOfFile(ScintillaNext *editor) const {
     editor->endUndoAction();
 }
 
-QString Macro::getName() const {
+const QString &Macro::getName() const {
     return name;
 }
 
