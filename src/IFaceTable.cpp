@@ -69,11 +69,9 @@ const IFaceFunction *IFaceTable::FindFunctionByConstantName(const char *name) co
 }
 
 const IFaceFunction *IFaceTable::FindFunctionByValue(int value) const {
-    for (const auto &func : functions) {
-        if (func.value == value)
-            return &func;
-    }
-    return nullptr;
+    const auto it =
+        std::find_if(functions.cbegin(), functions.cend(), [value](const auto &func) { return func.value == value; });
+    return (it != functions.cend()) ? &(*it) : nullptr;
 }
 
 const IFaceProperty *IFaceTable::FindProperty(const char *name) const {
@@ -105,7 +103,7 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
     }
 
     for (const auto &con : constants) {
-        if (con.value == value && (hint == NULL || strncmp(hint, con.name, strlen(hint)) == 0)) {
+        if (con.value == value && (hint == nullptr || strncmp(hint, con.name, strlen(hint)) == 0)) {
             int len = static_cast<int>(strlen(con.name));
             if (nameOut && (static_cast<int>(nameBufferLen) > len)) {
                 snprintf(nameOut, nameBufferLen, "%s", con.name);
@@ -120,12 +118,9 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
 }
 
 const IFaceFunction *IFaceTable::GetFunctionByMessage(int message) const {
-    for (const auto &func : functions) {
-        if (func.value == message) {
-            return &func;
-        }
-    }
-    return nullptr;
+    const auto it = std::find_if(functions.cbegin(), functions.cend(),
+                                 [message](const auto &func) { return func.value == message; });
+    return (it != functions.cend()) ? &(*it) : nullptr;
 }
 
 IFaceFunction IFaceTable::GetPropertyFuncByMessage(int message) const {

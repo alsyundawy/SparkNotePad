@@ -88,15 +88,16 @@ LanguageInspectorDock::LanguageInspectorDock(MainWindow *parent)
     ComboBoxDelegate *caseComoboDelegate = new ComboBoxDelegate(caseItems, this);
     ui->tblStyles->setItemDelegateForColumn(15, caseComoboDelegate);
 
-    QList<ComboBoxItem> fontNames;
+    const QStringList families =
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    for (const QString &font : QFontDatabase::families()) {
+        QFontDatabase::families();
 #else
-    QFontDatabase fontDatabase;
-    for (const QString &font : fontDatabase.families()) {
+        QFontDatabase().families();
 #endif
-        fontNames.append(QPair<QString, QString>(font, font));
-    }
+    QList<ComboBoxItem> fontNames;
+    fontNames.reserve(families.size());
+    std::transform(families.cbegin(), families.cend(), std::back_inserter(fontNames),
+                   [](const QString &font) { return QPair<QString, QString>(font, font); });
     ComboBoxDelegate *fontComboDelegate = new ComboBoxDelegate(fontNames, this);
     ui->tblStyles->setItemDelegateForColumn(4, fontComboDelegate);
 

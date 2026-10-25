@@ -38,9 +38,9 @@ public:
     void uncommentSelection();
 
 private:
-    void toggleLine(int line);
-    void commentLine(int line);
-    void uncommentLine(int line);
+    void toggleLine(sptr_t line);
+    void commentLine(sptr_t line);
+    void uncommentLine(sptr_t line);
 
     ScintillaNext *editor;
     SelectionTracker st;

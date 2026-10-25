@@ -165,10 +165,11 @@ QPixmap UpdateDialog::createBadgePixmap(DialogType type) {
         painter.drawLine(size / 2 - 9, 38, size / 2 + 9, 38);
     } else if (type == DialogType::UpToDate) {
         // Crisp checkmark
+        const qreal halfSize = static_cast<qreal>(size) / 2.0;
         QPainterPath path;
-        path.moveTo(size / 2 - 9, size / 2);
-        path.lineTo(size / 2 - 2, size / 2 + 7);
-        path.lineTo(size / 2 + 10, size / 2 - 7);
+        path.moveTo(halfSize - 9.0, halfSize);
+        path.lineTo(halfSize - 2.0, halfSize + 7.0);
+        path.lineTo(halfSize + 10.0, halfSize - 7.0);
         painter.strokePath(path, QPen(ringColor, 2.6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     } else {
         // Exclamation point

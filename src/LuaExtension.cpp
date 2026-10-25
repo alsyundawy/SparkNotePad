@@ -194,14 +194,14 @@ void stackdump(lua_State *l) {
 }
 
 static NppExtensionAPIPane check_pane_object(lua_State *L, int index) {
-    NppExtensionAPIPane *pPane = static_cast<NppExtensionAPIPane *>(luaL_testudata(L, index, "Nn_MT_Pane"));
+    const NppExtensionAPIPane *pPane = static_cast<const NppExtensionAPIPane *>(luaL_testudata(L, index, "Nn_MT_Pane"));
 
     if ((!pPane) && lua_istable(L, index)) {
         // so that nested objects have a convenient way to do a back reference
         int absIndex = absolute_index(L, index);
         lua_pushliteral(L, "pane");
         lua_gettable(L, absIndex);
-        pPane = static_cast<NppExtensionAPIPane *>(luaL_testudata(L, -1, "Nn_MT_Pane"));
+        pPane = static_cast<const NppExtensionAPIPane *>(luaL_testudata(L, -1, "Nn_MT_Pane"));
     }
 
     if (pPane) {
@@ -668,6 +668,7 @@ static int cf_global_metatable_index(lua_State *L) {
     return 0;  // global namespace access should not raise errors
 }
 
+// cppcheck-suppress constParameterCallback
 static int LuaPanicFunction(lua_State *L) {
     if (L == luaState) {
         lua_close(luaState);
@@ -774,10 +775,9 @@ bool LuaExtension::RunString(const char *s) {
 }
 
 bool LuaExtension::OnExecute(const char *s) {
-    static bool isFirstLine = true;
-    static std::string chunk;
-
     if (luaState || InitGlobalScope()) {
+        static bool isFirstLine = true;
+        static std::string chunk;
         int status = 0;
         if (isFirstLine) {
             // First try to compile the chunk as a return statement

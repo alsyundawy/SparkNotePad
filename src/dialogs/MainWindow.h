@@ -253,8 +253,8 @@ private:
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);
     void onToggleTailMonitoringTriggered();
-    void onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring);
-    void updateTailMonitoringUi(ScintillaNext *editor);
+    void onTailMonitoringStateChanged(const ScintillaNext *editor, bool isMonitoring);
+    void updateTailMonitoringUi(const ScintillaNext *editor);
     void onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount);
     void onToggleTransparencyTriggered();
     void onIncreaseOpacityTriggered();

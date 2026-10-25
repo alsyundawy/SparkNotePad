@@ -38,7 +38,7 @@ public:
     QStringList fileList() const;
     void setFileList(const QStringList &list);
 
-    int count() const { return recentFiles.size(); }
+    qsizetype count() const { return recentFiles.size(); }
 
 public slots:
     void addFile(const QString &filePath);

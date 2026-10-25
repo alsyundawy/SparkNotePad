@@ -12,6 +12,7 @@
 #ifndef UPDATEDIALOG_H
 #define UPDATEDIALOG_H
 
+#include <cstdint>
 #include <QDialog>
 #include <QString>
 #include "../features/ReleaseManager.h"
@@ -32,7 +33,7 @@ class UpdateDialog : public QDialog {
     Q_OBJECT
 
 public:
-    enum class DialogType { UpdateAvailable, UpToDate, CheckFailed };
+    enum class DialogType : std::uint8_t { UpdateAvailable, UpToDate, CheckFailed };
 
     explicit UpdateDialog(QWidget *parent = nullptr, DialogType type = DialogType::UpdateAvailable);
     ~UpdateDialog() override = default;

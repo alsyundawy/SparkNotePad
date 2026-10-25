@@ -47,7 +47,7 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
 
         QString savedPalette = m_settings->value(QStringLiteral("App/ThemePalette"), QString()).toString();
         if (!savedPalette.isEmpty() && findThemePaletteById(savedPalette)) {
-            m_currentPaletteId = savedPalette;
+            m_currentPaletteId = std::move(savedPalette);
         } else {
             m_currentPaletteId =
                 (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("notepadNext");

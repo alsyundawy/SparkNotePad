@@ -13,6 +13,7 @@
 #include "ExternalToolManager.h"
 #include "ScintillaNext.h"
 
+#include <algorithm>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -181,11 +182,10 @@ void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cm
                                         QStringLiteral("alacritty"),
                                         QStringLiteral("kitty"),
                                         QStringLiteral("xterm")};
-        for (const auto &c : candidates) {
-            if (!QStandardPaths::findExecutable(c).isEmpty()) {
-                term = c;
-                break;
-            }
+        const auto it = std::find_if(candidates.cbegin(), candidates.cend(),
+                                     [](const QString &c) { return !QStandardPaths::findExecutable(c).isEmpty(); });
+        if (it != candidates.cend()) {
+            term = *it;
         }
     }
     if (term.isEmpty()) {

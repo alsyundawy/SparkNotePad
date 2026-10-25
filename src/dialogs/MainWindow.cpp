@@ -3973,7 +3973,7 @@ void MainWindow::onToggleTailMonitoringTriggered() {
     TailMonitoringManager::instance()->toggleMonitoring(editor);
 }
 
-void MainWindow::onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring) {
+void MainWindow::onTailMonitoringStateChanged(const ScintillaNext *editor, bool isMonitoring) {
     if (editor == currentEditor() && actionToggleTailMonitoring) {
         actionToggleTailMonitoring->setChecked(isMonitoring);
         if (actionTailAutoScroll) {
@@ -3982,7 +3982,7 @@ void MainWindow::onTailMonitoringStateChanged(ScintillaNext *editor, bool isMoni
     }
 }
 
-void MainWindow::updateTailMonitoringUi(ScintillaNext *editor) {
+void MainWindow::updateTailMonitoringUi(const ScintillaNext *editor) {
     if (!actionToggleTailMonitoring)
         return;
     const bool isMon = TailMonitoringManager::instance()->isMonitoring(editor);

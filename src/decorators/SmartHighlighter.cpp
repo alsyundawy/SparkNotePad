@@ -56,7 +56,7 @@ void SmartHighlighter::highlightCurrentView() {
         return;
     }
 
-    const int docLen = editor->length();
+    const sptr_t docLen = editor->length();
     if (docLen <= 0 || editor->selectionEmpty()) {
         if (m_hasHighlights) {
             editor->setIndicatorCurrent(indicator);
@@ -66,10 +66,10 @@ void SmartHighlighter::highlightCurrentView() {
         return;
     }
 
-    const int mainSelection = editor->mainSelection();
-    const int selectionStart = editor->selectionNStart(mainSelection);
-    const int selectionEnd = editor->selectionNEnd(mainSelection);
-    const int selLen = selectionEnd - selectionStart;
+    const sptr_t mainSelection = editor->mainSelection();
+    const sptr_t selectionStart = editor->selectionNStart(mainSelection);
+    const sptr_t selectionEnd = editor->selectionNEnd(mainSelection);
+    const sptr_t selLen = selectionEnd - selectionStart;
 
     // Fast reject: if selection is empty or longer than a single reasonable word (e.g. multi-word or Select All)
     if (selLen <= 0 || selLen > 128) {
@@ -81,9 +81,9 @@ void SmartHighlighter::highlightCurrentView() {
         return;
     }
 
-    const int curPos = editor->currentPos();
-    const int wordStart = editor->wordStartPosition(curPos, true);
-    const int wordEnd = editor->wordEndPosition(wordStart, true);
+    const sptr_t curPos = editor->currentPos();
+    const sptr_t wordStart = editor->wordStartPosition(curPos, true);
+    const sptr_t wordEnd = editor->wordEndPosition(wordStart, true);
 
     // Make sure the selection is strictly on word boundaries
     if (wordStart == wordEnd || wordStart != selectionStart || wordEnd != selectionEnd) {

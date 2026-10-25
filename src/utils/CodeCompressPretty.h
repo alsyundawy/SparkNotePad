@@ -14,6 +14,7 @@
 #ifndef CODECOMPRESSPRETTY_H
 #define CODECOMPRESSPRETTY_H
 
+#include <cstdint>
 #include <QString>
 
 #if !defined(UNIT_TESTING)
@@ -22,7 +23,7 @@ class ScintillaNext;
 
 class CodeCompressPretty {
 public:
-    enum Language { Auto, Json, Json5, Css, JavaScript };
+    enum Language : std::uint8_t { Auto, Json, Json5, Css, JavaScript };
 
     struct Result {
         bool success{false};

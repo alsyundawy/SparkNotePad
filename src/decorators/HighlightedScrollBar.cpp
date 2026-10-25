@@ -42,11 +42,10 @@ HighlightedScrollBarDecorator::HighlightedScrollBarDecorator(ScintillaNext *edit
 HighlightedScrollBarDecorator::~HighlightedScrollBarDecorator() {}
 
 void HighlightedScrollBarDecorator::notify(const NotificationData *pscn) {
-    if (pscn->nmhdr.code == Notification::UpdateUI &&
-        (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection))) {
-        scrollBar->update();
-    } else if (pscn->nmhdr.code == Notification::Modified &&
-               FlagSet(pscn->modificationType, ModificationFlags::ChangeMarker)) {
+    if ((pscn->nmhdr.code == Notification::UpdateUI &&
+         (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection))) ||
+        (pscn->nmhdr.code == Notification::Modified &&
+         FlagSet(pscn->modificationType, ModificationFlags::ChangeMarker))) {
         scrollBar->update();
     }
 }
@@ -68,7 +67,7 @@ void HighlightedScrollBar::paintEvent(QPaintEvent *event) {
 
 void HighlightedScrollBar::drawMarker(QPainter &p, int marker) {
     // NOTE: SCI_MARKERGETBACK doesn't exist...so can't use the marker color
-    int curLine = 0;
+    sptr_t curLine = 0;
 
     while ((curLine = editor->markerNext(curLine, 1 << marker)) != -1) {
         drawTickMark(p, lineToScrollBarY(curLine), DEFAULT_TICK_HEIGHT, QColor(100, 100, 255));
@@ -78,17 +77,17 @@ void HighlightedScrollBar::drawMarker(QPainter &p, int marker) {
 }
 
 void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
-    const int docLength = editor->length();
+    const sptr_t docLength = editor->length();
     if (docLength <= 0) {
         return;
     }
 
-    int curPos = 0;
-    int color = editor->indicFore(indicator);
+    sptr_t curPos = 0;
+    const int color = static_cast<int>(editor->indicFore(indicator));
     int safetyCount = 0;
 
     while (curPos < docLength && safetyCount++ < 1500) {
-        int nextPos = editor->indicatorEnd(indicator, curPos);
+        sptr_t nextPos = editor->indicatorEnd(indicator, curPos);
         if (nextPos <= curPos) {
             break;
         }
@@ -100,8 +99,8 @@ void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
 }
 
 void HighlightedScrollBar::drawCursors(QPainter &p) {
-    const int numSelections = editor->selections();
-    for (int i = 0; i < numSelections; i++) {
+    const sptr_t numSelections = editor->selections();
+    for (sptr_t i = 0; i < numSelections; i++) {
         int startCaretY = posToScrollBarY(editor->selectionNCaret(i));
         int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i));
 
@@ -120,14 +119,14 @@ void HighlightedScrollBar::drawTickMark(QPainter &p, int y, int height, QColor c
                rect().width() - (DEFAULT_TICK_PADDING * 2), height, color);
 }
 
-int HighlightedScrollBar::posToScrollBarY(int pos) const {
-    int line = editor->visibleFromDocLine(editor->lineFromPosition(pos));
+int HighlightedScrollBar::posToScrollBarY(sptr_t pos) const {
+    sptr_t line = editor->visibleFromDocLine(editor->lineFromPosition(pos));
 
     return lineToScrollBarY(line);
 }
 
-int HighlightedScrollBar::lineToScrollBarY(int line) const {
-    int lineCount = editor->visibleFromDocLine(editor->lineCount());
+int HighlightedScrollBar::lineToScrollBarY(sptr_t line) const {
+    sptr_t lineCount = editor->visibleFromDocLine(editor->lineCount());
 
     if (!editor->endAtLastLine()) {
         lineCount += editor->linesOnScreen();
@@ -137,7 +136,8 @@ int HighlightedScrollBar::lineToScrollBarY(int line) const {
         return 0;
     }
 
-    return static_cast<double>(line) / lineCount * (rect().height() - scrollbarArrowHeight() * 2);
+    return static_cast<int>(static_cast<double>(line) / static_cast<double>(lineCount) *
+                            static_cast<double>(rect().height() - scrollbarArrowHeight() * 2));
 }
 
 int HighlightedScrollBar::scrollbarArrowHeight() const {

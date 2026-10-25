@@ -39,9 +39,9 @@ public:
     static ClipboardMonitor *instance();
 
     bool isMonitoring() const;
-    void startMonitoring(ScintillaNext *targetEditor = nullptr);
+    void startMonitoring(ScintillaNext *editor = nullptr);
     void stopMonitoring();
-    void toggleMonitoring(ScintillaNext *targetEditor = nullptr);
+    void toggleMonitoring(ScintillaNext *editor = nullptr);
 
     void setTargetEditor(ScintillaNext *editor);
     ScintillaNext *targetEditor() const;

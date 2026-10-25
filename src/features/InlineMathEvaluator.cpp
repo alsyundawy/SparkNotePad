@@ -160,8 +160,8 @@ private:
                 m_pos++;
             }
             std::string ident = m_s.substr(start, m_pos - start);
-            for (char &ch : ident)
-                ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+            std::transform(ident.begin(), ident.end(), ident.begin(),
+                           [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
 
             if (ident == "pi")
                 return M_PI;

@@ -15,6 +15,7 @@
 #ifndef CASECONVERTER_H
 #define CASECONVERTER_H
 
+#include <cstdint>
 #include <QString>
 
 #if !defined(UNIT_TESTING)
@@ -23,7 +24,7 @@ class ScintillaNext;
 
 class CaseConverter {
 public:
-    enum class CaseType { UpperCase, LowerCase, InvertCase, TitleCase, SentenceCase };
+    enum class CaseType : std::uint8_t { UpperCase, LowerCase, InvertCase, TitleCase, SentenceCase };
 
     struct ConvertResult {
         bool success = false;

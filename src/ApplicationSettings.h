@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <functional>
 
 #include <QObject>
@@ -52,9 +53,9 @@ private:
 public:                                   \
     type lname() const;                   \
 public slots:                             \
-    void set##name(type val);             \
+    void set##name(const type &val);      \
     Q_SIGNAL                              \
-    void lname##Changed(type val);
+    void lname##Changed(const type &val);
 
 class ApplicationSettings : public QSettings {
     Q_OBJECT
@@ -62,7 +63,7 @@ class ApplicationSettings : public QSettings {
 public:
     explicit ApplicationSettings(QObject *parent = nullptr);
 
-    enum DefaultDirectoryBehaviorEnum { FollowCurrentDocument, RememberLastUsed, HardCoded };
+    enum DefaultDirectoryBehaviorEnum : std::uint8_t { FollowCurrentDocument, RememberLastUsed, HardCoded };
     Q_ENUM(DefaultDirectoryBehaviorEnum)
 
     template <typename T>

@@ -32,7 +32,7 @@ using ComboBoxItem = QPair<QString, QVariant>;
 class ComboBoxDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    ComboBoxDelegate(const QList<ComboBoxItem> &items, QObject *parent = nullptr);
+    explicit ComboBoxDelegate(const QList<ComboBoxItem> &items, QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
