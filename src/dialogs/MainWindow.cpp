@@ -159,6 +159,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->setupUi(this);
+    ui->mainToolBar->setIconSize(QSize(20, 20));
 
     applyCustomShortcuts();
 

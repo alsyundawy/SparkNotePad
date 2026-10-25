@@ -515,8 +515,8 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>16</width>
-     <height>16</height>
+     <width>20</width>
+     <height>20</height>
     </size>
    </property>
    <property name="floatable">
@@ -1011,9 +1011,8 @@
   </action>
   <action name="actionZoomIn">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/zoomIn.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/zoomIn.svg</normaloff>:/icons/zoomIn.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom &amp;In</string>
@@ -1024,9 +1023,8 @@
   </action>
   <action name="actionZoomOut">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/zoomOut.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/zoomOut.svg</normaloff>:/icons/zoomOut.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom &amp;Out</string>
@@ -1097,9 +1095,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/indentGuide.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/indentGuide.svg</normaloff>:/icons/indentGuide.svg</iconset>
    </property>
    <property name="text">
     <string>Show Indent Guide</string>
@@ -1146,9 +1143,8 @@
   </action>
   <action name="actionFind">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/find.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Find...</string>
@@ -1180,9 +1176,8 @@
   </action>
   <action name="actionReplace">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/findReplace.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/findReplace.svg</normaloff>:/icons/findReplace.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Replace...</string>

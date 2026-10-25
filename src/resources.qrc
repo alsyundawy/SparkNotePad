@@ -49,5 +49,10 @@
         <file>icons/restart.svg</file>
         <file>icons/exit.svg</file>
         <file>icons/settings.svg</file>
+        <file>icons/find.svg</file>
+        <file>icons/findReplace.svg</file>
+        <file>icons/zoomIn.svg</file>
+        <file>icons/zoomOut.svg</file>
+        <file>icons/indentGuide.svg</file>
     </qresource>
 </RCC>

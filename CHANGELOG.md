@@ -16,11 +16,18 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 #### 🆕 Added
 
 - **Restart Application Action (`Ctrl+Alt+R` / `Cmd+Option+R`)**: Graceful restart from the File menu that verifies unsaved documents across all tabs (`checkEditorsBeforeClose()`), flushes `QSettings` (`saveSettings()`), stops the auto-save timer, releases the SingleApplication instance lock (`releaseSingleInstanceLock()`), and relaunches natively: macOS `.app` bundles via `/usr/bin/open -n -a <bundle>` (absolute path), Linux via `QProcess::startDetached(QCoreApplication::applicationFilePath(), args)`. Supports optional `--safe-mode` flag.
-- **Modern Elegant Toolbar Icons & Preferences Button**:
+- **Modern Elegant Toolbar Icons & 20x20 High-DPI Standard**:
+  - Replaced legacy low-resolution pixelated PNG icons (`find.png`, `findReplace.png`, `zoomIn.png`, `zoomOut.png`, `indentGuide.png`) with crisp monoline vector SVGs matching the design language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):
+    - `src/icons/find.svg`: Precision magnifying glass in Sky Blue (`#0ea5e9`).
+    - `src/icons/findReplace.svg`: Magnifying glass with integrated directional replace flow in Vivid Violet (`#8b5cf6`).
+    - `src/icons/zoomIn.svg`: Magnifying glass with centered plus sign in Emerald Green (`#10b981`).
+    - `src/icons/zoomOut.svg`: Magnifying glass with centered minus sign in Amber Gold (`#f59e0b`).
+    - `src/icons/indentGuide.svg`: Vertical alignment guideline with hierarchical indentation levels and step arrow in Electric Cyan (`#06b6d4`).
   - Replaced low-resolution pixelated `arrow_refresh.png` with a modern crisp vector SVG circular reload icon (`icons/restart.svg`) in vibrant blue `#2563eb`.
   - Replaced generic cross with an elegant modern Exit SVG icon (`icons/exit.svg`) featuring an intuitive door-exit vector in crimson `#ef4444`.
   - Added Preferences shortcut (`actionPreferences`) with modern vector icon (`icons/settings.svg`) directly on `mainToolBar` beside the Restart action for immediate one-click access.
-  - Fully optimized all SVG vector assets via SVGO for crisp rendering across macOS Retina and Linux HiDPI displays.
+  - Standardized `mainToolBar` icon dimensions to **20x20** high-DPI across `MainWindow.ui` and `MainWindow.cpp`, ensuring optimal optical clarity on macOS Retina (devicePixelRatio 2x / 40x40 px) and 4K displays.
+  - Fully optimized all SVG vector assets via SVGO for minimum byte weight and zero rendering artifacts.
 - **Security Regression Tests (`tests/test_lua_security.h`)**: Added `TestLuaSecurity` to the standard test suite verifying:
   - CVE-2026-42214 / GHSA-m5fq-c9x5-w54g: Extension injection payloads treated as literal Lua variable data (not code).
   - `LuaState::setVariable()` inert data contract (values pushed via `lua_pushstring`, never `luaL_loadstring`).

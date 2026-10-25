@@ -38,7 +38,17 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - Formatted, scrollable release notes changelog preview container with custom scrollbars and responsive typography.
    - Polished buttons: Primary glowing accent button (`Unduh Pembaruan ⤓`), neutral dismiss button (`Nanti Saja`), and direct GitHub release link (`Lihat di GitHub ↗`).
 
-3. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
+3. **Modern Monoline Vector Toolbar Icons & 20x20 High-DPI Standard**:
+   - Redesigned 5 core toolbar icons into clean, modern monoline vector SVGs matching the visual language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):
+     - `src/icons/find.svg`: Precision magnifying glass in Sky Blue (`#0ea5e9`).
+     - `src/icons/findReplace.svg`: Magnifying glass with integrated directional replace flow in Vivid Violet (`#8b5cf6`).
+     - `src/icons/zoomIn.svg`: Magnifying glass with centered plus sign in Emerald Green (`#10b981`).
+     - `src/icons/zoomOut.svg`: Magnifying glass with centered minus sign in Amber Gold (`#f59e0b`).
+     - `src/icons/indentGuide.svg`: Vertical alignment guideline with hierarchical indentation levels and step arrow in Electric Cyan (`#06b6d4`).
+   - Standardized `mainToolBar` icon dimensions to **20x20** high-DPI across `MainWindow.ui` and `MainWindow.cpp`, ensuring optimal optical clarity on macOS Retina (devicePixelRatio 2x / 40x40 px) and 4K displays.
+   - Fully optimized all SVG vector assets via SVGO for zero artifact rendering.
+
+4. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
    - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.
    - **Clangd, SonarLint & C/C++ Extensions**: Corrected `.clangd` configuration by removing misplaced `--query-driver` compiler flag, keeping it properly in `clangd.arguments` within `.vscode/settings.json`, and added `.vscode/c_cpp_properties.json` for full IntelliSense and compiler path mapping.
    - **C/C++ FlyLint Crash Fix**: Disabled erroneous external parser (`lizard` compression CLI) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` crash.
@@ -63,26 +73,26 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
      - `release.yml`: Refactored `secrets` access from dot notation to bracket notation `${{ secrets['...'] }}` to eliminate IDE context access warnings.
      - `thirdparty/scintilla`: Made `ScintillaEdit` constructor explicit, passed `rc` by const reference in `Geometry.h`, added explicit and cppcheck suppression annotations to constructors in `Geometry.h` and `Platform.h`.
 
-4. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
+5. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
    - Native application restart via `MainWindow::restartApplication()` (`Ctrl+Alt+R` / `Cmd+Option+R`).
    - Verifies unsaved tabs, flushes settings, terminates timers, releases `SingleApplication` locks, and relaunches with absolute binary path (`/usr/bin/open -n -a` on macOS, `QProcess::startDetached` on Linux).
    - Explicit File → Exit action with confirmation and status bar feedback.
    - **Modern Elegant Toolbar Icons**: Replaced low-res PNGs and generic crosses with SVGO-optimized crisp vector SVGs (`icons/restart.svg` in vibrant blue `#2563eb` and `icons/exit.svg` in crimson `#ef4444`).
    - **Toolbar Preferences Shortcut**: Embedded `actionPreferences` with modern vector icon `icons/settings.svg` directly beside the Restart action on `mainToolBar`.
 
-5. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
+6. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
    - **CVE-2026-95620 Mitigation**: Disabled HTTP/2 in `ReleaseManager::checkForUpdates()`, eliminating Qt QNetworkAccessManager HTTP/2 use-after-free risk across all Qt 6 versions.
    - **CVE-2026-42214 Mitigation**: Verified inert `lua_pushlstring` / `setVariable()` contract in `SparkNotePadApplication::detectLanguageFromExtension()`, supplemented by `LuaState::restrictDangerousApis()` sandbox and 100% passing test regression suite (`tests/test_lua_security.h`).
    - **Verified Clean**: Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 confirm 0 relevant CVEs.
 
-6. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
+7. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
    - **Split-View Close Tab Safety**: Replaced raw pointers `currentEditor` and `latestDockArea` in `DockedEditor` with guarded `QPointer<ScintillaNext>` and `QPointer<ads::CDockAreaWidget>`. Added safe fallback iteration across all opened dock areas in `focusedDockWidgetChanged`, and hooked `editor->destroyed` cleanup to permanently prevent null pointer dereferences and use-after-free crashes when closing split tabs.
    - **Massive File & Emoji/UTF-8 Caret Stability**: Initialized Scintilla buffer code page to `SC_CP_UTF8` (preventing single-byte slicing of multi-byte Unicode characters). Clamped character counting in `EditorInfoStatusBar` on documents > 2MB. Constrained `SmartHighlighter` (100ms debounce timer, maximum 128 chars, search window capped to viewport +/- 150 lines, 1500 matches limit) and `AutoCompletion` (viewport +/- 200 lines, 100 words limit).
    - **Text Selection Visibility & Interaction Fix**: Set vibrant selection blue `#ACCEF7` (macOS accent) for light theme and `#2D558C` for dark theme, providing 4.5:1 contrast against editor canvas. Suppressed `ColorPreviewCallTip` hover dwell while mouse buttons are depressed, eliminating selection drag interruptions.
    - **macOS Dock Right-Click Quit Save Prompt**: Implemented `MacServicesHandler::activateApplication()` via Cocoa `[NSApp activateIgnoringOtherApps:YES]`. Connected `commitDataRequest` and handled `QEvent::Quit`/`Close` in `SparkNotePadApplication` to ensure the save prompt surfaces in the foreground when quitting from the Dock, preventing silent quit and data loss.
    - **Upstream Feature & Stability Synchronization**: Cleanly integrated `ScintillaNext::getToolTip()` for tab and File List dock path inspection, added `removeMessageHandler()` in `DebugManager` and `DebugLogDock` destructor to prevent exit crashes, and added `Blank Operations > Trim Trailing Space` in the Edit menu with full Indonesian translation.
 
-7. **Complete Resolution of Remaining IDE & SonarLint Diagnostics, In-Depth Upstream Comparison & Static Hardening**:
+8. **Complete Resolution of Remaining IDE & SonarLint Diagnostics, In-Depth Upstream Comparison & Static Hardening**:
    - **AppleClang Compilation Database Generation**: Successfully configured CMake with AppleClang and auto-generated an 874 KB `build/compile_commands.json` (symlinked at project root) containing complete framework, sysroot, and compiler flags across all translation units. Completely resolved all 1,288 IDE cascade header resolution errors and 756 SonarQube CFamily compilation errors.
    - **Code Modernization & Diagnostic Suppressions**: Wrapped `SearchResultsDock::searchResultActivated` lambda parameters in `MainWindow.cpp` with `// NOLINTBEGIN(bugprone-easily-swappable-parameters)` and `ScintillaNext::characterPointer()` pointer casts in `ScintillaNext.cpp` with `// NOLINTBEGIN(performance-no-int-to-ptr)`. Added both checks to `.clangd` `ClangTidy.Remove` list to ensure 100% clean IDE status across all workstations.
    - **Buffer Overflow & Flawfinder Eradication**: Replaced unsafe C `strcpy` and `strcat` with length-bounded `snprintf` in `src/IFaceTable.cpp`. Added explicit `/* flawfinder: ignore */` annotations on legitimate Qt `QLocale::system()` and `QRandomGenerator::system()` calls, achieving **0 hits at minimum risk level 4** across the entire codebase.
