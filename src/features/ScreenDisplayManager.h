@@ -13,6 +13,7 @@
 #define SCREENDISPLAYMANAGER_H
 
 #include <QObject>
+#include <QPointer>
 #include <QRect>
 #include <QString>
 #include <QList>
@@ -71,7 +72,7 @@ private:
 
     void onScreenChangedForWindow(QScreen *screen);
 
-    QMainWindow *m_mainWindow = nullptr;
+    QPointer<QMainWindow> m_mainWindow = nullptr;
     qreal m_lastDpr = 1.0;
 };
 

@@ -13,6 +13,7 @@
 #define MACSERVICESHANDLER_H
 
 #include <QObject>
+#include <QPointer>
 #include <QString>
 #include <QStringList>
 
@@ -51,7 +52,7 @@ private:
     ~MacServicesHandler() override;
 
     SparkNotePadApplication *m_app = nullptr;
-    MainWindow *m_activeWindow = nullptr;
+    QPointer<MainWindow> m_activeWindow = nullptr;
 };
 
 #endif  // MACSERVICESHANDLER_H

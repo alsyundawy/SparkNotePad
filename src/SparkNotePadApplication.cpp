@@ -212,7 +212,7 @@ bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
 
     connect(this, &SparkNotePadApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
         if (state == Qt::ApplicationActive) {
-            if (window->isActiveWindow()) {
+            if (window && window->isActiveWindow()) {
                 window->focusIn();
             }
 
@@ -464,21 +464,15 @@ bool SparkNotePadApplication::event(QEvent *ev) {
         return true;
     }
 
-    if (ev->type() == QEvent::Quit || ev->type() == QEvent::Close) {
-        if (window && window->isVisible()) {
-            window->bringWindowToForeground();
-            if (!window->close()) {
-                ev->ignore();
-                return false;
-            }
-        }
-    }
-
     return SingleApplication::event(ev);
 }
 
 void SparkNotePadApplication::openFiles(const QStringList &files) {
     qInfo(Q_FUNC_INFO);
+
+    if (!window) {
+        return;
+    }
 
     for (const QString &file : files) {
         window->openFile(toLocalFileName(file));
@@ -494,6 +488,10 @@ void SparkNotePadApplication::saveSettings() const {
 }
 
 void SparkNotePadApplication::saveSession() {
+    if (!window) {
+        return;
+    }
+
     for (const auto *editor : window->editors()) {
         if (editor->isFile()) {
             recentFilesListManager->addFile(editor->getFilePath());
@@ -501,23 +499,30 @@ void SparkNotePadApplication::saveSession() {
     }
     saveSettings();
 
-    getSessionManager()->saveSession(window);
+    getSessionManager()->saveSession(window.data());
 }
 
 MainWindow *SparkNotePadApplication::createNewWindow() {
-    Q_ASSERT(window == Q_NULLPTR);
+    if (window) {
+        return window.data();
+    }
 
     window = new MainWindow(this);
 
-    connect(window, &MainWindow::editorActivated, this,
+    connect(window.data(), &QObject::destroyed, this, [this]() {
+        autoSaveTimer.stop();
+        window = nullptr;
+    });
+
+    connect(window.data(), &MainWindow::editorActivated, this,
             [](ScintillaNext *editor) { LuaExtension::Instance().setEditor(editor); });
 
-    connect(window, &MainWindow::aboutToClose, this, &SparkNotePadApplication::saveSession);
+    connect(window.data(), &MainWindow::aboutToClose, this, &SparkNotePadApplication::saveSession);
 
     connect(&autoSaveTimer, &QTimer::timeout, this, &SparkNotePadApplication::saveSession);
     autoSaveTimer.start(60 * 1000);
 
-    return window;
+    return window.data();
 }
 
 QStringList SparkNotePadApplication::debugInfo() const {
