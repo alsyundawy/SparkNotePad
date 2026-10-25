@@ -42,6 +42,7 @@ void populateActionContainer(Container* container, QObject* context, const QStri
             QAction* action = context->findChild<QAction*>(fullObjectName, Qt::FindDirectChildrenOnly);
 
             if (action) {
+                action->setIconVisibleInMenu(true);
                 container->addAction(action);
             } else {
                 qWarning() << "Cannot locate action named" << fullObjectName;

@@ -596,9 +596,8 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/openFile.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/openFile.png</normaloff>:/icons/openFile.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open...</string>
@@ -612,9 +611,8 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/saved.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/saved.png</normaloff>:/icons/saved.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -664,9 +662,8 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/undo.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/undo.svg</normaloff>:/icons/undo.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Undo</string>
@@ -677,9 +674,8 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/redo.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/redo.svg</normaloff>:/icons/redo.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Redo</string>
@@ -690,9 +686,8 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/cut.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
    </property>
    <property name="text">
     <string>Cu&amp;t</string>
@@ -703,9 +698,8 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/copy.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Copy</string>
@@ -716,9 +710,8 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/paste.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Paste</string>
@@ -728,6 +721,10 @@
    </property>
   </action>
   <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/bin_closed.png</normaloff>:/icons/bin_closed.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Delete</string>
    </property>
@@ -1543,6 +1540,10 @@
    </property>
   </action>
   <action name="actionCopyURL">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+   </property>
    <property name="text">
     <string>Copy URL</string>
    </property>
@@ -1551,6 +1552,10 @@
    </property>
   </action>
   <action name="actionOpenURL">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/folder_go.png</normaloff>:/icons/folder_go.png</iconset>
+   </property>
    <property name="text">
     <string>Open URL</string>
    </property>

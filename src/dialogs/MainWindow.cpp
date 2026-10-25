@@ -3380,13 +3380,39 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
         editor->setEmptySelection(contextMenuPos);
     }
 
-    QStringList actionNames = {
-        "Cut",          "Copy",      "Paste", "Delete",       "",         "SelectAll", "", "ShowCharacterInfo", "",
-        "Base64Encode", "URLEncode", "",      "Base64Decode", "URLDecode"};
+    const QStringList defaultActionNames = {"Undo",
+                                            "Redo",
+                                            "",
+                                            "Cut",
+                                            "Copy",
+                                            "Paste",
+                                            "Delete",
+                                            "",
+                                            "SelectAll",
+                                            "",
+                                            "Find",
+                                            "",
+                                            "Open",
+                                            "Save",
+                                            "",
+                                            "ShowCharacterInfo",
+                                            "",
+                                            "Base64Encode",
+                                            "URLEncode",
+                                            "",
+                                            "Base64Decode",
+                                            "URLDecode"};
+
+    QStringList actionNames = defaultActionNames;
 
     // If the entry exists in the settings, use that
     if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
         actionNames = settings->value("Gui/EditorContextMenu").toStringList();
+        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, and Find are always included
+        if (!actionNames.contains("Undo") || !actionNames.contains("Redo") || !actionNames.contains("Open") ||
+            !actionNames.contains("Save") || !actionNames.contains("Find")) {
+            actionNames = defaultActionNames;
+        }
     }
 
     // If the cursor is at a URL, prepend the actions
@@ -3404,6 +3430,14 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     menu->addMenu(ui->menuClearMarks);
     if (menuRun) {
         menu->addMenu(menuRun);
+    }
+
+    // Ensure all context menu actions and submenus display their icons
+    for (QAction *action : menu->findChildren<QAction *>()) {
+        action->setIconVisibleInMenu(true);
+    }
+    for (QAction *action : menu->actions()) {
+        action->setIconVisibleInMenu(true);
     }
 
     menu->popup(QCursor::pos());

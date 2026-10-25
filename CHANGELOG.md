@@ -17,7 +17,9 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 - **Restart Application Action (`Ctrl+Alt+R` / `Cmd+Option+R`)**: Graceful restart from the File menu that verifies unsaved documents across all tabs (`checkEditorsBeforeClose()`), flushes `QSettings` (`saveSettings()`), stops the auto-save timer, releases the SingleApplication instance lock (`releaseSingleInstanceLock()`), and relaunches natively: macOS `.app` bundles via `/usr/bin/open -n -a <bundle>` (absolute path), Linux via `QProcess::startDetached(QCoreApplication::applicationFilePath(), args)`. Supports optional `--safe-mode` flag.
 - **Modern Elegant Toolbar Icons & 20x20 High-DPI Standard**:
-  - Replaced legacy low-resolution pixelated PNG icons (`find.png`, `findReplace.png`, `zoomIn.png`, `zoomOut.png`, `indentGuide.png`) with crisp monoline vector SVGs matching the design language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):
+  - Replaced legacy low-resolution pixelated PNG icons (`find.png`, `findReplace.png`, `zoomIn.png`, `zoomOut.png`, `indentGuide.png`, `undo.png`, `redo.png`) with crisp monoline vector SVGs matching the design language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):
+    - `src/icons/undo.svg`: Iconic U-turn return arrow in Vibrant Blue (`#3b82f6`).
+    - `src/icons/redo.svg`: Iconic U-turn forward arrow in Emerald Green (`#10b981`).
     - `src/icons/find.svg`: Precision magnifying glass in Sky Blue (`#0ea5e9`).
     - `src/icons/findReplace.svg`: Magnifying glass with integrated directional replace flow in Vivid Violet (`#8b5cf6`).
     - `src/icons/zoomIn.svg`: Magnifying glass with centered plus sign in Emerald Green (`#10b981`).
@@ -27,6 +29,18 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
   - Replaced generic cross with an elegant modern Exit SVG icon (`icons/exit.svg`) featuring an intuitive door-exit vector in crimson `#ef4444`.
   - Added Preferences shortcut (`actionPreferences`) with modern vector icon (`icons/settings.svg`) directly on `mainToolBar` beside the Restart action for immediate one-click access.
   - Standardized `mainToolBar` icon dimensions to **20x20** high-DPI across `MainWindow.ui` and `MainWindow.cpp`, ensuring optimal optical clarity on macOS Retina (devicePixelRatio 2x / 40x40 px) and 4K displays.
+- **Workspace Editor Right-Click Context Menu Expansion**:
+  - Expanded editor workspace right-click context menu with direct access to:
+    - **Undo** (`Ctrl+Z` / `Cmd+Z`) and **Redo** (`Ctrl+Y` / `Cmd+Y`) at the top of the menu.
+    - **Find** (`Ctrl+F` / `Cmd+F`) for instant search from caret position.
+    - **Open** (`Ctrl+O` / `Cmd+O`) and **Save** (`Ctrl+S` / `Cmd+S`) for rapid document operations.
+  - Comprehensive icon support across the context menu:
+    - Attached icons for `Undo` (`undo.svg`), `Redo` (`redo.svg`), `Cut` (`cut.png`), `Copy` (`copy.png`), `Paste` (`paste.png`), `Delete` (`bin_closed.png`), `Find` (`find.svg`), `Open` (`openFile.png`), `Save` (`saved.png`), `Open URL` (`folder_go.png`), and `Copy URL` (`copy.png`).
+    - Enforced `action->setIconVisibleInMenu(true)` in `ActionUtils::populateActionContainer` and `MainWindow::showEditorContextMenu()` ensuring all actions and submenus display their icons across macOS Retina and Linux desktop environments.
+    - Automatic migration for existing custom context menu settings to ensure essential actions (Undo, Redo, Open, Save, Find) are always present.
+- **Repository Branch Alignment & 100% Parity**:
+  - Aligned branch `main` and release branch `1.3.5` to identical commit history (`main` IS `1.3.5`).
+  - Aligned branch `develop` and branch `1.1.0` to identical commit history (`1.1.0` IS `develop`).
 - **Unified Repository Copyright & Attribution Header Across Entire Codebase**:
   - Standardized legal and author attribution headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly credit upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
 - **Security Regression Tests (`tests/test_lua_security.h`)**: Added `TestLuaSecurity` to the standard test suite verifying:

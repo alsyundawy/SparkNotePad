@@ -54,5 +54,7 @@
         <file>icons/zoomIn.svg</file>
         <file>icons/zoomOut.svg</file>
         <file>icons/indentGuide.svg</file>
+        <file>icons/undo.svg</file>
+        <file>icons/redo.svg</file>
     </qresource>
 </RCC>
