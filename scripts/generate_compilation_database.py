@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 CPM_CACHE_DIR = ".cpm-cache"
-CLANGXX_PATH = "/usr/bin/clang++"
+CLANGXX_PATH = "/usr/local/opt/llvm/bin/clang++"
 
 
 FLYENV_NODE_LIB = "/Users/alsyundawy/Library/FlyEnv/env/node/lib"
@@ -82,10 +82,10 @@ def get_include_dirs(root: Path) -> list[str]:
 def get_base_defines() -> list[str]:
     """Return common preprocessor defines."""
     return [
-        '-DAPP_VERSION="1.3.5"',
-        '-DAPP_DISTRIBUTION="Source"',
-        '-DAPP_COPYRIGHT="Copyright 2019-2026 Justin Dailey & SparkNotePad Contributors"',
-        '-DAPP_COPYRIGHT_BUILDER="Copyright 2026 HARRY DS ALSYUNDAWY (SparkNotePad Maintainer)"',
+        r"-DAPP_VERSION=\"1.3.5\"",
+        r"-DAPP_DISTRIBUTION=\"Source\"",
+        r"-DAPP_COPYRIGHT=\"Copyright 2019-2026 Justin Dailey & SparkNotePad Contributors\"",
+        r"-DAPP_COPYRIGHT_BUILDER=\"Copyright 2026 HARRY DS ALSYUNDAWY (SparkNotePad Maintainer)\"",
         "-DSCI_OWNREGEX",
         "-DADS_STATIC",
         "-DQSIMPLEUPDATER_STATIC",
@@ -144,6 +144,8 @@ def build_compile_entry(
     cmd_parts = [
         compiler,
         std_flag,
+        "-isystem",
+        "/usr/local/opt/llvm/include/c++/v1",
         "-isysroot",
         MACOS_SDK_PATH,
         *fw_flags,

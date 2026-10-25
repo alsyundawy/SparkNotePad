@@ -38,7 +38,7 @@
 #include "lua.hpp"
 #include "EditorConfigAppDecorator.h"
 
-#include "ILexer.h"
+#include "ILexer.h"  // IWYU pragma: keep
 #include "Lexilla.h"
 
 #include <QCommandLineParser>

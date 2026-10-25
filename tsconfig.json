@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "checkJs": false,
+    "allowJs": false
+  },
+  "include": [],
+  "exclude": ["**/*", "i18n/*", "i18n/**/*"]
+}
