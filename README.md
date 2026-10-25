@@ -201,6 +201,20 @@ Official production binary packages for SparkNotePad v1.3.5 are ready for immedi
 | **Linux**           | x86_64 (Fedora / RHEL)      |     `.rpm`     | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm) |
 | **macOS / Linux**   | Association Helper Script   |     `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)   |
 
+### Linux Package Installation (Automated Dependencies)
+
+- **Ubuntu 22.04+ / Debian 12+ (`.deb`)**:
+  Install via `apt` with a leading `./` so all Qt 6 and desktop dependencies are automatically resolved and installed from official repositories:
+  ```bash
+  sudo apt install ./sparknotepad_1.3.5_amd64.deb
+  ```
+  *(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md)).*
+
+- **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
+  ```bash
+  sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
+  ```
+
 ---
 
 ## macOS Gatekeeper & Quarantine Removal

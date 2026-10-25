@@ -52,6 +52,14 @@ set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_RECOMMENDS "xdg-utils")
 set(CPACK_DEBIAN_FILE_NAME "sparknotepad_${PROJECT_VERSION}_${DEB_ARCH}.deb")
 
+# Explicit Debian/Ubuntu package dependencies for automated installation via APT (`sudo apt install ./sparknotepad_*.deb`).
+# Uses Debian '|' alternative syntax to seamlessly support both classic Qt6 packages (Ubuntu 22.04 LTS, Debian 12 Bookworm)
+# and 64-bit time_t transition packages (Ubuntu 24.04 LTS, Ubuntu 26.04, Debian 13 Trixie).
+# CPACK_DEBIAN_PACKAGE_SHLIBDEPS dynamically discovers and appends libc6, libstdc++6, etc.
+set(CPACK_DEBIAN_PACKAGE_DEPENDS
+    "libqt6core6 (>= 6.2.4) | libqt6core6t64, libqt6gui6 (>= 6.2.4) | libqt6gui6t64, libqt6widgets6 (>= 6.2.4) | libqt6widgets6t64, libqt6network6 (>= 6.2.4) | libqt6network6t64, libqt6printsupport6 (>= 6.2.4) | libqt6printsupport6t64, libqt6core5compat6 (>= 6.2.4) | libqt6core5compat6t64, qt6-qpa-plugins, libglx0, libopengl0"
+)
+
 # Red Hat (.rpm)
 set(CPACK_RPM_PACKAGE_NAME "sparknotepad")
 set(CPACK_RPM_PACKAGE_ARCHITECTURE "${RPM_ARCH}")

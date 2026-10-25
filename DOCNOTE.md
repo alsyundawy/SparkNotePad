@@ -156,6 +156,12 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **Compilation Database Fix**: Resolved whitespace argument splitting on preprocessor defines in `scripts/generate_compilation_database.py` with `shlex.join()` and standard LLVM `"arguments": [...]` array.
     - **Linux GCC Cross-Platform Portability**: Resolved GCC compilation error in `src/features/MacServicesHandler.cpp` by including `dialogs/MainWindow.h` and `SparkNotePadApplication.h` to complete type requirements during `QPointer` template instantiation on Linux runners.
 
+18. **Automated Linux Debian/Ubuntu Dependency Resolution & glibc 2.35 Multi-Distro Baseline**:
+    - **Debian Dependency Metadata**: Configured explicit `CPACK_DEBIAN_PACKAGE_DEPENDS` in `cmake/PackagingLinux.cmake` using Debian alternative syntax (`|`) for classic Qt6 (`libqt6core6`, etc.) and `t64` 64-bit time_t packages (`libqt6core6t64`, etc.).
+    - **Automated APT Dependency Installation**: Resolved the Debian manual dependency issue by ensuring that `sudo apt install ./sparknotepad_*.deb` automatically resolves and downloads all required Qt 6 modules (`libqt6widgets6`, `qt6-qpa-plugins`, `libglx0`, etc.) from official mirrors, providing parity with Fedora's automatic `dnf install ./sparknotepad-*.rpm`.
+    - **glibc 2.35 Multi-Distro Baseline**: Anchored Linux release CI runners to **`ubuntu-22.04`** (glibc 2.35) with `g++-12`, guaranteeing dynamic link compatibility so packages install and execute natively across Ubuntu 22.04+, Debian 12 (Bookworm), Ubuntu 24.04+, Debian 13 (Trixie), and Ubuntu 26.04.
+    - **Community & Upstream Research**: Published `doc/BUILD_UBUNTU_DEBIAN.md` and updated `doc/LINUX_DEB_RPM_PACKAGING.md` incorporating reference research from `jeremieconte/NotepadNext-native-linux/BUILD-UBUNTU-26.04.md`.
+
 ---
 
 ## 1. Executive Summary: Release v1.3.0

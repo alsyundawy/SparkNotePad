@@ -22,14 +22,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs_on: ubuntu-24.04
+          - runs_on: ubuntu-22.04
             platform: linux
             arch: x64
             cmake_arch: x86_64
             qt_arch: gcc_64
             qt_version: "6.5"
 
-          - runs_on: ubuntu-24.04
+          - runs_on: ubuntu-22.04
             platform: linux
             arch: x64
             cmake_arch: x86_64
@@ -67,6 +67,10 @@ jobs:
             libxcb-keysyms1 libxcb-randr0 libxcb-render0 \
             libxcb-render-util0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 \
             rpm dpkg-dev
+          if [ "${{ matrix.runs_on }}" = "ubuntu-22.04" ]; then
+            sudo apt-get install -y --no-install-recommends g++-12 gcc-12
+            sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
+          fi
 
       - name: Install Qt
         uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1

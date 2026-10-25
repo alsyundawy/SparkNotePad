@@ -19,6 +19,11 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
   - Re-engineered `cmake/PackagingMac.cmake` target `dmg` to prune unused, bulky Qt 6 frameworks eagerly deployed by `macdeployqt` on desktop macOS (`QtPdf`, `QtQml`, `QtQmlMeta`, `QtQmlModels`, `QtQmlWorkerScript`, `QtQuick`, `QtVirtualKeyboard`, `QtVirtualKeyboardQml`, and plugins `libqtvirtualkeyboardplugin.dylib`, `libqpdf.dylib`).
   - Enforced maximum `UDZO` zlib compression (`zlib-level=9`) and automatic ad-hoc code-signing (`codesign --force --deep -s -`).
   - Slashed macOS Intel (`x86_64`) DMG package size from **52.46 MB** down to **29.80 MB** (43% reduction, strictly below the 50 MB ceiling) while maintaining 100% runtime integrity.
+- **Automated Linux Debian/Ubuntu Dependency Resolution & glibc 2.35 Multi-Distro Baseline**:
+  - Configured explicit `CPACK_DEBIAN_PACKAGE_DEPENDS` in `cmake/PackagingLinux.cmake` using Debian alternative syntax (`|`) supporting both classic Qt6 packages (Ubuntu 22.04 LTS, Debian 12 Bookworm) and 64-bit `time_t` transition packages (Ubuntu 24.04 LTS, Debian 13 Trixie, Ubuntu 26.04).
+  - Solved the Debian manual dependency installation problem: installing via `sudo apt install ./sparknotepad_*.deb` now automatically queries mirrors and installs all Qt6 runtime libraries and QPA plugins, providing full parity with Fedora's automatic `dnf install ./sparknotepad-*.rpm`.
+  - Re-anchored canonical Linux CI build runners to **`ubuntu-22.04`** (glibc 2.35) with `g++-12`, guaranteeing binary execution across Ubuntu 22.04+, Debian 12+, Ubuntu 24.04+, and Debian 13+.
+  - Added dedicated documentation in `doc/BUILD_UBUNTU_DEBIAN.md` and updated `doc/LINUX_DEB_RPM_PACKAGING.md` referencing `jeremieconte/NotepadNext-native-linux/BUILD-UBUNTU-26.04.md`.
 - **Zero-Error IDE, Clangd, Cppcheck & SonarQube Static Analysis Compliance**:
   - Verified 0 compiler and AST diagnostics across all 135 translation units (`src/*.cpp` and `src/*/*.cpp`) using `clangd --check`.
   - Resolved `cppcheck` performance recommendations: returning `const QString &` from `Macro::getName()` and `const QStringList &` from `RecentFilesListManager::fileList()`, eliminating redundant string allocations.

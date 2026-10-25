@@ -201,6 +201,20 @@ Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui
 | **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm) |
 | **macOS / Linux**   | Skrip Pembantu Asosiasi     |    `.sh`     | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)   |
 
+### Pemasangan Paket Linux (Instalasi Dependensi Otomatis)
+
+- **Ubuntu 22.04+ / Debian 12+ (`.deb`)**:
+  Pasang melalui perintah `apt` dengan awalan `./` agar seluruh pustaka dependensi Qt 6 dan desktop diunduh dan dipasang otomatis dari repositori resmi:
+  ```bash
+  sudo apt install ./sparknotepad_1.3.5_amd64.deb
+  ```
+  *(Lihat panduan lengkap [Panduan Build Native Debian & Ubuntu](doc/BUILD_UBUNTU_DEBIAN.md) serta [Panduan Paket Linux](doc/LINUX_DEB_RPM_PACKAGING.md)).*
+
+- **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
+  ```bash
+  sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
+  ```
+
 ---
 
 ## macOS Gatekeeper & Quarantine Removal
