@@ -24,6 +24,9 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
   - Solved the Debian manual dependency installation problem: installing via `sudo apt install ./sparknotepad_*.deb` now automatically queries mirrors and installs all Qt6 runtime libraries and QPA plugins, providing full parity with Fedora's automatic `dnf install ./sparknotepad-*.rpm`.
   - Re-anchored canonical Linux CI build runners to **`ubuntu-22.04`** (glibc 2.35) with `g++-12`, guaranteeing binary execution across Ubuntu 22.04+, Debian 12+, Ubuntu 24.04+, and Debian 13+.
   - Added dedicated documentation in `doc/BUILD_UBUNTU_DEBIAN.md` and updated `doc/LINUX_DEB_RPM_PACKAGING.md` referencing `jeremieconte/NotepadNext-native-linux/BUILD-UBUNTU-26.04.md`.
+- **Vector SVG Application Icon Realignment (`SparkNotePad.svg`)**:
+  - Converted the master branding artwork `SparkNotePad.png` (blue rounded notepad with horizontal tone bands, dark blue "N#" emblem, and angled orange/gold graphite pencil) directly into high-DPI vector SVG (`icon/SparkNotePad.svg` and `src/icons/SparkNotePad.svg`), replacing the obsolete dark-editor squircle graphic.
+  - Bundled `icons/SparkNotePad.svg` into Qt resources (`src/resources.qrc`) and updated packaging automation (`scripts/package-flatpak-appimage.sh`, `cmake/PackagingLinux.cmake`) ensuring 100% brand consistency across Linux desktop launchers, Flatpak, AppImage, and window managers.
 - **Zero-Error IDE, Clangd, Cppcheck & SonarQube Static Analysis Compliance**:
   - Verified 0 compiler and AST diagnostics across all 135 translation units (`src/*.cpp` and `src/*/*.cpp`) using `clangd --check`.
   - Resolved `cppcheck` performance recommendations: returning `const QString &` from `Macro::getName()` and `const QStringList &` from `RecentFilesListManager::fileList()`, eliminating redundant string allocations.

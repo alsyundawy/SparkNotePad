@@ -162,6 +162,10 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **glibc 2.35 Multi-Distro Baseline**: Anchored Linux release CI runners to **`ubuntu-22.04`** (glibc 2.35) with `g++-12`, guaranteeing dynamic link compatibility so packages install and execute natively across Ubuntu 22.04+, Debian 12 (Bookworm), Ubuntu 24.04+, Debian 13 (Trixie), and Ubuntu 26.04.
     - **Community & Upstream Research**: Published `doc/BUILD_UBUNTU_DEBIAN.md` and updated `doc/LINUX_DEB_RPM_PACKAGING.md` incorporating reference research from `jeremieconte/NotepadNext-native-linux/BUILD-UBUNTU-26.04.md`.
 
+19. **Vector SVG Application Icon Realignment (`SparkNotePad.svg`)**:
+    - **PNG-to-SVG Conversion**: Converted the master branding artwork `SparkNotePad.png` (blue rounded notepad with alternating blue tone bands, navy blue "N#" emblem, and angled orange/gold graphite pencil with pink eraser) directly into a standards-compliant, high-DPI vector SVG (`icon/SparkNotePad.svg` and `src/icons/SparkNotePad.svg`), replacing the obsolete dark-editor squircle graphic.
+    - **Qt Resource & Linux Packaging Integration**: Bundled `icons/SparkNotePad.svg` into Qt resources (`src/resources.qrc`) and updated packaging automation (`scripts/package-flatpak-appimage.sh`, `cmake/PackagingLinux.cmake`) ensuring 100% brand consistency across Linux desktop launchers, Flatpak, AppImage, and window managers.
+
 ---
 
 ## 1. Executive Summary: Release v1.3.0

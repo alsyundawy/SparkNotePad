@@ -52,9 +52,12 @@ if [[ ${BUILD_APPIMAGE} == "true" ]]; then
 	cp "${REPO_ROOT}/deploy/linux/appimage/AppRun" "${APPDIR}/AppRun"
 	cp "${REPO_ROOT}/deploy/linux/SparkNotePad.desktop" "${APPDIR}/SparkNotePad.desktop"
 	cp "${REPO_ROOT}/deploy/linux/SparkNotePad.desktop" "${APPDIR}/usr/share/applications/io.github.alsyundawy.SparkNotePad.desktop"
-	if [[ -f "${REPO_ROOT}/src/icon/SparkNotePad.svg" ]]; then
-		cp "${REPO_ROOT}/src/icon/SparkNotePad.svg" "${APPDIR}/SparkNotePad.svg"
-		cp "${REPO_ROOT}/src/icon/SparkNotePad.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/io.github.alsyundawy.SparkNotePad.svg"
+	if [[ -f "${REPO_ROOT}/icon/SparkNotePad.svg" ]]; then
+		cp "${REPO_ROOT}/icon/SparkNotePad.svg" "${APPDIR}/SparkNotePad.svg"
+		cp "${REPO_ROOT}/icon/SparkNotePad.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/io.github.alsyundawy.SparkNotePad.svg"
+	elif [[ -f "${REPO_ROOT}/src/icons/SparkNotePad.svg" ]]; then
+		cp "${REPO_ROOT}/src/icons/SparkNotePad.svg" "${APPDIR}/SparkNotePad.svg"
+		cp "${REPO_ROOT}/src/icons/SparkNotePad.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/io.github.alsyundawy.SparkNotePad.svg"
 	fi
 
 	if [[ -f "${REPO_ROOT}/build/src/SparkNotePad" ]]; then
