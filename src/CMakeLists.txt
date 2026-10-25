@@ -261,6 +261,8 @@ qt_add_executable(SparkNotePad
 	dialogs/ThemeSwitcherDialog.cpp
 	dialogs/ModernMessageBox.h
 	dialogs/ModernMessageBox.cpp
+	dialogs/UpdateDialog.h
+	dialogs/UpdateDialog.cpp
 	dialogs/MkcertDialog.h
 	dialogs/MkcertDialog.cpp
 	docks/DebugLogDock.cpp

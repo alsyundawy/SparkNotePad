@@ -28,6 +28,7 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 - **`LuaState::restrictDangerousApis()` Sandbox Method**: Strips dangerous OS/IO Lua primitives (`os.execute`, `os.exit`, `os.tmpname`, `io.popen`, `package.loadlib`, `package.loadclib`) for untrusted macro/extension execution contexts.
 - **Trim Trailing Space Action (`Edit > Blank Operations`)**: Quick command to trim all trailing whitespace and tabs across the buffer in a single atomic undo step. Fully localized in Indonesian (_Pangkas Spasi di Akhir_).
 - **Full Path Tooltips on Tabs & File List Dock**: Hovering over tabs and file list items now displays the full path of the document, making it effortless to distinguish identically named files across different directories.
+- **Elegant & Modern Update Check Dialog (`UpdateDialog`)**: Replaced generic legacy `QMessageBox` alerts with an exquisite, theme-responsive dialog. Features high-DPI antialiased vector badges, version comparison cards with pill tags (`Versi Terpasang` ➜ `Versi Terbaru`), formatted scrollable changelog viewer, and refined primary/secondary action buttons for Update Available, Up to Date, and Network Error states.
 - **NotepadNext 0.15 vs. SparkNotePad Comparison Doc (`doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md`)**: Comprehensive bilingual (English & Indonesian) technical treatise detailing the lineage, architectural superiority, security hardening, and extensive capability expansion of SparkNotePad over official upstream NotepadNext 0.15.
 
 #### 🔧 Fixed

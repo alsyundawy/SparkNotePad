@@ -14,6 +14,8 @@ CLANGXX_PATH = "/usr/bin/clang++"
 
 FLYENV_NODE_LIB = "/Users/alsyundawy/Library/FlyEnv/env/node/lib"
 QT_MACOS_LIB = "/Users/alsyundawy/Qt/6.12.0/macos/lib"
+QT_MACOS_INCLUDE = "/Users/alsyundawy/Qt/6.12.0/macos/include"
+MACOS_SDK_PATH = "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
 
 
 def get_framework_dirs() -> list[str]:
@@ -49,6 +51,15 @@ def get_include_dirs(root: Path) -> list[str]:
         str(root / "thirdparty" / "lua" / "src"),
         str(root / "thirdparty" / "uchardet" / "src"),
         str(root / "tests"),
+        # Qt system headers and includes
+        QT_MACOS_INCLUDE,
+        f"{QT_MACOS_INCLUDE}/QtCore",
+        f"{QT_MACOS_INCLUDE}/QtGui",
+        f"{QT_MACOS_INCLUDE}/QtWidgets",
+        f"{QT_MACOS_INCLUDE}/QtNetwork",
+        f"{QT_MACOS_INCLUDE}/QtPrintSupport",
+        f"{QT_MACOS_INCLUDE}/QtCore5Compat",
+        f"{QT_MACOS_INCLUDE}/QtTest",
         # Qt system framework headers
         f"{FLYENV_NODE_LIB}/QtCore.framework/Headers",
         f"{FLYENV_NODE_LIB}/QtGui.framework/Headers",
@@ -133,6 +144,8 @@ def build_compile_entry(
     cmd_parts = [
         compiler,
         std_flag,
+        "-isysroot",
+        MACOS_SDK_PATH,
         *fw_flags,
         *defines,
         *inc_flags,

@@ -9,15 +9,13 @@
  */
 
 #include "ReleaseManager.h"
+#include "../dialogs/UpdateDialog.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QAbstractButton>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QApplication>
@@ -100,9 +98,7 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "[ReleaseManager] Network request failed:" << reply->errorString();
         if (!m_silent && m_parentWidget) {
-            QMessageBox::warning(m_parentWidget, tr("Update Check Failed"),
-                                 tr("Unable to connect to update server:\n%1\n\nPlease check your internet connection.")
-                                     .arg(reply->errorString()));
+            UpdateDialog::showCheckFailed(m_parentWidget, reply->errorString(), m_parentWidget);
         }
         return;
     }
@@ -131,37 +127,11 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
 
     if (updateAvail) {
         if (m_parentWidget) {
-            QString msg = tr("<h3>A new version of SparkNotePad is available!</h3>"
-                             "<p><b>Installed Version:</b> %1<br/>"
-                             "<b>Latest Version:</b> %2 (%3)</p>"
-                             "<p>%4</p>"
-                             "<p>Would you like to open the download page now?</p>")
-                              .arg(curVer)
-                              .arg(info.versionTag)
-                              .arg(info.releaseName)
-                              .arg(info.releaseNotes.left(400).toHtmlEscaped().replace("\n", "<br/>"));
-
-            QMessageBox msgBox(m_parentWidget);
-            msgBox.setWindowTitle(tr("SparkNotePad Update Available"));
-            msgBox.setText(msg);
-            msgBox.setIcon(QMessageBox::Information);
-            const QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
-            const QAbstractButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
-            (void)btnLater;
-
-            msgBox.exec();
-            if (msgBox.clickedButton() == btnDownload) {
-                QString url =
-                    !info.htmlUrl.isEmpty() ? info.htmlUrl : "https://github.com/alsyundawy/SparkNotePad/releases";
-                QDesktopServices::openUrl(QUrl(url));
-            }
+            UpdateDialog::showUpdateAvailable(m_parentWidget, curVer, info);
         }
     } else {
         if (!m_silent && m_parentWidget) {
-            QMessageBox::information(m_parentWidget, tr("SparkNotePad Up to Date"),
-                                     tr("<h3>You are running the latest version!</h3>"
-                                        "<p><b>SparkNotePad version %1</b> is currently up to date.</p>")
-                                         .arg(curVer));
+            UpdateDialog::showUpToDate(m_parentWidget, curVer);
         }
     }
 }
