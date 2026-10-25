@@ -14,6 +14,7 @@
 #ifndef MATHEVALUATOR_H
 #define MATHEVALUATOR_H
 
+#include <cstdint>
 #include <QString>
 
 #if !defined(UNIT_TESTING)
@@ -22,7 +23,7 @@ class ScintillaNext;
 
 class MathEvaluator {
 public:
-    enum Action {
+    enum Action : std::uint8_t {
         AppendResult,      // "15 * 4" -> "15 * 4 = 60"
         ReplaceExpression  // "15 * 4" -> "60"
     };

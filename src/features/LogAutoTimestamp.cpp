@@ -55,7 +55,7 @@ bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool for
 
     editor->QObject::setProperty("LogTimestampApplied", true);
 
-    const int docLen = editor->length();
+    const int docLen = static_cast<int>(editor->length());
     const QString eol = (editor->eOLMode() == SC_EOL_CRLF) ? QStringLiteral("\r\n") : QStringLiteral("\n");
 
     QString prefix;
@@ -73,7 +73,7 @@ bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool for
     editor->beginUndoAction();
     const QByteArray utf8 = entry.toUtf8();
     editor->insertText(docLen, utf8.constData());
-    const int newPos = docLen + utf8.length();
+    const int newPos = docLen + static_cast<int>(utf8.length());
     editor->setSelection(newPos, newPos);
     editor->endUndoAction();
 
@@ -85,7 +85,7 @@ bool LogAutoTimestamp::appendLogTimestamp(ScintillaNext *editor) {
     if (!editor || editor->readOnly())
         return false;
 
-    const int docLen = editor->length();
+    const int docLen = static_cast<int>(editor->length());
     const QString eol = (editor->eOLMode() == SC_EOL_CRLF) ? QStringLiteral("\r\n") : QStringLiteral("\n");
 
     QString prefix;
@@ -102,7 +102,7 @@ bool LogAutoTimestamp::appendLogTimestamp(ScintillaNext *editor) {
     editor->beginUndoAction();
     const QByteArray utf8 = entry.toUtf8();
     editor->insertText(docLen, utf8.constData());
-    const int newPos = docLen + utf8.length();
+    const int newPos = docLen + static_cast<int>(utf8.length());
     editor->setSelection(newPos, newPos);
     editor->endUndoAction();
 

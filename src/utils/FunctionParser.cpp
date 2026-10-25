@@ -20,7 +20,7 @@ QVector<FunctionSymbol> FunctionParser::parse(ScintillaNext *editor) {
     if (!editor || editor->textLength() <= 0)
         return {};
 
-    const int len = editor->textLength();
+    const int len = static_cast<int>(editor->textLength());
     QByteArray bytes(len + 1, '\0');
     editor->getRange(0, len, bytes.data());
     bytes.resize(len);
@@ -127,7 +127,7 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
         const int linePos = byteOffset;
 
         // Advance byteOffset for next line
-        byteOffset += lineStr.toUtf8().size() + 1;
+        byteOffset += static_cast<int>(lineStr.toUtf8().size()) + 1;
 
         if (lineStr.trimmed().isEmpty())
             continue;
@@ -151,7 +151,7 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
         if (lang.contains(QStringLiteral("python"))) {
             auto classMatch = pyClassRe.match(lineStr);
             if (classMatch.hasMatch()) {
-                currentClassIndent = classMatch.captured(1).length();
+                currentClassIndent = static_cast<int>(classMatch.captured(1).length());
                 currentClass = classMatch.captured(2);
                 FunctionSymbol sym;
                 sym.name = currentClass;
@@ -164,7 +164,7 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
 
             auto defMatch = pyDefRe.match(lineStr);
             if (defMatch.hasMatch()) {
-                int indent = defMatch.captured(1).length();
+                int indent = static_cast<int>(defMatch.captured(1).length());
                 if (indent <= currentClassIndent) {
                     currentClass.clear();
                     currentClassIndent = -1;

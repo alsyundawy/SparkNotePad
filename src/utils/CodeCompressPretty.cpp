@@ -375,7 +375,8 @@ CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, L
         endPos = editor->length();
     }
 
-    const QString text = QString::fromUtf8(editor->get_text_range(startPos, endPos));
+    const QString text =
+        QString::fromUtf8(editor->get_text_range(static_cast<int>(startPos), static_cast<int>(endPos)));
     if (text.trimmed().isEmpty()) {
         return {false, wholeDoc, lang, text, QString(), QStringLiteral("Selection or document is empty")};
     }
@@ -416,7 +417,8 @@ CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, L
         endPos = editor->length();
     }
 
-    const QString text = QString::fromUtf8(editor->get_text_range(startPos, endPos));
+    const QString text =
+        QString::fromUtf8(editor->get_text_range(static_cast<int>(startPos), static_cast<int>(endPos)));
     if (text.trimmed().isEmpty()) {
         return {false, wholeDoc, lang, text, QString(), QStringLiteral("Selection or document is empty")};
     }

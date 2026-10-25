@@ -47,10 +47,10 @@ bool AutoClosePairs::handleKeyPress(QKeyEvent *keyEvent) {
         return false;
     }
 
-    const int curPos = editor->currentPos();
-    const int docLen = editor->length();
-    const char charAtPos = (curPos < docLen) ? editor->charAt(curPos) : 0;
-    const char charBefore = (curPos > 0) ? editor->charAt(curPos - 1) : 0;
+    const int curPos = static_cast<int>(editor->currentPos());
+    const int docLen = static_cast<int>(editor->length());
+    const char charAtPos = (curPos < docLen) ? static_cast<char>(editor->charAt(curPos)) : 0;
+    const char charBefore = (curPos > 0) ? static_cast<char>(editor->charAt(curPos - 1)) : 0;
     const QString text = keyEvent->text();
 
     if (text.isEmpty()) {

@@ -54,16 +54,16 @@ QColor MarkerAppDecorator::markerColor(int i) const {
 }
 
 void MarkerAppDecorator::mark(ScintillaNext *editor, int i) {
-    int selectionStart = editor->selectionStart();
-    int selectionEnd = editor->selectionEnd();
+    int selectionStart = static_cast<int>(editor->selectionStart());
+    int selectionEnd = static_cast<int>(editor->selectionEnd());
     bool isWholeWord = false;
 
     // If there is no selection, get the word at the cursor, else use it verbatim
     if (selectionStart == selectionEnd) {
         isWholeWord = true;
-        const int curPos = editor->currentPos();
-        selectionStart = editor->wordStartPosition(curPos, true);
-        selectionEnd = editor->wordEndPosition(curPos, true);
+        const int curPos = static_cast<int>(editor->currentPos());
+        selectionStart = static_cast<int>(editor->wordStartPosition(curPos, true));
+        selectionEnd = static_cast<int>(editor->wordEndPosition(curPos, true));
 
         // If they are still in the same location, just abort
         if (selectionStart == selectionEnd) {

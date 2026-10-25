@@ -99,8 +99,8 @@ PerformanceProfiler::MemoryMetrics PerformanceProfiler::getMemoryMetrics() {
     }
 #endif
 
-    m.rssMegabytes = m.rssBytes / (1024.0 * 1024.0);
-    m.virtualMegabytes = m.virtualBytes / (1024.0 * 1024.0);
+    m.rssMegabytes = static_cast<double>(m.rssBytes) / (1024.0 * 1024.0);
+    m.virtualMegabytes = static_cast<double>(m.virtualBytes) / (1024.0 * 1024.0);
     return m;
 }
 
@@ -116,7 +116,7 @@ PerformanceProfiler::DocumentMetrics PerformanceProfiler::getDocumentMetrics(Sci
     doc.isHighPerformanceMode = isHighPerformanceMode(editor);
 
     // Consider files larger than 5 MB or 50,000 lines as large files
-    if (doc.byteSize > 5 * 1024 * 1024 || doc.lineCount > 50000) {
+    if (doc.byteSize > 5LL * 1024 * 1024 || doc.lineCount > 50000) {
         doc.isLargeFile = true;
     }
 
@@ -174,11 +174,11 @@ PerformanceProfiler::BenchmarkResult PerformanceProfiler::runScintillaInsertBenc
     }
     testEditor.endUndoAction();
 
-    res.elapsedMs = timer.nsecsElapsed() / 1000000.0;
-    res.throughputMBps = (totalBytes / (1024.0 * 1024.0)) / (res.elapsedMs / 1000.0);
+    res.elapsedMs = static_cast<double>(timer.nsecsElapsed()) / 1000000.0;
+    res.throughputMBps = (static_cast<double>(totalBytes) / (1024.0 * 1024.0)) / (res.elapsedMs / 1000.0);
     res.details = QStringLiteral("Ingested %1 lines (%2 MB) in %3 ms (%4 lines/sec, %5 MB/sec)")
                       .arg(lineCount)
-                      .arg(QString::number(totalBytes / (1024.0 * 1024.0), 'f', 2))
+                      .arg(QString::number(static_cast<double>(totalBytes) / (1024.0 * 1024.0), 'f', 2))
                       .arg(QString::number(res.elapsedMs, 'f', 2))
                       .arg(QString::number(lineCount / (res.elapsedMs / 1000.0), 'f', 0))
                       .arg(QString::number(res.throughputMBps, 'f', 2));
@@ -215,7 +215,7 @@ QString PerformanceProfiler::generateDiagnosticReport(ScintillaNext *currentEdit
         r += QStringLiteral("Line Count:    %1 lines\n").arg(doc.lineCount);
         r += QStringLiteral("Byte Size:     %1 bytes (%2 MB)\n")
                  .arg(doc.byteSize)
-                 .arg(QString::number(doc.byteSize / (1024.0 * 1024.0), 'f', 2));
+                 .arg(QString::number(static_cast<double>(doc.byteSize) / (1024.0 * 1024.0), 'f', 2));
         r += QStringLiteral("Language:      %1\n").arg(doc.language);
         r += QStringLiteral("High-Perf Mode: %1\n\n")
                  .arg(doc.isHighPerformanceMode ? QStringLiteral("ACTIVE") : QStringLiteral("Standard"));

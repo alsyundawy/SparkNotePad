@@ -93,7 +93,7 @@ JsEvaluator::Result JsEvaluator::evaluate(const QString &script) {
     JSValueRef exception = nullptr;
     JSValueRef jsResult = JSEvaluateScript(ctx, scriptRef, nullptr, nullptr, 1, &exception);
 
-    const double elapsedMs = timer.nsecsElapsed() / 1000000.0;
+    const double elapsedMs = static_cast<double>(timer.nsecsElapsed()) / 1000000.0;
 
     Result res;
     res.expression = trimmed;
@@ -163,18 +163,18 @@ JsEvaluator::Result JsEvaluator::evaluateInEditor(ScintillaNext *editor, Action 
         return {false, QString(), QString(), QStringLiteral("Document is read-only"), 0.0};
     }
 
-    int startPos = editor->selectionStart();
-    int endPos = editor->selectionEnd();
+    int startPos = static_cast<int>(editor->selectionStart());
+    int endPos = static_cast<int>(editor->selectionEnd());
     QString scriptText;
 
     if (startPos != endPos) {
         scriptText = QString::fromUtf8(editor->get_text_range(startPos, endPos));
     } else {
         // Expand from line
-        const int curPos = editor->currentPos();
-        const int line = editor->lineFromPosition(curPos);
-        const int lineStart = editor->positionFromLine(line);
-        const int lineEnd = editor->lineEndPosition(line);
+        const int curPos = static_cast<int>(editor->currentPos());
+        const int line = static_cast<int>(editor->lineFromPosition(curPos));
+        const int lineStart = static_cast<int>(editor->positionFromLine(line));
+        const int lineEnd = static_cast<int>(editor->lineEndPosition(line));
         startPos = lineStart;
         endPos = lineEnd;
         scriptText = QString::fromUtf8(editor->get_text_range(startPos, endPos));
@@ -196,7 +196,7 @@ JsEvaluator::Result JsEvaluator::evaluateInEditor(ScintillaNext *editor, Action 
     editor->setTargetRange(startPos, endPos);
     const QByteArray utf8 = replacement.toUtf8();
     editor->replaceTarget(utf8.length(), utf8.constData());
-    const int newPos = startPos + utf8.length();
+    const int newPos = startPos + static_cast<int>(utf8.length());
     editor->setSelection(newPos, newPos);
     editor->endUndoAction();
 

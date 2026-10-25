@@ -20,9 +20,9 @@
 #include <QRegularExpression>
 #include <QtGlobal>
 
-static const QByteArray BOM_UTF8_BYTES = QByteArray::fromHex("EFBBBF");
-static const QByteArray BOM_UTF16LE_BYTES = QByteArray::fromHex("FFFE");
-static const QByteArray BOM_UTF16BE_BYTES = QByteArray::fromHex("FEFF");
+#define BOM_UTF8_BYTES QByteArrayLiteral("\xEF\xBB\xBF")
+#define BOM_UTF16LE_BYTES QByteArrayLiteral("\xFF\xFE")
+#define BOM_UTF16BE_BYTES QByteArrayLiteral("\xFE\xFF")
 
 EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &data) {
     DetectionResult result;
@@ -177,7 +177,7 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     if (xmlMatch.hasMatch()) {
         QString enc = canonicalizeEncodingName(xmlMatch.captured(1));
         if (isSupportedEncoding(enc)) {
-            result.encoding = enc;
+            result.encoding = std::move(enc);
             result.bomType = ScintillaNext::BomType::None;
             result.bomLength = 0;
             result.confidence = 95;
@@ -193,7 +193,7 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     if (htmlMatch1.hasMatch()) {
         QString enc = canonicalizeEncodingName(htmlMatch1.captured(1));
         if (isSupportedEncoding(enc)) {
-            result.encoding = enc;
+            result.encoding = std::move(enc);
             result.bomType = ScintillaNext::BomType::None;
             result.bomLength = 0;
             result.confidence = 95;
@@ -209,7 +209,7 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     if (htmlMatch2.hasMatch()) {
         QString enc = canonicalizeEncodingName(htmlMatch2.captured(1));
         if (isSupportedEncoding(enc)) {
-            result.encoding = enc;
+            result.encoding = std::move(enc);
             result.bomType = ScintillaNext::BomType::None;
             result.bomLength = 0;
             result.confidence = 95;
@@ -226,7 +226,7 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     if (cookieMatch.hasMatch()) {
         QString enc = canonicalizeEncodingName(cookieMatch.captured(1));
         if (isSupportedEncoding(enc)) {
-            result.encoding = enc;
+            result.encoding = std::move(enc);
             result.bomType = ScintillaNext::BomType::None;
             result.bomLength = 0;
             result.confidence = 95;
@@ -242,7 +242,7 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     if (cssMatch.hasMatch()) {
         QString enc = canonicalizeEncodingName(cssMatch.captured(1));
         if (isSupportedEncoding(enc)) {
-            result.encoding = enc;
+            result.encoding = std::move(enc);
             result.bomType = ScintillaNext::BomType::None;
             result.bomLength = 0;
             result.confidence = 95;
@@ -415,10 +415,9 @@ QByteArray EncodingDetector::decodeToUtf8(const QByteArray &data, const QString 
     if (encUpper == QStringLiteral("UTF-16LE") || encUpper == QStringLiteral("UTF-16BE")) {
         const bool isBE = (encUpper == QStringLiteral("UTF-16BE"));
         int offset = 0;
-        if (isBE && data.startsWith(BOM_UTF16BE_BYTES))
+        if ((isBE && data.startsWith(BOM_UTF16BE_BYTES)) || (!isBE && data.startsWith(BOM_UTF16LE_BYTES))) {
             offset = 2;
-        else if (!isBE && data.startsWith(BOM_UTF16LE_BYTES))
-            offset = 2;
+        }
 
         QStringDecoder decoder(isBE ? QStringDecoder::Utf16BE : QStringDecoder::Utf16LE);
         QString text = decoder(QByteArrayView(data.constData() + offset, data.size() - offset));
@@ -438,7 +437,7 @@ QByteArray EncodingDetector::decodeToUtf8(const QByteArray &data, const QString 
         int offset = 0;
         if (bom == ScintillaNext::BomType::Utf8 && data.startsWith(BOM_UTF8_BYTES))
             offset = 3;
-        QString text = codec->toUnicode(data.constData() + offset, data.size() - offset);
+        QString text = codec->toUnicode(data.constData() + offset, static_cast<int>(data.size() - offset));
         return text.toUtf8();
     }
 

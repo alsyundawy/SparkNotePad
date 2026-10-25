@@ -25,10 +25,11 @@
 #ifndef IFACETABLE_H
 #define IFACETABLE_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
-enum IFaceType {
+enum IFaceType : std::uint8_t {
     iface_void,
     iface_int,
     iface_length,
