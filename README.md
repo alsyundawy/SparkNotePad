@@ -128,8 +128,9 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | **2025–2026 Security Posture**   | Mitigates Lua injection (CVE-2026-42214), Qt HTTP/2 UAF (CVE-2026-95620), and dual crypto                     |           Built-in           |
 | **AES-256-CBC Encryption**       | High-assurance document encryption with PBKDF2 key derivation (100,000 rounds) and HMAC-SHA256 integrity auth | `Ctrl+Alt+E` / `Ctrl+Alt+D`  |
 | **Real-Time Log Monitoring**     | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                  |         `Ctrl+Alt+Y`         |
-| **25 Theme Families (75 V.)**    | 75 hand-crafted developer palettes strictly adhering to international WCAG 2.1 AA/AAA contrast standards      |        `Themes` Menu         |
-| **Pixel-Perfect 16x16 Toolbar**  | High-contrast crisp iconography for Find, Replace, Zoom, and Indent Guides across Dark & Light modes          |         Main Toolbar         |
+| **High-DPI 20x20 Toolbar Icons** | Crisp monoline vector SVGs (Undo, Redo, Find, Replace, Zoom, Indent) standardized to 20x20 HiDPI on Retina/4K |         Main Toolbar         |
+| **Complete Menu Icons Support**  | All menus and submenus show action icons natively via `setIconVisibleInMenu` across macOS and Linux           |          All Menus           |
+| **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,405 UI strings and dialogs             |   Preferences >> Language    |
 | **Ergonomic Dialog Spacing**     | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs       |         All Dialogs          |
 | **JavaScript Evaluator**         | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation       |        `Ctrl+Shift+J`        |
 | **Interactive Regex Tester**     | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes   |      `Ctrl+Alt+Shift+R`      |

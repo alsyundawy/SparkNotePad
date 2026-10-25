@@ -1656,7 +1656,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="334"/>
         <source>Unknown</source>
-        <translation type="unfinished">Tidak Diketahui</translation>
+        <translation>Tidak Diketahui</translation>
     </message>
     <message>
         <source>ANSI</source>
@@ -7459,97 +7459,97 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="111"/>
         <source>SparkNotePad - Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>SparkNotePad - Pembaruan Perangkat Lunak</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="188"/>
         <source>Official Stable Release</source>
-        <translation type="unfinished"></translation>
+        <translation>Rilis Stabil Resmi</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="201"/>
         <source>Performance enhancements, stability improvements, and bug fixes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Peningkatan performa, perbaikan stabilitas, dan perbaikan bug.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="281"/>
-        <source>Pembaruan SparkNotePad Tersedia</source>
-        <translation type="unfinished"></translation>
+        <source>SparkNotePad Update Available</source>
+        <translation>Pembaruan SparkNotePad Tersedia</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="286"/>
-        <source>Versi baru siap diunduh untuk meningkatkan performa, stabilitas, dan fitur.</source>
-        <translation type="unfinished"></translation>
+        <source>A new version is available for download with performance, stability, and feature improvements.</source>
+        <translation>Versi baru siap diunduh untuk meningkatkan performa, stabilitas, dan fitur.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="316"/>
-        <source>Terpasang</source>
-        <translation type="unfinished"></translation>
+        <source>Installed</source>
+        <translation>Terpasang</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="328"/>
-        <source>Terbaru</source>
-        <translation type="unfinished"></translation>
+        <source>Latest</source>
+        <translation>Terbaru</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="345"/>
-        <source>CATATAN RILIS / RELEASE NOTES</source>
-        <translation type="unfinished"></translation>
+        <source>Release Notes</source>
+        <translation>Catatan Rilis</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="385"/>
-        <source>Lihat di GitHub ↗</source>
-        <translation type="unfinished"></translation>
+        <source>View on GitHub ↗</source>
+        <translation>Lihat di GitHub ↗</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="407"/>
-        <source>Nanti Saja</source>
-        <translation type="unfinished"></translation>
+        <source>Remind Me Later</source>
+        <translation>Nanti Saja</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="412"/>
-        <source>Unduh Pembaruan ⤓</source>
-        <translation type="unfinished"></translation>
+        <source>Download Update ⤓</source>
+        <translation>Unduh Pembaruan ⤓</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="445"/>
-        <source>SparkNotePad Sudah Versi Terbaru</source>
-        <translation type="unfinished"></translation>
+        <source>SparkNotePad is Up to Date</source>
+        <translation>SparkNotePad Sudah Versi Terbaru</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="453"/>
-        <source>Anda sedang menggunakan versi yang paling mutakhir. Seluruh fitur keamanan dan stabilitas telah aktif.</source>
-        <translation type="unfinished"></translation>
+        <source>You are using the latest version. All security and stability features are active.</source>
+        <translation>Anda sedang menggunakan versi yang paling mutakhir. Seluruh fitur keamanan dan stabilitas telah aktif.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="477"/>
-        <source>Versi Aktif</source>
-        <translation type="unfinished"></translation>
+        <source>Active Version</source>
+        <translation>Versi Aktif</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="487"/>
-        <source>Selesai</source>
-        <translation type="unfinished"></translation>
+        <source>Done</source>
+        <translation>Selesai</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="515"/>
-        <source>Pemeriksaan Pembaruan Gagal</source>
-        <translation type="unfinished"></translation>
+        <source>Update Check Failed</source>
+        <translation>Pemeriksaan Pembaruan Gagal</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="520"/>
-        <source>Tidak dapat terhubung ke server pembaruan GitHub. Silakan periksa koneksi internet Anda.</source>
-        <translation type="unfinished"></translation>
+        <source>Unable to connect to the GitHub update server. Please check your internet connection.</source>
+        <translation>Tidak dapat terhubung ke server pembaruan GitHub. Silakan periksa koneksi internet Anda.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="555"/>
-        <source>Coba Lagi</source>
-        <translation type="unfinished"></translation>
+        <source>Retry</source>
+        <translation>Coba Lagi</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="563"/>
-        <source>Tutup</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation>Tutup</translation>
     </message>
 </context>
 </TS>

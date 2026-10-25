@@ -128,8 +128,9 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Keamanan Siber 2025–2026**     | Mitigasi injeksi Lua (CVE-2026-42214), mitigasi UAF Qt HTTP/2 (CVE-2026-95620), dual crypto                           |             Bawaan              |
 | **Enkripsi AES-256-CBC**         | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
 | **Pemantauan Log Langsung**      | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |          `Ctrl+Alt+Y`           |
-| **25 Rumpun Tema (75 Varian)**   | 75 palet tema pengembang pilihan yang memenuhi standar kontras internasional WCAG 2.1 AA/AAA                          |          Menu `Themes`          |
-| **Bilah Alat 16x16 Pixel-Fit**   | Ikonografi tajam beresolusi tinggi untuk Cari, Ganti, Zoom, dan Indent Guide di tema Gelap & Terang                   |        Bilah Alat Utama         |
+| **Ikon Bilah Alat 20x20 HiDPI**  | Ikon monoline SVG tajam (Urungkan, Ulangi, Cari, Ganti, Zoom, Indent) standar 20x20 HiDPI untuk Retina/4K             |        Bilah Alat Utama         |
+| **Dukungan Ikon Seluruh Menu**   | Seluruh menu dan submenu menampilkan ikon secara native via `setIconVisibleInMenu` di macOS dan Linux                 |          Seluruh Menu           |
+| **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.405 teks antarmuka dan dialog          |   Preferensi >> Bahasa (Lang)   |
 | **Ergonomi Spasi Dialog**        | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian    |         Seluruh Dialog          |
 | **Evaluator JavaScript**         | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks |         `Ctrl+Shift+J`          |
 | **Pengujian Regex Interaktif**   | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                               |       `Ctrl+Alt+Shift+R`        |

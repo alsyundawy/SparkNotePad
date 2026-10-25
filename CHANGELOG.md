@@ -15,6 +15,13 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🆕 Added
 
+- **Comprehensive Menu Icon Display Across All Menus (`action->setIconVisibleInMenu(true)`)**:
+  - Implemented application-wide `MenuIconEventFilter` on `SparkNotePadApplication` and `ensureMenuIconsVisible()` in `MainWindow` ensuring that macOS Cocoa and all desktop environments render action icons in menus (overriding macOS Qt's default behavior where menu icons are suppressed).
+  - Assigned crisp icons from `resources.qrc` to 30+ previously un-iconized menu actions across File, Edit, Search, View, Window, Run, and Help menus (e.g., Save As, Save a Copy As, Close All variants, Find in Files, Find Next/Previous, Move Selected Lines Up/Down, Duplicate Current Line, Copy Full Path/File Name/Directory, Recent Files actions, Open Folder as Workspace, Check for Updates, Show Wrap Symbol, Display Diagnostics, Accessibility & User/Developer Guides, External Tools, and Theme Switcher).
+- **Complete i18n & Localization Synchronization (Indonesian & English)**:
+  - Synchronized `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` using `lupdate`, achieving 100% translation coverage (1,405 strings, 0 unfinished, 0 missing).
+  - Standardized `UpdateDialog` source strings to English in C++ code and provided refined, high-fidelity Indonesian translations (EYD V) and English equivalents for all update dialog states (Update Available, Up to Date, Update Check Failed).
+  - Recompiled and verified `.qm` translation catalogs via `lrelease`.
 - **Restart Application Action (`Ctrl+Alt+R` / `Cmd+Option+R`)**: Graceful restart from the File menu that verifies unsaved documents across all tabs (`checkEditorsBeforeClose()`), flushes `QSettings` (`saveSettings()`), stops the auto-save timer, releases the SingleApplication instance lock (`releaseSingleInstanceLock()`), and relaunches natively: macOS `.app` bundles via `/usr/bin/open -n -a <bundle>` (absolute path), Linux via `QProcess::startDetached(QCoreApplication::applicationFilePath(), args)`. Supports optional `--safe-mode` flag.
 - **Modern Elegant Toolbar Icons & 20x20 High-DPI Standard**:
   - Replaced legacy low-resolution pixelated PNG icons (`find.png`, `findReplace.png`, `zoomIn.png`, `zoomOut.png`, `indentGuide.png`, `undo.png`, `redo.png`) with crisp monoline vector SVGs matching the design language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):

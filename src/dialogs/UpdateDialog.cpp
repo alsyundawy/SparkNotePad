@@ -278,12 +278,12 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     QVBoxLayout *headerTextLayout = new QVBoxLayout();
     headerTextLayout->setSpacing(4);
 
-    QLabel *titleLabel = new QLabel(tr("Pembaruan SparkNotePad Tersedia"), this);
+    QLabel *titleLabel = new QLabel(tr("SparkNotePad Update Available"), this);
     titleLabel->setStyleSheet(QString("font-size: 17px; font-weight: 700; color: %1;").arg(colors.txtPri));
     headerTextLayout->addWidget(titleLabel);
 
-    QLabel *subtitleLabel =
-        new QLabel(tr("Versi baru siap diunduh untuk meningkatkan performa, stabilitas, dan fitur."), this);
+    QLabel *subtitleLabel = new QLabel(
+        tr("A new version is available for download with performance, stability, and feature improvements."), this);
     subtitleLabel->setWordWrap(true);
     subtitleLabel->setStyleSheet(QString("font-size: 13px; color: %1;").arg(colors.txtSec));
     headerTextLayout->addWidget(subtitleLabel);
@@ -313,7 +313,7 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     curPill->setText(
         QString("<span style='color:%1;'>%2:</span> "
                 "<b style='background:rgba(128,128,128,0.18); color:%3; padding:2px 8px; border-radius:4px;'>%4</b>")
-            .arg(colors.txtSec, tr("Terpasang"), colors.txtPri, curVer));
+            .arg(colors.txtSec, tr("Installed"), colors.txtPri, curVer));
     pillsLayout->addWidget(curPill);
 
     QLabel *arrowLabel = new QLabel(QStringLiteral("➜"), this);
@@ -325,7 +325,7 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     newPill->setText(
         QString("<span style='color:%1;'>%2:</span> "
                 "<b style='background:rgba(16,185,129,0.18); color:%3; padding:2px 8px; border-radius:4px;'>%4</b>")
-            .arg(colors.txtSec, tr("Terbaru"), colors.green, info.versionTag));
+            .arg(colors.txtSec, tr("Latest"), colors.green, info.versionTag));
     pillsLayout->addWidget(newPill);
     pillsLayout->addStretch();
 
@@ -342,7 +342,7 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     mainLayout->addWidget(versionCard);
 
     // 3. Release Notes Preview Area
-    QLabel *notesHeader = new QLabel(tr("CATATAN RILIS / RELEASE NOTES"), this);
+    QLabel *notesHeader = new QLabel(tr("Release Notes"), this);
     notesHeader->setStyleSheet(
         QString("font-size: 11px; font-weight: 700; color: %1; letter-spacing: 0.5px;").arg(colors.txtSec));
     mainLayout->addWidget(notesHeader);
@@ -382,7 +382,7 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     buttonBar->setSpacing(10);
 
     // GitHub link button
-    QPushButton *btnGitHub = new QPushButton(tr("Lihat di GitHub ↗"), this);
+    QPushButton *btnGitHub = new QPushButton(tr("View on GitHub ↗"), this);
     btnGitHub->setCursor(Qt::PointingHandCursor);
     btnGitHub->setStyleSheet(QString("QPushButton {"
                                      "  background: transparent;"
@@ -404,12 +404,12 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     buttonBar->addStretch();
 
     // Neutral Remind Later button
-    QPushButton *btnLater = createSecondaryButton(tr("Nanti Saja"), colors, this);
+    QPushButton *btnLater = createSecondaryButton(tr("Remind Me Later"), colors, this);
     connect(btnLater, &QPushButton::clicked, this, &QDialog::reject);
     buttonBar->addWidget(btnLater);
 
     // Primary Download Update button
-    QPushButton *btnDownload = createPrimaryButton(tr("Unduh Pembaruan ⤓"), colors.accent, this);
+    QPushButton *btnDownload = createPrimaryButton(tr("Download Update ⤓"), colors.accent, this);
     btnDownload->setDefault(true);
     btnDownload->setFocus();
     connect(btnDownload, &QPushButton::clicked, this, [this, info]() {
@@ -429,7 +429,7 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(24, 22, 24, 20);
-    mainLayout->setSpacing(18);
+    mainLayout->setSpacing(16);
 
     QHBoxLayout *headerLayout = new QHBoxLayout();
     headerLayout->setSpacing(16);
@@ -442,15 +442,14 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
     QVBoxLayout *textLayout = new QVBoxLayout();
     textLayout->setSpacing(6);
 
-    QLabel *titleLabel = new QLabel(tr("SparkNotePad Sudah Versi Terbaru"), this);
+    QLabel *titleLabel = new QLabel(tr("SparkNotePad is Up to Date"), this);
     titleLabel->setStyleSheet(QString("font-size: 16px; font-weight: 700; color: %1;").arg(colors.txtPri));
     textLayout->addWidget(titleLabel);
 
     QLabel *descLabel = new QLabel(this);
     descLabel->setWordWrap(true);
     descLabel->setStyleSheet(QString("font-size: 13px; color: %1;").arg(colors.txtSec));
-    descLabel->setText(
-        tr("Anda sedang menggunakan versi yang paling mutakhir. Seluruh fitur keamanan dan stabilitas telah aktif."));
+    descLabel->setText(tr("You are using the latest version. All security and stability features are active."));
     textLayout->addWidget(descLabel);
 
     headerLayout->addLayout(textLayout, 1);
@@ -474,7 +473,7 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
     statusText->setText(QString("<span style='color:%1;'>%2: <b>v%3</b></span>"
                                 "<span style='margin-left: 12px; background:rgba(16,185,129,0.18); color:%4; "
                                 "padding:2px 8px; border-radius:4px; font-weight:bold;'>✓ Up to Date</span>")
-                            .arg(colors.txtPri, tr("Versi Aktif"), curVer, colors.green));
+                            .arg(colors.txtPri, tr("Active Version"), curVer, colors.green));
     cardLayout->addWidget(statusText);
     cardLayout->addStretch();
 
@@ -484,7 +483,7 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
     QHBoxLayout *buttonBar = new QHBoxLayout();
     buttonBar->addStretch();
 
-    QPushButton *btnOk = createPrimaryButton(tr("Selesai"), colors.accent, this);
+    QPushButton *btnOk = createPrimaryButton(tr("Done"), colors.accent, this);
     btnOk->setDefault(true);
     btnOk->setFocus();
     connect(btnOk, &QPushButton::clicked, this, &QDialog::accept);
@@ -512,12 +511,12 @@ void UpdateDialog::setupCheckFailedUi(const QString &errorMessage, QWidget *retr
     QVBoxLayout *textLayout = new QVBoxLayout();
     textLayout->setSpacing(6);
 
-    QLabel *titleLabel = new QLabel(tr("Pemeriksaan Pembaruan Gagal"), this);
+    QLabel *titleLabel = new QLabel(tr("Update Check Failed"), this);
     titleLabel->setStyleSheet(QString("font-size: 16px; font-weight: 700; color: %1;").arg(colors.txtPri));
     textLayout->addWidget(titleLabel);
 
-    QLabel *descLabel = new QLabel(
-        tr("Tidak dapat terhubung ke server pembaruan GitHub. Silakan periksa koneksi internet Anda."), this);
+    QLabel *descLabel =
+        new QLabel(tr("Unable to connect to the GitHub update server. Please check your internet connection."), this);
     descLabel->setWordWrap(true);
     descLabel->setStyleSheet(QString("font-size: 13px; color: %1;").arg(colors.txtSec));
     textLayout->addWidget(descLabel);
@@ -552,7 +551,7 @@ void UpdateDialog::setupCheckFailedUi(const QString &errorMessage, QWidget *retr
     buttonBar->addStretch();
 
     if (retryParent) {
-        QPushButton *btnRetry = createSecondaryButton(tr("Coba Lagi"), colors, this);
+        QPushButton *btnRetry = createSecondaryButton(tr("Retry"), colors, this);
         connect(btnRetry, &QPushButton::clicked, this, [this, retryParent]() {
             accept();
             ReleaseManager::instance().checkForUpdates(retryParent, false);
@@ -560,7 +559,7 @@ void UpdateDialog::setupCheckFailedUi(const QString &errorMessage, QWidget *retr
         buttonBar->addWidget(btnRetry);
     }
 
-    QPushButton *btnClose = createPrimaryButton(tr("Tutup"), colors.accent, this);
+    QPushButton *btnClose = createPrimaryButton(tr("Close"), colors.accent, this);
     btnClose->setDefault(true);
     btnClose->setFocus();
     connect(btnClose, &QPushButton::clicked, this, &QDialog::reject);

@@ -733,16 +733,28 @@
    </property>
   </action>
   <action name="actionCopyFullPath">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+   </property>
    <property name="text">
     <string>Copy Full Path</string>
    </property>
   </action>
   <action name="actionCopyFileName">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+   </property>
    <property name="text">
     <string>Copy File Name</string>
    </property>
   </action>
   <action name="actionCopyFileDirectory">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+   </property>
    <property name="text">
     <string>Copy File Directory</string>
    </property>
@@ -763,6 +775,10 @@
    </property>
   </action>
   <action name="actionSaveAs">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/saved.png</normaloff>:/icons/saved.png</iconset>
+   </property>
    <property name="text">
     <string>Save &amp;As...</string>
    </property>
@@ -771,6 +787,10 @@
    </property>
   </action>
   <action name="actionSaveCopyAs">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/saved.png</normaloff>:/icons/saved.png</iconset>
+   </property>
    <property name="text">
     <string>Save a Copy As...</string>
    </property>
@@ -940,6 +960,10 @@
    </property>
   </action>
   <action name="actionDuplicateCurrentLine">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
    <property name="text">
     <string>Duplicate Current Line</string>
    </property>
@@ -961,6 +985,10 @@
    </property>
   </action>
   <action name="actionMoveSelectedLinesUp">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_up.png</normaloff>:/icons/arrow_up.png</iconset>
+   </property>
    <property name="text">
     <string>Move Selected Lines Up</string>
    </property>
@@ -969,6 +997,10 @@
    </property>
   </action>
   <action name="actionMoveSelectedLinesDown">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.png</normaloff>:/icons/arrow_down.png</iconset>
+   </property>
    <property name="text">
     <string>Move Selected Lines Down</string>
    </property>
@@ -992,16 +1024,28 @@
    </property>
   </action>
   <action name="actionCloseAllExceptActive">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+   </property>
    <property name="text">
     <string>Close All Except Active Document</string>
    </property>
   </action>
   <action name="actionCloseAllToLeft">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+   </property>
    <property name="text">
     <string>Close All to the Left</string>
    </property>
   </action>
   <action name="actionCloseAllToRight">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+   </property>
    <property name="text">
     <string>Close All to the Right</string>
    </property>
@@ -1039,6 +1083,10 @@
    </property>
   </action>
   <action name="actionAboutQt">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/SparkNotePad.png</normaloff>:/icons/SparkNotePad.png</iconset>
+   </property>
    <property name="text">
     <string>About Qt</string>
    </property>
@@ -1049,7 +1097,7 @@
   <action name="actionAboutSparkNotePad">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/newfile.png</normaloff>:/icons/newfile.png</iconset>
+     <normaloff>:/icons/SparkNotePad.png</normaloff>:/icons/SparkNotePad.png</iconset>
    </property>
    <property name="text">
     <string>About SparkNotePad</string>
@@ -1103,6 +1151,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/wrapindicator.png</normaloff>:/icons/wrapindicator.png</iconset>
+   </property>
    <property name="text">
     <string>Show Wrap Symbol</string>
    </property>
@@ -1121,6 +1173,10 @@
    </property>
   </action>
   <action name="actionRestoreRecentlyClosedFile">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+   </property>
    <property name="text">
     <string>Restore Recently Closed File</string>
    </property>
@@ -1129,11 +1185,19 @@
    </property>
   </action>
   <action name="actionOpenAllRecentFiles">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/openFile.png</normaloff>:/icons/openFile.png</iconset>
+   </property>
    <property name="text">
     <string>Open All Recent Files</string>
    </property>
   </action>
   <action name="actionClearRecentFilesList">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/bin_closed.png</normaloff>:/icons/bin_closed.png</iconset>
+   </property>
    <property name="text">
     <string>Clear Recent Files List</string>
    </property>
@@ -1151,11 +1215,19 @@
    </property>
   </action>
   <action name="actionFindInFiles">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Find in Files...</string>
    </property>
   </action>
   <action name="actionFindNext">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Find &amp;Next</string>
    </property>
@@ -1164,6 +1236,10 @@
    </property>
   </action>
   <action name="actionFindPrevious">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Find &amp;Previous</string>
    </property>
@@ -1259,6 +1335,10 @@
    </property>
   </action>
   <action name="actionQuickFind">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Quick Find</string>
    </property>
@@ -1287,6 +1367,10 @@
    </property>
   </action>
   <action name="actionCheckForUpdates">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+   </property>
    <property name="text">
     <string>Check for Updates...</string>
    </property>
@@ -1312,6 +1396,10 @@
    </property>
   </action>
   <action name="actionOpenFolderasWorkspace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/folder_go.png</normaloff>:/icons/folder_go.png</iconset>
+   </property>
    <property name="text">
     <string>Open Folder as Workspace...</string>
    </property>
@@ -1841,6 +1929,10 @@
    </property>
   </action>
   <action name="actionPerformanceDiagnostics">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/cog.png</normaloff>:/icons/cog.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Performance &amp;&amp; Diagnostics...</string>
    </property>
@@ -1855,6 +1947,10 @@
    </property>
   </action>
   <action name="actionDebugInfo">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/cog.png</normaloff>:/icons/cog.png</iconset>
+   </property>
    <property name="text">
     <string>Debug Info...</string>
    </property>
@@ -1998,6 +2094,10 @@
    </property>
   </action>
   <action name="actionSelectandFindNext">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Select and Find Next</string>
    </property>
@@ -2006,6 +2106,10 @@
    </property>
   </action>
   <action name="actionSelectandFindPrevious">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Select and Find Previous</string>
    </property>
@@ -2405,6 +2509,10 @@
      </property>
     </action>
     <action name="actionCustomizeStatusBarFields">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+     </property>
      <property name="text">
       <string>&amp;Status Bar Fields...</string>
      </property>
