@@ -72,7 +72,7 @@ private:
 
     void onScreenChangedForWindow(QScreen *screen);
 
-    QPointer<QMainWindow> m_mainWindow = nullptr;
+    QPointer<QMainWindow> m_mainWindow;
     qreal m_lastDpr = 1.0;
 };
 

@@ -52,7 +52,7 @@ private:
     ~MacServicesHandler() override;
 
     SparkNotePadApplication *m_app = nullptr;
-    QPointer<MainWindow> m_activeWindow = nullptr;
+    QPointer<MainWindow> m_activeWindow;
 };
 
 #endif  // MACSERVICESHANDLER_H

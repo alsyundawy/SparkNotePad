@@ -93,7 +93,7 @@ private:
     TranslationManager *translationManager = nullptr;
 
     LuaState *luaState = nullptr;
-    QPointer<MainWindow> window = nullptr;
+    QPointer<MainWindow> window;
 
     // cppcheck-suppress unusedStructMember
     QPointer<QWidget> currentlyFocusedWidget;  // Weak pointer to focused QWidget

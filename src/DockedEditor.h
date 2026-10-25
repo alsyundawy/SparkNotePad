@@ -36,9 +36,9 @@ class DockedEditor : public QObject {
     Q_OBJECT
 
 private:
-    ads::CDockManager *dockManager = Q_NULLPTR;
-    QPointer<ads::CDockAreaWidget> latestDockArea = Q_NULLPTR;
-    QPointer<ScintillaNext> currentEditor = Q_NULLPTR;
+    ads::CDockManager *dockManager = nullptr;
+    QPointer<ads::CDockAreaWidget> latestDockArea;
+    QPointer<ScintillaNext> currentEditor;
 
 public:
     explicit DockedEditor(QWidget *parent);
