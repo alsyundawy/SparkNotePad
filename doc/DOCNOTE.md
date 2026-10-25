@@ -63,8 +63,8 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - Aligned branch `main` and release branch `1.3.5` to identical commit history (`main` IS `1.3.5`).
    - Aligned branch `develop` and branch `1.1.0` to identical commit history (`1.1.0` IS `develop`).
 
-6. **Unified Repository Copyright & Attribution Header Across Entire Codebase**:
-   - Standardized legal and author attribution headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly credit upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
+6. **Unified Repository Copyright, License Header & Attribution Across Entire Codebase**:
+   - Standardized legal and license notice headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly declare `SparkNotepad is free software: you can redistribute it and/or modify`, crediting upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
 
 7. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
    - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.

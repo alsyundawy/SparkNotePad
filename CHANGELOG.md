@@ -41,8 +41,8 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 - **Repository Branch Alignment & 100% Parity**:
   - Aligned branch `main` and release branch `1.3.5` to identical commit history (`main` IS `1.3.5`).
   - Aligned branch `develop` and branch `1.1.0` to identical commit history (`1.1.0` IS `develop`).
-- **Unified Repository Copyright & Attribution Header Across Entire Codebase**:
-  - Standardized legal and author attribution headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly credit upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
+- **Unified Repository Copyright, License Header & Attribution Across Entire Codebase**:
+  - Standardized legal and license notice headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly declare `SparkNotepad is free software: you can redistribute it and/or modify`, crediting upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
 - **Security Regression Tests (`tests/test_lua_security.h`)**: Added `TestLuaSecurity` to the standard test suite verifying:
   - CVE-2026-42214 / GHSA-m5fq-c9x5-w54g: Extension injection payloads treated as literal Lua variable data (not code).
   - `LuaState::setVariable()` inert data contract (values pushed via `lua_pushstring`, never `luaL_loadstring`).
