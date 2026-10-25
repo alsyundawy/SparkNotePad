@@ -347,6 +347,7 @@ if(WIN32)
 		"${CMAKE_BINARY_DIR}/version.rc"
 		@ONLY
 	)
+	set_source_files_properties("${CMAKE_BINARY_DIR}/version.rc" PROPERTIES GENERATED TRUE)
 	target_sources(SparkNotePad PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/icon/SparkNotePad.ico"

@@ -15,6 +15,12 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🆕 Added
 
+- **Zero-Error IDE & SonarQube Static Analysis Compliance**:
+  - Eliminated static member function access through instance objects in `src/main.cpp` (`SparkNotePadApplication::exec()` and `SparkNotePadApplication::exit(0)`), resolving SonarQube rule `cpp:S2695`.
+  - Configured `PROPERTIES GENERATED TRUE` on `${CMAKE_BINARY_DIR}/version.rc` in `src/CMakeLists.txt`, eliminating CMake IntelliSense missing file diagnostics.
+  - Repaired `clangd.fallbackFlags` in `.vscode/settings.json` by removing a stray `-isystem` argument before `-isysroot`, restoring correct header search paths for standalone header files.
+  - Filtered out macOS SDK `/usr/include` from `Qt6` and `Cups::Cups` interface include directories in `CMakeLists.txt`, permanently preventing C `math.h` macro pollution (`signbit`, `isfinite`, `isnan`, `hypot`) from interfering with C++20 standard library `<format>` and `<cmath>`.
+  - Regenerated 288-entry compilation database (`scripts/generate_compilation_database.py`) indexing all `.h`, `.hpp`, `.cpp`, and `.mm` files with 0 linter errors across all pillars.
 - **Comprehensive Menu Icon Display Across All Menus (`action->setIconVisibleInMenu(true)`)**:
   - Implemented application-wide `MenuIconEventFilter` on `SparkNotePadApplication` and `ensureMenuIconsVisible()` in `MainWindow` ensuring that macOS Cocoa and all desktop environments render action icons in menus (overriding macOS Qt's default behavior where menu icons are suppressed).
   - Assigned crisp icons from `resources.qrc` to 30+ previously un-iconized menu actions across File, Edit, Search, View, Window, Run, and Help menus (e.g., Save As, Save a Copy As, Close All variants, Find in Files, Find Next/Previous, Move Selected Lines Up/Down, Duplicate Current Line, Copy Full Path/File Name/Directory, Recent Files actions, Open Folder as Workspace, Check for Updates, Show Wrap Symbol, Display Diagnostics, Accessibility & User/Developer Guides, External Tools, and Theme Switcher).

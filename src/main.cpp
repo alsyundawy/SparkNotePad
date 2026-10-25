@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     if (app.isPrimary()) {
         app.init();
 
-        return app.exec();
+        return SparkNotePadApplication::exec();
     } else {
         qInfo() << "Primary instance already running. PID:" << app.primaryPid();
 
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
 
         qInfo() << "Secondary instance closing...";
 
-        app.exit(0);
+        SparkNotePadApplication::exit(0);
 
         return 0;
     }
