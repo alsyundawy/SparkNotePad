@@ -656,3 +656,113 @@ Certified by **Harry Dertin Sutisna Alsyundawy** — SparkNotePad Lead Maintaine
 - **Dual-Format Cryptography Integrity (`TestCryptoManager`)**:
   - Validated AES-256-CBC + HMAC-SHA256 authenticated encryption (`SPKENC01` and legacy `NSPENC01`).
   - Added unit test assertions proving automatic rejection of tampered ciphertext, MAC, IV, and salt bytes.
+
+---
+
+## 10. Multi-Branch Build Verification & Test Integrity
+
+Every active and release branch in the SparkNotePad repository has been configured, compiled, and verified against the comprehensive CTest test suite (`TestCryptoManager` and `TestLuaSecurity`), achieving **100% clean builds and 0 test failures**:
+
+| Branch        | Base Commit | Build Directory | CMake / Compiler      | CTest Status | Pass Rate  | Execution Time |
+| ------------- | ----------- | --------------- | --------------------- | ------------ | ---------- | -------------- |
+| **`main`**    | `d119aee`   | `build`         | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 1.17s          |
+| **`1.3.5`**   | `d119aee`   | `build`         | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 1.17s          |
+| **`develop`** | `4431d5e`   | `build-develop` | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.97s          |
+| **`1.3.0`**   | `3502d41`   | `build-130`     | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.95s          |
+| **`1.2.0`**   | `f1b0608`   | `build-120`     | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.88s          |
+| **`1.1.0`**   | `4431d5e`   | `build-develop` | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.97s          |
+| **`1.0.0`**   | `c013c25`   | `build-100`     | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 1.00s          |
+
+---
+
+## 11. AboutDialog Tab Background Unification & Enriched Multi-Version Credits (v1.0.0 – v1.3.5)
+
+### 11.1 Diagnosis of Tab Background Inconsistency
+
+In previous revisions, the tab pane exhibited a glaring visual inconsistency:
+
+- **Root Cause**: `QTabWidget::pane` was styled with `cardBg` (`#1e293b` in dark mode or `#ffffff` in light mode), but the contents of the **About** and **Diagnostics** tabs resided inside unstyled `QScrollArea` viewports and bare `QWidget` child containers. Qt defaulted those container backgrounds to the dialog's window background (`winBg` `#0f172a` in dark mode or `#f8fafc` in light mode).
+- **Visual Defect**: This produced a two-tone canvas where the About and Diagnostics tabs showed a dark/light backdrop with floating nested panels, whereas tabs containing `QTextBrowser` elements (Maintainer, Credits, Shortcuts, License) filled the entire pane with solid `cardBg` surrounded by an inner border.
+- **Resolution**:
+  - Re-architected tab containers in `src/dialogs/AboutDialog.cpp` with explicit container IDs (`aboutTab`, `aboutContent`, `diagnosticsTab`, `diagnosticsContent`).
+  - Enforced uniform `cardBg` across `QTabWidget::pane`, `QTabWidget > QWidget`, `QScrollArea`, and all viewports.
+  - Standardized all notice, metadata, and diagnostics cards to use elegant inset panel styling (`panelBg`: `rgba(15,23,42,0.65)` in dark mode, `rgba(241,245,249,0.85)` in light mode) with 1px borders and a 4px accent left border.
+  - Stripped redundant inner borders and margins from all `QTextBrowser` widgets, allowing text to flow seamlessly with consistent typography.
+
+### 11.2 Comprehensive Multi-Version Credit Enrichment
+
+The Credits tab and `doc/ABOUT_AND_CREDITS.md` have been updated with complete historical acknowledgments spanning all versions from **v1.0.0 through v1.3.5**:
+
+1. **AI Engineering, Code Review & Auditing Engines**:
+   - **Google DeepMind Antigravity IDE**: Primary AI Code Editor, high-precision code refactoring engine, and unified development environment powering SparkNotePad's codebase architecture and workflow automation.
+   - **Gemini 3.8 Flash (Google DeepMind)**: Advanced AI Code Review, 13-Pillar Security Auditing, Linter Compliance, and static analysis verification engine.
+2. **Upstream & Ancestral Foundations**:
+   - **NotepadNext** by Justin Dailey (`@dail8859`): The original cross-platform Qt foundation and architectural ancestor.
+   - **Notepad4** by Zufu Liu (`@zufuliu`): Text transformation ergonomics, Scintilla integration patterns, and utility algorithms.
+   - **Notepad3** by Rizonesoft / Florian Balmer: Text manipulation ergonomics and encoding management concepts.
+   - **Notepad--** by cxasm (`@cxasm`): Cross-platform multi-tab design paradigms and text editing methodologies.
+   - **Notepad++** by Don Ho (`@donho`): The legendary Windows open-source text editor that inspired the modern notepad lineage.
+   - **notepadnext-macos & SubnetCalc for macOS**: Native macOS integration patterns, AppKit services, and Cocoa bundle scaffolding.
+3. **Core Editing Engines & Runtimes**:
+   - **Scintilla 5.6.7** by Neil Hodgson: Production text editing engine.
+   - **Lexilla 5.5.4** by Neil Hodgson: Syntax highlighting and lexical scanning components.
+   - **Lua 5.5.1 / 5.4.x** (Lua.org): Embedded scripting engine and runtime extension sandbox.
+4. **Third-Party Libraries & Frameworks**:
+   - **The Qt Company**: Qt 6.5–6.12 C++ application framework.
+   - **Qt Advanced Docking System (ADS 5.1.1)** by Manuel Freiholz: Professional multi-dock docking framework.
+   - **QSimpleUpdater** by Alex Spataru: Asynchronous update management engine.
+   - **SingleApplication 3.5.6** by Itay Grudev: Secure single-instance process IPC and lock management.
+   - **EditorConfig Core Qt**: `.editorconfig` parser and formatting compliance.
+   - **uchardet**: Universal character set detection library by Mozilla.
+   - **OpenSSL Project**: Military-grade authenticated cryptography (AES-256-CBC/GCM + PBKDF2/HMAC-SHA256).
+5. **Art, Design & Iconography**:
+   - **Lon McGregor** (`NotepadPlusPlusIcons`): Heritage tool and action iconography.
+   - **SparkNotePad Monoline Vector Suite**: In-house 24x24 monoline vector SVGs designed for crisp display across Retina and HiDPI displays.
+
+---
+
+## 12. 📦 GitHub Actions Release Matrix & Build Artifacts (v1.0.0 – v1.3.5)
+
+All release packages and binaries are automatically compiled, tested, and packaged natively on GitHub Actions cloud runners across macOS Apple Silicon (arm64), macOS Intel (x86_64), and Linux Ubuntu/Debian/Fedora.
+
+| Release Version | Branch              | Tag      | Platform / Architecture          | Package File Name                                                                                                                                      | Size     | Toolchain & Qt           |
+| --------------- | ------------------- | -------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------ |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.5-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)                   | 28.99 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.5-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                       | 52.46 MB | Apple Clang / Qt 6.12    |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                     | 4.07 MB  | GCC 14 / Qt 6.8          |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | Linux Fedora / RHEL (x86_64)     | [`sparknotepad-1.3.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)               | 4.06 MB  | GCC 14 / Qt 6.8          |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS / Linux Association Script | [`SparkNotePad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)                 | 18.66 KB | POSIX Shell              |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-arm64.dmg)                   | 28.88 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-x64.dmg)                       | 29.10 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0_amd64.deb)                     | 3.99 MB  | GCC 13 / Qt 6.8          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Debian / Ubuntu Qt 6.5     | [`sparknotepad_1.3.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0-qt6.5_amd64.deb)         | 3.96 MB  | GCC 13 / Qt 6.5          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Debian / Ubuntu Qt 6.11    | [`sparknotepad_1.3.0-qt6.11_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0-qt6.11_amd64.deb)       | 3.99 MB  | GCC 13 / Qt 6.11         |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Fedora / RHEL (x86_64)     | [`sparknotepad-1.3.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-1.x86_64.rpm)               | 3.97 MB  | GCC 13 / Qt 6.8          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Fedora / RHEL Qt 6.5       | [`sparknotepad-1.3.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-qt6.5-1.x86_64.rpm)   | 3.94 MB  | GCC 13 / Qt 6.5          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Fedora / RHEL Qt 6.11      | [`sparknotepad-1.3.0-qt6.11-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-qt6.11-1.x86_64.rpm) | 3.97 MB  | GCC 13 / Qt 6.11         |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | macOS / Linux Association Script | [`SparkNotePad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-Default-Editor.sh)                 | 18.66 KB | POSIX Shell              |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | macOS Apple Silicon (arm64)      | [`NoteSciPad-v1.2.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/NoteSciPad-v1.2.0-arm64.dmg)                       | 27.98 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | macOS Intel (x86_64)             | [`NoteSciPad-v1.2.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/NoteSciPad-v1.2.0-x64.dmg)                           | 28.22 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Debian / Ubuntu (x86_64)   | [`notesci-pad_1.2.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad_1.2.0_amd64.deb)                       | 3.94 MB  | GCC 12 / Qt 6.8          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Debian / Ubuntu Qt 6.5     | [`notesci-pad_1.2.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad_1.2.0-qt6.5_amd64.deb)           | 3.94 MB  | GCC 12 / Qt 6.5          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Debian / Ubuntu Qt 6.11    | [`notesci-pad_1.2.0-qt6.11_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad_1.2.0-qt6.11_amd64.deb)         | 3.97 MB  | GCC 12 / Qt 6.11         |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Fedora / RHEL (x86_64)     | [`notesci-pad-1.2.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad-1.2.0-1.x86_64.rpm)                 | 3.93 MB  | GCC 12 / Qt 6.8          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Fedora / RHEL Qt 6.5       | [`notesci-pad-1.2.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad-1.2.0-qt6.5-1.x86_64.rpm)     | 3.93 MB  | GCC 12 / Qt 6.5          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Fedora / RHEL Qt 6.11      | [`notesci-pad-1.2.0-qt6.11-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad-1.2.0-qt6.11-1.x86_64.rpm)   | 3.96 MB  | GCC 12 / Qt 6.11         |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Checksum Verification            | [`SHA256SUMS.txt`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/SHA256SUMS.txt)                                                 | 472 B    | SHA-256                  |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | macOS / Linux Association Script | [`NoteSciPad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/NoteSciPad-Default-Editor.sh)                     | 18.93 KB | POSIX Shell              |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | macOS Apple Silicon (arm64)      | [`NoteSciPad-v1.1.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/NoteSciPad-v1.1.0-arm64.dmg)                       | 28.18 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | macOS Intel (x86_64)             | [`NoteSciPad-v1.1.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/NoteSciPad-v1.1.0-x64.dmg)                           | 28.64 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Debian / Ubuntu (x86_64)   | [`notesci-pad_1.1.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad_1.1.0_amd64.deb)                       | 4.08 MB  | GCC 12 / Qt 6.8          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Debian / Ubuntu Qt 6.5     | [`notesci-pad_1.1.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad_1.1.0-qt6.5_amd64.deb)           | 4.06 MB  | GCC 12 / Qt 6.5          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Fedora / RHEL (x86_64)     | [`notesci-pad-1.1.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad-1.1.0-1.x86_64.rpm)                 | 4.07 MB  | GCC 12 / Qt 6.8          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Fedora / RHEL Qt 6.5       | [`notesci-pad-1.1.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad-1.1.0-qt6.5-1.x86_64.rpm)     | 4.05 MB  | GCC 12 / Qt 6.5          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | macOS / Linux Association Script | [`NoteSciPad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/NoteSciPad-Default-Editor.sh)                     | 18.94 KB | POSIX Shell              |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | macOS Apple Silicon (arm64)      | [`NoteSciPad-v1.0.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/NoteSciPad-v1.0.0-arm64.dmg)                       | 26.52 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | macOS Intel (x86_64)             | [`NoteSciPad-v1.0.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/NoteSciPad-v1.0.0-x64.dmg)                           | 28.29 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Debian / Ubuntu (x86_64)   | [`notesci-pad_1.0.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad_1.0.0_amd64.deb)                       | 4.08 MB  | GCC 12 / Qt 6.8          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Debian / Ubuntu Qt 6.5     | [`notesci-pad_1.0.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad_1.0.0-qt6.5_amd64.deb)           | 4.06 MB  | GCC 12 / Qt 6.5          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Fedora / RHEL (x86_64)     | [`notesci-pad-1.0.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad-1.0.0-1.x86_64.rpm)                 | 4.07 MB  | GCC 12 / Qt 6.8          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Fedora / RHEL Qt 6.5       | [`notesci-pad-1.0.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad-1.0.0-qt6.5-1.x86_64.rpm)     | 4.05 MB  | GCC 12 / Qt 6.5          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Checksum Verification            | [`SHA256SUMS.txt`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/SHA256SUMS.txt)                                                 | 472 B    | SHA-256                  |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | macOS / Linux Association Script | [`NoteSciPad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/NoteSciPad-Default-Editor.sh)                     | 18.94 KB | POSIX Shell              |

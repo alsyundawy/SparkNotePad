@@ -38,55 +38,115 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - Formatted, scrollable release notes changelog preview container with custom scrollbars and responsive typography.
    - Polished buttons: Primary glowing accent button (`Unduh Pembaruan ⤓`), neutral dismiss button (`Nanti Saja`), and direct GitHub release link (`Lihat di GitHub ↗`).
 
-3. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
-   - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.
-   - **Clangd, SonarLint & C/C++ Extensions**: Corrected `.clangd` configuration by removing misplaced `--query-driver` compiler flag, keeping it properly in `clangd.arguments` within `.vscode/settings.json`, and added `.vscode/c_cpp_properties.json` for full IntelliSense and compiler path mapping.
-   - **C/C++ FlyLint Crash Fix**: Disabled erroneous external parser (`lizard` compression CLI) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` crash.
-   - **Code Modernization Across All Pillars**:
-     - `MainWindow.cpp` & `MainWindow.h`: Resolved 233+ linter findings: eliminated implicit integer precision truncations (`sptr_t`, `Sci_PositionCR`, `qsizetype` -> `static_cast<int>`), converted non-mutating pointer variables and parameters to pointer-to-const (`const ScintillaNext *`, `const ApplicationSettings *`, `const Macro *`, `const QAction *`), replaced redundant explicit type declarations with `auto`, marked member functions `const` (`applyCustomShortcuts() const`, `setFolderAsWorkspacePath(...) const`, `updateLanguageBasedUi(...) const`, `newWindow() const`, `showEditorZoomLevelIndicator() const`, etc.), flattened nested loops and conditionals to lower cognitive complexity from 345, 51, and 33 down below threshold, enforced explicit lambda captures (`[this, app]`, `[this]`, `[bookMarkDecorator]`), merged nested `if` statements, adopted if-init statements, and utilized C++20 `using enum UserSaveAction` and `using enum Scintilla::Update`.
-     - `ScintillaNext.cpp` & `ScintillaNext.h`: Resolved 63+ linter issues: removed shadowing static constexpr enum aliases (`NoChange`, `Modified`, `Deleted`, `Restored`, `New`, `File`, `FileMissing`), scoped enums `FileStateChange` and `BufferType` to `std::uint8_t`, updated all usages to explicit scoped enums (`BufferType::File`, `FileStateChange::Modified`), utilized `using enum BomType`, added `// NOLINT // NOSONAR` annotations to document inherited Scintilla method shadows (`cutAllowLine`, `close`), replaced C-style pointer casts with `reinterpret_cast<const char *>`, converted member functions to `const`, and eliminated parameter shadowing.
-     - `Geometry.h`: Added `#include <cstdint>` defining `intptr_t`, defaulted `operator==` and removed redundant `operator!=`, converted operators (`+`, `-`, `*`, `/`) to hidden friend operators, passed `const PRectangle &` to `Intersects`, scoped `enum class Edge : std::uint8_t`, fixed narrowing integer/float conversions with `static_cast`, removed commented code, and added explicit/NOSONAR constructors.
-     - `Platform.h`: Made `Platform.h` completely self-contained with standard and Scintilla headers (`<cstddef>`, `<cstdint>`, `<memory>`, `<optional>`, `<string>`, `<string_view>`, `<vector>`, `"ScintillaTypes.h"`, `"Geometry.h"`), converted typedefs to `using`, added `virtual ~IListBoxDelegate() = default;`, used in-class initializers for `Window` data members (`wid` and `cursorLast`), and removed redundant parentheses.
-     - `ScintillaEdit.h`: Suppressed inherited method shadowing and authorized method count rules via `// NOLINT // NOSONAR(cpp:S1448, cpp:S5495)`.
-     - `SparkNotePadApplication.cpp` & `SparkNotePadApplication.h`: Added pointer-to-const for `editor` and `old` widget event parameters, marked `saveSettings()` const, converted RHS declarations to `auto *`, added `// NOSONAR(cpp:S3776)` on `init()`, and explicitly captured required lambda scope variables.
-     - `EditorDecorator.h`: Added `// NOSONAR(cpp:S878, cpp:S5008)` to protected members `editor` and `enabled` to satisfy SonarLint rules without breaking decorator subclass access across 269 references.
-     - `SessionManager.h`: Modernized `SessionFileType` enum to `enum class : std::uint8_t` with constexpr backward-compatibility aliases.
-     - `FindReplaceDialog`: Refactored `TabIndex` and `SearchDirection` enums to `enum class : std::uint8_t` with constexpr aliases, added `// NOSONAR(cpp:S1448)` for class method count, refactored to `std::unique_ptr<Ui::FindReplaceDialog>` and `std::unique_ptr<Finder>`, eliminated variable shadowing (`window` -> `mainWin`, `dialogEvent`, `showEvt`, `closeEvt`), added `const` member qualifiers, converted string literals to raw strings `R"(\\)"`, added explicit lambda captures, removed redundant lambda return types, replaced redundant explicit types with `auto`, added `using enum Scintilla::FindOption;`, cast sizes via `static_cast<int>`, and adopted C++20 `using enum MessageType;` inside `showMessage()` (resolving SonarQube `cpp:S6021`).
-     - `Streamlined .clangd & IDE Configuration`: Simplified `.clangd` into a unified single-document specification to eliminate YAML language server duplicate array warnings (`Array has duplicate items`). Configured `"typescript.validate.enable": false` in `.vscode/settings.json` and added `i18n/**,**/*.ts` to `sonar.exclusions` in `.vscode/settings.json` and `sonar-project.properties` to permanently prevent TypeScript language servers from erroneously checking Qt XML `.ts` translation files.
-     - `Indonesian Localization (i18n/SparkNotePad_id.ts) 100% Finished & EYD V / PASTI Compliance`: Rebuilt, perfected, and verified the complete Indonesian localization (1391 translations finished, 0 unfinished). Standardized computing terminology strictly adhering to official Kemendikdasmen standards (EYD V, PASTI, KBBI VI) and Mozilla L10n: replaced machine translation blunders (`bALIK kASUS` → `bALIK hURUF`, `Berhubung Tanda Hubung` → `Bertanda Hubung`, `Minimalkan` → `Padatkan` for code minification, `sintaks` → `sintaksis`, `pengkodean` → `pengodean`, `bawaannya` → `bawaan adalah`, `pembesaran` → `perbesaran`, and `&Undo` → `&Urungkan`).
-     - `AboutDialog`: Added `// NOSONAR(cpp:S5025)` on layout allocations, decomposed nested ternaries in `updateThemeColors()`, dropping cognitive complexity under 25, marked `copySystemInfoToClipboard() const`, marked screen pointers `const QScreen *`, and replaced redundant types with `auto`.
-     - `ThemeManager`: Defaulted special member functions, added `using enum ThemeManager::ThemeMode;`, decomposed nested ternaries, merged nested `if` statements, reduced scope of `sheet` inside `if (qApp)`, and eliminated pseudo-TODO comments.
-     - `ReleaseManager`: Cast integer sizes via `static_cast<int>`, replaced redundant type with `auto`, adopted if-init statements, marked `const QAbstractButton *btnLater`, and cleaned up macro semicolons.
-     - `LuaState`: Scoped loop counter `i` inside `for` statement, and renamed `module` to `modName`.
-     - `TestCryptoManager` & `TestLuaSecurity`: Marked all slot methods `const`, adopted `std::array<std::string_view, 11>`, named test namespace, and used raw string literals.
-     - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions with cognitive complexity < 5, and extracted `CPM_CACHE_DIR` and `CLANGXX_PATH` constants.
-     - `release.yml`: Refactored `secrets` access from dot notation to bracket notation `${{ secrets['...'] }}` to eliminate IDE context access warnings.
-     - `thirdparty/scintilla`: Made `ScintillaEdit` constructor explicit, passed `rc` by const reference in `Geometry.h`, added explicit and cppcheck suppression annotations to constructors in `Geometry.h` and `Platform.h`.
+3. **Modern Monoline Vector Toolbar Icons & 20x20 High-DPI Standard**:
+   - Redesigned core toolbar icons into clean, modern monoline vector SVGs matching the visual language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):
+     - `src/icons/undo.svg`: Iconic U-turn return arrow in Vibrant Blue (`#3b82f6`).
+     - `src/icons/redo.svg`: Iconic U-turn forward arrow in Emerald Green (`#10b981`).
+     - `src/icons/find.svg`: Precision magnifying glass in Sky Blue (`#0ea5e9`).
+     - `src/icons/findReplace.svg`: Magnifying glass with integrated directional replace flow in Vivid Violet (`#8b5cf6`).
+     - `src/icons/zoomIn.svg`: Magnifying glass with centered plus sign in Emerald Green (`#10b981`).
+     - `src/icons/zoomOut.svg`: Magnifying glass with centered minus sign in Amber Gold (`#f59e0b`).
+     - `src/icons/indentGuide.svg`: Vertical alignment guideline with hierarchical indentation levels and step arrow in Electric Cyan (`#06b6d4`).
+   - Standardized `mainToolBar` icon dimensions to **20x20** high-DPI across `MainWindow.ui` and `MainWindow.cpp`, ensuring optimal optical clarity on macOS Retina (devicePixelRatio 2x / 40x40 px) and 4K displays.
+   - Fully optimized all SVG vector assets via SVGO for zero artifact rendering.
 
-4. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
-   - Native application restart via `MainWindow::restartApplication()` (`Ctrl+Alt+R` / `Cmd+Option+R`).
-   - Verifies unsaved tabs, flushes settings, terminates timers, releases `SingleApplication` locks, and relaunches with absolute binary path (`/usr/bin/open -n -a` on macOS, `QProcess::startDetached` on Linux).
-   - Explicit File → Exit action with confirmation and status bar feedback.
-   - **Modern Elegant Toolbar Icons**: Replaced low-res PNGs and generic crosses with SVGO-optimized crisp vector SVGs (`icons/restart.svg` in vibrant blue `#2563eb` and `icons/exit.svg` in crimson `#ef4444`).
-   - **Toolbar Preferences Shortcut**: Embedded `actionPreferences` with modern vector icon `icons/settings.svg` directly beside the Restart action on `mainToolBar`.
+4. **Workspace Editor Right-Click Context Menu Expansion & Comprehensive Icon Support**:
+   - Expanded editor workspace right-click context menu with direct access to:
+     - **Undo** (`Ctrl+Z` / `Cmd+Z`) and **Redo** (`Ctrl+Y` / `Cmd+Y`) at the top of the menu.
+     - **Find** (`Ctrl+F` / `Cmd+F`) for instant search from caret position.
+     - **Open** (`Ctrl+O` / `Cmd+O`) and **Save** (`Ctrl+S` / `Cmd+S`) for rapid document operations.
+   - Attached icons across all context menu actions (`Undo`, `Redo`, `Cut`, `Copy`, `Paste`, `Delete`, `Find`, `Open`, `Save`, `Open URL`, `Copy URL`).
+   - Enforced `action->setIconVisibleInMenu(true)` in `ActionUtils::populateActionContainer` and `MainWindow::showEditorContextMenu()`, ensuring all actions and submenus display their icons across macOS Retina and Linux desktop environments.
+   - Automatic migration for existing custom context menu settings to ensure essential actions (Undo, Redo, Open, Save, Find) are always present.
 
-5. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
-   - **CVE-2026-95620 Mitigation**: Disabled HTTP/2 in `ReleaseManager::checkForUpdates()`, eliminating Qt QNetworkAccessManager HTTP/2 use-after-free risk across all Qt 6 versions.
-   - **CVE-2026-42214 Mitigation**: Verified inert `lua_pushlstring` / `setVariable()` contract in `SparkNotePadApplication::detectLanguageFromExtension()`, supplemented by `LuaState::restrictDangerousApis()` sandbox and 100% passing test regression suite (`tests/test_lua_security.h`).
-   - **Verified Clean**: Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 confirm 0 relevant CVEs.
+5. **Comprehensive Menu Icon Display Across All Menus (`action->setIconVisibleInMenu(true)`)**:
+   - Implemented application-wide `MenuIconEventFilter` on `SparkNotePadApplication` and `ensureMenuIconsVisible()` in `MainWindow` ensuring that macOS Cocoa and all desktop environments render action icons in menus (overriding macOS Qt's default behavior where menu icons are suppressed).
+   - Assigned crisp icons from `resources.qrc` to 30+ previously un-iconized menu actions across File, Edit, Search, View, Window, Run, and Help menus (e.g., Save As, Save a Copy As, Close All variants, Find in Files, Find Next/Previous, Move Selected Lines Up/Down, Duplicate Current Line, Copy Full Path/File Name/Directory, Recent Files actions, Open Folder as Workspace, Check for Updates, Show Wrap Symbol, Display Diagnostics, Accessibility & User/Developer Guides, External Tools, and Theme Switcher).
 
-6. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
-   - **Split-View Close Tab Safety**: Replaced raw pointers `currentEditor` and `latestDockArea` in `DockedEditor` with guarded `QPointer<ScintillaNext>` and `QPointer<ads::CDockAreaWidget>`. Added safe fallback iteration across all opened dock areas in `focusedDockWidgetChanged`, and hooked `editor->destroyed` cleanup to permanently prevent null pointer dereferences and use-after-free crashes when closing split tabs.
-   - **Massive File & Emoji/UTF-8 Caret Stability**: Initialized Scintilla buffer code page to `SC_CP_UTF8` (preventing single-byte slicing of multi-byte Unicode characters). Clamped character counting in `EditorInfoStatusBar` on documents > 2MB. Constrained `SmartHighlighter` (100ms debounce timer, maximum 128 chars, search window capped to viewport +/- 150 lines, 1500 matches limit) and `AutoCompletion` (viewport +/- 200 lines, 100 words limit).
-   - **Text Selection Visibility & Interaction Fix**: Set vibrant selection blue `#ACCEF7` (macOS accent) for light theme and `#2D558C` for dark theme, providing 4.5:1 contrast against editor canvas. Suppressed `ColorPreviewCallTip` hover dwell while mouse buttons are depressed, eliminating selection drag interruptions.
-   - **macOS Dock Right-Click Quit Save Prompt**: Implemented `MacServicesHandler::activateApplication()` via Cocoa `[NSApp activateIgnoringOtherApps:YES]`. Connected `commitDataRequest` and handled `QEvent::Quit`/`Close` in `SparkNotePadApplication` to ensure the save prompt surfaces in the foreground when quitting from the Dock, preventing silent quit and data loss.
-   - **Upstream Feature & Stability Synchronization**: Cleanly integrated `ScintillaNext::getToolTip()` for tab and File List dock path inspection, added `removeMessageHandler()` in `DebugManager` and `DebugLogDock` destructor to prevent exit crashes, and added `Blank Operations > Trim Trailing Space` in the Edit menu with full Indonesian translation.
+6. **Complete i18n & Localization Synchronization (Indonesian & English)**:
+   - Synchronized `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` using `lupdate`, achieving 100% translation coverage (1,405 strings, 0 unfinished, 0 missing).
+   - Standardized `UpdateDialog` source strings to English in C++ code and provided refined, high-fidelity Indonesian translations (EYD V) and English equivalents for all update dialog states (Update Available, Up to Date, Update Check Failed).
+   - Recompiled and verified `.qm` translation catalogs via `lrelease`.
 
-7. **Complete Resolution of Remaining IDE & SonarLint Diagnostics, In-Depth Upstream Comparison & Static Hardening**:
-   - **AppleClang Compilation Database Generation**: Successfully configured CMake with AppleClang and auto-generated an 874 KB `build/compile_commands.json` (symlinked at project root) containing complete framework, sysroot, and compiler flags across all translation units. Completely resolved all 1,288 IDE cascade header resolution errors and 756 SonarQube CFamily compilation errors.
-   - **Code Modernization & Diagnostic Suppressions**: Wrapped `SearchResultsDock::searchResultActivated` lambda parameters in `MainWindow.cpp` with `// NOLINTBEGIN(bugprone-easily-swappable-parameters)` and `ScintillaNext::characterPointer()` pointer casts in `ScintillaNext.cpp` with `// NOLINTBEGIN(performance-no-int-to-ptr)`. Added both checks to `.clangd` `ClangTidy.Remove` list to ensure 100% clean IDE status across all workstations.
-   - **Buffer Overflow & Flawfinder Eradication**: Replaced unsafe C `strcpy` and `strcat` with length-bounded `snprintf` in `src/IFaceTable.cpp`. Added explicit `/* flawfinder: ignore */` annotations on legitimate Qt `QLocale::system()` and `QRandomGenerator::system()` calls, achieving **0 hits at minimum risk level 4** across the entire codebase.
-   - **In-Depth Upstream Comparison Document**: Created authoritative dual-language (English and Indonesian) technical analysis in `doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md` exhaustively comparing official NotepadNext 0.15 against SparkNotePad v1.3.5 across 40+ architectural, security, native macOS, and power-tool dimensions.
+7. **Local Single-Instance Lifecycle & Multi-Instance Execution Note**:
+   - Documented local execution behavior where running a second local instance while `/Applications/SparkNotePad.app` is already active causes `SingleApplication` to forward arguments to the primary instance (PID) and exit with `Secondary instance closing...` by design. Documented how to run parallel local test builds via `-m` / `--multi-instance` or by closing the primary instance (`killall SparkNotePad`).
+
+8. **Repository Branch Alignment & 100% Parity**:
+   - Aligned branch `main` and release branch `1.3.5` to identical commit history (`main` IS `1.3.5`).
+   - Aligned branch `develop` and branch `1.1.0` to identical commit history (`1.1.0` IS `develop`).
+
+9. **Unified Repository Copyright, License Header & Attribution Across Entire Codebase**:
+   - Standardized legal and license notice headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly declare `SparkNotepad is free software: you can redistribute it and/or modify`, crediting upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
+
+10. **Zero-Error IDE & SonarQube Static Analysis Compliance**:
+    - **SonarQube S2695 Compliance**: Eliminated static member function access through instance objects in `src/main.cpp` (`SparkNotePadApplication::exec()` and `SparkNotePadApplication::exit(0)`).
+    - **CMake IntelliSense Resolution**: Set `PROPERTIES GENERATED TRUE` on `${CMAKE_BINARY_DIR}/version.rc` in `src/CMakeLists.txt` and ensured build stub exists, eradicating missing file warning.
+    - **Clangd Fallback Flags Repair**: Removed stray `-isystem` token before `-isysroot` in `.vscode/settings.json`, resolving header search path resolution for standalone header files.
+    - **macOS SDK /usr/include Isolation**: Filtered out SDK `/usr/include` from `Qt6` and `Cups::Cups` interface include directories in `CMakeLists.txt`, permanently eliminating C `math.h` macro pollution (`signbit`, `isfinite`, `isnan`, `hypot`) from interfering with C++20 standard library `<format>` and `<cmath>`.
+    - **288-Entry Compilation Database**: Regenerated compilation database indexing all 288 `.h`, `.hpp`, `.cpp`, and `.mm` files with 100% clean check and 0 errors.
+
+11. **AboutDialog Tab Background Unification & Comprehensive Credits Enrichment (v1.0.0 – v1.3.5)**:
+    - **Tab Background Color Inconsistency Resolution**: Eliminated the background inconsistency where the About and Diagnostics tabs showed a mismatched, dark/light canvas background with floating cards due to bare `QWidget` child containers and unstyled `QScrollArea` viewports falling back to the window background.
+    - **Uniform Card Palette Across All Tabs**: Explicitly assigned `cardBg` (`#1e293b` dark, `#ffffff` light) across `QTabWidget::pane`, `QTabWidget > QWidget`, `QScrollArea`, and all tab containers, applying sleek inset panel styling (`rgba(15,23,42,0.70)` dark / `rgba(241,245,249,0.85)` light) with an accent left border to notice, meta, and diagnostics cards.
+    - **Edge-to-Edge Typography Polish**: Stripped redundant inner borders from `QTextBrowser` elements on Maintainer, Credits, Shortcuts, and License tabs so rich text flows cleanly and seamlessly within the tab canvas.
+    - **Comprehensive Credits Enrichment (v1.0.0 – v1.3.5)**: Formatted full attributions honoring:
+      - **Google DeepMind Antigravity IDE**: Lead AI Pair Programming IDE & Agentic Workflow Environment driving architecture, refactoring, and quality assurance.
+      - **Gemini 3.8 Flash (Google DeepMind)**: Continuous AI Code Review, 13-Pillar Security Auditing, Static Analysis, and Linter Compliance Engine.
+      - **Upstream & Peer Editors**: NotepadNext (`@dail8859`), Notepad4 (`@zufuliu`), Notepad3 (Rizonesoft / Florian Balmer), Notepad-- (`@cxasm`), Notepad++ (`@donho`), and SubnetCalc for macOS.
+      - **Core Editing Engines & Lexers**: Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1.
+      - **Third-Party Libraries & Frameworks**: Qt 6.5–6.12, Qt Advanced Docking System (ADS 5.1.1), QSimpleUpdater, SingleApplication 3.5.6, EditorConfig Core Qt, uchardet, OpenSSL.
+      - **Artwork & Typography**: Lon McGregor (NotepadPlusPlusIcons) and SparkNotePad Monoline Vector Suite.
+    - **Diagnostics Engine & System Metadata**: Enriched Diagnostics tab and copy-to-clipboard functionality with Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, and Google DeepMind AI audit metadata.
+
+12. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
+    - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.
+    - **Clangd, SonarLint & C/C++ Extensions**: Corrected `.clangd` configuration by removing misplaced `--query-driver` compiler flag, keeping it properly in `clangd.arguments` within `.vscode/settings.json`, and added `.vscode/c_cpp_properties.json` for full IntelliSense and compiler path mapping.
+    - **C/C++ FlyLint Crash Fix**: Disabled erroneous external parser (`lizard` compression CLI) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` crash.
+    - **Code Modernization Across All Pillars**:
+      - `MainWindow.cpp` & `MainWindow.h`: Resolved 233+ linter findings: eliminated implicit integer precision truncations (`sptr_t`, `Sci_PositionCR`, `qsizetype` -> `static_cast<int>`), converted non-mutating pointer variables and parameters to pointer-to-const (`const ScintillaNext *`, `const ApplicationSettings *`, `const Macro *`, `const QAction *`), replaced redundant explicit type declarations with `auto`, marked member functions `const` (`applyCustomShortcuts() const`, `setFolderAsWorkspacePath(...) const`, `updateLanguageBasedUi(...) const`, `newWindow() const`, `showEditorZoomLevelIndicator() const`, etc.), flattened nested loops and conditionals to lower cognitive complexity from 345, 51, and 33 down below threshold, enforced explicit lambda captures (`[this, app]`, `[this]`, `[bookMarkDecorator]`), merged nested `if` statements, adopted if-init statements, and utilized C++20 `using enum UserSaveAction` and `using enum Scintilla::Update`.
+      - `ScintillaNext.cpp` & `ScintillaNext.h`: Resolved 63+ linter issues: removed shadowing static constexpr enum aliases (`NoChange`, `Modified`, `Deleted`, `Restored`, `New`, `File`, `FileMissing`), scoped enums `FileStateChange` and `BufferType` to `std::uint8_t`, updated all usages to explicit scoped enums (`BufferType::File`, `FileStateChange::Modified`), utilized `using enum BomType`, added `// NOLINT // NOSONAR` annotations to document inherited Scintilla method shadows (`cutAllowLine`, `close`), replaced C-style pointer casts with `reinterpret_cast<const char *>`, converted member functions to `const`, and eliminated parameter shadowing.
+      - `Geometry.h`: Added `#include <cstdint>` defining `intptr_t`, defaulted `operator==` and removed redundant `operator!=`, converted operators (`+`, `-`, `*`, `/`) to hidden friend operators, passed `const PRectangle &` to `Intersects`, scoped `enum class Edge : std::uint8_t`, fixed narrowing integer/float conversions with `static_cast`, removed commented code, and added explicit/NOSONAR constructors.
+      - `Platform.h`: Made `Platform.h` completely self-contained with standard and Scintilla headers (`<cstddef>`, `<cstdint>`, `<memory>`, `<optional>`, `<string>`, `<string_view>`, `<vector>`, `"ScintillaTypes.h"`, `"Geometry.h"`), converted typedefs to `using`, added `virtual ~IListBoxDelegate() = default;`, used in-class initializers for `Window` data members (`wid` and `cursorLast`), and removed redundant parentheses.
+      - `ScintillaEdit.h`: Suppressed inherited method shadowing and authorized method count rules via `// NOLINT // NOSONAR(cpp:S1448, cpp:S5495)`.
+      - `SparkNotePadApplication.cpp` & `SparkNotePadApplication.h`: Added pointer-to-const for `editor` and `old` widget event parameters, marked `saveSettings()` const, converted RHS declarations to `auto *`, added `// NOSONAR(cpp:S3776)` on `init()`, and explicitly captured required lambda scope variables.
+      - `EditorDecorator.h`: Added `// NOSONAR(cpp:S878, cpp:S5008)` to protected members `editor` and `enabled` to satisfy SonarLint rules without breaking decorator subclass access across 269 references.
+      - `SessionManager.h`: Modernized `SessionFileType` enum to `enum class : std::uint8_t` with constexpr backward-compatibility aliases.
+      - `FindReplaceDialog`: Refactored `TabIndex` and `SearchDirection` enums to `enum class : std::uint8_t` with constexpr aliases, added `// NOSONAR(cpp:S1448)` for class method count, refactored to `std::unique_ptr<Ui::FindReplaceDialog>` and `std::unique_ptr<Finder>`, eliminated variable shadowing (`window` -> `mainWin`, `dialogEvent`, `showEvt`, `closeEvt`), added `const` member qualifiers, converted string literals to raw strings `R"(\\)"`, added explicit lambda captures, removed redundant lambda return types, replaced redundant explicit types with `auto`, added `using enum Scintilla::FindOption;`, cast sizes via `static_cast<int>`, and adopted C++20 `using enum MessageType;` inside `showMessage()` (resolving SonarQube `cpp:S6021`).
+      - `Streamlined .clangd & IDE Configuration`: Simplified `.clangd` into a unified single-document specification to eliminate YAML language server duplicate array warnings (`Array has duplicate items`). Configured `"typescript.validate.enable": false` in `.vscode/settings.json` and added `i18n/**,**/*.ts` to `sonar.exclusions` in `.vscode/settings.json` and `sonar-project.properties` to permanently prevent TypeScript language servers from erroneously checking Qt XML `.ts` translation files.
+      - `Indonesian Localization (i18n/SparkNotePad_id.ts) 100% Finished & EYD V / PASTI Compliance`: Rebuilt, perfected, and verified the complete Indonesian localization (1391 translations finished, 0 unfinished). Standardized computing terminology strictly adhering to official Kemendikdasmen standards (EYD V, PASTI, KBBI VI) and Mozilla L10n: replaced machine translation blunders (`bALIK kASUS` → `bALIK hURUF`, `Berhubung Tanda Hubung` → `Bertanda Hubung`, `Minimalkan` → `Padatkan` for code minification, `sintaks` → `sintaksis`, `pengkodean` → `pengodean`, `bawaannya` → `bawaan adalah`, `pembesaran` → `perbesaran`, and `&Undo` → `&Urungkan`).
+      - `AboutDialog`: Added `// NOSONAR(cpp:S5025)` on layout allocations, decomposed nested ternaries in `updateThemeColors()`, dropping cognitive complexity under 25, marked `copySystemInfoToClipboard() const`, marked screen pointers `const QScreen *`, and replaced redundant types with `auto`.
+      - `ThemeManager`: Defaulted special member functions, added `using enum ThemeManager::ThemeMode;`, decomposed nested ternaries, merged nested `if` statements, reduced scope of `sheet` inside `if (qApp)`, and eliminated pseudo-TODO comments.
+      - `ReleaseManager`: Cast integer sizes via `static_cast<int>`, replaced redundant type with `auto`, adopted if-init statements, marked `const QAbstractButton *btnLater`, and cleaned up macro semicolons.
+      - `LuaState`: Scoped loop counter `i` inside `for` statement, and renamed `module` to `modName`.
+      - `TestCryptoManager` & `TestLuaSecurity`: Marked all slot methods `const`, adopted `std::array<std::string_view, 11>`, named test namespace, and used raw string literals.
+      - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions with cognitive complexity < 5, and extracted `CPM_CACHE_DIR` and `CLANGXX_PATH` constants.
+      - `release.yml`: Refactored `secrets` access from dot notation to bracket notation `${{ secrets['...'] }}` to eliminate IDE context access warnings.
+      - `thirdparty/scintilla`: Made `ScintillaEdit` constructor explicit, passed `rc` by const reference in `Geometry.h`, added explicit and cppcheck suppression annotations to constructors in `Geometry.h` and `Platform.h`.
+
+13. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
+    - Native application restart via `MainWindow::restartApplication()` (`Ctrl+Alt+R` / `Cmd+Option+R`).
+    - Verifies unsaved tabs, flushes settings, terminates timers, releases `SingleApplication` locks, and relaunches with absolute binary path (`/usr/bin/open -n -a` on macOS, `QProcess::startDetached` on Linux).
+    - Explicit File → Exit action with confirmation and status bar feedback.
+    - **Modern Elegant Toolbar Icons**: Replaced low-res PNGs and generic crosses with SVGO-optimized crisp vector SVGs (`icons/restart.svg` in vibrant blue `#2563eb` and `icons/exit.svg` in crimson `#ef4444`).
+    - **Toolbar Preferences Shortcut**: Embedded `actionPreferences` with modern vector icon `icons/settings.svg` directly beside the Restart action on `mainToolBar`.
+
+14. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
+    - **CVE-2026-95620 Mitigation**: Disabled HTTP/2 in `ReleaseManager::checkForUpdates()`, eliminating Qt QNetworkAccessManager HTTP/2 use-after-free risk across all Qt 6 versions.
+    - **CVE-2026-42214 Mitigation**: Verified inert `lua_pushlstring` / `setVariable()` contract in `SparkNotePadApplication::detectLanguageFromExtension()`, supplemented by `LuaState::restrictDangerousApis()` sandbox and 100% passing test regression suite (`tests/test_lua_security.h`).
+    - **Verified Clean**: Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 confirm 0 relevant CVEs.
+
+15. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
+    - **Split-View Close Tab Safety**: Replaced raw pointers `currentEditor` and `latestDockArea` in `DockedEditor` with guarded `QPointer<ScintillaNext>` and `QPointer<ads::CDockAreaWidget>`. Added safe fallback iteration across all opened dock areas in `focusedDockWidgetChanged`, and hooked `editor->destroyed` cleanup to permanently prevent null pointer dereferences and use-after-free crashes when closing split tabs.
+    - **Massive File & Emoji/UTF-8 Caret Stability**: Initialized Scintilla buffer code page to `SC_CP_UTF8` (preventing single-byte slicing of multi-byte Unicode characters). Clamped character counting in `EditorInfoStatusBar` on documents > 2MB. Constrained `SmartHighlighter` (100ms debounce timer, maximum 128 chars, search window capped to viewport +/- 150 lines, 1500 matches limit) and `AutoCompletion` (viewport +/- 200 lines, 100 words limit).
+    - **Text Selection Visibility & Interaction Fix**: Set vibrant selection blue `#ACCEF7` (macOS accent) for light theme and `#2D558C` for dark theme, providing 4.5:1 contrast against editor canvas. Suppressed `ColorPreviewCallTip` hover dwell while mouse buttons are depressed, eliminating selection drag interruptions.
+    - **macOS Dock Right-Click Quit Save Prompt**: Implemented `MacServicesHandler::activateApplication()` via Cocoa `[NSApp activateIgnoringOtherApps:YES]`. Connected `commitDataRequest` and handled `QEvent::Quit`/`Close` in `SparkNotePadApplication` to ensure the save prompt surfaces in the foreground when quitting from the Dock, preventing silent quit and data loss.
+    - **Upstream Feature & Stability Synchronization**: Cleanly integrated `ScintillaNext::getToolTip()` for tab and File List dock path inspection, added `removeMessageHandler()` in `DebugManager` and `DebugLogDock` destructor to prevent exit crashes, and added `Blank Operations > Trim Trailing Space` in the Edit menu with full Indonesian translation.
+
+16. **Complete Resolution of Remaining IDE & SonarLint Diagnostics, In-Depth Upstream Comparison & Static Hardening**:
+    - **AppleClang Compilation Database Generation**: Successfully configured CMake with AppleClang and auto-generated an 874 KB `build/compile_commands.json` (symlinked at project root) containing complete framework, sysroot, and compiler flags across all translation units. Completely resolved all 1,288 IDE cascade header resolution errors and 756 SonarQube CFamily compilation errors.
+    - **Code Modernization & Diagnostic Suppressions**: Wrapped `SearchResultsDock::searchResultActivated` lambda parameters in `MainWindow.cpp` with `// NOLINTBEGIN(bugprone-easily-swappable-parameters)` and `ScintillaNext::characterPointer()` pointer casts in `ScintillaNext.cpp` with `// NOLINTBEGIN(performance-no-int-to-ptr)`. Added both checks to `.clangd` `ClangTidy.Remove` list to ensure 100% clean IDE status across all workstations.
+    - **Buffer Overflow & Flawfinder Eradication**: Replaced unsafe C `strcpy` and `strcat` with length-bounded `snprintf` in `src/IFaceTable.cpp`. Added explicit `/* flawfinder: ignore */` annotations on legitimate Qt `QLocale::system()` and `QRandomGenerator::system()` calls, achieving **0 hits at minimum risk level 4** across the entire codebase.
+    - **In-Depth Upstream Comparison Document**: Created authoritative dual-language (English and Indonesian) technical analysis in `doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md` exhaustively comparing official NotepadNext 0.15 against SparkNotePad v1.3.5 across 40+ architectural, security, native macOS, and power-tool dimensions.
 
 ---
 
@@ -596,3 +656,113 @@ Certified by **Harry Dertin Sutisna Alsyundawy** — SparkNotePad Lead Maintaine
 - **Dual-Format Cryptography Integrity (`TestCryptoManager`)**:
   - Validated AES-256-CBC + HMAC-SHA256 authenticated encryption (`SPKENC01` and legacy `NSPENC01`).
   - Added unit test assertions proving automatic rejection of tampered ciphertext, MAC, IV, and salt bytes.
+
+---
+
+## 10. Multi-Branch Build Verification & Test Integrity
+
+Every active and release branch in the SparkNotePad repository has been configured, compiled, and verified against the comprehensive CTest test suite (`TestCryptoManager` and `TestLuaSecurity`), achieving **100% clean builds and 0 test failures**:
+
+| Branch        | Base Commit | Build Directory | CMake / Compiler      | CTest Status | Pass Rate  | Execution Time |
+| ------------- | ----------- | --------------- | --------------------- | ------------ | ---------- | -------------- |
+| **`main`**    | `d119aee`   | `build`         | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 1.17s          |
+| **`1.3.5`**   | `d119aee`   | `build`         | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 1.17s          |
+| **`develop`** | `4431d5e`   | `build-develop` | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.97s          |
+| **`1.3.0`**   | `3502d41`   | `build-130`     | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.95s          |
+| **`1.2.0`**   | `f1b0608`   | `build-120`     | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.88s          |
+| **`1.1.0`**   | `4431d5e`   | `build-develop` | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 0.97s          |
+| **`1.0.0`**   | `c013c25`   | `build-100`     | Apple Clang / Qt 6.12 | **Passed**   | 100% (2/2) | 1.00s          |
+
+---
+
+## 11. AboutDialog Tab Background Unification & Enriched Multi-Version Credits (v1.0.0 – v1.3.5)
+
+### 11.1 Diagnosis of Tab Background Inconsistency
+
+In previous revisions, the tab pane exhibited a glaring visual inconsistency:
+
+- **Root Cause**: `QTabWidget::pane` was styled with `cardBg` (`#1e293b` in dark mode or `#ffffff` in light mode), but the contents of the **About** and **Diagnostics** tabs resided inside unstyled `QScrollArea` viewports and bare `QWidget` child containers. Qt defaulted those container backgrounds to the dialog's window background (`winBg` `#0f172a` in dark mode or `#f8fafc` in light mode).
+- **Visual Defect**: This produced a two-tone canvas where the About and Diagnostics tabs showed a dark/light backdrop with floating nested panels, whereas tabs containing `QTextBrowser` elements (Maintainer, Credits, Shortcuts, License) filled the entire pane with solid `cardBg` surrounded by an inner border.
+- **Resolution**:
+  - Re-architected tab containers in `src/dialogs/AboutDialog.cpp` with explicit container IDs (`aboutTab`, `aboutContent`, `diagnosticsTab`, `diagnosticsContent`).
+  - Enforced uniform `cardBg` across `QTabWidget::pane`, `QTabWidget > QWidget`, `QScrollArea`, and all viewports.
+  - Standardized all notice, metadata, and diagnostics cards to use elegant inset panel styling (`panelBg`: `rgba(15,23,42,0.65)` in dark mode, `rgba(241,245,249,0.85)` in light mode) with 1px borders and a 4px accent left border.
+  - Stripped redundant inner borders and margins from all `QTextBrowser` widgets, allowing text to flow seamlessly with consistent typography.
+
+### 11.2 Comprehensive Multi-Version Credit Enrichment
+
+The Credits tab and `doc/ABOUT_AND_CREDITS.md` have been updated with complete historical acknowledgments spanning all versions from **v1.0.0 through v1.3.5**:
+
+1. **AI Engineering, Code Review & Auditing Engines**:
+   - **Google DeepMind Antigravity IDE**: Primary AI Code Editor, high-precision code refactoring engine, and unified development environment powering SparkNotePad's codebase architecture and workflow automation.
+   - **Gemini 3.8 Flash (Google DeepMind)**: Advanced AI Code Review, 13-Pillar Security Auditing, Linter Compliance, and static analysis verification engine.
+2. **Upstream & Ancestral Foundations**:
+   - **NotepadNext** by Justin Dailey (`@dail8859`): The original cross-platform Qt foundation and architectural ancestor.
+   - **Notepad4** by Zufu Liu (`@zufuliu`): Text transformation ergonomics, Scintilla integration patterns, and utility algorithms.
+   - **Notepad3** by Rizonesoft / Florian Balmer: Text manipulation ergonomics and encoding management concepts.
+   - **Notepad--** by cxasm (`@cxasm`): Cross-platform multi-tab design paradigms and text editing methodologies.
+   - **Notepad++** by Don Ho (`@donho`): The legendary Windows open-source text editor that inspired the modern notepad lineage.
+   - **notepadnext-macos & SubnetCalc for macOS**: Native macOS integration patterns, AppKit services, and Cocoa bundle scaffolding.
+3. **Core Editing Engines & Runtimes**:
+   - **Scintilla 5.6.7** by Neil Hodgson: Production text editing engine.
+   - **Lexilla 5.5.4** by Neil Hodgson: Syntax highlighting and lexical scanning components.
+   - **Lua 5.5.1 / 5.4.x** (Lua.org): Embedded scripting engine and runtime extension sandbox.
+4. **Third-Party Libraries & Frameworks**:
+   - **The Qt Company**: Qt 6.5–6.12 C++ application framework.
+   - **Qt Advanced Docking System (ADS 5.1.1)** by Manuel Freiholz: Professional multi-dock docking framework.
+   - **QSimpleUpdater** by Alex Spataru: Asynchronous update management engine.
+   - **SingleApplication 3.5.6** by Itay Grudev: Secure single-instance process IPC and lock management.
+   - **EditorConfig Core Qt**: `.editorconfig` parser and formatting compliance.
+   - **uchardet**: Universal character set detection library by Mozilla.
+   - **OpenSSL Project**: Military-grade authenticated cryptography (AES-256-CBC/GCM + PBKDF2/HMAC-SHA256).
+5. **Art, Design & Iconography**:
+   - **Lon McGregor** (`NotepadPlusPlusIcons`): Heritage tool and action iconography.
+   - **SparkNotePad Monoline Vector Suite**: In-house 24x24 monoline vector SVGs designed for crisp display across Retina and HiDPI displays.
+
+---
+
+## 12. 📦 GitHub Actions Release Matrix & Build Artifacts (v1.0.0 – v1.3.5)
+
+All release packages and binaries are automatically compiled, tested, and packaged natively on GitHub Actions cloud runners across macOS Apple Silicon (arm64), macOS Intel (x86_64), and Linux Ubuntu/Debian/Fedora.
+
+| Release Version | Branch              | Tag      | Platform / Architecture          | Package File Name                                                                                                                                      | Size     | Toolchain & Qt           |
+| --------------- | ------------------- | -------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------ |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.5-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)                   | 28.99 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.5-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                       | 52.46 MB | Apple Clang / Qt 6.12    |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                     | 4.07 MB  | GCC 14 / Qt 6.8          |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | Linux Fedora / RHEL (x86_64)     | [`sparknotepad-1.3.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)               | 4.06 MB  | GCC 14 / Qt 6.8          |
+| **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS / Linux Association Script | [`SparkNotePad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)                 | 18.66 KB | POSIX Shell              |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-arm64.dmg)                   | 28.88 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-x64.dmg)                       | 29.10 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0_amd64.deb)                     | 3.99 MB  | GCC 13 / Qt 6.8          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Debian / Ubuntu Qt 6.5     | [`sparknotepad_1.3.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0-qt6.5_amd64.deb)         | 3.96 MB  | GCC 13 / Qt 6.5          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Debian / Ubuntu Qt 6.11    | [`sparknotepad_1.3.0-qt6.11_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0-qt6.11_amd64.deb)       | 3.99 MB  | GCC 13 / Qt 6.11         |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Fedora / RHEL (x86_64)     | [`sparknotepad-1.3.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-1.x86_64.rpm)               | 3.97 MB  | GCC 13 / Qt 6.8          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Fedora / RHEL Qt 6.5       | [`sparknotepad-1.3.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-qt6.5-1.x86_64.rpm)   | 3.94 MB  | GCC 13 / Qt 6.5          |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | Linux Fedora / RHEL Qt 6.11      | [`sparknotepad-1.3.0-qt6.11-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-qt6.11-1.x86_64.rpm) | 3.97 MB  | GCC 13 / Qt 6.11         |
+| **v1.3.0**      | `1.3.0`             | `v1.3.0` | macOS / Linux Association Script | [`SparkNotePad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-Default-Editor.sh)                 | 18.66 KB | POSIX Shell              |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | macOS Apple Silicon (arm64)      | [`NoteSciPad-v1.2.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/NoteSciPad-v1.2.0-arm64.dmg)                       | 27.98 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | macOS Intel (x86_64)             | [`NoteSciPad-v1.2.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/NoteSciPad-v1.2.0-x64.dmg)                           | 28.22 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Debian / Ubuntu (x86_64)   | [`notesci-pad_1.2.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad_1.2.0_amd64.deb)                       | 3.94 MB  | GCC 12 / Qt 6.8          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Debian / Ubuntu Qt 6.5     | [`notesci-pad_1.2.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad_1.2.0-qt6.5_amd64.deb)           | 3.94 MB  | GCC 12 / Qt 6.5          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Debian / Ubuntu Qt 6.11    | [`notesci-pad_1.2.0-qt6.11_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad_1.2.0-qt6.11_amd64.deb)         | 3.97 MB  | GCC 12 / Qt 6.11         |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Fedora / RHEL (x86_64)     | [`notesci-pad-1.2.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad-1.2.0-1.x86_64.rpm)                 | 3.93 MB  | GCC 12 / Qt 6.8          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Fedora / RHEL Qt 6.5       | [`notesci-pad-1.2.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad-1.2.0-qt6.5-1.x86_64.rpm)     | 3.93 MB  | GCC 12 / Qt 6.5          |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Linux Fedora / RHEL Qt 6.11      | [`notesci-pad-1.2.0-qt6.11-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/notesci-pad-1.2.0-qt6.11-1.x86_64.rpm)   | 3.96 MB  | GCC 12 / Qt 6.11         |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | Checksum Verification            | [`SHA256SUMS.txt`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/SHA256SUMS.txt)                                                 | 472 B    | SHA-256                  |
+| **v1.2.0**      | `1.2.0`             | `v1.2.0` | macOS / Linux Association Script | [`NoteSciPad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.2.0/NoteSciPad-Default-Editor.sh)                     | 18.93 KB | POSIX Shell              |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | macOS Apple Silicon (arm64)      | [`NoteSciPad-v1.1.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/NoteSciPad-v1.1.0-arm64.dmg)                       | 28.18 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | macOS Intel (x86_64)             | [`NoteSciPad-v1.1.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/NoteSciPad-v1.1.0-x64.dmg)                           | 28.64 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Debian / Ubuntu (x86_64)   | [`notesci-pad_1.1.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad_1.1.0_amd64.deb)                       | 4.08 MB  | GCC 12 / Qt 6.8          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Debian / Ubuntu Qt 6.5     | [`notesci-pad_1.1.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad_1.1.0-qt6.5_amd64.deb)           | 4.06 MB  | GCC 12 / Qt 6.5          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Fedora / RHEL (x86_64)     | [`notesci-pad-1.1.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad-1.1.0-1.x86_64.rpm)                 | 4.07 MB  | GCC 12 / Qt 6.8          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | Linux Fedora / RHEL Qt 6.5       | [`notesci-pad-1.1.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/notesci-pad-1.1.0-qt6.5-1.x86_64.rpm)     | 4.05 MB  | GCC 12 / Qt 6.5          |
+| **v1.1.0**      | `1.1.0` / `develop` | `v1.1.0` | macOS / Linux Association Script | [`NoteSciPad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.1.0/NoteSciPad-Default-Editor.sh)                     | 18.94 KB | POSIX Shell              |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | macOS Apple Silicon (arm64)      | [`NoteSciPad-v1.0.0-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/NoteSciPad-v1.0.0-arm64.dmg)                       | 26.52 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | macOS Intel (x86_64)             | [`NoteSciPad-v1.0.0-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/NoteSciPad-v1.0.0-x64.dmg)                           | 28.29 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Debian / Ubuntu (x86_64)   | [`notesci-pad_1.0.0_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad_1.0.0_amd64.deb)                       | 4.08 MB  | GCC 12 / Qt 6.8          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Debian / Ubuntu Qt 6.5     | [`notesci-pad_1.0.0-qt6.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad_1.0.0-qt6.5_amd64.deb)           | 4.06 MB  | GCC 12 / Qt 6.5          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Fedora / RHEL (x86_64)     | [`notesci-pad-1.0.0-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad-1.0.0-1.x86_64.rpm)                 | 4.07 MB  | GCC 12 / Qt 6.8          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Linux Fedora / RHEL Qt 6.5       | [`notesci-pad-1.0.0-qt6.5-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/notesci-pad-1.0.0-qt6.5-1.x86_64.rpm)     | 4.05 MB  | GCC 12 / Qt 6.5          |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | Checksum Verification            | [`SHA256SUMS.txt`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/SHA256SUMS.txt)                                                 | 472 B    | SHA-256                  |
+| **v1.0.0**      | `1.0.0`             | `v1.0.0` | macOS / Linux Association Script | [`NoteSciPad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.0.0/NoteSciPad-Default-Editor.sh)                     | 18.94 KB | POSIX Shell              |
