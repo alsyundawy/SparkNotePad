@@ -26,12 +26,23 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
 
 ### Key Milestones in v1.3.5
 
-1. **Find & Replace Dialog Input Box Form Enforcement (Find & Mark Tabs)**:
+1. **Production-Grade Linux Default Editor Engine (`SparkNotePad-Default-Editor-Linux.sh`) & Root Script Promotion**:
+   - Promoted both `SparkNotePad-Default-Editor.sh` (Universal macOS & Linux script) and `SparkNotePad-Default-Editor-Linux.sh` (Dedicated Linux engine) directly into the repository root folder as canonical top-level release assets across all branches.
+   - Designed a robust **5-Layer Integration Matrix** supporting all Linux distributions (Debian, Ubuntu, Linux Mint, Pop!_OS, Elementary, Zorin, Kali, MX, Fedora, RHEL, CentOS, Rocky, AlmaLinux, openSUSE, Mageia, Arch, etc.) and all Desktop Environments (GNOME, KDE Plasma 5/6, XFCE, Cinnamon, MATE, LXQt, Budgie, COSMIC, Deepin, Pantheon, Tiling WMs):
+     - **Layer 1 (FreeDesktop XDG MIME)**: Associating 80+ programming and document MIME types via `xdg-mime` and atomic updates to `~/.config/mimeapps.list` and `~/.config/*-mimeapps.list`.
+     - **Layer 2 (Desktop Environment Native APIs)**: Direct integration with `gio mime` (GNOME/Budgie/Cinnamon/MATE/Pantheon), `kwriteconfig6` / `kwriteconfig5` & `kbuildsycoca6` / `kbuildsycoca5` (KDE Plasma), and XFCE Thunar synchronization.
+     - **Layer 3 (System Terminal Alternatives)**: Dual-engine support for Debian/Ubuntu `update-alternatives` and Fedora/RHEL/openSUSE `alternatives` registering `/usr/bin/editor` and `/usr/bin/gnome-text-editor` with priority 100.
+     - **Layer 4 (Shell Environment Variables)**: Idempotent exports for `$VISUAL`, `$EDITOR`, and `$SUDO_EDITOR` in `~/.bashrc`, `~/.profile`, `~/.zshrc`, and `/etc/profile.d/sparknotepad-editor.sh`.
+     - **Layer 5 (Binary & Desktop Entry Scaffolding)**: Dynamic binary discovery with self-healing generation of compliant `~/.local/share/applications/SparkNotePad.desktop` when uninstalled.
+   - Comprehensive documentation authored in [`doc/LINUX_DEFAULT_EDITOR_GUIDE.md`](doc/LINUX_DEFAULT_EDITOR_GUIDE.md).
+   - 100% clean verification across ShellCheck (`shellcheck`) and Trunk/shfmt (0 warnings).
+
+2. **Find & Replace Dialog Input Box Form Enforcement (Find & Mark Tabs)**:
    - Eliminated the defect where the Find and Mark tabs rendered two input boxes due to `setMaximumHeight(0)` failing to completely hide the Replace row in Qt's `QFormLayout`.
    - Applied explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
    - Updated `setTab(int tab)` to explicitly call `changeTab(tab)` guaranteeing that switching between tabs immediately and reliably collapses the form to exactly 1 single search input box.
 
-2. **Elegant, Modern & Professional Update Check Dialog (`UpdateDialog`)**:
+3. **Elegant, Modern & Professional Update Check Dialog (`UpdateDialog`)**:
    - Replaced generic legacy `QMessageBox` popups with a dedicated, theme-responsive `UpdateDialog` featuring custom vector badges and adaptive styling for both dark and light modes.
    - **Update Available Experience**: Custom high-DPI antialiased illuminated electric blue download badge, version comparison cards with pill tags (`Versi Terpasang` ➜ `Versi Terbaru`), release metadata, publication date, scrollable changelog viewer, and action buttons (`Unduh Pembaruan ⤓` and `Nanti Saja`).
    - **Modern Card-and-Pill Up-To-Date Experience**: Re-engineered the up-to-date dialog into an elegant layout inspired by native macOS design aesthetics:
@@ -45,7 +56,7 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
        4. Last Checked: localized formatted timestamp `yyyy-MM-dd HH:mm`
      - Action buttons: Left vibrant blue `Release Notes` (`Catatan Rilis`) button opening the official GitHub release tag in browser; Right neutral `OK` button dismissing the dialog.
 
-3. **Modern Monoline Vector Toolbar Icons & 20x20 High-DPI Standard**:
+4. **Modern Monoline Vector Toolbar Icons & 20x20 High-DPI Standard**:
    - Redesigned core toolbar icons into clean, modern monoline vector SVGs matching the visual language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):
      - `src/icons/undo.svg`: Iconic U-turn return arrow in Vibrant Blue (`#3b82f6`).
      - `src/icons/redo.svg`: Iconic U-turn forward arrow in Emerald Green (`#10b981`).
@@ -57,7 +68,7 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - Standardized `mainToolBar` icon dimensions to **20x20** high-DPI across `MainWindow.ui` and `MainWindow.cpp`, ensuring optimal optical clarity on macOS Retina (devicePixelRatio 2x / 40x40 px) and 4K displays.
    - Fully optimized all SVG vector assets via SVGO for zero artifact rendering.
 
-4. **Workspace Editor Right-Click Context Menu Expansion & Comprehensive Icon Support**:
+5. **Workspace Editor Right-Click Context Menu Expansion & Comprehensive Icon Support**:
    - Expanded editor workspace right-click context menu with direct access to:
      - **Undo** (`Ctrl+Z` / `Cmd+Z`) and **Redo** (`Ctrl+Y` / `Cmd+Y`) at the top of the menu.
      - **Find** (`Ctrl+F` / `Cmd+F`) for instant search from caret position.
@@ -66,33 +77,33 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - Enforced `action->setIconVisibleInMenu(true)` in `ActionUtils::populateActionContainer` and `MainWindow::showEditorContextMenu()`, ensuring all actions and submenus display their icons across macOS Retina and Linux desktop environments.
    - Automatic migration for existing custom context menu settings to ensure essential actions (Undo, Redo, Open, Save, Find) are always present.
 
-5. **Comprehensive Menu Icon Display Across All Menus (`action->setIconVisibleInMenu(true)`)**:
+6. **Comprehensive Menu Icon Display Across All Menus (`action->setIconVisibleInMenu(true)`)**:
    - Implemented application-wide `MenuIconEventFilter` on `SparkNotePadApplication` and `ensureMenuIconsVisible()` in `MainWindow` ensuring that macOS Cocoa and all desktop environments render action icons in menus (overriding macOS Qt's default behavior where menu icons are suppressed).
    - Assigned crisp icons from `resources.qrc` to 30+ previously un-iconized menu actions across File, Edit, Search, View, Window, Run, and Help menus (e.g., Save As, Save a Copy As, Close All variants, Find in Files, Find Next/Previous, Move Selected Lines Up/Down, Duplicate Current Line, Copy Full Path/File Name/Directory, Recent Files actions, Open Folder as Workspace, Check for Updates, Show Wrap Symbol, Display Diagnostics, Accessibility & User/Developer Guides, External Tools, and Theme Switcher).
 
-6. **Complete i18n & Localization Synchronization (Indonesian & English)**:
+7. **Complete i18n & Localization Synchronization (Indonesian & English)**:
    - Synchronized `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` using `lupdate`, achieving 100% translation coverage (1,405 strings, 0 unfinished, 0 missing).
    - Standardized `UpdateDialog` source strings to English in C++ code and provided refined, high-fidelity Indonesian translations (EYD V) and English equivalents for all update dialog states (Update Available, Up to Date, Update Check Failed).
    - Recompiled and verified `.qm` translation catalogs via `lrelease`.
 
-7. **Local Single-Instance Lifecycle & Multi-Instance Execution Note**:
+8. **Local Single-Instance Lifecycle & Multi-Instance Execution Note**:
    - Documented local execution behavior where running a second local instance while `/Applications/SparkNotePad.app` is already active causes `SingleApplication` to forward arguments to the primary instance (PID) and exit with `Secondary instance closing...` by design. Documented how to run parallel local test builds via `-m` / `--multi-instance` or by closing the primary instance (`killall SparkNotePad`).
 
-8. **Repository Branch Alignment & 100% Parity**:
+9. **Repository Branch Alignment & 100% Parity**:
    - Aligned branch `main` and release branch `1.3.5` to identical commit history (`main` IS `1.3.5`).
    - Aligned branch `develop` and branch `1.1.0` to identical commit history (`1.1.0` IS `develop`).
 
-9. **Unified Repository Copyright, License Header & Attribution Across Entire Codebase**:
-   - Standardized legal and license notice headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly declare `SparkNotepad is free software: you can redistribute it and/or modify`, crediting upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
+10. **Unified Repository Copyright, License Header & Attribution Across Entire Codebase**:
+    - Standardized legal and license notice headers across all 158 C++ source and header files (`.cpp`, `.h`) to explicitly declare `SparkNotepad is free software: you can redistribute it and/or modify`, crediting upstream creator Justin Dailey (2018–2026), current lead maintainer Harry Dertin Sutisna Alsyundawy (2025–2026), official repository URI, and ALSYUNDAWY IT SOLUTION.
 
-10. **Zero-Error IDE & SonarQube Static Analysis Compliance**:
+11. **Zero-Error IDE & SonarQube Static Analysis Compliance**:
     - **SonarQube S2695 Compliance**: Eliminated static member function access through instance objects in `src/main.cpp` (`SparkNotePadApplication::exec()` and `SparkNotePadApplication::exit(0)`).
     - **CMake IntelliSense Resolution**: Set `PROPERTIES GENERATED TRUE` on `${CMAKE_BINARY_DIR}/version.rc` in `src/CMakeLists.txt` and ensured build stub exists, eradicating missing file warning.
     - **Clangd Fallback Flags Repair**: Removed stray `-isystem` token before `-isysroot` in `.vscode/settings.json`, resolving header search path resolution for standalone header files.
     - **macOS SDK /usr/include Isolation**: Filtered out SDK `/usr/include` from `Qt6` and `Cups::Cups` interface include directories in `CMakeLists.txt`, permanently eliminating C `math.h` macro pollution (`signbit`, `isfinite`, `isnan`, `hypot`) from interfering with C++20 standard library `<format>` and `<cmath>`.
     - **288-Entry Compilation Database**: Regenerated compilation database indexing all 288 `.h`, `.hpp`, `.cpp`, and `.mm` files with 100% clean check and 0 errors.
 
-11. **AboutDialog Tab Background Unification & Comprehensive Credits Enrichment (v1.0.0 – v1.3.5)**:
+12. **AboutDialog Tab Background Unification & Comprehensive Credits Enrichment (v1.0.0 – v1.3.5)**:
     - **Tab Background Color Inconsistency Resolution**: Eliminated the background inconsistency where the About and Diagnostics tabs showed a mismatched, dark/light canvas background with floating cards due to bare `QWidget` child containers and unstyled `QScrollArea` viewports falling back to the window background.
     - **Uniform Card Palette Across All Tabs**: Explicitly assigned `cardBg` (`#1e293b` dark, `#ffffff` light) across `QTabWidget::pane`, `QTabWidget > QWidget`, `QScrollArea`, and all tab containers, applying sleek inset panel styling (`rgba(15,23,42,0.70)` dark / `rgba(241,245,249,0.85)` light) with an accent left border to notice, meta, and diagnostics cards.
     - **Edge-to-Edge Typography Polish**: Stripped redundant inner borders from `QTextBrowser` elements on Maintainer, Credits, Shortcuts, and License tabs so rich text flows cleanly and seamlessly within the tab canvas.
@@ -105,7 +116,7 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
       - **Artwork & Typography**: Lon McGregor (NotepadPlusPlusIcons) and SparkNotePad Monoline Vector Suite.
     - **Diagnostics Engine & System Metadata**: Enriched Diagnostics tab and copy-to-clipboard functionality with Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, and Google DeepMind AI audit metadata.
 
-12. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
+13. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
     - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.
     - **Clangd, SonarLint & C/C++ Extensions**: Corrected `.clangd` configuration by removing misplaced `--query-driver` compiler flag, keeping it properly in `clangd.arguments` within `.vscode/settings.json`, and added `.vscode/c_cpp_properties.json` for full IntelliSense and compiler path mapping.
     - **C/C++ FlyLint Crash Fix**: Disabled erroneous external parser (`lizard` compression CLI) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` crash.
@@ -130,23 +141,23 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
       - `release.yml`: Refactored `secrets` access from dot notation to bracket notation `${{ secrets['...'] }}` to eliminate IDE context access warnings.
       - `thirdparty/scintilla`: Made `ScintillaEdit` constructor explicit, passed `rc` by const reference in `Geometry.h`, added explicit and cppcheck suppression annotations to constructors in `Geometry.h` and `Platform.h`.
 
-13. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
+14. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
     - Native application restart via `MainWindow::restartApplication()` (`Ctrl+Alt+R` / `Cmd+Option+R`).
     - Verifies unsaved tabs, flushes settings, terminates timers, releases `SingleApplication` locks, and relaunches with absolute binary path (`/usr/bin/open -n -a` on macOS, `QProcess::startDetached` on Linux).
     - Explicit File → Exit action with confirmation and status bar feedback.
     - **Modern Elegant Toolbar Icons**: Replaced low-res PNGs and generic crosses with SVGO-optimized crisp vector SVGs (`icons/restart.svg` in vibrant blue `#2563eb` and `icons/exit.svg` in crimson `#ef4444`).
     - **Toolbar Preferences Shortcut**: Embedded `actionPreferences` with modern vector icon `icons/settings.svg` directly beside the Restart action on `mainToolBar`.
 
-14. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
+15. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
     - **CVE-2026-95620 Mitigation**: Disabled HTTP/2 in `ReleaseManager::checkForUpdates()`, eliminating Qt QNetworkAccessManager HTTP/2 use-after-free risk across all Qt 6 versions.
     - **CVE-2026-42214 Mitigation**: Verified inert `lua_pushlstring` / `setVariable()` contract in `SparkNotePadApplication::detectLanguageFromExtension()`, supplemented by `LuaState::restrictDangerousApis()` sandbox and 100% passing test regression suite (`tests/test_lua_security.h`).
     - **Verified Clean**: Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 confirm 0 relevant CVEs.
 
-15. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
+16. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
     - **Split-View Close Tab Safety**: Replaced raw pointers `currentEditor` and `latestDockArea` in `DockedEditor` with guarded `QPointer<ScintillaNext>` and `QPointer<ads::CDockAreaWidget>`. Added safe fallback iteration across all opened dock areas in `focusedDockWidgetChanged`, and hooked `editor->destroyed` cleanup to permanently prevent null pointer dereferences and use-after-free crashes when closing split tabs.
     - **Massive File & Emoji/UTF-8 Caret Stability**: Initialized Scintilla buffer code page to `SC_CP_UTF8` (preventing single-byte slicing of multi-byte Unicode characters). Clamped character counting in `EditorInfoStatusBar` on documents > 2MB. Constrained `SmartHighlighter` (100ms debounce timer, maximum 128 chars, search window capped to viewport +/- 150 lines, 1500 matches limit) and `AutoCompletion` (viewport +/- 200 lines, 100 words limit).
 
-16. **Zoom Indicator Ergonomics & Complete SonarLint / Clangd Quality Eradication**:
+17. **Zoom Indicator Ergonomics & Complete SonarLint / Clangd Quality Eradication**:
     - **Non-Intrusive Zoom Level Status Bar Feedback**: Replaced the disruptive centered fading overlay pill that previously appeared directly over the active editor during zoom gestures (Ctrl/Cmd + Scroll, Ctrl/Cmd + Plus/Minus) with smooth, non-intrusive status bar notifications (`statusBar()->showMessage(tr("Zoom: %1%").arg(zoomLevel * 10 + 100), 2000)`). The editor workspace remains 100% visible and unblocked at all zoom levels.
     - **FadingIndicator Visual Styling**: Upgraded `FadingIndicator` container styling with high-contrast `#ffffff` bold text on translucent dark rounded background (`rgba(30, 30, 30, 220)`) with 12px border radius and subtle border outline (`rgba(255, 255, 255, 45)`) for remaining indicator use cases.
     - **SonarLint S995, S5274, S2807, S5416, & S5008 Compliance**:
@@ -160,13 +171,13 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **macOS Dock Right-Click Quit Save Prompt**: Implemented `MacServicesHandler::activateApplication()` via Cocoa `[NSApp activateIgnoringOtherApps:YES]`. Connected `commitDataRequest` and handled `QEvent::Quit`/`Close` in `SparkNotePadApplication` to ensure the save prompt surfaces in the foreground when quitting from the Dock, preventing silent quit and data loss.
     - **Upstream Feature & Stability Synchronization**: Cleanly integrated `ScintillaNext::getToolTip()` for tab and File List dock path inspection, added `removeMessageHandler()` in `DebugManager` and `DebugLogDock` destructor to prevent exit crashes, and added `Blank Operations > Trim Trailing Space` in the Edit menu with full Indonesian translation.
 
-17. **Complete Resolution of Remaining IDE & SonarLint Diagnostics, In-Depth Upstream Comparison & Static Hardening**:
+18. **Complete Resolution of Remaining IDE & SonarLint Diagnostics, In-Depth Upstream Comparison & Static Hardening**:
     - **AppleClang Compilation Database Generation**: Successfully configured CMake with AppleClang and auto-generated an 874 KB `build/compile_commands.json` (symlinked at project root) containing complete framework, sysroot, and compiler flags across all translation units. Completely resolved all 1,288 IDE cascade header resolution errors and 756 SonarQube CFamily compilation errors.
     - **Code Modernization & Diagnostic Suppressions**: Wrapped `SearchResultsDock::searchResultActivated` lambda parameters in `MainWindow.cpp` with `// NOLINTBEGIN(bugprone-easily-swappable-parameters)` and `ScintillaNext::characterPointer()` pointer casts in `ScintillaNext.cpp` with `// NOLINTBEGIN(performance-no-int-to-ptr)`. Added both checks to `.clangd` `ClangTidy.Remove` list to ensure 100% clean IDE status across all workstations.
     - **Buffer Overflow & Flawfinder Eradication**: Replaced unsafe C `strcpy` and `strcat` with length-bounded `snprintf` in `src/IFaceTable.cpp`. Added explicit `/* flawfinder: ignore */` annotations on legitimate Qt `QLocale::system()` and `QRandomGenerator::system()` calls, achieving **0 hits at minimum risk level 4** across the entire codebase.
     - **In-Depth Upstream Comparison Document**: Created authoritative dual-language (English and Indonesian) technical analysis in `doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md` exhaustively comparing official NotepadNext 0.15 against SparkNotePad v1.3.5 across 40+ architectural, security, native macOS, and power-tool dimensions.
 
-18. **macOS DMG Package Size Optimization (< 30 MB) & Deep Static Analysis Verification**:
+19. **macOS DMG Package Size Optimization (< 30 MB) & Deep Static Analysis Verification**:
     - **Framework Pruning in Target DMG**: Re-engineered `cmake/PackagingMac.cmake` to strip out unused, bulky Qt 6 frameworks eagerly deployed by `macdeployqt` on desktop macOS (`QtPdf`, `QtQuick`, `QtQml`, `QtVirtualKeyboard`, and plugins `libqtvirtualkeyboardplugin.dylib`, `libqpdf.dylib`).
     - **UDZO Compression & Code-Signing**: Enforced maximum `UDZO` zlib compression (`zlib-level=9`) and automatic ad-hoc code-signing (`codesign --force --deep -s -`). Slashed macOS Intel (`x86_64`) DMG package size from **52.46 MB** down to **27.28 MB** (48% reduction, strictly below the 50 MB threshold) while guaranteeing 100% runtime integrity.
     - **Zero-Error `clangd --check` Verification**: Tested all 135 translation units (`src/*.cpp` and `src/*/*.cpp`) with 0 AST/compiler errors.
@@ -174,13 +185,13 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **Compilation Database Fix**: Resolved whitespace argument splitting on preprocessor defines in `scripts/generate_compilation_database.py` with `shlex.join()` and standard LLVM `"arguments": [...]` array.
     - **Linux GCC Cross-Platform Portability**: Resolved GCC compilation error in `src/features/MacServicesHandler.cpp` by including `dialogs/MainWindow.h` and `SparkNotePadApplication.h` to complete type requirements during `QPointer` template instantiation on Linux runners.
 
-19. **Automated Linux Debian/Ubuntu Dependency Resolution & glibc 2.35 Multi-Distro Baseline**:
+20. **Automated Linux Debian/Ubuntu Dependency Resolution & glibc 2.35 Multi-Distro Baseline**:
     - **Debian Dependency Metadata**: Configured explicit `CPACK_DEBIAN_PACKAGE_DEPENDS` in `cmake/PackagingLinux.cmake` using Debian alternative syntax (`|`) for classic Qt6 (`libqt6core6`, etc.) and `t64` 64-bit time_t packages (`libqt6core6t64`, etc.).
     - **Automated APT Dependency Installation**: Resolved the Debian manual dependency issue by ensuring that `sudo apt install ./sparknotepad_*.deb` automatically resolves and downloads all required Qt 6 modules (`libqt6widgets6`, `qt6-qpa-plugins`, `libglx0`, etc.) from official mirrors, providing parity with Fedora's automatic `dnf install ./sparknotepad-*.rpm`.
     - **glibc 2.35 Multi-Distro Baseline**: Anchored Linux release CI runners to **`ubuntu-22.04`** (glibc 2.35) with `g++-12`, guaranteeing dynamic link compatibility so packages install and execute natively across Ubuntu 22.04+, Debian 12 (Bookworm), Ubuntu 24.04+, Debian 13 (Trixie), and Ubuntu 26.04.
     - **Community & Upstream Research**: Published `doc/BUILD_UBUNTU_DEBIAN.md` and updated `doc/LINUX_DEB_RPM_PACKAGING.md` incorporating reference research from `jeremieconte/NotepadNext-native-linux/BUILD-UBUNTU-26.04.md`.
 
-20. **Vector SVG Application Icon Realignment (`SparkNotePad.svg`)**:
+21. **Vector SVG Application Icon Realignment (`SparkNotePad.svg`)**:
     - **PNG-to-SVG Conversion**: Converted the master branding artwork `SparkNotePad.png` (blue rounded notepad with alternating blue tone bands, navy blue "N#" emblem, and angled orange/gold graphite pencil with pink eraser) directly into a standards-compliant, high-DPI vector SVG (`icon/SparkNotePad.svg` and `src/icons/SparkNotePad.svg`), replacing the obsolete dark-editor squircle graphic.
     - **Qt Resource & Linux Packaging Integration**: Bundled `icons/SparkNotePad.svg` into Qt resources (`src/resources.qrc`) and updated packaging automation (`scripts/package-flatpak-appimage.sh`, `cmake/PackagingLinux.cmake`) ensuring 100% brand consistency across Linux desktop launchers, Flatpak, AppImage, and window managers.
 

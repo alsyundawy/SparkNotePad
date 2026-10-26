@@ -15,6 +15,17 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🆕 Added
 
+- **Production-Grade Linux Default Editor Engine (`SparkNotePad-Default-Editor-Linux.sh`) & Root Script Promotion**:
+  - Engineered a specialized, industrial-strength Linux default editor configuration engine (`SparkNotePad-Default-Editor-Linux.sh`) and promoted both `SparkNotePad-Default-Editor.sh` and `SparkNotePad-Default-Editor-Linux.sh` directly to the repository root directory as canonical release assets.
+  - Implemented a comprehensive **5-Layer Integration Architecture**:
+    - **Layer 1 (FreeDesktop XDG MIME)**: Mass association of 80+ programming, markup, serialization, DevOps, and config MIME types via `xdg-mime` with atomic updates to `~/.config/mimeapps.list`, `~/.config/*-mimeapps.list`, and `/etc/xdg/mimeapps.list`.
+    - **Layer 2 (Desktop Environment Native APIs)**: GIO file association via `gio mime` (GNOME, Budgie, Cinnamon, MATE, Pantheon), KDE Plasma 5/6 sycoca integration via `kwriteconfig6` / `kwriteconfig5` and `kbuildsycoca6` / `kbuildsycoca5`, and XFCE Thunar synchronization.
+    - **Layer 3 (System Terminal Alternatives)**: Dual-engine support for Debian/Ubuntu `update-alternatives` and Fedora/RHEL/CentOS/Rocky/AlmaLinux/openSUSE `alternatives`, registering `/usr/bin/editor` and `/usr/bin/gnome-text-editor` with priority 100.
+    - **Layer 4 (Shell Environment Variables)**: Idempotent exports for `$VISUAL`, `$EDITOR`, and `$SUDO_EDITOR` in `~/.bashrc`, `~/.profile`, `~/.zshrc`, and system-wide `/etc/profile.d/sparknotepad-editor.sh`.
+    - **Layer 5 (Binary & Desktop Entry Scaffolding)**: Dynamic binary discovery with self-healing generation of compliant `~/.local/share/applications/SparkNotePad.desktop` when uninstalled.
+  - Full diagnostic audit mode (`--status`), dry-run preview (`-d`), system-wide mode (`--system`), non-interactive force mode (`-f`), and native default restoration (`--restore`).
+  - Added exhaustive engineering documentation in [`doc/LINUX_DEFAULT_EDITOR_GUIDE.md`](doc/LINUX_DEFAULT_EDITOR_GUIDE.md).
+  - Verified 100% clean check across ShellCheck (`shellcheck`) and Trunk/shfmt with 0 warnings.
 - **Modern Card-and-Pill Up-To-Date Dialog Layout & System Metadata (`UpdateDialog`)**:
   - Re-engineered the software update "Up to Date" dialog into an elegant, modern card-and-pill layout matching native macOS design aesthetics.
   - Features 58x58 antialiased high-DPI SparkNotePad application branding icon (`SparkNotePad.png`), emerald green status pill (`✓ Up to Date` / `✓ Sudah Terbaru`), bold reassuring subtitle (`You Are Using the Latest Release!` / `Anda Menggunakan Rilis Terbaru!`), and platform-aware optimization notice (macOS / Linux).

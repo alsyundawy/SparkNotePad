@@ -439,6 +439,24 @@ apply_linux() {
 	local dry_run="$1"
 	local auto_confirm="$2"
 
+	local script_dir
+	script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+	local linux_script="${script_dir}/SparkNotePad-Default-Editor-Linux.sh"
+	if [[ ! -f ${linux_script} ]]; then
+		linux_script="${script_dir}/scripts/SparkNotePad-Default-Editor-Linux.sh"
+	fi
+
+	if [[ -x ${linux_script} ]] || [[ -f ${linux_script} ]]; then
+		local forward_args=()
+		if [[ ${auto_confirm} -eq 1 ]]; then
+			forward_args+=("-f")
+		fi
+		if [[ ${dry_run} -eq 1 ]]; then
+			forward_args+=("-d")
+		fi
+		exec bash "${linux_script}" "${forward_args[@]}"
+	fi
+
 	header "======================================================"
 	header "  Set SparkNotePad as Default Editor (Linux)"
 	header "======================================================"
