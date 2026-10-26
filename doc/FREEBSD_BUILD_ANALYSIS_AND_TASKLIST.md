@@ -78,6 +78,17 @@ CMake Error at build/_deps/ads-build/src/cmake_install.cmake:78 (file):
 * **Solusi Arsitektur**:
   Menambahkan percabangan `if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")` agar sistem FreeBSD menampilkan status konfigurasi FreeBSD desktop dan menonaktifkan target generator `.deb`, `.rpm`, serta `AppImage` yang tidak relevan di lingkungan BSD.
 
+### 2.5 Solusi Empiris — Metapackage Qt 6 Lengkap (`pkg install qt6`)
+
+* **Temuan Empiris**:
+  Pengujian langsung pada FreeBSD 15.1 mengonfirmasi bahwa memasang metapackage `qt6` (`x11-toolkits/qt6`) bersama `qt6-base`, `qt6-5compat`, dan `qt6-tools`:
+
+  ```bash
+  sudo pkg install -y qt6 qt6-base qt6-5compat qt6-tools
+  ```
+
+  sepenuhnya menyelesaikan seluruh kendala modul privat Qt 6 dan pencarian paket CMake. Kompilasi berhasil 100% dan executable SparkNotePad dapat langsung dijalankan dengan performa lancar di KDE Plasma 6 maupun XFCE.
+
 ---
 
 ## 3. Actionable Task List: Menuju Kompilasi & Instalasi 100% Berhasil
@@ -138,7 +149,7 @@ Gunakan checklist berikut saat mengeksekusi kompilasi di mesin FreeBSD Anda:
 
   ```bash
   sudo pkg install -y git cmake ninja pkgconf \
-      qt6-base qt6-5compat qt6-tools \
+      qt6 qt6-base qt6-5compat qt6-tools \
       uchardet python3 libxkbcommon libxcb desktop-file-utils
   ```
 

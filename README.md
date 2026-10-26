@@ -237,8 +237,8 @@ Official production binary packages for SparkNotePad v1.3.5 are ready for immedi
 On FreeBSD 14.x and 15.x, SparkNotePad compiles as a native ELF binary without Linuxulator or Wine:
 
 ```bash
-# 1. Install prerequisites
-sudo pkg install -y git cmake ninja pkgconf qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+# 1. Install prerequisites (including full Qt 6 metapackage)
+sudo pkg install -y git cmake ninja pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
 
 # 2. Build & install
 git clone https://github.com/alsyundawy/SparkNotePad.git && cd SparkNotePad
@@ -277,6 +277,7 @@ bash scripts/SparkNotePad-Default-Editor.sh -f
 
 - **macOS**: Xcode 15+, Homebrew, Qt 6.5+ (`brew install qt6 cmake ninja`)
 - **Linux**: GCC 11+ or Clang 14+, CMake 3.21+, Qt 6.5+ (`qt6-base-dev qt6-5compat-dev libuchardet-dev ninja-build`)
+- **FreeBSD**: Clang 18+, CMake 3.21+, Qt 6.5+ (`pkg install qt6 qt6-base qt6-5compat qt6-tools ninja uchardet`)
 
 ### Building from Source
 

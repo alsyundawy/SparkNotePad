@@ -17,6 +17,7 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 - **FreeBSD 14.x & 15.x Native Portability, Subproject Install Isolation & FreeBSD Desktop Packaging**:
   - Validated native compilation and execution on FreeBSD 14.x and FreeBSD 15.1 under both **KDE Plasma 6** and **XFCE** desktop environments without Linuxulator or Wine.
+  - Confirmed empirical resolution on FreeBSD 15.1: installing the `qt6` metapackage (`x11-toolkits/qt6`) alongside `qt6-base`, `qt6-5compat`, and `qt6-tools` (`sudo pkg install -y qt6 qt6-base qt6-5compat qt6-tools`) provides the full Qt 6 suite, private headers, and runtime plugins, achieving 100% build pass and verified native application execution.
   - Applied `EXCLUDE_FROM_ALL YES` across all CPM vendor packages (`ads`, `QSimpleUpdater`, `SingleApplication`, `editorconfig_core_qt`) in `thirdparty/CMakeLists.txt`, isolating internal static libraries and headers from host system installation paths (`/usr/local/include`, `/usr/local/lib`) and eliminating accidental subproject leakage into Linux `.deb`/`.rpm` packages.
   - Declared `OPTIONAL_COMPONENTS GuiPrivate` and enabled `QT_NO_PRIVATE_MODULE_WARNING ON` for clean Qt 6.10+/6.11 compilation, and added FreeBSD platform detection in `cmake/PackagingLinux.cmake`.
   - Added comprehensive native guides: [`doc/BUILD_FREEBSD_KDE_XFCE.md`](doc/BUILD_FREEBSD_KDE_XFCE.md) and [`doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md).

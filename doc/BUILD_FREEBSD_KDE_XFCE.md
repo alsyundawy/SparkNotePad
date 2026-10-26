@@ -109,7 +109,7 @@ FreeBSD menyediakan Clang dalam sistem dasar (`/usr/bin/cc` dan `/usr/bin/c++`).
 sudo pkg update
 sudo pkg install -y \
     git cmake ninja pkgconf \
-    qt6-base qt6-5compat qt6-tools \
+    qt6 qt6-base qt6-5compat qt6-tools \
     python3 uchardet \
     libxkbcommon libxcb \
     desktop-file-utils
@@ -119,6 +119,7 @@ sudo pkg install -y \
 
 | Paket FreeBSD | Deskripsi & Fungsi |
 | :--- | :--- |
+| `qt6` | Metapackage Qt 6 (umbrella package) memastikan seluruh modul dan plugin runtime lengkap |
 | `qt6-base` | Pustaka inti: `QtCore`, `QtGui`, `QtWidgets`, `QtNetwork`, `QtPrintSupport`, `QtTest` |
 | `qt6-5compat` | Modul `Core5Compat` untuk API utilitas teks dan encoding |
 | `qt6-tools` | Utility developer Qt6 (`lupdate`, `lrelease`, `qmake`) |
@@ -277,7 +278,7 @@ Salin dan jalankan urutan perintah berikut pada terminal FreeBSD Anda:
 ```bash
 # 1. Update & pasang dependensi build
 sudo pkg update
-sudo pkg install -y git cmake ninja pkgconf qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+sudo pkg install -y git cmake ninja pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
 
 # 2. Clone repositori
 git clone https://github.com/alsyundawy/SparkNotePad.git
