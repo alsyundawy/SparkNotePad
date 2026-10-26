@@ -220,6 +220,7 @@ Official production binary packages for SparkNotePad v1.3.5 are ready for immedi
   _(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md))._
 
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
+
   ```bash
   sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
   ```

@@ -119,10 +119,12 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🔧 Fixed
 
-- **Codespell CI & MegaLinter (Python Mypy) Static Analysis Hardening**:
+- **Codespell CI, MegaLinter & Compiler Flag Tokenization Hardening**:
   - Configured `.github/workflows/codespell.yml` with `*.svg` skip rule and `sistem` term exclusion to eliminate false positive spellcheck errors on vector artwork paths.
   - Standardized code comments in `src/dialogs/UpdateDialog.cpp` from Indonesian to English (`// Row 2: System Architecture`) to prevent spellcheck false alerts.
   - Resolved MegaLinter `PYTHON_MYPY` dictionary item type mismatch in `scripts/generate_compilation_database.py` by annotating compilation command dictionaries with `dict[str, Any]` and restructuring top-level imports.
+  - Decomposed composite standard and language flags (`-std=c++20 -x c++-header` and `-std=c++20 -x objective-c++`) into discrete CLI tokens in `scripts/generate_compilation_database.py`, preventing Clang/Clangd and SonarLint compiler argument errors (`invalid value in -std=...`) across all header units.
+  - Resolved markdownlint MD031 (blanks-around-fences) in `README.md` and `README-id.md`, guaranteeing 100% clean linter status in the IDE problems pane.
 
 - **Complete Resolution of All IDE & SonarLint Compiler Diagnostics**:
   - Reconfigured CMake build and compilation database generator to produce a complete 874 KB `build/compile_commands.json` (symlinked at root), eliminating all IDE cascade header resolution errors and 756 SonarQube CFamily compilation errors.

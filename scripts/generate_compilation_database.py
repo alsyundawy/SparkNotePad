@@ -117,15 +117,15 @@ def collect_source_files(search_paths: list[Path]) -> list[Path]:
     return files
 
 
-def determine_compiler_and_std(suffix: str) -> tuple[str, str]:
+def determine_compiler_and_flags(suffix: str) -> tuple[str, list[str]]:
     """Select compiler and standard flags based on file extension."""
     if suffix == ".c":
-        return "/usr/bin/clang", "-std=c17"
+        return "/usr/bin/clang", ["-std=c17"]
     if suffix == ".mm":
-        return CLANGXX_PATH, "-std=c++20 -x objective-c++"
+        return CLANGXX_PATH, ["-std=c++20", "-x", "objective-c++"]
     if suffix in {".h", ".hpp"}:
-        return CLANGXX_PATH, "-std=c++20 -x c++-header"
-    return CLANGXX_PATH, "-std=c++20"
+        return CLANGXX_PATH, ["-std=c++20", "-x", "c++-header"]
+    return CLANGXX_PATH, ["-std=c++20"]
 
 
 def build_compile_entry(
@@ -137,7 +137,7 @@ def build_compile_entry(
 ) -> dict[str, Any]:
     """Generate a single compile command dictionary."""
     rel_path = sf.relative_to(root)
-    compiler, std_flag = determine_compiler_and_std(sf.suffix)
+    compiler, std_flags = determine_compiler_and_flags(sf.suffix)
 
     defines = list(base_defines)
     if "tests" in rel_path.parts:
@@ -145,7 +145,7 @@ def build_compile_entry(
 
     cmd_parts = [
         compiler,
-        std_flag,
+        *std_flags,
         "-isystem",
         "/usr/local/opt/llvm/include/c++/v1",
         "-isysroot",

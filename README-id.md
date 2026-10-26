@@ -220,6 +220,7 @@ Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui
   _(Lihat panduan lengkap [Panduan Build Native Debian & Ubuntu](doc/BUILD_UBUNTU_DEBIAN.md) serta [Panduan Paket Linux](doc/LINUX_DEB_RPM_PACKAGING.md))._
 
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
+
   ```bash
   sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
   ```
