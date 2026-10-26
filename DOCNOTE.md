@@ -32,11 +32,18 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - Updated `setTab(int tab)` to explicitly call `changeTab(tab)` guaranteeing that switching between tabs immediately and reliably collapses the form to exactly 1 single search input box.
 
 2. **Elegant, Modern & Professional Update Check Dialog (`UpdateDialog`)**:
-   - Replaced generic legacy `QMessageBox` popups with a dedicated, theme-responsive `UpdateDialog`.
-   - Custom high-DPI antialiased vector badges (illuminated electric blue download badge, emerald green checkmark, and amber warning badge).
-   - Version Comparison Cards with pill tags (`Versi Terpasang` ➜ `Versi Terbaru`), release metadata, and formatted publication dates.
-   - Formatted, scrollable release notes changelog preview container with custom scrollbars and responsive typography.
-   - Polished buttons: Primary glowing accent button (`Unduh Pembaruan ⤓`), neutral dismiss button (`Nanti Saja`), and direct GitHub release link (`Lihat di GitHub ↗`).
+   - Replaced generic legacy `QMessageBox` popups with a dedicated, theme-responsive `UpdateDialog` featuring custom vector badges and adaptive styling for both dark and light modes.
+   - **Update Available Experience**: Custom high-DPI antialiased illuminated electric blue download badge, version comparison cards with pill tags (`Versi Terpasang` ➜ `Versi Terbaru`), release metadata, publication date, scrollable changelog viewer, and action buttons (`Unduh Pembaruan ⤓` and `Nanti Saja`).
+   - **Modern Card-and-Pill Up-To-Date Experience**: Re-engineered the up-to-date dialog into an elegant layout inspired by native macOS design aesthetics:
+     - 58x58 antialiased high-DPI SparkNotePad application branding icon (`:/icons/SparkNotePad.png`).
+     - Emerald green status pill (`✓ Up to Date` / `✓ Sudah Terbaru`) adjacent to the bold title header.
+     - Reassuring bold subtitle (`You Are Using the Latest Release!` / `Anda Menggunakan Rilis Terbaru!`) with platform-specific optimization notice (`macOS` / `Linux`).
+     - Distinctive 4-row system metadata card with dual capsule pills:
+       1. Current Version: `v1.3.5`
+       2. System Architecture: dynamic detection via `QSysInfo` (e.g., `macOS Intel (x86_64)` or `macOS Apple Silicon (arm64)`)
+       3. Release Channel: `Official GitHub Stable Release (v1.3.5)` / `Rilis Stabil GitHub Resmi (v1.3.5)`
+       4. Last Checked: localized formatted timestamp `yyyy-MM-dd HH:mm`
+     - Action buttons: Left vibrant blue `Release Notes` (`Catatan Rilis`) button opening the official GitHub release tag in browser; Right neutral `OK` button dismissing the dialog.
 
 3. **Modern Monoline Vector Toolbar Icons & 20x20 High-DPI Standard**:
    - Redesigned core toolbar icons into clean, modern monoline vector SVGs matching the visual language of `restart.svg` and `exit.svg` (24x24 viewBox, stroke-width 2.2, round stroke linecaps and joins, fill="none"):

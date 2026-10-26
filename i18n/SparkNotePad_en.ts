@@ -7534,24 +7534,40 @@ Please check your internet connection.</translation>
         <translation>Download Update ⤓</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="445" />
-        <source>SparkNotePad is Up to Date</source>
-        <translation>SparkNotePad is Up to Date</translation>
+        <source>✓ Up to Date</source>
+        <translation>✓ Up to Date</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="452" />
-        <source>You are using the latest version. All security and stability features are active.</source>
-        <translation>You are using the latest version. All security and stability features are active.</translation>
+        <source>You Are Using the Latest Release!</source>
+        <translation>You Are Using the Latest Release!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="476" />
-        <source>Active Version</source>
-        <translation>Active Version</translation>
+        <source>SparkNotePad is fully up to date with complete optimizations for %1.</source>
+        <translation>SparkNotePad is fully up to date with complete optimizations for %1.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="486" />
-        <source>Done</source>
-        <translation>Done</translation>
+        <source>Current Version:</source>
+        <translation>Current Version:</translation>
+    </message>
+    <message>
+        <source>System Architecture:</source>
+        <translation>System Architecture:</translation>
+    </message>
+    <message>
+        <source>Release Channel:</source>
+        <translation>Release Channel:</translation>
+    </message>
+    <message>
+        <source>Official GitHub Stable Release (%1)</source>
+        <translation>Official GitHub Stable Release (%1)</translation>
+    </message>
+    <message>
+        <source>Last Checked:</source>
+        <translation>Last Checked:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="514" />

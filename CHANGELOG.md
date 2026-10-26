@@ -15,6 +15,11 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🆕 Added
 
+- **Modern Card-and-Pill Up-To-Date Dialog Layout & System Metadata (`UpdateDialog`)**:
+  - Re-engineered the software update "Up to Date" dialog into an elegant, modern card-and-pill layout matching native macOS design aesthetics.
+  - Features 58x58 antialiased high-DPI SparkNotePad application branding icon (`SparkNotePad.png`), emerald green status pill (`✓ Up to Date` / `✓ Sudah Terbaru`), bold reassuring subtitle (`You Are Using the Latest Release!` / `Anda Menggunakan Rilis Terbaru!`), and platform-aware optimization notice (macOS / Linux).
+  - Integrated a clean dual-capsule metadata card displaying 4 key-value pill rows: Current Version (`v1.3.5`), System Architecture dynamically detected via `QSysInfo` (e.g., `macOS Intel (x86_64)` or `macOS Apple Silicon (arm64)`), Release Channel (`Official GitHub Stable Release (v1.3.5)`), and localized Last Checked timestamp (`yyyy-MM-dd HH:mm`).
+  - Added dedicated navigation controls: vibrant accent blue `Release Notes` (`Catatan Rilis`) button opening the official GitHub release tag in the default web browser and neutral `OK` confirmation button, fully responsive across dark and light desktop color schemes.
 - **Zoom Level Indicator UX Refinement & Non-Intrusive Status Bar Feedback**:
   - Replaced the intrusive centered fading indicator text pill that popped up directly in the center of the active editor during zoom gestures (Ctrl/Cmd + Scroll, Ctrl/Cmd + Plus/Minus) with clean, non-intrusive status bar notifications (`statusBar()->showMessage(tr("Zoom: %1%").arg(zoomLevel * 10 + 100), 2000)`), keeping the editor canvas completely visible and unblocked.
   - Refined `FadingIndicator` styling with crisp white bold typography (`#ffffff; font-weight: bold;`) and sleek, modern translucent dark rounded container (`rgba(30, 30, 30, 220)`) with 12px rounded borders and subtle border outline (`rgba(255, 255, 255, 45)`) for remaining indicator use-cases.

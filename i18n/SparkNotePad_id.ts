@@ -7620,24 +7620,40 @@ Harap periksa koneksi internet Anda.</translation>
         <translation>Unduh Pembaruan ⤓</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="445" />
-        <source>SparkNotePad is Up to Date</source>
-        <translation>SparkNotePad Sudah Versi Terbaru</translation>
+        <source>✓ Up to Date</source>
+        <translation>✓ Sudah Terbaru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="452" />
-        <source>You are using the latest version. All security and stability features are active.</source>
-        <translation>Anda sedang menggunakan versi yang paling mutakhir. Seluruh fitur keamanan dan stabilitas telah aktif.</translation>
+        <source>You Are Using the Latest Release!</source>
+        <translation>Anda Menggunakan Rilis Terbaru!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="476" />
-        <source>Active Version</source>
-        <translation>Versi Aktif</translation>
+        <source>SparkNotePad is fully up to date with complete optimizations for %1.</source>
+        <translation>SparkNotePad sudah sepenuhnya menggunakan versi terbaru dengan optimasi penuh untuk %1.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="486" />
-        <source>Done</source>
-        <translation>Selesai</translation>
+        <source>Current Version:</source>
+        <translation>Versi Saat Ini:</translation>
+    </message>
+    <message>
+        <source>System Architecture:</source>
+        <translation>Arsitektur Sistem:</translation>
+    </message>
+    <message>
+        <source>Release Channel:</source>
+        <translation>Saluran Rilis:</translation>
+    </message>
+    <message>
+        <source>Official GitHub Stable Release (%1)</source>
+        <translation>Rilis Stabil GitHub Resmi (%1)</translation>
+    </message>
+    <message>
+        <source>Last Checked:</source>
+        <translation>Terakhir Diperiksa:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="514" />

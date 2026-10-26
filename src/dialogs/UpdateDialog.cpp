@@ -24,6 +24,7 @@
 #include <QUrl>
 #include <QDateTime>
 #include <QLocale>
+#include <QSysInfo>
 
 namespace {
 
@@ -425,66 +426,212 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
 }
 
 void UpdateDialog::setupUpToDateUi(const QString &curVer) {
-    applyBaseStyling(490, 220);
+    applyBaseStyling(510, 280);
     const DialogColors colors = fetchDialogColors();
+    const bool dark = ThemeManager::instance()->isDarkActive();
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(24, 22, 24, 20);
-    mainLayout->setSpacing(16);
+    mainLayout->setContentsMargins(22, 18, 22, 18);
+    mainLayout->setSpacing(14);
 
+    // ─── Header: App Icon + Title & Badge + Subtitle + Description ───
     QHBoxLayout *headerLayout = new QHBoxLayout();
-    headerLayout->setSpacing(16);
+    headerLayout->setSpacing(14);
 
-    QLabel *badgeLabel = new QLabel(this);
-    badgeLabel->setPixmap(createBadgePixmap(DialogType::UpToDate));
-    badgeLabel->setFixedSize(56, 56);
-    headerLayout->addWidget(badgeLabel, 0, Qt::AlignTop);
+    QLabel *iconLabel = new QLabel(this);
+    if (const QPixmap appIcon(QStringLiteral(":/icons/SparkNotePad.png")); !appIcon.isNull()) {
+        iconLabel->setPixmap(appIcon.scaled(58, 58, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    } else {
+        iconLabel->setPixmap(createBadgePixmap(DialogType::UpToDate));
+    }
+    iconLabel->setFixedSize(58, 58);
+    headerLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
-    QVBoxLayout *textLayout = new QVBoxLayout();
-    textLayout->setSpacing(6);
+    QVBoxLayout *headerTextLayout = new QVBoxLayout();
+    headerTextLayout->setSpacing(2);
 
-    QLabel *titleLabel = new QLabel(tr("SparkNotePad is Up to Date"), this);
-    titleLabel->setStyleSheet(QString("font-size: 16px; font-weight: 700; color: %1;").arg(colors.txtPri));
-    textLayout->addWidget(titleLabel);
+    // Title line: "SparkNotePad" + "✓ Sudah Terbaru" badge
+    QHBoxLayout *titleLine = new QHBoxLayout();
+    titleLine->setSpacing(8);
 
-    QLabel *descLabel = new QLabel(this);
+    QLabel *appTitle = new QLabel(QStringLiteral("SparkNotePad"), this);
+    appTitle->setStyleSheet(QStringLiteral("font-size: 16px; font-weight: 700; color: %1;").arg(colors.txtPri));
+    titleLine->addWidget(appTitle);
+
+    QLabel *badgePill = new QLabel(tr("✓ Up to Date"), this);
+    const QString badgeStyle = dark ? QStringLiteral(
+                                          "QLabel { background-color: rgba(16, 185, 129, 0.18); color: #34d399; "
+                                          "border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 4px; "
+                                          "padding: 2px 7px; font-size: 11px; font-weight: 700; }")
+                                    : QStringLiteral(
+                                          "QLabel { background-color: #ecfdf5; color: #059669; "
+                                          "border: 1px solid #a7f3d0; border-radius: 4px; "
+                                          "padding: 2px 7px; font-size: 11px; font-weight: 700; }");
+    badgePill->setStyleSheet(badgeStyle);
+    titleLine->addWidget(badgePill);
+    titleLine->addStretch();
+    headerTextLayout->addLayout(titleLine);
+
+    // Subtitle line: "Anda Menggunakan Rilis Terbaru!"
+    QLabel *subTitle = new QLabel(tr("You Are Using the Latest Release!"), this);
+    subTitle->setStyleSheet(QStringLiteral("font-size: 14px; font-weight: 700; color: %1;").arg(colors.txtPri));
+    headerTextLayout->addWidget(subTitle);
+
+    // Description line: "SparkNotePad sudah sepenuhnya menggunakan versi terbaru dengan optimasi penuh untuk macOS."
+#if defined(Q_OS_MACOS)
+    const QString platformName = QStringLiteral("macOS");
+#elif defined(Q_OS_LINUX)
+    const QString platformName = QStringLiteral("Linux");
+#else
+    const QString platformName = QStringLiteral("Desktop");
+#endif
+    QLabel *descLabel =
+        new QLabel(tr("SparkNotePad is fully up to date with complete optimizations for %1.").arg(platformName), this);
     descLabel->setWordWrap(true);
-    descLabel->setStyleSheet(QString("font-size: 13px; color: %1;").arg(colors.txtSec));
-    descLabel->setText(tr("You are using the latest version. All security and stability features are active."));
-    textLayout->addWidget(descLabel);
+    descLabel->setStyleSheet(QStringLiteral("font-size: 12px; color: %1;").arg(colors.txtSec));
+    headerTextLayout->addWidget(descLabel);
 
-    headerLayout->addLayout(textLayout, 1);
+    headerLayout->addLayout(headerTextLayout, 1);
     mainLayout->addLayout(headerLayout);
 
-    // Status Pill Card
+    // ─── Status Info Card (4 Capsule-Pill Rows) ───
     QFrame *statusCard = new QFrame(this);
-    statusCard->setStyleSheet(QString("QFrame {"
-                                      "  background-color: %1;"
-                                      "  border: 1px solid %2;"
-                                      "  border-radius: 8px;"
-                                      "  padding: 8px 12px;"
-                                      "}")
-                                  .arg(colors.cardBg, colors.border));
+    const QString cardBg = dark ? QStringLiteral("rgba(255, 255, 255, 0.04)") : QStringLiteral("#f3f4f6");
+    const QString cardBorder = dark ? QStringLiteral("rgba(255, 255, 255, 0.08)") : QStringLiteral("#e5e7eb");
+    statusCard->setStyleSheet(QStringLiteral("QFrame {"
+                                             "  background-color: %1;"
+                                             "  border: 1px solid %2;"
+                                             "  border-radius: 8px;"
+                                             "  padding: 6px 12px;"
+                                             "}")
+                                  .arg(cardBg, cardBorder));
 
-    QHBoxLayout *cardLayout = new QHBoxLayout(statusCard);
-    cardLayout->setContentsMargins(10, 6, 10, 6);
+    QVBoxLayout *cardLayout = new QVBoxLayout(statusCard);
+    cardLayout->setContentsMargins(8, 8, 8, 8);
+    cardLayout->setSpacing(6);
 
-    QLabel *statusText = new QLabel(this);
-    statusText->setTextFormat(Qt::RichText);
-    statusText->setText(QString("<span style='color:%1;'>%2: <b>v%3</b></span>"
-                                "<span style='margin-left: 12px; background:rgba(16,185,129,0.18); color:%4; "
-                                "padding:2px 8px; border-radius:4px; font-weight:bold;'>✓ Up to Date</span>")
-                            .arg(colors.txtPri, tr("Active Version"), curVer, colors.green));
-    cardLayout->addWidget(statusText);
-    cardLayout->addStretch();
+    const QString labelPillStyle =
+        dark ? QStringLiteral(
+                   "QLabel { background-color: rgba(255, 255, 255, 0.08); color: #dcdfe4; "
+                   "border-radius: 8px; padding: 3px 10px; font-size: 12px; font-weight: 600; }")
+             : QStringLiteral(
+                   "QLabel { background-color: #e5e7eb; color: #374151; "
+                   "border-radius: 8px; padding: 3px 10px; font-size: 12px; font-weight: 600; }");
+
+    const QString valPillStyle =
+        dark ? QStringLiteral(
+                   "QLabel { background-color: rgba(255, 255, 255, 0.04); "
+                   "border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; "
+                   "border-radius: 8px; padding: 3px 12px; font-size: 12px; font-weight: 600; }")
+             : QStringLiteral(
+                   "QLabel { background-color: #ffffff; border: 1px solid #e5e7eb; color: #111827; "
+                   "border-radius: 8px; padding: 3px 12px; font-size: 12px; font-weight: 600; }");
+
+    auto addCardRow = [&](const QString &label, const QString &value) {
+        QHBoxLayout *row = new QHBoxLayout();
+        row->setSpacing(10);
+        row->setContentsMargins(0, 0, 0, 0);
+
+        QLabel *lblKey = new QLabel(label, statusCard);
+        lblKey->setStyleSheet(labelPillStyle);
+        lblKey->setAlignment(Qt::AlignCenter);
+        lblKey->setMinimumWidth(130);
+        lblKey->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+
+        QLabel *lblVal = new QLabel(value, statusCard);
+        lblVal->setStyleSheet(valPillStyle);
+        lblVal->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
+        row->addWidget(lblKey);
+        row->addWidget(lblVal);
+        row->addStretch();
+        cardLayout->addLayout(row);
+    };
+
+    // Row 1: Versi Saat Ini
+    const QString verFormatted = curVer.startsWith(QLatin1Char('v')) ? curVer : QStringLiteral("v") + curVer;
+    addCardRow(tr("Current Version:"), verFormatted);
+
+    // Row 2: Arsitektur Sistem
+#if defined(Q_OS_MACOS)
+    const QString archCpu = QSysInfo::currentCpuArchitecture();
+    const QString archStr = (archCpu == QLatin1String("arm64") || archCpu == QLatin1String("aarch64"))
+                                ? QStringLiteral("macOS Apple Silicon (arm64)")
+                                : (archCpu == QLatin1String("x86_64") ? QStringLiteral("macOS Intel (x86_64)")
+                                                                      : QStringLiteral("macOS (%1)").arg(archCpu));
+#elif defined(Q_OS_LINUX)
+    const QString archStr = QStringLiteral("Linux (%1)").arg(QSysInfo::currentCpuArchitecture());
+#elif defined(Q_OS_WIN)
+    const QString archStr = QStringLiteral("Windows (%1)").arg(QSysInfo::currentCpuArchitecture());
+#else
+    const QString archStr = QSysInfo::currentCpuArchitecture();
+#endif
+    addCardRow(tr("System Architecture:"), archStr);
+
+    // Row 3: Saluran Rilis
+    addCardRow(tr("Release Channel:"), tr("Official GitHub Stable Release (%1)").arg(verFormatted));
+
+    // Row 4: Terakhir Diperiksa
+    addCardRow(tr("Last Checked:"), QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd HH:mm")));
 
     mainLayout->addWidget(statusCard);
 
-    // Action button
+    // ─── Button Bar: Catatan Rilis (Left) & OK (Right) ───
     QHBoxLayout *buttonBar = new QHBoxLayout();
+    buttonBar->setContentsMargins(0, 4, 0, 0);
+
+    QPushButton *btnReleaseNotes = new QPushButton(tr("Release Notes"), this);
+    btnReleaseNotes->setCursor(Qt::PointingHandCursor);
+    btnReleaseNotes->setMinimumHeight(32);
+    btnReleaseNotes->setStyleSheet(QStringLiteral("QPushButton {"
+                                                  "  background-color: %1;"
+                                                  "  color: #ffffff;"
+                                                  "  border: none;"
+                                                  "  border-radius: 6px;"
+                                                  "  padding: 6px 18px;"
+                                                  "  font-weight: 700;"
+                                                  "  font-size: 13px;"
+                                                  "}"
+                                                  "QPushButton:hover { background-color: #0052a3; }"
+                                                  "QPushButton:pressed { background-color: #003d7a; }")
+                                       .arg(colors.accent));
+    connect(btnReleaseNotes, &QPushButton::clicked, this, [curVer]() {
+        const QString tag = curVer.startsWith(QLatin1Char('v')) ? curVer : QLatin1Char('v') + curVer;
+        QDesktopServices::openUrl(
+            QUrl(QStringLiteral("https://github.com/alsyundawy/SparkNotePad/releases/tag/") + tag));
+    });
+    buttonBar->addWidget(btnReleaseNotes);
+
     buttonBar->addStretch();
 
-    QPushButton *btnOk = createPrimaryButton(tr("Done"), colors.accent, this);
+    QPushButton *btnOk = new QPushButton(tr("OK"), this);
+    btnOk->setCursor(Qt::PointingHandCursor);
+    btnOk->setMinimumHeight(32);
+    const QString okBtnStyle = dark ? QStringLiteral(
+                                          "QPushButton {"
+                                          "  background-color: #282c34;"
+                                          "  color: #e0e0e0;"
+                                          "  border: 1px solid #3e4451;"
+                                          "  border-radius: 6px;"
+                                          "  padding: 6px 28px;"
+                                          "  font-weight: 700;"
+                                          "  font-size: 13px;"
+                                          "}"
+                                          "QPushButton:hover { background-color: #353b45; }"
+                                          "QPushButton:pressed { background-color: #1e2227; }")
+                                    : QStringLiteral(
+                                          "QPushButton {"
+                                          "  background-color: #ffffff;"
+                                          "  color: #111827;"
+                                          "  border: 1px solid #d1d5db;"
+                                          "  border-radius: 6px;"
+                                          "  padding: 6px 28px;"
+                                          "  font-weight: 700;"
+                                          "  font-size: 13px;"
+                                          "}"
+                                          "QPushButton:hover { background-color: #f3f4f6; }"
+                                          "QPushButton:pressed { background-color: #e5e7eb; }");
+    btnOk->setStyleSheet(okBtnStyle);
     btnOk->setDefault(true);
     btnOk->setFocus();
     connect(btnOk, &QPushButton::clicked, this, &QDialog::accept);
