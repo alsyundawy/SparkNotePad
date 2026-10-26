@@ -548,11 +548,11 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
         cardLayout->addLayout(row);
     };
 
-    // Row 1: Versi Saat Ini
+    // Row 1: Current Version
     const QString verFormatted = curVer.startsWith(QLatin1Char('v')) ? curVer : QStringLiteral("v") + curVer;
     addCardRow(tr("Current Version:"), verFormatted);
 
-    // Row 2: Arsitektur Sistem
+    // Row 2: System Architecture
 #if defined(Q_OS_MACOS)
     const QString archCpu = QSysInfo::currentCpuArchitecture();
     const QString archStr = (archCpu == QLatin1String("arm64") || archCpu == QLatin1String("aarch64"))
@@ -568,15 +568,15 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
 #endif
     addCardRow(tr("System Architecture:"), archStr);
 
-    // Row 3: Saluran Rilis
+    // Row 3: Release Channel
     addCardRow(tr("Release Channel:"), tr("Official GitHub Stable Release (%1)").arg(verFormatted));
 
-    // Row 4: Terakhir Diperiksa
+    // Row 4: Last Checked
     addCardRow(tr("Last Checked:"), QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd HH:mm")));
 
     mainLayout->addWidget(statusCard);
 
-    // ─── Button Bar: Catatan Rilis (Left) & OK (Right) ───
+    // ─── Button Bar: Release Notes (Left) & OK (Right) ───
     QHBoxLayout *buttonBar = new QHBoxLayout();
     buttonBar->setContentsMargins(0, 4, 0, 0);
 

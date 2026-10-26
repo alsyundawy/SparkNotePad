@@ -6,7 +6,9 @@ Decomposed into modular functions with cognitive complexity < 10.
 """
 
 import json
+import shlex
 from pathlib import Path
+from typing import Any
 
 CPM_CACHE_DIR = ".cpm-cache"
 CLANGXX_PATH = "/usr/local/opt/llvm/bin/clang++"
@@ -132,7 +134,7 @@ def build_compile_entry(
     inc_flags: list[str],
     fw_flags: list[str],
     base_defines: list[str],
-) -> dict[str, str]:
+) -> dict[str, Any]:
     """Generate a single compile command dictionary."""
     rel_path = sf.relative_to(root)
     compiler, std_flag = determine_compiler_and_std(sf.suffix)
@@ -157,7 +159,6 @@ def build_compile_entry(
         f"build/{rel_path.stem}.o",
     ]
 
-    import shlex
     return {
         "directory": str(root),
         "command": shlex.join(cmd_parts),
@@ -166,7 +167,7 @@ def build_compile_entry(
     }
 
 
-def write_database(entries: list[dict[str, str]], build_dir: Path, root: Path) -> None:
+def write_database(entries: list[dict[str, Any]], build_dir: Path, root: Path) -> None:
     """Save compile_commands.json to build/ and maintain root symlink."""
     out_file = build_dir / "compile_commands.json"
     with open(out_file, "w", encoding="utf-8") as f:

@@ -195,6 +195,11 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **PNG-to-SVG Conversion**: Converted the master branding artwork `SparkNotePad.png` (blue rounded notepad with alternating blue tone bands, navy blue "N#" emblem, and angled orange/gold graphite pencil with pink eraser) directly into a standards-compliant, high-DPI vector SVG (`icon/SparkNotePad.svg` and `src/icons/SparkNotePad.svg`), replacing the obsolete dark-editor squircle graphic.
     - **Qt Resource & Linux Packaging Integration**: Bundled `icons/SparkNotePad.svg` into Qt resources (`src/resources.qrc`) and updated packaging automation (`scripts/package-flatpak-appimage.sh`, `cmake/PackagingLinux.cmake`) ensuring 100% brand consistency across Linux desktop launchers, Flatpak, AppImage, and window managers.
 
+22. **Zero-Error Codespell CI & MegaLinter (Python Mypy) Static Analysis Compliance**:
+    - **Codespell CI Hardening**: Updated `.github/workflows/codespell.yml` to ignore raw vector graphics (`*.svg`) and whitelisted domain term `sistem`, eliminating false-positive spelling errors on base64 and vector path tokens.
+    - **Source Comment English Standardization**: Refactored internal code comments in `src/dialogs/UpdateDialog.cpp` to standard English (`// Row 2: System Architecture`, etc.), ensuring full compatibility with automated linters while keeping runtime UI translations in `.ts` files intact.
+    - **Python Mypy Type Hardening**: Fixed dictionary return type annotations in `scripts/generate_compilation_database.py` to `dict[str, Any]` and promoted `shlex` and `typing.Any` to top-level imports, resolving CI MegaLinter `PYTHON_MYPY` `[dict-item]` type incompatibility.
+
 ---
 
 ## 1. Executive Summary: Release v1.3.0
