@@ -25,7 +25,7 @@
 
 <p align="center">
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.5-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.5"></a>
-  <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10%20%7C%206.11-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
   <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla + Lexilla"></a>
@@ -76,6 +76,8 @@
 > 🍏 **[`Latest Releases (v1.3.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
+> 🔱 **[`FreeBSD Build Guide (KDE6 & XFCE)`](doc/BUILD_FREEBSD_KDE_XFCE.md)** &nbsp;|&nbsp;
+> 📋 **[`FreeBSD Analysis & Tasklist`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md)** &nbsp;|&nbsp;
 > ⚖️ **[`NotepadNext vs SparkNotePad Comparison`](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
 > 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
@@ -211,6 +213,7 @@ Official production binary packages for SparkNotePad v1.3.5 are ready for immedi
 | **Linux**               | x86_64 (Fedora / RHEL)          |     `.rpm`     | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)           |
 | **Linux (All Distros)** | Default Editor Script (DEB/RPM) |     `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor-Linux.sh) |
 | **macOS / Linux**       | Universal Association Script    |     `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)             |
+| **FreeBSD**             | 14.x / 15.x (KDE 6 / XFCE)      |  Source / Pkg  | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Linux Package Installation (Automated Dependencies)
 
@@ -228,6 +231,26 @@ Official production binary packages for SparkNotePad v1.3.5 are ready for immedi
   ```bash
   sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
   ```
+
+### FreeBSD Build & Desktop Installation (KDE Plasma 6 & XFCE)
+
+On FreeBSD 14.x and 15.x, SparkNotePad compiles as a native ELF binary without Linuxulator or Wine:
+
+```bash
+# 1. Install prerequisites
+sudo pkg install -y git cmake ninja pkgconf qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+
+# 2. Build & install
+git clone https://github.com/alsyundawy/SparkNotePad.git && cd SparkNotePad
+export CMAKE_PREFIX_PATH=/usr/local
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake --build build -j$(sysctl -n hw.ncpu)
+sudo cmake --install build
+sudo update-desktop-database /usr/local/share/applications
+sudo gtk-update-icon-cache -f /usr/local/share/icons/hicolor 2>/dev/null || true
+```
+
+_(See detailed [FreeBSD Native Build Guide](doc/BUILD_FREEBSD_KDE_XFCE.md) and [FreeBSD Analysis & Tasklist](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md))._
 
 ---
 
@@ -286,6 +309,11 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 
 ### [v1.3.5] — Restart/Exit Lifecycle, Find & Replace Form Fix, 100% Linter Eradication & 2025–2026 Security Audit (2026-10-24)
 
+- **FreeBSD 14.x & 15.x Native Portability, Subproject Install Isolation & FreeBSD Desktop Packaging**:
+  - Validated native compilation and execution on FreeBSD 14.x and FreeBSD 15.1 under both **KDE Plasma 6** and **XFCE** desktop environments without Linuxulator or Wine.
+  - Applied `EXCLUDE_FROM_ALL YES` across all CPM packages (`ads`, `QSimpleUpdater`, `SingleApplication`, `editorconfig_core_qt`) in `thirdparty/CMakeLists.txt`, isolating internal static libraries and headers from host system installation paths (`/usr/local/include`, `/usr/local/lib`) and eliminating accidental subproject leakage into Linux `.deb`/`.rpm` packages.
+  - Declared `OPTIONAL_COMPONENTS GuiPrivate` and enabled `QT_NO_PRIVATE_MODULE_WARNING ON` for clean Qt 6.10+/6.11 compilation, and added FreeBSD platform detection in `cmake/PackagingLinux.cmake`.
+  - Added comprehensive native guides: [`doc/BUILD_FREEBSD_KDE_XFCE.md`](doc/BUILD_FREEBSD_KDE_XFCE.md) and [`doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md).
 - **Production-Grade Linux Default Editor Engine (`SparkNotePad-Default-Editor-Linux.sh`) & Root Script Promotion**: Engineered a specialized, defense-in-depth Linux default editor script and promoted both `SparkNotePad-Default-Editor.sh` and `SparkNotePad-Default-Editor-Linux.sh` directly to the repository root as canonical release assets. Features a 5-layer integration matrix across 80+ MIME types supporting all Debian (.deb) & RPM (.rpm) distributions and all desktop environments (GNOME, KDE Plasma 5/6, XFCE, Cinnamon, MATE, LXQt, Budgie, COSMIC, Deepin, Pantheon, Tiling WMs) with full terminal alternatives and shell environment variable configuration. Fully documented in [doc/LINUX_DEFAULT_EDITOR_GUIDE.md](doc/LINUX_DEFAULT_EDITOR_GUIDE.md).
 - **Modern Card-and-Pill Up-To-Date Dialog Layout & System Metadata**: Re-engineered the software update "Up to Date" dialog into an elegant, modern card-and-pill layout matching native macOS design aesthetics. Features high-DPI SparkNotePad icon (`SparkNotePad.png`), emerald green status pill (`✓ Up to Date` / `✓ Sudah Terbaru`), bold subtitle (`You Are Using the Latest Release!` / `Anda Menggunakan Rilis Terbaru!`), platform optimization notice, dual-capsule metadata card displaying Current Version, System Architecture (dynamic via `QSysInfo`), Release Channel, and Last Checked timestamp, along with a direct `Release Notes` (`Catatan Rilis`) web action button.
 - **Zoom Level Indicator UX Refinement & Non-Intrusive Status Bar Feedback**: Replaced the intrusive centered fading indicator text pill that covered the editor during zoom gestures with clean, unobtrusive status bar notifications (`statusBar()->showMessage(tr("Zoom: %1%").arg(...), 2000)`), keeping code completely visible. Refined `FadingIndicator` container styling with crisp white bold typography on modern translucent dark rounded container (`rgba(30, 30, 30, 220)`).

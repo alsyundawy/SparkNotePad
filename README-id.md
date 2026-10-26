@@ -76,6 +76,8 @@
 > 🍏 **[`Latest Releases (v1.3.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
+> 🔱 **[`Panduan Build FreeBSD (KDE6 & XFCE)`](doc/BUILD_FREEBSD_KDE_XFCE.md)** &nbsp;|&nbsp;
+> 📋 **[`Analisis & Tasklist FreeBSD`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md)** &nbsp;|&nbsp;
 > ⚖️ **[`Komparasi NotepadNext vs SparkNotePad`](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
 > 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
@@ -211,6 +213,7 @@ Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui
 | **Linux**                | x86_64 (Fedora / RHEL)         |    `.rpm`    | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)           |
 | **Linux (Semua Distro)** | Skrip Editor Default (DEB/RPM) |    `.sh`     | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor-Linux.sh) |
 | **macOS / Linux**        | Skrip Asosiasi Universal       |    `.sh`     | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)             |
+| **FreeBSD**              | 14.x / 15.x (KDE 6 / XFCE)     | Source / Pkg | [Panduan Build & Integrasi FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Pemasangan Paket Linux (Instalasi Dependensi Otomatis)
 
@@ -228,6 +231,26 @@ Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui
   ```bash
   sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
   ```
+
+### Build Native & Pemasangan FreeBSD (KDE Plasma 6 & XFCE)
+
+Pada FreeBSD 14.x dan 15.x, SparkNotePad dikompilasi sebagai binary ELF native tanpa Linuxulator atau Wine:
+
+```bash
+# 1. Pasang paket prasyarat
+sudo pkg install -y git cmake ninja pkgconf qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+
+# 2. Build & pasang ke sistem
+git clone https://github.com/alsyundawy/SparkNotePad.git && cd SparkNotePad
+export CMAKE_PREFIX_PATH=/usr/local
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake --build build -j$(sysctl -n hw.ncpu)
+sudo cmake --install build
+sudo update-desktop-database /usr/local/share/applications
+sudo gtk-update-icon-cache -f /usr/local/share/icons/hicolor 2>/dev/null || true
+```
+
+_(Lihat panduan lengkap [Panduan Build FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md) serta [Analisis & Tasklist FreeBSD](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md))._
 
 ---
 
@@ -286,6 +309,11 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 
 ### [v1.3.5] — Siklus Mulai Ulang/Keluar Aplikasi, Koreksi Form Cari & Ganti, Pembasmian Total Linter & Audit Keamanan 2025–2026 (2026-10-24)
 
+- **Portabilitas Native FreeBSD 14.x & 15.x, Isolasi Instalasi Subproject & Paket Desktop FreeBSD**:
+  - Memvalidasi kompilasi dan eksekusi native pada FreeBSD 14.x dan FreeBSD 15.1 di bawah lingkungan desktop **KDE Plasma 6** dan **XFCE** tanpa Linuxulator atau Wine.
+  - Menerapkan `EXCLUDE_FROM_ALL YES` pada seluruh paket vendor CPM (`ads`, `QSimpleUpdater`, `SingleApplication`, `editorconfig_core_qt`) di `thirdparty/CMakeLists.txt`, mengisolasi pustaka statis internal dan header vendor dari direktori instalasi sistem host (`/usr/local/include`, `/usr/local/lib`) serta meniadakan kebocoran file subproject ke dalam paket Linux `.deb`/`.rpm`.
+  - Mendeklarasikan `OPTIONAL_COMPONENTS GuiPrivate` dan mengaktifkan `QT_NO_PRIVATE_MODULE_WARNING ON` untuk kompilasi Qt 6.10+/6.11 yang bersih, serta menambahkan deteksi platform FreeBSD pada `cmake/PackagingLinux.cmake`.
+  - Menambahkan panduan native komprehensif: [`doc/BUILD_FREEBSD_KDE_XFCE.md`](doc/BUILD_FREEBSD_KDE_XFCE.md) dan [`doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md).
 - **Mesin Otomasi Editor Default Linux Kelas Industri (`SparkNotePad-Default-Editor-Linux.sh`) & Promosi Skrip Root**: Merancang skrip otomatisasi tingkat lanjut untuk Linux serta mempromosikan `SparkNotePad-Default-Editor.sh` dan `SparkNotePad-Default-Editor-Linux.sh` langsung ke direktori utama (root) repositori sebagai artefak rilis kanonikal. Mengimplementasikan matriks integrasi 5-lapis mencakup 80+ tipe MIME untuk seluruh distro Linux berbasis Debian (.deb) & RPM (.rpm) serta seluruh lingkungan desktop (GNOME, KDE Plasma 5/6, XFCE, Cinnamon, MATE, LXQt, Budgie, COSMIC, Deepin, Pantheon, Tiling WMs) dengan konfigurasi alternatif terminal dan variabel lingkungan shell. Terdokumentasi lengkap pada [doc/LINUX_DEFAULT_EDITOR_GUIDE.md](doc/LINUX_DEFAULT_EDITOR_GUIDE.md).
 - **Desain Modern Dialog Pembaruan Terkini (Tata Letak Card & Pill)**: Pembaruan visual menyeluruh pada dialog status "Up to Date" mengadopsi estetika native macOS yang elegan. Dilengkapi ikon aplikasi SparkNotePad beresolusi tinggi (`SparkNotePad.png`), pill status hijau zamrud (`✓ Sudah Terbaru` / `✓ Up to Date`), subjudul penegasan (`Anda Menggunakan Rilis Terbaru!` / `You Are Using the Latest Release!`), pemberitahuan optimasi platform, kartu metadata kapsul ganda (Versi Saat Ini, Arsitektur Sistem dinamis via `QSysInfo`, Saluran Rilis, dan cap waktu Terakhir Diperiksa), serta tombol aksi langsung `Catatan Rilis` (`Release Notes`) menuju rilis GitHub.
 - **Penyempurnaan UX Indikator Perbesaran (Zoom) & Umpan Balik Status Bar**: Menggantikan jendela indikator teks memudar di tengah layar yang sebelumnya menutupi teks editor saat melakukan pembesaran/pengecilan dengan notifikasi status bar yang bersih dan tidak mengganggu (`statusBar()->showMessage(tr("Zoom: %1%").arg(...), 2000)`), menjaga ruang kerja editor tetap terlihat utuh. Memperbarui wadah `FadingIndicator` dengan tipografi tebal putih kontras tinggi di atas latar belakang gelap tembus pandang membulat (`rgba(30, 30, 30, 220)`).

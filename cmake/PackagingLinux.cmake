@@ -1,6 +1,10 @@
-message(STATUS "Configuring Linux packaging (.deb, .rpm, AppImage)")
+if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    message(STATUS "Configuring FreeBSD desktop installation")
+else()
+    message(STATUS "Configuring Linux packaging (.deb, .rpm, AppImage)")
+endif()
 
-# Standard installation paths for Linux desktop
+# Standard installation paths for Linux & BSD desktops
 install(TARGETS SparkNotePad
     RUNTIME DESTINATION bin
 )
@@ -17,6 +21,7 @@ install(FILES
     DESTINATION share/icons/hicolor/scalable/mimetypes
 )
 
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 # ─── CPack Configuration (.deb & .rpm) ─────────────────────────────
 set(CPACK_PACKAGE_NAME "sparknotepad")
 set(CPACK_PACKAGE_VENDOR "SparkNotePad Contributors")
@@ -122,4 +127,5 @@ if(APP_DISTRIBUTION STREQUAL "AppImage")
             DEPENDS appdir download_linuxdeploy
         )
     endif()
+endif()
 endif()

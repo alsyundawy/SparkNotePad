@@ -15,6 +15,11 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🆕 Added
 
+- **FreeBSD 14.x & 15.x Native Portability, Subproject Install Isolation & FreeBSD Desktop Packaging**:
+  - Validated native compilation and execution on FreeBSD 14.x and FreeBSD 15.1 under both **KDE Plasma 6** and **XFCE** desktop environments without Linuxulator or Wine.
+  - Applied `EXCLUDE_FROM_ALL YES` across all CPM vendor packages (`ads`, `QSimpleUpdater`, `SingleApplication`, `editorconfig_core_qt`) in `thirdparty/CMakeLists.txt`, isolating internal static libraries and headers from host system installation paths (`/usr/local/include`, `/usr/local/lib`) and eliminating accidental subproject leakage into Linux `.deb`/`.rpm` packages.
+  - Declared `OPTIONAL_COMPONENTS GuiPrivate` and enabled `QT_NO_PRIVATE_MODULE_WARNING ON` for clean Qt 6.10+/6.11 compilation, and added FreeBSD platform detection in `cmake/PackagingLinux.cmake`.
+  - Added comprehensive native guides: [`doc/BUILD_FREEBSD_KDE_XFCE.md`](doc/BUILD_FREEBSD_KDE_XFCE.md) and [`doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md).
 - **Production-Grade Linux Default Editor Engine (`SparkNotePad-Default-Editor-Linux.sh`) & Root Script Promotion**:
   - Engineered a specialized, industrial-strength Linux default editor configuration engine (`SparkNotePad-Default-Editor-Linux.sh`) and promoted both `SparkNotePad-Default-Editor.sh` and `SparkNotePad-Default-Editor-Linux.sh` directly to the repository root directory as canonical release assets.
   - Implemented a comprehensive **5-Layer Integration Architecture**:

@@ -35,6 +35,8 @@ if(UNIX AND NOT APPLE)
     add_link_options(-Wl,-z,relro -Wl,-z,now)
 endif()
 
+set(QT_NO_PRIVATE_MODULE_WARNING ON)
+
 find_package(Qt6
     REQUIRED
         COMPONENTS
@@ -44,6 +46,8 @@ find_package(Qt6
             Network
             PrintSupport
             Core5Compat
+        OPTIONAL_COMPONENTS
+            GuiPrivate
 )
 
 set(CMAKE_AUTORCC ON)
