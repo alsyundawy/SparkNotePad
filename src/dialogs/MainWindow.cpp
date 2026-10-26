@@ -3146,8 +3146,10 @@ void MainWindow::showSaveErrorMessage(const ScintillaNext *editor, QFileDevice::
 }
 
 void MainWindow::showEditorZoomLevelIndicator() const {
-    // Not sure if Scintilla's zoom level matches up to an exact percentage, but visibly this is close
-    FadingIndicator::showText(currentEditor(), tr("Zoom: %1%").arg(zoomLevel * 10 + 100));
+    const QString msg = tr("Zoom: %1%").arg(zoomLevel * 10 + 100);
+    if (statusBar()) {
+        statusBar()->showMessage(msg, 2000);
+    }
 }
 
 MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext *> &editorList) {
@@ -3495,7 +3497,7 @@ void MainWindow::ensureMenuIconsVisible(QWidget *root) {
             action->setIconVisibleInMenu(true);
         }
     }
-    if (auto *menu = qobject_cast<QMenu *>(target)) {
+    if (const auto *menu = qobject_cast<const QMenu *>(target)) {
         for (auto *action : menu->actions()) {
             if (!action->icon().isNull()) {
                 action->setIconVisibleInMenu(true);
@@ -4332,17 +4334,21 @@ void MainWindow::restartApplication(bool safeMode) {
                           .arg(args.join(QLatin1Char(' ')));
     }
 
-    const bool launched =
-        QProcess::startDetached(QStringLiteral("/bin/sh"), QStringList{QStringLiteral("-c"), relaunchCmd});
-#else
-    const bool launched = QProcess::startDetached(appFilePath, args, QCoreApplication::applicationDirPath());
-#endif
-
-    if (!launched) {
+    if (const bool launched =
+            QProcess::startDetached(QStringLiteral("/bin/sh"), QStringList{QStringLiteral("-c"), relaunchCmd});
+        !launched) {
         QMessageBox::warning(this, tr("Restart Failed"),
                              tr("Unable to relaunch SparkNotePad automatically from:\n%1").arg(appFilePath));
         return;
     }
+#else
+    if (const bool launched = QProcess::startDetached(appFilePath, args, QCoreApplication::applicationDirPath());
+        !launched) {
+        QMessageBox::warning(this, tr("Restart Failed"),
+                             tr("Unable to relaunch SparkNotePad automatically from:\n%1").arg(appFilePath));
+        return;
+    }
+#endif
 
     QCoreApplication::quit();
 }

@@ -26,13 +26,14 @@
 #include "ui_FolderAsWorkspaceDock.h"
 
 #include <QFileSystemModel>
+#include <QToolButton>
 #include <qmenu.h>
 
-ApplicationSetting<QString> rootPathSetting{"FolderAsWorkspace/RootPath"};
+ApplicationSetting<QString> rootPathSetting{"FolderAsWorkspace/RootPath"};  // NOSONAR(cpp:S5421)
 
 namespace {
 // QFileSystemModel's standard column order.
-enum FileSystemColumn { NameColumn = 0, SizeColumn, TypeColumn, DateColumn };
+enum class FileSystemColumn : int { NameColumn = 0, SizeColumn, TypeColumn, DateColumn };
 }  // namespace
 
 FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
@@ -41,7 +42,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
 
     ui->treeView->setModel(model);
 
-    QMenu *menu = new QMenu(ui->toolButton);
+    auto *menu = new QMenu(ui->toolButton);
     menu->addAction(ui->actionShowSize);
     menu->addAction(ui->actionShowType);
     menu->addAction(ui->actionShowDateModified);
@@ -51,7 +52,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
     ui->toolButton->setMenu(menu);
     ui->toolButton->setPopupMode(QToolButton::MenuButtonPopup);
 
-    auto bindColumnVisibility = [this](QAction *action, int column) {
+    auto bindColumnVisibility = [this](const QAction *action, int column) {
         ui->treeView->setColumnHidden(column, !action->isChecked());
         connect(action, &QAction::toggled, this,
                 [this, column](bool checked) { ui->treeView->setColumnHidden(column, !checked); });
@@ -67,11 +68,12 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
         });
     };
 
-    auto bindColumn = [&](QAction *action, int column, const QString &key) {
-        bindColumnVisibility(action, column);
+    auto bindColumn = [&](QAction *action, FileSystemColumn column, const QString &key) {
+        bindColumnVisibility(action, static_cast<int>(column));
         bindActionToSetting(action, key);
     };
 
+    using enum FileSystemColumn;
     bindColumn(ui->actionShowSize, SizeColumn, "FolderAsWorkspace/ShowSize");
     bindColumn(ui->actionShowType, TypeColumn, "FolderAsWorkspace/ShowType");
     bindColumn(ui->actionShowDateModified, DateColumn, "FolderAsWorkspace/ShowDateModified");
@@ -96,11 +98,11 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
     });
 
     // Configure header settings
-    QHeaderView *header = ui->treeView->header();
-    header->setSectionResizeMode(NameColumn, QHeaderView::Stretch);
-    header->setSectionResizeMode(SizeColumn, QHeaderView::ResizeToContents);
-    header->setSectionResizeMode(TypeColumn, QHeaderView::ResizeToContents);
-    header->setSectionResizeMode(DateColumn, QHeaderView::ResizeToContents);
+    auto *header = ui->treeView->header();
+    header->setSectionResizeMode(static_cast<int>(NameColumn), QHeaderView::Stretch);
+    header->setSectionResizeMode(static_cast<int>(SizeColumn), QHeaderView::ResizeToContents);
+    header->setSectionResizeMode(static_cast<int>(TypeColumn), QHeaderView::ResizeToContents);
+    header->setSectionResizeMode(static_cast<int>(DateColumn), QHeaderView::ResizeToContents);
 
     ApplicationSettings settings;
     setRootPath(settings.get(rootPathSetting));

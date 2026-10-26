@@ -332,6 +332,7 @@ qt_add_translations(SparkNotePad
 
 target_include_directories(SparkNotePad
     PRIVATE
+        ${CMAKE_CURRENT_BINARY_DIR}/SparkNotePad_autogen/include
         ${CMAKE_CURRENT_SOURCE_DIR}/decorators
         ${CMAKE_CURRENT_SOURCE_DIR}/dialogs
         ${CMAKE_CURRENT_SOURCE_DIR}/docks
@@ -341,12 +342,13 @@ target_include_directories(SparkNotePad
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+configure_file(
+	"${CMAKE_SOURCE_DIR}/deploy/windows/version.rc.in"
+	"${CMAKE_BINARY_DIR}/version.rc"
+	@ONLY
+)
+
 if(WIN32)
-	configure_file(
-		"${CMAKE_SOURCE_DIR}/deploy/windows/version.rc.in"
-		"${CMAKE_BINARY_DIR}/version.rc"
-		@ONLY
-	)
 	set_source_files_properties("${CMAKE_BINARY_DIR}/version.rc" PROPERTIES GENERATED TRUE)
 	target_sources(SparkNotePad PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
 	configure_file(

@@ -205,10 +205,12 @@ Official production binary packages for SparkNotePad v1.3.5 are ready for immedi
 
 - **Ubuntu 22.04+ / Debian 12+ (`.deb`)**:
   Install via `apt` with a leading `./` so all Qt 6 and desktop dependencies are automatically resolved and installed from official repositories:
+
   ```bash
   sudo apt install ./sparknotepad_1.3.5_amd64.deb
   ```
-  *(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md)).*
+
+  _(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md))._
 
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
   ```bash
@@ -272,7 +274,9 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 
 ### [v1.3.5] — Restart/Exit Lifecycle, Find & Replace Form Fix, 100% Linter Eradication & 2025–2026 Security Audit (2026-10-24)
 
-- **macOS DMG Package Size Optimization (< 30 MB)**: Re-engineered `cmake/PackagingMac.cmake` to prune unused Qt frameworks (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`, and associated plugins) and enforced maximum `UDZO` compression (`zlib-level=9`), slashing macOS Intel (`x86_64`) DMG package size from 52.46 MB to **29.80 MB** (43% reduction, safely under the 50 MB ceiling) with 100% verified runtime integrity.
+- **Zoom Level Indicator UX Refinement & Non-Intrusive Status Bar Feedback**: Replaced the intrusive centered fading indicator text pill that covered the editor during zoom gestures with clean, unobtrusive status bar notifications (`statusBar()->showMessage(tr("Zoom: %1%").arg(...), 2000)`), keeping code completely visible. Refined `FadingIndicator` container styling with crisp white bold typography on modern translucent dark rounded container (`rgba(30, 30, 30, 220)`).
+- **100% Clean SonarLint, Clangd & Cppcheck Static Analysis Compliance**: Resolved all SonarLint and Clangd linter warnings across `MainWindow.cpp`, `EditorInspectorDock.cpp`, `FadingIndicator.cpp`, `.clangd`, and external Qt framework header parsing in Clangd. Verified 0 issues via `trunk check` (`cppcheck-qt`, `clang-format`, `git-diff-check`).
+- **macOS DMG Package Size Optimization (< 30 MB)**: Re-engineered `cmake/PackagingMac.cmake` to prune unused Qt frameworks (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`, and associated plugins) and enforced maximum `UDZO` compression (`zlib-level=9`), slashing macOS Intel (`x86_64`) DMG package size from 52.46 MB to **27.28 MB** (48% reduction, safely under the 50 MB ceiling) with 100% verified runtime integrity.
 - **100% Clean Clangd & Cppcheck Static Analysis**: Verified 0 compiler/AST diagnostics across all 135 translation units via `clangd --check`. Resolved cppcheck performance and safety recommendations (`const QString &` return in `Macro::getName()`, `const QStringList &` in `RecentFilesListManager::fileList()`, default member initialization in `StatusBarCustomizerDialog`), and corrected preprocessor define tokenization in `scripts/generate_compilation_database.py`.
 - **Complete Eradication of 1,288 IDE Diagnostics & 756 SonarQube Errors**: Configured clean AppleClang compilation database (874 KB, 286 units) resolving all cascade include path errors. Fully verified compliance across Scintilla 5.6.7 (`Platform.h`, `Geometry.h`, `ScintillaEdit.h`) and SparkNotePad (`ScintillaNext.h`, `FindReplaceDialog`, `MainWindow.cpp`, `IFaceTable.cpp`), resolving parameter shadowing, type conversions, swappable parameters, non-virtual destructors, and preprocessor circular dependencies. Replaced unsafe C `strcpy`/`strcat` with bounded `snprintf`, and eliminated all Flawfinder risk-level-4 hits (0 hits across codebase).
 - **In-Depth Upstream Comparison Documentation**: Added [doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md) providing an exhaustive bilingual (English & Indonesian) technical analysis comparing official NotepadNext 0.15 with SparkNotePad v1.3.5 across 40+ architectural, security, and productivity dimensions.

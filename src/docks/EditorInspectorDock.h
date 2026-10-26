@@ -33,7 +33,7 @@
 class MainWindow;
 class ScintillaNext;
 
-typedef std::function<QString(ScintillaNext *)> EditorFunction;
+using EditorFunction = std::function<QString(ScintillaNext *)>;
 
 namespace Ui {
 class EditorInspectorDock;
@@ -44,7 +44,7 @@ class EditorInspectorDock : public QDockWidget {
 
 public:
     explicit EditorInspectorDock(MainWindow *parent);
-    ~EditorInspectorDock();
+    ~EditorInspectorDock() override;
 
 private slots:
     void connectToEditor(ScintillaNext *editor);

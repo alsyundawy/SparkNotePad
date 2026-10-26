@@ -205,10 +205,12 @@ Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui
 
 - **Ubuntu 22.04+ / Debian 12+ (`.deb`)**:
   Pasang melalui perintah `apt` dengan awalan `./` agar seluruh pustaka dependensi Qt 6 dan desktop diunduh dan dipasang otomatis dari repositori resmi:
+
   ```bash
   sudo apt install ./sparknotepad_1.3.5_amd64.deb
   ```
-  *(Lihat panduan lengkap [Panduan Build Native Debian & Ubuntu](doc/BUILD_UBUNTU_DEBIAN.md) serta [Panduan Paket Linux](doc/LINUX_DEB_RPM_PACKAGING.md)).*
+
+  _(Lihat panduan lengkap [Panduan Build Native Debian & Ubuntu](doc/BUILD_UBUNTU_DEBIAN.md) serta [Panduan Paket Linux](doc/LINUX_DEB_RPM_PACKAGING.md))._
 
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
   ```bash
@@ -272,7 +274,9 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 
 ### [v1.3.5] — Siklus Mulai Ulang/Keluar Aplikasi, Koreksi Form Cari & Ganti, Pembasmian Total Linter & Audit Keamanan 2025–2026 (2026-10-24)
 
-- **Optimasi Ukuran Paket DMG macOS (< 30 MB)**: Memodifikasi `cmake/PackagingMac.cmake` untuk memangkas framework Qt yang tidak digunakan (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`, serta plugin terkait) dan menerapkan kompresi maksimal `UDZO` (`zlib-level=9`), memangkas ukuran berkas DMG macOS Intel (`x86_64`) dari 52.46 MB menjadi **29.80 MB** (pengurangan 43%, jauh di bawah batas 50 MB) dengan integritas eksekusi 100% teruji.
+- **Penyempurnaan UX Indikator Perbesaran (Zoom) & Umpan Balik Status Bar**: Menggantikan jendela indikator teks memudar di tengah layar yang sebelumnya menutupi teks editor saat melakukan pembesaran/pengecilan dengan notifikasi status bar yang bersih dan tidak mengganggu (`statusBar()->showMessage(tr("Zoom: %1%").arg(...), 2000)`), menjaga ruang kerja editor tetap terlihat utuh. Memperbarui wadah `FadingIndicator` dengan tipografi tebal putih kontras tinggi di atas latar belakang gelap tembus pandang membulat (`rgba(30, 30, 30, 220)`).
+- **Kepatuhan 100% Bersih SonarLint, Clangd & Cppcheck**: Memperbaiki seluruh peringatan SonarLint dan Clangd di `MainWindow.cpp`, `EditorInspectorDock.cpp`, `FadingIndicator.cpp`, `.clangd`, serta konfigurasi parsing header eksternal Qt di Clangd. Terverifikasi 0 masalah melalui `trunk check` (`cppcheck-qt`, `clang-format`, `git-diff-check`).
+- **Optimasi Ukuran Paket DMG macOS (< 30 MB)**: Memodifikasi `cmake/PackagingMac.cmake` untuk memangkas framework Qt yang tidak digunakan (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`, serta plugin terkait) dan menerapkan kompresi maksimal `UDZO` (`zlib-level=9`), memangkas ukuran berkas DMG macOS Intel (`x86_64`) dari 52.46 MB menjadi **27.28 MB** (pengurangan 48%, jauh di bawah batas 50 MB) dengan integritas eksekusi 100% teruji.
 - **Analisis Statis 100% Bersih (Clangd & Cppcheck)**: Memverifikasi 0 diagnostik compiler/AST pada seluruh 135 unit translasi via `clangd --check`. Menuntaskan rekomendasi performa dan keamanan cppcheck (pengembalian `const QString &` pada `Macro::getName()`, `const QStringList &` pada `RecentFilesListManager::fileList()`, dan inisialisasi default member pada `StatusBarCustomizerDialog`), serta memperbaiki tokenisasi define preprocessor pada `scripts/generate_compilation_database.py`.
 - **Pembasmian Total 1.288 Error IDE & 756 Error SonarQube**: Mengonfigurasi basis data kompilasi AppleClang bersih (874 KB, 286 unit) yang menuntaskan seluruh error header search path. Kepatuhan penuh terverifikasi pada pustaka Scintilla 5.6.7 (`Platform.h`, `Geometry.h`, `ScintillaEdit.h`) serta kode inti SparkNotePad (`ScintillaNext.h`, `FindReplaceDialog`, `MainWindow.cpp`, `IFaceTable.cpp`), menuntaskan shadowing parameter, konversi tipe data, swappable parameters, non-virtual destructor, dan dependensi sirkular preprocessor. Mengganti fungsi C tidak aman `strcpy`/`strcat` dengan `snprintf` berbatas ukuran buffer, serta menuntaskan seluruh temuan Flawfinder level 4 (0 temuan di seluruh repositori).
 - **Dokumen Komparasi Mendalam vs Upstream**: Menambahkan [doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md) yang memuat analisis teknis mendalam dwibahasa (Inggris & Indonesia) yang membandingkan official NotepadNext 0.15 dengan SparkNotePad v1.3.5 pada lebih dari 40 dimensi arsitektur, keamanan, integrasi macOS, dan perangkat pengembang.
