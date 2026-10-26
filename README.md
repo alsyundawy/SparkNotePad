@@ -68,6 +68,8 @@
 
 ![imafe](https://github.com/user-attachments/assets/53a7a455-7533-4280-8b2f-811d38c9445a)
 
+![imafe](https://github.com/user-attachments/assets/6eccbb52-0aca-471c-8536-957d2ba0a09b)
+
 ---
 
 > Lead Developer & Maintainer:<br>
