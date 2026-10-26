@@ -56,9 +56,15 @@
   </a>
 </p>
 
-<p align="center">
-  <img src="doc/screenshot.png" width="85%" alt="SparkNotePad Application Preview Screenshot" />
-</p>
+---
+
+![image](https://github.com/user-attachments/assets/6de50c4f-44d9-4ba9-937b-c0188e271ef4)
+
+![imafe](https://github.com/user-attachments/assets/a7b36711-1ee8-40b1-ae86-13a1ff7ab0b6)
+
+![imafe](https://github.com/user-attachments/assets/4b3e6456-494b-45cd-8009-926b8d528091)
+
+---
 
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
