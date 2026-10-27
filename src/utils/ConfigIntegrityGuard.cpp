@@ -32,10 +32,9 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
 
     const QString lower = trimmed.toLower();
 
-    const auto bannedIt = std::find_if(kBannedPrefixes.cbegin(), kBannedPrefixes.cend(),
-                                        [&lower](const QString &banned) {
-                                            return lower.startsWith(banned) || lower == banned.trimmed();
-                                        });
+    const auto bannedIt =
+        std::find_if(kBannedPrefixes.cbegin(), kBannedPrefixes.cend(),
+                     [&lower](const QString &banned) { return lower.startsWith(banned) || lower == banned.trimmed(); });
     if (bannedIt != kBannedPrefixes.cend()) {
         if (rejectedReason) {
             *rejectedReason = QCoreApplication::translate(
@@ -88,12 +87,12 @@ bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString 
                                                       QStringLiteral("/bin/bash")};
 
     const bool isSensitive = std::any_of(kSensitiveSystemPaths.cbegin(), kSensitiveSystemPaths.cend(),
-                                          [&canonical](const QString &sysPath) { return canonical == sysPath; });
+                                         [&canonical](const QString &sysPath) { return canonical == sysPath; });
     if (isSensitive) {
         if (errorMsg)
-            *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard",
-                                                    "Attempted access to restricted system file: %1")
-                            .arg(canonical);
+            *errorMsg =
+                QCoreApplication::translate("ConfigIntegrityGuard", "Attempted access to restricted system file: %1")
+                    .arg(canonical);
         return false;
     }
 
