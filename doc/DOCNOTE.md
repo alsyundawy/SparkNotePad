@@ -210,6 +210,11 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
     - **FreeBSD Packaging Detection**: Updated `cmake/PackagingLinux.cmake` with FreeBSD platform branching to cleanly suppress Linux `.deb`/`.rpm`/`AppImage` targets on BSD while maintaining standard XDG desktop entry and scalable icon registration.
     - **Comprehensive Production Documentation**: Authored `doc/BUILD_FREEBSD_KDE_XFCE.md` (Native build & desktop integration guide) and `doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md` (Forensic analysis and actionable task list).
 
+24. **CI/CD Security Automation & Dependency Hardening (CodeQL 4.39.1 & Git Auto-Commit 7.2.1)**:
+    - **CodeQL Security Action Upgrades**: Upgraded GitHub Actions CodeQL security suite to `github/codeql-action/init-4.39.1` and `github/codeql-action/analyze-4.39.1`, ensuring zero-vulnerability security analysis against the latest vulnerability and CWE threat databases.
+    - **Git Auto-Commit Automation Hardening**: Upgraded `stefanzweifel/git-auto-commit-action` to `v7.2.1` with hardened commit signing and token permissions.
+    - **FreeBSD Platform Support Alignment**: Updated English and Indonesian documentation (`README.md`, `README-id.md`) officially declaring native Tier-1 platform support for FreeBSD across KDE Plasma 6 and XFCE desktop environments.
+
 ---
 
 ## 1. Executive Summary: Release v1.3.0
