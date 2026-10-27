@@ -48,8 +48,9 @@ SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating sys
    - **HashIntegrityManager & Dialog**: Chunk-by-chunk streaming checksum generation (SHA-256, SHA-512, SHA-3) and real-time comparison badge.
    - **NetworkSecurityPolicy**: Global TLS 1.2+ baseline, no CWD cert lookups (CVE-2025-14575), and 1-click air-gap offline mode.
 
-6. **High-Visibility UI Polish**:
-   - 19 crisp 24x24 monoline SVGs replacing legacy PNGs.
+6. **Complete 27 Monoline Vector SVG Suite & Full i18n Localization**:
+   - Replaced all legacy toolbar and menu PNG icons (`newfile`, `openFile`, `closeFile`, `closeAll`, `saveAll`, `saved`, `unsaved`, `cut`, `copy`, `paste`, `printer`, `readonly`, `text_indent`, `text_indent_remove`, `table_edit`, `table_delete`, `arrow_up`, `arrow_down`, `arrow_refresh`, `wrap`, `wrapindicator`, `invisibleChar`, `startRecord`, `stopRecord`, `playRecord`, `playRecord_m`, `saveRecord`) with 27 crisp 24x24 monoline SVGs matching modern macOS/Linux design language.
+   - Completed 100% bilingual localization in `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` for all 35 new v1.3.6 strings, compiled with 0 unfinished entries.
    - Standardized `QComboBox` and popup list styling across all dialogs.
 
 ---

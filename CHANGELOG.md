@@ -41,9 +41,10 @@ SparkNotePad v1.3.6 delivers an expanded Tier-1 operating system and distributio
 - **Strict TLS Security Baseline & Air-Gap Offline Policy (`NetworkSecurityPolicy`)**:
   - Enforced global TLS 1.2/1.3 baseline across network access routines, disabling unvalidated CA cert lookup from the current working directory to mitigate CVE-2025-14575.
   - Added single-click "Strict Offline Mode (Air-Gap)" setting in `ApplicationSettings` and Preferences Dialog, immediately blocking all outbound telemetry and update requests.
-- **Complete Monoline Vector SVG Toolbar Suite**:
-  - Created 19 high-DPI 24x24 monoline SVGs replacing legacy PNGs: `newfile.svg`, `openFile.svg`, `closeFile.svg`, `closeAll.svg`, `saveAll.svg`, `saved.svg`, `unsaved.svg`, `cut.svg`, `copy.svg`, `paste.svg`, `printer.svg`, `readonly.svg`, `text_indent.svg`, `text_indent_remove.svg`, `table_edit.svg`, `table_delete.svg`, `arrow_up.svg`, `arrow_down.svg`, `arrow_refresh.svg`.
+- **Complete 27 Monoline Vector SVG Toolbar Suite & Full i18n Localization**:
+  - Replaced all legacy toolbar and menu PNG icons with 27 high-DPI 24x24 monoline vector SVGs: `newfile.svg`, `openFile.svg`, `closeFile.svg`, `closeAll.svg`, `saveAll.svg`, `saved.svg`, `unsaved.svg`, `cut.svg`, `copy.svg`, `paste.svg`, `printer.svg`, `readonly.svg`, `text_indent.svg`, `text_indent_remove.svg`, `table_edit.svg`, `table_delete.svg`, `arrow_up.svg`, `arrow_down.svg`, `arrow_refresh.svg`, `wrap.svg`, `wrapindicator.svg`, `invisibleChar.svg`, `startRecord.svg`, `stopRecord.svg`, `playRecord.svg`, `playRecord_m.svg`, and `saveRecord.svg`.
   - Updated resource definitions in `src/resources.qrc` and UI form bindings in `MainWindow.ui` and `MainWindow.cpp`.
+  - Completed 100% bilingual localization in `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` for all 35 new v1.3.6 features and dialogs with 0 unfinished entries.
 - **Unified QComboBox Dropdown Ergonomics**:
   - Standardized `QComboBox`, `QListView`, and popup list views across dialogs (`PreferencesDialog`, `FindReplaceDialog`, `ThemeManager`) with subtle 4px rounded borders, 4px 8px padding, vector down-arrows, and clean selection/hover highlighting (`rgba(59, 130, 246, 0.2)`).
 
