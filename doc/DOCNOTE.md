@@ -55,7 +55,7 @@ SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating sys
 
 ---
 
-# SparkNotePad Release DocNote — v1.3.5
+## SparkNotePad Release DocNote — v1.3.5
 
 ```text
 ================================================================================
