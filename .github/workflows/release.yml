@@ -371,7 +371,7 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           if [ "${{ github.ref_type }}" != "tag" ]; then
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.5")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.6")
           fi
           echo "Resolved release tag: ${TAG}"
           echo "RELEASE_TAG=${TAG}" >> "$GITHUB_ENV"
@@ -422,12 +422,14 @@ jobs:
             gh release upload "${RELEASE_TAG}" "${pkg}" --clobber || true
           done
 
-      - name: Upload Default Editor Script
+      - name: Upload Default Editor Scripts
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ -f "scripts/SparkNotePad-Default-Editor.sh" ]; then
-            echo "Uploading scripts/SparkNotePad-Default-Editor.sh to release ${RELEASE_TAG}"
-            gh release upload "${RELEASE_TAG}" "scripts/SparkNotePad-Default-Editor.sh" --clobber
-          fi
+          for script in "SparkNotePad-Default-Editor.sh" "SparkNotePad-Default-Editor-Linux.sh" "scripts/SparkNotePad-Default-Editor.sh" "scripts/SparkNotePad-Default-Editor-Linux.sh"; do
+            if [ -f "${script}" ]; then
+              echo "Uploading ${script} to release ${RELEASE_TAG}"
+              gh release upload "${RELEASE_TAG}" "${script}" --clobber || true
+            fi
+          done
