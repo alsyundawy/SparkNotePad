@@ -90,7 +90,7 @@ jobs:
         shell: bash
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
-          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}"
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}"
 
       - name: Build
         shell: bash
@@ -101,6 +101,14 @@ jobs:
         run: |
           cmake --build build --target deb || true
           cmake --build build --target rpm || true
+          if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
+            for f in build/*-qt${{ matrix.qt_version }}_*.deb; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+            for f in build/*-qt${{ matrix.qt_version }}-1.*.rpm; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+          fi
 
       - name: Upload Linux Packages (.deb, .rpm)
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
