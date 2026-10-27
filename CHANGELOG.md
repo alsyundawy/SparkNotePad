@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.7-pre] - 2026-10-28
+
+### 🚀 Command Palette Omnibar, Visual Side-by-Side Diff, Upgraded Project Tree, & Forensics Suite
+
+SparkNotePad v1.3.7-pre introduces high-velocity developer ergonomics inspired by KDE Kate, Pluma (MATE), Notepad-- (cxasm), and modern editors:
+
+#### 🆕 Added
+
+- **Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)**:
+  - Global floating modal spotlight bound to `Cmd+P` / `Ctrl+P` (and Kate `Ctrl+Alt+O`).
+  - Fast fuzzy-search tab switcher across all open document buffers and recent files.
+  - Go-To-Line navigation via `:line` prefix (e.g. `:150`).
+  - Global command launcher mode (`Cmd+Shift+P` / `Ctrl+Shift+P` and Kate `Ctrl+Alt+I`, or `>command`) executing any editor action with fuzzy match.
+- **Native Side-by-Side Visual Diff & File Compare Engine (`FileDiffDialog`)**:
+  - Inspired by `cxasm/notepad--` and Kate `DiffWidget`.
+  - Dual Scintilla pane comparison dialog with synchronized vertical scrolling.
+  - Pure C++20 Myers / LCS line difference algorithm without external dependencies.
+  - Real-time line highlighting for additions (green), deletions (red), and modifications (yellow).
+  - Fast difference navigation via `F7` (Next Diff) and `Shift+F7` (Previous Diff).
+- **Upgraded Project & Workspace Tree Dock (`FolderAsWorkspaceDock`)**:
+  - Integrated real-time bottom filter bar (`filterEdit`) supporting wildcard and pattern matching.
+  - Added toolbar actions for Refresh and Collapse All.
+  - Context menu on tree items: Open in SparkNotePad, Open with System Application, Show in File Manager/Finder, Copy Full Path, Copy Relative Path.
+  - Support for `.sparkproject` JSON configuration detection.
+- **Swiss-Army Code Transformer & Forensics Suite (`TokenForensicUtils` & `CodeCompressPretty`)**:
+  - Prettify and Minify XML / HTML using native Qt `QXmlStreamReader` and `QXmlStreamWriter`.
+  - Prettify SQL queries with major keyword uppercasing and clause indentation.
+  - JWT (JSON Web Token) decoder and validator inspecting Header, Payload, expiration timestamp, and signature.
+  - Document Statistics & Forensics dialog (`DocumentStatisticsDialog`) reporting character counts, word counts, line counts, reading time, and Shannon Entropy (detecting encrypted/obfuscated content).
+- **Multi-Cursor Status Bar Polish**:
+  - Status bar indicator displaying active cursor count (e.g. `[3 Cursors]`) when multi-selection is active.
+
+---
+
 ## [1.3.6] - 2026-10-28
 
 ### 🛡️ Expanded Platform Matrix, Sandboxing Hardening, Defensive Features & Visual Polish

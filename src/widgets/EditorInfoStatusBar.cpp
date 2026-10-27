@@ -273,7 +273,7 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
     QString selectionText;
 
     if (editor->selections() > 1) {
-        selectionText = tr("Sel: N/A");
+        selectionText = tr("    [%1 Cursors]").arg(editor->selections());
     } else {
         const int start = static_cast<int>(editor->selectionStart());
         const int end = static_cast<int>(editor->selectionEnd());

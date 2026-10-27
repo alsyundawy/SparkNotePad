@@ -89,6 +89,10 @@ public slots:
 
     void openFileDialog();
     void openFile(const QString &filePath);
+    void showCommandPalette(bool commandMode = false);
+    void showDocumentStatistics();
+    void decodeJwtToken();
+    void showFileDiffDialog(const QString &filePathA = QString(), const QString &filePathB = QString());
 
     void openFolderAsWorkspaceDialog();
     void setFolderAsWorkspacePath(const QString &dir) const;

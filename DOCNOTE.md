@@ -1,4 +1,37 @@
-# SparkNotePad Release DocNote — v1.3.6
+# SparkNotePad Release DocNote — v1.3.7-pre
+
+```text
+================================================================================
+Release Version     : 1.3.7-pre (Command Palette, Visual Diff, Project Tree & Forensics)
+Release Date        : 2026-10-28
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine : Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 / 5.4.7 (Official Source)
+Scripting Runtime   : Python 3.13+ Engine Bridge
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
+Architecture        : 100% Additive Safe Enhancements Inspired by KDE Kate, Pluma MATE & Notepad--
+================================================================================
+```
+
+---
+
+## 0. Executive Summary: Release v1.3.7-pre
+
+SparkNotePad **v1.3.7-pre** delivers a suite of high-velocity developer ergonomics inspired by primary-source research into **KDE Kate**, **Pluma (MATE)**, and **Notepad-- (cxasm/ndd)** without breaking or regressing any existing functionality:
+
+1. **Omnibar Command Palette & Quick Open (`Cmd+P` / `Ctrl+P`)**: Keyboard-driven floating modal for fast tab switching, recent file navigation, `:line` jumping, and executing any editor action.
+2. **Native Side-by-Side Visual Diff & File Compare Engine**: Pure C++20 Myers/LCS difference algorithm with synchronized vertical scrolling, color-coded line markers, and fast navigation (`F7` / `Shift+F7`).
+3. **Upgraded Project & Workspace Tree Dock**: Real-time bottom filter bar (`filterEdit`), toolbar controls (Refresh, Collapse All), comprehensive context menu (Open, Open with System, Show in Finder, Copy Paths), and `.sparkproject` JSON detection.
+4. **Swiss-Army Code Transformer & Forensics**: Prettify/Minify XML/HTML, SQL query formatting, JWT (JSON Web Token) decoding & validation, and Pluma-style Document Statistics with real-time Shannon Entropy calculation.
+5. **Multi-Cursor UI Polish**: Real-time active cursor counter in status bar (`[N Cursors]`).
+
+---
+
+## SparkNotePad Release DocNote — v1.3.6
 
 ```text
 ================================================================================

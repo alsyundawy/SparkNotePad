@@ -1392,7 +1392,7 @@
     <string>Print...</string>
    </property>
    <property name="shortcut">
-    <string notr="true">Ctrl+P</string>
+    <string notr="true">Ctrl+Alt+Shift+P</string>
    </property>
   </action>
   <action name="actionOpenFolderasWorkspace">

@@ -167,6 +167,10 @@ qt_add_executable(SparkNotePad
 	utils/HashIntegrityManager.cpp
 	utils/NetworkSecurityPolicy.h
 	utils/NetworkSecurityPolicy.cpp
+	utils/TokenForensicUtils.h
+	utils/TokenForensicUtils.cpp
+	utils/MyersDiffEngine.h
+	utils/MyersDiffEngine.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
@@ -199,6 +203,12 @@ qt_add_executable(SparkNotePad
 	decorators/URLFinder.h
 	decorators/ChangeHistoryDecorator.cpp
 	decorators/ChangeHistoryDecorator.h
+	dialogs/CommandPaletteDialog.cpp
+	dialogs/CommandPaletteDialog.h
+	dialogs/DocumentStatisticsDialog.cpp
+	dialogs/DocumentStatisticsDialog.h
+	dialogs/FileDiffDialog.cpp
+	dialogs/FileDiffDialog.h
 	dialogs/ColumnEditorDialog.cpp
 	dialogs/ColumnEditorDialog.h
 	dialogs/ColumnEditorDialog.ui

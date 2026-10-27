@@ -44,6 +44,12 @@ public:
 signals:
     void fileDoubleClicked(const QString &filePath);
 
+private slots:
+    void onFilterTextChanged(const QString &text);
+    void onRefreshClicked();
+    void onCollapseAllClicked();
+    void onCustomContextMenu(const QPoint &pos);
+
 private:
     Ui::FolderAsWorkspaceDock *ui;
 

@@ -23,6 +23,10 @@
 
 #include <QtGlobal>
 #include "MainWindow.h"
+#include "CommandPaletteDialog.h"
+#include "DocumentStatisticsDialog.h"
+#include "FileDiffDialog.h"
+#include "TokenForensicUtils.h"
 #include "SparkNotePadApplication.h"
 #include "ThemeSwitcherDialog.h"
 #include "features/ThemePaletteData.h"
@@ -411,6 +415,45 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, false); });
     connect(ui->actionMinifyJs, &QAction::triggered, this,
             [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, true); });
+
+    ui->menuCodeFormatter->addSeparator();
+
+    auto *actionFormatXml = new QAction(tr("Prettify XML / HTML"), this);
+    connect(actionFormatXml, &QAction::triggered, this,
+            [handleFormat]() { handleFormat(CodeCompressPretty::Xml, false); });
+    ui->menuCodeFormatter->addAction(actionFormatXml);
+
+    auto *actionMinifyXml = new QAction(tr("Minify XML / HTML"), this);
+    connect(actionMinifyXml, &QAction::triggered, this,
+            [handleFormat]() { handleFormat(CodeCompressPretty::Xml, true); });
+    ui->menuCodeFormatter->addAction(actionMinifyXml);
+
+    ui->menuCodeFormatter->addSeparator();
+
+    auto *actionFormatSql = new QAction(tr("Prettify SQL Query"), this);
+    connect(actionFormatSql, &QAction::triggered, this,
+            [handleFormat]() { handleFormat(CodeCompressPretty::Sql, false); });
+    ui->menuCodeFormatter->addAction(actionFormatSql);
+
+    // Document Statistics & Forensics (Pluma style + Shannon Entropy)
+    auto *actionDocStats = new QAction(tr("&Document Statistics & Forensics..."), this);
+    actionDocStats->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_D));
+    actionDocStats->setStatusTip(tr("View document lines, words, characters, reading time, and Shannon entropy"));
+    connect(actionDocStats, &QAction::triggered, this, &MainWindow::showDocumentStatistics);
+    ui->menuView->addAction(actionDocStats);
+
+    // Side-by-side Visual Diff (Notepad-- / Kate DiffWidget style)
+    auto *actionCompareFiles = new QAction(tr("&Compare Files / Tabs (Diff)..."), this);
+    actionCompareFiles->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
+    actionCompareFiles->setStatusTip(tr("Compare two open tabs or files side-by-side with synchronized scrolling"));
+    connect(actionCompareFiles, &QAction::triggered, this, [this]() { showFileDiffDialog(); });
+    ui->menuView->addAction(actionCompareFiles);
+
+    // JWT Decoder action
+    auto *actionDecodeJwt = new QAction(tr("&Decode JSON Web Token (JWT)"), this);
+    actionDecodeJwt->setStatusTip(tr("Decode selected JWT token or current document into formatted JSON"));
+    connect(actionDecodeJwt, &QAction::triggered, this, &MainWindow::decodeJwtToken);
+    ui->menuEdit->addAction(actionDecodeJwt);
 
     ui->actionEvaluateMathAppend->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
     ui->actionEvaluateMathReplace->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
@@ -887,7 +930,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     auto *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
     auto *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
     actionRunPython->setIcon(QIcon(QStringLiteral(":/icons/playRecord.svg")));
-    actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
+    actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R));
     connect(actionRunPython, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
         if (!editor) {
@@ -1504,6 +1547,21 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         }
     });
     ui->menuView->addAction(actionPrevChange);
+
+    // Quick Open (Cmd+P / Ctrl+P, Kate: Ctrl+Alt+O)
+    auto *actionQuickOpen = new QAction(tr("&Quick Open..."), this);
+    actionQuickOpen->setShortcuts({QKeySequence(Qt::CTRL | Qt::Key_P), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O)});
+    actionQuickOpen->setStatusTip(tr("Quickly switch open tabs, recent files, or jump to line"));
+    connect(actionQuickOpen, &QAction::triggered, this, [this]() { showCommandPalette(false); });
+    ui->menuFile->addAction(actionQuickOpen);
+
+    // Command Palette (Cmd+Shift+P / Ctrl+Shift+P, Kate: Ctrl+Alt+I)
+    auto *actionCommandPalette = new QAction(tr("&Command Palette..."), this);
+    actionCommandPalette->setShortcuts(
+        {QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_I)});
+    actionCommandPalette->setStatusTip(tr("Search and execute any editor command"));
+    connect(actionCommandPalette, &QAction::triggered, this, [this]() { showCommandPalette(true); });
+    ui->menuView->addAction(actionCommandPalette);
 
     // Zooming controls all editors simulaneously
     connect(ui->actionZoomIn, &QAction::triggered, this, [this]() {
@@ -4393,4 +4451,64 @@ void MainWindow::exitApplication() {
 
     saveSettings();
     QCoreApplication::quit();
+}
+
+void MainWindow::showCommandPalette(bool commandMode) {
+    auto *palette = new CommandPaletteDialog(this, commandMode ? CommandPaletteDialog::InitialMode::Commands
+                                                               : CommandPaletteDialog::InitialMode::FilesAndTabs);
+    palette->show();
+}
+
+void MainWindow::showDocumentStatistics() {
+    auto *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active document"), 2000);
+        return;
+    }
+
+    const QString text = QString::fromUtf8(editor->getText(editor->length() + 1));
+    const auto stats = TokenForensicUtils::analyzeText(text);
+
+    auto *dialog = new DocumentStatisticsDialog(editor->getName(), stats, this);
+    dialog->exec();
+}
+
+void MainWindow::decodeJwtToken() {
+    auto *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active document"), 2000);
+        return;
+    }
+
+    QString targetText;
+    if (!editor->selectionEmpty()) {
+        targetText = QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()),
+                                                              static_cast<int>(editor->selectionEnd())));
+    } else {
+        targetText = QString::fromUtf8(editor->getText(editor->length() + 1));
+    }
+
+    auto info = TokenForensicUtils::decodeJwt(targetText);
+    if (!info.valid) {
+        QMessageBox::warning(this, tr("JWT Decode Error"), info.errorMessage);
+        return;
+    }
+
+    newFile();
+    auto *newEd = currentEditor();
+    newEd->setName(tr("JWT-Decoded.json"));
+    const QByteArray utf8 = info.formattedOutput.toUtf8();
+    newEd->setText(utf8.constData());
+    newEd->setFocus();
+}
+
+void MainWindow::showFileDiffDialog(const QString &filePathA, const QString &filePathB) {
+    auto *dialog = new FileDiffDialog(this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    if (!filePathA.isEmpty()) {
+        dialog->setInitialFiles(filePathA, filePathB);
+    } else if (auto *ed = currentEditor()) {
+        dialog->setInitialFiles(ed->getFilePath());
+    }
+    dialog->show();
 }

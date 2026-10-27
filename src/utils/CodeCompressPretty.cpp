@@ -21,6 +21,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QRegularExpression>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 QString CodeCompressPretty::languageName(Language lang) {
     switch (lang) {
@@ -32,6 +34,10 @@ QString CodeCompressPretty::languageName(Language lang) {
             return QStringLiteral("CSS");
         case JavaScript:
             return QStringLiteral("JavaScript");
+        case Xml:
+            return QStringLiteral("XML / HTML");
+        case Sql:
+            return QStringLiteral("SQL");
         default:
             return QStringLiteral("Auto");
     }
@@ -50,6 +56,11 @@ CodeCompressPretty::Language CodeCompressPretty::detectLanguage(ScintillaNext *e
         if (ext == QLatin1String("js") || ext == QLatin1String("mjs") || ext == QLatin1String("cjs") ||
             ext == QLatin1String("ts") || ext == QLatin1String("jsx"))
             return JavaScript;
+        if (ext == QLatin1String("xml") || ext == QLatin1String("html") || ext == QLatin1String("svg") ||
+            ext == QLatin1String("xhtml") || ext == QLatin1String("ui") || ext == QLatin1String("plist"))
+            return Xml;
+        if (ext == QLatin1String("sql"))
+            return Sql;
     }
 
     return detectLanguage(sample);
@@ -63,6 +74,17 @@ CodeCompressPretty::Language CodeCompressPretty::detectLanguage(const QString &s
             return Json5;
         }
         return Json;
+    }
+
+    if (text.startsWith('<') && text.endsWith('>')) {
+        return Xml;
+    }
+
+    if (text.startsWith(QStringLiteral("SELECT "), Qt::CaseInsensitive) ||
+        text.startsWith(QStringLiteral("INSERT INTO "), Qt::CaseInsensitive) ||
+        text.startsWith(QStringLiteral("UPDATE "), Qt::CaseInsensitive) ||
+        text.startsWith(QStringLiteral("CREATE TABLE "), Qt::CaseInsensitive)) {
+        return Sql;
     }
 
     if (text.contains('{') && text.contains('}') && text.contains(':') && text.contains(';')) {
@@ -333,6 +355,10 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &tex
             return prettifyCss(text);
         case JavaScript:
             return prettifyJs(text);
+        case Xml:
+            return prettifyXml(text);
+        case Sql:
+            return prettifySql(text);
         default:
             return prettifyJson(text, false);
     }
@@ -352,6 +378,10 @@ CodeCompressPretty::Result CodeCompressPretty::compressString(const QString &tex
             return compressCss(text);
         case JavaScript:
             return compressJs(text);
+        case Xml:
+            return compressXml(text);
+        case Sql:
+            return prettifySql(text);
         default:
             return compressJson(text, false);
     }
@@ -442,3 +472,100 @@ CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, L
     return result;
 }
 #endif
+
+CodeCompressPretty::Result CodeCompressPretty::prettifyXml(const QString &text) {
+    if (text.trimmed().isEmpty()) {
+        return {false, false, Xml, text, QString(), QStringLiteral("Empty XML input")};
+    }
+
+    QXmlStreamReader reader(text);
+    QString out;
+    QXmlStreamWriter writer(&out);
+    writer.setAutoFormatting(true);
+    writer.setAutoFormattingIndent(2);
+
+    while (!reader.atEnd()) {
+        reader.readNext();
+        if (reader.hasError()) {
+            return {false, false, Xml, text, QString(), reader.errorString()};
+        }
+        writer.writeCurrentToken(reader);
+    }
+
+    return {true, false, Xml, text, out, QString()};
+}
+
+CodeCompressPretty::Result CodeCompressPretty::compressXml(const QString &text) {
+    if (text.trimmed().isEmpty()) {
+        return {false, false, Xml, text, QString(), QStringLiteral("Empty XML input")};
+    }
+
+    QXmlStreamReader reader(text);
+    QString out;
+    QXmlStreamWriter writer(&out);
+    writer.setAutoFormatting(false);
+
+    while (!reader.atEnd()) {
+        reader.readNext();
+        if (reader.hasError()) {
+            return {false, false, Xml, text, QString(), reader.errorString()};
+        }
+        if (reader.tokenType() == QXmlStreamReader::Characters && reader.isWhitespace()) {
+            continue;
+        }
+        writer.writeCurrentToken(reader);
+    }
+
+    return {true, false, Xml, text, out, QString()};
+}
+
+CodeCompressPretty::Result CodeCompressPretty::prettifySql(const QString &text) {
+    if (text.trimmed().isEmpty()) {
+        return {false, false, Sql, text, QString(), QStringLiteral("Empty SQL input")};
+    }
+
+    static const QStringList majorKeywords = {
+        QStringLiteral("SELECT"),      QStringLiteral("FROM"),         QStringLiteral("WHERE"),
+        QStringLiteral("GROUP BY"),    QStringLiteral("HAVING"),       QStringLiteral("ORDER BY"),
+        QStringLiteral("LEFT JOIN"),   QStringLiteral("RIGHT JOIN"),   QStringLiteral("INNER JOIN"),
+        QStringLiteral("OUTER JOIN"),  QStringLiteral("FULL JOIN"),    QStringLiteral("CROSS JOIN"),
+        QStringLiteral("JOIN"),        QStringLiteral("ON"),           QStringLiteral("INSERT INTO"),
+        QStringLiteral("VALUES"),      QStringLiteral("UPDATE"),       QStringLiteral("SET"),
+        QStringLiteral("DELETE FROM"), QStringLiteral("CREATE TABLE"), QStringLiteral("DROP TABLE"),
+        QStringLiteral("ALTER TABLE"), QStringLiteral("UNION ALL"),    QStringLiteral("UNION"),
+        QStringLiteral("LIMIT"),       QStringLiteral("OFFSET")};
+
+    static const QStringList inlineKeywords = {
+        QStringLiteral("AND"),         QStringLiteral("OR"),        QStringLiteral("AS"),
+        QStringLiteral("IN"),          QStringLiteral("IS NULL"),   QStringLiteral("IS NOT NULL"),
+        QStringLiteral("NOT"),         QStringLiteral("LIKE"),      QStringLiteral("BETWEEN"),
+        QStringLiteral("EXISTS"),      QStringLiteral("CASE"),      QStringLiteral("WHEN"),
+        QStringLiteral("THEN"),        QStringLiteral("ELSE"),      QStringLiteral("END"),
+        QStringLiteral("DISTINCT"),    QStringLiteral("COUNT"),     QStringLiteral("SUM"),
+        QStringLiteral("AVG"),         QStringLiteral("MIN"),       QStringLiteral("MAX"),
+        QStringLiteral("ASC"),         QStringLiteral("DESC"),      QStringLiteral("PRIMARY KEY"),
+        QStringLiteral("FOREIGN KEY"), QStringLiteral("REFERENCES")};
+
+    QString result = text;
+
+    for (const auto &kw : majorKeywords) {
+        QRegularExpression re(QStringLiteral("\\b") + QRegularExpression::escape(kw) + QStringLiteral("\\b"),
+                              QRegularExpression::CaseInsensitiveOption);
+        result.replace(re, kw);
+    }
+    for (const auto &kw : inlineKeywords) {
+        QRegularExpression re(QStringLiteral("\\b") + QRegularExpression::escape(kw) + QStringLiteral("\\b"),
+                              QRegularExpression::CaseInsensitiveOption);
+        result.replace(re, kw);
+    }
+
+    for (const auto &kw : majorKeywords) {
+        if (kw == QStringLiteral("ON") || kw == QStringLiteral("VALUES"))
+            continue;
+        QRegularExpression re(QStringLiteral("\\s*\\b(") + QRegularExpression::escape(kw) + QStringLiteral(")\\b\\s*"));
+        result.replace(re, QStringLiteral("\n\\1 "));
+    }
+
+    result.replace(QRegularExpression(QStringLiteral("\\n\\s*\\n+")), QStringLiteral("\n"));
+    return {true, false, Sql, text, result.trimmed(), QString()};
+}

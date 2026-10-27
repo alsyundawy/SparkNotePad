@@ -23,7 +23,7 @@ class ScintillaNext;
 
 class CodeCompressPretty {
 public:
-    enum Language : std::uint8_t { Auto, Json, Json5, Css, JavaScript };
+    enum Language : std::uint8_t { Auto, Json, Json5, Css, JavaScript, Xml, Sql };
 
     struct Result {
         bool success{false};
@@ -55,6 +55,11 @@ public:
 
     static Result prettifyJs(const QString &text);
     static Result compressJs(const QString &text);
+
+    static Result prettifyXml(const QString &text);
+    static Result compressXml(const QString &text);
+
+    static Result prettifySql(const QString &text);
 
     // Detect language from text sample or editor context
     static Language detectLanguage(const QString &sample = QString());
