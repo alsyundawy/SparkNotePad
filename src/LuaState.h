@@ -49,10 +49,12 @@ public:
     void executeFile(const QString &fileName);
     void clearStack();
 
-    // Security sandbox: call after luaL_openlibs() to strip dangerous OS/IO primitives
-    // when executing untrusted user macro scripts or extension code.
-    // Removes: os.execute, os.exit, os.tmpname, io.popen, package.loadlib, package.loadclib
-    // SAFE to call on the shared LuaState; core language/editor functions are unaffected.
+    // Security sandbox: strips dangerous OS/IO/debug primitives and dynamic loaders
+    // to defend against arbitrary code execution (CVE-2026-42214 / GHSA-m5fq-c9x5-w54g).
+    // Neutralizes: os.execute, os.exit, os.tmpname, os.remove, os.rename, os.getenv, os.setlocale,
+    //              io.popen, io.open, io.lines, io.input, io.output, io.tmpfile,
+    //              debug library (debug = nil), package.loadlib, package.loadclib, package.cpath = "".
+    // Safe standard libraries (math, string, table, utf8) remain intact for syntax definitions.
     void restrictDangerousApis();
 
     void raiseError(const char *errorMessage = Q_NULLPTR);

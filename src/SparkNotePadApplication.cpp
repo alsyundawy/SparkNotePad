@@ -33,6 +33,7 @@
 #include "TranslationManager.h"
 #include "ApplicationSettings.h"
 #include "features/ThemeManager.h"
+#include "utils/NetworkSecurityPolicy.h"
 
 #include "LuaState.h"
 #include "lua.hpp"
@@ -146,6 +147,12 @@ bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
     } else {
         translationManager->loadSystemDefaultTranslation();
     }
+
+    // Enforce global network security & air-gap policy (CVE-2025-14575)
+    NetworkSecurityPolicy::initializeGlobalSecurityPolicy();
+    NetworkSecurityPolicy::setOfflineModeEnabled(settings->strictOfflineMode());
+    connect(settings, &ApplicationSettings::strictOfflineModeChanged,
+            [](bool enabled) { NetworkSecurityPolicy::setOfflineModeEnabled(enabled); });
 
     luaState = new LuaState();  // NOSONAR(cpp:S5025)
     if (parser.isSet(QStringLiteral("safe-mode"))) {

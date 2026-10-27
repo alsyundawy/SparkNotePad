@@ -10,6 +10,7 @@
 
 #include "ReleaseManager.h"
 #include "../dialogs/UpdateDialog.h"
+#include "../utils/NetworkSecurityPolicy.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -80,13 +81,17 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
     m_parentWidget = parent;
     m_silent = silent;
 
+    if (NetworkSecurityPolicy::isOfflineModeEnabled()) {
+        qInfo() << "[ReleaseManager] Check for updates suppressed: Strict Offline Mode is active.";
+        return;
+    }
+
     QUrl apiUrl("https://api.github.com/repos/alsyundawy/SparkNotePad/releases/latest");
     QNetworkRequest request(apiUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, QString("SparkNotePad-App/%1").arg(currentVersion()));
     request.setRawHeader("Accept", "application/vnd.github.v3+json");
-    // Security: CVE-2026-95620 — Disable HTTP/2 to mitigate Qt QNetworkAccessManager
-    // use-after-free in HTTP/2 stream handling (Qt 6.9.0–6.11.2). Safe for all Qt versions.
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false);
+    // Security: CVE-2026-95620 & CVE-2025-14575 mitigations
+    NetworkSecurityPolicy::applySecureTlsConfiguration(request);
 
     qInfo() << "[ReleaseManager] Checking for updates via:" << apiUrl.toString();
     m_netManager->get(request);
@@ -113,8 +118,8 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
 
     QJsonObject obj = doc.object();
     ReleaseInfo info;
-    info.versionTag = obj.value("tag_name").toString();
-    info.releaseName = obj.value("name").toString();
+    info.versionTag = obj.value("tag_name").toString().trimmed().toHtmlEscaped();
+    info.releaseName = obj.value("name").toString().toHtmlEscaped();
     info.releaseNotes = obj.value("body").toString();
     info.htmlUrl = obj.value("html_url").toString();
     info.publishedAt = obj.value("published_at").toString();

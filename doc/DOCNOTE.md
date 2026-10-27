@@ -1,3 +1,59 @@
+# SparkNotePad Release DocNote — v1.3.6
+
+```text
+================================================================================
+Release Version     : 1.3.6 (Expanded Platform Support, Sandbox Hardening, Defensive Features & Visual Polish)
+Release Date        : 2026-10-28
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine : Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 / 5.4.7 (Official Source)
+Scripting Runtime   : Python 3.13+ Engine Bridge
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu 22.04–26.04, Debian 12–14, Fedora 40–44, RHEL/Rocky 9–11, openSUSE, Slackware), FreeBSD 13–15
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
+CI/CD Status        : 100% Passing across all release matrices, MegaLinter & CodeQL
+Security Hardening  : Lua sandbox stripping (CVE-2026-42214), ReDoS bounds (CVE-2026-4744), Markdown preview sandbox (CVE-2026-20841), Config integrity guard (CVE-2026-48778/48800), Strict TLS & air-gap offline mode (CVE-2025-14575)
+================================================================================
+```
+
+---
+
+## 0. Executive Summary: Release v1.3.6
+
+SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating system support matrix anchored on Ubuntu 22.04 LTS (glibc 2.35), rigorous Lua engine sandbox hardening stripping dangerous OS/IO/debug primitives (CVE-2026-42214), session and external configuration tampering guards (CVE-2026-48778, CVE-2026-48800), regular expression catastrophic backtracking (ReDoS) safeguards (CVE-2026-4744), sandboxed Markdown preview with safe URI scheme whitelisting (CVE-2026-20841), real-time cryptographic hash verification (SHA-256/SHA-512/SHA-3), strict TLS 1.2+ air-gap offline mode (CVE-2025-14575), a complete 24x24 monoline vector SVG toolbar suite, unified `QComboBox` dropdown ergonomics, and a 14-pillar codebase verification pass.
+
+### Key Milestones in v1.3.6
+
+1. **Expanded Official Distro & Operating System Support Matrix**:
+   - Comprehensive matrix detailed in `doc/PLATFORM_SUPPORT.md`.
+   - Tier-1 native binaries for Ubuntu 22.04 LTS through 26.04 LTS, Debian 12–14, FreeBSD 13–15, Fedora 40–44, Rocky/Alma 9–11, openSUSE Leap/Tumbleweed, Slackware, and macOS 11–26 (Universal Apple Silicon arm64 & Intel x86_64).
+   - Enforced glibc 2.35 binary baseline principle for seamless downstream compatibility.
+
+2. **Core Security & Strict Lua Sandboxing (`LuaState`)**:
+   - Exhaustive neutralization of dangerous execution primitives (`os.execute`, `os.exit`, `os.tmpname`, `os.remove`, `os.rename`, `os.getenv`, `os.setlocale`, `io.popen`, `io.open`, `io.lines`, `io.input`, `io.output`, `io.tmpfile`, `debug = nil`, `package.loadlib = nil`, `package.cpath = ""`).
+   - Automated unit test suite in `tests/TestLuaSandbox.cpp` passing with 100% assertions.
+
+3. **Config & Session Tamper Guard (`ConfigIntegrityGuard`)**:
+   - Intercepts external tool strings and validates shell commands against interpreter hijacking (`cmd.exe`, `powershell.exe`, `/bin/sh`, `/bin/bash`, `sudo`, `doas`, `pkexec`).
+   - Enforces `0600` file permissions on session state files to protect against unauthorized tampering on multi-user systems.
+
+4. **Scintilla ReDoS Safeguard (`RegexSafetyEngine`)**:
+   - Catastrophic backtracking detection for nested quantifiers and repetition loops (`(a+)+`, `(.*a)+`).
+   - Bounded execution time on interactive find/replace operations.
+
+5. **Defensive Feature Suite**:
+   - **MarkdownSafePreviewDock**: Isolated preview with strict URI whitelisting (`http`, `https`, `mailto`), blocking local execution and protocol hijacking (CVE-2026-20841).
+   - **HashIntegrityManager & Dialog**: Chunk-by-chunk streaming checksum generation (SHA-256, SHA-512, SHA-3) and real-time comparison badge.
+   - **NetworkSecurityPolicy**: Global TLS 1.2+ baseline, no CWD cert lookups (CVE-2025-14575), and 1-click air-gap offline mode.
+
+6. **High-Visibility UI Polish**:
+   - 19 crisp 24x24 monoline SVGs replacing legacy PNGs.
+   - Standardized `QComboBox` and popup list styling across all dialogs.
+
+---
+
 # SparkNotePad Release DocNote — v1.3.5
 
 ```text

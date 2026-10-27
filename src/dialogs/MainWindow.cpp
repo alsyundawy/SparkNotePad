@@ -48,6 +48,8 @@
 #include "SessionManager.h"
 #include "UndoAction.h"
 #include "ModernMessageBox.h"
+#include "docks/MarkdownSafePreviewDock.h"
+#include "dialogs/HashIntegrityDialog.h"
 #include "ui_MainWindow.h"
 
 #include <QFileDialog>
@@ -859,9 +861,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     menuEncryption->addAction(actionDecryptDoc);
     ui->menuFile->addMenu(menuEncryption);
 
+    auto *actionHashValidator = new QAction(tr("Cryptographic &Hash & Authenticity Validator..."), this);
+    actionHashValidator->setIcon(QIcon(QStringLiteral(":/icons/saved.svg")));
+    connect(actionHashValidator, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
+    ui->menuFile->addAction(actionHashValidator);
+
     menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
     actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
-    actionToggleClipboardMonitoring->setIcon(QIcon(QStringLiteral(":/icons/copy.png")));
+    actionToggleClipboardMonitoring->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
     actionToggleClipboardMonitoring->setCheckable(true);
     actionToggleClipboardMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(actionToggleClipboardMonitoring, &QAction::triggered, this,
@@ -893,7 +900,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     auto *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
-    actionRunPythonFile->setIcon(QIcon(QStringLiteral(":/icons/openFile.png")));
+    actionRunPythonFile->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
     connect(actionRunPythonFile, &QAction::triggered, this, [this]() {
         QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(),
                                                         tr("Python Scripts (*.py);;All Files (*)"));
@@ -932,7 +939,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             [this](bool checked) { TailMonitoringManager::instance()->setAutoScrollToEnd(currentEditor(), checked); });
 
     actionTailReloadNow = new QAction(tr("&Force Check / Reload Now"), this);
-    actionTailReloadNow->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.png")));
+    actionTailReloadNow->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
     connect(actionTailReloadNow, &QAction::triggered, this,
             [this]() { TailMonitoringManager::instance()->forceCheck(currentEditor()); });
 
@@ -1732,7 +1739,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         editorsMenu->clear();
 
         for (const auto editor : editorsList) {
-            const auto iconPath = editor->isSavedToDisk() ? ":/icons/saved.png" : ":/icons/unsaved.png";
+            const auto iconPath = editor->isSavedToDisk() ? ":/icons/saved.svg" : ":/icons/unsaved.svg";
             const auto action = editorsMenu->addAction(QIcon(iconPath), editor->getName());
 
             if (editor->isActiveWindow()) {
@@ -1799,6 +1806,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     toggleFunctionListAction->setText(tr("Function List"));
     toggleFunctionListAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
     ui->menuView->addAction(toggleFunctionListAction);
+
+    markdownSafePreviewDock = new MarkdownSafePreviewDock(this);
+    markdownSafePreviewDock->hide();
+    addDockWidget(Qt::RightDockWidgetArea, markdownSafePreviewDock);
+    auto *toggleMarkdownPreviewAction = markdownSafePreviewDock->toggleViewAction();
+    toggleMarkdownPreviewAction->setText(tr("Markdown Safe Preview"));
+    toggleMarkdownPreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
+    ui->menuView->addAction(toggleMarkdownPreviewAction);
+    connect(markdownSafePreviewDock, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+        if (visible) {
+            markdownSafePreviewDock->setActiveEditor(currentEditor());
+        }
+    });
 
     connect(app->getSettings(), &ApplicationSettings::showMenuBarChanged, this, [this](bool showMenuBar) {
         // Don't 'hide' it, else the actions won't be enabled
@@ -2864,6 +2884,10 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     updateSelectionBasedUi(editor);
     updateContentBasedUi(editor);
     updateLanguageBasedUi(editor);
+
+    if (markdownSafePreviewDock && markdownSafePreviewDock->isVisible()) {
+        markdownSafePreviewDock->setActiveEditor(editor);
+    }
 }
 
 void MainWindow::updateDocumentBasedUi(Scintilla::Update updated) {
@@ -3892,6 +3916,11 @@ void MainWindow::onDecryptDocumentTriggered() {
     }
 }
 
+void MainWindow::onHashValidatorTriggered() {
+    HashIntegrityDialog dlg(this, currentEditor());
+    dlg.exec();
+}
+
 void MainWindow::onToggleClipboardMonitoringTriggered() const {
     ClipboardMonitor *mon = ClipboardMonitor::instance();
     mon->toggleMonitoring(currentEditor());
@@ -4056,13 +4085,13 @@ void MainWindow::setupWindowMenu() {
 
     // Multi-Monitor and Retina screen management
     auto *actionMoveToNextScreen = new QAction(tr("Move to &Next Screen"), this);
-    actionMoveToNextScreen->setIcon(QIcon(QStringLiteral(":/icons/arrow_up.png")));
+    actionMoveToNextScreen->setIcon(QIcon(QStringLiteral(":/icons/arrow_up.svg")));
     actionMoveToNextScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Right));
     connect(actionMoveToNextScreen, &QAction::triggered, this, &MainWindow::onMoveToNextScreenTriggered);
     menuWindow->addAction(actionMoveToNextScreen);
 
     auto *actionMoveToPrevScreen = new QAction(tr("Move to &Previous Screen"), this);
-    actionMoveToPrevScreen->setIcon(QIcon(QStringLiteral(":/icons/arrow_down.png")));
+    actionMoveToPrevScreen->setIcon(QIcon(QStringLiteral(":/icons/arrow_down.svg")));
     actionMoveToPrevScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Left));
     connect(actionMoveToPrevScreen, &QAction::triggered, this, &MainWindow::onMoveToPreviousScreenTriggered);
     menuWindow->addAction(actionMoveToPrevScreen);

@@ -12,6 +12,7 @@
 
 #include "ExternalToolManager.h"
 #include "ScintillaNext.h"
+#include "ConfigIntegrityGuard.h"
 
 #include <algorithm>
 #include <QCoreApplication>
@@ -108,6 +109,11 @@ bool ExternalToolManager::executeCommand(const QString &commandLine, const QStri
     if (trimmed.isEmpty()) {
         if (errorOut)
             *errorOut = tr("Command line is empty.");
+        return false;
+    }
+
+    // Security: Validate external command to prevent shell hijacking & privilege escalation
+    if (!ConfigIntegrityGuard::isExternalCommandSafe(trimmed, errorOut)) {
         return false;
     }
 

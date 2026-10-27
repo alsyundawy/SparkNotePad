@@ -27,6 +27,7 @@
 #include "SessionManager.h"
 #include "EditorManager.h"
 #include "SparkNotePadApplication.h"
+#include "utils/ConfigIntegrityGuard.h"
 
 #include <QDir>
 #include <QStandardPaths>
@@ -71,7 +72,10 @@ QDir SessionManager::sessionDirectory() {
 }
 
 void SessionManager::saveIntoSessionDirectory(const ScintillaNext *editor, const QString &sessionFileName) {
-    editor->saveCopyAs(sessionDirectory().filePath(sessionFileName));
+    const QString targetPath = sessionDirectory().filePath(sessionFileName);
+    editor->saveCopyAs(targetPath);
+    // Enforce 0600 permissions to protect against multi-user session tampering (CVE-2026-48778)
+    ConfigIntegrityGuard::enforceSecureFilePermissions(targetPath);
 }
 
 SessionManager::SessionFileType SessionManager::determineType(const ScintillaNext *editor) {
@@ -338,6 +342,12 @@ ScintillaNext *SessionManager::loadTempFile(const QSettings &settings) {
     qDebug("Session temp file: \"%s\"", qUtf8Printable(fullFilePath));
 
     if (QFileInfo::exists(fullFilePath)) {
+        QString integrityError;
+        if (!ConfigIntegrityGuard::verifyFileIntegrity(fullFilePath, &integrityError)) {
+            qWarning("Session file integrity failed: %s", qUtf8Printable(integrityError));
+            return Q_NULLPTR;
+        }
+
         ScintillaNext *editor = ScintillaNext::fromFile(fullFilePath, false);
 
         if (editor == Q_NULLPTR) {

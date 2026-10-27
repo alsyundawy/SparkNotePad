@@ -15,6 +15,7 @@
 #include "test_crypto_manager.h"
 #include "test_code_compress_pretty.h"
 #include "test_lua_security.h"  // CVE-2026-42214 Lua injection regression tests
+#include "TestLuaSandbox.h"     // Lua sandbox restriction unit tests
 
 int runAllTests(int argc, char *argv[]) {
     int status = 0;
@@ -48,6 +49,10 @@ int runAllTests(int argc, char *argv[]) {
     }
     {
         TestLuaSecurity t;  // Security regression: CVE-2026-42214 Lua injection
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestLuaSandbox t;  // Unit tests for Lua sandbox stripping & primitives
         status |= QTest::qExec(&t, argc, argv);
     }
     return status;

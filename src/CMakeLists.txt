@@ -159,6 +159,14 @@ qt_add_executable(SparkNotePad
 	utils/FunctionParser.cpp
 	utils/ExternalToolManager.h
 	utils/ExternalToolManager.cpp
+	utils/ConfigIntegrityGuard.h
+	utils/ConfigIntegrityGuard.cpp
+	utils/RegexSafetyEngine.h
+	utils/RegexSafetyEngine.cpp
+	utils/HashIntegrityManager.h
+	utils/HashIntegrityManager.cpp
+	utils/NetworkSecurityPolicy.h
+	utils/NetworkSecurityPolicy.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
@@ -265,6 +273,8 @@ qt_add_executable(SparkNotePad
 	dialogs/UpdateDialog.cpp
 	dialogs/MkcertDialog.h
 	dialogs/MkcertDialog.cpp
+	dialogs/HashIntegrityDialog.h
+	dialogs/HashIntegrityDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
@@ -283,6 +293,8 @@ qt_add_executable(SparkNotePad
 	docks/FunctionListDock.cpp
 	docks/FunctionListDock.h
 	docks/FunctionListDock.ui
+	docks/MarkdownSafePreviewDock.h
+	docks/MarkdownSafePreviewDock.cpp
 
 
 

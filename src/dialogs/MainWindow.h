@@ -63,6 +63,7 @@ class TailOptionsDialog;
 class PerformanceDiagnosticsDialog;
 class MarkOccurrences;
 class FileBrowserDock;
+class MarkdownSafePreviewDock;
 
 class MainWindow : public QMainWindow {  // NOSONAR(cpp:S1448, cpp:S1820)
     Q_OBJECT
@@ -233,6 +234,7 @@ private:
     MarkOccurrences *markOccurrences = nullptr;
     FileBrowserDock *fileBrowserDock = nullptr;
     FunctionListDock *functionListDock = nullptr;
+    MarkdownSafePreviewDock *markdownSafePreviewDock = nullptr;
 
     void setupRunMenu();
     void updateCustomToolsMenu();
@@ -249,6 +251,7 @@ private:
     void onRegexHelperTriggered();
     void onEncryptDocumentTriggered();
     void onDecryptDocumentTriggered();
+    void onHashValidatorTriggered();
     void onToggleClipboardMonitoringTriggered() const;
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);

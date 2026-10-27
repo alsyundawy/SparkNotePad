@@ -107,6 +107,9 @@ LuaState::LuaState() {
     lua_pushcfunction(L, require_resource);
 
     lua_call(L, 2, 0);
+
+    // Enforce strict sandbox baseline immediately upon initialization
+    restrictDangerousApis();
 }
 
 LuaState::~LuaState() {
@@ -176,19 +179,37 @@ void LuaState::clearStack() {
 }
 
 void LuaState::restrictDangerousApis() {
-    // Security sandbox: removes OS/IO execution primitives that could be abused
-    // by untrusted user Lua macro/extension code. Call before executing any
-    // non-core user scripts.
-    // CVE-2026-42214 defense-in-depth: even if an injection slips through,
-    // os.execute / io.popen / package.loadlib are unavailable.
+    // Security sandbox: exhaustively neutralizes all dangerous OS, IO, debugging,
+    // and dynamic loading primitives that could be abused by untrusted Lua scripts or macros.
+    // Mitigates CVE-2026-42214 / GHSA-m5fq-c9x5-w54g across all execution entrypoints.
     static const char *sandboxScript =
-        "os.execute  = nil\n"
-        "os.exit     = nil\n"
-        "os.tmpname  = nil\n"
-        "io.popen    = nil\n"
+        "if os then\n"
+        "  os.execute   = nil\n"
+        "  os.exit      = nil\n"
+        "  os.tmpname   = nil\n"
+        "  os.remove    = nil\n"
+        "  os.rename    = nil\n"
+        "  os.getenv    = nil\n"
+        "  os.setlocale = nil\n"
+        "end\n"
+        "if io then\n"
+        "  io.popen     = nil\n"
+        "  io.open      = nil\n"
+        "  io.lines     = nil\n"
+        "  io.input     = nil\n"
+        "  io.output    = nil\n"
+        "  io.tmpfile   = nil\n"
+        "  io.close     = nil\n"
+        "  io.flush     = nil\n"
+        "  io.read      = nil\n"
+        "  io.type      = nil\n"
+        "  io.write     = nil\n"
+        "end\n"
+        "debug = nil\n"
         "if package then\n"
         "  package.loadlib  = nil\n"
         "  package.loadclib = nil\n"
+        "  package.cpath    = \"\"\n"
         "end\n";
     internal_execute(sandboxScript, true);
 }

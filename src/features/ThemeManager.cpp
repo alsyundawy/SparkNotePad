@@ -626,7 +626,7 @@ QAbstractItemView::item:selected {
     color: #ffffff;
 }
 QAbstractItemView::item:hover:!selected {
-    background-color: %3;
+    background-color: rgba(59, 130, 246, 0.2);
     color: %2;
 }
 

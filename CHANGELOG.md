@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.6] - 2026-10-28
+
+### 🛡️ Expanded Platform Matrix, Sandboxing Hardening, Defensive Features & Visual Polish
+
+SparkNotePad v1.3.6 delivers an expanded Tier-1 operating system and distribution support matrix anchored on Ubuntu 22.04 LTS (glibc 2.35), rigorous Lua engine sandbox hardening stripping dangerous OS/IO/debug primitives (CVE-2026-42214), session and external configuration tampering guards (CVE-2026-48778, CVE-2026-48800), regular expression catastrophic backtracking (ReDoS) safeguards (CVE-2026-4744), sandboxed Markdown preview with safe URI scheme whitelisting (CVE-2026-20841), real-time cryptographic hash verification (SHA-256/SHA-512/SHA-3), strict TLS 1.2+ air-gap offline mode (CVE-2025-14575), a complete 24x24 monoline vector SVG toolbar suite, unified `QComboBox` dropdown ergonomics, and a 14-pillar codebase verification pass.
+
+#### 🆕 Added
+
+- **Expanded Official Distro & Operating System Support Matrix**:
+  - Authored comprehensive platform support documentation in [`doc/PLATFORM_SUPPORT.md`](doc/PLATFORM_SUPPORT.md) and [`doc/SPARKNOTEPAD_1.3.6_IMPLEMENTATION_AND_TASK_LIST_PLAN.md`](doc/SPARKNOTEPAD_1.3.6_IMPLEMENTATION_AND_TASK_LIST_PLAN.md).
+  - Validated native builds across Ubuntu 22.04–26.04, Debian 12–14, FreeBSD 13–15, Fedora 40–44, Rocky/Alma 9–11, openSUSE Leap/Tumbleweed, Slackware, and macOS 11–26 (Universal Apple Silicon arm64 & Intel x86_64).
+  - Formalized the **glibc 2.35 Baseline Principle**: binaries compiled on Ubuntu 22.04 LTS run out-of-the-box on downstream distributions with automatic SONAME checking.
+- **Strict Lua Engine Sandbox Hardening (`LuaState`)**:
+  - Exhaustively stripped all dangerous OS, IO, debugging, and dynamic loader primitives in `LuaState::restrictDangerousApis()`:
+    - Nullified: `os.execute`, `os.exit`, `os.tmpname`, `os.remove`, `os.rename`, `os.getenv`, `os.setlocale`.
+    - Nullified: `io.popen`, `io.open`, `io.lines`, `io.input`, `io.output`, `io.tmpfile`, `io.close`, `io.read`, `io.write`.
+    - Neutralized: `debug = nil`, `package.loadlib = nil`, `package.loadclib = nil`, `package.cpath = ""`.
+  - Enforced sandbox baseline immediately upon `LuaState` instantiation and provided automated regression tests in `tests/TestLuaSandbox.cpp`.
+- **Configuration & Session Tamper Guard (`ConfigIntegrityGuard`)**:
+  - Implemented `ConfigIntegrityGuard` in `src/utils/ConfigIntegrityGuard.h/cpp` to defend against configuration and macro poisoning (CVE-2026-48778 and CVE-2026-48800).
+  - Intercepted external tool execution, blocking shell interpreter hijacking (`cmd.exe`, `powershell.exe`, `pwsh`, `/bin/sh`, `/bin/bash`, `sudo`, `doas`, `pkexec`).
+  - Enforced owner-only file permissions (`0600`) across session configuration directories and files in `SessionManager`.
+- **Scintilla ReDoS & Execution Timeout Safeguard (`RegexSafetyEngine`)**:
+  - Created `RegexSafetyEngine` in `src/utils/RegexSafetyEngine.h/cpp` to detect catastrophic nested quantifiers (`(a+)+`, `(.*a)+`, `(x{1,5})+`) before executing find/replace queries.
+  - Bounded find and replace execution, protecting against CPU lockups and application freezes.
+- **Markdown Safe Preview Dock (`MarkdownSafePreviewDock`)**:
+  - Built an isolated Markdown preview dock with sandboxed `QTextBrowser` integration and debounced (300ms) live buffer synchronization (`Ctrl+Shift+M`).
+  - Implemented strict URI scheme whitelisting (`http`, `https`, `mailto`), intercepting and blocking dangerous protocol executions (`file:`, `ms-msdt:`, `cmd:`, `powershell:`, `javascript:`, `data:`) to neutralize CVE-2026-20841.
+- **Cryptographic Hash & Authenticity Validator Suite (`HashIntegrityManager` & `HashIntegrityDialog`)**:
+  - Engineered chunk-by-chunk streaming checksum calculation for SHA-256, SHA-512, SHA-3-256, and SHA-3-512 supporting files of arbitrary size with constant 64 KB memory usage.
+  - Integrated real-time comparison badge with visual feedback (`✓ MATCH` / `✗ MISMATCH`) accessible via File menu -> `Cryptographic Hash & Authenticity Validator...`.
+- **Strict TLS Security Baseline & Air-Gap Offline Policy (`NetworkSecurityPolicy`)**:
+  - Enforced global TLS 1.2/1.3 baseline across network access routines, disabling unvalidated CA cert lookup from the current working directory to mitigate CVE-2025-14575.
+  - Added single-click "Strict Offline Mode (Air-Gap)" setting in `ApplicationSettings` and Preferences Dialog, immediately blocking all outbound telemetry and update requests.
+- **Complete Monoline Vector SVG Toolbar Suite**:
+  - Created 19 high-DPI 24x24 monoline SVGs replacing legacy PNGs: `newfile.svg`, `openFile.svg`, `closeFile.svg`, `closeAll.svg`, `saveAll.svg`, `saved.svg`, `unsaved.svg`, `cut.svg`, `copy.svg`, `paste.svg`, `printer.svg`, `readonly.svg`, `text_indent.svg`, `text_indent_remove.svg`, `table_edit.svg`, `table_delete.svg`, `arrow_up.svg`, `arrow_down.svg`, `arrow_refresh.svg`.
+  - Updated resource definitions in `src/resources.qrc` and UI form bindings in `MainWindow.ui` and `MainWindow.cpp`.
+- **Unified QComboBox Dropdown Ergonomics**:
+  - Standardized `QComboBox`, `QListView`, and popup list views across dialogs (`PreferencesDialog`, `FindReplaceDialog`, `ThemeManager`) with subtle 4px rounded borders, 4px 8px padding, vector down-arrows, and clean selection/hover highlighting (`rgba(59, 130, 246, 0.2)`).
+
+#### 🔄 Changed
+
+- **Version Bump**: Updated project version to `1.3.6` in `CMakeLists.txt`, `src/dialogs/AboutDialog.cpp`, `README.md`, and `README-id.md`.
+- **Release Parity**: Maintained 100% parity between release branch `1.3.6` and `main`.
+
+---
+
 ## [1.3.5] - 2026-10-24
 
 ### ⚡ Restart/Exit Lifecycle, About Dialog Polish, 2025–2026 Security Audit & CVE Mitigations

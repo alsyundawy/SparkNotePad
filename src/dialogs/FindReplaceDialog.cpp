@@ -29,6 +29,7 @@
 #include <QStatusBar>
 #include <QLineEdit>
 #include <QAbstractItemView>
+#include <QListView>
 #include <QShortcut>
 #include <QClipboard>
 #include <QGuiApplication>
@@ -37,6 +38,7 @@
 #include "ScintillaNext.h"
 #include "MainWindow.h"
 #include "BookMarkDecorator.h"
+#include "utils/RegexSafetyEngine.h"
 
 static void convertToExtended(QString &str) {
     str.replace(R"(\r)", "\r");
@@ -82,12 +84,16 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
     ui->comboReplace->setCompleter(nullptr);
     ui->comboFind->setMaxVisibleItems(10);
     ui->comboReplace->setMaxVisibleItems(10);
-    if (ui->comboFind->view()) {
-        ui->comboFind->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    }
-    if (ui->comboReplace->view()) {
-        ui->comboReplace->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    }
+
+    auto *findListView = new QListView(ui->comboFind);
+    findListView->setUniformItemSizes(true);
+    findListView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ui->comboFind->setView(findListView);
+
+    auto *replaceListView = new QListView(ui->comboReplace);
+    replaceListView->setUniformItemSizes(true);
+    replaceListView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ui->comboReplace->setView(replaceListView);
 
     setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this,
@@ -549,6 +555,15 @@ void FindReplaceDialog::prepareToPerformSearch(bool isReplace) {
     }
 
     statusBar->clearMessage();
+
+    if (ui->radioRegexSearch->isChecked()) {
+        QString redosWarning;
+        if (!RegexSafetyEngine::isSafeRegex(findText, &redosWarning)) {
+            statusBar->showMessage(redosWarning, 5000);
+            qWarning("Regex ReDoS guard triggered: %s", qUtf8Printable(redosWarning));
+            return;
+        }
+    }
 
     if (ui->radioExtendedSearch->isChecked()) {
         convertToExtended(findText);

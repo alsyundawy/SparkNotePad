@@ -120,4 +120,5 @@ public:
     DEFINE_SETTING(ColorPreviewCallTip, colorPreviewCallTip, bool)
     DEFINE_SETTING(SmartAutoIndent, smartAutoIndent, bool)
     DEFINE_SETTING(PreserveFileTime, preserveFileTime, bool)
+    DEFINE_SETTING(StrictOfflineMode, strictOfflineMode, bool)
 };

@@ -565,7 +565,7 @@
   <action name="actionNew">
    <property name="icon">
     <iconset>
-     <normalon>:/icons/newfile.png</normalon>
+     <normalon>:/icons/newfile.svg</normalon>
     </iconset>
    </property>
    <property name="text">
@@ -597,7 +597,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/openFile.png</normaloff>:/icons/openFile.png</iconset>
+     <normaloff>:/icons/openFile.svg</normaloff>:/icons/openFile.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Open...</string>
@@ -612,7 +612,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/saved.png</normaloff>:/icons/saved.png</iconset>
+     <normaloff>:/icons/saved.svg</normaloff>:/icons/saved.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -687,7 +687,7 @@
   <action name="actionCut">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
+     <normaloff>:/icons/cut.svg</normaloff>:/icons/cut.svg</iconset>
    </property>
    <property name="text">
     <string>Cu&amp;t</string>
@@ -699,7 +699,7 @@
   <action name="actionCopy">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Copy</string>
@@ -711,7 +711,7 @@
   <action name="actionPaste">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
+     <normaloff>:/icons/paste.svg</normaloff>:/icons/paste.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Paste</string>
@@ -735,7 +735,7 @@
   <action name="actionCopyFullPath">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
    </property>
    <property name="text">
     <string>Copy Full Path</string>
@@ -744,7 +744,7 @@
   <action name="actionCopyFileName">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
    </property>
    <property name="text">
     <string>Copy File Name</string>
@@ -753,7 +753,7 @@
   <action name="actionCopyFileDirectory">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
    </property>
    <property name="text">
     <string>Copy File Directory</string>
@@ -762,7 +762,7 @@
   <action name="actionClose">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/closeFile.png</normaloff>:/icons/closeFile.png</iconset>
+     <normaloff>:/icons/closeFile.svg</normaloff>:/icons/closeFile.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Close</string>
@@ -777,7 +777,7 @@
   <action name="actionSaveAs">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/saved.png</normaloff>:/icons/saved.png</iconset>
+     <normaloff>:/icons/saved.svg</normaloff>:/icons/saved.svg</iconset>
    </property>
    <property name="text">
     <string>Save &amp;As...</string>
@@ -789,7 +789,7 @@
   <action name="actionSaveCopyAs">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/saved.png</normaloff>:/icons/saved.png</iconset>
+     <normaloff>:/icons/saved.svg</normaloff>:/icons/saved.svg</iconset>
    </property>
    <property name="text">
     <string>Save a Copy As...</string>
@@ -798,7 +798,7 @@
   <action name="actionSaveAll">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/saveAll.png</normaloff>:/icons/saveAll.png</iconset>
+     <normaloff>:/icons/saveAll.svg</normaloff>:/icons/saveAll.svg</iconset>
    </property>
    <property name="text">
     <string>Sav&amp;e All</string>
@@ -851,7 +851,7 @@
   <action name="actionIncreaseIndent">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/text_indent.png</normaloff>:/icons/text_indent.png</iconset>
+     <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
    </property>
    <property name="text">
     <string>Increase Indent</string>
@@ -860,7 +860,7 @@
   <action name="actionDecreaseIndent">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/text_indent_remove.png</normaloff>:/icons/text_indent_remove.png</iconset>
+     <normaloff>:/icons/text_indent_remove.svg</normaloff>:/icons/text_indent_remove.svg</iconset>
    </property>
    <property name="text">
     <string>Decrease Indent</string>
@@ -874,7 +874,7 @@
   <action name="actionReload">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
    </property>
    <property name="text">
     <string>Re&amp;load</string>
@@ -987,7 +987,7 @@
   <action name="actionMoveSelectedLinesUp">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/arrow_up.png</normaloff>:/icons/arrow_up.png</iconset>
+     <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
    </property>
    <property name="text">
     <string>Move Selected Lines Up</string>
@@ -999,7 +999,7 @@
   <action name="actionMoveSelectedLinesDown">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/arrow_down.png</normaloff>:/icons/arrow_down.png</iconset>
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
    </property>
    <property name="text">
     <string>Move Selected Lines Down</string>
@@ -1011,7 +1011,7 @@
   <action name="actionCloseAll">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+     <normaloff>:/icons/closeAll.svg</normaloff>:/icons/closeAll.svg</iconset>
    </property>
    <property name="text">
     <string>Clos&amp;e All</string>
@@ -1026,7 +1026,7 @@
   <action name="actionCloseAllExceptActive">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+     <normaloff>:/icons/closeAll.svg</normaloff>:/icons/closeAll.svg</iconset>
    </property>
    <property name="text">
     <string>Close All Except Active Document</string>
@@ -1035,7 +1035,7 @@
   <action name="actionCloseAllToLeft">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+     <normaloff>:/icons/closeAll.svg</normaloff>:/icons/closeAll.svg</iconset>
    </property>
    <property name="text">
     <string>Close All to the Left</string>
@@ -1044,7 +1044,7 @@
   <action name="actionCloseAllToRight">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/closeAll.png</normaloff>:/icons/closeAll.png</iconset>
+     <normaloff>:/icons/closeAll.svg</normaloff>:/icons/closeAll.svg</iconset>
    </property>
    <property name="text">
     <string>Close All to the Right</string>
@@ -1175,7 +1175,7 @@
   <action name="actionRestoreRecentlyClosedFile">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
    </property>
    <property name="text">
     <string>Restore Recently Closed File</string>
@@ -1187,7 +1187,7 @@
   <action name="actionOpenAllRecentFiles">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/openFile.png</normaloff>:/icons/openFile.png</iconset>
+     <normaloff>:/icons/openFile.svg</normaloff>:/icons/openFile.svg</iconset>
    </property>
    <property name="text">
     <string>Open All Recent Files</string>
@@ -1369,7 +1369,7 @@
   <action name="actionCheckForUpdates">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
    </property>
    <property name="text">
     <string>Check for Updates...</string>
@@ -1386,7 +1386,7 @@
   <action name="actionPrint">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/printer.png</normaloff>:/icons/printer.png</iconset>
+     <normaloff>:/icons/printer.svg</normaloff>:/icons/printer.svg</iconset>
    </property>
    <property name="text">
     <string>Print...</string>
@@ -1434,7 +1434,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/table_edit.png</normaloff>:/icons/table_edit.png</iconset>
+     <normaloff>:/icons/table_edit.svg</normaloff>:/icons/table_edit.svg</iconset>
    </property>
    <property name="text">
     <string>Edit Macros...</string>
@@ -1560,7 +1560,7 @@
   <action name="actionExportPdf">
    <property name="icon">
     <iconset>
-     <normalon>:/icons/printer.png</normalon>
+     <normalon>:/icons/printer.svg</normalon>
     </iconset>
    </property>
    <property name="text">
@@ -1630,7 +1630,7 @@
   <action name="actionCopyURL">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
    </property>
    <property name="text">
     <string>Copy URL</string>

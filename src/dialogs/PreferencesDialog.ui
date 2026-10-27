@@ -294,6 +294,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkBoxStrictOfflineMode">
+         <property name="text">
+          <string>Strict Offline Mode (Air-Gap: block all outbound network requests)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Default Directory</string>

@@ -57,5 +57,24 @@
         <file>icons/indentGuide.svg</file>
         <file>icons/undo.svg</file>
         <file>icons/redo.svg</file>
+        <file>icons/newfile.svg</file>
+        <file>icons/openFile.svg</file>
+        <file>icons/closeFile.svg</file>
+        <file>icons/closeAll.svg</file>
+        <file>icons/saveAll.svg</file>
+        <file>icons/saved.svg</file>
+        <file>icons/unsaved.svg</file>
+        <file>icons/cut.svg</file>
+        <file>icons/copy.svg</file>
+        <file>icons/paste.svg</file>
+        <file>icons/printer.svg</file>
+        <file>icons/readonly.svg</file>
+        <file>icons/text_indent.svg</file>
+        <file>icons/text_indent_remove.svg</file>
+        <file>icons/table_edit.svg</file>
+        <file>icons/table_delete.svg</file>
+        <file>icons/arrow_up.svg</file>
+        <file>icons/arrow_down.svg</file>
+        <file>icons/arrow_refresh.svg</file>
     </qresource>
 </RCC>

@@ -32,6 +32,7 @@
 #include "features/TransparentWindowManager.h"
 
 #include <QAbstractItemView>
+#include <QListView>
 #include <QButtonGroup>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -88,6 +89,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
                          &ApplicationSettings::setCombineSearchResults,
                          &ApplicationSettings::combineSearchResultsChanged);
 
+    ui->comboBoxTranslation->setView(new QListView(ui->comboBoxTranslation));
     populateTranslationComboBox();
     connect(ui->comboBoxTranslation, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=, this](int index) {
         settings->setTranslation(ui->comboBoxTranslation->itemData(index).toString());
@@ -98,6 +100,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
                          &ApplicationSettings::setExitOnLastTabClosed,
                          &ApplicationSettings::exitOnLastTabClosedChanged);
 
+    ui->fcbDefaultFont->setView(new QListView(ui->fcbDefaultFont));
     ui->fcbDefaultFont->setCurrentFont(QFont(settings->fontName()));
     connect(ui->fcbDefaultFont, &QFontComboBox::currentFontChanged, this,
             [=, this](const QFont &f) { settings->setFontName(f.family()); });
@@ -109,6 +112,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
             &ApplicationSettings::setFontSize);
     connect(settings, &ApplicationSettings::fontSizeChanged, ui->spbDefaultFontSize, &QSpinBox::setValue);
 
+    ui->comboBoxLineEndings->setView(new QListView(ui->comboBoxLineEndings));
     ui->comboBoxLineEndings->addItem(tr("System Default"), QString(""));
     ui->comboBoxLineEndings->addItem(tr("Windows (CR LF)"), ScintillaNext::eolModeToString(SC_EOL_CRLF));
     ui->comboBoxLineEndings->addItem(tr("Linux (LF)"), ScintillaNext::eolModeToString(SC_EOL_LF));
@@ -147,6 +151,8 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
                          &ApplicationSettings::colorPreviewCallTipChanged);
     MapSettingToCheckBox(ui->checkBoxPreserveFileTime, &ApplicationSettings::preserveFileTime,
                          &ApplicationSettings::setPreserveFileTime, &ApplicationSettings::preserveFileTimeChanged);
+    MapSettingToCheckBox(ui->checkBoxStrictOfflineMode, &ApplicationSettings::strictOfflineMode,
+                         &ApplicationSettings::setStrictOfflineMode, &ApplicationSettings::strictOfflineModeChanged);
 
     QButtonGroup *buttonGroup = new QButtonGroup(this);
     buttonGroup->addButton(ui->radioFollowCurrentDirectory, ApplicationSettings::FollowCurrentDocument);
@@ -493,7 +499,7 @@ void PreferencesDialog::updateThemeColors() {
             "  color: #ffffff;"
             "}"
             "QComboBox QAbstractItemView::item:hover:!selected, QListView::item:hover:!selected {"
-            "  background-color: %3;"
+            "  background-color: rgba(59, 130, 246, 0.2);"
             "  color: %4;"
             "}"
             "QSlider::groove:horizontal {"
