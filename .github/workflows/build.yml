@@ -57,6 +57,13 @@ jobs:
             qt_arch: linux_gcc_64
             qt_version: "6.11"
 
+          - runs_on: ubuntu-24.04
+            platform: linux
+            arch: x64
+            cmake_arch: x86_64
+            qt_arch: linux_gcc_64
+            qt_version: "6.12"
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -213,7 +220,7 @@ jobs:
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
           CMAKE_OPTS=(-S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}")
-          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}")
+          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}")
           echo "CMake options: ${CMAKE_OPTS[*]}"
           cmake "${CMAKE_OPTS[@]}"
 
@@ -223,7 +230,13 @@ jobs:
 
       - name: Build MacOS Targets (dmg)
         shell: bash
-        run: cmake --build build --target dmg --parallel
+        run: |
+          cmake --build build --target dmg --parallel
+          if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
+            for f in build/*-qt${{ matrix.qt_version }}-*.dmg; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+          fi
 
       - name: Upload MacOS dmg
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -309,7 +322,7 @@ jobs:
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
           CMAKE_OPTS=(-S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}")
-          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}")
+          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}")
           echo "CMake options: ${CMAKE_OPTS[*]}"
           cmake "${CMAKE_OPTS[@]}"
 
@@ -319,7 +332,13 @@ jobs:
 
       - name: Build MacOS Targets (dmg)
         shell: bash
-        run: cmake --build build --target dmg --parallel
+        run: |
+          cmake --build build --target dmg --parallel
+          if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
+            for f in build/*-qt${{ matrix.qt_version }}-*.dmg; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+          fi
 
       - name: Upload MacOS dmg
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

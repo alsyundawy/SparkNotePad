@@ -48,7 +48,14 @@ if(NOT DEFINED MAC_ARCH_SUFFIX OR MAC_ARCH_SUFFIX STREQUAL "")
     endif()
 endif()
 
-set(MAC_DMG_NAME "SparkNotePad-v${PROJECT_VERSION}-${MAC_ARCH_SUFFIX}.dmg")
+# Optional Qt version tag for multi-Qt release matrices (e.g., -qt6.5, -qt6.8)
+if(DEFINED PKG_QT_SUFFIX AND NOT PKG_QT_SUFFIX STREQUAL "")
+    set(PKG_QT_TAG "-${PKG_QT_SUFFIX}")
+else()
+    set(PKG_QT_TAG "")
+endif()
+
+set(MAC_DMG_NAME "SparkNotePad-v${PROJECT_VERSION}${PKG_QT_TAG}-${MAC_ARCH_SUFFIX}.dmg")
 
 find_program(MACDEPLOYQT_EXECUTABLE macdeployqt REQUIRED)
 

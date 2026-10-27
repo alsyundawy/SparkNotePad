@@ -50,6 +50,13 @@ jobs:
             qt_arch: linux_gcc_64
             qt_version: "6.11"
 
+          - runs_on: ubuntu-24.04
+            platform: linux
+            arch: x64
+            cmake_arch: x86_64
+            qt_arch: linux_gcc_64
+            qt_version: "6.12"
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -196,7 +203,7 @@ jobs:
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }} deployment=${{ matrix.deployment_target }}"
           CMAKE_OPTS=(-S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}")
-          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}")
+          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}")
           echo "CMake options: ${CMAKE_OPTS[*]}"
           cmake "${CMAKE_OPTS[@]}"
 
@@ -206,7 +213,13 @@ jobs:
 
       - name: Build MacOS Targets (dmg)
         shell: bash
-        run: cmake --build build --target dmg --parallel
+        run: |
+          cmake --build build --target dmg --parallel
+          if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
+            for f in build/*-qt${{ matrix.qt_version }}-*.dmg; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+          fi
 
       - name: Codesign and Notarize (macOS)
         if: env.APPLE_CERTIFICATE_BASE64 != ''
@@ -309,7 +322,7 @@ jobs:
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }} deployment=${{ matrix.deployment_target }}"
           CMAKE_OPTS=(-S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}")
-          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}")
+          CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}")
           echo "CMake options: ${CMAKE_OPTS[*]}"
           cmake "${CMAKE_OPTS[@]}"
 
@@ -319,7 +332,13 @@ jobs:
 
       - name: Build MacOS Targets (dmg)
         shell: bash
-        run: cmake --build build --target dmg --parallel
+        run: |
+          cmake --build build --target dmg --parallel
+          if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
+            for f in build/*-qt${{ matrix.qt_version }}-*.dmg; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+          fi
 
       - name: Codesign and Notarize (macOS)
         if: env.APPLE_CERTIFICATE_BASE64 != ''
@@ -396,20 +415,9 @@ jobs:
         run: |
           echo "=== Downloaded artifact directories ==="
           ls -la
-          for arch in x64 arm64; do
-            dir="SparkNotePad-macOS-${arch}-Qt${QT_RELEASE_VER}"
-            echo "Looking for canonical release dir: ${dir}"
-            if [ -d "${dir}" ]; then
-              dmg_file=$(find "${dir}" -maxdepth 1 -name 'SparkNotePad*.dmg' | head -1)
-              if [ -n "${dmg_file}" ]; then
-                echo "Uploading ${dmg_file} → release ${RELEASE_TAG}"
-                gh release upload "${RELEASE_TAG}" "${dmg_file}" --clobber
-              else
-                echo "WARNING: No DMG found in ${dir}, skipping ${arch}"
-              fi
-            else
-              echo "WARNING: Directory ${dir} not found — skipping ${arch}"
-            fi
+          find . -name "*.dmg" | while IFS= read -r dmg_file; do
+            echo "Uploading macOS DMG: ${dmg_file} → release ${RELEASE_TAG}"
+            gh release upload "${RELEASE_TAG}" "${dmg_file}" --clobber || true
           done
 
       - name: Upload Linux Packages (.deb, .rpm)
