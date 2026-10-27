@@ -886,7 +886,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     // Setup Python Scripting (3.13+) Menu
     auto *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
     auto *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
-    actionRunPython->setIcon(QIcon(QStringLiteral(":/icons/playRecord.png")));
+    actionRunPython->setIcon(QIcon(QStringLiteral(":/icons/playRecord.svg")));
     actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
     connect(actionRunPython, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -3694,7 +3694,7 @@ void MainWindow::setupRunMenu() {
 
     // 1. Run... (Ctrl+Alt+R, F6)
     auto *actionRun = new QAction(tr("&Run..."), this);
-    actionRun->setIcon(QIcon(QStringLiteral(":/icons/playRecord.png")));
+    actionRun->setIcon(QIcon(QStringLiteral(":/icons/playRecord.svg")));
     actionRun->setShortcuts({QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R), QKeySequence(Qt::Key_F6)});
     connect(actionRun, &QAction::triggered, this, &MainWindow::onRunTriggered);
     menuRun->addAction(actionRun);

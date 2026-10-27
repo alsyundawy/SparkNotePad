@@ -12,6 +12,7 @@
  */
 
 #include "HashIntegrityManager.h"
+#include <QByteArrayView>
 #include <QFile>
 #include <QFileInfo>
 
@@ -30,13 +31,13 @@ QString HashIntegrityManager::computeFileHash(const QString &filePath, QCryptogr
     qint64 processedBytes = 0;
 
     // Stream file in 64 KB chunks to preserve minimal memory footprint
-    constexpr qint64 kChunkSize = 64 * 1024;
+    constexpr qint64 kChunkSize = 64LL * 1024LL;
     char buffer[kChunkSize];
 
     while (!file.atEnd()) {
         const qint64 bytesRead = file.read(buffer, kChunkSize);
         if (bytesRead > 0) {
-            hasher.addData(buffer, bytesRead);
+            hasher.addData(QByteArrayView(buffer, bytesRead));
             processedBytes += bytesRead;
             if (progressCallback) {
                 progressCallback(processedBytes, totalBytes);

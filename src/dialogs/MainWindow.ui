@@ -1127,9 +1127,9 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/invisibleChar.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/invisibleChar.svg</normaloff>
+     <normalon>:/icons/invisibleChar.svg</normalon>:/icons/invisibleChar.svg</iconset>
    </property>
    <property name="text">
     <string>Show All Characters</string>
@@ -1153,7 +1153,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/wrapindicator.png</normaloff>:/icons/wrapindicator.png</iconset>
+     <normaloff>:/icons/wrapindicator.svg</normaloff>:/icons/wrapindicator.svg</iconset>
    </property>
    <property name="text">
     <string>Show Wrap Symbol</string>
@@ -1164,9 +1164,9 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/wrap.png</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/wrap.svg</normaloff>
+     <normalon>:/icons/wrap.svg</normalon>:/icons/wrap.svg</iconset>
    </property>
    <property name="text">
     <string>Word Wrap</string>
@@ -1276,8 +1276,8 @@
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/startRecord.png</normaloff>
-     <normalon>:/icons/stopRecord.png</normalon>:/icons/startRecord.png</iconset>
+     <normaloff>:/icons/startRecord.svg</normaloff>
+     <normalon>:/icons/stopRecord.svg</normalon>:/icons/startRecord.svg</iconset>
    </property>
    <property name="text">
     <string>Start Recording</string>
@@ -1289,7 +1289,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/playRecord.png</normaloff>:/icons/playRecord.png</iconset>
+     <normaloff>:/icons/playRecord.svg</normaloff>:/icons/playRecord.svg</iconset>
    </property>
    <property name="text">
     <string>Playback</string>
@@ -1304,7 +1304,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/saveRecord.png</normaloff>:/icons/saveRecord.png</iconset>
+     <normaloff>:/icons/saveRecord.svg</normaloff>:/icons/saveRecord.svg</iconset>
    </property>
    <property name="text">
     <string>Save Current Recorded Macro...</string>
@@ -1316,7 +1316,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/playRecord_m.png</normaloff>:/icons/playRecord_m.png</iconset>
+     <normaloff>:/icons/playRecord_m.svg</normaloff>:/icons/playRecord_m.svg</iconset>
    </property>
    <property name="text">
     <string>Run a Macro Multiple Times...</string>

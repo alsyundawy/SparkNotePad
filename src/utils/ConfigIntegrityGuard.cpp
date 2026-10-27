@@ -32,16 +32,18 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
 
     const QString lower = trimmed.toLower();
 
-    for (const QString &banned : kBannedPrefixes) {
-        if (lower.startsWith(banned) || lower == banned.trimmed()) {
-            if (rejectedReason) {
-                *rejectedReason = QCoreApplication::translate(
-                                      "ConfigIntegrityGuard",
-                                      "Execution of interpreter/privilege escalation '%1' is blocked for security.")
-                                      .arg(banned.trimmed());
-            }
-            return false;
+    const auto bannedIt = std::find_if(kBannedPrefixes.cbegin(), kBannedPrefixes.cend(),
+                                        [&lower](const QString &banned) {
+                                            return lower.startsWith(banned) || lower == banned.trimmed();
+                                        });
+    if (bannedIt != kBannedPrefixes.cend()) {
+        if (rejectedReason) {
+            *rejectedReason = QCoreApplication::translate(
+                                  "ConfigIntegrityGuard",
+                                  "Execution of interpreter/privilege escalation '%1' is blocked for security.")
+                                  .arg(bannedIt->trimmed());
         }
+        return false;
     }
 
     // Check for suspicious direct shell chaining attempting pipe injection
@@ -85,14 +87,14 @@ bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString 
                                                       QStringLiteral("/etc/sudoers"), QStringLiteral("/bin/sh"),
                                                       QStringLiteral("/bin/bash")};
 
-    for (const QString &sysPath : kSensitiveSystemPaths) {
-        if (canonical == sysPath) {
-            if (errorMsg)
-                *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard",
-                                                        "Attempted access to restricted system file: %1")
-                                .arg(canonical);
-            return false;
-        }
+    const bool isSensitive = std::any_of(kSensitiveSystemPaths.cbegin(), kSensitiveSystemPaths.cend(),
+                                          [&canonical](const QString &sysPath) { return canonical == sysPath; });
+    if (isSensitive) {
+        if (errorMsg)
+            *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard",
+                                                    "Attempted access to restricted system file: %1")
+                            .arg(canonical);
+        return false;
     }
 
     // Enforce 0600 permissions if file is currently world-writable

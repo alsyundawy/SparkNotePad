@@ -76,5 +76,13 @@
         <file>icons/arrow_up.svg</file>
         <file>icons/arrow_down.svg</file>
         <file>icons/arrow_refresh.svg</file>
+        <file>icons/wrap.svg</file>
+        <file>icons/wrapindicator.svg</file>
+        <file>icons/invisibleChar.svg</file>
+        <file>icons/startRecord.svg</file>
+        <file>icons/stopRecord.svg</file>
+        <file>icons/playRecord.svg</file>
+        <file>icons/playRecord_m.svg</file>
+        <file>icons/saveRecord.svg</file>
     </qresource>
 </RCC>
