@@ -47,6 +47,10 @@ SparkNotePad v1.3.6 delivers an expanded Tier-1 operating system and distributio
   - Completed 100% bilingual localization in `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` for all 35 new v1.3.6 features and dialogs with 0 unfinished entries.
 - **Unified QComboBox Dropdown Ergonomics**:
   - Standardized `QComboBox`, `QListView`, and popup list views across dialogs (`PreferencesDialog`, `FindReplaceDialog`, `ThemeManager`) with subtle 4px rounded borders, 4px 8px padding, vector down-arrows, and clean selection/hover highlighting (`rgba(59, 130, 246, 0.2)`).
+- **Multi-Qt Packaging Matrix (Qt 6.5–6.12) Across Linux & macOS**:
+  - Extended CI/CD build matrices across Linux and macOS to support Qt 6.5, Qt 6.8 LTS (canonical release), Qt 6.10, Qt 6.11, and Qt 6.12 development targets.
+  - Implemented dynamic `PKG_QT_TAG` in `cmake/PackagingMac.cmake` for automated multi-Qt macOS DMG bundling alongside `.deb` and `.rpm` packaging.
+  - Configured automated release workflows to upload all built artifacts across all Qt versions.
 
 #### 🔄 Changed
 

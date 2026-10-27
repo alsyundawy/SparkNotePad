@@ -137,15 +137,22 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 
 | Feature                          | Capability Description                                                                                        |           Shortcut           |
 | :------------------------------- | :------------------------------------------------------------------------------------------------------------ | :--------------------------: |
+| **Strict Lua Sandbox**           | Neutralizes dangerous OS/IO/debug execution primitives (CVE-2026-42214) with 100% automated regression tests  |           Built-in           |
+| **Config & Session Guard**       | Intercepts shell interpreter hijacking (CVE-2026-48778); enforces owner-only (0600) permissions on sessions   |           Built-in           |
+| **Scintilla ReDoS Safeguard**    | Detects catastrophic nested quantifiers before Scintilla regex execution; bounds interactive search runtime   |           Built-in           |
+| **Safe Markdown Preview Dock**   | Sandboxed QTextBrowser dock with debounced sync and strict URI whitelisting (http/https/mailto)               |        `Ctrl+Shift+M`        |
+| **Streaming Cryptographic Hash** | Constant 64 KB chunk buffer streaming for SHA-256, SHA-512, SHA-3 with real-time match verification badge     |    File >> Hash Validator    |
+| **Strict TLS & Air-Gap Mode**    | Enforces global TLS 1.2+ baseline, disables CWD cert lookup (CVE-2025-14575), and provides 1-click air-gap    |    Preferences >> General    |
+| **27 Monoline Vector Icons**     | Complete suite of 24x24 high-DPI monoline vector SVGs matching modern macOS Retina and Linux desktop styling  |       Toolbar & Menus        |
+| **Unified QComboBox Ergonomics** | Polished dropdown styling across all dialogs with 4px rounded borders, vector arrows, and hover highlights    |         All Dialogs          |
+| **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,461 UI strings and dialogs             |   Preferences >> Language    |
 | **Graceful App Restart**         | Flushes sessions, saves settings, and relaunches cleanly without single-instance conflicts                    |         `Ctrl+Alt+R`         |
 | **Prominent Exit Action**        | Accessible toolbar and File menu termination with unsaved-document prompts and safe cleanup                   | Toolbar / `Cmd+Q` / `Alt+F4` |
 | **About Dialog HiDPI Polish**    | Responsive `QScrollArea` wrapping, label word-wrap, and elision-free layout across Retina/4K                  |       `Help >> About`        |
 | **2025–2026 Security Posture**   | Mitigates Lua injection (CVE-2026-42214), Qt HTTP/2 UAF (CVE-2026-95620), and dual crypto                     |           Built-in           |
 | **AES-256-CBC Encryption**       | High-assurance document encryption with PBKDF2 key derivation (100,000 rounds) and HMAC-SHA256 integrity auth | `Ctrl+Alt+E` / `Ctrl+Alt+D`  |
 | **Real-Time Log Monitoring**     | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                  |         `Ctrl+Alt+Y`         |
-| **High-DPI 20x20 Toolbar Icons** | Crisp monoline vector SVGs (Undo, Redo, Find, Replace, Zoom, Indent) standardized to 20x20 HiDPI on Retina/4K |         Main Toolbar         |
 | **Complete Menu Icons Support**  | All menus and submenus show action icons natively via `setIconVisibleInMenu` across macOS and Linux           |          All Menus           |
-| **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,405 UI strings and dialogs             |   Preferences >> Language    |
 | **Ergonomic Dialog Spacing**     | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs       |         All Dialogs          |
 | **JavaScript Evaluator**         | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation       |        `Ctrl+Shift+J`        |
 | **Interactive Regex Tester**     | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes   |      `Ctrl+Alt+Shift+R`      |
@@ -208,16 +215,18 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 Official production binary packages for SparkNotePad v1.3.6 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
-| Platform                    | Target Architecture             | Package Format | Download Link                                                                                                                                    |
-| :-------------------------- | :------------------------------ | :------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+ / 14+ / 11–13** | Universal (arm64 + x86_64)      |     `.dmg`     | [SparkNotePad-v1.3.6.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6.dmg)                           |
-| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`     | [SparkNotePad-v1.3.6-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-arm64.dmg)               |
-| **macOS Intel**             | x86_64                          |     `.dmg`     | [SparkNotePad-v1.3.6-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-x64.dmg)                   |
-| **Linux (Ubuntu/Debian)**   | x86_64 (glibc 2.35+)            |     `.deb`     | [sparknotepad_1.3.6_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad_1.3.6_amd64.deb)                 |
-| **Linux (Fedora/RHEL)**     | x86_64                          |     `.rpm`     | [sparknotepad-1.3.6-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad-1.3.6-1.x86_64.rpm)           |
-| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |     `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**           | Universal Association Script    |     `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor.sh)             |
-| **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)      |  Source / Pkg  | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
+| Platform                    | Target Architecture             | Package Format  | Download Link                                                                                                                                    |
+| :-------------------------- | :------------------------------ | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.3.6-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-x64.dmg)                   |
+| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.3.6-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-arm64.dmg)               |
+| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.3.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.6)                                                         |
+| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.3.6_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad_1.3.6_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.3.6-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad-1.3.6-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.3.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.6)                                                         |
+| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor.sh)             |
+| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SHA256SUMS.txt)                                             |
+| **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)      |  Source / Pkg   | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Linux Package Installation (Automated Dependencies)
 

@@ -137,15 +137,22 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 
 | Fitur                            | Deskripsi Kapabilitas                                                                                                 |       Pintasan (Shortcut)       |
 | :------------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Sandbox Lua Ketat**            | Menetralisasi primitif eksekusi OS/IO/debug berbahaya (CVE-2026-42214) dengan 100% tes regresi otomatis               |             Bawaan              |
+| **Guard Konfigurasi & Sesi**     | Mencegat pembajakan shell interpreter (CVE-2026-48778); menegakkan izin berkas hanya pemilik (0600) pada sesi         |             Bawaan              |
+| **Perlindungan ReDoS Scintilla** | Mendeteksi nested quantifiers berisiko sebelum regex dieksekusi; membatasi runtime pencarian interaktif               |             Bawaan              |
+| **Pratinjau Markdown Aman**      | Dock QTextBrowser kotak pasir dengan sinkronisasi debounced dan whitelisting skema URI (http/https/mailto)            |         `Ctrl+Shift+M`          |
+| **Streaming Hash Kriptografis**  | Buffer konstan 64 KB untuk kalkulasi SHA-256, SHA-512, SHA-3 dengan lencana verifikasi kesesuaian real-time           |   Menu File >> Validator Hash   |
+| **Baseline TLS & Mode Air-Gap**  | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik     |  Preferensi >> Pengaturan Umum  |
+| **27 Ikon Bilah Alat Monoline**  | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                      |        Bilah Alat & Menu        |
+| **Ergonomi QComboBox Terpadu**   | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema             |         Seluruh Dialog          |
+| **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.461 teks antarmuka dan dialog          |   Preferensi >> Bahasa (Lang)   |
 | **Mulai Ulang Aplikasi Aman**    | Mengosongkan sesi, menyimpan pengaturan, dan meluncurkan ulang aplikasi tanpa konflik lock                            |          `Ctrl+Alt+R`           |
 | **Tombol Keluar Terkemuka**      | Penghentian aplikasi yang mudah diakses di bilah alat dan menu dengan konfirmasi simpan                               | Bilah Alat / `Cmd+Q` / `Alt+F4` |
 | **Penyempurnaan Dialog Tentang** | Tata letak responsif dengan `QScrollArea`, pelipatan teks, dan bebas pemotongan di Retina/4K                          |      Menu `Help >> About`       |
 | **Keamanan Siber 2025–2026**     | Mitigasi injeksi Lua (CVE-2026-42214), mitigasi UAF Qt HTTP/2 (CVE-2026-95620), dual crypto                           |             Bawaan              |
 | **Enkripsi AES-256-CBC**         | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
 | **Pemantauan Log Langsung**      | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |          `Ctrl+Alt+Y`           |
-| **Ikon Bilah Alat 20x20 HiDPI**  | Ikon monoline SVG tajam (Urungkan, Ulangi, Cari, Ganti, Zoom, Indent) standar 20x20 HiDPI untuk Retina/4K             |        Bilah Alat Utama         |
 | **Dukungan Ikon Seluruh Menu**   | Seluruh menu dan submenu menampilkan ikon secara native via `setIconVisibleInMenu` di macOS dan Linux                 |          Seluruh Menu           |
-| **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.405 teks antarmuka dan dialog          |   Preferensi >> Bahasa (Lang)   |
 | **Ergonomi Spasi Dialog**        | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian    |         Seluruh Dialog          |
 | **Evaluator JavaScript**         | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks |         `Ctrl+Shift+J`          |
 | **Pengujian Regex Interaktif**   | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                               |       `Ctrl+Alt+Shift+R`        |
@@ -208,16 +215,18 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 Berkas biner resmi SparkNotePad v1.3.6 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (lihat matriks lengkap di [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
-| Platform                    | Arsitektur Target              | Format Paket | Tautan Unduhan                                                                                                                                   |
-| :-------------------------- | :----------------------------- | :----------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+ / 14+ / 11–13** | Universal (arm64 + x86_64)     |    `.dmg`    | [SparkNotePad-v1.3.6.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6.dmg)                           |
-| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)            |    `.dmg`    | [SparkNotePad-v1.3.6-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-arm64.dmg)               |
-| **macOS Intel**             | x86_64                         |    `.dmg`    | [SparkNotePad-v1.3.6-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-x64.dmg)                   |
-| **Linux (Ubuntu/Debian)**   | x86_64 (glibc 2.35+)           |    `.deb`    | [sparknotepad_1.3.6_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad_1.3.6_amd64.deb)                 |
-| **Linux (Fedora/RHEL)**     | x86_64                         |    `.rpm`    | [sparknotepad-1.3.6-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad-1.3.6-1.x86_64.rpm)           |
-| **Linux (Semua Distro)**    | Skrip Editor Default (DEB/RPM) |    `.sh`     | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**           | Skrip Asosiasi Universal       |    `.sh`     | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor.sh)             |
-| **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)     | Source / Pkg | [Panduan Build & Integrasi FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
+| Platform                     | Arsitektur Target              |  Format Paket   | Tautan Unduhan                                                                                                                                   |
+| :--------------------------- | :----------------------------- | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **macOS Intel (Kanonikal)**  | x86_64                         |     `.dmg`      | [SparkNotePad-v1.3.6-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-x64.dmg)                   |
+| **macOS Apple Silicon**      | arm64 (M1/M2/M3/M4)            |     `.dmg`      | [SparkNotePad-v1.3.6-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-arm64.dmg)               |
+| **macOS Multi-Qt Builds**    | x86_64 / arm64 (Qt 6.5–6.12)   |     `.dmg`      | [GitHub Releases v1.3.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.6)                                                         |
+| **Linux Ubuntu/Debian**      | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.deb`      | [sparknotepad_1.3.6_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad_1.3.6_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**   | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.rpm`      | [sparknotepad-1.3.6-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad-1.3.6-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**    | Debian / RPM (Qt 6.5–6.12)     | `.deb` / `.rpm` | [GitHub Releases v1.3.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.6)                                                         |
+| **Linux (Semua Distro)**     | Skrip Editor Default (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**            | Skrip Asosiasi Universal       |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor.sh)             |
+| **Manifes Checksum SHA-256** | Manifes Integritas SHA-256     |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SHA256SUMS.txt)                                             |
+| **FreeBSD**                  | 13.x – 15.x (KDE 6 / XFCE)     |  Source / Pkg   | [Panduan Build & Integrasi FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Pemasangan Paket Linux (Instalasi Dependensi Otomatis)
 
