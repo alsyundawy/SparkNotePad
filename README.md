@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/alsyundawy/SparkNotePad">
-    <img src="assets/sparknotepad-desktop-banner.jpg" width="100%" alt="SparkNotePad Desktop Suite — Native Scintilla &amp; Qt Text and Source Code Editor for Linux &amp; macOS" />
+    <img src="assets/sparknotepad-desktop-banner.jpg" width="100%" alt="SparkNotePad Desktop Suite — Native Scintilla &amp; Qt Text and Source Code Editor for Linux, FreeBSD &amp; macOS" />
   </a>
 </p>
 
@@ -15,7 +15,7 @@
 <h1 align="center">SparkNotePad</h1>
 
 <p align="center">
-  <b>SparkNotePad — Lightweight, blazing-fast native Scintilla &amp; Qt text and source code editor for Linux and macOS.</b><br>
+  <b>SparkNotePad — Lightweight, blazing-fast native Scintilla &amp; Qt text and source code editor for Linux, FreeBSD and macOS.</b><br>
   <i>Engineered with Qt 6 and native Scintilla 5.6.7 / Lexilla 5.5.4 core for maximum execution performance and minimal memory footprint</i>
 </p>
 

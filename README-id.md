@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/alsyundawy/SparkNotePad">
-    <img src="assets/sparknotepad-desktop-banner.jpg" width="100%" alt="SparkNotePad Desktop Suite — Native Scintilla & Qt Text and Source Code Editor for Linux & macOS" />
+    <img src="assets/sparknotepad-desktop-banner.jpg" width="100%" alt="SparkNotePad Desktop Suite — Native Scintilla & Qt Text and Source Code Editor for Linux, FreeBSD & macOS" />
   </a>
 </p>
 
@@ -15,7 +15,7 @@
 <h1 align="center">SparkNotePad</h1>
 
 <p align="center">
-  <b>SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla &amp; Qt untuk Linux dan macOS.</b><br>
+  <b>SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla &amp; Qt untuk Linux, FreeBSD dan macOS.</b><br>
   <i>Dibangun dengan Qt 6 dan engine Scintilla 5.6.7 / Lexilla 5.5.4 native untuk performa maksimal dan efisiensi memori tinggi</i>
 </p>
 
@@ -34,7 +34,7 @@
 </p>
 
 <p align="center">
-  <b>SparkNotePad</b> adalah editor teks dan kode sumber native yang ringan dan cepat, dibangun dengan Qt 6 dan engine Scintilla/Lexilla. Proyek ini menjadi alternatif native keluarga Notepad untuk pengguna Linux dan macOS, dengan fokus pada performa, efisiensi memori, dan fitur power-user.
+  <b>SparkNotePad</b> adalah editor teks dan kode sumber native yang ringan dan cepat, dibangun dengan Qt 6 dan engine Scintilla/Lexilla. Proyek ini menjadi alternatif native keluarga Notepad untuk pengguna Linux, FreeBSD dan macOS, dengan fokus pada performa, efisiensi memori, dan fitur power-user.
 </p>
 
 <p align="center">
