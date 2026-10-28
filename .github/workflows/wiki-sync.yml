@@ -1,0 +1,60 @@
+name: Sync Documentation to GitHub Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - wiki/**
+      - .github/workflows/wiki-sync.yml
+  workflow_dispatch:
+
+concurrency:
+  group: wiki-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  sync-wiki:
+    name: Sync wiki/ to GitHub Wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 1
+
+      - name: Sync to GitHub Wiki Repository
+        env:
+          WIKI_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          WIKI_REPO="https://x-access-token:${WIKI_PAT}@github.com/${{ github.repository }}.wiki.git"
+
+          echo "Checking if GitHub Wiki git repository is initialized..."
+          if ! git ls-remote "${WIKI_REPO}" &>/dev/null; then
+            echo "::warning title=Wiki Not Initialized::The GitHub Wiki repository for ${{ github.repository }} has not been initialized via the GitHub Web UI. Visit https://github.com/${{ github.repository }}/wiki and click 'Create the first page' to enable the Wiki git repository."
+            exit 0
+          fi
+
+          echo "Cloning GitHub Wiki..."
+          TMP_WIKI_DIR=$(mktemp -d)
+          git clone "${WIKI_REPO}" "${TMP_WIKI_DIR}"
+
+          echo "Copying documentation from wiki/ to wiki git workspace..."
+          cp -R wiki/* "${TMP_WIKI_DIR}/"
+
+          cd "${TMP_WIKI_DIR}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          if git diff-index --quiet HEAD --; then
+            echo "Wiki is already up to date. No changes to commit."
+          else
+            git commit -m "docs(wiki): synchronize wiki from main (${{ github.sha }})"
+            git push origin HEAD
+            echo "Successfully updated GitHub Wiki."
+          fi
