@@ -1,8 +1,8 @@
-# SparkNotePad Release DocNote — v1.3.7-pre
+# SparkNotePad Release DocNote — v1.3.7
 
 ```text
 ================================================================================
-Release Version     : 1.3.7-pre (Command Palette, Visual Diff, Project Tree & Forensics)
+Release Version     : 1.3.7 (Command Palette, Visual Diff, Project Tree & Forensics Suite)
 Release Date        : 2026-10-28
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -19,9 +19,9 @@ Architecture        : 100% Additive Safe Enhancements Inspired by KDE Kate, Plum
 
 ---
 
-## 0. Executive Summary: Release v1.3.7-pre
+## 0. Executive Summary: Release v1.3.7
 
-SparkNotePad **v1.3.7-pre** delivers a suite of high-velocity developer ergonomics inspired by primary-source research into **KDE Kate**, **Pluma (MATE)**, and **Notepad-- (cxasm/ndd)** without breaking or regressing any existing functionality:
+SparkNotePad **v1.3.7** delivers a suite of high-velocity developer ergonomics inspired by primary-source research into **KDE Kate**, **Pluma (MATE)**, and **Notepad-- (cxasm/ndd)** without breaking or regressing any existing functionality:
 
 1. **Omnibar Command Palette & Quick Open (`Cmd+P` / `Ctrl+P`)**: Keyboard-driven floating modal for fast tab switching, recent file navigation, `:line` jumping, and executing any editor action.
 2. **Native Side-by-Side Visual Diff & File Compare Engine**: Pure C++20 Myers/LCS difference algorithm with synchronized vertical scrolling, color-coded line markers, and fast navigation (`F7` / `Shift+F7`).

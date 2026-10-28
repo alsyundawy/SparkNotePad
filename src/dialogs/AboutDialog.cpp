@@ -306,9 +306,9 @@ void AboutDialog::updateThemeColors() {
                     "https://github.com/alsyundawy/SparkNotePad</a></div>"
                     "<div style='margin-bottom: 5px;'><b style='color: %1;'>%4:</b> "
                     "<a style='text-decoration: none;' "
-                    "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.6'>"
+                    "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.7'>"
                     "<span style='background-color: #238636; color: #ffffff; padding: 2px 8px; border-radius: 10px; "
-                    "font-weight: bold; font-size: 10px;'>🏷️ v1.3.6 %5</span></a></div>"
+                    "font-weight: bold; font-size: 10px;'>🏷️ v1.3.7 %5</span></a></div>"
                     "<div style='margin-bottom: 5px;'><b style='color: %1;'>%6:</b> "
                     "<b>Harry Dertin Sutisna Alsyundawy</b> (<a style='color: %3; text-decoration: none;' "
                     "href='https://github.com/alsyundawy'>@alsyundawy</a>) — <b>ALSYUNDAWY IT SOLUTION</b></div>"
@@ -383,7 +383,7 @@ void AboutDialog::updateThemeColors() {
                            "<p>%4</p>")
                            .arg(txtPri, accentCol, tr("Credits, Resources & Upstream Attribution"),
                                 tr("SparkNotePad stands on the shoulders of giants. We express our deepest gratitude "
-                                   "to the following projects, communities, and tools (v1.0.0 – v1.3.6):"));
+                                   "to the following projects, communities, and tools (v1.0.0 – v1.3.7):"));
 
         creditsHtml += QString(
                            "<h4 style='color: %1; margin: 12px 0 4px 0; font-size: 12px;'>🤖 %2</h4>"

@@ -390,7 +390,7 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           if [ "${{ github.ref_type }}" != "tag" ]; then
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.6")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.7")
           fi
           echo "Resolved release tag: ${TAG}"
           echo "RELEASE_TAG=${TAG}" >> "$GITHUB_ENV"

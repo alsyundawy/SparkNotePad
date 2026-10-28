@@ -253,8 +253,12 @@
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="385"/>
+        <source>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.7):</source>
+        <translation>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.7):</translation>
+    </message>
+    <message>
         <source>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.6):</source>
-        <translation>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.6):</translation>
+        <translation type="vanished">SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.6):</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="422"/>
@@ -1682,102 +1686,102 @@
 <context>
     <name>DocumentStatisticsDialog</name>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="29"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="32"/>
         <source>Document Statistics &amp; Forensics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="41"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="44"/>
         <source>Statistics for: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="46"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="49"/>
         <source>Metric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="46"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="49"/>
         <source>Value</source>
         <translation type="unfinished">Value</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="61"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="64"/>
         <source>Lines (Total / Non-empty)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="61"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="64"/>
         <source>%1 / %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="62"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="65"/>
         <source>Words Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="63"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="66"/>
         <source>Characters (with spaces)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="64"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="67"/>
         <source>Characters (without spaces)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="65"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="68"/>
         <source>Size (UTF-8 Bytes)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="65"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="68"/>
         <source>%1 bytes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="69"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="72"/>
         <source>Estimated Reading Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="69"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="72"/>
         <source>%1 min %2 sec (at 200 wpm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="73"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="76"/>
         <source>Estimated Speaking Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="73"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="76"/>
         <source>%1 min %2 sec (at 130 wpm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="75"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="78"/>
         <source>%1 / 8.00 bits/byte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="77"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="80"/>
         <source> — High (Possible Encrypted/Obfuscated Payload)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="79"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="82"/>
         <source> — Normal text/source code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="81"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="84"/>
         <source>Shannon Entropy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="85"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="88"/>
         <source>=== Document Statistics for %1 ===
 Lines: %2 (Non-empty: %3)
 Words: %4
@@ -1791,17 +1795,17 @@ Shannon Entropy: %12
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="108"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="111"/>
         <source>Copy to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="114"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="117"/>
         <source>Close</source>
         <translation type="unfinished">Close</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="123"/>
+        <location filename="../src/dialogs/DocumentStatisticsDialog.cpp" line="126"/>
         <source>Copied!</source>
         <translation type="unfinished"></translation>
     </message>

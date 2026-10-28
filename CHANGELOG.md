@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.3.7-pre] - 2026-10-28
+## [1.3.7] - 2026-10-28
 
 ### 🚀 Command Palette Omnibar, Visual Side-by-Side Diff, Upgraded Project Tree, & Forensics Suite
 
-SparkNotePad v1.3.7-pre introduces high-velocity developer ergonomics inspired by KDE Kate, Pluma (MATE), Notepad-- (cxasm), and modern editors:
+SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KDE Kate, Pluma (MATE), Notepad-- (cxasm), and modern editors:
 
 #### 🆕 Added
 
@@ -38,6 +38,15 @@ SparkNotePad v1.3.7-pre introduces high-velocity developer ergonomics inspired b
   - Document Statistics & Forensics dialog (`DocumentStatisticsDialog`) reporting character counts, word counts, line counts, reading time, and Shannon Entropy (detecting encrypted/obfuscated content).
 - **Multi-Cursor Status Bar Polish**:
   - Status bar indicator displaying active cursor count (e.g. `[3 Cursors]`) when multi-selection is active.
+
+#### 🔧 Changed & Hardened
+
+- **14-Pillar Code Audit & AST Verification**:
+  - Verified across `clangd --check` (0 diagnostics / 0 errors).
+  - Sanitized header inclusions via `clang-tidy` (`misc-include-cleaner`) across all diff and forensic modules.
+  - Hardened Shannon Entropy calculation with bounds-safe `.at(byte)` frequency lookups.
+  - 100% clean across all 26 modified files in `trunk check` (cppcheck-qt, clang-format, prettier, markdownlint).
+  - Bumped SonarQube project version to `1.3.7`.
 
 ---
 
