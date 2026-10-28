@@ -84,7 +84,7 @@ def get_include_dirs(root: Path) -> list[str]:
 def get_base_defines() -> list[str]:
     """Return common preprocessor defines."""
     return [
-        '-DAPP_VERSION="1.3.5"',
+        '-DAPP_VERSION="1.3.7"',
         '-DAPP_DISTRIBUTION="Source"',
         '-DAPP_COPYRIGHT="Copyright 2019-2026 Justin Dailey & SparkNotePad Contributors"',
         '-DAPP_COPYRIGHT_BUILDER="Copyright 2026 HARRY DS ALSYUNDAWY (SparkNotePad Maintainer)"',

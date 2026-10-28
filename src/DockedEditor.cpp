@@ -135,6 +135,10 @@ QVector<ScintillaNext *> DockedEditor::editors() const {
 }
 
 void DockedEditor::switchToEditor(const ScintillaNext *editor) {
+    if (!editor) {
+        return;
+    }
+
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
 
     if (dockWidget == Q_NULLPTR) {
@@ -225,6 +229,7 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
         if (currentEditor == obj) {
             currentEditor = nullptr;
             auto edList = editors();
+            edList.removeAll(static_cast<ScintillaNext *>(obj));
             if (!edList.isEmpty()) {
                 currentEditor = edList.first();
                 emit editorActivated(currentEditor.data());

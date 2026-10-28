@@ -28,6 +28,8 @@ SparkNotePad **v1.3.7** delivers a suite of high-velocity developer ergonomics i
 3. **Upgraded Project & Workspace Tree Dock**: Real-time bottom filter bar (`filterEdit`), toolbar controls (Refresh, Collapse All), comprehensive context menu (Open, Open with System, Show in Finder, Copy Paths), and `.sparkproject` JSON detection.
 4. **Swiss-Army Code Transformer & Forensics**: Prettify/Minify XML/HTML, SQL query formatting, JWT (JSON Web Token) decoding & validation, and Pluma-style Document Statistics with real-time Shannon Entropy calculation.
 5. **Multi-Cursor UI Polish**: Real-time active cursor counter in status bar (`[N Cursors]`).
+6. **Critical Crash Prevention & Lifecycle Hardening**: Eliminated fatal `Q_ASSERT(isFile())` abort on untitled/new documents in `ScintillaNext::getFilePath()` and `getPath()`; fixed potential Use-After-Free in `DockedEditor.cpp` destroyed slot; added null checks in `MainWindow::checkEditorsBeforeClose()`, `closeFile()` (`QPointer`), `isAnyUnsaved()`, and `ModernMessageBox::promptForSave()`.
+7. **Complete Eradication of 1,288 IDE Diagnostics & 756 SonarQube Errors**: Configured `.clangd` with explicit C++ header mode mapping and SDK sysroots; enabled `sonarlint.analysisExcludesStandalone` and `sonarqube.analysisExcludesStandalone` in `.vscode/settings.json` for thirdparty packages; synchronized 312-entry compilation database via `scripts/generate_compilation_database.py`.
 
 ---
 

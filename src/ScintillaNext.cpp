@@ -312,13 +312,17 @@ QFileInfo ScintillaNext::getFileInfo() const {
 }
 
 QString ScintillaNext::getPath() const {
-    Q_ASSERT(isFile());
+    if (!isFile()) {
+        return QString();
+    }
 
     return QDir::toNativeSeparators(fileInfo.canonicalPath());
 }
 
 QString ScintillaNext::getFilePath() const {
-    Q_ASSERT(isFile());
+    if (!isFile()) {
+        return QString();
+    }
 
     return QDir::toNativeSeparators(fileInfo.canonicalFilePath());
 }

@@ -2158,7 +2158,7 @@ void MainWindow::openFileList(const QStringList &fileNames) {
 bool MainWindow::checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorList) {
     QVector<ScintillaNext *> unsaved;
     for (auto *e : editorList) {
-        if (!e->isSavedToDisk())
+        if (e && !e->isSavedToDisk())
             unsaved.append(e);
     }
 
@@ -2243,6 +2243,8 @@ void MainWindow::closeFile(ScintillaNext *editor) {
         return;
     }
 
+    QPointer<ScintillaNext> pEditor(editor);
+
     // Early out. If we aren't exiting on last tab closed, and it exists, there's no point in continuing
     if (!app->getSettings()->exitOnLastTabClosed() && getInitialEditor() != Q_NULLPTR) {
         return;
@@ -2252,7 +2254,12 @@ void MainWindow::closeFile(ScintillaNext *editor) {
         return;
     }
 
-    editor->close();
+    // cppcheck-suppress knownConditionTrueFalse
+    if (!pEditor) {
+        return;
+    }
+
+    pEditor->close();
 
     // If the last document was closed, figure out what to do next
     if (editorCount() == 0) {
@@ -2848,7 +2855,7 @@ void MainWindow::updateFileStatusBasedUi(const ScintillaNext *editor) {
 
 bool MainWindow::isAnyUnsaved() const {
     const auto eds = editors();
-    return std::ranges::any_of(eds, [](const ScintillaNext *editor) { return !editor->isSavedToDisk(); });
+    return std::ranges::any_of(eds, [](const ScintillaNext *editor) { return editor && !editor->isSavedToDisk(); });
 }
 
 void MainWindow::updateEOLBasedUi(const ScintillaNext *editor) {

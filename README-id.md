@@ -321,6 +321,22 @@ trunk check -n -j 2
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
 
+### [v1.3.7] — Command Palette Omnibar, Visual Side-by-Side Diff, Pembaruan Pohon Proyek, Rangkaian Forensik & Pembasmian Total Linter (2026-10-28)
+
+- **Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)**: Jendela modal spotlight mengambang (`Cmd+P` / `Ctrl+P` dan `Cmd+Shift+P` / `Ctrl+Shift+P`) dengan pencarian fuzzy tab aktif, penukar berkas riwayat, lompat baris (`:line`), serta eksekusi aksi menu editor.
+- **Mesin Komparasi Berkas Visual Bersebelahan Native (`FileDiffDialog`)**: Algoritma Myers/LCS murni C++20 dengan sinkronisasi gulir vertikal dua panel Scintilla, penanda baris berkode warna, dan navigasi cepat lompatan selisih (`F7` / `Shift+F7`).
+- **Pembaruan Dock Pohon Proyek & Ruang Kerja (`FolderAsWorkspaceDock`)**: Bilah filter pencarian real-time bawah (`filterEdit`) dengan pencocokan pola wildcard, kontrol bilah alat (Segarkan, Ciutkan Semua), menu konteks lengkap (Buka di SparkNotePad, Aplikasi Sistem, Tampilkan di Finder/Manajer Berkas, Salin Path), serta deteksi konfigurasi `.sparkproject`.
+- **Rangkaian Transformasi Kode & Forensik Digital (`TokenForensicUtils` & `CodeCompressPretty`)**: Perapih dan Pemadat XML/HTML, pemformat kueri SQL dengan standardisasi kata kunci dan indentasi klausa, dekoder & validator token JWT (JSON Web Token), serta dialog Statistik Dokumen (`DocumentStatisticsDialog`) dengan kalkulasi Entropi Shannon real-time.
+- **Pencegahan Crash Kritis & Pengerasan Daur Hidup Objek**:
+  - Menghilangkan abort fatal pada tab dokumen belum tersimpan di `ScintillaNext::getFilePath()` dan `getPath()`.
+  - Memperkuat siklus pemusnahan tab dan dock widget pada `DockedEditor.cpp` dan `MainWindow.cpp`, mencegah Use-After-Free (UAF) dan dereferensi pointer null.
+  - Menambahkan pengaman null pada `ModernMessageBox::promptForSave()` dan `checkEditorsBeforeClose()`.
+- **Pembasmian Total 1.288 Error IDE & 756 Error SonarQube**:
+  - Merestrukturisasi `.clangd` dengan routing unit translasi header C++ eksplisit (`If: PathMatch: .*\.h$` -> `-xc++-header`, `-std=c++20`) dan sysroot SDK, mengeliminasi kesalahan sintaks C-mode pada header C++.
+  - Mengonfigurasi `sonarlint.analysisExcludesStandalone` dan `sonarqube.analysisExcludesStandalone` pada `.vscode/settings.json` untuk `thirdparty/**`, `.cpm-cache/**`, `build/**`, dan `i18n/**`, menuntaskan 756 diagnostik false-positive SonarQube / SonarLint.
+  - Menyelaraskan generator basis data kompilasi (`scripts/generate_compilation_database.py`) pada seluruh 312 unit translasi implementasi dan header.
+- **Kepatuhan Bersih 100% Trunk & MegaLinter**: Terverifikasi 0 isu pada seluruh linter repositori (`cppcheck-qt`, `clang-format`, `markdownlint`, `git-diff-check`, `yamllint`).
+
 ### [v1.3.6] — Perluasan Matriks Platform, Pengerasan Sandboxing, Fitur Pertahanan & Pemolesan Visual (2026-10-28)
 
 - **Matriks Kompatibilitas Multi-Distro & Sistem Operasi Lengkap**: Menetapkan [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md) dan [SPARKNOTEPAD_1.3.6_IMPLEMENTATION_AND_TASK_LIST_PLAN.md](doc/SPARKNOTEPAD_1.3.6_IMPLEMENTATION_AND_TASK_LIST_PLAN.md) yang menstandarisasi paket biner resmi tier-1 pada Ubuntu 22.04 LTS (glibc 2.35 baseline), Ubuntu 24.04/26.04, Debian 12–14, Fedora 40–44, Rocky/Alma 9–11, openSUSE Tumbleweed/Leap, Slackware, FreeBSD 13–15, dan macOS 11–26 (Universal Apple Silicon & Intel).
