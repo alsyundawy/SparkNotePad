@@ -260,32 +260,37 @@ SparkNotePad is built with universal accessibility compliance (WCAG 2.1 AA):
 
 ## 15. Keyboard Shortcuts Quick Reference
 
-| Action                        | macOS Shortcut                | Linux / Windows Shortcut      |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| **New Document**              | `Cmd+N`                       | `Ctrl+N`                      |
-| **Open Document**             | `Cmd+O`                       | `Ctrl+O`                      |
-| **Save Document**             | `Cmd+S`                       | `Ctrl+S`                      |
-| **Save As**                   | `Cmd+Shift+S`                 | `Ctrl+Shift+S`                |
-| **Close Tab**                 | `Cmd+W`                       | `Ctrl+W`                      |
-| **Find Text**                 | `Cmd+F`                       | `Ctrl+F`                      |
-| **Replace Text**              | `Cmd+H`                       | `Ctrl+H`                      |
-| **Find in Files**             | `Cmd+Shift+F`                 | `Ctrl+Shift+F`                |
-| **Go to Line**                | `Cmd+G`                       | `Ctrl+G`                      |
-| **Next Tab / Prev Tab**       | `Ctrl+Tab` / `Ctrl+Shift+Tab` | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
-| **Focus Editor**              | `Ctrl+Alt+E`                  | `Ctrl+Alt+E`                  |
-| **Toggle Dark/Light Theme**   | `Cmd+Alt+T`                   | `Ctrl+Alt+T`                  |
-| **Move to Next Screen**       | `Cmd+Alt+Right`               | `Ctrl+Alt+Right`              |
-| **Move to Previous Screen**   | `Cmd+Alt+Left`                | `Ctrl+Alt+Left`               |
-| **Center Window on Screen**   | `Cmd+Alt+C`                   | `Ctrl+Alt+C`                  |
-| **Display Diagnostics**       | `Cmd+Alt+D`                   | `Ctrl+Alt+D`                  |
-| **Encrypt Document**          | `Cmd+Alt+E`                   | `Ctrl+Alt+E`                  |
-| **Decrypt Document**          | `Cmd+Alt+X`                   | `Ctrl+Alt+X`                  |
-| **Evaluate JS / Math**        | `Cmd+Alt+J`                   | `Ctrl+Alt+J`                  |
-| **Log Tail Monitoring**       | `Cmd+Alt+M`                   | `Ctrl+Alt+M`                  |
-| **Clipboard History**         | `Cmd+Alt+V`                   | `Ctrl+Alt+V`                  |
-| **Accessibility & Shortcuts** | `Shift+F1`                    | `Shift+F1` / `F1`             |
-| **Restart Application**       | `Cmd+Alt+R`                   | `Ctrl+Alt+R`                  |
-| **User Guide**                | `F1`                          | `Ctrl+F1`                     |
+| Action                        | macOS Shortcut                  | Linux / Windows Shortcut        |
+| ----------------------------- | ------------------------------- | ------------------------------- |
+| **Quick Open (Omnibar)**      | `Cmd+P` / `Ctrl+Alt+O`          | `Ctrl+P` / `Ctrl+Alt+O`         |
+| **Command Palette Launcher**  | `Cmd+Shift+P` / `Ctrl+Alt+I`    | `Ctrl+Shift+P` / `Ctrl+Alt+I`   |
+| **New Document**              | `Cmd+N`                         | `Ctrl+N`                        |
+| **Open Document**             | `Cmd+O`                         | `Ctrl+O`                        |
+| **Save Document**             | `Cmd+S`                         | `Ctrl+S`                        |
+| **Save As**                   | `Cmd+Shift+S`                   | `Ctrl+Shift+S`                  |
+| **Close Tab**                 | `Cmd+W`                         | `Ctrl+W`                        |
+| **Print Document**            | `Cmd+Alt+Shift+P`               | `Ctrl+Alt+Shift+P`              |
+| **Find Text**                 | `Cmd+F`                         | `Ctrl+F`                        |
+| **Replace Text**              | `Cmd+H`                         | `Ctrl+H`                        |
+| **Find in Files**             | `Cmd+Shift+F`                   | `Ctrl+Shift+F`                  |
+| **Go to Line**                | `Cmd+G`                         | `Ctrl+G`                        |
+| **Next Tab / Prev Tab**       | `Ctrl+Tab` / `Ctrl+Shift+Tab`   | `Ctrl+Tab` / `Ctrl+Shift+Tab`   |
+| **Focus Editor**              | `Ctrl+Alt+E`                    | `Ctrl+Alt+E`                    |
+| **Visual Diff Navigation**    | `F7` (Next) / `Shift+F7` (Prev) | `F7` (Next) / `Shift+F7` (Prev) |
+| **Markdown Safe Preview**     | `Cmd+Shift+M`                   | `Ctrl+Shift+M`                  |
+| **Toggle Dark/Light Theme**   | `Cmd+Alt+T`                     | `Ctrl+Alt+T`                    |
+| **Move to Next Screen**       | `Cmd+Alt+Right`                 | `Ctrl+Alt+Right`                |
+| **Move to Previous Screen**   | `Cmd+Alt+Left`                  | `Ctrl+Alt+Left`                 |
+| **Center Window on Screen**   | `Cmd+Alt+C`                     | `Ctrl+Alt+C`                    |
+| **Display Diagnostics**       | `Cmd+Alt+D`                     | `Ctrl+Alt+D`                    |
+| **Encrypt Document**          | `Cmd+Alt+E`                     | `Ctrl+Alt+E`                    |
+| **Decrypt Document**          | `Cmd+Alt+X`                     | `Ctrl+Alt+X`                    |
+| **Evaluate JS / Math**        | `Cmd+Alt+J`                     | `Ctrl+Alt+J`                    |
+| **Log Tail Monitoring**       | `Cmd+Alt+M`                     | `Ctrl+Alt+M`                    |
+| **Clipboard History**         | `Cmd+Alt+V`                     | `Ctrl+Alt+V`                    |
+| **Accessibility & Shortcuts** | `Shift+F1`                      | `Shift+F1` / `F1`               |
+| **Restart Application**       | `Cmd+Alt+R`                     | `Ctrl+Alt+R`                    |
+| **User Guide**                | `F1`                            | `Ctrl+F1`                       |
 
 ---
 

@@ -5,6 +5,7 @@
 SparkNotePad is a fast, versatile native Linux and macOS desktop text editor built on the **Scintilla 5.6.7** and **Lexilla 5.5.4** editing engines with a native **Qt 6** GUI (no Win32 emulation, no Wine layer).
 
 This guide provides step-by-step native compilation and `.deb` packaging instructions for:
+
 - **Debian 12 (Bookworm)** and **Debian 13 (Trixie / Sid)**
 - **Ubuntu 22.04 LTS (Jammy Jellyfish)**
 - **Ubuntu 24.04 LTS (Noble Numbat)**
@@ -46,19 +47,21 @@ sudo apt install -y \
     dpkg-dev rpm
 ```
 
-*(On Ubuntu 22.04, `g++-12` provides optimal C++20 standard library support for Scintilla and Lexilla).*
+_(On Ubuntu 22.04, `g++-12` provides optimal C++20 standard library support for Scintilla and Lexilla)._
 
 ---
 
 ## 3. Vendored & Automatic Dependencies (CPM)
 
 SparkNotePad vendors core editing algorithms directly within `thirdparty/` for reproducibility and offline stability:
+
 - **Scintilla 5.6.7** (`thirdparty/scintilla`)
 - **Lexilla 5.5.4** (`thirdparty/lexilla`)
 - **Lua 5.5.1 / 5.4.x** (`thirdparty/lua`)
 - **uchardet** (`thirdparty/uchardet`)
 
 Auxiliary Qt utilities are retrieved automatically via **CPM (CMake Package Manager)** during CMake configuration (internet connection required only on the first configure):
+
 - **Qt-Advanced-Docking-System (ADS)**
 - **QSimpleUpdater**
 - **SingleApplication**
@@ -69,11 +72,14 @@ Auxiliary Qt utilities are retrieved automatically via **CPM (CMake Package Mana
 ## 4. Technical Portage Notes & Workarounds
 
 ### 4.1 Qt-Advanced-Docking-System & `Qt6::GuiPrivate` on Qt ≥ 6.9
+
 As documented in `NotepadNext-native-linux/BUILD-UBUNTU-26.04.md`:
+
 - On Qt ≥ 6.9 (such as Ubuntu 24.10, 26.04, or modern Qt SDKs), ADS links against `Qt6::GuiPrivate` to access `<qpa/qplatformnativeinterface.h>` for X11 floating title bar customization.
 - When compiling against system Qt packages on these distributions, the package `qt6-base-private-dev` **must** be installed. If absent, CMake will fail looking for private header paths under `/usr/include/.../QtGui/<version>`.
 
 ### 4.2 glibc Backward Compatibility Invariant
+
 - Binaries built on **Ubuntu 22.04 LTS** link against `glibc 2.35`.
 - Because the GNU C Library (glibc) maintains strict backward compatibility, an executable built on `glibc 2.35` will seamlessly run on **Ubuntu 22.04**, **Debian 12** (`glibc 2.36`), **Ubuntu 24.04** (`glibc 2.39`), and **Ubuntu 26.04**.
 - Conversely, a binary compiled on Ubuntu 24.04 (`glibc 2.39`) **cannot** run on Ubuntu 22.04 or Debian 12 without upgrading the host glibc.
@@ -112,17 +118,18 @@ cmake --build build --target rpm
 ```
 
 The resulting files will be placed in `build/`:
-- `build/sparknotepad_1.3.5_amd64.deb`
-- `build/sparknotepad-1.3.5-1.x86_64.rpm`
+
+- `build/sparknotepad_1.3.7_amd64.deb`
+- `build/sparknotepad-1.3.7-1.x86_64.rpm`
 
 ### 6.1 Inspect Package Metadata
 
 ```bash
 # Inspect generated Debian package control metadata:
-dpkg-deb -I build/sparknotepad_1.3.5_amd64.deb
+dpkg-deb -I build/sparknotepad_1.3.7_amd64.deb
 
 # Verify file contents inside .deb:
-dpkg-deb -c build/sparknotepad_1.3.5_amd64.deb
+dpkg-deb -c build/sparknotepad_1.3.7_amd64.deb
 ```
 
 ---
@@ -133,7 +140,7 @@ To install the `.deb` package while automatically resolving and downloading all 
 
 ```bash
 # ✅ Recommended APT installation command (local file):
-sudo apt install ./build/sparknotepad_1.3.5_amd64.deb
+sudo apt install ./build/sparknotepad_1.3.7_amd64.deb
 ```
 
 > **Why `apt install ./file.deb` instead of `dpkg -i`?**  

@@ -4,10 +4,11 @@
 
 SparkNotePad provides native packaging support for modern Linux distributions via CMake and CPack:
 
-- **Debian / Ubuntu / Linux Mint / Pop!_OS:** Debian packages (`.deb`)
+- **Debian / Ubuntu / Linux Mint / Pop!\_OS:** Debian packages (`.deb`)
 - **Fedora / RHEL / Rocky Linux / AlmaLinux / openSUSE:** RPM packages (`.rpm`)
 
 All official packages are compiled on LTS base environments (**Ubuntu 22.04 LTS / glibc 2.35**) to guarantee binary backward and forward compatibility across:
+
 - **Ubuntu:** 22.04 LTS, 24.04 LTS, 26.04 LTS
 - **Debian:** 12 (Bookworm), 13 (Trixie), Sid
 - **Fedora:** 38, 39, 40, 41, 42+
@@ -18,43 +19,51 @@ All official packages are compiled on LTS base environments (**Ubuntu 22.04 LTS 
 
 ## 2. Package Specifications & Dependency Architecture
 
-| Attribute        | Debian (`.deb`)                                                                             | RPM (`.rpm`)                                              |
-| :--------------- | :------------------------------------------------------------------------------------------ | :-------------------------------------------------------- |
-| Package Name     | `sparknotepad`                                                                              | `sparknotepad`                                            |
-| Output Filename  | `sparknotepad_<version>_<arch>.deb`                                                         | `sparknotepad-<version>-1.<arch>.rpm`                     |
-| Section / Group  | `editors`                                                                                   | `Applications/Editors`                                    |
-| License          | `GPL-3.0-or-later`                                                                          | `GPL-3.0-or-later`                                        |
-| Direct Dependencies | Declared with multi-version fallback (`\|`) for classic Qt6 and `t64` (64-bit `time_t`)    | Auto-detected ELF SONAME requirements (`AutoReq: 1`)       |
-| System Libraries | `libc6 (>= 2.35)`, `libstdc++6 (>= 11)`, `libgcc-s1` (via `CPACK_DEBIAN_PACKAGE_SHLIBDEPS`) | `libc.so.6`, `libstdc++.so.6` (via DNF provides)          |
-| Recommends       | `xdg-utils`                                                                                 | `xdg-utils`                                               |
-| Desktop Entry    | `/usr/share/applications/SparkNotePad.desktop`                                              | `/usr/share/applications/SparkNotePad.desktop`            |
-| Application Icon | `/usr/share/icons/hicolor/scalable/apps/SparkNotePad.svg`                                   | `/usr/share/icons/hicolor/scalable/apps/SparkNotePad.svg` |
+| Attribute           | Debian (`.deb`)                                                                             | RPM (`.rpm`)                                              |
+| :------------------ | :------------------------------------------------------------------------------------------ | :-------------------------------------------------------- |
+| Package Name        | `sparknotepad`                                                                              | `sparknotepad`                                            |
+| Output Filename     | `sparknotepad_<version>_<arch>.deb`                                                         | `sparknotepad-<version>-1.<arch>.rpm`                     |
+| Section / Group     | `editors`                                                                                   | `Applications/Editors`                                    |
+| License             | `GPL-3.0-or-later`                                                                          | `GPL-3.0-or-later`                                        |
+| Direct Dependencies | Declared with multi-version fallback (`\|`) for classic Qt6 and `t64` (64-bit `time_t`)     | Auto-detected ELF SONAME requirements (`AutoReq: 1`)      |
+| System Libraries    | `libc6 (>= 2.35)`, `libstdc++6 (>= 11)`, `libgcc-s1` (via `CPACK_DEBIAN_PACKAGE_SHLIBDEPS`) | `libc.so.6`, `libstdc++.so.6` (via DNF provides)          |
+| Recommends          | `xdg-utils`                                                                                 | `xdg-utils`                                               |
+| Desktop Entry       | `/usr/share/applications/SparkNotePad.desktop`                                              | `/usr/share/applications/SparkNotePad.desktop`            |
+| Application Icon    | `/usr/share/icons/hicolor/scalable/apps/SparkNotePad.svg`                                   | `/usr/share/icons/hicolor/scalable/apps/SparkNotePad.svg` |
 
 ---
 
 ## 3. Why RPM Automatically Installs Dependencies vs. DEB
 
 ### 3.1 The RPM Mechanism (Fedora / DNF)
+
 In RPM-based systems (Fedora, RHEL, openSUSE):
+
 - CPack configures `CPACK_RPM_PACKAGE_AUTOREQ ON`.
 - During package assembly, `rpmbuild` inspects the ELF `DT_NEEDED` dynamic tags of the binary (`SparkNotePad`).
 - It extracts raw shared object names (SONAMEs):
   `libQt6Widgets.so.6`, `libQt6Core.so.6`, `libQt6Gui.so.6`, `libQt6PrintSupport.so.6`, `libQt6Core5Compat.so.6`, `libc.so.6`.
 - In Fedora / RHEL, repository metadata indexes which package provides which SONAME (`Provides: libQt6Widgets.so.6()(64bit)`).
 - When a user executes:
+
   ```bash
-  sudo dnf install ./sparknotepad-1.3.5-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-1.3.7-1.x86_64.rpm
   ```
+
   `dnf` queries the repository index for every required SONAME and automatically downloads and installs `qt6-qtbase-gui`, `qt6-qt5compat`, etc.
 
 ### 3.2 The Debian/Ubuntu Mechanism (DEB / APT)
+
 In Debian-based systems (Ubuntu, Debian, Mint):
+
 - Debian package management (`dpkg` and `apt`) does **not** query repositories by raw ELF SONAME strings at install time. It requires **explicit package names** in the `Depends:` field of `debian/control`.
 - If CPack relies exclusively on `CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON` while Qt was installed from an external SDK or GitHub Actions path (e.g., `/home/runner/Qt/...`), `dpkg-shlibdeps` cannot map those shared libraries to system Debian package names. Consequently, Qt packages are omitted from `Depends:`.
 - To solve this, SparkNotePad defines `CPACK_DEBIAN_PACKAGE_DEPENDS` in `cmake/PackagingLinux.cmake`.
 
 ### 3.3 The 64-bit `time_t` Transition (`t64`)
+
 Starting with **Ubuntu 24.04 LTS (Noble)** and **Debian 13 (Trixie)**, Debian implemented the 64-bit `time_t` architecture transition (Y2038 protection), renaming standard runtime libraries:
+
 - `libqt6core6` ➜ `libqt6core6t64`
 - `libqt6gui6` ➜ `libqt6gui6t64`
 - `libqt6widgets6` ➜ `libqt6widgets6t64`
@@ -63,6 +72,7 @@ Starting with **Ubuntu 24.04 LTS (Noble)** and **Debian 13 (Trixie)**, Debian im
 - `libqt6core5compat6` ➜ `libqt6core5compat6t64`
 
 Meanwhile, **Ubuntu 22.04 LTS (Jammy)** and **Debian 12 (Bookworm)** retain the non-t64 package names. SparkNotePad uses Debian's alternative dependency operator (`|`):
+
 ```text
 libqt6core6 (>= 6.2.4) | libqt6core6t64,
 libqt6gui6 (>= 6.2.4) | libqt6gui6t64,
@@ -74,6 +84,7 @@ qt6-qpa-plugins,
 libglx0,
 libopengl0
 ```
+
 This syntax instructs APT to install the classic package on Debian 12 / Ubuntu 22.04, or the `t64` package on Ubuntu 24.04+ / Debian 13+.
 
 ---
@@ -81,19 +92,23 @@ This syntax instructs APT to install the classic package on Debian 12 / Ubuntu 2
 ## 4. How to Install: The Crucial Tool Difference (`apt` vs. `dpkg`)
 
 Many users historically ran:
+
 ```bash
 # ⚠️ Legacy command: Does NOT resolve or download dependencies from mirrors!
-sudo dpkg -i sparknotepad_1.3.5_amd64.deb
+sudo dpkg -i sparknotepad_1.3.7_amd64.deb
 ```
+
 `dpkg` is a low-level package unpacker. It has **no network access** and **cannot query APT repositories**. If any dependency is missing, `dpkg -i` aborts with an `unmet dependencies` error.
 
 ### ✅ Recommended Modern Installation Command
 
 On Debian 9+, Ubuntu 16.04+, and all modern derivatives:
+
 ```bash
 # ✅ Modern high-level APT command (equivalent to 'dnf install ./file.rpm')
-sudo apt install ./sparknotepad_1.3.5_amd64.deb
+sudo apt install ./sparknotepad_1.3.7_amd64.deb
 ```
+
 > **Note:** The leading `./` (or absolute path `/path/to/...`) is mandatory. It tells `apt` that the target is a local file rather than a remote repository package name. `apt` will automatically inspect all dependencies, fetch missing packages from official mirrors, install them, and configure SparkNotePad in a single automated step.
 
 ---
@@ -103,6 +118,7 @@ sudo apt install ./sparknotepad_1.3.5_amd64.deb
 ### 5.1 System Prerequisites
 
 #### Ubuntu 22.04 LTS / Debian 12 (Bookworm)
+
 ```bash
 sudo apt update
 sudo apt install -y --no-install-recommends \
@@ -115,6 +131,7 @@ sudo apt install -y --no-install-recommends \
 ```
 
 #### Ubuntu 24.04 LTS (Noble) / Ubuntu 26.04 / Debian 13 (Trixie)
+
 ```bash
 sudo apt update
 sudo apt install -y --no-install-recommends \
@@ -127,6 +144,7 @@ sudo apt install -y --no-install-recommends \
 ```
 
 #### Fedora / RHEL / CentOS Stream
+
 ```bash
 sudo dnf install -y \
     gcc-c++ cmake ninja-build rpm-build pkgconf-pkg-config \
@@ -152,5 +170,6 @@ cmake --build build --target rpm
 ```
 
 The resulting packages are generated in the `build/` root:
-- `build/sparknotepad_1.3.5_amd64.deb`
-- `build/sparknotepad-1.3.5-1.x86_64.rpm`
+
+- `build/sparknotepad_1.3.7_amd64.deb`
+- `build/sparknotepad-1.3.7-1.x86_64.rpm`
