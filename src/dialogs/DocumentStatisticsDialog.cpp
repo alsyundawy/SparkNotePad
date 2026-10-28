@@ -12,6 +12,7 @@
  */
 
 #include "DocumentStatisticsDialog.h"
+#include "utils/TokenForensicUtils.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -19,9 +20,11 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <QPushButton>
+#include <QString>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QVBoxLayout>
+#include <QWidget>
 
 DocumentStatisticsDialog::DocumentStatisticsDialog(const QString &documentName,
                                                    const TokenForensicUtils::DocumentStats &stats, QWidget *parent)

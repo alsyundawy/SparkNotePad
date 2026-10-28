@@ -16,6 +16,7 @@
 #include <QStringList>
 #include <QTimeZone>
 #include <array>
+#include <cstddef>
 
 double TokenForensicUtils::calculateShannonEntropy(const QByteArray &data) {
     if (data.isEmpty()) {
@@ -25,17 +26,17 @@ double TokenForensicUtils::calculateShannonEntropy(const QByteArray &data) {
     std::array<std::size_t, 256> frequencies{};
     frequencies.fill(0);
 
-    for (unsigned char byte : data) {
-        frequencies[byte]++;
+    for (const unsigned char byte : data) {
+        frequencies.at(byte)++;
     }
 
     const double total = static_cast<double>(data.size());
     double entropy = 0.0;
 
-    for (std::size_t count : frequencies) {
+    for (const std::size_t count : frequencies) {
         if (count > 0) {
-            const double p = static_cast<double>(count) / total;
-            entropy -= p * (std::log(p) / std::log(2.0));
+            const double prob = static_cast<double>(count) / total;
+            entropy -= prob * (std::log(prob) / std::log(2.0));
         }
     }
 

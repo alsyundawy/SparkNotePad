@@ -12,6 +12,8 @@
  */
 
 #include "MyersDiffEngine.h"
+#include <QLatin1Char>
+#include <QStringList>
 #include <algorithm>
 #include <vector>
 
