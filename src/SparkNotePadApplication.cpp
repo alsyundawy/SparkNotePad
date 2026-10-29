@@ -52,28 +52,6 @@
 #include <Windows.h>
 #endif
 
-namespace {
-
-class MenuIconEventFilter : public QObject {
-public:
-    explicit MenuIconEventFilter(QObject *parent = nullptr) : QObject(parent) {}
-
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override {
-        if (event->type() == QEvent::Show || event->type() == QEvent::Polish) {
-            if (auto *menu = qobject_cast<QMenu *>(watched)) {
-                for (auto *action : menu->actions()) {
-                    if (!action->icon().isNull()) {
-                        action->setIconVisibleInMenu(true);
-                    }
-                }
-            }
-        }
-        return QObject::eventFilter(watched, event);
-    }
-};
-
-}  // namespace
 
 const SingleApplication::Options opts =
     SingleApplication::ExcludeAppPath | SingleApplication::ExcludeAppVersion | SingleApplication::SecondaryNotification;
@@ -187,7 +165,6 @@ bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
     luaState->executeFile(":/scripts/init.lua");
     LuaExtension::Instance().Initialise(luaState->L, Q_NULLPTR);
 
-    installEventFilter(new MenuIconEventFilter(this));
 
     createNewWindow();
     connect(editorManager, &EditorManager::editorCreated, window, &MainWindow::addEditor);

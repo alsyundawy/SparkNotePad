@@ -84,5 +84,9 @@
         <file>icons/playRecord.svg</file>
         <file>icons/playRecord_m.svg</file>
         <file>icons/saveRecord.svg</file>
+        <file>icons/select_all.svg</file>
+        <file>icons/trash.svg</file>
+        <file>icons/folder.svg</file>
+        <file>icons/terminal.svg</file>
     </qresource>
 </RCC>

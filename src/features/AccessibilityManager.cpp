@@ -39,11 +39,14 @@ void AccessibilityManager::setupAccessibility(MainWindow *window) {
 
     QList<QToolBar *> toolBars = window->findChildren<QToolBar *>();
     for (QToolBar *tb : toolBars) {
+        tb->setAttribute(Qt::WA_AlwaysShowToolTips, true);
         tb->setAccessibleName(tb->windowTitle());
         for (QAction *act : tb->actions()) {
             if (!act->text().isEmpty()) {
                 QWidget *w = tb->widgetForAction(act);
                 if (w) {
+                    w->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+                    w->setToolTip(act->toolTip());
                     w->setAccessibleName(act->text().remove('&'));
                     w->setAccessibleDescription(act->toolTip());
                 }

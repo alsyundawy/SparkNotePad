@@ -38,9 +38,22 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
   - Document Statistics & Forensics dialog (`DocumentStatisticsDialog`) reporting character counts, word counts, line counts, reading time, and Shannon Entropy (detecting encrypted/obfuscated content).
 - **Multi-Cursor Status Bar Polish**:
   - Status bar indicator displaying active cursor count (e.g. `[3 Cursors]`) when multi-selection is active.
+- **Dedicated "Select All" Monoline Vector Icon**:
+  - Created `src/icons/select_all.svg` featuring three horizontal parallel lines with leading bullet markers matching the exact user reference design.
+  - Assigned icon to `actionSelectAll` across main menu, toolbars, and Scintilla context menus.
+- **High-DPI Razor-Sharp Vector Icon Suite**:
+  - Replaced legacy low-resolution 16x16 PNG icons with razor-sharp vector SVGs (`trash.svg`, `folder.svg`, `terminal.svg`, `settings.svg`, `SparkNotePad.svg`).
+  - Fixed SVG rendering by replacing unsupported `currentColor` in `cross.svg`, `plus.svg`, and `list_with_icons.svg` with explicit solid vector colors (`#3b82f6` / `#ef4444`).
+  - Populated crisp vector icons across all previously iconless menu actions (`actionSaveWithOriginalTime`, `actionUpdateFileTime`, `actionPreserveFileTime`, `actionRename`, `actionExportHtml`, `actionExportRtf`, `menuEncryption`, `actionEncryptDoc`, `actionDecryptDoc`, `actionQuickOpen`, `actionCommandPalette`, `menuClose_More`, `menuRecentFiles`, `menuExportAs`).
 
 #### 🐛 Fixed
 
+- **Toolbar Button Tooltip Visibility Restoration**:
+  - Restored hover tooltips across all 25 actions on `mainToolBar` in `MainWindow.ui` by defining explicit `<property name="toolTip">` values for all actions.
+  - Set `Qt::WA_AlwaysShowToolTips` and programmatically synchronized `toolTip()` on child `QToolButton` widgets in `MainWindow::initView()` and `AccessibilityManager::updateWidgetAccessibility()`, ensuring tooltips consistently render on macOS Qt 6 without suppression.
+- **Menu Presentation Latency & Rendering Optimization**:
+  - Completely removed high-overhead `MenuIconEventFilter` in `SparkNotePadApplication.cpp` that intercepted every application event during menu presentation.
+  - Enabled native cross-platform menu icon display via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation in `main.cpp`, restoring instant, lag-free menu rendering.
 - **Unsaved Buffer Path & Directory Assertion Crash**:
   - Eliminated fatal `Q_ASSERT(isFile())` abort in `ScintillaNext::getFilePath()` and `ScintillaNext::getPath()` when invoked on untitled/new documents, returning safe empty string `QString()`.
 - **Dock Widget Destruction Lifecycle & UAF Mitigation**:
