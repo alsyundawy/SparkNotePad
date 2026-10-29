@@ -7,14 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.3.7] - 2026-10-28
+## [1.3.7] - 2026-10-30
 
-### 🚀 Command Palette Omnibar, Visual Side-by-Side Diff, Upgraded Project Tree, & Forensics Suite
+### 🚀 Tools Suite (Notepad++ Style), Forensics Suite, Linter Zero-Defect Hardening & Ergonomics
 
-SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KDE Kate, Pluma (MATE), Notepad-- (cxasm), and modern editors:
+SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KDE Kate, Pluma (MATE), Notepad-- (cxasm), and Notepad++:
 
 #### 🆕 Added
 
+- **Notepad++ Style Top-Level `Tools` Menu**:
+  - Inserted between View and Settings menus with complete vector icon support.
+  - **Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-512 with sub-actions:
+    - _Generate_: Hashes entire active document and copies to clipboard with status bar confirmation.
+    - _Generate From File_: File picker to calculate and copy checksum.
+    - _Generate From Selection_: Hashes highlighted selection directly.
+    - _Verify_: Cross-validates document hash against reference string.
+  - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation.
+  - **MIME Tools Submenu**: Base64 Encode/Decode, URL Encode/Decode, Quoted-Printable Encode.
+  - **Converter Submenu**: ASCII <-> HEX, Decimal <-> HEX conversion.
+  - **Relocated AES-256 Encryption**: Migrated from File menu into Tools for cleaner organization.
+- **Ergonomic Quick Open Placement**:
+  - Relocated Quick Open (`Ctrl+Alt+O`) directly adjacent to Open in the File menu.
+- **Compact Menubar Typography**:
+  - Reduced menubar padding (`3px 6px`) and enforced compact `12px` font size for tighter, modern navigation bar spacing.
+- **Compilation Database Synchronization & Linter Zero-Defect Hardening**:
+  - Generated and synchronized 312-entry `build/compile_commands.json` and root `compile_commands.json`.
+  - Eradicated all 1,288 IDE diagnostics and 756 SonarQube / SonarLint errors by aligning `.vscode/settings.json`, `.clangd`, and `sonar-project.properties`.
+  - Resolved `ScintillaNext::getSelText()` Qt 6 type mismatches with explicit `QString::fromUtf8()` UTF-8 boundary safety.
 - **Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)**:
   - Global floating modal spotlight bound to `Cmd+P` / `Ctrl+P` (and Kate `Ctrl+Alt+O`).
   - Fast fuzzy-search tab switcher across all open document buffers and recent files.

@@ -137,11 +137,16 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 
 | Fitur                            | Deskripsi Kapabilitas                                                                                                 |       Pintasan (Shortcut)       |
 | :------------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Menu Tools Gaya Notepad++**    | Menu tingkat atas: Hash (MD5/CRC32/XXHASH/SHA1/256/512), MIME Tools (Base64/URL/QP), Konverter (ASCII/Hex/Dec)        |          `Tools >> *`           |
+| **Enkripsi AES-256 di Tools**    | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) & HMAC-SHA256, kini di dalam menu Tools           |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
+| **Quick Open Lebih Ergonomis**   | Pembuka berkas spotlight mengambang ditempatkan tepat setelah Open pada menu Berkas (File)                            |          `Ctrl+Alt+O`           |
+| **Tipografi Bilah Menu Kompak**  | Padding presisi 3px 6px dengan ukuran font 12px untuk navigasi lebih rapat dan bersih                                 |        Bilah Menu Global        |
+| **Hardening Linter Zero-Defect** | Sinkronisasi 312 entri basis data kompilasi menuntaskan 1.288 diagnostik IDE dan 756 peringatan SonarQube             |          Semua Berkas           |
 | **Sandbox Lua Ketat**            | Menetralisasi primitif eksekusi OS/IO/debug berbahaya (CVE-2026-42214) dengan 100% tes regresi otomatis               |             Bawaan              |
 | **Guard Konfigurasi & Sesi**     | Mencegat pembajakan shell interpreter (CVE-2026-48778); menegakkan izin berkas hanya pemilik (0600) pada sesi         |             Bawaan              |
 | **Perlindungan ReDoS Scintilla** | Mendeteksi nested quantifiers berisiko sebelum regex dieksekusi; membatasi runtime pencarian interaktif               |             Bawaan              |
 | **Pratinjau Markdown Aman**      | Dock QTextBrowser kotak pasir dengan sinkronisasi debounced dan whitelisting skema URI (http/https/mailto)            |         `Ctrl+Shift+M`          |
-| **Streaming Hash Kriptografis**  | Buffer konstan 64 KB untuk kalkulasi SHA-256, SHA-512, SHA-3 dengan lencana verifikasi kesesuaian real-time           |   Menu File >> Validator Hash   |
+| **Streaming Hash Kriptografis**  | Buffer konstan 64 KB untuk kalkulasi SHA-256, SHA-512, SHA-3 dengan lencana verifikasi kesesuaian real-time           |  Menu Tools >> Validator Hash   |
 | **Baseline TLS & Mode Air-Gap**  | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik     |  Preferensi >> Pengaturan Umum  |
 | **27 Ikon Bilah Alat Monoline**  | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                      |        Bilah Alat & Menu        |
 | **Ergonomi QComboBox Terpadu**   | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema             |         Seluruh Dialog          |
@@ -150,7 +155,6 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Tombol Keluar Terkemuka**      | Penghentian aplikasi yang mudah diakses di bilah alat dan menu dengan konfirmasi simpan                               | Bilah Alat / `Cmd+Q` / `Alt+F4` |
 | **Penyempurnaan Dialog Tentang** | Tata letak responsif dengan `QScrollArea`, pelipatan teks, dan bebas pemotongan di Retina/4K                          |      Menu `Help >> About`       |
 | **Keamanan Siber 2025–2026**     | Mitigasi injeksi Lua (CVE-2026-42214), mitigasi UAF Qt HTTP/2 (CVE-2026-95620), dual crypto                           |             Bawaan              |
-| **Enkripsi AES-256-CBC**         | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
 | **Pemantauan Log Langsung**      | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |          `Ctrl+Alt+Y`           |
 | **Dukungan Ikon Seluruh Menu**   | Seluruh menu dan submenu menampilkan ikon secara native via `setIconVisibleInMenu` di macOS dan Linux                 |          Seluruh Menu           |
 | **Ergonomi Spasi Dialog**        | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian    |         Seluruh Dialog          |
