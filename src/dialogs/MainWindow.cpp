@@ -457,6 +457,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Side-by-side Visual Diff (Notepad-- / Kate DiffWidget style)
     auto *actionCompareFiles = new QAction(tr("&Compare Files / Tabs (Diff)..."), this);
+    actionCompareFiles->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
+    actionCompareFiles->setIconVisibleInMenu(true);
     actionCompareFiles->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     actionCompareFiles->setStatusTip(tr("Compare two open tabs or files side-by-side with synchronized scrolling"));
     connect(actionCompareFiles, &QAction::triggered, this, [this]() { showFileDiffDialog(); });
@@ -464,6 +466,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // JWT Decoder action
     auto *actionDecodeJwt = new QAction(tr("&Decode JSON Web Token (JWT)"), this);
+    actionDecodeJwt->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
+    actionDecodeJwt->setIconVisibleInMenu(true);
     actionDecodeJwt->setStatusTip(tr("Decode selected JWT token or current document into formatted JSON"));
     connect(actionDecodeJwt, &QAction::triggered, this, &MainWindow::decodeJwtToken);
     ui->menuEdit->addAction(actionDecodeJwt);
@@ -907,14 +911,20 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     menuEncryption = new QMenu(tr("&Encryption (AES-256)"), this);
     menuEncryption->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
+    if (auto *act = menuEncryption->menuAction()) {
+        act->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
+        act->setIconVisibleInMenu(true);
+    }
     actionEncryptDoc = new QAction(tr("&Encrypt Current Document..."), this);
     actionEncryptDoc->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
+    actionEncryptDoc->setIconVisibleInMenu(true);
     actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
     connect(actionEncryptDoc, &QAction::triggered, this, &MainWindow::onEncryptDocumentTriggered);
     menuEncryption->addAction(actionEncryptDoc);
 
     actionDecryptDoc = new QAction(tr("&Remove Encryption / Decrypt..."), this);
-    actionDecryptDoc->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
+    actionDecryptDoc->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
+    actionDecryptDoc->setIconVisibleInMenu(true);
     actionDecryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
@@ -922,12 +932,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     auto *actionHashValidator = new QAction(tr("Cryptographic &Hash & Authenticity Validator..."), this);
     actionHashValidator->setIcon(QIcon(QStringLiteral(":/icons/saved.svg")));
+    actionHashValidator->setIconVisibleInMenu(true);
     connect(actionHashValidator, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
     ui->menuFile->addAction(actionHashValidator);
 
     menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
+    menuClipboardMonitoring->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+    if (auto *act = menuClipboardMonitoring->menuAction()) {
+        act->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+        act->setIconVisibleInMenu(true);
+    }
     actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
     actionToggleClipboardMonitoring->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+    actionToggleClipboardMonitoring->setIconVisibleInMenu(true);
     actionToggleClipboardMonitoring->setCheckable(true);
     actionToggleClipboardMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(actionToggleClipboardMonitoring, &QAction::triggered, this,
@@ -936,6 +953,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     actionClipboardHistory = new QAction(tr("View Clipboard &History..."), this);
     actionClipboardHistory->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
+    actionClipboardHistory->setIconVisibleInMenu(true);
     connect(actionClipboardHistory, &QAction::triggered, this, &MainWindow::onClipboardHistoryTriggered);
     menuClipboardMonitoring->addAction(actionClipboardHistory);
 
@@ -944,8 +962,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Setup Python Scripting (3.13+) Menu
     auto *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
+    menuPython->setIcon(QIcon(QStringLiteral(":/icons/terminal.svg")));
+    if (auto *act = menuPython->menuAction()) {
+        act->setIcon(QIcon(QStringLiteral(":/icons/terminal.svg")));
+        act->setIconVisibleInMenu(true);
+    }
     auto *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
     actionRunPython->setIcon(QIcon(QStringLiteral(":/icons/playRecord.svg")));
+    actionRunPython->setIconVisibleInMenu(true);
     actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R));
     connect(actionRunPython, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -960,6 +984,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     auto *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
     actionRunPythonFile->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
+    actionRunPythonFile->setIconVisibleInMenu(true);
     connect(actionRunPythonFile, &QAction::triggered, this, [this]() {
         QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(),
                                                         tr("Python Scripts (*.py);;All Files (*)"));
@@ -982,7 +1007,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Setup Tail Monitoring (tail -f) Menu
     menuTailMonitoring = new QMenu(tr("Monitoring (tail -f)"), this);
+    menuTailMonitoring->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    if (auto *act = menuTailMonitoring->menuAction()) {
+        act->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+        act->setIconVisibleInMenu(true);
+    }
     actionToggleTailMonitoring = new QAction(tr("&Monitoring (tail -f)"), this);
+    actionToggleTailMonitoring->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    actionToggleTailMonitoring->setIconVisibleInMenu(true);
     actionToggleTailMonitoring->setCheckable(true);
     actionToggleTailMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Y));
     actionToggleTailMonitoring->setToolTip(
@@ -992,6 +1024,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(actionToggleTailMonitoring, &QAction::triggered, this, &MainWindow::onToggleTailMonitoringTriggered);
 
     actionTailAutoScroll = new QAction(tr("&Auto-scroll to End on Update"), this);
+    actionTailAutoScroll->setIcon(QIcon(QStringLiteral(":/icons/checkmark.svg")));
+    actionTailAutoScroll->setIconVisibleInMenu(true);
     actionTailAutoScroll->setCheckable(true);
     actionTailAutoScroll->setChecked(true);
     connect(actionTailAutoScroll, &QAction::toggled, this,
@@ -999,11 +1033,13 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     actionTailReloadNow = new QAction(tr("&Force Check / Reload Now"), this);
     actionTailReloadNow->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    actionTailReloadNow->setIconVisibleInMenu(true);
     connect(actionTailReloadNow, &QAction::triggered, this,
             [this]() { TailMonitoringManager::instance()->forceCheck(currentEditor()); });
 
     actionTailOptions = new QAction(tr("Tail Monitoring &Options..."), this);
     actionTailOptions->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
+    actionTailOptions->setIconVisibleInMenu(true);
     connect(actionTailOptions, &QAction::triggered, this, [this]() {
         TailOptionsDialog dlg(this, currentEditor());
         dlg.exec();
@@ -1913,6 +1949,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Native Emoji & Symbols
     auto *actionEmoji = new QAction(tr("&Emoji && Symbols"), this);
+    actionEmoji->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
+    actionEmoji->setIconVisibleInMenu(true);
 #if defined(Q_OS_MACOS)
     actionEmoji->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_Space));
 #endif
@@ -1936,6 +1974,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     ensureMenuIconsVisible(this);
     for (auto *menu : ui->menuBar->findChildren<QMenu *>()) {
+        ensureMenuIconsVisible(menu);
         connect(menu, &QMenu::aboutToShow, this, [this, menu]() { ensureMenuIconsVisible(menu); });
     }
 }
@@ -3597,16 +3636,28 @@ void MainWindow::initUpdateCheck() {
 void MainWindow::ensureMenuIconsVisible(QWidget *root) {
     QWidget *target = root ? root : this;
     for (auto *action : target->findChildren<QAction *>()) {
-        action->setIconVisibleInMenu(true);
-    }
-    for (auto *menu : target->findChildren<QMenu *>()) {
-        for (auto *action : menu->actions()) {
+        if (!action->icon().isNull()) {
             action->setIconVisibleInMenu(true);
         }
     }
-    if (const auto *menu = qobject_cast<const QMenu *>(target)) {
+    for (auto *menu : target->findChildren<QMenu *>()) {
+        if (auto *act = menu->menuAction(); act && !act->icon().isNull()) {
+            act->setIconVisibleInMenu(true);
+        }
         for (auto *action : menu->actions()) {
-            action->setIconVisibleInMenu(true);
+            if (!action->icon().isNull()) {
+                action->setIconVisibleInMenu(true);
+            }
+        }
+    }
+    if (const auto *menu = qobject_cast<const QMenu *>(target)) {
+        if (auto *act = menu->menuAction(); act && !act->icon().isNull()) {
+            act->setIconVisibleInMenu(true);
+        }
+        for (auto *action : menu->actions()) {
+            if (!action->icon().isNull()) {
+                action->setIconVisibleInMenu(true);
+            }
         }
     }
 }

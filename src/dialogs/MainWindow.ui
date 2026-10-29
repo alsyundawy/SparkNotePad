@@ -105,6 +105,10 @@
      <string>&amp;Edit</string>
     </property>
     <widget class="QMenu" name="menuCopyMore">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
+     </property>
      <property name="title">
       <string>Copy More</string>
      </property>
@@ -115,6 +119,10 @@
      <addaction name="actionCopyURL" />
     </widget>
     <widget class="QMenu" name="menuIndent">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
+     </property>
      <property name="title">
       <string>Indent</string>
      </property>
@@ -122,6 +130,10 @@
      <addaction name="actionDecreaseIndent" />
     </widget>
     <widget class="QMenu" name="menuEOLConversion">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+     </property>
      <property name="title">
       <string>EOL Conversion</string>
      </property>
@@ -130,6 +142,10 @@
      <addaction name="actionMacintosh" />
     </widget>
     <widget class="QMenu" name="menuConvertCase">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/select_all.svg</normaloff>:/icons/select_all.svg</iconset>
+     </property>
      <property name="title">
       <string>Convert Case</string>
      </property>
@@ -141,6 +157,10 @@
      <addaction name="actionInvertCase" />
     </widget>
     <widget class="QMenu" name="menuLine_Operations">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/list_with_icons.svg</normaloff>:/icons/list_with_icons.svg</iconset>
+     </property>
      <property name="title">
       <string>Line Operations</string>
      </property>
@@ -164,12 +184,20 @@
      <addaction name="actionSortLinesbyLengthDesc" />
     </widget>
     <widget class="QMenu" name="menuBlankOperations">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/invisibleChar.svg</normaloff>:/icons/invisibleChar.svg</iconset>
+     </property>
      <property name="title">
       <string>Blank Operations</string>
      </property>
      <addaction name="actionTrimTrailingSpace" />
     </widget>
     <widget class="QMenu" name="menuCommentUncomment">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/table_edit.svg</normaloff>:/icons/table_edit.svg</iconset>
+     </property>
      <property name="title">
       <string>Comment/Uncomment</string>
      </property>
@@ -178,6 +206,10 @@
      <addaction name="actionSingleLineUncomment" />
     </widget>
     <widget class="QMenu" name="menuCopyAs">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
+     </property>
      <property name="title">
       <string>Copy As</string>
      </property>
@@ -185,6 +217,10 @@
      <addaction name="actionCopyAsRtf" />
     </widget>
     <widget class="QMenu" name="menuEncodingDecoding">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+     </property>
      <property name="title">
       <string>Encoding/Decoding</string>
      </property>
@@ -224,6 +260,10 @@
     <addaction name="separator" />
     <addaction name="actionColumnMode" />
     <widget class="QMenu" name="menuConvertNumber">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+     </property>
      <property name="title">
       <string>Convert Number</string>
      </property>
@@ -233,6 +273,10 @@
      <addaction name="actionConvertToOct" />
     </widget>
     <widget class="QMenu" name="menuInsert">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+     </property>
      <property name="title">
       <string>Insert</string>
      </property>
@@ -252,6 +296,10 @@
      <addaction name="actionToggleAutoLogTimestamp" />
     </widget>
     <widget class="QMenu" name="menuCodeFormatter">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+     </property>
      <property name="title">
       <string>Code Formatter &amp; Minifier</string>
      </property>
@@ -270,6 +318,10 @@
      <addaction name="actionMinifyJs" />
     </widget>
     <widget class="QMenu" name="menuJsExpression">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+     </property>
      <property name="title">
       <string>JavaScript Expression</string>
      </property>
@@ -279,6 +331,10 @@
      <addaction name="actionEvaluateJsDialog" />
     </widget>
     <widget class="QMenu" name="menuMathExpression">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+     </property>
      <property name="title">
       <string>Math Expression</string>
      </property>
@@ -291,6 +347,10 @@
      <string>Search</string>
     </property>
     <widget class="QMenu" name="menuBookmark">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/saved.svg</normaloff>:/icons/saved.svg</iconset>
+     </property>
      <property name="title">
       <string>Bookmarks</string>
      </property>
@@ -308,6 +368,10 @@
      <addaction name="actionDeleteBookmarkedLines" />
     </widget>
     <widget class="QMenu" name="menuMarkAllOccurrences">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/select_all.svg</normaloff>:/icons/select_all.svg</iconset>
+     </property>
      <property name="title">
       <string>Mark All Occurrences</string>
      </property>
@@ -318,6 +382,10 @@
      <addaction name="actionMarkStyle3" />
     </widget>
     <widget class="QMenu" name="menuClearMarks">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+     </property>
      <property name="title">
       <string>Clear Marks</string>
      </property>
@@ -349,6 +417,10 @@
      <string>&amp;View</string>
     </property>
     <widget class="QMenu" name="menuZoom">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/zoomIn.svg</normaloff>:/icons/zoomIn.svg</iconset>
+     </property>
      <property name="title">
       <string>&amp;Zoom</string>
      </property>
@@ -358,6 +430,10 @@
      <addaction name="actionZoomReset" />
     </widget>
     <widget class="QMenu" name="menuShowSymbol">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/invisibleChar.svg</normaloff>:/icons/invisibleChar.svg</iconset>
+     </property>
      <property name="title">
       <string>Show Symbol</string>
      </property>
@@ -369,6 +445,10 @@
      <addaction name="actionShowWrapSymbol" />
     </widget>
     <widget class="QMenu" name="menuFold_Level">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
+     </property>
      <property name="title">
       <string>Fold Level</string>
      </property>
@@ -383,6 +463,10 @@
      <addaction name="actionFoldLevel9" />
     </widget>
     <widget class="QMenu" name="menuUnfold_Level">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+     </property>
      <property name="title">
       <string>Unfold Level</string>
      </property>
@@ -397,6 +481,10 @@
      <addaction name="actionUnfoldLevel9" />
     </widget>
     <widget class="QMenu" name="menuFocusedView">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+     </property>
      <property name="title">
       <string>Focused View</string>
      </property>
@@ -464,6 +552,10 @@
      <string>&amp;Encoding</string>
     </property>
     <widget class="QMenu" name="menuReopenWithEncoding">
+     <property name="icon">
+      <iconset resource="../resources.qrc">
+       <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+     </property>
      <property name="title">
       <string>Reopen with Encoding</string>
      </property>
@@ -875,6 +967,10 @@
    </property>
   </action>
   <action name="actionWindows">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -883,6 +979,10 @@
    </property>
   </action>
   <action name="actionUnix">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -891,6 +991,10 @@
    </property>
   </action>
   <action name="actionMacintosh">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -899,6 +1003,10 @@
    </property>
   </action>
   <action name="actionUpperCase">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;UPPER CASE</string>
    </property>
@@ -910,6 +1018,10 @@
    </property>
   </action>
   <action name="actionLowerCase">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;lower case</string>
    </property>
@@ -921,6 +1033,10 @@
    </property>
   </action>
   <action name="actionTitleCase">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Title Case</string>
    </property>
@@ -932,6 +1048,10 @@
    </property>
   </action>
   <action name="actionSentenceCase">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Sentence case</string>
    </property>
@@ -943,6 +1063,10 @@
    </property>
   </action>
   <action name="actionInvertCase">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/text_indent.svg</normaloff>:/icons/text_indent.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;iNVERT cASE</string>
    </property>
@@ -966,11 +1090,19 @@
    </property>
   </action>
   <action name="actionSplitLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/table_delete.svg</normaloff>:/icons/table_delete.svg</iconset>
+   </property>
    <property name="text">
     <string>Split Lines</string>
    </property>
   </action>
   <action name="actionJoinLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
    <property name="text">
     <string>Join Lines</string>
    </property>
@@ -1069,6 +1201,10 @@
    </property>
   <property name="toolTip"><string>Zoom Out (Ctrl+-)</string></property></action>
   <action name="actionZoomReset">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/zoomIn.svg</normaloff>:/icons/zoomIn.svg</iconset>
+   </property>
    <property name="text">
     <string>Reset Zoom</string>
    </property>
@@ -1099,6 +1235,10 @@
    </property>
   </action>
   <action name="actionShowWhitespace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/invisibleChar.svg</normaloff>:/icons/invisibleChar.svg</iconset>
+   </property>
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1107,6 +1247,10 @@
    </property>
   </action>
   <action name="actionShowEndofLine">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/invisibleChar.svg</normaloff>:/icons/invisibleChar.svg</iconset>
+   </property>
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1250,6 +1394,10 @@
    </property>
   <property name="toolTip"><string>Replace... (Ctrl+H)</string></property></action>
   <action name="actionFullScreen">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/zoomIn.svg</normaloff>:/icons/zoomIn.svg</iconset>
+   </property>
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1337,6 +1485,10 @@
    </property>
   </action>
   <action name="actionSelectNext">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Select Next Instance</string>
    </property>
@@ -1364,6 +1516,10 @@
    </property>
   </action>
   <action name="actionGoToLine">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Go to Line...</string>
    </property>
@@ -1391,6 +1547,10 @@
    </property>
   </action>
   <action name="actionToggleSingleLineComment">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/table_edit.svg</normaloff>:/icons/table_edit.svg</iconset>
+   </property>
    <property name="text">
     <string>Toggle Single Line Comment</string>
    </property>
@@ -1399,6 +1559,10 @@
    </property>
   </action>
   <action name="actionSingleLineComment">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
    <property name="text">
     <string>Single Line Comment</string>
    </property>
@@ -1407,6 +1571,10 @@
    </property>
   </action>
   <action name="actionSingleLineUncomment">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/table_delete.svg</normaloff>:/icons/table_delete.svg</iconset>
+   </property>
    <property name="text">
     <string>Single Line Uncomment</string>
    </property>
@@ -1427,6 +1595,10 @@
    </property>
   </action>
   <action name="actionShowEncodingInfo">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/SparkNotePad.svg</normaloff>:/icons/SparkNotePad.svg</iconset>
+   </property>
    <property name="text">
     <string>Encoding &amp;Information &amp;&amp; Conversion...</string>
    </property>
@@ -1438,6 +1610,10 @@
    </property>
   </action>
   <action name="actionConvertToUtf8">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Convert to &amp;UTF-8</string>
    </property>
@@ -1446,11 +1622,19 @@
    </property>
   </action>
   <action name="actionConvertToUtf8Bom">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Convert to UTF-8 with &amp;BOM</string>
    </property>
   </action>
   <action name="actionConvertToAnsi">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Convert to &amp;ANSI (Windows-1252)</string>
    </property>
@@ -1459,76 +1643,136 @@
    </property>
   </action>
   <action name="actionConvertToUtf16Le">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Convert to UTF-16 &amp;LE</string>
    </property>
   </action>
   <action name="actionConvertToUtf16Be">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Convert to UTF-16 &amp;BE</string>
    </property>
   </action>
   <action name="actionReopenUtf8">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>UTF-8</string>
    </property>
   </action>
   <action name="actionReopenAnsi">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>ANSI / Windows-1252</string>
    </property>
   </action>
   <action name="actionReopenUtf16Le">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>UTF-16 LE</string>
    </property>
   </action>
   <action name="actionReopenUtf16Be">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>UTF-16 BE</string>
    </property>
   </action>
   <action name="actionReopenShiftJis">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Shift-JIS (Japanese)</string>
    </property>
   </action>
   <action name="actionReopenGbk">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>GB18030 / GBK (Chinese)</string>
    </property>
   </action>
   <action name="actionReopenBig5">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Big5 (Traditional Chinese)</string>
    </property>
   </action>
   <action name="actionReopenEucKr">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>EUC-KR (Korean)</string>
    </property>
   </action>
   <action name="actionReopenWin1251">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Windows-1251 (Cyrillic)</string>
    </property>
   </action>
   <action name="actionReopenWin1250">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Windows-1250 (Central European)</string>
    </property>
   </action>
   <action name="actionReopenCp437">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>OEM-US (DOS CP437)</string>
    </property>
   </action>
   <action name="actionReopenMore">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;More Encodings...</string>
    </property>
   </action>
   <action name="actionColumnMode">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/list_with_icons.svg</normaloff>:/icons/list_with_icons.svg</iconset>
+   </property>
    <property name="text">
     <string>Column Mode...</string>
    </property>
@@ -1556,11 +1800,19 @@
    </property>
   </action>
   <action name="actionCopyAsHtml">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
+   </property>
    <property name="text">
     <string>Copy as HTML</string>
    </property>
   </action>
   <action name="actionCopyAsRtf">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
+   </property>
    <property name="text">
     <string>Copy as RTF</string>
    </property>
@@ -1575,6 +1827,10 @@
    </property>
   </action>
   <action name="actionBase64Encode">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
    <property name="text">
     <string>Base64 Encode</string>
    </property>
@@ -1589,11 +1845,19 @@
    </property>
   </action>
   <action name="actionURLEncode">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
    <property name="text">
     <string>URL Encode</string>
    </property>
   </action>
   <action name="actionBase64Decode">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
    <property name="text">
     <string>Base64 Decode</string>
    </property>
@@ -1608,6 +1872,10 @@
    </property>
   </action>
   <action name="actionURLDecode">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
    <property name="text">
     <string>URL Decode</string>
    </property>
@@ -1643,11 +1911,19 @@
    </property>
   </action>
   <action name="actionRemoveEmptyLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Remove Empty Lines</string>
    </property>
   </action>
   <action name="actionTrimTrailingSpace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/invisibleChar.svg</normaloff>:/icons/invisibleChar.svg</iconset>
+   </property>
    <property name="text">
     <string>Trim Trailing Space</string>
    </property>
@@ -1670,6 +1946,10 @@
    </property>
   </action>
   <action name="actionToggleBookmark">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/saved.svg</normaloff>:/icons/saved.svg</iconset>
+   </property>
    <property name="text">
     <string>Toggle Bookmark</string>
    </property>
@@ -1678,6 +1958,10 @@
    </property>
   </action>
   <action name="actionSearchAndBookmark">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/find.svg</normaloff>:/icons/find.svg</iconset>
+   </property>
    <property name="text">
     <string>Search and Bookmark Lines...</string>
    </property>
@@ -1686,6 +1970,10 @@
    </property>
   </action>
   <action name="actionNextBookmark">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+   </property>
    <property name="text">
     <string>Next Bookmark</string>
    </property>
@@ -1694,6 +1982,10 @@
    </property>
   </action>
   <action name="actionPreviousBookmark">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
+   </property>
    <property name="text">
     <string>Previous Bookmark</string>
    </property>
@@ -1702,11 +1994,19 @@
    </property>
   </action>
   <action name="actionClearBookmarks">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Clear Bookmarks</string>
    </property>
   </action>
   <action name="actionInvertBookmarks">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Invert Bookmarks</string>
    </property>
@@ -1798,6 +2098,10 @@
    </property>
   </action>
   <action name="actionFoldAll">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
+   </property>
    <property name="text">
     <string>Fold All</string>
    </property>
@@ -1806,6 +2110,10 @@
    </property>
   </action>
   <action name="actionUnfoldAll">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+   </property>
    <property name="text">
     <string>Unfold All</string>
    </property>
@@ -1931,21 +2239,37 @@
    </property>
   </action>
   <action name="actionCutBookmarkedLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/cut.svg</normaloff>:/icons/cut.svg</iconset>
+   </property>
    <property name="text">
     <string>Cut Bookmarked Lines</string>
    </property>
   </action>
   <action name="actionCopyBookmarkedLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
+   </property>
    <property name="text">
     <string>Copy Bookmarked Lines</string>
    </property>
   </action>
   <action name="actionDeleteBookmarkedLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Delete Bookmarked Lines</string>
    </property>
   </action>
   <action name="actionMarkStyle1">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/select_all.svg</normaloff>:/icons/select_all.svg</iconset>
+   </property>
    <property name="text">
     <string>Mark Style 1</string>
    </property>
@@ -1954,6 +2278,10 @@
    </property>
   </action>
   <action name="actionMarkStyle2">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/select_all.svg</normaloff>:/icons/select_all.svg</iconset>
+   </property>
    <property name="text">
     <string>Mark Style 2</string>
    </property>
@@ -1962,6 +2290,10 @@
    </property>
   </action>
   <action name="actionClearStyle1">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Clear Style 1</string>
    </property>
@@ -1970,6 +2302,10 @@
    </property>
   </action>
   <action name="actionClearStyle2">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Clear Style 2</string>
    </property>
@@ -1978,6 +2314,10 @@
    </property>
   </action>
   <action name="actionMarkStyle3">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/select_all.svg</normaloff>:/icons/select_all.svg</iconset>
+   </property>
    <property name="text">
     <string>Mark Style 3</string>
    </property>
@@ -1986,6 +2326,10 @@
    </property>
   </action>
   <action name="actionClearStyle3">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Clear Style 3</string>
    </property>
@@ -1994,6 +2338,10 @@
    </property>
   </action>
   <action name="actionClearAllStyles">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Clear All Styles</string>
    </property>
@@ -2002,51 +2350,91 @@
    </property>
   </action>
   <action name="actionRemoveDuplicateLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Remove Duplicate Lines</string>
    </property>
   </action>
   <action name="actionRemoveConsecutiveDuplicateLines">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
    <property name="text">
     <string>Remove Consecutive Duplicate Lines</string>
    </property>
   </action>
   <action name="actionSortLinesAsc">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
+   </property>
    <property name="text">
     <string>Sort Lines Ascending</string>
    </property>
   </action>
   <action name="actionSortLinesDesc">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+   </property>
    <property name="text">
     <string>Sort Lines Descending</string>
    </property>
   </action>
   <action name="actionSortLinesAscCaseInsensitive">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
+   </property>
    <property name="text">
     <string>Sort Lines Ascending (Case-Insensitive)</string>
    </property>
   </action>
   <action name="actionSortLinesDescCaseInsensitive">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+   </property>
    <property name="text">
     <string>Sort Lines Descending (Case-Insensitive)</string>
    </property>
   </action>
   <action name="actionSortLinesbyLengthAsc">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
+   </property>
    <property name="text">
     <string>Sort Lines by Length Ascending</string>
    </property>
   </action>
   <action name="actionSortLinesbyLengthDesc">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
+   </property>
    <property name="text">
     <string>Sort Lines by Length Descending</string>
    </property>
   </action>
   <action name="actionReverseLineOrder">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
    <property name="text">
     <string>Reverse Line Order</string>
    </property>
   </action>
   <action name="actionSplitHorizontal">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/table_delete.svg</normaloff>:/icons/table_delete.svg</iconset>
+   </property>
    <property name="text">
     <string>Split Horizontal</string>
    </property>
@@ -2058,6 +2446,10 @@
    </property>
   </action>
   <action name="actionSplitVertical">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/table_delete.svg</normaloff>:/icons/table_delete.svg</iconset>
+   </property>
    <property name="text">
     <string>Split Vertical</string>
    </property>
@@ -2093,6 +2485,10 @@
    </property>
   </action>
   <action name="actionMarkAllOccurrences">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/select_all.svg</normaloff>:/icons/select_all.svg</iconset>
+   </property>
      <property name="text">
       <string>Mark All Occurrences</string>
      </property>
@@ -2107,6 +2503,10 @@
      </property>
     </action>
     <action name="actionClearAllOccurrencesMarks">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
      <property name="text">
       <string>Clear Marked Occurrences</string>
      </property>
@@ -2121,6 +2521,10 @@
      </property>
     </action>
     <action name="actionConvertToHex">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>To Hexadecimal (0x...)</string>
      </property>
@@ -2135,6 +2539,10 @@
      </property>
     </action>
     <action name="actionConvertToDec">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>To Decimal</string>
      </property>
@@ -2149,6 +2557,10 @@
      </property>
     </action>
     <action name="actionConvertToBin">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>To Binary (0b...)</string>
      </property>
@@ -2160,6 +2572,10 @@
      </property>
     </action>
     <action name="actionConvertToOct">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>To Octal (0o...)</string>
      </property>
@@ -2171,6 +2587,10 @@
      </property>
     </action>
     <action name="actionInsertDateTimeShort">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Current Date &amp; Time (Short)</string>
      </property>
@@ -2185,6 +2605,10 @@
      </property>
     </action>
     <action name="actionInsertDateTimeLong">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Current Date &amp; Time (Long / Locale)</string>
      </property>
@@ -2196,6 +2620,10 @@
      </property>
     </action>
     <action name="actionInsertTimestampIso">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>ISO-8601 Timestamp</string>
      </property>
@@ -2210,6 +2638,10 @@
      </property>
     </action>
     <action name="actionInsertTimestampUnix">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Unix Timestamp (Epoch Seconds)</string>
      </property>
@@ -2221,6 +2653,10 @@
      </property>
     </action>
     <action name="actionInsertDateOnly">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Current Date (yyyy-MM-dd)</string>
      </property>
@@ -2232,6 +2668,10 @@
      </property>
     </action>
     <action name="actionInsertTimeOnly">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Current Time (HH:mm:ss)</string>
      </property>
@@ -2243,6 +2683,10 @@
      </property>
     </action>
     <action name="actionInsertGuidHyphens">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
      <property name="text">
       <string>New GUID / UUID (Hyphenated)</string>
      </property>
@@ -2257,6 +2701,10 @@
      </property>
     </action>
     <action name="actionInsertGuidBraces">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
      <property name="text">
       <string>New GUID (with Braces { ... })</string>
      </property>
@@ -2268,6 +2716,10 @@
      </property>
     </action>
     <action name="actionInsertGuidCompact">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
      <property name="text">
       <string>New GUID (32-digit Hex / Compact)</string>
      </property>
@@ -2279,6 +2731,10 @@
      </property>
     </action>
     <action name="actionColorPreview">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>Color Preview / Pick Color...</string>
      </property>
@@ -2293,6 +2749,10 @@
      </property>
     </action>
     <action name="actionFormatAuto">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>Format / Prettify (Auto)</string>
      </property>
@@ -2307,6 +2767,10 @@
      </property>
     </action>
     <action name="actionMinifyAuto">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>Minify / Compress (Auto)</string>
      </property>
@@ -2321,46 +2785,82 @@
      </property>
     </action>
     <action name="actionFormatJson">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>JSON Prettify</string>
      </property>
     </action>
     <action name="actionMinifyJson">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>JSON Minify</string>
      </property>
     </action>
     <action name="actionFormatJson5">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>JSON5 Prettify</string>
      </property>
     </action>
     <action name="actionMinifyJson5">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>JSON5 Minify</string>
      </property>
     </action>
     <action name="actionFormatCss">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>CSS Prettify</string>
      </property>
     </action>
     <action name="actionMinifyCss">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>CSS Minify</string>
      </property>
     </action>
     <action name="actionFormatJs">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>JavaScript Prettify</string>
      </property>
     </action>
     <action name="actionMinifyJs">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>JavaScript Minify</string>
      </property>
     </action>
     <action name="actionEvaluateJsReplace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Evaluate JS Expression (Replace)</string>
      </property>
@@ -2375,6 +2875,10 @@
      </property>
     </action>
     <action name="actionEvaluateJsAppend">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
      <property name="text">
       <string>Evaluate JS Expression (Append // -&gt; ...)</string>
      </property>
@@ -2386,6 +2890,10 @@
      </property>
     </action>
     <action name="actionEvaluateJsDialog">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>Interactive JS Evaluation Dialog...</string>
      </property>
@@ -2400,6 +2908,10 @@
      </property>
     </action>
     <action name="actionEvaluateMathAppend">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+   </property>
      <property name="text">
       <string>Calculate &amp; Append Result (= ...)</string>
      </property>
@@ -2414,6 +2926,10 @@
      </property>
     </action>
     <action name="actionEvaluateMathReplace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Calculate &amp; Replace with Result</string>
      </property>
@@ -2428,6 +2944,10 @@
      </property>
     </action>
     <action name="actionToggleFocusedView">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
@@ -2445,6 +2965,10 @@
      </property>
     </action>
     <action name="actionFocusedViewFilterDialog">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   </property>
      <property name="text">
       <string>&amp;Filter Lines...</string>
      </property>
@@ -2459,6 +2983,10 @@
      </property>
     </action>
     <action name="actionFocusedViewBookmarks">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/saved.svg</normaloff>:/icons/saved.svg</iconset>
+   </property>
      <property name="text">
       <string>Filter to &amp;Bookmarked Lines</string>
      </property>
@@ -2470,6 +2998,10 @@
      </property>
     </action>
     <action name="actionFocusedViewClear">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/trash.svg</normaloff>:/icons/trash.svg</iconset>
+   </property>
      <property name="text">
       <string>&amp;Show All Hidden Lines (Reset)</string>
      </property>
@@ -2502,6 +3034,10 @@
      </property>
     </action>
     <action name="actionInsertLogHeader">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/newfile.svg</normaloff>:/icons/newfile.svg</iconset>
+   </property>
      <property name="text">
       <string>Insert .LOG Header</string>
      </property>
@@ -2516,6 +3052,10 @@
      </property>
     </action>
     <action name="actionAppendLogTimestamp">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.svg</normaloff>:/icons/arrow_refresh.svg</iconset>
+   </property>
      <property name="text">
       <string>Append .LOG Timestamp</string>
      </property>
@@ -2530,6 +3070,10 @@
      </property>
     </action>
     <action name="actionToggleAutoLogTimestamp">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/checkmark.svg</normaloff>:/icons/checkmark.svg</iconset>
+   </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
