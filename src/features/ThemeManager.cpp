@@ -752,15 +752,15 @@ QMenu::separator {
     margin: 4px 6px;
 }
 
-/* Tooltips - Modern Translucent Floating Pill */
+/* Tooltips - Compact Subtly Rounded */
 QToolTip {
-    background-color: rgba(30, 34, 42, 0.94);
+    background-color: rgba(30, 34, 42, 0.95);
     color: #f0f6fc;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 6px;
-    padding: 5px 9px;
-    font-size: 12px;
-    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 400;
 }
 
 /* Status Bar */
