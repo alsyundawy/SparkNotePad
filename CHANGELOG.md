@@ -45,6 +45,19 @@ SparkNotePad v1.3.6 delivers an expanded Tier-1 operating system and distributio
   - Replaced all legacy toolbar and menu PNG icons with 27 high-DPI 24x24 monoline vector SVGs: `newfile.svg`, `openFile.svg`, `closeFile.svg`, `closeAll.svg`, `saveAll.svg`, `saved.svg`, `unsaved.svg`, `cut.svg`, `copy.svg`, `paste.svg`, `printer.svg`, `readonly.svg`, `text_indent.svg`, `text_indent_remove.svg`, `table_edit.svg`, `table_delete.svg`, `arrow_up.svg`, `arrow_down.svg`, `arrow_refresh.svg`, `wrap.svg`, `wrapindicator.svg`, `invisibleChar.svg`, `startRecord.svg`, `stopRecord.svg`, `playRecord.svg`, `playRecord_m.svg`, and `saveRecord.svg`.
   - Updated resource definitions in `src/resources.qrc` and UI form bindings in `MainWindow.ui` and `MainWindow.cpp`.
   - Completed 100% bilingual localization in `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` for all 35 new v1.3.6 features and dialogs with 0 unfinished entries.
+- **Dedicated "Select All" Monoline Vector Icon**:
+  - Created `src/icons/select_all.svg` featuring three horizontal parallel lines with leading bullet markers matching the exact user reference design.
+  - Assigned icon to `actionSelectAll` across main menu, toolbars, and Scintilla context menus.
+- **High-DPI Razor-Sharp Vector Icon Suite & Missing Menu Icons**:
+  - Replaced legacy low-resolution 16x16 PNG icons with razor-sharp vector SVGs (`trash.svg`, `folder.svg`, `terminal.svg`, `settings.svg`, `SparkNotePad.svg`).
+  - Fixed SVG rendering by replacing unsupported `currentColor` in `cross.svg`, `plus.svg`, and `list_with_icons.svg` with explicit solid vector colors (`#3b82f6` / `#ef4444`).
+  - Populated crisp vector icons across all previously iconless menu actions (`actionSaveWithOriginalTime`, `actionUpdateFileTime`, `actionPreserveFileTime`, `actionRename`, `actionExportHtml`, `actionExportRtf`, `menuEncryption`, `actionEncryptDoc`, `actionDecryptDoc`, `menuClose_More`, `menuRecentFiles`, `menuExportAs`).
+- **Toolbar Button Tooltip Visibility Restoration**:
+  - Restored hover tooltips across all 25 actions on `mainToolBar` in `MainWindow.ui` by defining explicit `<property name="toolTip">` values for all actions.
+  - Set `Qt::WA_AlwaysShowToolTips` and programmatically synchronized `toolTip()` on child `QToolButton` widgets in `MainWindow::initView()` and `AccessibilityManager::updateWidgetAccessibility()`, ensuring tooltips consistently render on macOS Qt 6 without suppression.
+- **Menu Presentation Latency & Rendering Optimization**:
+  - Completely removed high-overhead `MenuIconEventFilter` in `SparkNotePadApplication.cpp` that intercepted every application event during menu presentation.
+  - Enabled native cross-platform menu icon display via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation in `main.cpp`, restoring instant, lag-free menu rendering.
 - **Unified QComboBox Dropdown Ergonomics**:
   - Standardized `QComboBox`, `QListView`, and popup list views across dialogs (`PreferencesDialog`, `FindReplaceDialog`, `ThemeManager`) with subtle 4px rounded borders, 4px 8px padding, vector down-arrows, and clean selection/hover highlighting (`rgba(59, 130, 246, 0.2)`).
 - **Multi-Qt Packaging Matrix (Qt 6.5–6.12) Across Linux & macOS**:

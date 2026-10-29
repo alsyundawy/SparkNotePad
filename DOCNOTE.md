@@ -67,6 +67,22 @@ SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating sys
     - Physical `compile_commands.json` (917 KB, 454 translation units) copied directly to repository root, permanently resolving all 1,288 IDE cascade resolution errors and 756 SonarLint parser warnings.
     - Verified `trunk check` with 0 issues across all repository files.
 
+11. **Toolbar Tooltip Visibility & Accessibility Restoration**:
+    - Restored missing hover tooltips for all 25 actions on `mainToolBar` in `MainWindow.ui`.
+    - Implemented programmatic `Qt::WA_AlwaysShowToolTips` and child `QToolButton` tooltip synchronization in `AccessibilityManager` and `MainWindow::initView()`, guaranteeing tooltips appear on macOS Qt 6.
+
+12. **Zero-Lag Menu Presentation & Native Icon Rendering**:
+    - Eliminated high-overhead global `MenuIconEventFilter` event hook in `SparkNotePadApplication.cpp`.
+    - Enabled native menu icons via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation in `main.cpp`, restoring instant menu response.
+
+13. **Dedicated "Select All" Vector Icon & High-DPI Vector Suite**:
+    - Designed custom monoline `select_all.svg` (three parallel horizontal lines with leading bullet markers) matching user design specifications.
+    - Upgraded all legacy 16x16 PNG menu icons (`bin_closed.png`, `folder_go.png`, `application_osx_terminal.png`, `cog.png`, `SparkNotePad.png`) to crisp vector SVGs (`trash.svg`, `folder.svg`, `terminal.svg`, `settings.svg`, `SparkNotePad.svg`).
+    - Fixed SVG rendering in Qt by eliminating unsupported `currentColor` attributes in `cross.svg`, `plus.svg`, and `list_with_icons.svg`.
+
+14. **Comprehensive Static Analysis Verification**:
+    - 100% clean check across all 141 translation units in `clangd --check` (0 errors), 100% clean check in `cppcheck` (141/141 files clean), clean verification in `clang-tidy`, and 100% test pass rate in CTest.
+
 ---
 
 ## 1. 14-Pillar Code Quality & Security Audit (v1.3.6)

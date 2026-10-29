@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -51,54 +51,54 @@
      <property name="title">
       <string>Close More</string>
      </property>
-     <addaction name="actionCloseAllExceptActive"/>
-     <addaction name="actionCloseAllToLeft"/>
-     <addaction name="actionCloseAllToRight"/>
-    </widget>
+     <addaction name="actionCloseAllExceptActive" />
+     <addaction name="actionCloseAllToLeft" />
+     <addaction name="actionCloseAllToRight" />
+    <property name="icon"><iconset resource="../resources.qrc">:/icons/closeAll.svg<normaloff>:/icons/closeAll.svg</normaloff></iconset></property></widget>
     <widget class="QMenu" name="menuRecentFiles">
      <property name="title">
       <string>&amp;Recent Files</string>
      </property>
-     <addaction name="actionRestoreRecentlyClosedFile"/>
-     <addaction name="actionOpenAllRecentFiles"/>
-     <addaction name="actionClearRecentFilesList"/>
-     <addaction name="separator"/>
-    </widget>
+     <addaction name="actionRestoreRecentlyClosedFile" />
+     <addaction name="actionOpenAllRecentFiles" />
+     <addaction name="actionClearRecentFilesList" />
+     <addaction name="separator" />
+    <property name="icon"><iconset resource="../resources.qrc">:/icons/arrow_refresh.svg<normaloff>:/icons/arrow_refresh.svg</normaloff></iconset></property></widget>
     <widget class="QMenu" name="menuExportAs">
      <property name="title">
       <string>Export As</string>
      </property>
-     <addaction name="actionExportHtml"/>
-     <addaction name="actionExportRtf"/>
-     <addaction name="actionExportPdf"/>
-    </widget>
-    <addaction name="actionNew"/>
-    <addaction name="actionNewWindow"/>
-    <addaction name="actionOpen"/>
-    <addaction name="actionOpenFolderasWorkspace"/>
-    <addaction name="actionReload"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAs"/>
-    <addaction name="actionSaveCopyAs"/>
-    <addaction name="actionSaveWithOriginalTime"/>
-    <addaction name="actionSaveAll"/>
-    <addaction name="separator"/>
-    <addaction name="actionUpdateFileTime"/>
-    <addaction name="actionPreserveFileTime"/>
-    <addaction name="separator"/>
-    <addaction name="menuExportAs"/>
-    <addaction name="actionRename"/>
-    <addaction name="actionClose"/>
-    <addaction name="actionCloseAll"/>
-    <addaction name="menuClose_More"/>
-    <addaction name="actionMoveToTrash"/>
-    <addaction name="separator"/>
-    <addaction name="actionPrint"/>
-    <addaction name="separator"/>
-    <addaction name="menuRecentFiles"/>
-    <addaction name="separator"/>
-    <addaction name="actionRestart"/>
-    <addaction name="actionExit"/>
+     <addaction name="actionExportHtml" />
+     <addaction name="actionExportRtf" />
+     <addaction name="actionExportPdf" />
+    <property name="icon"><iconset resource="../resources.qrc">:/icons/printer.svg<normaloff>:/icons/printer.svg</normaloff></iconset></property></widget>
+    <addaction name="actionNew" />
+    <addaction name="actionNewWindow" />
+    <addaction name="actionOpen" />
+    <addaction name="actionOpenFolderasWorkspace" />
+    <addaction name="actionReload" />
+    <addaction name="actionSave" />
+    <addaction name="actionSaveAs" />
+    <addaction name="actionSaveCopyAs" />
+    <addaction name="actionSaveWithOriginalTime" />
+    <addaction name="actionSaveAll" />
+    <addaction name="separator" />
+    <addaction name="actionUpdateFileTime" />
+    <addaction name="actionPreserveFileTime" />
+    <addaction name="separator" />
+    <addaction name="menuExportAs" />
+    <addaction name="actionRename" />
+    <addaction name="actionClose" />
+    <addaction name="actionCloseAll" />
+    <addaction name="menuClose_More" />
+    <addaction name="actionMoveToTrash" />
+    <addaction name="separator" />
+    <addaction name="actionPrint" />
+    <addaction name="separator" />
+    <addaction name="menuRecentFiles" />
+    <addaction name="separator" />
+    <addaction name="actionRestart" />
+    <addaction name="actionExit" />
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -108,182 +108,182 @@
      <property name="title">
       <string>Copy More</string>
      </property>
-     <addaction name="actionCopyFullPath"/>
-     <addaction name="actionCopyFileName"/>
-     <addaction name="actionCopyFileDirectory"/>
-     <addaction name="separator"/>
-     <addaction name="actionCopyURL"/>
+     <addaction name="actionCopyFullPath" />
+     <addaction name="actionCopyFileName" />
+     <addaction name="actionCopyFileDirectory" />
+     <addaction name="separator" />
+     <addaction name="actionCopyURL" />
     </widget>
     <widget class="QMenu" name="menuIndent">
      <property name="title">
       <string>Indent</string>
      </property>
-     <addaction name="actionIncreaseIndent"/>
-     <addaction name="actionDecreaseIndent"/>
+     <addaction name="actionIncreaseIndent" />
+     <addaction name="actionDecreaseIndent" />
     </widget>
     <widget class="QMenu" name="menuEOLConversion">
      <property name="title">
       <string>EOL Conversion</string>
      </property>
-     <addaction name="actionWindows"/>
-     <addaction name="actionUnix"/>
-     <addaction name="actionMacintosh"/>
+     <addaction name="actionWindows" />
+     <addaction name="actionUnix" />
+     <addaction name="actionMacintosh" />
     </widget>
     <widget class="QMenu" name="menuConvertCase">
      <property name="title">
       <string>Convert Case</string>
      </property>
-     <addaction name="actionUpperCase"/>
-     <addaction name="actionLowerCase"/>
-     <addaction name="separator"/>
-     <addaction name="actionTitleCase"/>
-     <addaction name="actionSentenceCase"/>
-     <addaction name="actionInvertCase"/>
+     <addaction name="actionUpperCase" />
+     <addaction name="actionLowerCase" />
+     <addaction name="separator" />
+     <addaction name="actionTitleCase" />
+     <addaction name="actionSentenceCase" />
+     <addaction name="actionInvertCase" />
     </widget>
     <widget class="QMenu" name="menuLine_Operations">
      <property name="title">
       <string>Line Operations</string>
      </property>
-     <addaction name="actionDuplicateCurrentLine"/>
-     <addaction name="actionSplitLines"/>
-     <addaction name="actionJoinLines"/>
-     <addaction name="actionMoveSelectedLinesUp"/>
-     <addaction name="actionMoveSelectedLinesDown"/>
-     <addaction name="separator"/>
-     <addaction name="actionRemoveEmptyLines"/>
-     <addaction name="actionRemoveDuplicateLines"/>
-     <addaction name="actionRemoveConsecutiveDuplicateLines"/>
-     <addaction name="actionReverseLineOrder"/>
-     <addaction name="separator"/>
-     <addaction name="actionSortLinesAsc"/>
-     <addaction name="actionSortLinesAscCaseInsensitive"/>
-     <addaction name="actionSortLinesbyLengthAsc"/>
-     <addaction name="separator"/>
-     <addaction name="actionSortLinesDesc"/>
-     <addaction name="actionSortLinesDescCaseInsensitive"/>
-     <addaction name="actionSortLinesbyLengthDesc"/>
+     <addaction name="actionDuplicateCurrentLine" />
+     <addaction name="actionSplitLines" />
+     <addaction name="actionJoinLines" />
+     <addaction name="actionMoveSelectedLinesUp" />
+     <addaction name="actionMoveSelectedLinesDown" />
+     <addaction name="separator" />
+     <addaction name="actionRemoveEmptyLines" />
+     <addaction name="actionRemoveDuplicateLines" />
+     <addaction name="actionRemoveConsecutiveDuplicateLines" />
+     <addaction name="actionReverseLineOrder" />
+     <addaction name="separator" />
+     <addaction name="actionSortLinesAsc" />
+     <addaction name="actionSortLinesAscCaseInsensitive" />
+     <addaction name="actionSortLinesbyLengthAsc" />
+     <addaction name="separator" />
+     <addaction name="actionSortLinesDesc" />
+     <addaction name="actionSortLinesDescCaseInsensitive" />
+     <addaction name="actionSortLinesbyLengthDesc" />
     </widget>
     <widget class="QMenu" name="menuBlankOperations">
      <property name="title">
       <string>Blank Operations</string>
      </property>
-     <addaction name="actionTrimTrailingSpace"/>
+     <addaction name="actionTrimTrailingSpace" />
     </widget>
     <widget class="QMenu" name="menuCommentUncomment">
      <property name="title">
       <string>Comment/Uncomment</string>
      </property>
-     <addaction name="actionToggleSingleLineComment"/>
-     <addaction name="actionSingleLineComment"/>
-     <addaction name="actionSingleLineUncomment"/>
+     <addaction name="actionToggleSingleLineComment" />
+     <addaction name="actionSingleLineComment" />
+     <addaction name="actionSingleLineUncomment" />
     </widget>
     <widget class="QMenu" name="menuCopyAs">
      <property name="title">
       <string>Copy As</string>
      </property>
-     <addaction name="actionCopyAsHtml"/>
-     <addaction name="actionCopyAsRtf"/>
+     <addaction name="actionCopyAsHtml" />
+     <addaction name="actionCopyAsRtf" />
     </widget>
     <widget class="QMenu" name="menuEncodingDecoding">
      <property name="title">
       <string>Encoding/Decoding</string>
      </property>
-     <addaction name="actionBase64Encode"/>
-     <addaction name="actionURLEncode"/>
-     <addaction name="separator"/>
-     <addaction name="actionBase64Decode"/>
-     <addaction name="actionURLDecode"/>
+     <addaction name="actionBase64Encode" />
+     <addaction name="actionURLEncode" />
+     <addaction name="separator" />
+     <addaction name="actionBase64Decode" />
+     <addaction name="actionURLDecode" />
     </widget>
-    <addaction name="actionUndo"/>
-    <addaction name="actionRedo"/>
-    <addaction name="separator"/>
-    <addaction name="actionCut"/>
-    <addaction name="actionCopy"/>
-    <addaction name="actionPaste"/>
-    <addaction name="actionDelete"/>
-    <addaction name="actionSelectAll"/>
-    <addaction name="actionSelectNext"/>
-    <addaction name="separator"/>
-    <addaction name="menuCopyMore"/>
-    <addaction name="actionOpenURL"/>
-    <addaction name="menuCopyAs"/>
-    <addaction name="menuIndent"/>
-    <addaction name="menuConvertCase"/>
-    <addaction name="menuConvertNumber"/>
-    <addaction name="menuInsert"/>
-    <addaction name="actionColorPreview"/>
-    <addaction name="actionShowCharacterInfo"/>
-    <addaction name="menuCodeFormatter"/>
-    <addaction name="menuMathExpression"/>
-    <addaction name="menuJsExpression"/>
-    <addaction name="menuEOLConversion"/>
-    <addaction name="menuLine_Operations"/>
-    <addaction name="menuBlankOperations"/>
-    <addaction name="menuCommentUncomment"/>
-    <addaction name="menuEncodingDecoding"/>
-    <addaction name="separator"/>
-    <addaction name="actionColumnMode"/>
+    <addaction name="actionUndo" />
+    <addaction name="actionRedo" />
+    <addaction name="separator" />
+    <addaction name="actionCut" />
+    <addaction name="actionCopy" />
+    <addaction name="actionPaste" />
+    <addaction name="actionDelete" />
+    <addaction name="actionSelectAll" />
+    <addaction name="actionSelectNext" />
+    <addaction name="separator" />
+    <addaction name="menuCopyMore" />
+    <addaction name="actionOpenURL" />
+    <addaction name="menuCopyAs" />
+    <addaction name="menuIndent" />
+    <addaction name="menuConvertCase" />
+    <addaction name="menuConvertNumber" />
+    <addaction name="menuInsert" />
+    <addaction name="actionColorPreview" />
+    <addaction name="actionShowCharacterInfo" />
+    <addaction name="menuCodeFormatter" />
+    <addaction name="menuMathExpression" />
+    <addaction name="menuJsExpression" />
+    <addaction name="menuEOLConversion" />
+    <addaction name="menuLine_Operations" />
+    <addaction name="menuBlankOperations" />
+    <addaction name="menuCommentUncomment" />
+    <addaction name="menuEncodingDecoding" />
+    <addaction name="separator" />
+    <addaction name="actionColumnMode" />
     <widget class="QMenu" name="menuConvertNumber">
      <property name="title">
       <string>Convert Number</string>
      </property>
-     <addaction name="actionConvertToHex"/>
-     <addaction name="actionConvertToDec"/>
-     <addaction name="actionConvertToBin"/>
-     <addaction name="actionConvertToOct"/>
+     <addaction name="actionConvertToHex" />
+     <addaction name="actionConvertToDec" />
+     <addaction name="actionConvertToBin" />
+     <addaction name="actionConvertToOct" />
     </widget>
     <widget class="QMenu" name="menuInsert">
      <property name="title">
       <string>Insert</string>
      </property>
-     <addaction name="actionInsertDateTimeShort"/>
-     <addaction name="actionInsertDateTimeLong"/>
-     <addaction name="actionInsertTimestampIso"/>
-     <addaction name="actionInsertTimestampUnix"/>
-     <addaction name="actionInsertDateOnly"/>
-     <addaction name="actionInsertTimeOnly"/>
-     <addaction name="separator"/>
-     <addaction name="actionInsertGuidHyphens"/>
-     <addaction name="actionInsertGuidBraces"/>
-     <addaction name="actionInsertGuidCompact"/>
-     <addaction name="separator"/>
-     <addaction name="actionInsertLogHeader"/>
-     <addaction name="actionAppendLogTimestamp"/>
-     <addaction name="actionToggleAutoLogTimestamp"/>
+     <addaction name="actionInsertDateTimeShort" />
+     <addaction name="actionInsertDateTimeLong" />
+     <addaction name="actionInsertTimestampIso" />
+     <addaction name="actionInsertTimestampUnix" />
+     <addaction name="actionInsertDateOnly" />
+     <addaction name="actionInsertTimeOnly" />
+     <addaction name="separator" />
+     <addaction name="actionInsertGuidHyphens" />
+     <addaction name="actionInsertGuidBraces" />
+     <addaction name="actionInsertGuidCompact" />
+     <addaction name="separator" />
+     <addaction name="actionInsertLogHeader" />
+     <addaction name="actionAppendLogTimestamp" />
+     <addaction name="actionToggleAutoLogTimestamp" />
     </widget>
     <widget class="QMenu" name="menuCodeFormatter">
      <property name="title">
       <string>Code Formatter &amp; Minifier</string>
      </property>
-     <addaction name="actionFormatAuto"/>
-     <addaction name="actionMinifyAuto"/>
-     <addaction name="separator"/>
-     <addaction name="actionFormatJson"/>
-     <addaction name="actionMinifyJson"/>
-     <addaction name="actionFormatJson5"/>
-     <addaction name="actionMinifyJson5"/>
-     <addaction name="separator"/>
-     <addaction name="actionFormatCss"/>
-     <addaction name="actionMinifyCss"/>
-     <addaction name="separator"/>
-     <addaction name="actionFormatJs"/>
-     <addaction name="actionMinifyJs"/>
+     <addaction name="actionFormatAuto" />
+     <addaction name="actionMinifyAuto" />
+     <addaction name="separator" />
+     <addaction name="actionFormatJson" />
+     <addaction name="actionMinifyJson" />
+     <addaction name="actionFormatJson5" />
+     <addaction name="actionMinifyJson5" />
+     <addaction name="separator" />
+     <addaction name="actionFormatCss" />
+     <addaction name="actionMinifyCss" />
+     <addaction name="separator" />
+     <addaction name="actionFormatJs" />
+     <addaction name="actionMinifyJs" />
     </widget>
     <widget class="QMenu" name="menuJsExpression">
      <property name="title">
       <string>JavaScript Expression</string>
      </property>
-     <addaction name="actionEvaluateJsReplace"/>
-     <addaction name="actionEvaluateJsAppend"/>
-     <addaction name="separator"/>
-     <addaction name="actionEvaluateJsDialog"/>
+     <addaction name="actionEvaluateJsReplace" />
+     <addaction name="actionEvaluateJsAppend" />
+     <addaction name="separator" />
+     <addaction name="actionEvaluateJsDialog" />
     </widget>
     <widget class="QMenu" name="menuMathExpression">
      <property name="title">
       <string>Math Expression</string>
      </property>
-     <addaction name="actionEvaluateMathAppend"/>
-     <addaction name="actionEvaluateMathReplace"/>
+     <addaction name="actionEvaluateMathAppend" />
+     <addaction name="actionEvaluateMathReplace" />
     </widget>
    </widget>
    <widget class="QMenu" name="menuSearch">
@@ -294,55 +294,55 @@
      <property name="title">
       <string>Bookmarks</string>
      </property>
-     <addaction name="actionToggleBookmark"/>
-     <addaction name="actionSearchAndBookmark"/>
-     <addaction name="separator"/>
-     <addaction name="actionNextBookmark"/>
-     <addaction name="actionPreviousBookmark"/>
-     <addaction name="separator"/>
-     <addaction name="actionClearBookmarks"/>
-     <addaction name="actionInvertBookmarks"/>
-     <addaction name="separator"/>
-     <addaction name="actionCutBookmarkedLines"/>
-     <addaction name="actionCopyBookmarkedLines"/>
-     <addaction name="actionDeleteBookmarkedLines"/>
+     <addaction name="actionToggleBookmark" />
+     <addaction name="actionSearchAndBookmark" />
+     <addaction name="separator" />
+     <addaction name="actionNextBookmark" />
+     <addaction name="actionPreviousBookmark" />
+     <addaction name="separator" />
+     <addaction name="actionClearBookmarks" />
+     <addaction name="actionInvertBookmarks" />
+     <addaction name="separator" />
+     <addaction name="actionCutBookmarkedLines" />
+     <addaction name="actionCopyBookmarkedLines" />
+     <addaction name="actionDeleteBookmarkedLines" />
     </widget>
     <widget class="QMenu" name="menuMarkAllOccurrences">
      <property name="title">
       <string>Mark All Occurrences</string>
      </property>
-     <addaction name="actionMarkAllOccurrences"/>
-     <addaction name="separator"/>
-     <addaction name="actionMarkStyle1"/>
-     <addaction name="actionMarkStyle2"/>
-     <addaction name="actionMarkStyle3"/>
+     <addaction name="actionMarkAllOccurrences" />
+     <addaction name="separator" />
+     <addaction name="actionMarkStyle1" />
+     <addaction name="actionMarkStyle2" />
+     <addaction name="actionMarkStyle3" />
     </widget>
     <widget class="QMenu" name="menuClearMarks">
      <property name="title">
       <string>Clear Marks</string>
      </property>
-     <addaction name="actionClearAllOccurrencesMarks"/>
-     <addaction name="separator"/>
-     <addaction name="actionClearStyle1"/>
-     <addaction name="actionClearStyle2"/>
-     <addaction name="actionClearStyle3"/>
-     <addaction name="actionClearAllStyles"/>
+     <addaction name="actionClearAllOccurrencesMarks" />
+     <addaction name="separator" />
+     <addaction name="actionClearStyle1" />
+     <addaction name="actionClearStyle2" />
+     <addaction name="actionClearStyle3" />
+     <addaction name="actionClearAllStyles" />
     </widget>
-    <addaction name="actionFind"/>
-    <addaction name="actionFindInFiles"/>
-    <addaction name="actionFindNext"/>
-    <addaction name="actionFindPrevious"/>
-    <addaction name="actionSelectandFindNext"/>
-    <addaction name="actionSelectandFindPrevious"/>
-    <addaction name="actionReplace"/>
-    <addaction name="separator"/>
-    <addaction name="actionQuickFind"/>
-    <addaction name="actionGoToLine"/>
-    <addaction name="separator"/>
-    <addaction name="menuMarkAllOccurrences"/>
-    <addaction name="menuClearMarks"/>
-    <addaction name="separator"/>
-    <addaction name="menuBookmark"/>
+    <addaction name="actionFind" />
+    <addaction name="actionFindInFiles" />
+    <addaction name="actionFindNext" />
+    <addaction name="actionFindPrevious" />
+    <addaction name="actionSelectandFindNext" />
+    <addaction name="actionSelectandFindPrevious" />
+    <addaction name="actionReplace" />
+    <addaction name="separator" />
+    <addaction name="actionQuickFind" />
+    <addaction name="actionGoToLine" />
+    <addaction name="separator" />
+    <addaction name="menuMarkAllOccurrences" />
+    <addaction name="menuClearMarks" />
+    <addaction name="separator" />
+    <addaction name="menuBookmark" />
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -352,78 +352,78 @@
      <property name="title">
       <string>&amp;Zoom</string>
      </property>
-     <addaction name="actionZoomIn"/>
-     <addaction name="actionZoomOut"/>
-     <addaction name="separator"/>
-     <addaction name="actionZoomReset"/>
+     <addaction name="actionZoomIn" />
+     <addaction name="actionZoomOut" />
+     <addaction name="separator" />
+     <addaction name="actionZoomReset" />
     </widget>
     <widget class="QMenu" name="menuShowSymbol">
      <property name="title">
       <string>Show Symbol</string>
      </property>
-     <addaction name="actionShowAllCharacters"/>
-     <addaction name="actionShowWhitespace"/>
-     <addaction name="actionShowEndofLine"/>
-     <addaction name="separator"/>
-     <addaction name="actionShowIndentGuide"/>
-     <addaction name="actionShowWrapSymbol"/>
+     <addaction name="actionShowAllCharacters" />
+     <addaction name="actionShowWhitespace" />
+     <addaction name="actionShowEndofLine" />
+     <addaction name="separator" />
+     <addaction name="actionShowIndentGuide" />
+     <addaction name="actionShowWrapSymbol" />
     </widget>
     <widget class="QMenu" name="menuFold_Level">
      <property name="title">
       <string>Fold Level</string>
      </property>
-     <addaction name="actionFoldLevel1"/>
-     <addaction name="actionFoldLevel2"/>
-     <addaction name="actionFoldLevel3"/>
-     <addaction name="actionFoldLevel4"/>
-     <addaction name="actionFoldLevel5"/>
-     <addaction name="actionFoldLevel6"/>
-     <addaction name="actionFoldLevel7"/>
-     <addaction name="actionFoldLevel8"/>
-     <addaction name="actionFoldLevel9"/>
+     <addaction name="actionFoldLevel1" />
+     <addaction name="actionFoldLevel2" />
+     <addaction name="actionFoldLevel3" />
+     <addaction name="actionFoldLevel4" />
+     <addaction name="actionFoldLevel5" />
+     <addaction name="actionFoldLevel6" />
+     <addaction name="actionFoldLevel7" />
+     <addaction name="actionFoldLevel8" />
+     <addaction name="actionFoldLevel9" />
     </widget>
     <widget class="QMenu" name="menuUnfold_Level">
      <property name="title">
       <string>Unfold Level</string>
      </property>
-     <addaction name="actionUnfoldLevel1"/>
-     <addaction name="actionUnfoldLevel2"/>
-     <addaction name="actionUnfoldLevel3"/>
-     <addaction name="actionUnfoldLevel4"/>
-     <addaction name="actionUnfoldLevel5"/>
-     <addaction name="actionUnfoldLevel6"/>
-     <addaction name="actionUnfoldLevel7"/>
-     <addaction name="actionUnfoldLevel8"/>
-     <addaction name="actionUnfoldLevel9"/>
+     <addaction name="actionUnfoldLevel1" />
+     <addaction name="actionUnfoldLevel2" />
+     <addaction name="actionUnfoldLevel3" />
+     <addaction name="actionUnfoldLevel4" />
+     <addaction name="actionUnfoldLevel5" />
+     <addaction name="actionUnfoldLevel6" />
+     <addaction name="actionUnfoldLevel7" />
+     <addaction name="actionUnfoldLevel8" />
+     <addaction name="actionUnfoldLevel9" />
     </widget>
     <widget class="QMenu" name="menuFocusedView">
      <property name="title">
       <string>Focused View</string>
      </property>
-     <addaction name="actionToggleFocusedView"/>
-     <addaction name="actionFocusedViewFilterDialog"/>
-     <addaction name="actionFocusedViewBookmarks"/>
-     <addaction name="separator"/>
-     <addaction name="actionFocusedViewClear"/>
+     <addaction name="actionToggleFocusedView" />
+     <addaction name="actionFocusedViewFilterDialog" />
+     <addaction name="actionFocusedViewBookmarks" />
+     <addaction name="separator" />
+     <addaction name="actionFocusedViewClear" />
     </widget>
-    <addaction name="actionFullScreen"/>
-    <addaction name="separator"/>
-    <addaction name="menuShowSymbol"/>
-    <addaction name="menuZoom"/>
-    <addaction name="actionWordWrap"/>
-    <addaction name="actionToggleURLHighlighting"/>
-    <addaction name="menuFocusedView"/>
-    <addaction name="actionCustomizeStatusBarFields"/>
-    <addaction name="actionShowCharacterInfo"/>
-    <addaction name="separator"/>
-    <addaction name="actionFoldAll"/>
-    <addaction name="actionUnfoldAll"/>
-    <addaction name="menuFold_Level"/>
-    <addaction name="menuUnfold_Level"/>
-    <addaction name="separator"/>
-    <addaction name="actionSplitHorizontal"/>
-    <addaction name="actionSplitVertical"/>
-    <addaction name="separator"/>
+    <addaction name="actionFullScreen" />
+    <addaction name="separator" />
+    <addaction name="menuShowSymbol" />
+    <addaction name="menuZoom" />
+    <addaction name="actionWordWrap" />
+    <addaction name="actionToggleURLHighlighting" />
+    <addaction name="menuFocusedView" />
+    <addaction name="actionCustomizeStatusBarFields" />
+    <addaction name="actionShowCharacterInfo" />
+    <addaction name="separator" />
+    <addaction name="actionFoldAll" />
+    <addaction name="actionUnfoldAll" />
+    <addaction name="menuFold_Level" />
+    <addaction name="menuUnfold_Level" />
+    <addaction name="separator" />
+    <addaction name="actionSplitHorizontal" />
+    <addaction name="actionSplitVertical" />
+    <addaction name="separator" />
    </widget>
    <widget class="QMenu" name="menuLanguage">
     <property name="title">
@@ -434,30 +434,30 @@
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionPreferences"/>
+    <addaction name="actionPreferences" />
    </widget>
    <widget class="QMenu" name="menuMacro">
     <property name="title">
      <string>Macro</string>
     </property>
-    <addaction name="actionMacroRecording"/>
-    <addaction name="actionPlayback"/>
-    <addaction name="actionRunMacroMultipleTimes"/>
-    <addaction name="actionSaveCurrentRecordedMacro"/>
-    <addaction name="actionEditMacros"/>
-    <addaction name="separator"/>
+    <addaction name="actionMacroRecording" />
+    <addaction name="actionPlayback" />
+    <addaction name="actionRunMacroMultipleTimes" />
+    <addaction name="actionSaveCurrentRecordedMacro" />
+    <addaction name="actionEditMacros" />
+    <addaction name="separator" />
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="separator"/>
-    <addaction name="actionCheckForUpdates"/>
-    <addaction name="separator"/>
-    <addaction name="actionAboutQt"/>
-    <addaction name="actionAboutSparkNotePad"/>
-    <addaction name="actionPerformanceDiagnostics"/>
-    <addaction name="actionDebugInfo"/>
+    <addaction name="separator" />
+    <addaction name="actionCheckForUpdates" />
+    <addaction name="separator" />
+    <addaction name="actionAboutQt" />
+    <addaction name="actionAboutSparkNotePad" />
+    <addaction name="actionPerformanceDiagnostics" />
+    <addaction name="actionDebugInfo" />
    </widget>
    <widget class="QMenu" name="menuEncodings">
     <property name="title">
@@ -467,41 +467,41 @@
      <property name="title">
       <string>Reopen with Encoding</string>
      </property>
-     <addaction name="actionReopenUtf8"/>
-     <addaction name="actionReopenAnsi"/>
-     <addaction name="actionReopenUtf16Le"/>
-     <addaction name="actionReopenUtf16Be"/>
-     <addaction name="separator"/>
-     <addaction name="actionReopenShiftJis"/>
-     <addaction name="actionReopenGbk"/>
-     <addaction name="actionReopenBig5"/>
-     <addaction name="actionReopenEucKr"/>
-     <addaction name="separator"/>
-     <addaction name="actionReopenWin1251"/>
-     <addaction name="actionReopenWin1250"/>
-     <addaction name="actionReopenCp437"/>
-     <addaction name="separator"/>
-     <addaction name="actionReopenMore"/>
+     <addaction name="actionReopenUtf8" />
+     <addaction name="actionReopenAnsi" />
+     <addaction name="actionReopenUtf16Le" />
+     <addaction name="actionReopenUtf16Be" />
+     <addaction name="separator" />
+     <addaction name="actionReopenShiftJis" />
+     <addaction name="actionReopenGbk" />
+     <addaction name="actionReopenBig5" />
+     <addaction name="actionReopenEucKr" />
+     <addaction name="separator" />
+     <addaction name="actionReopenWin1251" />
+     <addaction name="actionReopenWin1250" />
+     <addaction name="actionReopenCp437" />
+     <addaction name="separator" />
+     <addaction name="actionReopenMore" />
     </widget>
-    <addaction name="actionShowEncodingInfo"/>
-    <addaction name="separator"/>
-    <addaction name="actionConvertToUtf8"/>
-    <addaction name="actionConvertToUtf8Bom"/>
-    <addaction name="actionConvertToAnsi"/>
-    <addaction name="actionConvertToUtf16Le"/>
-    <addaction name="actionConvertToUtf16Be"/>
-    <addaction name="separator"/>
-    <addaction name="menuReopenWithEncoding"/>
+    <addaction name="actionShowEncodingInfo" />
+    <addaction name="separator" />
+    <addaction name="actionConvertToUtf8" />
+    <addaction name="actionConvertToUtf8Bom" />
+    <addaction name="actionConvertToAnsi" />
+    <addaction name="actionConvertToUtf16Le" />
+    <addaction name="actionConvertToUtf16Be" />
+    <addaction name="separator" />
+    <addaction name="menuReopenWithEncoding" />
    </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
-   <addaction name="menuSearch"/>
-   <addaction name="menuView"/>
-   <addaction name="menuEncodings"/>
-   <addaction name="menuLanguage"/>
-   <addaction name="menuSettings"/>
-   <addaction name="menuMacro"/>
-   <addaction name="menuHelp"/>
+   <addaction name="menuFile" />
+   <addaction name="menuEdit" />
+   <addaction name="menuSearch" />
+   <addaction name="menuView" />
+   <addaction name="menuEncodings" />
+   <addaction name="menuLanguage" />
+   <addaction name="menuSettings" />
+   <addaction name="menuMacro" />
+   <addaction name="menuHelp" />
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="windowTitle">
@@ -528,40 +528,40 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNew"/>
-   <addaction name="actionOpen"/>
-   <addaction name="actionSave"/>
-   <addaction name="actionSaveAll"/>
-   <addaction name="actionClose"/>
-   <addaction name="actionCloseAll"/>
-   <addaction name="separator"/>
-   <addaction name="actionCut"/>
-   <addaction name="actionCopy"/>
-   <addaction name="actionPaste"/>
-   <addaction name="separator"/>
-   <addaction name="actionUndo"/>
-   <addaction name="actionRedo"/>
-   <addaction name="separator"/>
-   <addaction name="actionFind"/>
-   <addaction name="actionReplace"/>
-   <addaction name="separator"/>
-   <addaction name="actionZoomIn"/>
-   <addaction name="actionZoomOut"/>
-   <addaction name="separator"/>
-   <addaction name="actionWordWrap"/>
-   <addaction name="actionShowAllCharacters"/>
-   <addaction name="actionShowIndentGuide"/>
-   <addaction name="separator"/>
-   <addaction name="actionMacroRecording"/>
-   <addaction name="actionPlayback"/>
-   <addaction name="actionRunMacroMultipleTimes"/>
-   <addaction name="actionSaveCurrentRecordedMacro"/>
-   <addaction name="separator"/>
-   <addaction name="actionRestart"/>
-   <addaction name="actionPreferences"/>
-   <addaction name="actionExit"/>
+   <addaction name="actionNew" />
+   <addaction name="actionOpen" />
+   <addaction name="actionSave" />
+   <addaction name="actionSaveAll" />
+   <addaction name="actionClose" />
+   <addaction name="actionCloseAll" />
+   <addaction name="separator" />
+   <addaction name="actionCut" />
+   <addaction name="actionCopy" />
+   <addaction name="actionPaste" />
+   <addaction name="separator" />
+   <addaction name="actionUndo" />
+   <addaction name="actionRedo" />
+   <addaction name="separator" />
+   <addaction name="actionFind" />
+   <addaction name="actionReplace" />
+   <addaction name="separator" />
+   <addaction name="actionZoomIn" />
+   <addaction name="actionZoomOut" />
+   <addaction name="separator" />
+   <addaction name="actionWordWrap" />
+   <addaction name="actionShowAllCharacters" />
+   <addaction name="actionShowIndentGuide" />
+   <addaction name="separator" />
+   <addaction name="actionMacroRecording" />
+   <addaction name="actionPlayback" />
+   <addaction name="actionRunMacroMultipleTimes" />
+   <addaction name="actionSaveCurrentRecordedMacro" />
+   <addaction name="separator" />
+   <addaction name="actionRestart" />
+   <addaction name="actionPreferences" />
+   <addaction name="actionExit" />
   </widget>
-  <widget class="EditorInfoStatusBar" name="statusBar"/>
+  <widget class="EditorInfoStatusBar" name="statusBar" />
   <action name="actionNew">
    <property name="icon">
     <iconset>
@@ -580,10 +580,7 @@
   </action>
   <action name="actionNewWindow">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/SparkNotePad.png</normalon>
-    </iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/SparkNotePad.svg<normaloff>:/icons/SparkNotePad.svg</normaloff></iconset></property>
    <property name="text">
     <string>New &amp;Window</string>
    </property>
@@ -608,7 +605,7 @@
    <property name="shortcutContext">
     <enum>Qt::WindowShortcut</enum>
    </property>
-  </action>
+  <property name="toolTip"><string>Open File (Ctrl+O)</string></property></action>
   <action name="actionSave">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -671,7 +668,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Z</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Undo (Ctrl+Z)</string></property></action>
   <action name="actionRedo">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -683,7 +680,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Y</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Redo (Ctrl+Y)</string></property></action>
   <action name="actionCut">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -695,7 +692,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+X</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Cut (Ctrl+X)</string></property></action>
   <action name="actionCopy">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -707,7 +704,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+C</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Copy (Ctrl+C)</string></property></action>
   <action name="actionPaste">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -719,19 +716,17 @@
    <property name="shortcut">
     <string notr="true">Ctrl+V</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Paste (Ctrl+V)</string></property></action>
   <action name="actionDelete">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/bin_closed.png</normaloff>:/icons/bin_closed.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/trash.svg<normaloff>:/icons/trash.svg</normaloff></iconset></property>
    <property name="text">
     <string>&amp;Delete</string>
    </property>
    <property name="shortcut">
     <string notr="true">Del</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Delete</string></property></action>
   <action name="actionCopyFullPath">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -806,7 +801,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+S</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Save All (Ctrl+Shift+S)</string></property></action>
   <action name="actionSaveWithOriginalTime">
    <property name="text">
     <string>Save with Original &amp;Time</string>
@@ -817,7 +812,7 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+S</string>
    </property>
-  </action>
+  <property name="icon"><iconset resource="../resources.qrc">:/icons/saved.svg<normaloff>:/icons/saved.svg</normaloff></iconset></property></action>
   <action name="actionUpdateFileTime">
    <property name="text">
     <string>&amp;Update File Time (Touch)</string>
@@ -828,7 +823,7 @@
    <property name="shortcut">
     <string notr="true">Alt+F5</string>
    </property>
-  </action>
+  <property name="icon"><iconset resource="../resources.qrc">:/icons/arrow_refresh.svg<normaloff>:/icons/arrow_refresh.svg</normaloff></iconset></property></action>
   <action name="actionPreserveFileTime">
    <property name="checkable">
     <bool>true</bool>
@@ -839,7 +834,7 @@
    <property name="toolTip">
     <string>Always preserve original file modification timestamp when saving</string>
    </property>
-  </action>
+  <property name="icon"><iconset resource="../resources.qrc">:/icons/saved.svg<normaloff>:/icons/saved.svg</normaloff></iconset></property></action>
   <action name="actionSelectAll">
    <property name="text">
     <string>Select A&amp;ll</string>
@@ -847,7 +842,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+A</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Select All (Ctrl+A)</string></property><property name="icon"><iconset resource="../resources.qrc">:/icons/select_all.svg<normaloff>:/icons/select_all.svg</normaloff></iconset></property></action>
   <action name="actionIncreaseIndent">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -870,7 +865,7 @@
    <property name="text">
     <string>Rename...</string>
    </property>
-  </action>
+  <property name="icon"><iconset resource="../resources.qrc">:/icons/table_edit.svg<normaloff>:/icons/table_edit.svg</normaloff></iconset></property></action>
   <action name="actionReload">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -1061,7 +1056,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl++</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Zoom In (Ctrl++)</string></property></action>
   <action name="actionZoomOut">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -1073,7 +1068,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+-</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Zoom Out (Ctrl+-)</string></property></action>
   <action name="actionZoomReset">
    <property name="text">
     <string>Reset Zoom</string>
@@ -1096,9 +1091,7 @@
   </action>
   <action name="actionAboutSparkNotePad">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/SparkNotePad.png</normaloff>:/icons/SparkNotePad.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/SparkNotePad.svg<normaloff>:/icons/SparkNotePad.svg</normaloff></iconset></property>
    <property name="text">
     <string>About SparkNotePad</string>
    </property>
@@ -1134,7 +1127,7 @@
    <property name="text">
     <string>Show All Characters</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Show All Characters</string></property></action>
   <action name="actionShowIndentGuide">
    <property name="checkable">
     <bool>true</bool>
@@ -1146,7 +1139,7 @@
    <property name="text">
     <string>Show Indent Guide</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Show Indent Guide</string></property></action>
   <action name="actionShowWrapSymbol">
    <property name="checkable">
     <bool>true</bool>
@@ -1171,7 +1164,7 @@
    <property name="text">
     <string>Word Wrap</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Word Wrap</string></property></action>
   <action name="actionRestoreRecentlyClosedFile">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -1195,9 +1188,7 @@
   </action>
   <action name="actionClearRecentFilesList">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/bin_closed.png</normaloff>:/icons/bin_closed.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/trash.svg<normaloff>:/icons/trash.svg</normaloff></iconset></property>
    <property name="text">
     <string>Clear Recent Files List</string>
    </property>
@@ -1213,7 +1204,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+F</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Find... (Ctrl+F)</string></property></action>
   <action name="actionFindInFiles">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -1258,7 +1249,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+H</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Replace... (Ctrl+H)</string></property></action>
   <action name="actionFullScreen">
    <property name="checkable">
     <bool>true</bool>
@@ -1282,7 +1273,7 @@
    <property name="text">
     <string>Start Recording</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Start / Stop Recording</string></property></action>
   <action name="actionPlayback">
    <property name="enabled">
     <bool>false</bool>
@@ -1297,7 +1288,7 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+P</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Playback (Ctrl+Shift+P)</string></property></action>
   <action name="actionSaveCurrentRecordedMacro">
    <property name="enabled">
     <bool>false</bool>
@@ -1309,7 +1300,7 @@
    <property name="text">
     <string>Save Current Recorded Macro...</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Save Current Recorded Macro...</string></property></action>
   <action name="actionRunMacroMultipleTimes">
    <property name="enabled">
     <bool>false</bool>
@@ -1321,7 +1312,7 @@
    <property name="text">
     <string>Run a Macro Multiple Times...</string>
    </property>
-  </action>
+  <property name="toolTip"><string>Run a Macro Multiple Times...</string></property></action>
   <action name="actionPreferences">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -1333,7 +1324,7 @@
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
    </property>
-  </action>
+  <property name="toolTip"><string>Preferences...</string></property></action>
   <action name="actionQuickFind">
    <property name="icon">
     <iconset resource="../resources.qrc">
@@ -1356,9 +1347,7 @@
   </action>
   <action name="actionMoveToTrash">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/bin_closed.png</normaloff>:/icons/bin_closed.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/trash.svg<normaloff>:/icons/trash.svg</normaloff></iconset></property>
    <property name="text">
     <string>Move to Trash...</string>
    </property>
@@ -1392,14 +1381,12 @@
     <string>Print...</string>
    </property>
    <property name="shortcut">
-    <string notr="true">Ctrl+P</string>
+    <string notr="true">Ctrl+Alt+Shift+P</string>
    </property>
   </action>
   <action name="actionOpenFolderasWorkspace">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/folder_go.png</normaloff>:/icons/folder_go.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/folder.svg<normaloff>:/icons/folder.svg</normaloff></iconset></property>
    <property name="text">
     <string>Open Folder as Workspace...</string>
    </property>
@@ -1551,12 +1538,12 @@
    <property name="text">
     <string>Export as HTML...</string>
    </property>
-  </action>
+  <property name="icon"><iconset resource="../resources.qrc">:/icons/newfile.svg<normaloff>:/icons/newfile.svg</normaloff></iconset></property></action>
   <action name="actionExportRtf">
    <property name="text">
     <string>Export as RTF...</string>
    </property>
-  </action>
+  <property name="icon"><iconset resource="../resources.qrc">:/icons/newfile.svg<normaloff>:/icons/newfile.svg</normaloff></iconset></property></action>
   <action name="actionExportPdf">
    <property name="icon">
     <iconset>
@@ -1641,9 +1628,7 @@
   </action>
   <action name="actionOpenURL">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/folder_go.png</normaloff>:/icons/folder_go.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/folder.svg<normaloff>:/icons/folder.svg</normaloff></iconset></property>
    <property name="text">
     <string>Open URL</string>
    </property>
@@ -1671,9 +1656,7 @@
   </action>
   <action name="actionShowInExplorer">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/folder_go.png</normaloff>:/icons/folder_go.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/folder.svg<normaloff>:/icons/folder.svg</normaloff></iconset></property>
    <property name="text">
     <string>Show in Explorer</string>
    </property>
@@ -1683,9 +1666,7 @@
   </action>
   <action name="actionOpenTerminalHere">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/application_osx_terminal.png</normaloff>:/icons/application_osx_terminal.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/terminal.svg<normaloff>:/icons/terminal.svg</normaloff></iconset></property>
    <property name="text">
     <string>Open %1 Here</string>
    </property>
@@ -1930,9 +1911,7 @@
   </action>
   <action name="actionPerformanceDiagnostics">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/cog.png</normaloff>:/icons/cog.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/settings.svg<normaloff>:/icons/settings.svg</normaloff></iconset></property>
    <property name="text">
     <string>&amp;Performance &amp;&amp; Diagnostics...</string>
    </property>
@@ -1948,9 +1927,7 @@
   </action>
   <action name="actionDebugInfo">
    <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/cog.png</normaloff>:/icons/cog.png</iconset>
-   </property>
+    <iconset resource="../resources.qrc">:/icons/settings.svg<normaloff>:/icons/settings.svg</normaloff></iconset></property>
    <property name="text">
     <string>Debug Info...</string>
    </property>
@@ -2583,7 +2560,7 @@
      </property>
     </action>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
+ <layoutdefault spacing="6" margin="11" />
  <customwidgets>
   <customwidget>
    <class>EditorInfoStatusBar</class>
@@ -2592,7 +2569,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../resources.qrc" />
  </resources>
- <connections/>
+ <connections />
 </ui>

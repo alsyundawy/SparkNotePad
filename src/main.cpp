@@ -37,14 +37,16 @@ int main(int argc, char *argv[]) {
         "%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: "
         "%{message}");
 
-    bool isMultiInstance = false;
-    for (int i = 1; i < argc; ++i) {
-        if (qstrcmp(argv[i], "--multi-instance") == 0 || qstrcmp(argv[i], "--new-window") == 0 ||
-            qstrcmp(argv[i], "-m") == 0) {
-            isMultiInstance = true;
-            break;
+    auto checkMultiInstance = [argc, argv]() {
+        for (int i = 1; i < argc; ++i) {
+            if (qstrcmp(argv[i], "--multi-instance") == 0 || qstrcmp(argv[i], "--new-window") == 0 ||
+                qstrcmp(argv[i], "-m") == 0) {
+                return true;
+            }
         }
-    }
+        return false;
+    };
+    bool isMultiInstance = checkMultiInstance();
 
     // Set these since other parts of the app references these
     QApplication::setOrganizationName("SparkNotePad");
@@ -55,6 +57,9 @@ int main(int argc, char *argv[]) {
     }
     QGuiApplication::setApplicationDisplayName("SparkNotePad");
     QGuiApplication::setApplicationVersion(APP_VERSION);
+
+    // Ensure action icons are natively shown in all menus across macOS, Linux, and Windows
+    QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);

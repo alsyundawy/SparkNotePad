@@ -167,6 +167,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     ui->setupUi(this);
     ui->mainToolBar->setIconSize(QSize(20, 20));
+    ui->mainToolBar->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+    for (QAction *act : ui->mainToolBar->actions()) {
+        if (!act->isSeparator()) {
+            if (QWidget *w = ui->mainToolBar->widgetForAction(act)) {
+                w->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+                w->setToolTip(act->toolTip());
+            }
+        }
+    }
 
     applyCustomShortcuts();
 
@@ -850,12 +859,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     ui->menuSearch->addAction(actionRegexHelper);
 
     menuEncryption = new QMenu(tr("&Encryption (AES-256)"), this);
+    menuEncryption->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
     actionEncryptDoc = new QAction(tr("&Encrypt Current Document..."), this);
+    actionEncryptDoc->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
     actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
     connect(actionEncryptDoc, &QAction::triggered, this, &MainWindow::onEncryptDocumentTriggered);
     menuEncryption->addAction(actionEncryptDoc);
 
     actionDecryptDoc = new QAction(tr("&Remove Encryption / Decrypt..."), this);
+    actionDecryptDoc->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
     actionDecryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
@@ -1688,7 +1700,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     // Keyboard Shortcuts & Accessibility Guide
     actionAccessibilityHelp = new QAction(tr("&Keyboard Shortcuts && Accessibility..."), this);
-    actionAccessibilityHelp->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.png")));
+    actionAccessibilityHelp->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
 #if defined(Q_OS_MACOS)
     actionAccessibilityHelp->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F1));
 #else
@@ -1700,7 +1712,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     // User & Developer Documentation
     auto *actionUserGuide = new QAction(tr("SparkNotePad &User Guide"), this);
-    actionUserGuide->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.png")));
+    actionUserGuide->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
 #if defined(Q_OS_MACOS)
     actionUserGuide->setShortcut(QKeySequence(Qt::Key_F1));
 #else
@@ -1710,7 +1722,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionUserGuide);
 
     auto *actionDeveloperGuide = new QAction(tr("SparkNotePad &Developer Guide"), this);
-    actionDeveloperGuide->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.png")));
+    actionDeveloperGuide->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
     actionDeveloperGuide->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F12));
     connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionDeveloperGuide);
@@ -3703,33 +3715,33 @@ void MainWindow::setupRunMenu() {
 
     // 2. Run Current File in Terminal (Ctrl+Alt+Return)
     auto *actionRunCurrentFile = new QAction(tr("Run Current &File in Terminal"), this);
-    actionRunCurrentFile->setIcon(QIcon(QStringLiteral(":/icons/application_osx_terminal.png")));
+    actionRunCurrentFile->setIcon(QIcon(QStringLiteral(":/icons/terminal.svg")));
     actionRunCurrentFile->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Return));
     connect(actionRunCurrentFile, &QAction::triggered, this, &MainWindow::onRunCurrentFileTriggered);
     menuRun->addAction(actionRunCurrentFile);
 
     // 3. Open Terminal Here (Ctrl+Alt+P)
     auto *actionTerminalHere = new QAction(tr("Open &Terminal Here"), this);
-    actionTerminalHere->setIcon(QIcon(QStringLiteral(":/icons/application_osx_terminal.png")));
+    actionTerminalHere->setIcon(QIcon(QStringLiteral(":/icons/terminal.svg")));
     actionTerminalHere->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_P));
     connect(actionTerminalHere, &QAction::triggered, this, &MainWindow::onOpenTerminalHereTriggered);
     menuRun->addAction(actionTerminalHere);
 
     // 4. Reveal in File Manager
     auto *actionReveal = new QAction(tr("Reveal in &File Manager"), this);
-    actionReveal->setIcon(QIcon(QStringLiteral(":/icons/folder_go.png")));
+    actionReveal->setIcon(QIcon(QStringLiteral(":/icons/folder.svg")));
     connect(actionReveal, &QAction::triggered, this, &MainWindow::onRevealInFileManagerTriggered);
     menuRun->addAction(actionReveal);
 
     // 5. Open in Default Browser
     auto *actionBrowser = new QAction(tr("Open in Default &Web Browser"), this);
-    actionBrowser->setIcon(QIcon(QStringLiteral(":/icons/folder_go.png")));
+    actionBrowser->setIcon(QIcon(QStringLiteral(":/icons/folder.svg")));
     connect(actionBrowser, &QAction::triggered, this, &MainWindow::onOpenInBrowserTriggered);
     menuRun->addAction(actionBrowser);
 
     // 6. Generate Development SSL Certificate (mkcert / OpenSSL)
     auto *actionGenerateCert = new QAction(tr("Generate Development SSL &Certificate (mkcert/OpenSSL)..."), this);
-    actionGenerateCert->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.png")));
+    actionGenerateCert->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
     actionGenerateCert->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
     connect(actionGenerateCert, &QAction::triggered, this, &MainWindow::onGenerateCertTriggered);
     menuRun->addAction(actionGenerateCert);
@@ -3762,7 +3774,7 @@ void MainWindow::setupRunMenu() {
 
     // 7. Manage Tools
     auto *actionManage = new QAction(tr("&Manage External Tools..."), this);
-    actionManage->setIcon(QIcon(QStringLiteral(":/icons/cog.png")));
+    actionManage->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
     connect(actionManage, &QAction::triggered, this, &MainWindow::onManageToolsTriggered);
     menuRun->addAction(actionManage);
 
@@ -4102,7 +4114,7 @@ void MainWindow::setupWindowMenu() {
     menuWindow->addAction(actionCenterScreen);
 
     auto *actionDisplayDiagnostics = new QAction(tr("&Display & Retina Diagnostics..."), this);
-    actionDisplayDiagnostics->setIcon(QIcon(QStringLiteral(":/icons/cog.png")));
+    actionDisplayDiagnostics->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
     actionDisplayDiagnostics->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDisplayDiagnostics, &QAction::triggered, this, &MainWindow::onDisplayDiagnosticsTriggered);
     menuWindow->addAction(actionDisplayDiagnostics);
