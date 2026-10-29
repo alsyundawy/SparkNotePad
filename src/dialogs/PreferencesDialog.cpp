@@ -65,11 +65,10 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     }
     if (!mainWin) {
         const auto topLevels = QApplication::topLevelWidgets();
-        for (QWidget *w : topLevels) {
-            if (auto *mw = qobject_cast<QMainWindow *>(w)) {
-                mainWin = mw;
-                break;
-            }
+        const auto it =
+            std::ranges::find_if(topLevels, [](QWidget *w) { return qobject_cast<QMainWindow *>(w) != nullptr; });
+        if (it != topLevels.end()) {
+            mainWin = qobject_cast<QMainWindow *>(*it);
         }
     }
 

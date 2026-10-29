@@ -186,11 +186,10 @@ void ShortcutCustomizerWidget::traverseMenu(const QMenu *menu, const QString &ca
 void ShortcutCustomizerWidget::collectActions() {
     if (!m_mainWindow) {
         const auto topLevels = QApplication::topLevelWidgets();
-        for (QWidget *w : topLevels) {
-            if (auto *mw = qobject_cast<QMainWindow *>(w)) {
-                m_mainWindow = mw;
-                break;
-            }
+        const auto it =
+            std::ranges::find_if(topLevels, [](QWidget *w) { return qobject_cast<QMainWindow *>(w) != nullptr; });
+        if (it != topLevels.end()) {
+            m_mainWindow = qobject_cast<QMainWindow *>(*it);
         }
     }
     if (!m_mainWindow)
