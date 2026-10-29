@@ -536,7 +536,8 @@ void AboutDialog::updateThemeColors() {
                      tr("Toggle Block / Stream Comment"), tr("Convert Selection to UPPERCASE"),
                      tr("Convert Selection to lowercase"), tr("Toggle Clipboard Monitoring"),
                      tr("Column / Rectangular Box Selection"),
-                     tr("Customize all shortcuts anytime in <b>Settings &gt; Shortcut Mapper</b>.")));
+                     tr("Customize all shortcuts anytime in <b>Preferences &gt; Shortcuts</b> (or <b>Settings &gt; "
+                        "Shortcut Mapper</b>).")));
     }
 
     if (m_licenseBrowser) {

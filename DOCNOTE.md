@@ -40,13 +40,14 @@ SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity develope
      - "Rust Documentation" (`Alt+F2` / Mac `Opt+F2`) -> `https://rust-lang.org/learn/`.
      - "Python Documentation" (`Alt+F3` / Mac `Opt+F3`) -> `https://www.w3schools.com/python/`.
      - "Wikipedia Search" (`Alt+Shift+F1` / `Ctrl+Alt+W`) -> `https://en.wikipedia.org/wiki/Special:Search?search=`.
-3. **Interactive Shortcut Mapper & Customizer (`ShortcutCustomizerDialog`)**:
-   - Dedicated GUI keybinding customizer accessible from `Settings >> Shortcut Mapper...` and `Preferences >> Shortcuts`.
+3. **Interactive Shortcut Mapper & Customizer (`ShortcutCustomizerWidget` / `PreferencesDialog`)**:
+   - Embedded dedicated **Shortcuts** tab directly inside `PreferencesDialog` (`m_tabWidget`) alongside `General` settings.
+   - Mirrored menu routing: clicking `Settings >> Shortcut Mapper / Customize Shortcuts...` directly opens Preferences switched to the Shortcuts tab.
    - Real-time search/filter across actions, categories, and current key combinations.
    - Collision detection with visual warning badges to prevent duplicate bindings.
-   - Per-action "Reset to Default" and global "Reset All to Defaults".
+   - Per-action "Reset to Default", global "Reset All to Defaults", and in-tab "Apply Shortcuts".
    - Stored in `QSettings("Shortcuts")` with live application hot-reloading without restart.
-   - Expanded, categorized shortcuts reference table in `AboutDialog`.
+   - Updated `AboutDialog` shortcuts reference note with direct pointer to `Preferences > Shortcuts`.
 4. **GitHub API Rate Limit Elimination (`ReleaseManager`)**:
    - Resolved 60 requests/hour IP rate limits on update checks.
    - Added HTTP `ETag` / `If-None-Match` caching (`304 Not Modified` on unchanged releases without consuming API quota).

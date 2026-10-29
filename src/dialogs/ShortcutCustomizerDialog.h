@@ -15,6 +15,7 @@
 #include <QDialog>
 #include <QKeySequence>
 #include <QMap>
+#include <QWidget>
 
 class QAction;
 class QKeySequenceEdit;
@@ -24,6 +25,7 @@ class QPushButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 class QMainWindow;
+class QMenu;
 
 struct ActionShortcutEntry {
     QAction *action = nullptr;
@@ -35,12 +37,19 @@ struct ActionShortcutEntry {
     bool isModified = false;
 };
 
-class ShortcutCustomizerDialog : public QDialog {
+class ShortcutCustomizerWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ShortcutCustomizerDialog(QMainWindow *mainWindow, QWidget *parent = nullptr);
-    ~ShortcutCustomizerDialog() override = default;
+    explicit ShortcutCustomizerWidget(QMainWindow *mainWindow, QWidget *parent = nullptr);
+    ~ShortcutCustomizerWidget() override = default;
+
+    void saveShortcuts() const;
+    void applyThemeStyles();
+    void refreshActions();
+
+signals:
+    void shortcutsChanged();
 
 private slots:
     void onFilterTextChanged(const QString &text) const;
@@ -49,8 +58,7 @@ private slots:
     void onClearClicked();
     void onResetSelectedClicked();
     void onResetAllClicked();
-    void onApplyClicked() const;
-    void onOkClicked();
+    void onApplyClicked();
     void updateConflictWarning();
 
 private:
@@ -59,8 +67,6 @@ private:
     void registerAction(QAction *action, const QString &category);
     void traverseMenu(const QMenu *menu, const QString &catPrefix);
     void populateTree();
-    void applyThemeStyles();
-    void saveShortcuts() const;
     static QString cleanActionText(const QString &text);
 
     QMainWindow *m_mainWindow = nullptr;
@@ -73,11 +79,22 @@ private:
     QPushButton *m_btnClear = nullptr;
     QPushButton *m_btnResetSelected = nullptr;
     QPushButton *m_btnResetAll = nullptr;
-    QPushButton *m_btnOk = nullptr;
-    QPushButton *m_btnCancel = nullptr;
     QPushButton *m_btnApply = nullptr;
 
     QMap<QString, ActionShortcutEntry> m_entries;  // Keyed by objectName
+};
+
+class ShortcutCustomizerDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit ShortcutCustomizerDialog(QMainWindow *mainWindow, QWidget *parent = nullptr);
+    ~ShortcutCustomizerDialog() override = default;
+
+    ShortcutCustomizerWidget *customizerWidget() const { return m_customizerWidget; }
+
+private:
+    ShortcutCustomizerWidget *m_customizerWidget = nullptr;
 };
 
 #endif  // SHORTCUTCUSTOMIZERDIALOG_H

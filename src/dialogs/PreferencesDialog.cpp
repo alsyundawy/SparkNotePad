@@ -41,6 +41,7 @@
 #include <QSlider>
 #include <QSpinBox>
 #include <QPushButton>
+#include <QTabWidget>
 
 #include <algorithm>
 #include <functional>
@@ -48,6 +49,39 @@
 PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent)
     : QDialog(parent, Qt::Tool), ui(std::make_unique<Ui::PreferencesDialog>()), settings(settings) {
     ui->setupUi(this);
+
+    // Setup Tabbed Interface: General (existing scrollArea) & Shortcuts
+    m_tabWidget = new QTabWidget(this);
+    m_tabWidget->setObjectName(QStringLiteral("preferencesTabWidget"));
+
+    // Detach scrollArea from verticalLayout and place into Tab 0 ("General")
+    ui->verticalLayout->removeWidget(ui->scrollArea);
+    m_tabWidget->addTab(ui->scrollArea, QIcon(QStringLiteral(":/icons/settings.svg")), tr("&General"));
+
+    // Find main window for action harvesting in ShortcutCustomizerWidget
+    QMainWindow *mainWin = qobject_cast<QMainWindow *>(parent);
+    if (!mainWin) {
+        mainWin = qobject_cast<QMainWindow *>(window());
+    }
+    if (!mainWin) {
+        const auto topLevels = QApplication::topLevelWidgets();
+        for (QWidget *w : topLevels) {
+            if (auto *mw = qobject_cast<QMainWindow *>(w)) {
+                mainWin = mw;
+                break;
+            }
+        }
+    }
+
+    m_shortcutWidget = new ShortcutCustomizerWidget(mainWin, this);
+    connect(m_shortcutWidget, &ShortcutCustomizerWidget::shortcutsChanged, this, &PreferencesDialog::shortcutsChanged);
+    m_tabWidget->addTab(m_shortcutWidget, QIcon(QStringLiteral(":/icons/list_with_icons.svg")), tr("&Shortcuts"));
+
+    // Insert tab widget at the top of the dialog layout
+    ui->verticalLayout->insertWidget(0, m_tabWidget, 1);
+
+    resize(820, 640);
+    setMinimumSize(700, 520);
 
     setupThemeAndFeatureSettings();
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &PreferencesDialog::updateThemeColors);
@@ -206,6 +240,26 @@ void PreferencesDialog::showApplicationRestartRequired() const {
     ui->labelAppRestart->show();
 }
 
+void PreferencesDialog::openShortcutsTab() {
+    if (m_tabWidget && m_shortcutWidget) {
+        m_tabWidget->setCurrentWidget(m_shortcutWidget);
+    }
+}
+
+void PreferencesDialog::setCurrentTab(int index) {
+    if (m_tabWidget && index >= 0 && index < m_tabWidget->count()) {
+        m_tabWidget->setCurrentIndex(index);
+    }
+}
+
+void PreferencesDialog::accept() {
+    if (m_shortcutWidget) {
+        m_shortcutWidget->saveShortcuts();
+        emit shortcutsChanged();
+    }
+    QDialog::accept();
+}
+
 template <typename Func1, typename Func2, typename Func3>
 void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, Func2 setter, Func3 notifier) const {
     // Get the value and set the checkbox state
@@ -361,18 +415,9 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     themeLayout->addRow(tr("Display Safety:"), checkBoxMultiMonitorSafety);
 
     // 5. Shortcuts & Key Bindings Customizer
-    auto *btnOpenShortcuts = new QPushButton(tr("Customize Shortcuts / Shortcut Mapper..."), gbxThemes);
-    btnOpenShortcuts->setIcon(QIcon(QStringLiteral(":/icons/run.svg")));
-    connect(btnOpenShortcuts, &QPushButton::clicked, this, [this]() {
-        QMainWindow *mainWin = qobject_cast<QMainWindow *>(this->parentWidget());
-        if (!mainWin) {
-            mainWin = qobject_cast<QMainWindow *>(this->window());
-        }
-        if (mainWin) {
-            ShortcutCustomizerDialog dlg(mainWin, this);
-            dlg.exec();
-        }
-    });
+    auto *btnOpenShortcuts = new QPushButton(tr("Configure Keyboard Shortcuts (Shortcuts Tab)..."), gbxThemes);
+    btnOpenShortcuts->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
+    connect(btnOpenShortcuts, &QPushButton::clicked, this, &PreferencesDialog::openShortcutsTab);
     themeLayout->addRow(tr("Shortcuts:"), btnOpenShortcuts);
 
     // Insert at the top of scrollAreaWidgetContents layout
@@ -576,8 +621,56 @@ void PreferencesDialog::updateThemeColors() {
             "}"
             "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
             "  height: 0px;"
+            "}"
+            "QTabWidget::pane {"
+            "  background-color: %1;"
+            "  border: 1px solid %3;"
+            "  border-radius: 8px;"
+            "  top: -1px;"
+            "}"
+            "QTabBar {"
+            "  background: transparent;"
+            "  border: none;"
+            "  qproperty-drawBase: 0;"
+            "}"
+            "QTabBar::tab {"
+            "  background-color: %2;"
+            "  color: %5;"
+            "  padding: 8px 18px;"
+            "  border: 1px solid %3;"
+            "  border-bottom: none;"
+            "  border-top-left-radius: 6px;"
+            "  border-top-right-radius: 6px;"
+            "  margin-right: 4px;"
+            "  font-size: 13px;"
+            "  font-weight: 500;"
+            "}"
+            "QTabBar::tab:selected {"
+            "  background-color: %1;"
+            "  color: %4;"
+            "  font-weight: bold;"
+            "  border-top: 2px solid %6;"
+            "}"
+            "QTabBar::tab:hover:!selected {"
+            "  background-color: %3;"
+            "  color: %4;"
+            "}"
+            "QKeySequenceEdit {"
+            "  background-color: %2;"
+            "  color: %4;"
+            "  border: 1px solid %3;"
+            "  border-radius: 6px;"
+            "  padding: 6px 10px;"
+            "  font-size: 13px;"
+            "}"
+            "QKeySequenceEdit:focus {"
+            "  border-color: %6;"
             "}")
             .arg(winBg, cardBg, borderCol, txtPri, txtSec, accentCol);
 
     setStyleSheet(prefStyle);
+
+    if (m_shortcutWidget) {
+        m_shortcutWidget->applyThemeStyles();
+    }
 }

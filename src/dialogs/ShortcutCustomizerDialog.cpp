@@ -17,7 +17,6 @@
 #include <QAction>
 #include <QApplication>
 #include <QBoxLayout>
-#include <QDialogButtonBox>
 #include <QGroupBox>
 #include <QHeaderView>
 #include <QKeySequenceEdit>
@@ -28,33 +27,28 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QRegularExpression>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
-ShortcutCustomizerDialog::ShortcutCustomizerDialog(QMainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent ? parent : mainWindow), m_mainWindow(mainWindow) {
-    setWindowTitle(tr("Shortcut Mapper / Customize Shortcuts"));
-    resize(780, 560);
-    setMinimumSize(600, 420);
-
+ShortcutCustomizerWidget::ShortcutCustomizerWidget(QMainWindow *mainWindow, QWidget *parent)
+    : QWidget(parent), m_mainWindow(mainWindow) {
     setupUi();
     collectActions();
     populateTree();
     applyThemeStyles();
 }
 
-QString ShortcutCustomizerDialog::cleanActionText(const QString &text) {
+QString ShortcutCustomizerWidget::cleanActionText(const QString &text) {
     QString res = text;
     res.remove(QLatin1Char('&'));
     res.remove(QStringLiteral("..."));
     return res.trimmed();
 }
 
-void ShortcutCustomizerDialog::setupUi() {
+void ShortcutCustomizerWidget::setupUi() {
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(10);
-    mainLayout->setContentsMargins(14, 14, 14, 14);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
 
     // Filter bar
     auto *filterLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
@@ -65,7 +59,7 @@ void ShortcutCustomizerDialog::setupUi() {
     m_filterEdit->setPlaceholderText(
         tr("Search by action name, category, or shortcut (e.g. 'Diff', 'Ctrl+N', 'PHP')..."));
     m_filterEdit->setClearButtonEnabled(true);
-    connect(m_filterEdit, &QLineEdit::textChanged, this, &ShortcutCustomizerDialog::onFilterTextChanged);
+    connect(m_filterEdit, &QLineEdit::textChanged, this, &ShortcutCustomizerWidget::onFilterTextChanged);
     filterLayout->addWidget(m_filterEdit);
     mainLayout->addLayout(filterLayout);
 
@@ -77,7 +71,7 @@ void ShortcutCustomizerDialog::setupUi() {
     m_treeWidget->header()->setStretchLastSection(true);
     m_treeWidget->setAlternatingRowColors(true);
     m_treeWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    connect(m_treeWidget, &QTreeWidget::itemSelectionChanged, this, &ShortcutCustomizerDialog::onItemSelectionChanged);
+    connect(m_treeWidget, &QTreeWidget::itemSelectionChanged, this, &ShortcutCustomizerWidget::onItemSelectionChanged);
     mainLayout->addWidget(m_treeWidget, 1);
 
     // Shortcut Editor Box
@@ -95,23 +89,23 @@ void ShortcutCustomizerDialog::setupUi() {
 
     m_seqEdit = new QKeySequenceEdit(editGroup);
     m_seqEdit->setEnabled(false);
-    connect(m_seqEdit, &QKeySequenceEdit::keySequenceChanged, this, &ShortcutCustomizerDialog::updateConflictWarning);
+    connect(m_seqEdit, &QKeySequenceEdit::keySequenceChanged, this, &ShortcutCustomizerWidget::updateConflictWarning);
     inputRow->addWidget(m_seqEdit, 1);
 
     m_btnAssign = new QPushButton(tr("Assign"), editGroup);
     m_btnAssign->setEnabled(false);
-    connect(m_btnAssign, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onAssignClicked);
+    connect(m_btnAssign, &QPushButton::clicked, this, &ShortcutCustomizerWidget::onAssignClicked);
     inputRow->addWidget(m_btnAssign);
 
     m_btnClear = new QPushButton(tr("Clear"), editGroup);
     m_btnClear->setEnabled(false);
-    connect(m_btnClear, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onClearClicked);
+    connect(m_btnClear, &QPushButton::clicked, this, &ShortcutCustomizerWidget::onClearClicked);
     inputRow->addWidget(m_btnClear);
 
     m_btnResetSelected = new QPushButton(tr("Reset"), editGroup);
     m_btnResetSelected->setEnabled(false);
     m_btnResetSelected->setToolTip(tr("Reset selected action to default shortcut"));
-    connect(m_btnResetSelected, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onResetSelectedClicked);
+    connect(m_btnResetSelected, &QPushButton::clicked, this, &ShortcutCustomizerWidget::onResetSelectedClicked);
     inputRow->addWidget(m_btnResetSelected);
 
     editLayout->addLayout(inputRow);
@@ -126,28 +120,20 @@ void ShortcutCustomizerDialog::setupUi() {
     // Bottom Action Buttons
     auto *bottomRow = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     m_btnResetAll = new QPushButton(tr("Reset All to Defaults"), this);
-    connect(m_btnResetAll, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onResetAllClicked);
+    connect(m_btnResetAll, &QPushButton::clicked, this, &ShortcutCustomizerWidget::onResetAllClicked);
     bottomRow->addWidget(m_btnResetAll);
 
     bottomRow->addStretch();
 
-    m_btnOk = new QPushButton(tr("OK"), this);
-    m_btnOk->setDefault(true);
-    connect(m_btnOk, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onOkClicked);
-    bottomRow->addWidget(m_btnOk);
-
-    m_btnCancel = new QPushButton(tr("Cancel"), this);
-    connect(m_btnCancel, &QPushButton::clicked, this, &QDialog::reject);
-    bottomRow->addWidget(m_btnCancel);
-
-    m_btnApply = new QPushButton(tr("Apply"), this);
-    connect(m_btnApply, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onApplyClicked);
+    m_btnApply = new QPushButton(tr("Apply Shortcuts"), this);
+    m_btnApply->setIcon(QIcon(QStringLiteral(":/icons/checkmark.svg")));
+    connect(m_btnApply, &QPushButton::clicked, this, &ShortcutCustomizerWidget::onApplyClicked);
     bottomRow->addWidget(m_btnApply);
 
     mainLayout->addLayout(bottomRow);
 }
 
-void ShortcutCustomizerDialog::registerAction(QAction *action, const QString &category) {
+void ShortcutCustomizerWidget::registerAction(QAction *action, const QString &category) {
     if (!action || action->isSeparator())
         return;
 
@@ -179,7 +165,7 @@ void ShortcutCustomizerDialog::registerAction(QAction *action, const QString &ca
     }
 }
 
-void ShortcutCustomizerDialog::traverseMenu(const QMenu *menu, const QString &catPrefix) {
+void ShortcutCustomizerWidget::traverseMenu(const QMenu *menu, const QString &catPrefix) {
     if (!menu)
         return;
 
@@ -197,7 +183,16 @@ void ShortcutCustomizerDialog::traverseMenu(const QMenu *menu, const QString &ca
     }
 }
 
-void ShortcutCustomizerDialog::collectActions() {
+void ShortcutCustomizerWidget::collectActions() {
+    if (!m_mainWindow) {
+        const auto topLevels = QApplication::topLevelWidgets();
+        for (QWidget *w : topLevels) {
+            if (auto *mw = qobject_cast<QMainWindow *>(w)) {
+                m_mainWindow = mw;
+                break;
+            }
+        }
+    }
     if (!m_mainWindow)
         return;
 
@@ -217,7 +212,12 @@ void ShortcutCustomizerDialog::collectActions() {
     }
 }
 
-void ShortcutCustomizerDialog::populateTree() {
+void ShortcutCustomizerWidget::refreshActions() {
+    collectActions();
+    populateTree();
+}
+
+void ShortcutCustomizerWidget::populateTree() {
     m_treeWidget->clear();
 
     // Group entries by category
@@ -243,7 +243,7 @@ void ShortcutCustomizerDialog::populateTree() {
     }
 }
 
-void ShortcutCustomizerDialog::applyThemeStyles() {
+void ShortcutCustomizerWidget::applyThemeStyles() {
     const auto *tm = ThemeManager::instance();
     if (!tm)
         return;
@@ -251,22 +251,33 @@ void ShortcutCustomizerDialog::applyThemeStyles() {
     const bool isDark = tm->isDarkActive();
     const ThemePalette *pal = tm->currentPalette();
 
-    const QString defaultBg = isDark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f8f9fa");
-    const QString defaultTextCol = isDark ? QStringLiteral("#e0e0e0") : QStringLiteral("#212529");
-    const QString defaultBorderCol = isDark ? QStringLiteral("#3c3c3c") : QStringLiteral("#ced4da");
+    const QString defaultBg = isDark ? QStringLiteral("#1e293b") : QStringLiteral("#ffffff");
+    const QString defaultWinBg = isDark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc");
+    const QString defaultTextCol = isDark ? QStringLiteral("#f8fafc") : QStringLiteral("#0f172a");
+    const QString defaultBorderCol = isDark ? QStringLiteral("#334155") : QStringLiteral("#cbd5e1");
+    const QString defaultAccentCol = isDark ? QStringLiteral("#38bdf8") : QStringLiteral("#2563eb");
 
-    const QString bg = pal ? QString::fromLatin1(pal->win) : defaultBg;
+    const QString cardBg = pal ? QString::fromLatin1(pal->card) : defaultBg;
+    const QString winBg = pal ? QString::fromLatin1(pal->win) : defaultWinBg;
     const QString textCol = pal ? QString::fromLatin1(pal->txtPri) : defaultTextCol;
     const QString borderCol = pal ? QString::fromLatin1(pal->border) : defaultBorderCol;
+    const QString accentCol = pal ? QString::fromLatin1(pal->blue) : defaultAccentCol;
 
     setStyleSheet(
-        QStringLiteral("QDialog { background-color: %1; color: %2; }"
-                       "QTreeWidget { background-color: %1; color: %2; border: 1px solid %3; }"
-                       "QHeaderView::section { background-color: %3; color: %2; padding: 4px; font-weight: bold; }")
-            .arg(bg, textCol, borderCol));
+        QStringLiteral("QWidget { background-color: transparent; color: %1; }"
+                       "QTreeWidget { background-color: %2; color: %1; border: 1px solid %3; border-radius: 6px; }"
+                       "QHeaderView::section { background-color: %4; color: %1; padding: 6px; font-weight: bold; "
+                       "border: none; border-bottom: 1px solid %3; }"
+                       "QTreeWidget::item:selected { background-color: %5; color: #ffffff; }"
+                       "QTreeWidget::item:hover:!selected { background-color: rgba(56, 189, 248, 0.15); }"
+                       "QGroupBox { background-color: %2; border: 1px solid %3; border-radius: 6px; margin-top: 10px; "
+                       "padding: 12px; font-weight: 600; color: %1; }"
+                       "QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; padding: 0 6px; "
+                       "color: %1; font-weight: bold; }")
+            .arg(textCol, cardBg, borderCol, winBg, accentCol));
 }
 
-void ShortcutCustomizerDialog::onFilterTextChanged(const QString &text) const {
+void ShortcutCustomizerWidget::onFilterTextChanged(const QString &text) const {
     const QString query = text.trimmed();
 
     for (int i = 0; i < m_treeWidget->topLevelItemCount(); ++i) {
@@ -292,7 +303,7 @@ void ShortcutCustomizerDialog::onFilterTextChanged(const QString &text) const {
     }
 }
 
-void ShortcutCustomizerDialog::onItemSelectionChanged() {
+void ShortcutCustomizerWidget::onItemSelectionChanged() {
     QList<QTreeWidgetItem *> selected = m_treeWidget->selectedItems();
     if (selected.isEmpty()) {
         m_selectedActionLabel->setText(tr("Select an action above to configure its shortcut."));
@@ -329,7 +340,7 @@ void ShortcutCustomizerDialog::onItemSelectionChanged() {
     updateConflictWarning();
 }
 
-void ShortcutCustomizerDialog::updateConflictWarning() {
+void ShortcutCustomizerWidget::updateConflictWarning() {
     QList<QTreeWidgetItem *> selected = m_treeWidget->selectedItems();
     if (selected.isEmpty()) {
         m_conflictLabel->setVisible(false);
@@ -356,7 +367,7 @@ void ShortcutCustomizerDialog::updateConflictWarning() {
     m_conflictLabel->setVisible(false);
 }
 
-void ShortcutCustomizerDialog::onAssignClicked() {
+void ShortcutCustomizerWidget::onAssignClicked() {
     QList<QTreeWidgetItem *> selected = m_treeWidget->selectedItems();
     if (selected.isEmpty())
         return;
@@ -379,12 +390,12 @@ void ShortcutCustomizerDialog::onAssignClicked() {
     updateConflictWarning();
 }
 
-void ShortcutCustomizerDialog::onClearClicked() {
+void ShortcutCustomizerWidget::onClearClicked() {
     m_seqEdit->setKeySequence(QKeySequence());
     onAssignClicked();
 }
 
-void ShortcutCustomizerDialog::onResetSelectedClicked() {
+void ShortcutCustomizerWidget::onResetSelectedClicked() {
     QList<QTreeWidgetItem *> selected = m_treeWidget->selectedItems();
     if (selected.isEmpty())
         return;
@@ -407,7 +418,7 @@ void ShortcutCustomizerDialog::onResetSelectedClicked() {
     updateConflictWarning();
 }
 
-void ShortcutCustomizerDialog::onResetAllClicked() {
+void ShortcutCustomizerWidget::onResetAllClicked() {
     if (QMessageBox::question(this, tr("Reset All Shortcuts"),
                               tr("Are you sure you want to restore all shortcuts to their default settings?")) !=
         QMessageBox::Yes) {
@@ -423,7 +434,7 @@ void ShortcutCustomizerDialog::onResetAllClicked() {
     onItemSelectionChanged();
 }
 
-void ShortcutCustomizerDialog::saveShortcuts() const {
+void ShortcutCustomizerWidget::saveShortcuts() const {
     const auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
     ApplicationSettings *settings = app ? app->getSettings() : nullptr;
     if (!settings)
@@ -459,11 +470,40 @@ void ShortcutCustomizerDialog::saveShortcuts() const {
     settings->sync();
 }
 
-void ShortcutCustomizerDialog::onApplyClicked() const {
+void ShortcutCustomizerWidget::onApplyClicked() {
     saveShortcuts();
+    emit shortcutsChanged();
 }
 
-void ShortcutCustomizerDialog::onOkClicked() {
-    saveShortcuts();
-    accept();
+ShortcutCustomizerDialog::ShortcutCustomizerDialog(QMainWindow *mainWindow, QWidget *parent)
+    : QDialog(parent ? parent : mainWindow) {
+    setWindowTitle(tr("Shortcut Mapper / Customize Shortcuts"));
+    resize(780, 560);
+    setMinimumSize(600, 420);
+
+    auto *mainLayout = new QVBoxLayout(this);
+    mainLayout->setSpacing(10);
+    mainLayout->setContentsMargins(14, 14, 14, 14);
+
+    m_customizerWidget = new ShortcutCustomizerWidget(mainWindow, this);
+    mainLayout->addWidget(m_customizerWidget, 1);
+
+    auto *bottomRow = new QHBoxLayout();  // NOSONAR(cpp:S5025)
+    bottomRow->addStretch();
+
+    auto *btnOk = new QPushButton(tr("OK"), this);
+    btnOk->setDefault(true);
+    connect(btnOk, &QPushButton::clicked, this, [this]() {
+        if (m_customizerWidget) {
+            m_customizerWidget->saveShortcuts();
+        }
+        accept();
+    });
+    bottomRow->addWidget(btnOk);
+
+    auto *btnCancel = new QPushButton(tr("Cancel"), this);
+    connect(btnCancel, &QPushButton::clicked, this, &QDialog::reject);
+    bottomRow->addWidget(btnCancel);
+
+    mainLayout->addLayout(bottomRow);
 }

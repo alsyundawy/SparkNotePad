@@ -2053,8 +2053,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
         if (pd == Q_NULLPTR) {
             pd = new PreferencesDialog(app->getSettings(), this);
+            connect(pd, &PreferencesDialog::shortcutsChanged, this, &MainWindow::applyCustomShortcuts);
         }
 
+        pd->setCurrentTab(0);
         pd->show();
         pd->raise();
         pd->activateWindow();
@@ -2062,7 +2064,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     auto *actionCustomizeShortcuts = new QAction(tr("Shortcut &Mapper / Customize Shortcuts..."), this);
     actionCustomizeShortcuts->setObjectName(QStringLiteral("actionCustomizeShortcuts"));
-    actionCustomizeShortcuts->setIcon(QIcon(QStringLiteral(":/icons/run.svg")));
+    actionCustomizeShortcuts->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
     connect(actionCustomizeShortcuts, &QAction::triggered, this, &MainWindow::onCustomizeShortcutsTriggered);
     ui->menuSettings->addAction(actionCustomizeShortcuts);
 
@@ -4360,8 +4362,17 @@ void MainWindow::onManageToolsTriggered() {
 }
 
 void MainWindow::onCustomizeShortcutsTriggered() {
-    ShortcutCustomizerDialog dlg(this, this);
-    dlg.exec();
+    PreferencesDialog *pd = findChild<PreferencesDialog *>(QString(), Qt::FindDirectChildrenOnly);
+
+    if (pd == Q_NULLPTR) {
+        pd = new PreferencesDialog(app->getSettings(), this);
+        connect(pd, &PreferencesDialog::shortcutsChanged, this, &MainWindow::applyCustomShortcuts);
+    }
+
+    pd->openShortcutsTab();
+    pd->show();
+    pd->raise();
+    pd->activateWindow();
 }
 
 void MainWindow::onGenerateCertTriggered() {
