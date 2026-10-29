@@ -70,6 +70,21 @@ SparkNotePad v1.3.6 delivers an expanded Tier-1 operating system and distributio
 - **Version Bump**: Updated project version to `1.3.6` in `CMakeLists.txt`, `src/dialogs/AboutDialog.cpp`, `README.md`, and `README-id.md`.
 - **Release Parity**: Maintained 100% parity between release branch `1.3.6` and `main`.
 
+#### 🔧 Fixed
+
+- **Toolbar Tooltip Elegance & Black-Box Corner Artifact Resolution**:
+  - Implemented application-level `ToolTipTranslucentFilter` setting `Qt::WA_TranslucentBackground` on `QToolTip` display events, resolving native macOS Cocoa unpainted black corner boxes on rounded tooltips.
+  - Upgraded global `QToolTip` stylesheet in `ThemeManager` with modern translucent dark glassmorphism styling (`rgba(30, 34, 42, 0.94)` background, `rgba(255, 255, 255, 0.14)` border, `#f0f6fc` text, and `border-radius: 6px`).
+- **HiDPI Crisp Menu & Context Menu Icons**:
+  - Upgraded `ActionUtils::createSolidIcon` to render at 2x Retina resolution with anti-aliasing and gentle rounded corners, eliminating blurriness in menu items and right-click context menus across light and dark modes.
+  - Replaced raster PNG references with sharp vector SVGs across toolbar and menus.
+- **SonarLint, Clangd, Clang-Tidy & Cppcheck Zero-Error Hardening**:
+  - Resolved undeclared identifier `APP_VERSION` and `APP_DISTRIBUTION` with robust preprocessor fallback macros.
+  - Corrected static member method calls on `LuaExtension` from `LuaExtension::Instance().*` to `LuaExtension::*` syntax.
+  - Reduced cognitive complexity in `MainWindow::openFileList` by modularizing cryptographic decryption logic into `MainWindow::openOrDecryptFile`.
+  - Flattened nested statement structures in `MainWindow::dropEvent` and `AccessibilityManager::setupAccessibility`.
+  - Marked member functions `const` and converted destructor to `= default` in `AccessibilityManager`.
+
 ---
 
 ## [1.3.5] - 2026-10-24

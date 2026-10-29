@@ -67,9 +67,12 @@ SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating sys
     - Physical `compile_commands.json` (917 KB, 454 translation units) copied directly to repository root, permanently resolving all 1,288 IDE cascade resolution errors and 756 SonarLint parser warnings.
     - Verified `trunk check` with 0 issues across all repository files.
 
-11. **Toolbar Tooltip Visibility & Accessibility Restoration**:
+11. **Toolbar Tooltip Elegance, Translucent Background & Accessibility Restoration**:
     - Restored missing hover tooltips for all 25 actions on `mainToolBar` in `MainWindow.ui`.
-    - Implemented programmatic `Qt::WA_AlwaysShowToolTips` and child `QToolButton` tooltip synchronization in `AccessibilityManager` and `MainWindow::initView()`, guaranteeing tooltips appear on macOS Qt 6.
+    - Implemented application-level `ToolTipTranslucentFilter` setting `Qt::WA_TranslucentBackground` on `QToolTip` display events, permanently fixing native Cocoa unpainted black corner boxes on macOS.
+    - Upgraded `ThemeManager` tooltip styling to a translucent floating dark glassmorphism pill (`rgba(30, 34, 42, 0.94)`, `border-radius: 6px`, subtle border `rgba(255, 255, 255, 0.14)`).
+    - Upgraded `ActionUtils::createSolidIcon` with 2x Retina anti-aliased rendering and subtle rounded rect corners for crisp menu and context-menu display in light and dark modes.
+    - Achieved 100% zero-warning compliance across SonarLint, Clangd, Clang-Tidy, and Cppcheck.
 
 12. **Zero-Lag Menu Presentation & Native Icon Rendering**:
     - Eliminated high-overhead global `MenuIconEventFilter` event hook in `SparkNotePadApplication.cpp`.

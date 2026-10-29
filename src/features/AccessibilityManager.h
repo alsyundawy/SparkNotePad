@@ -26,13 +26,13 @@ public:
     static AccessibilityManager *instance();
 
     void setupAccessibility(MainWindow *window);
-    void announce(QWidget *context, const QString &message);
-    void openAccessibilityHelp(QWidget *parent);
-    void announceDocumentState(ScintillaNext *editor, int index, int total);
+    void announce(QWidget *context, const QString &message) const;
+    void openAccessibilityHelp(QWidget *parent) const;
+    void announceDocumentState(ScintillaNext *editor, int index, int total) const;
 
 private:
     explicit AccessibilityManager(QObject *parent = nullptr);
-    ~AccessibilityManager() override;
+    ~AccessibilityManager() override = default;
 
     MainWindow *m_window = nullptr;
 };

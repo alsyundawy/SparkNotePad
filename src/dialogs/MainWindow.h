@@ -213,6 +213,7 @@ private:
     void applyCustomShortcuts() const;
     void initUpdateCheck();
     ScintillaNext *getInitialEditor() const;
+    ScintillaNext *openOrDecryptFile(const QString &filePath);
     void openFileList(const QStringList &fileNames);
     bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorList);
     bool checkFileForModification(ScintillaNext *editor);
