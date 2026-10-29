@@ -1603,6 +1603,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     // Quick Open (Cmd+P / Ctrl+P, Kate: Ctrl+Alt+O)
     auto *actionQuickOpen = new QAction(tr("&Quick Open..."), this);
     actionQuickOpen->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
+    actionQuickOpen->setIconVisibleInMenu(true);
     actionQuickOpen->setShortcuts({QKeySequence(Qt::CTRL | Qt::Key_P), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O)});
     actionQuickOpen->setStatusTip(tr("Quickly switch open tabs, recent files, or jump to line"));
     connect(actionQuickOpen, &QAction::triggered, this, [this]() { showCommandPalette(false); });
@@ -1611,6 +1612,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     // Command Palette (Cmd+Shift+P / Ctrl+Shift+P, Kate: Ctrl+Alt+I)
     auto *actionCommandPalette = new QAction(tr("&Command Palette..."), this);
     actionCommandPalette->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
+    actionCommandPalette->setIconVisibleInMenu(true);
     actionCommandPalette->setShortcuts(
         {QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_I)});
     actionCommandPalette->setStatusTip(tr("Search and execute any editor command"));
@@ -3636,28 +3638,22 @@ void MainWindow::initUpdateCheck() {
 void MainWindow::ensureMenuIconsVisible(QWidget *root) {
     QWidget *target = root ? root : this;
     for (auto *action : target->findChildren<QAction *>()) {
-        if (!action->icon().isNull()) {
+        action->setIconVisibleInMenu(true);
+    }
+    for (auto *menu : target->findChildren<QMenu *>()) {
+        if (auto *act = menu->menuAction()) {
+            act->setIconVisibleInMenu(true);
+        }
+        for (auto *action : menu->actions()) {
             action->setIconVisibleInMenu(true);
         }
     }
-    for (auto *menu : target->findChildren<QMenu *>()) {
-        if (auto *act = menu->menuAction(); act && !act->icon().isNull()) {
-            act->setIconVisibleInMenu(true);
-        }
-        for (auto *action : menu->actions()) {
-            if (!action->icon().isNull()) {
-                action->setIconVisibleInMenu(true);
-            }
-        }
-    }
     if (const auto *menu = qobject_cast<const QMenu *>(target)) {
-        if (auto *act = menu->menuAction(); act && !act->icon().isNull()) {
+        if (auto *act = menu->menuAction()) {
             act->setIconVisibleInMenu(true);
         }
         for (auto *action : menu->actions()) {
-            if (!action->icon().isNull()) {
-                action->setIconVisibleInMenu(true);
-            }
+            action->setIconVisibleInMenu(true);
         }
     }
 }
