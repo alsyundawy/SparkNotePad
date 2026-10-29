@@ -752,15 +752,16 @@ QMenu::separator {
     margin: 4px 6px;
 }
 
-/* Tooltips - Compact Subtly Rounded */
+/* Tooltips - Compact Rounded Font Fit */
 QToolTip {
     background-color: rgba(30, 34, 42, 0.95);
     color: #f0f6fc;
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 3px;
-    padding: 2px 6px;
+    border-radius: 4px;
+    padding: 2px 5px;
     font-size: 11px;
     font-weight: 400;
+    qproperty-margin: 0;
 }
 
 /* Status Bar */

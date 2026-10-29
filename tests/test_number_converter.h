@@ -3,13 +3,11 @@
 #include <QTest>
 #include "utils/NumberConverter.h"
 
-class TestNumberConverter : public QObject
-{
+class TestNumberConverter : public QObject {
     Q_OBJECT
 
 private slots:
-    void testConversions()
-    {
+    void testConversions() {
         auto rHex = NumberConverter::convertString("255", NumberConverter::ToHex);
         QVERIFY(rHex.success);
         QCOMPARE(rHex.converted, QString("0xFF"));

@@ -47,6 +47,7 @@
 #include <QSessionManager>
 #include <QMenu>
 #include <QEvent>
+#include <QLabel>
 
 #ifdef Q_OS_WIN
 #include <Windows.h>
@@ -63,10 +64,13 @@ public:
 
 protected:
     bool eventFilter(QObject *obj, QEvent *ev) override {
-        if (ev->type() == QEvent::Show) {
+        if (ev->type() == QEvent::Show || ev->type() == QEvent::Polish) {
             if (auto *w = qobject_cast<QWidget *>(obj)) {
-                if (w->windowFlags() & Qt::ToolTip) {
+                if (w->inherits("QTipLabel") || (w->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip) {
                     w->setAttribute(Qt::WA_TranslucentBackground, true);
+                    if (auto *lbl = qobject_cast<QLabel *>(w)) {
+                        lbl->setMargin(0);
+                    }
                 }
             }
         }

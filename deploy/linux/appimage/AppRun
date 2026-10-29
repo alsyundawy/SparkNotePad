@@ -3,8 +3,8 @@
 # SCRIPT NAME: AppRun
 # DESCRIPTION: Entry point for SparkNotePad AppImage
 # ==============================================================================
-
-HERE="$(dirname "$(readlink -f "${0}")")"
+TARGET_FILE="$(readlink -f "${0}")" || exit 1
+HERE="$(dirname "${TARGET_FILE}")"
 export PATH="${HERE}/usr/bin:${PATH}"
 export LD_LIBRARY_PATH="${HERE}/usr/lib:${HERE}/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
 export QT_PLUGIN_PATH="${HERE}/usr/plugins"
