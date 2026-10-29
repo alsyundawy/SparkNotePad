@@ -23,7 +23,28 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
     - _Generate From Selection_: Hashes highlighted selection directly.
     - _Verify_: Cross-validates document hash against reference string.
   - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation.
-  - **MIME Tools Submenu**: Base64 Encode/Decode, URL Encode/Decode, Quoted-Printable Encode.
+  - **Complete 16-Action MIME Tools Suite (`MimeTools`)**:
+    - Full parity with Notepad++ MIME Tools plugin matching user specifications:
+      - _Base64_: Encode (unpadded), Encode with padding (`=`), Encode with Unix EOL (`\n` line-wrapped), Encode by line, Decode, Decode strict (with strict error detection), Decode by line.
+      - _Quoted-Printable_: Encode, Decode.
+      - _URL_: Encode (RFC1738), Encode (RFC1738) by line, Encode (Extended), Encode (Extended) by line, Encode (Full), Encode (Full) by line, Decode.
+  - **Developer Help & Web Documentation Search in Run Menu**:
+    - Integrated instant documentation lookup with automatic word-under-caret detection:
+      - "Get PHP Help" (`Alt+F1` / Mac `Opt+F1`) -> `https://www.php.net/manual-lookup.php?pattern=` (or `https://www.php.net/`).
+      - "Rust Documentation" (`Alt+F2` / Mac `Opt+F2`) -> `https://rust-lang.org/learn/`.
+      - "Python Documentation" (`Alt+F3` / Mac `Opt+F3`) -> `https://www.w3schools.com/python/`.
+      - "Wikipedia Search" (`Alt+Shift+F1` / `Ctrl+Alt+W`) -> `https://en.wikipedia.org/wiki/Special:Search?search=`.
+  - **Interactive Shortcut Mapper & Customizer (`ShortcutCustomizerDialog`)**:
+    - Complete GUI keybinding customizer accessible from `Settings >> Shortcut Mapper...` and `Preferences >> Shortcuts`.
+    - Real-time search/filter by action name, category, or shortcut.
+    - Key sequence capture via `QKeySequenceEdit` with collision & conflict warning badges.
+    - Per-action "Reset to Default" and global "Reset All to Defaults".
+    - Persistent storage in `QSettings("Shortcuts")` with live application hot-reloading without requiring a restart.
+    - Comprehensive multi-category shortcuts reference table in `AboutDialog`.
+  - **GitHub API Rate Limit Elimination (`ReleaseManager`)**:
+    - Resolved 60 requests/hour IP rate limit errors on update checks.
+    - Added HTTP `ETag` / `If-None-Match` caching: returns `304 Not Modified` on fresh versions without consuming API rate limit quota.
+    - Added automatic fallback to unmetered GitHub web redirect endpoint (`https://github.com/alsyundawy/SparkNotePad/releases/latest`) on HTTP 403 or network failure, resolving release tags from the HTTP 302 `Location` header.
   - **Converter Submenu**: ASCII <-> HEX, Decimal <-> HEX conversion.
   - **Relocated AES-256 Encryption**: Migrated from File menu into Tools for cleaner organization.
 - **Ergonomic Quick Open Placement**:

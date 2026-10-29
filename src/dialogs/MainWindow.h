@@ -250,9 +250,13 @@ private:
     void onOpenInBrowserTriggered() const;
     void onSearchGoogleTriggered() const;
     void onSearchWikipediaTriggered() const;
+    void onSearchPhpTriggered() const;
+    void onSearchRustTriggered() const;
+    void onSearchPythonTriggered() const;
     void onSearchGitHubTriggered() const;
     void onSearchStackOverflowTriggered() const;
     void onManageToolsTriggered();
+    void onCustomizeShortcutsTriggered();
     void onRegexHelperTriggered();
     void onEncryptDocumentTriggered();
     void onDecryptDocumentTriggered();

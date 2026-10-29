@@ -250,14 +250,20 @@ void ExternalToolManager::openInBrowser(const QString &pathOrUrl) {
 
 void ExternalToolManager::webSearch(const QString &query, const QString &service) {
     const QString trimmed = query.trimmed();
-    if (trimmed.isEmpty())
-        return;
-
     const QString encoded = QString::fromUtf8(QUrl::toPercentEncoding(trimmed));
     QString urlStr;
 
     if (service == QStringLiteral("wikipedia")) {
-        urlStr = QStringLiteral("https://en.wikipedia.org/wiki/Special:Search?search=%1").arg(encoded);
+        urlStr = trimmed.isEmpty()
+                     ? QStringLiteral("https://en.wikipedia.org/wiki/Special:Search?search=")
+                     : QStringLiteral("https://en.wikipedia.org/wiki/Special:Search?search=%1").arg(encoded);
+    } else if (service == QStringLiteral("php")) {
+        urlStr = trimmed.isEmpty() ? QStringLiteral("https://www.php.net/")
+                                   : QStringLiteral("https://www.php.net/manual-lookup.php?pattern=%1").arg(encoded);
+    } else if (service == QStringLiteral("rust")) {
+        urlStr = QStringLiteral("https://rust-lang.org/learn/");
+    } else if (service == QStringLiteral("python")) {
+        urlStr = QStringLiteral("https://www.w3schools.com/python/");
     } else if (service == QStringLiteral("github")) {
         urlStr = QStringLiteral("https://github.com/search?q=%1").arg(encoded);
     } else if (service == QStringLiteral("stackoverflow")) {

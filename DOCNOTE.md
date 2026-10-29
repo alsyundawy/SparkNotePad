@@ -24,55 +24,75 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity developer ergonomics inspired by primary-source research into **KDE Kate**, **Pluma (MATE)**, **Notepad-- (cxasm/ndd)**, and **Notepad++** without breaking or regressing any existing functionality:
 
-1. **Notepad++ Style Top-Level `Tools` Menu Suite**:
+1. **Notepad++ Style Top-Level `Tools` Menu & 16-Action MIME Tools Suite**:
    - Integrated top-level Tools menu located between View and Settings menus with complete vector icon support.
    - **Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-512, each equipped with Generate (active document), Generate From File, Generate From Selection, and Verify actions.
    - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation (`HashIntegrityDialog`).
-   - **MIME Tools Submenu**: Base64 Encode/Decode, URL Encode/Decode, Quoted-Printable Encode.
+   - **Full 16-Action MIME Tools Suite (`MimeTools`)**:
+     - _Base64_: Encode (unpadded), Encode with padding (`=`), Encode with Unix EOL (`\n` wrapped), Encode by line, Decode, Decode strict (with strict error reporting), Decode by line.
+     - _Quoted-Printable_: Encode, Decode.
+     - _URL_: Encode RFC1738, Encode RFC1738 by line, Encode Extended, Encode Extended by line, Encode Full (all non-alphanumeric chars), Encode Full by line, URL Decode.
    - **Converter Submenu**: Bidirectional ASCII <-> HEX and Decimal <-> HEX conversion.
    - **Relocated AES-256 Encryption**: Migrated from File menu into Tools for cleaner organization.
-2. **Ergonomic Quick Open Placement & Compact Menubar Typography**:
+2. **Developer Help & Web Documentation Navigation (Run Menu)**:
+   - Added instant documentation lookup with auto-selection or word-under-caret:
+     - "Get PHP Help" (`Alt+F1` / Mac `Opt+F1`) -> `https://www.php.net/manual-lookup.php?pattern=` (or `https://www.php.net/`).
+     - "Rust Documentation" (`Alt+F2` / Mac `Opt+F2`) -> `https://rust-lang.org/learn/`.
+     - "Python Documentation" (`Alt+F3` / Mac `Opt+F3`) -> `https://www.w3schools.com/python/`.
+     - "Wikipedia Search" (`Alt+Shift+F1` / `Ctrl+Alt+W`) -> `https://en.wikipedia.org/wiki/Special:Search?search=`.
+3. **Interactive Shortcut Mapper & Customizer (`ShortcutCustomizerDialog`)**:
+   - Dedicated GUI keybinding customizer accessible from `Settings >> Shortcut Mapper...` and `Preferences >> Shortcuts`.
+   - Real-time search/filter across actions, categories, and current key combinations.
+   - Collision detection with visual warning badges to prevent duplicate bindings.
+   - Per-action "Reset to Default" and global "Reset All to Defaults".
+   - Stored in `QSettings("Shortcuts")` with live application hot-reloading without restart.
+   - Expanded, categorized shortcuts reference table in `AboutDialog`.
+4. **GitHub API Rate Limit Elimination (`ReleaseManager`)**:
+   - Resolved 60 requests/hour IP rate limits on update checks.
+   - Added HTTP `ETag` / `If-None-Match` caching (`304 Not Modified` on unchanged releases without consuming API quota).
+   - Added automatic fallback to unmetered GitHub web redirect endpoint (`https://github.com/alsyundawy/SparkNotePad/releases/latest`) on HTTP 403 or network failure, resolving release tags from the HTTP 302 `Location` header.
+5. **Ergonomic Quick Open Placement & Compact Menubar Typography**:
    - Relocated Quick Open (`Ctrl+Alt+O` / `Cmd+Alt+O`) directly adjacent to Open in the File menu, keeping the Help menu clean.
    - Tightened QMenuBar item padding (`3px 6px`) and enforced compact `12px` font size for modern, compact navigation bar spacing without horizontal overflow.
-3. **Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)**:
+6. **Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)**:
    - Keyboard-driven floating modal (`Cmd+P` / `Ctrl+P` and `Cmd+Shift+P` / `Ctrl+Shift+P`) for fast tab switching, recent file navigation, `:line` jumping, and executing any editor action.
-4. **Native Side-by-Side Visual Diff & File Compare Engine (`FileDiffDialog`)**:
+7. **Native Side-by-Side Visual Diff & File Compare Engine (`FileDiffDialog`)**:
    - Pure C++20 Myers/LCS difference algorithm with synchronized vertical scrolling, color-coded line markers, and fast navigation (`F7` / `Shift+F7`).
-5. **Upgraded Project & Workspace Tree Dock (`FolderAsWorkspaceDock`)**:
+8. **Upgraded Project & Workspace Tree Dock (`FolderAsWorkspaceDock`)**:
    - Real-time bottom filter bar (`filterEdit`) with wildcard pattern matching, toolbar controls (Refresh, Collapse All), comprehensive context menu (Open, Open with System, Show in Finder, Copy Paths), and `.sparkproject` JSON detection.
-6. **Swiss-Army Code Transformer & Forensics Suite (`TokenForensicUtils` & `CodeCompressPretty`)**:
+9. **Swiss-Army Code Transformer & Forensics Suite (`TokenForensicUtils` & `CodeCompressPretty`)**:
    - Prettify/Minify XML/HTML using native Qt XML streaming engines.
    - SQL query formatting with keyword normalization and clause indentation.
    - JWT (JSON Web Token) decoding, inspection, and expiration timestamp validation.
    - Pluma-style Document Statistics with real-time Shannon Entropy calculation to identify encrypted or obfuscated code.
-7. **Multi-Cursor UI Polish**:
-   - Real-time active cursor counter in status bar (`[N Cursors]`).
-8. **Critical Crash Prevention & Lifecycle Hardening**:
-   - Eliminated fatal `Q_ASSERT(isFile())` abort on untitled/new documents in `ScintillaNext::getFilePath()` and `getPath()`.
-   - Fixed potential Use-After-Free in `DockedEditor.cpp` destroyed slot.
-   - Added null checks in `MainWindow::checkEditorsBeforeClose()`, `closeFile()` (`QPointer`), `isAnyUnsaved()`, and `ModernMessageBox::promptForSave()`.
-9. **13-Pillar Production Code Review & 100% Linter Eradication**:
-   - Generated 459-entry unified compilation database (`build/compile_commands.json` & root symlink) via `scripts/generate_compilation_database.py`.
-   - Unified `.vscode/settings.json`, `.clangd`, and `sonar-project.properties` with uniform build path resolution, completely resolving 1,288 IDE diagnostics and 756 SonarLint C++ warnings.
-   - Corrected all `ScintillaNext::getSelText()` Qt 6 type mismatches (`QByteArray` to `QString::fromUtf8()`).
-   - 100% clean check across all translation units in `clangd`, `cppcheck-qt`, and `trunk check`.
-10. **Toolbar Tooltip Translucent Floating Pill Styling & Accessibility**:
+10. **Multi-Cursor UI Polish**:
+    - Real-time active cursor counter in status bar (`[N Cursors]`).
+11. **Critical Crash Prevention & Lifecycle Hardening**:
+    - Eliminated fatal `Q_ASSERT(isFile())` abort on untitled/new documents in `ScintillaNext::getFilePath()` and `getPath()`.
+    - Fixed potential Use-After-Free in `DockedEditor.cpp` destroyed slot.
+    - Added null checks in `MainWindow::checkEditorsBeforeClose()`, `closeFile()` (`QPointer`), `isAnyUnsaved()`, and `ModernMessageBox::promptForSave()`.
+12. **13-Pillar Production Code Review & 100% Linter Eradication**:
+    - Generated 459-entry unified compilation database (`build/compile_commands.json` & root symlink) via `scripts/generate_compilation_database.py`.
+    - Unified `.vscode/settings.json`, `.clangd`, and `sonar-project.properties` with uniform build path resolution, completely resolving 1,288 IDE diagnostics and 756 SonarLint C++ warnings.
+    - Corrected all `ScintillaNext::getSelText()` Qt 6 type mismatches (`QByteArray` to `QString::fromUtf8()`).
+    - 100% clean check across all translation units in `clangd`, `cppcheck-qt`, and `trunk check`.
+13. **Toolbar Tooltip Translucent Floating Pill Styling & Accessibility**:
     - Restored hover tooltips for all 25 actions on `mainToolBar` in `MainWindow.ui`.
     - Implemented programmatic `Qt::WA_AlwaysShowToolTips` and child `QToolButton` tooltip synchronization.
     - Upgraded `QToolTip` CSS to modern floating translucent pill (`rgba(30, 34, 42, 0.94)`, `border-radius: 6px`, white text `#f0f6fc`, 1px subtle border) and installed `ToolTipTranslucentFilter` in `SparkNotePadApplication` enforcing `Qt::WA_TranslucentBackground` on `QEvent::Show`, completely eliminating macOS black square corner artifacts.
-11. **Zero-Lag Menu Presentation & Native Icon Rendering**:
+14. **Zero-Lag Menu Presentation & Native Icon Rendering**:
     - Eliminated high-overhead global `MenuIconEventFilter` event hook.
     - Enabled native menu icons via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation, restoring instant menu response.
-12. **Dedicated "Select All" Vector Icon & High-DPI Vector Suite**:
+15. **Dedicated "Select All" Vector Icon & High-DPI Vector Suite**:
     - Designed custom monoline `select_all.svg` matching user design specifications.
     - Upgraded all legacy 16x16 PNG menu icons to crisp vector SVGs.
     - Assigned SVGs to `actionAboutQt`, `actionShowCharacterInfo`, `actionBase64Encode`, `actionBase64Decode`, `actionURLEncode`, `actionURLDecode`.
     - Upgraded `ActionUtils::createSolidIcon` to render 2x anti-aliased rounded rects querying `qApp->devicePixelRatio()`.
-13. **Restoration of Main Toolbar Print Action & Menu Icon Sanitization**:
+16. **Restoration of Main Toolbar Print Action & Menu Icon Sanitization**:
     - Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar`.
     - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
     - Removed duplicate `settings.svg` and `select_all.svg` across ~150 non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
-14. **Static Analysis, Const-Correctness & Scope Hardening**:
+17. **Static Analysis, Const-Correctness & Scope Hardening**:
     - Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`), directly resolving SonarQube `cpp:S5416` warnings.
     - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp`, resolving SonarQube `cpp:S5418` warnings and restricting variable lifetime.
 

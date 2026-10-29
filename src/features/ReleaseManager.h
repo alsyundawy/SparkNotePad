@@ -43,8 +43,11 @@ signals:
 
 private slots:
     void onReplyFinished(QNetworkReply *reply);
+    void onFallbackReplyFinished(QNetworkReply *reply);
 
 private:
+    void triggerWebFallback();
+
     explicit ReleaseManager(QObject *parent = nullptr);
     ~ReleaseManager() override = default;
     ReleaseManager(const ReleaseManager &) = delete;

@@ -28,6 +28,7 @@
 #include "ScintillaNext.h"
 #include "ThemeManager.h"
 #include "MainWindow.h"
+#include "ShortcutCustomizerDialog.h"
 #include "features/ThemePaletteData.h"
 #include "features/TransparentWindowManager.h"
 
@@ -351,6 +352,21 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     connect(checkBoxMultiMonitorSafety, &QCheckBox::toggled, this,
             [this](bool checked) { settings->setValue("Screen/SafetyGuards", checked); });
     themeLayout->addRow(tr("Display Safety:"), checkBoxMultiMonitorSafety);
+
+    // 5. Shortcuts & Key Bindings Customizer
+    auto *btnOpenShortcuts = new QPushButton(tr("Customize Shortcuts / Shortcut Mapper..."), gbxThemes);
+    btnOpenShortcuts->setIcon(QIcon(QStringLiteral(":/icons/run.svg")));
+    connect(btnOpenShortcuts, &QPushButton::clicked, this, [this]() {
+        QMainWindow *mainWin = qobject_cast<QMainWindow *>(this->parentWidget());
+        if (!mainWin) {
+            mainWin = qobject_cast<QMainWindow *>(this->window());
+        }
+        if (mainWin) {
+            ShortcutCustomizerDialog dlg(mainWin, this);
+            dlg.exec();
+        }
+    });
+    themeLayout->addRow(tr("Shortcuts:"), btnOpenShortcuts);
 
     // Insert at the top of scrollAreaWidgetContents layout
     ui->verticalLayout_4->insertWidget(0, gbxThemes);
