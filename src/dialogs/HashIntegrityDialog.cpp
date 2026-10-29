@@ -26,7 +26,7 @@
 
 HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *currentEditor)
     : QDialog(parent), editor(currentEditor) {
-    setWindowTitle(tr("Cryptographic Hash & Integrity Validator"));
+    setWindowTitle(tr("Hash & Authenticity Validator"));
     setMinimumWidth(560);
 
     auto *mainLayout = new QVBoxLayout(this);

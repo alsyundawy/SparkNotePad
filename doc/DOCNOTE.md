@@ -26,8 +26,8 @@ SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity develope
 
 1. **Notepad++ Style Top-Level `Tools` Menu & 16-Action MIME Tools Suite**:
    - Integrated top-level Tools menu located between View and Settings menus with complete vector icon support.
-   - **Hash Submenu**: Complete cryptographic and non-cryptographic checksum suite: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, and SHA3-512, each equipped with Generate (active document), Generate From File, Generate From Selection, and Verify actions.
-   - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation (`HashIntegrityDialog`) supporting SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, and MD5.
+   - **Hash Submenu**: Complete cryptographic and non-cryptographic checksum suite: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, and SHA3-512, each equipped with `Generate...` (Notepad++ style interactive digest modal with real-time computation and per-line string hashing), Generate From File, Generate From Selection, and Verify / Hash Authenticity Validator actions.
+   - **Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation (`HashIntegrityDialog`) supporting SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, and MD5 (streamlined rename from "Cryptographic Hash & Authenticity Validator").
    - **Full 16-Action MIME Tools Suite (`MimeTools`)**:
      - _Base64_: Encode (unpadded), Encode with padding (`=`), Encode with Unix EOL (`\n` wrapped), Encode by line, Decode, Decode strict (with strict error reporting), Decode by line.
      - _Quoted-Printable_: Encode, Decode.

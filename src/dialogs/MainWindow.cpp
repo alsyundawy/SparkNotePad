@@ -59,6 +59,7 @@
 #include "ModernMessageBox.h"
 #include "docks/MarkdownSafePreviewDock.h"
 #include "dialogs/HashIntegrityDialog.h"
+#include "dialogs/GenerateHashDigestDialog.h"
 #include "ui_MainWindow.h"
 
 #include <QFileDialog>
@@ -194,11 +195,12 @@ std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &alg
     return std::nullopt;
 }
 
-QString computeHashString(const QString &algStr, const QByteArray &data, const QString &validatorSuffix = {}) {
-    if (const auto alg = getHashAlgorithm(algStr)) {
-        return QString::fromLatin1(QCryptographicHash::hash(data, *alg).toHex());
+QString computeHashString(const QString &algStr, const QByteArray &data, const QString & /*validatorSuffix*/ = {}) {
+    const QString digest = GenerateHashDigestDialog::computeSingleDigest(algStr, data);
+    if (!digest.isEmpty()) {
+        return digest;
     }
-    return QObject::tr("(Use Hash & Authenticity Validator for %1%2)").arg(algStr, validatorSuffix);
+    return QObject::tr("(Unknown algorithm %1)").arg(algStr);
 }
 
 QString computeFileHash(const QString &algStr, const QString &filePath, QString *errorOut) {
@@ -213,7 +215,8 @@ QString computeFileHash(const QString &algStr, const QString &filePath, QString 
         hasher.addData(&f);
         return QString::fromLatin1(hasher.result().toHex());
     }
-    return QObject::tr("(Use Hash & Authenticity Validator for %1 files)").arg(algStr);
+    const QByteArray data = f.readAll();
+    return GenerateHashDigestDialog::computeSingleDigest(algStr, data);
 }
 
 QAction *findActionByName(const MainWindow *window, const QString &actionName, const QList<QAction *> &allActions) {
@@ -1012,7 +1015,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
 
-    auto *actionHashValidator = new QAction(tr("Cryptographic &Hash && Authenticity Validator..."), this);
+    auto *actionHashValidator = new QAction(tr("&Hash && Authenticity Validator..."), this);
     connect(actionHashValidator, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
 
     // --- Tools top-level menu (Notepad++ style) ---
@@ -1041,18 +1044,20 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
         auto *subHash = new QMenu(tr(h.label), this);
         const QString algStr = QLatin1String(h.alg);
 
-        auto *actGen = new QAction(tr("&Generate"), this);
+        auto *actGen = new QAction(tr("&Generate..."), this);
         connect(actGen, &QAction::triggered, this, [this, algStr]() {
-            ScintillaNext *editor = currentEditor();
-            if (!editor)
-                return;
-            const QByteArray data = QByteArray::fromStdString(editor->getText(editor->length() + 1).toStdString());
-            const QString hash = computeHashString(algStr, data);
-            QApplication::clipboard()->setText(hash);
-            ui->statusBar->showMessage(
-                tr("%1 hash copied to clipboard: %2")
-                    .arg(algStr, hash.left(20) + (hash.size() > 20 ? QStringLiteral("...") : QString())),
-                4000);
+            QString text;
+            if (ScintillaNext *editor = currentEditor()) {
+                const QByteArray sel = editor->getSelText();
+                if (!sel.isEmpty()) {
+                    text = QString::fromUtf8(sel);
+                } else {
+                    text = QString::fromUtf8(editor->getText(editor->length() + 1));
+                }
+            }
+            auto *dlg = new GenerateHashDigestDialog(algStr, text, this);
+            dlg->setAttribute(Qt::WA_DeleteOnClose);
+            dlg->show();
         });
         subHash->addAction(actGen);
 
@@ -1095,7 +1100,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
         subHash->addAction(actGenSel);
 
         subHash->addSeparator();
-        auto *actVerify = new QAction(tr("&Verify / Authenticity Validator..."), this);
+        auto *actVerify = new QAction(tr("&Verify / Hash Authenticity Validator..."), this);
         connect(actVerify, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
         subHash->addAction(actVerify);
 

@@ -289,6 +289,8 @@ qt_add_executable(SparkNotePad
 	dialogs/MkcertDialog.cpp
 	dialogs/HashIntegrityDialog.h
 	dialogs/HashIntegrityDialog.cpp
+	dialogs/GenerateHashDigestDialog.h
+	dialogs/GenerateHashDigestDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

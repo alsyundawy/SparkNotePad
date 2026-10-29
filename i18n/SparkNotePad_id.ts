@@ -3291,8 +3291,8 @@ Atau URL daring cadangan:
     <name>HashIntegrityDialog</name>
     <message>
         <location filename="../src/dialogs/HashIntegrityDialog.cpp" line="29" />
-        <source>Cryptographic Hash &amp; Integrity Validator</source>
-        <translation>Validator Hash Kriptografi &amp; Integritas</translation>
+        <source>Hash &amp; Authenticity Validator</source>
+        <translation>Validator Hash &amp; Keaslian</translation>
     </message>
     <message>
         <location filename="../src/dialogs/HashIntegrityDialog.cpp" line="37" />
@@ -6011,9 +6011,9 @@ Atau URL daring cadangan:
         <translation>Tidak dapat membuka berkas: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="1005" />
-        <source>Cryptographic &amp;Hash &amp;&amp; Authenticity Validator...</source>
-        <translation>Validator &amp;Hash Kriptografi &amp;&amp; Keaslian...</translation>
+        <location filename="../src/dialogs/MainWindow.cpp" line="1018" />
+        <source>&amp;Hash &amp;&amp; Authenticity Validator...</source>
+        <translation>Validator &amp;Hash &amp;&amp; Keaslian...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1009" />
@@ -6026,9 +6026,9 @@ Atau URL daring cadangan:
         <translation>&amp;Hash</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="1029" />
-        <source>&amp;Generate</source>
-        <translation>&amp;Buat</translation>
+        <location filename="../src/dialogs/MainWindow.cpp" line="1047" />
+        <source>&amp;Generate...</source>
+        <translation>&amp;Buat...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1038" />
@@ -6071,9 +6071,9 @@ Atau URL daring cadangan:
         <translation>Hash %1 dari seleksi disalin: %2</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="1083" />
-        <source>&amp;Verify / Authenticity Validator...</source>
-        <translation>&amp;Verifikasi / Validator Keaslian...</translation>
+        <location filename="../src/dialogs/MainWindow.cpp" line="1103" />
+        <source>&amp;Verify / Hash Authenticity Validator...</source>
+        <translation>&amp;Verifikasi / Validator Hash &amp; Keaslian...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1094" />
@@ -8783,6 +8783,44 @@ Kunci: %2</translation>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="710" />
         <source>Close</source>
         <translation>Tutup</translation>
+    </message>
+</context>
+<context>
+    <name>GenerateHashDigestDialog</name>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="195" />
+        <source>Generate %1 digest</source>
+        <translation>Buat digest %1</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="205" />
+        <source>Treat each line as a &amp;separate string</source>
+        <translation>Perlakukan setiap baris sebagai string &amp;terpisah</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="212" />
+        <source>Enter text or paste here to generate digest...</source>
+        <translation>Masukkan teks atau tempel di sini untuk membuat digest...</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="220" />
+        <source>Computed hash digest will appear here...</source>
+        <translation>Hasil digest hash akan muncul di sini...</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="226" />
+        <source>&amp;Copy to Clipboard</source>
+        <translation>&amp;Salin ke Papan Klip</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="233" />
+        <source>&amp;Close</source>
+        <translation>&amp;Tutup</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/GenerateHashDigestDialog.cpp" line="285" />
+        <source>✓ Copied!</source>
+        <translation>✓ Tersalin!</translation>
     </message>
 </context>
 </TS>

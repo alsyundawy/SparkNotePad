@@ -429,8 +429,8 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 
 - **Menu Utama Tingkat Atas `Tools` (Gaya Notepad++)**:
   - Menu `Tools` tingkat atas baru terintegrasi di antara menu Tampilan (View) dan Pengaturan (Settings) dengan dukungan penuh ikon vektor.
-  - **Submenu Hash**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, masing-masing dilengkapi aksi Hasilkan (Generate dokumen aktif), Hasilkan Dari Berkas (Generate From File), Hasilkan Dari Pilihan (Generate From Selection), dan Verifikasi (Verify).
-  - **Validator Integritas Hash & Otentisitas Kriptografis**: Peluncur langsung mandiri untuk validasi streaming hash dokumen (`HashIntegrityDialog`) mendukung SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, dan MD5.
+  - **Submenu Hash**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, masing-masing dilengkapi aksi `Generate...` (modal interaktif gaya Notepad++ untuk komputasi hash real-time dan opsi pemrosesan per baris), Hasilkan Dari Berkas (Generate From File), Hasilkan Dari Pilihan (Generate From Selection), dan Verifikasi / Validator Hash & Otentisitas.
+  - **Validator Hash & Otentisitas**: Peluncur langsung mandiri untuk validasi streaming hash dokumen (`HashIntegrityDialog`) mendukung SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, dan MD5 (penamaan lebih ringkas dan ergonomis).
   - **Submenu MIME Tools**: Enkode/Dekode Base64, Enkode/Dekode URL, Enkode Quoted-Printable.
   - **Submenu Konverter (Converter)**: Konversi dua arah ASCII <-> HEX dan Desimal <-> HEX.
   - **Relokasi Enkripsi AES-256**: Dipindahkan dari menu Berkas ke dalam menu Tools agar struktur menu lebih rapi dan intuitif.

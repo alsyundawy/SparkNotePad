@@ -429,8 +429,8 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 
 - **Notepad++ Style Top-Level `Tools` Menu Suite**:
   - Integrated top-level Tools menu located between View and Settings menus with complete vector icon support.
-  - **Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, each equipped with Generate (active document), Generate From File, Generate From Selection, and Verify actions.
-  - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation (`HashIntegrityDialog`) supporting SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, and MD5.
+  - **Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, each equipped with `Generate...` (Notepad++ style interactive digest modal with real-time computation and per-line string hashing), Generate From File, Generate From Selection, and Verify / Hash Authenticity Validator actions.
+  - **Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation (`HashIntegrityDialog`) supporting SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, and MD5 (streamlined rename for optimal menubar ergonomics).
   - **MIME Tools Submenu**: Base64 Encode/Decode, URL Encode/Decode, Quoted-Printable Encode.
   - **Converter Submenu**: Bidirectional ASCII <-> HEX and Decimal <-> HEX conversion.
   - **Relocated AES-256 Encryption**: Migrated from File menu into Tools for cleaner organization.
