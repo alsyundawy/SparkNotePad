@@ -74,6 +74,9 @@ private:
 
         if (ev->type() == QEvent::Show || ev->type() == QEvent::Polish) {
             if (auto *menu = qobject_cast<QMenu *>(obj); menu != nullptr) {
+                if (auto *act = menu->menuAction()) {
+                    act->setIconVisibleInMenu(true);
+                }
                 for (auto *act : menu->actions()) {
                     act->setIconVisibleInMenu(true);
                 }

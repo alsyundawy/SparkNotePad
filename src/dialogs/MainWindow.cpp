@@ -3565,28 +3565,22 @@ void MainWindow::initUpdateCheck() {
 void MainWindow::ensureMenuIconsVisible(QWidget *root) {
     QWidget *target = root ? root : this;
     for (auto *action : target->findChildren<QAction *>()) {
-        if (!action->icon().isNull()) {
+        action->setIconVisibleInMenu(true);
+    }
+    for (auto *menu : target->findChildren<QMenu *>()) {
+        if (auto *act = menu->menuAction()) {
+            act->setIconVisibleInMenu(true);
+        }
+        for (auto *action : menu->actions()) {
             action->setIconVisibleInMenu(true);
         }
     }
-    for (auto *menu : target->findChildren<QMenu *>()) {
-        if (auto *act = menu->menuAction(); act && !act->icon().isNull()) {
-            act->setIconVisibleInMenu(true);
-        }
-        for (auto *action : menu->actions()) {
-            if (!action->icon().isNull()) {
-                action->setIconVisibleInMenu(true);
-            }
-        }
-    }
     if (const auto *menu = qobject_cast<const QMenu *>(target)) {
-        if (auto *act = menu->menuAction(); act && !act->icon().isNull()) {
+        if (auto *act = menu->menuAction()) {
             act->setIconVisibleInMenu(true);
         }
         for (auto *action : menu->actions()) {
-            if (!action->icon().isNull()) {
-                action->setIconVisibleInMenu(true);
-            }
+            action->setIconVisibleInMenu(true);
         }
     }
 }
