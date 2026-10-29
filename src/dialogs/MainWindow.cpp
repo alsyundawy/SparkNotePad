@@ -23,6 +23,10 @@
 
 #include <QtGlobal>
 #include "MainWindow.h"
+
+#ifndef APP_VERSION
+#define APP_VERSION "1.3.7"
+#endif
 #include "CommandPaletteDialog.h"
 #include "DocumentStatisticsDialog.h"
 #include "FileDiffDialog.h"
@@ -2079,10 +2083,61 @@ ScintillaNext *MainWindow::getInitialEditor() const {
     return Q_NULLPTR;
 }
 
+ScintillaNext *MainWindow::openOrDecryptFile(const QString &filePath) {
+    const QFileInfo fileInfo(filePath);
+    if (!fileInfo.isFile()) {
+        const QString prompt = tr("<b>%1</b> does not exist. Do you want to create it?").arg(filePath);
+        if (ModernMessageBox::question(this, tr("Create File"), prompt)) {
+            return app->getEditorManager()->createEditorFromFile(filePath, true);
+        }
+        app->getRecentFilesListManager()->removeFile(filePath);
+        return nullptr;
+    }
+
+    if (!CryptoManager::isEncryptedFile(filePath)) {
+        return app->getEditorManager()->createEditorFromFile(filePath);
+    }
+
+    DecryptDialog dlg(this, fileInfo.fileName());
+    while (dlg.exec() == QDialog::Accepted) {
+        const QString pass = dlg.passphrase();
+        QFile encFile(filePath);
+        if (!encFile.open(QIODevice::ReadOnly)) {
+            dlg.setErrorMessage(tr("Cannot open file: %1").arg(encFile.errorString()));
+            continue;
+        }
+        const QByteArray cipherData = encFile.readAll();
+        encFile.close();
+
+        const CryptoManager::CryptoResult decRes = CryptoManager::decrypt(cipherData, pass);
+        if (!decRes.success) {
+            dlg.setErrorMessage(decRes.errorMessage);
+            continue;
+        }
+
+        ScintillaNext *editor = app->getEditorManager()->createEditorFromFile(filePath);
+        if (editor) {
+            editor->clearAll();
+            editor->setUndoCollection(false);
+            editor->appendText(decRes.data.size(), decRes.data.constData());
+            editor->setUndoCollection(true);
+            editor->setSavePoint();
+            editor->QObject::setProperty("IsEncrypted", true);
+            editor->QObject::setProperty("EncryptionPassword", pass);
+            ui->statusBar->showMessage(tr("Unlocked encrypted file \"%1\" (AES-256)").arg(fileInfo.fileName()), 4000);
+            return editor;
+        }
+        break;
+    }
+
+    app->getRecentFilesListManager()->removeFile(filePath);
+    return nullptr;
+}
+
 void MainWindow::openFileList(const QStringList &fileNames) {
     qInfo(Q_FUNC_INFO);
 
-    if (fileNames.size() == 0)
+    if (fileNames.isEmpty())
         return;
 
     QList<ScintillaNext *> openedEditors;
@@ -2094,64 +2149,8 @@ void MainWindow::openFileList(const QStringList &fileNames) {
         // Search currently open editors to see if it is already open
         ScintillaNext *editor = app->getEditorManager()->getEditorByFilePath(filePath);
 
-        if (editor == Q_NULLPTR) {
-            QFileInfo fileInfo(filePath);
-
-            if (!fileInfo.isFile()) {
-                if (ModernMessageBox::question(
-                        this, tr("Create File"),
-                        tr("<b>%1</b> does not exist. Do you want to create it?").arg(filePath))) {
-                    editor = app->getEditorManager()->createEditorFromFile(filePath, true);
-                } else {
-                    // Make sure it is not still in the recent files list still.
-                    // Normally when a file is opened it is removed from the file list,
-                    // but if a user doesn't want to create the file, remove it explicitly.
-                    app->getRecentFilesListManager()->removeFile(filePath);
-                    continue;
-                }
-            } else {
-                if (CryptoManager::isEncryptedFile(filePath)) {
-                    DecryptDialog dlg(this, fileInfo.fileName());
-                    bool decryptedSuccess = false;
-                    while (dlg.exec() == QDialog::Accepted) {
-                        QString pass = dlg.passphrase();
-                        QFile encFile(filePath);
-                        if (!encFile.open(QIODevice::ReadOnly)) {
-                            dlg.setErrorMessage(tr("Cannot open file: %1").arg(encFile.errorString()));
-                            continue;
-                        }
-                        QByteArray cipherData = encFile.readAll();
-                        encFile.close();
-
-                        CryptoManager::CryptoResult decRes = CryptoManager::decrypt(cipherData, pass);
-                        if (!decRes.success) {
-                            dlg.setErrorMessage(decRes.errorMessage);
-                            continue;
-                        }
-
-                        editor = app->getEditorManager()->createEditorFromFile(filePath);
-                        if (editor) {
-                            editor->clearAll();
-                            editor->setUndoCollection(false);
-                            editor->appendText(decRes.data.size(), decRes.data.constData());
-                            editor->setUndoCollection(true);
-                            editor->setSavePoint();
-                            editor->QObject::setProperty("IsEncrypted", true);
-                            editor->QObject::setProperty("EncryptionPassword", pass);
-                            ui->statusBar->showMessage(
-                                tr("Unlocked encrypted file \"%1\" (AES-256)").arg(fileInfo.fileName()), 4000);
-                            decryptedSuccess = true;
-                        }
-                        break;
-                    }
-                    if (!decryptedSuccess) {
-                        app->getRecentFilesListManager()->removeFile(filePath);
-                        continue;
-                    }
-                } else {
-                    editor = app->getEditorManager()->createEditorFromFile(filePath);
-                }
-            }
+        if (!editor) {
+            editor = openOrDecryptFile(filePath);
         }
 
         if (editor) {
@@ -3658,18 +3657,18 @@ void MainWindow::dropEvent(QDropEvent *event) {
             if (!url.isLocalFile()) {
                 continue;
             }
-            QFileInfo info(url.toLocalFile());
+            const QFileInfo info(url.toLocalFile());
             if (!info.exists()) {
                 continue;
             }
-            if (info.isDir()) {
-                QDirIterator it(url.toLocalFile(), QDir::Files,
-                                QDirIterator::FollowSymlinks | QDirIterator::Subdirectories);
-                while (it.hasNext()) {
-                    fileNames << it.next();
-                }
-            } else {
+            if (!info.isDir()) {
                 fileNames.append(url.toLocalFile());
+                continue;
+            }
+            QDirIterator it(url.toLocalFile(), QDir::Files,
+                            QDirIterator::FollowSymlinks | QDirIterator::Subdirectories);
+            while (it.hasNext()) {
+                fileNames << it.next();
             }
         }
 
@@ -4528,7 +4527,7 @@ void MainWindow::showFileDiffDialog(const QString &filePathA, const QString &fil
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     if (!filePathA.isEmpty()) {
         dialog->setInitialFiles(filePathA, filePathB);
-    } else if (auto *ed = currentEditor()) {
+    } else if (const auto *ed = currentEditor()) {
         dialog->setInitialFiles(ed->getFilePath());
     }
     dialog->show();

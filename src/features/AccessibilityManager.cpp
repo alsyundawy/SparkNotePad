@@ -27,8 +27,6 @@ AccessibilityManager *AccessibilityManager::instance() {
 
 AccessibilityManager::AccessibilityManager(QObject *parent) : QObject(parent) {}
 
-AccessibilityManager::~AccessibilityManager() {}
-
 void AccessibilityManager::setupAccessibility(MainWindow *window) {
     m_window = window;
     if (!window)
@@ -37,25 +35,27 @@ void AccessibilityManager::setupAccessibility(MainWindow *window) {
     window->setAccessibleName(tr("SparkNotePad Main Window"));
     window->setAccessibleDescription(tr("Primary editing workspace with tabbed documents, toolbars, and status bar."));
 
-    QList<QToolBar *> toolBars = window->findChildren<QToolBar *>();
+    const QList<QToolBar *> toolBars = window->findChildren<QToolBar *>();
     for (QToolBar *tb : toolBars) {
         tb->setAttribute(Qt::WA_AlwaysShowToolTips, true);
         tb->setAccessibleName(tb->windowTitle());
         for (QAction *act : tb->actions()) {
-            if (!act->text().isEmpty()) {
-                QWidget *w = tb->widgetForAction(act);
-                if (w) {
-                    w->setAttribute(Qt::WA_AlwaysShowToolTips, true);
-                    w->setToolTip(act->toolTip());
-                    w->setAccessibleName(act->text().remove('&'));
-                    w->setAccessibleDescription(act->toolTip());
-                }
+            if (act->text().isEmpty()) {
+                continue;
             }
+            QWidget *w = tb->widgetForAction(act);
+            if (!w) {
+                continue;
+            }
+            w->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+            w->setToolTip(act->toolTip());
+            w->setAccessibleName(act->text().remove('&'));
+            w->setAccessibleDescription(act->toolTip());
         }
     }
 }
 
-void AccessibilityManager::announce(QWidget *context, const QString &message) {
+void AccessibilityManager::announce(QWidget *context, const QString &message) const {
     if (message.isEmpty())
         return;
 
@@ -74,12 +74,12 @@ void AccessibilityManager::announce(QWidget *context, const QString &message) {
 #endif
 }
 
-void AccessibilityManager::announceDocumentState(ScintillaNext *editor, int index, int total) {
+void AccessibilityManager::announceDocumentState(ScintillaNext *editor, int index, int total) const {
     if (!editor)
         return;
 
-    QString dirty = editor->isSavedToDisk() ? QString() : tr(" (unsaved)");
-    QString msg = tr("Document %1 of %2: %3%4").arg(index + 1).arg(total).arg(editor->getName()).arg(dirty);
+    const QString dirty = editor->isSavedToDisk() ? QString() : tr(" (unsaved)");
+    const QString msg = tr("Document %1 of %2: %3%4").arg(index + 1).arg(total).arg(editor->getName()).arg(dirty);
 
     editor->setAccessibleName(tr("Editor: %1").arg(editor->getName()));
     editor->setAccessibleDescription(
@@ -88,7 +88,7 @@ void AccessibilityManager::announceDocumentState(ScintillaNext *editor, int inde
     announce(editor, msg);
 }
 
-void AccessibilityManager::openAccessibilityHelp(QWidget *parent) {
+void AccessibilityManager::openAccessibilityHelp(QWidget *parent) const {
     AccessibilityHelpDialog dlg(parent);
     dlg.exec();
 }

@@ -52,6 +52,28 @@
 #include <Windows.h>
 #endif
 
+#ifndef APP_DISTRIBUTION
+#define APP_DISTRIBUTION ""
+#endif
+
+namespace {
+class ToolTipTranslucentFilter final : public QObject {
+public:
+    explicit ToolTipTranslucentFilter(QObject *parent = nullptr) : QObject(parent) {}
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *ev) override {
+        if (ev->type() == QEvent::Show) {
+            if (auto *w = qobject_cast<QWidget *>(obj)) {
+                if (w->windowFlags() & Qt::ToolTip) {
+                    w->setAttribute(Qt::WA_TranslucentBackground, true);
+                }
+            }
+        }
+        return false;
+    }
+};
+}  // namespace
 
 const SingleApplication::Options opts =
     SingleApplication::ExcludeAppPath | SingleApplication::ExcludeAppVersion | SingleApplication::SecondaryNotification;
@@ -141,6 +163,8 @@ bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
     editorManager = new EditorManager(settings, this);
     sessionManager = new SessionManager(this);
 
+    installEventFilter(new ToolTipTranslucentFilter(this));
+
     connect(editorManager, &EditorManager::editorCreated, recentFilesListManager, [this](const ScintillaNext *editor) {
         if (editor->isFile()) {
             recentFilesListManager->removeFile(editor->getFilePath());
@@ -163,8 +187,7 @@ bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
     mad->setEnabled(true);
 
     luaState->executeFile(":/scripts/init.lua");
-    LuaExtension::Instance().Initialise(luaState->L, Q_NULLPTR);
-
+    LuaExtension::Initialise(luaState->L, Q_NULLPTR);
 
     createNewWindow();
     connect(editorManager, &EditorManager::editorCreated, window, &MainWindow::addEditor);
@@ -283,7 +306,7 @@ QStringList SparkNotePadApplication::getLanguages() const {
 }
 
 void SparkNotePadApplication::setEditorLanguage(ScintillaNext *editor, const QString &languageName) const {
-    LuaExtension::Instance().setEditor(editor);
+    LuaExtension::setEditor(editor);
 
     getLuaState()->setVariable("languageName", languageName);
     const QString lexer = getLuaState()->executeAndReturn<QString>("return languages[languageName].lexer");
@@ -359,7 +382,7 @@ QString SparkNotePadApplication::detectLanguageFromExtension(const QString &exte
 QString SparkNotePadApplication::detectLanguageFromContents(ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
-    LuaExtension::Instance().setEditor(editor);
+    LuaExtension::setEditor(editor);
 
     return getLuaState()->executeAndReturn<QString>(R"(
     -- Grab a small chunk
@@ -499,7 +522,7 @@ MainWindow *SparkNotePadApplication::createNewWindow() {
     });
 
     connect(window.data(), &MainWindow::editorActivated, this,
-            [](ScintillaNext *editor) { LuaExtension::Instance().setEditor(editor); });
+            [](ScintillaNext *editor) { LuaExtension::setEditor(editor); });
 
     connect(window.data(), &MainWindow::aboutToClose, this, &SparkNotePadApplication::saveSession);
 

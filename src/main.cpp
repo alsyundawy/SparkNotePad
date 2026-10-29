@@ -28,8 +28,15 @@
 #include <QFont>
 #include <QDataStream>
 #include <QDateTime>
+#include <vector>
+#include <string_view>
+#include <algorithm>
 
 #include "SparkNotePadApplication.h"
+
+#ifndef APP_VERSION
+#define APP_VERSION "1.3.7"
+#endif
 
 int main(int argc, char *argv[]) {
     qSetMessagePattern(
@@ -37,16 +44,10 @@ int main(int argc, char *argv[]) {
         "%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: "
         "%{message}");
 
-    auto checkMultiInstance = [argc, argv]() {
-        for (int i = 1; i < argc; ++i) {
-            if (qstrcmp(argv[i], "--multi-instance") == 0 || qstrcmp(argv[i], "--new-window") == 0 ||
-                qstrcmp(argv[i], "-m") == 0) {
-                return true;
-            }
-        }
-        return false;
-    };
-    bool isMultiInstance = checkMultiInstance();
+    const std::vector<std::string_view> argList(argv + 1, argv + argc);
+    const bool isMultiInstance = std::ranges::any_of(argList, [](std::string_view arg) {
+        return arg == "--multi-instance" || arg == "--new-window" || arg == "-m";
+    });
 
     // Set these since other parts of the app references these
     QApplication::setOrganizationName("SparkNotePad");

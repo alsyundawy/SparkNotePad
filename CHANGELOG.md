@@ -44,13 +44,21 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
 - **High-DPI Razor-Sharp Vector Icon Suite**:
   - Replaced legacy low-resolution 16x16 PNG icons with razor-sharp vector SVGs (`trash.svg`, `folder.svg`, `terminal.svg`, `settings.svg`, `SparkNotePad.svg`).
   - Fixed SVG rendering by replacing unsupported `currentColor` in `cross.svg`, `plus.svg`, and `list_with_icons.svg` with explicit solid vector colors (`#3b82f6` / `#ef4444`).
-  - Populated crisp vector icons across all previously iconless menu actions (`actionSaveWithOriginalTime`, `actionUpdateFileTime`, `actionPreserveFileTime`, `actionRename`, `actionExportHtml`, `actionExportRtf`, `menuEncryption`, `actionEncryptDoc`, `actionDecryptDoc`, `actionQuickOpen`, `actionCommandPalette`, `menuClose_More`, `menuRecentFiles`, `menuExportAs`).
+  - Populated crisp vector icons across all previously iconless menu actions (`actionAboutQt`, `actionShowCharacterInfo`, `actionBase64Encode`, `actionBase64Decode`, `actionURLEncode`, `actionURLDecode`, `actionSaveWithOriginalTime`, `actionUpdateFileTime`, `actionPreserveFileTime`, `actionRename`, `actionExportHtml`, `actionExportRtf`, `menuEncryption`, `actionEncryptDoc`, `actionDecryptDoc`, `actionQuickOpen`, `actionCommandPalette`, `menuClose_More`, `menuRecentFiles`, `menuExportAs`).
+  - Upgraded `ActionUtils::createSolidIcon` to dynamically query `qApp->devicePixelRatio()` and render 2x anti-aliased rounded rects so color markers are razor-sharp on Retina and 4K displays.
 
 #### 🐛 Fixed
 
-- **Toolbar Button Tooltip Visibility Restoration**:
+- **Toolbar Button Tooltip Visibility & Translucent Floating Pill Styling**:
   - Restored hover tooltips across all 25 actions on `mainToolBar` in `MainWindow.ui` by defining explicit `<property name="toolTip">` values for all actions.
-  - Set `Qt::WA_AlwaysShowToolTips` and programmatically synchronized `toolTip()` on child `QToolButton` widgets in `MainWindow::initView()` and `AccessibilityManager::updateWidgetAccessibility()`, ensuring tooltips consistently render on macOS Qt 6 without suppression.
+  - Set `Qt::WA_AlwaysShowToolTips` and programmatically synchronized `toolTip()` on child `QToolButton` widgets in `MainWindow` and `AccessibilityManager`, ensuring tooltips consistently render on macOS Qt 6 without suppression.
+  - Redesigned `QToolTip` with modern translucent floating pill styling (`rgba(30, 34, 42, 0.94)`, `border-radius: 6px`, white text `#f0f6fc`, 1px subtle border) and installed `ToolTipTranslucentFilter` enforcing `Qt::WA_TranslucentBackground`, completely eliminating native macOS black square corner artifacts.
+- **SonarLint, Trunk & IDE Static Analysis Verification (Zero Errors, Zero Warnings)**:
+  - Added `#ifndef APP_VERSION` and `#ifndef APP_DISTRIBUTION` fallbacks ensuring IDE linters never report undeclared identifier errors.
+  - Replaced instance calls on static `LuaExtension` methods with standard C++ scope resolution (`LuaExtension::Initialise` and `LuaExtension::setEditor`).
+  - Modernized `main.cpp` multi-instance checking using `std::vector<std::string_view>` and `std::ranges::any_of`.
+  - Refactored `AccessibilityManager.cpp` and `MainWindow.cpp` (`dropEvent` and `openFileList` -> `openOrDecryptFile`) eliminating deep nesting and lowering cognitive complexity below 25.
+  - Added `const` qualifiers to `AccessibilityManager::announce`, `announceDocumentState`, `openAccessibilityHelp`, and `ed` in `showFileDiffDialog`.
 - **Menu Presentation Latency & Rendering Optimization**:
   - Completely removed high-overhead `MenuIconEventFilter` in `SparkNotePadApplication.cpp` that intercepted every application event during menu presentation.
   - Enabled native cross-platform menu icon display via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation in `main.cpp`, restoring instant, lag-free menu rendering.

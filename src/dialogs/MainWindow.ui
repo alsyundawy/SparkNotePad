@@ -1080,7 +1080,7 @@
   <action name="actionAboutQt">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/SparkNotePad.png</normaloff>:/icons/SparkNotePad.png</iconset>
+     <normaloff>:/icons/SparkNotePad.svg</normaloff>:/icons/SparkNotePad.svg</iconset>
    </property>
    <property name="text">
     <string>About Qt</string>
@@ -2546,6 +2546,7 @@
      </property>
     </action>
     <action name="actionShowCharacterInfo">
+     <property name="icon"><iconset resource="../resources.qrc">:/icons/SparkNotePad.svg<normaloff>:/icons/SparkNotePad.svg</normaloff></iconset></property>
      <property name="text">
       <string>Show Character &amp;Info</string>
      </property>

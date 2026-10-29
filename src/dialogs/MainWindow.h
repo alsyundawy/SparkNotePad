@@ -218,6 +218,7 @@ private:
     void initUpdateCheck();
     ScintillaNext *getInitialEditor() const;
     void openFileList(const QStringList &fileNames);
+    ScintillaNext *openOrDecryptFile(const QString &filePath);
     bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorList);
     bool checkFileForModification(ScintillaNext *editor);
     void showSaveErrorMessage(const ScintillaNext *editor, QFileDevice::FileError error);

@@ -51,15 +51,20 @@ void populateActionContainer(Container* container, QObject* context, const QStri
     }
 }
 
-QIcon createSolidIcon(QColor color) {
-    int iconSize = qApp->style()->pixelMetric(QStyle::PM_SmallIconSize);
+inline QIcon createSolidIcon(QColor color) {
+    constexpr int iconSize = 16;
+    const qreal dpr = qApp ? qApp->devicePixelRatio() : 2.0;
+    const int physSize = static_cast<int>(iconSize * dpr);
 
-    QPixmap pixmap(iconSize, iconSize);
-    pixmap.fill(color);
+    QPixmap pixmap(physSize, physSize);
+    pixmap.setDevicePixelRatio(dpr);
+    pixmap.fill(Qt::transparent);
 
     QPainter painter(&pixmap);
-    painter.setPen(Qt::black);                           // 1-pixel black pen by default
-    painter.drawRect(0, 0, iconSize - 1, iconSize - 1);  // draw border inside the pixmap
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setBrush(color);
+    painter.setPen(QPen(QColor(0, 0, 0, 90), 1.0));
+    painter.drawRoundedRect(QRectF(1.0, 1.0, iconSize - 2.0, iconSize - 2.0), 3.0, 3.0);
     painter.end();
 
     return QIcon(pixmap);
