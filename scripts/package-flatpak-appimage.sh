@@ -18,9 +18,10 @@ if [[ $# -eq 0 || $* == *"--all"* ]]; then
 	BUILD_APPIMAGE=true
 else
 	for arg in "$@"; do
-		case "$arg" in
+		case "${arg}" in
 		--flatpak) BUILD_FLATPAK=true ;;
 		--appimage) BUILD_APPIMAGE=true ;;
+		*) ;;
 		esac
 	done
 fi

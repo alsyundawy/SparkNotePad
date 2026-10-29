@@ -14,13 +14,13 @@ VERSION_TAG="${1:-}"
 DRY_RUN=false
 
 for arg in "$@"; do
-	case "$arg" in
+	case "${arg}" in
 	--dry-run)
 		DRY_RUN=true
 		;;
 	*)
-		if [[ -z ${VERSION_TAG} && $arg != --* ]]; then
-			VERSION_TAG="$arg"
+		if [[ -z ${VERSION_TAG} && ${arg} != --* ]]; then
+			VERSION_TAG="${arg}"
 		fi
 		;;
 	esac
@@ -40,7 +40,8 @@ echo ""
 # 1. Verify Git Status
 echo "[1/5] Checking git status..."
 if [[ ${DRY_RUN} == "false" ]]; then
-	if [[ -n "$(git status --porcelain)" ]]; then
+	GIT_STATUS_PORCELAIN="$(git status --porcelain 2>/dev/null)" || true
+	if [[ -n ${GIT_STATUS_PORCELAIN} ]]; then
 		echo "[WARN] Working tree contains uncommitted changes. Staging and verifying..."
 	else
 		echo "[OK] Working tree clean."
@@ -73,12 +74,14 @@ fi
 # 4. Generate SHA256SUMS
 echo "[4/5] Generating cryptographic checksums (SHA256SUMS)..."
 CHECKSUM_FILE="${RELEASE_DIR}/SHA256SUMS"
-if [[ -d ${RELEASE_DIR} && "$(ls -A "${RELEASE_DIR}" 2>/dev/null)" ]]; then
+RELEASE_CONTENT="$(ls -A "${RELEASE_DIR}" 2>/dev/null)" || true
+if [[ -d ${RELEASE_DIR} && -n ${RELEASE_CONTENT} ]]; then
 	(cd "${RELEASE_DIR}" && shasum -a 256 ./* >"${CHECKSUM_FILE}" 2>/dev/null || sha256sum ./* >"${CHECKSUM_FILE}" 2>/dev/null || true)
 	echo "[OK] Generated ${CHECKSUM_FILE}"
 else
+	DATE_STAMP="$(date -u)" || true
 	echo "# SparkNotePad Release Checksums" >"${CHECKSUM_FILE}"
-	echo "# Generated at: $(date -u)" >>"${CHECKSUM_FILE}"
+	echo "# Generated at: ${DATE_STAMP}" >>"${CHECKSUM_FILE}"
 fi
 
 # 5. Generate Release Notes Draft

@@ -8,9 +8,9 @@ Di FreeBSD, SparkNotePad berjalan sebagai aplikasi ELF native murni tanpa lapisa
 
 ### Karakteristik Utama Portabilitas FreeBSD
 
-* **In-Tree Vendored Engine**: Scintilla, Lexilla, Lua, dan uchardet di-vendor langsung di dalam repositori (`thirdparty/`), memastikan konsistensi build dan kompatibilitas 100% dengan toolchain Clang di FreeBSD.
-* **Native Qt 6 Integration**: Memanfaatkan port resmi `devel/qt6-base` dan `devel/qt6-5compat` yang dipelihara oleh tim `kde@FreeBSD.org`.
-* **Zero Linux-Kernel Coupling**: Menggunakan POSIX APIs standar, threads native (`libthr`), dan protokol display X11/Wayland melalui Qt6 GUI sub-framework.
+- **In-Tree Vendored Engine**: Scintilla, Lexilla, Lua, dan uchardet di-vendor langsung di dalam repositori (`thirdparty/`), memastikan konsistensi build dan kompatibilitas 100% dengan toolchain Clang di FreeBSD.
+- **Native Qt 6 Integration**: Memanfaatkan port resmi `devel/qt6-base` dan `devel/qt6-5compat` yang dipelihara oleh tim `kde@FreeBSD.org`.
+- **Zero Linux-Kernel Coupling**: Menggunakan POSIX APIs standar, threads native (`libthr`), dan protokol display X11/Wayland melalui Qt6 GUI sub-framework.
 
 ---
 
@@ -30,19 +30,19 @@ sudo pkg install -y drm-kmod
 
 Tambahkan driver yang sesuai ke `/etc/rc.conf`:
 
-* **Intel HD/UHD/Iris Graphics**:
+- **Intel HD/UHD/Iris Graphics**:
 
   ```bash
   sudo sysrc kld_list+="i915kms"
   ```
 
-* **AMD Radeon / Radeon RX**:
+- **AMD Radeon / Radeon RX**:
 
   ```bash
   sudo sysrc kld_list+="amdgpu"
   ```
 
-* **NVIDIA GeForce**:
+- **NVIDIA GeForce**:
 
   ```bash
   sudo pkg install -y nvidia-driver
@@ -117,17 +117,17 @@ sudo pkg install -y \
 
 ### Ringkasan Fungsi Paket
 
-| Paket FreeBSD | Deskripsi & Fungsi |
-| :--- | :--- |
-| `qt6` | Metapackage Qt 6 (umbrella package) memastikan seluruh modul dan plugin runtime lengkap |
-| `qt6-base` | Pustaka inti: `QtCore`, `QtGui`, `QtWidgets`, `QtNetwork`, `QtPrintSupport`, `QtTest` |
-| `qt6-5compat` | Modul `Core5Compat` untuk API utilitas teks dan encoding |
-| `qt6-tools` | Utility developer Qt6 (`lupdate`, `lrelease`, `qmake`) |
-| `cmake` + `ninja` | Sistem build modern dengan generator paralel berkecepatan tinggi |
-| `pkgconf` | Pencarian flag link dan dependensi pustaka C/C++ |
-| `uchardet` | Library deteksi charset/encoding dokumen |
-| `libxkbcommon` + `libxcb` | Integrasi keyboard layout dan X11 event handler |
-| `desktop-file-utils` | Utilitas `update-desktop-database` untuk registrasi menu aplikasi XDG |
+| Paket FreeBSD             | Deskripsi & Fungsi                                                                      |
+| :------------------------ | :-------------------------------------------------------------------------------------- |
+| `qt6`                     | Metapackage Qt 6 (umbrella package) memastikan seluruh modul dan plugin runtime lengkap |
+| `qt6-base`                | Pustaka inti: `QtCore`, `QtGui`, `QtWidgets`, `QtNetwork`, `QtPrintSupport`, `QtTest`   |
+| `qt6-5compat`             | Modul `Core5Compat` untuk API utilitas teks dan encoding                                |
+| `qt6-tools`               | Utility developer Qt6 (`lupdate`, `lrelease`, `qmake`)                                  |
+| `cmake` + `ninja`         | Sistem build modern dengan generator paralel berkecepatan tinggi                        |
+| `pkgconf`                 | Pencarian flag link dan dependensi pustaka C/C++                                        |
+| `uchardet`                | Library deteksi charset/encoding dokumen                                                |
+| `libxkbcommon` + `libxcb` | Integrasi keyboard layout dan X11 event handler                                         |
+| `desktop-file-utils`      | Utilitas `update-desktop-database` untuk registrasi menu aplikasi XDG                   |
 
 ---
 
@@ -196,10 +196,10 @@ sudo cmake --install build
 
 Perintah di atas akan menempatkan file sesuai standar XDG FreeBSD:
 
-* Executable: `/usr/local/bin/SparkNotePad`
-* Desktop Entry: `/usr/local/share/applications/SparkNotePad.desktop`
-* Aplikasi Icon: `/usr/local/share/icons/hicolor/scalable/apps/SparkNotePad.svg`
-* Mimetype Icon: `/usr/local/share/icons/hicolor/scalable/mimetypes/SparkNotePad.svg`
+- Executable: `/usr/local/bin/SparkNotePad`
+- Desktop Entry: `/usr/local/share/applications/SparkNotePad.desktop`
+- Aplikasi Icon: `/usr/local/share/icons/hicolor/scalable/apps/SparkNotePad.svg`
+- Mimetype Icon: `/usr/local/share/icons/hicolor/scalable/mimetypes/SparkNotePad.svg`
 
 ### 6.1 Refresh Cache Desktop & Icon
 
@@ -238,20 +238,20 @@ libxcb.so.1 => /usr/local/lib/libxcb.so.1
 
 #### Masalah 1: `file INSTALL cannot find ".../libqtadvanceddocking-qt6_static.a"`
 
-* **Penyebab**: Perintah `cmake --install build` dijalankan sebelum menjalankan `cmake --build build`, ATAU subproject ADS mencoba menginstal arsip statis internal ke sistem.
-* **Solusi**:
+- **Penyebab**: Perintah `cmake --install build` dijalankan sebelum menjalankan `cmake --build build`, ATAU subproject ADS mencoba menginstal arsip statis internal ke sistem.
+- **Solusi**:
   1. Pastikan Anda menjalankan `cmake --build build -j$(sysctl -n hw.ncpu)`.
   2. Pastikan file `thirdparty/CMakeLists.txt` menggunakan opsi `EXCLUDE_FROM_ALL YES` pada `CPMAddPackage` untuk mengisolasi instalasi vendor.
 
 #### Masalah 2: Sesi Wayland pada KDE Plasma 6 Menampilkan Layar Hitam / Glitch
 
-* **Penyebab**: Driver GPU tertentu di FreeBSD masih memiliki kendala KMS pada sesi Wayland native.
-* **Solusi**: Di layar login SDDM, ubah sesi dari *Plasma (Wayland)* menjadi **Plasma (X11)**.
+- **Penyebab**: Driver GPU tertentu di FreeBSD masih memiliki kendala KMS pada sesi Wayland native.
+- **Solusi**: Di layar login SDDM, ubah sesi dari _Plasma (Wayland)_ menjadi **Plasma (X11)**.
 
 #### Masalah 3: JavaScript Evaluator Tool Tidak Berjalan
 
-* **Penyebab**: SparkNotePad menyertakan bridge evaluator JavaScript yang menggunakan runtime eksternal di lingkungan Unix.
-* **Solusi**: Pasang engine JavaScript favorit Anda di FreeBSD:
+- **Penyebab**: SparkNotePad menyertakan bridge evaluator JavaScript yang menggunakan runtime eksternal di lingkungan Unix.
+- **Solusi**: Pasang engine JavaScript favorit Anda di FreeBSD:
 
   ```bash
   sudo pkg install -y node
@@ -261,8 +261,8 @@ libxcb.so.1 => /usr/local/lib/libxcb.so.1
 
 #### Masalah 4: Font Interface / Monospace Belum Terpasang
 
-* **Penyebab**: Font modern seperti JetBrains Mono atau Inter belum terpasang di sistem dasar FreeBSD.
-* **Solusi**: Pasang font developer pilihan:
+- **Penyebab**: Font modern seperti JetBrains Mono atau Inter belum terpasang di sistem dasar FreeBSD.
+- **Solusi**: Pasang font developer pilihan:
 
   ```bash
   sudo pkg install -y jetbrains-mono inter-fonts dejavu

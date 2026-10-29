@@ -3,13 +3,11 @@
 #include <QTest>
 #include "utils/CodeCompressPretty.h"
 
-class TestCodeCompressPretty : public QObject
-{
+class TestCodeCompressPretty : public QObject {
     Q_OBJECT
 
 private slots:
-    void testJsonMinifyPrettify()
-    {
+    void testJsonMinifyPrettify() {
         QString messy = "{   \"key\":   \"value\" ,  \"number\": 42 }";
         auto mini = CodeCompressPretty::compressJson(messy);
         QVERIFY(mini.success);
@@ -22,8 +20,7 @@ private slots:
         QVERIFY(pretty.formatted.contains("    \"key\""));
     }
 
-    void testCssMinify()
-    {
+    void testCssMinify() {
         QString css = "/* comment */ body { color: red; margin: 0px; }";
         auto mini = CodeCompressPretty::compressCss(css);
         QVERIFY(mini.success);
