@@ -51,6 +51,9 @@
   <a href="https://www.scintilla.org">
     <img src="https://img.shields.io/badge/⚙️_Engine_Heritage-Scintilla_&_Lexilla-orange?style=for-the-badge&logo=cplusplus&logoColor=white" alt="Scintilla Heritage">
   </a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/wiki">
+    <img src="https://img.shields.io/badge/📖_Documentation-GitHub_Wiki-6f42c1?style=for-the-badge&logo=gitbook&logoColor=white" alt="Official GitHub Wiki">
+  </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/issues">
     <img src="https://img.shields.io/badge/🐛_Report_Issue-GitHub_Issues-red?style=for-the-badge&logo=github&logoColor=white" alt="Report Issue">
   </a>
@@ -75,6 +78,7 @@
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
+> 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
 > 🍏 **[`Latest Releases (v1.3.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
@@ -161,6 +165,7 @@ A deliberate and conscious decision was made to establish SparkNotePad as an ind
 ## 🧭 Navigation
 
 - [Project Provenance, Architectural Heritage & Evolution](#-project-provenance-architectural-heritage--evolution)
+- [Official GitHub Wiki & Documentation Hub](#-official-github-wiki--documentation-hub)
 - [Overview & Value Proposition](#overview--value-proposition)
 - [Key Features & Capabilities Matrix](#key-features--capabilities-matrix)
 - [Curated 25 Developer Theme Families](#curated-25-developer-theme-families)
@@ -175,6 +180,25 @@ A deliberate and conscious decision was made to establish SparkNotePad as an ind
 - [📬 Maintainer & Contact](#-maintainer--contact)
 - [💖 Support & Donations](#-support--donations)
 - [License](#license)
+
+---
+
+## 📚 Official GitHub Wiki & Documentation Hub
+
+SparkNotePad features an extensive, production-grade bilingual knowledge base maintained directly on the **[Official GitHub Wiki](https://github.com/alsyundawy/SparkNotePad/wiki)**:
+
+| Chapter | English Documentation                                                                                                      | Panduan Bahasa Indonesia                                                                                                      | Focus & Scope                                  |
+| :-----: | :------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------- |
+| **01**  | [Welcome & Getting Started](https://github.com/alsyundawy/SparkNotePad/wiki/01-Welcome-and-Getting-Started)                | [Selamat Datang & Memulai](https://github.com/alsyundawy/SparkNotePad/wiki/01-Selamat-Datang-dan-Memulai)                     | First launch, layout, key concepts             |
+| **02**  | [Core Architecture & Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Core-Architecture-and-Scintilla-Engine) | [Arsitektur Inti & Engine Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Arsitektur-Inti-dan-Engine-Scintilla) | Scintilla 5.6.7, Lexilla 5.5.4, ISO C++20      |
+| **03**  | [Building & Installation Guide](https://github.com/alsyundawy/SparkNotePad/wiki/03-Building-and-Installation-Guide)        | [Panduan Kompilasi & Instalasi](https://github.com/alsyundawy/SparkNotePad/wiki/03-Panduan-Kompilasi-dan-Instalasi)           | macOS, Linux (DEB/RPM), FreeBSD 13–15          |
+| **04**  | [Themes & Visual System](https://github.com/alsyundawy/SparkNotePad/wiki/04-Developer-Themes-and-Visual-System)            | [Tema Developer & Sistem Visual](https://github.com/alsyundawy/SparkNotePad/wiki/04-Tema-Developer-dan-Sistem-Visual)         | 75 themes across 25 families (WCAG AAA)        |
+| **05**  | [Security Hardening & Zero-Trust](https://github.com/alsyundawy/SparkNotePad/wiki/05-Security-Hardening-and-Zero-Trust)    | [Penguatan Keamanan & Zero Trust](https://github.com/alsyundawy/SparkNotePad/wiki/05-Penguatan-Keamanan-dan-Zero-Trust)       | Lua sandbox, ReDoS guard, AES-256              |
+| **06**  | [Power Tools & MIME Utilities](https://github.com/alsyundawy/SparkNotePad/wiki/06-Power-Tools-and-MIME-Utilities)          | [Peralatan Khusus & Utilitas MIME](https://github.com/alsyundawy/SparkNotePad/wiki/06-Peralatan-Khusus-dan-Utilitas-MIME)     | 16-Action MIME, Hash, Diff, Hex, Converter     |
+| **07**  | [Multi-Platform Deployment](https://github.com/alsyundawy/SparkNotePad/wiki/07-Multi-Platform-Deployment-Matrix)           | [Matriks Deployment Multi-Platform](https://github.com/alsyundawy/SparkNotePad/wiki/07-Matriks-Deployment-Multi-Platform)     | Packaging, DMG notarization, Flatpak           |
+| **08**  | [FAQ & Troubleshooting](https://github.com/alsyundawy/SparkNotePad/wiki/08-FAQ-and-Troubleshooting)                        | [FAQ & Pemecahan Masalah](https://github.com/alsyundawy/SparkNotePad/wiki/08-FAQ-dan-Pemecahan-Masalah)                       | Common questions, solutions, logs              |
+| **09**  | [Project Provenance & Heritage](https://github.com/alsyundawy/SparkNotePad/wiki/09-Project-Provenance-and-Heritage)        | [Asal-Usul & Warisan Arsitektur](https://github.com/alsyundawy/SparkNotePad/wiki/09-Asal-Usul-dan-Warisan-Arsitektur)         | Baseline commit 4eabd12, evolution, credits    |
+| **10**  | [GPLv3 Compliance & Licensing](https://github.com/alsyundawy/SparkNotePad/wiki/10-GPLv3-Compliance-and-Licensing)          | [Kepatuhan Lisensi GPLv3](https://github.com/alsyundawy/SparkNotePad/wiki/10-Kepatuhan-Lisensi-GPLv3)                         | Legal analysis, copyright, distribution rights |
 
 ---
 

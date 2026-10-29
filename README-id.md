@@ -51,6 +51,9 @@
   <a href="https://www.scintilla.org">
     <img src="https://img.shields.io/badge/⚙️_Engine_Heritage-Scintilla_&_Lexilla-orange?style=for-the-badge&logo=cplusplus&logoColor=white" alt="Scintilla Heritage">
   </a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/wiki">
+    <img src="https://img.shields.io/badge/📖_Dokumentasi-GitHub_Wiki-6f42c1?style=for-the-badge&logo=gitbook&logoColor=white" alt="Dokumentasi Resmi GitHub Wiki">
+  </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/issues">
     <img src="https://img.shields.io/badge/🐛_Report_Issue-GitHub_Issues-red?style=for-the-badge&logo=github&logoColor=white" alt="Report Issue">
   </a>
@@ -75,6 +78,7 @@
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
+> 📚 **[`Dokumentasi Resmi GitHub Wiki (Bilingual EN/ID)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
 > 🍏 **[`Latest Releases (v1.3.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Matriks Dukungan Platform (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
@@ -161,6 +165,7 @@ Keputusan untuk membangun SparkNotePad sebagai proyek mandiri (_independent proj
 ## 🧭 Navigasi
 
 - [Asal-Usul Proyek, Warisan Arsitektur & Evolusi](#-asal-usul-proyek-warisan-arsitektur--evolusi)
+- [Dokumentasi Lengkap & GitHub Wiki](#-dokumentasi-lengkap--github-wiki)
 - [Ikhtisar & Nilai Keunggulan](#ikhtisar--nilai-keunggulan)
 - [Fitur Utama & Matriks Kapabilitas](#fitur-utama--matriks-kapabilitas)
 - [Koleksi 25 Rumpun Tema Pengembang](#koleksi-25-rumpun-tema-pengembang)
@@ -175,6 +180,25 @@ Keputusan untuk membangun SparkNotePad sebagai proyek mandiri (_independent proj
 - [📬 Maintainer & Contact](#-maintainer--contact)
 - [💖 Dukungan & Donasi](#-dukungan--donasi)
 - [Lisensi](#lisensi)
+
+---
+
+## 📚 Dokumentasi Lengkap & GitHub Wiki
+
+SparkNotePad menyediakan basis dokumentasi dan referensi arsitektur komprehensif dua bahasa (Indonesia & Inggris) yang dirawat langsung pada **[Official GitHub Wiki](https://github.com/alsyundawy/SparkNotePad/wiki)**:
+
+|  Bab   | Panduan Bahasa Indonesia                                                                                                      | Dokumentasi Bahasa Inggris                                                                                                 | Cakupan & Fokus                                 |
+| :----: | :---------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------- |
+| **01** | [Selamat Datang & Memulai](https://github.com/alsyundawy/SparkNotePad/wiki/01-Selamat-Datang-dan-Memulai)                     | [Welcome & Getting Started](https://github.com/alsyundawy/SparkNotePad/wiki/01-Welcome-and-Getting-Started)                | Peluncuran awal, tata letak, konsep dasar       |
+| **02** | [Arsitektur Inti & Engine Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Arsitektur-Inti-dan-Engine-Scintilla) | [Core Architecture & Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Core-Architecture-and-Scintilla-Engine) | Scintilla 5.6.7, Lexilla 5.5.4, ISO C++20       |
+| **03** | [Panduan Kompilasi & Instalasi](https://github.com/alsyundawy/SparkNotePad/wiki/03-Panduan-Kompilasi-dan-Instalasi)           | [Building & Installation Guide](https://github.com/alsyundawy/SparkNotePad/wiki/03-Building-and-Installation-Guide)        | macOS, Linux (DEB/RPM), FreeBSD 13–15           |
+| **04** | [Tema Developer & Sistem Visual](https://github.com/alsyundawy/SparkNotePad/wiki/04-Tema-Developer-dan-Sistem-Visual)         | [Themes & Visual System](https://github.com/alsyundawy/SparkNotePad/wiki/04-Developer-Themes-and-Visual-System)            | 75 tema dalam 25 rumpun (kontras WCAG AAA)      |
+| **05** | [Penguatan Keamanan & Zero Trust](https://github.com/alsyundawy/SparkNotePad/wiki/05-Penguatan-Keamanan-dan-Zero-Trust)       | [Security Hardening & Zero-Trust](https://github.com/alsyundawy/SparkNotePad/wiki/05-Security-Hardening-and-Zero-Trust)    | Sandbox Lua, mitigasi ReDoS, enkripsi AES-256   |
+| **06** | [Peralatan Khusus & Utilitas MIME](https://github.com/alsyundawy/SparkNotePad/wiki/06-Peralatan-Khusus-dan-Utilitas-MIME)     | [Power Tools & MIME Utilities](https://github.com/alsyundawy/SparkNotePad/wiki/06-Power-Tools-and-MIME-Utilities)          | 16-Aksi MIME, Hash, Diff, Hex, Konverter        |
+| **07** | [Matriks Deployment Multi-Platform](https://github.com/alsyundawy/SparkNotePad/wiki/07-Matriks-Deployment-Multi-Platform)     | [Multi-Platform Deployment](https://github.com/alsyundawy/SparkNotePad/wiki/07-Multi-Platform-Deployment-Matrix)           | Otomatisasi paket, notarisasi DMG, Flatpak      |
+| **08** | [FAQ & Pemecahan Masalah](https://github.com/alsyundawy/SparkNotePad/wiki/08-FAQ-dan-Pemecahan-Masalah)                       | [FAQ & Troubleshooting](https://github.com/alsyundawy/SparkNotePad/wiki/08-FAQ-and-Troubleshooting)                        | Tanya jawab teknis, penanganan galat & log      |
+| **09** | [Asal-Usul & Warisan Arsitektur](https://github.com/alsyundawy/SparkNotePad/wiki/09-Asal-Usul-dan-Warisan-Arsitektur)         | [Project Provenance & Heritage](https://github.com/alsyundawy/SparkNotePad/wiki/09-Project-Provenance-and-Heritage)        | Commit fondasi 4eabd12, evolusi, kredit hulu    |
+| **10** | [Kepatuhan Lisensi GPLv3](https://github.com/alsyundawy/SparkNotePad/wiki/10-Kepatuhan-Lisensi-GPLv3)                         | [GPLv3 Compliance & Licensing](https://github.com/alsyundawy/SparkNotePad/wiki/10-GPLv3-Compliance-and-Licensing)          | Analisis yuridis, hak cipta, distribusi mandiri |
 
 ---
 
