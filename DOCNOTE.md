@@ -34,6 +34,8 @@ SparkNotePad **v1.3.7** delivers a suite of high-velocity developer ergonomics i
 9. **Zero-Lag Menu Presentation & Native Icon Rendering**: Eliminated high-overhead global `MenuIconEventFilter` event hook; enabled native menu icons via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation, restoring instant menu response.
 10. **Dedicated "Select All" Vector Icon & High-DPI Vector Suite**: Designed custom monoline `select_all.svg` (three parallel horizontal lines with leading bullet markers) matching user design specifications; upgraded all legacy 16x16 PNG menu icons (`bin_closed.png`, `folder_go.png`, `application_osx_terminal.png`, `cog.png`, `SparkNotePad.png`) to crisp vector SVGs (`trash.svg`, `folder.svg`, `terminal.svg`, `settings.svg`, `SparkNotePad.svg`); assigned SVGs to `actionAboutQt`, `actionShowCharacterInfo`, `actionBase64Encode`, `actionBase64Decode`, `actionURLEncode`, `actionURLDecode`; upgraded `ActionUtils::createSolidIcon` to render 2x anti-aliased rounded rects querying `qApp->devicePixelRatio()`.
 11. **SonarLint, Trunk, Clangd, & Cppcheck 100% Zero-Error Verification**: Added fallback definitions for `APP_VERSION` and `APP_DISTRIBUTION`; replaced instance calls on static `LuaExtension` methods with standard C++ scope resolution (`::`); modernized argument parsing in `main.cpp` via `std::vector<std::string_view>` and `std::ranges::any_of`; decomposed `openFileList` into `openOrDecryptFile` lowering cognitive complexity below 25; flattened deep nesting in `dropEvent` and `AccessibilityManager`; added `const` qualifiers to `announce`, `announceDocumentState`, `openAccessibilityHelp`, and `ed`. 100% clean check across all translation units in `clangd --check`, `cppcheck`, `trunk check`, and 100% CTest pass rate.
+12. **Restoration of Main Toolbar Print Action & Menu Icon Sanitization**: Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar`. Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`. Removed duplicate `settings.svg` and `select_all.svg` across ~150 non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
+13. **Static Analysis, Const-Correctness & Scope Hardening**: Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`), directly resolving SonarQube `cpp:S5416` warnings. Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp`, resolving SonarQube `cpp:S5418` warnings and restricting variable lifetime.
 
 ---
 
@@ -105,6 +107,13 @@ SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating sys
 10. **Zero-Error IDE & SonarQube Static Analysis Compliance**:
     - Physical `compile_commands.json` (917 KB, 454 translation units) copied directly to repository root, permanently resolving all 1,288 IDE cascade resolution errors and 756 SonarLint parser warnings.
     - Verified `trunk check` with 0 issues across all repository files.
+
+11. **Toolbar Print Action & Clean Menu Ergonomics**:
+    - Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar` across `MainWindow.ui` and `MainWindow.cpp`.
+    - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
+    - Removed duplicate `settings.svg` and `select_all.svg` across non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
+    - Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`) (Sonar rule `cpp:S5416`).
+    - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp` (Sonar rule `cpp:S5418`).
 
 ---
 

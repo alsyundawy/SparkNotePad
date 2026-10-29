@@ -331,7 +331,13 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
   - Eliminated fatal abort on unsaved document buffers in `ScintillaNext::getFilePath()` and `getPath()`.
   - Hardened tab and dock widget destruction lifecycle in `DockedEditor.cpp` and `MainWindow.cpp`, preventing Use-After-Free (UAF) and null pointer dereferences.
   - Added safe guards in `ModernMessageBox::promptForSave()` and `checkEditorsBeforeClose()`.
-- **Complete Eradication of 1,288 IDE Diagnostics & 756 SonarQube Errors**:
+- **Toolbar Print Action Restoration & Menu Icon Sanitization**:
+  - Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar`, ensuring standard quick-print access.
+  - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
+  - Removed duplicate `settings.svg` and `select_all.svg` from ~150 non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
+- **Complete Eradication of IDE Diagnostics & SonarQube Warnings**:
+  - Enforced pointer-to-const correctness for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`) (Sonar rule `cpp:S5416`).
+  - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp` (Sonar rule `cpp:S5418`).
   - Re-engineered `.clangd` with explicit C++ header compilation database routing (`If: PathMatch: .*\.h$` -> `-xc++-header`, `-std=c++20`) and SDK sysroots, permanently eliminating cascading C-mode syntax errors.
   - Configured `sonarlint.analysisExcludesStandalone` and `sonarqube.analysisExcludesStandalone` in `.vscode/settings.json` for `thirdparty/**`, `.cpm-cache/**`, `build/**`, and `i18n/**`, resolving 756 false-positive SonarQube / SonarLint diagnostics.
   - Synchronized compilation database generator (`scripts/generate_compilation_database.py`) across all 312 header and implementation translation units.
@@ -339,6 +345,7 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 
 ### [v1.3.6] — Expanded Platform Matrix, Sandboxing Hardening, Defensive Features & Visual Polish (2026-10-28)
 
+- **Toolbar Print Action & Clean Menu Ergonomics**: Restored `actionPrint` on `mainToolBar` directly after `actionCloseAll` and sanitized menu dropdown headers and duplicate icons across menus.
 - **Comprehensive Multi-Distro & OS Support Matrix**: Established the official [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md) and [SPARKNOTEPAD_1.3.6_IMPLEMENTATION_AND_TASK_LIST_PLAN.md](doc/SPARKNOTEPAD_1.3.6_IMPLEMENTATION_AND_TASK_LIST_PLAN.md) standardizing tier-1 binary support on Ubuntu 22.04 LTS (glibc 2.35 baseline), Ubuntu 24.04/26.04, Debian 12–14, Fedora 40–44, Rocky/Alma 9–11, openSUSE Tumbleweed/Leap, Slackware, FreeBSD 13–15, and macOS 11–26 (Universal Apple Silicon & Intel).
 - **Core Security & Strict Lua Sandboxing**: Exhaustively stripped dangerous OS/IO and debugging execution primitives (`os.execute`, `os.exit`, `os.tmpname`, `os.remove`, `os.rename`, `os.getenv`, `os.setlocale`, `io.popen`, `io.open`, `io.lines`, `io.input`, `io.output`, `io.tmpfile`, `debug.*`, `package.loadlib`, `package.cpath = ""`) in `src/LuaState.cpp`, defending against CVE-2026-42214 vectors. Added automated unit tests in `tests/TestLuaSandbox.cpp`.
 - **Config & Session Tamper Guard**: Implemented `ConfigIntegrityGuard` validating external tool commands, rejecting shell interpreter hijacking (`cmd.exe`, `powershell.exe`, `/bin/sh`, `/bin/bash`, `sudo`), and enforcing strict `0600` permission controls on session files (mitigating CVE-2026-48778 and CVE-2026-48800).

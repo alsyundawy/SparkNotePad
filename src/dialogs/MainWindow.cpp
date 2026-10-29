@@ -3587,7 +3587,7 @@ void MainWindow::ensureMenuIconsVisible(QWidget *root) {
     for (auto *action : target->findChildren<QAction *>()) {
         action->setIconVisibleInMenu(true);
     }
-    for (auto *menu : target->findChildren<QMenu *>()) {
+    for (const QMenu *menu : target->findChildren<QMenu *>()) {
         if (auto *act = menu->menuAction()) {
             act->setIconVisibleInMenu(true);
         }

@@ -49,8 +49,16 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
 
 #### 🐛 Fixed
 
+- **Restoration of Main Toolbar Print Action (`actionPrint`)**:
+  - Restored missing `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar` across `MainWindow.ui` and `MainWindow.cpp`, providing immediate single-click print access from the primary toolbar.
+- **Menu Icon Sanitization & De-duplication**:
+  - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
+  - Removed duplicate `settings.svg` and `select_all.svg` that had erroneously been applied to ~150 non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
+- **Static Analysis & Const-Correctness Hardening (SonarQube / Clang-Tidy)**:
+  - Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`), directly resolving SonarQube `cpp:S5416` warnings.
+  - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp`, resolving SonarQube `cpp:S5418` warnings and restricting variable lifetime.
 - **Toolbar Button Tooltip Visibility & Translucent Floating Pill Styling**:
-  - Restored hover tooltips across all 25 actions on `mainToolBar` in `MainWindow.ui` by defining explicit `<property name="toolTip">` values for all actions.
+  - Restored hover tooltips across all actions on `mainToolBar` in `MainWindow.ui` by defining explicit `<property name="toolTip">` values for all actions.
   - Set `Qt::WA_AlwaysShowToolTips` and programmatically synchronized `toolTip()` on child `QToolButton` widgets in `MainWindow` and `AccessibilityManager`, ensuring tooltips consistently render on macOS Qt 6 without suppression.
   - Redesigned `QToolTip` with modern translucent floating pill styling (`rgba(30, 34, 42, 0.94)`, `border-radius: 6px`, white text `#f0f6fc`, 1px subtle border) and installed `ToolTipTranslucentFilter` enforcing `Qt::WA_TranslucentBackground`, completely eliminating native macOS black square corner artifacts.
 - **SonarLint, Trunk & IDE Static Analysis Verification (Zero Errors, Zero Warnings)**:
@@ -132,6 +140,17 @@ SparkNotePad v1.3.6 delivers an expanded Tier-1 operating system and distributio
   - Extended CI/CD build matrices across Linux and macOS to support Qt 6.5, Qt 6.8 LTS (canonical release), Qt 6.10, Qt 6.11, and Qt 6.12 development targets.
   - Implemented dynamic `PKG_QT_TAG` in `cmake/PackagingMac.cmake` for automated multi-Qt macOS DMG bundling alongside `.deb` and `.rpm` packaging.
   - Configured automated release workflows to upload all built artifacts across all Qt versions.
+
+#### 🐛 Fixed
+
+- **Toolbar Print Action Restoration (`actionPrint`)**:
+  - Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar` across `MainWindow.ui` and `MainWindow.cpp`, providing immediate single-click print access from the primary toolbar.
+- **Menu Dropdown Icon Sanitization & De-duplication**:
+  - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
+  - Removed duplicate `settings.svg` and `select_all.svg` from non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
+- **Static Analysis & Const-Correctness Hardening (SonarQube / Clang-Tidy)**:
+  - Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`), directly resolving SonarQube `cpp:S5416` warnings.
+  - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp`, resolving SonarQube `cpp:S5418` warnings.
 
 #### 🔄 Changed
 
