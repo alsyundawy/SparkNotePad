@@ -86,6 +86,13 @@ SparkNotePad **v1.3.6** establishes an expanded multi-distribution operating sys
 14. **Comprehensive Static Analysis Verification**:
     - 100% clean check across all 141 translation units in `clangd --check` (0 errors), 100% clean check in `cppcheck` (141/141 files clean), clean verification in `clang-tidy`, and 100% test pass rate in CTest.
 
+15. **Toolbar Print Action Restoration & Menu Icon Sanitization**:
+    - Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar` across `MainWindow.ui` and `MainWindow.cpp`.
+    - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
+    - Removed duplicate `settings.svg` and `select_all.svg` across non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
+    - Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`) (Sonar rule `cpp:S5416`).
+    - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp` (Sonar rule `cpp:S5418`).
+
 ---
 
 ## 1. 14-Pillar Code Quality & Security Audit (v1.3.6)

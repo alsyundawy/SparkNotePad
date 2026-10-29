@@ -72,19 +72,17 @@ private:
             return false;
         }
 
-        if (ev->type() == QEvent::Show || ev->type() == QEvent::Polish) {
-            if (auto *menu = qobject_cast<QMenu *>(obj); menu != nullptr) {
-                if (auto *act = menu->menuAction()) {
-                    act->setIconVisibleInMenu(true);
-                }
-                for (auto *act : menu->actions()) {
-                    act->setIconVisibleInMenu(true);
-                }
+        if (const auto *menu = qobject_cast<const QMenu *>(obj); menu != nullptr) {
+            if (auto *act = menu->menuAction()) {
+                act->setIconVisibleInMenu(true);
+            }
+            for (auto *act : menu->actions()) {
+                act->setIconVisibleInMenu(true);
             }
         }
 
-        const bool isTip = w->inherits("QTipLabel") || ((w->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip);
-        if (!isTip) {
+        if (const bool isTip = w->inherits("QTipLabel") || ((w->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip);
+            !isTip) {
             return false;
         }
 
