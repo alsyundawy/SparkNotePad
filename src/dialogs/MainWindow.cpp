@@ -863,41 +863,23 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     ui->menuSearch->addAction(actionRegexHelper);
 
     menuEncryption = new QMenu(tr("&Encryption (AES-256)"), this);
-    menuEncryption->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
-    if (auto *act = menuEncryption->menuAction()) {
-        act->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
-        act->setIconVisibleInMenu(true);
-    }
     actionEncryptDoc = new QAction(tr("&Encrypt Current Document..."), this);
-    actionEncryptDoc->setIcon(QIcon(QStringLiteral(":/icons/readonly.svg")));
-    actionEncryptDoc->setIconVisibleInMenu(true);
     actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
     connect(actionEncryptDoc, &QAction::triggered, this, &MainWindow::onEncryptDocumentTriggered);
     menuEncryption->addAction(actionEncryptDoc);
 
     actionDecryptDoc = new QAction(tr("&Remove Encryption / Decrypt..."), this);
-    actionDecryptDoc->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
-    actionDecryptDoc->setIconVisibleInMenu(true);
     actionDecryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
     ui->menuFile->addMenu(menuEncryption);
 
     auto *actionHashValidator = new QAction(tr("Cryptographic &Hash & Authenticity Validator..."), this);
-    actionHashValidator->setIcon(QIcon(QStringLiteral(":/icons/saved.svg")));
-    actionHashValidator->setIconVisibleInMenu(true);
     connect(actionHashValidator, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
     ui->menuFile->addAction(actionHashValidator);
 
     menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
-    menuClipboardMonitoring->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
-    if (auto *act = menuClipboardMonitoring->menuAction()) {
-        act->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
-        act->setIconVisibleInMenu(true);
-    }
     actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
-    actionToggleClipboardMonitoring->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
-    actionToggleClipboardMonitoring->setIconVisibleInMenu(true);
     actionToggleClipboardMonitoring->setCheckable(true);
     actionToggleClipboardMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(actionToggleClipboardMonitoring, &QAction::triggered, this,
@@ -905,8 +887,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     menuClipboardMonitoring->addAction(actionToggleClipboardMonitoring);
 
     actionClipboardHistory = new QAction(tr("View Clipboard &History..."), this);
-    actionClipboardHistory->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
-    actionClipboardHistory->setIconVisibleInMenu(true);
     connect(actionClipboardHistory, &QAction::triggered, this, &MainWindow::onClipboardHistoryTriggered);
     menuClipboardMonitoring->addAction(actionClipboardHistory);
 
@@ -915,14 +895,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Setup Python Scripting (3.13+) Menu
     auto *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
-    menuPython->setIcon(QIcon(QStringLiteral(":/icons/terminal.svg")));
-    if (auto *act = menuPython->menuAction()) {
-        act->setIcon(QIcon(QStringLiteral(":/icons/terminal.svg")));
-        act->setIconVisibleInMenu(true);
-    }
     auto *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
-    actionRunPython->setIcon(QIcon(QStringLiteral(":/icons/playRecord.svg")));
-    actionRunPython->setIconVisibleInMenu(true);
     actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
     connect(actionRunPython, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -936,8 +909,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     });
 
     auto *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
-    actionRunPythonFile->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
-    actionRunPythonFile->setIconVisibleInMenu(true);
     connect(actionRunPythonFile, &QAction::triggered, this, [this]() {
         QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(),
                                                         tr("Python Scripts (*.py);;All Files (*)"));
@@ -960,14 +931,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Setup Tail Monitoring (tail -f) Menu
     menuTailMonitoring = new QMenu(tr("Monitoring (tail -f)"), this);
-    menuTailMonitoring->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
-    if (auto *act = menuTailMonitoring->menuAction()) {
-        act->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
-        act->setIconVisibleInMenu(true);
-    }
     actionToggleTailMonitoring = new QAction(tr("&Monitoring (tail -f)"), this);
-    actionToggleTailMonitoring->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
-    actionToggleTailMonitoring->setIconVisibleInMenu(true);
     actionToggleTailMonitoring->setCheckable(true);
     actionToggleTailMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Y));
     actionToggleTailMonitoring->setToolTip(
@@ -977,22 +941,16 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(actionToggleTailMonitoring, &QAction::triggered, this, &MainWindow::onToggleTailMonitoringTriggered);
 
     actionTailAutoScroll = new QAction(tr("&Auto-scroll to End on Update"), this);
-    actionTailAutoScroll->setIcon(QIcon(QStringLiteral(":/icons/checkmark.svg")));
-    actionTailAutoScroll->setIconVisibleInMenu(true);
     actionTailAutoScroll->setCheckable(true);
     actionTailAutoScroll->setChecked(true);
     connect(actionTailAutoScroll, &QAction::toggled, this,
             [this](bool checked) { TailMonitoringManager::instance()->setAutoScrollToEnd(currentEditor(), checked); });
 
     actionTailReloadNow = new QAction(tr("&Force Check / Reload Now"), this);
-    actionTailReloadNow->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
-    actionTailReloadNow->setIconVisibleInMenu(true);
     connect(actionTailReloadNow, &QAction::triggered, this,
             [this]() { TailMonitoringManager::instance()->forceCheck(currentEditor()); });
 
     actionTailOptions = new QAction(tr("Tail Monitoring &Options..."), this);
-    actionTailOptions->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
-    actionTailOptions->setIconVisibleInMenu(true);
     connect(actionTailOptions, &QAction::triggered, this, [this]() {
         TailOptionsDialog dlg(this, currentEditor());
         dlg.exec();
@@ -1049,7 +1007,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     menuTransparency->addSeparator();
     actionTransparencyOptions = new QAction(tr("Transparency &Options..."), this);
-    actionTransparencyOptions->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
     connect(actionTransparencyOptions, &QAction::triggered, this, &MainWindow::onTransparencyOptionsTriggered);
     menuTransparency->addAction(actionTransparencyOptions);
 
@@ -1736,7 +1693,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Keyboard Shortcuts & Accessibility Guide
     actionAccessibilityHelp = new QAction(tr("&Keyboard Shortcuts && Accessibility..."), this);
-    actionAccessibilityHelp->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
 #if defined(Q_OS_MACOS)
     actionAccessibilityHelp->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F1));
 #else
@@ -1748,7 +1704,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // User & Developer Documentation
     auto *actionUserGuide = new QAction(tr("SparkNotePad &User Guide"), this);
-    actionUserGuide->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
 #if defined(Q_OS_MACOS)
     actionUserGuide->setShortcut(QKeySequence(Qt::Key_F1));
 #else
@@ -1758,7 +1713,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionUserGuide);
 
     auto *actionDeveloperGuide = new QAction(tr("SparkNotePad &Developer Guide"), this);
-    actionDeveloperGuide->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
     actionDeveloperGuide->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F12));
     connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionDeveloperGuide);
@@ -1885,8 +1839,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Native Emoji & Symbols
     auto *actionEmoji = new QAction(tr("&Emoji && Symbols"), this);
-    actionEmoji->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
-    actionEmoji->setIconVisibleInMenu(true);
 #if defined(Q_OS_MACOS)
     actionEmoji->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_Space));
 #endif
@@ -3785,7 +3737,6 @@ void MainWindow::setupRunMenu() {
 
     // 6. Generate Development SSL Certificate (mkcert / OpenSSL)
     auto *actionGenerateCert = new QAction(tr("Generate Development SSL &Certificate (mkcert/OpenSSL)..."), this);
-    actionGenerateCert->setIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
     actionGenerateCert->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
     connect(actionGenerateCert, &QAction::triggered, this, &MainWindow::onGenerateCertTriggered);
     menuRun->addAction(actionGenerateCert);
@@ -3794,23 +3745,19 @@ void MainWindow::setupRunMenu() {
 
     // 6. Web Searches
     auto *actionGoogle = new QAction(tr("Search on &Google"), this);
-    actionGoogle->setIcon(QIcon(QStringLiteral(":/icons/find.svg")));
     connect(actionGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
     menuRun->addAction(actionGoogle);
 
     auto *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
-    actionWiki->setIcon(QIcon(QStringLiteral(":/icons/find.svg")));
     actionWiki->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_W));
     connect(actionWiki, &QAction::triggered, this, &MainWindow::onSearchWikipediaTriggered);
     menuRun->addAction(actionWiki);
 
     auto *actionGitHub = new QAction(tr("Search on &GitHub"), this);
-    actionGitHub->setIcon(QIcon(QStringLiteral(":/icons/find.svg")));
     connect(actionGitHub, &QAction::triggered, this, &MainWindow::onSearchGitHubTriggered);
     menuRun->addAction(actionGitHub);
 
     auto *actionSO = new QAction(tr("Search on &Stack Overflow"), this);
-    actionSO->setIcon(QIcon(QStringLiteral(":/icons/find.svg")));
     connect(actionSO, &QAction::triggered, this, &MainWindow::onSearchStackOverflowTriggered);
     menuRun->addAction(actionSO);
 
@@ -3818,7 +3765,6 @@ void MainWindow::setupRunMenu() {
 
     // 7. Manage Tools
     auto *actionManage = new QAction(tr("&Manage External Tools..."), this);
-    actionManage->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
     connect(actionManage, &QAction::triggered, this, &MainWindow::onManageToolsTriggered);
     menuRun->addAction(actionManage);
 
@@ -4141,13 +4087,11 @@ void MainWindow::setupWindowMenu() {
 
     // Multi-Monitor and Retina screen management
     auto *actionMoveToNextScreen = new QAction(tr("Move to &Next Screen"), this);
-    actionMoveToNextScreen->setIcon(QIcon(QStringLiteral(":/icons/arrow_up.svg")));
     actionMoveToNextScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Right));
     connect(actionMoveToNextScreen, &QAction::triggered, this, &MainWindow::onMoveToNextScreenTriggered);
     menuWindow->addAction(actionMoveToNextScreen);
 
     auto *actionMoveToPrevScreen = new QAction(tr("Move to &Previous Screen"), this);
-    actionMoveToPrevScreen->setIcon(QIcon(QStringLiteral(":/icons/arrow_down.svg")));
     actionMoveToPrevScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Left));
     connect(actionMoveToPrevScreen, &QAction::triggered, this, &MainWindow::onMoveToPreviousScreenTriggered);
     menuWindow->addAction(actionMoveToPrevScreen);
@@ -4158,7 +4102,6 @@ void MainWindow::setupWindowMenu() {
     menuWindow->addAction(actionCenterScreen);
 
     auto *actionDisplayDiagnostics = new QAction(tr("&Display & Retina Diagnostics..."), this);
-    actionDisplayDiagnostics->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
     actionDisplayDiagnostics->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDisplayDiagnostics, &QAction::triggered, this, &MainWindow::onDisplayDiagnosticsTriggered);
     menuWindow->addAction(actionDisplayDiagnostics);
@@ -4245,7 +4188,6 @@ void MainWindow::setupThemeMenu() {
 
     // 1. Open Theme Switcher... (Ctrl+Shift+T)
     actionThemeSwitcher = new QAction(tr("Open Theme Switcher..."), this);
-    actionThemeSwitcher->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
     actionThemeSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(actionThemeSwitcher, &QAction::triggered, this, [this]() {
         ThemeSwitcherDialog dlg(this);
