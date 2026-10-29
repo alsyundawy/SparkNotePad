@@ -42,8 +42,11 @@
 #include <QSpinBox>
 #include <QPushButton>
 
+#include <algorithm>
+#include <functional>
+
 PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent)
-    : QDialog(parent, Qt::Tool), ui(new Ui::PreferencesDialog), settings(settings) {
+    : QDialog(parent, Qt::Tool), ui(std::make_unique<Ui::PreferencesDialog>()), settings(settings) {
     ui->setupUi(this);
 
     setupThemeAndFeatureSettings();
@@ -69,7 +72,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     MapSettingToGroupBox(ui->gbxRestorePreviousSession, &ApplicationSettings::restorePreviousSession,
                          &ApplicationSettings::setRestorePreviousSession,
                          &ApplicationSettings::restorePreviousSessionChanged);
-    connect(ui->gbxRestorePreviousSession, &QGroupBox::toggled, this, [=, this](bool checked) {
+    connect(ui->gbxRestorePreviousSession, &QGroupBox::toggled, this, [this](bool checked) {
         if (!checked) {
             ui->checkBoxUnsavedFiles->setChecked(false);
             ui->checkBoxRestoreTempFiles->setChecked(false);
@@ -92,8 +95,8 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
 
     ui->comboBoxTranslation->setView(new QListView(ui->comboBoxTranslation));
     populateTranslationComboBox();
-    connect(ui->comboBoxTranslation, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=, this](int index) {
-        settings->setTranslation(ui->comboBoxTranslation->itemData(index).toString());
+    connect(ui->comboBoxTranslation, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int idx) {
+        this->settings->setTranslation(ui->comboBoxTranslation->itemData(idx).toString());
         showApplicationRestartRequired();
     });
 
@@ -104,9 +107,9 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     ui->fcbDefaultFont->setView(new QListView(ui->fcbDefaultFont));
     ui->fcbDefaultFont->setCurrentFont(QFont(settings->fontName()));
     connect(ui->fcbDefaultFont, &QFontComboBox::currentFontChanged, this,
-            [=, this](const QFont &f) { settings->setFontName(f.family()); });
+            [this](const QFont &f) { this->settings->setFontName(f.family()); });
     connect(settings, &ApplicationSettings::fontNameChanged, this,
-            [=, this](QString fontName) { ui->fcbDefaultFont->setCurrentFont(QFont(fontName)); });
+            [this](const QString &fontName) { ui->fcbDefaultFont->setCurrentFont(QFont(fontName)); });
 
     ui->spbDefaultFontSize->setValue(settings->fontSize());
     connect(ui->spbDefaultFontSize, QOverload<int>::of(&QSpinBox::valueChanged), settings,
@@ -124,10 +127,10 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     ui->comboBoxLineEndings->setCurrentIndex(index == -1 ? 0 : index);
 
     connect(ui->comboBoxLineEndings, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
-            [=, this](int index) { settings->setDefaultEOLMode(ui->comboBoxLineEndings->itemData(index).toString()); });
-    connect(settings, &ApplicationSettings::defaultEOLModeChanged, this, [=, this](QString defaultEOLMode) {
-        int index = ui->comboBoxLineEndings->findData(defaultEOLMode);
-        ui->comboBoxLineEndings->setCurrentIndex(index == -1 ? 0 : index);
+            [this](int idx) { this->settings->setDefaultEOLMode(ui->comboBoxLineEndings->itemData(idx).toString()); });
+    connect(settings, &ApplicationSettings::defaultEOLModeChanged, this, [this](const QString &defaultEOLMode) {
+        const int idx = ui->comboBoxLineEndings->findData(defaultEOLMode);
+        ui->comboBoxLineEndings->setCurrentIndex(idx == -1 ? 0 : idx);
     });
 
     MapSettingToCheckBox(ui->checkBoxHighlightURLs, &ApplicationSettings::urlHighlighting,
@@ -155,34 +158,33 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     MapSettingToCheckBox(ui->checkBoxStrictOfflineMode, &ApplicationSettings::strictOfflineMode,
                          &ApplicationSettings::setStrictOfflineMode, &ApplicationSettings::strictOfflineModeChanged);
 
-    QButtonGroup *buttonGroup = new QButtonGroup(this);
+    auto *buttonGroup = new QButtonGroup(this);
     buttonGroup->addButton(ui->radioFollowCurrentDirectory, ApplicationSettings::FollowCurrentDocument);
     buttonGroup->addButton(ui->radioLastUsedDirectory, ApplicationSettings::RememberLastUsed);
     buttonGroup->addButton(ui->radioHardCoded, ApplicationSettings::HardCoded);
 
-    connect(buttonGroup, &QButtonGroup::idClicked, this, [=, this](int id) {
-        ApplicationSettings::DefaultDirectoryBehaviorEnum e =
-            static_cast<ApplicationSettings::DefaultDirectoryBehaviorEnum>(id);
-        settings->setDefaultDirectoryBehavior(e);
+    connect(buttonGroup, &QButtonGroup::idClicked, this, [this](int id) {
+        const auto e = static_cast<ApplicationSettings::DefaultDirectoryBehaviorEnum>(id);
+        this->settings->setDefaultDirectoryBehavior(e);
     });
 
-    connect(ui->radioHardCoded, &QRadioButton::toggled, this, [=, this](bool checked) {
+    connect(ui->radioHardCoded, &QRadioButton::toggled, this, [this](bool checked) {
         ui->btnSelectHardCodedPath->setEnabled(checked);
         ui->txtHardCodedPath->setEnabled(checked);
     });
 
-    connect(ui->btnSelectHardCodedPath, &QToolButton::clicked, this, [=, this]() {
-        QString dir = QFileDialog::getExistingDirectory(this, tr("Default Directory"));
+    connect(ui->btnSelectHardCodedPath, &QToolButton::clicked, this, [this]() {
+        const QString dir = QFileDialog::getExistingDirectory(this, tr("Default Directory"));
         if (dir.isEmpty())
             return;  // user cancelled
 
-        settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
+        this->settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(dir));
     });
 
-    connect(ui->txtHardCodedPath, &QLineEdit::editingFinished, this, [=, this]() {
-        QString dir = ui->txtHardCodedPath->text();
-        settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
+    connect(ui->txtHardCodedPath, &QLineEdit::editingFinished, this, [this]() {
+        const QString dir = ui->txtHardCodedPath->text();
+        this->settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(dir));
     });
 
@@ -191,15 +193,13 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     }
 
     if (settings->defaultDirectoryBehavior() == ApplicationSettings::HardCoded) {
-        ui->txtHardCodedPath->setText((QDir::toNativeSeparators(settings->defaultDirectory())));
+        ui->txtHardCodedPath->setText(QDir::toNativeSeparators(settings->defaultDirectory()));
     } else {
         ui->txtHardCodedPath->setText(QString());
     }
 }
 
-PreferencesDialog::~PreferencesDialog() {
-    delete ui;
-}
+PreferencesDialog::~PreferencesDialog() = default;
 
 void PreferencesDialog::showApplicationRestartRequired() const {
     ui->labelAppRestartIcon->show();
@@ -209,7 +209,7 @@ void PreferencesDialog::showApplicationRestartRequired() const {
 template <typename Func1, typename Func2, typename Func3>
 void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, Func2 setter, Func3 notifier) const {
     // Get the value and set the checkbox state
-    checkBox->setChecked(std::bind(getter, settings)());
+    checkBox->setChecked(std::invoke(getter, settings));
 
     // Set up two way connection
     connect(settings, notifier, checkBox, &QCheckBox::setChecked);
@@ -219,7 +219,7 @@ void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, 
 template <typename Func1, typename Func2, typename Func3>
 void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, Func2 setter, Func3 notifier) const {
     // Get the value and set the checkbox state
-    groupBox->setChecked(std::bind(getter, settings)());
+    groupBox->setChecked(std::invoke(getter, settings));
 
     // Set up two way connection
     connect(settings, notifier, groupBox, &QGroupBox::setChecked);
@@ -227,28 +227,35 @@ void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, 
 }
 
 void PreferencesDialog::populateTranslationComboBox() {
-    const SparkNotePadApplication *app = qobject_cast<SparkNotePadApplication *>(qApp);
+    const auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
+    if (!app)
+        return;
 
     // Add the system default at the top
     ui->comboBoxTranslation->addItem(tr("<System Default>"), QStringLiteral(""));
 
-    // TODO: sort this list and keep the system default at the top
+    QList<std::pair<QString, QString>> translations;
     for (const auto &localeName : app->getTranslationManager()->availableTranslations()) {
         QLocale locale(localeName);
-        const QString localeDisplay = TranslationManager::FormatLocaleTerritoryAndLanguage(locale);
-        ui->comboBoxTranslation->addItem(localeDisplay, localeName);
+        translations.emplace_back(TranslationManager::FormatLocaleTerritoryAndLanguage(locale), localeName);
     }
 
-    // Select the current one
-    int index = ui->comboBoxTranslation->findData(settings->translation());
+    std::ranges::sort(translations,
+                      [](const auto &a, const auto &b) { return a.first.localeAwareCompare(b.first) < 0; });
+
+    for (const auto &[display, localeName] : translations) {
+        ui->comboBoxTranslation->addItem(display, localeName);
+    }
+
+    const int index = ui->comboBoxTranslation->findData(settings->translation());
     if (index != -1) {
         ui->comboBoxTranslation->setCurrentIndex(index);
     }
 }
 
 void PreferencesDialog::setupThemeAndFeatureSettings() {
-    QGroupBox *gbxThemes = new QGroupBox(tr("Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
-    QFormLayout *themeLayout = new QFormLayout(gbxThemes);
+    auto *gbxThemes = new QGroupBox(tr("Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
+    auto *themeLayout = new QFormLayout(gbxThemes);
     themeLayout->setSpacing(10);
     themeLayout->setContentsMargins(14, 16, 14, 14);
 
@@ -287,7 +294,7 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
         ThemeManager::instance()->setPalette(themeId, mw);
     });
 
-    QHBoxLayout *themeRowLayout = new QHBoxLayout();
+    auto *themeRowLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     themeRowLayout->addWidget(comboBoxTheme, 1);
 
     btnToggleDarkLight = new QPushButton(tr("Toggle Dark/Light"), gbxThemes);
@@ -306,7 +313,7 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     themeLayout->addRow(tr("Active Theme:"), themeRowLayout);
 
     // 2. Window Opacity / Transparency
-    QHBoxLayout *opacityLayout = new QHBoxLayout();
+    auto *opacityLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     sliderWindowOpacity = new QSlider(Qt::Horizontal, gbxThemes);
     sliderWindowOpacity->setRange(20, 100);
     spinBoxWindowOpacity = new QSpinBox(gbxThemes);
@@ -385,18 +392,19 @@ void PreferencesDialog::updateThemeColors() {
         }
     }
 
-    QString winBg =
-        pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc"));
-    QString cardBg =
-        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#1e293b") : QStringLiteral("#ffffff"));
-    QString borderCol =
-        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#334155") : QStringLiteral("#cbd5e1"));
-    QString accentCol =
-        pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#38bdf8") : QStringLiteral("#2563eb"));
-    QString txtPri =
-        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8fafc") : QStringLiteral("#0f172a"));
-    QString txtSec =
-        pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#94a3b8") : QStringLiteral("#475569"));
+    const QString defaultWinBg = dark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc");
+    const QString defaultCardBg = dark ? QStringLiteral("#1e293b") : QStringLiteral("#ffffff");
+    const QString defaultBorderCol = dark ? QStringLiteral("#334155") : QStringLiteral("#cbd5e1");
+    const QString defaultAccentCol = dark ? QStringLiteral("#38bdf8") : QStringLiteral("#2563eb");
+    const QString defaultTxtPri = dark ? QStringLiteral("#f8fafc") : QStringLiteral("#0f172a");
+    const QString defaultTxtSec = dark ? QStringLiteral("#94a3b8") : QStringLiteral("#475569");
+
+    const QString winBg = pal ? QString::fromLatin1(pal->win) : defaultWinBg;
+    const QString cardBg = pal ? QString::fromLatin1(pal->card) : defaultCardBg;
+    const QString borderCol = pal ? QString::fromLatin1(pal->border) : defaultBorderCol;
+    const QString accentCol = pal ? QString::fromLatin1(pal->blue) : defaultAccentCol;
+    const QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : defaultTxtPri;
+    const QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : defaultTxtSec;
 
     QString prefStyle =
         QString(

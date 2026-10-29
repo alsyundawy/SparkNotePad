@@ -15,6 +15,7 @@
 #include "ConfigIntegrityGuard.h"
 
 #include <algorithm>
+#include <array>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -29,10 +30,8 @@ QString ExternalToolManager::getSelectedOrCurrentWord(ScintillaNext *editor) {
     if (!editor)
         return {};
 
-    int selStart = editor->selectionNStart(0);
-    int selEnd = editor->selectionNEnd(0);
-
-    if (selEnd > selStart) {
+    const auto selStart = static_cast<int>(editor->selectionNStart(0));
+    if (const auto selEnd = static_cast<int>(editor->selectionNEnd(0)); selEnd > selStart) {
         const int len = selEnd - selStart;
         QByteArray bytes(len + 1, '\0');
         editor->getRange(selStart, selEnd, bytes.data());
@@ -41,10 +40,9 @@ QString ExternalToolManager::getSelectedOrCurrentWord(ScintillaNext *editor) {
     }
 
     // Fallback to word under caret
-    int pos = editor->currentPos();
-    int wStart = editor->wordStartPosition(pos, true);
-    int wEnd = editor->wordEndPosition(pos, true);
-    if (wEnd > wStart) {
+    const auto pos = static_cast<int>(editor->currentPos());
+    const auto wStart = static_cast<int>(editor->wordStartPosition(pos, true));
+    if (const auto wEnd = static_cast<int>(editor->wordEndPosition(pos, true)); wEnd > wStart) {
         const int len = wEnd - wStart;
         QByteArray bytes(len + 1, '\0');
         editor->getRange(wStart, wEnd, bytes.data());
@@ -82,8 +80,8 @@ QString ExternalToolManager::expandVariables(const QString &cmdTemplate, Scintil
             extPart = fi.suffix();
         }
 
-        line = editor->lineFromPosition(editor->currentPos()) + 1;
-        col = editor->column(editor->currentPos()) + 1;
+        line = static_cast<int>(editor->lineFromPosition(editor->currentPos())) + 1;
+        col = static_cast<int>(editor->column(editor->currentPos())) + 1;
     }
 
     const QString currentWord = getSelectedOrCurrentWord(editor);
@@ -156,7 +154,7 @@ void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cm
         workDir = QDir::currentPath();
     }
 
-#if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS)
     if (cmdToRun.isEmpty()) {
         QProcess::startDetached(QStringLiteral("open"), {QStringLiteral("-a"), QStringLiteral("Terminal"), workDir});
     } else {
@@ -223,7 +221,7 @@ void ExternalToolManager::revealInFileManager(const QString &filePath) {
     if (filePath.isEmpty())
         return;
 
-#if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS)
     QProcess::startDetached(QStringLiteral("open"), {QStringLiteral("-R"), filePath});
 #elif defined(Q_OS_WIN)
     QProcess::startDetached(QStringLiteral("explorer.exe"),
@@ -276,6 +274,53 @@ void ExternalToolManager::webSearch(const QString &query, const QString &service
     QDesktopServices::openUrl(QUrl(urlStr));
 }
 
+static QString resolveInterpreterCommand(const QString &ext, const QString &filePath, ScintillaNext *editor) {
+    static const QMap<QString, QString> s_extMap = {{QStringLiteral("py"), QStringLiteral("python3 \"%1\"")},
+                                                    {QStringLiteral("js"), QStringLiteral("node \"%1\"")},
+                                                    {QStringLiteral("mjs"), QStringLiteral("node \"%1\"")},
+                                                    {QStringLiteral("cjs"), QStringLiteral("node \"%1\"")},
+                                                    {QStringLiteral("ts"), QStringLiteral("npx ts-node \"%1\"")},
+                                                    {QStringLiteral("sh"), QStringLiteral("bash \"%1\"")},
+                                                    {QStringLiteral("bash"), QStringLiteral("bash \"%1\"")},
+                                                    {QStringLiteral("zsh"), QStringLiteral("zsh \"%1\"")},
+                                                    {QStringLiteral("rb"), QStringLiteral("ruby \"%1\"")},
+                                                    {QStringLiteral("pl"), QStringLiteral("perl \"%1\"")},
+                                                    {QStringLiteral("php"), QStringLiteral("php \"%1\"")},
+                                                    {QStringLiteral("lua"), QStringLiteral("lua \"%1\"")},
+                                                    {QStringLiteral("go"), QStringLiteral("go run \"%1\"")}};
+
+    if (const auto it = s_extMap.constFind(ext); it != s_extMap.constEnd()) {
+        return it.value().arg(filePath);
+    }
+
+    if (!editor)
+        return {};
+
+    if (const auto lineLen = static_cast<int>(editor->lineLength(0)); lineLen <= 2)
+        return {};
+
+    const QByteArray firstLineBytes = editor->getLine(0);
+    const QString firstLine = QString::fromUtf8(firstLineBytes).trimmed();
+    if (!firstLine.startsWith(QStringLiteral("#!")))
+        return {};
+
+    const QString shebang = firstLine.mid(2).trimmed();
+    static constexpr std::array<std::pair<const char *, const char *>, 8> shebangInterpreters = {{{"python", "python3"},
+                                                                                                  {"node", "node"},
+                                                                                                  {"bash", "bash"},
+                                                                                                  {"sh", "sh"},
+                                                                                                  {"perl", "perl"},
+                                                                                                  {"ruby", "ruby"},
+                                                                                                  {"php", "php"},
+                                                                                                  {"lua", "lua"}}};
+    for (const auto &[name, interp] : shebangInterpreters) {
+        if (shebang.contains(QLatin1String(name))) {
+            return QStringLiteral("%1 \"%2\"").arg(QLatin1String(interp), filePath);
+        }
+    }
+    return {};
+}
+
 bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, QString *errorOut) {
     if (!editor) {
         if (errorOut)
@@ -298,58 +343,12 @@ bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, Q
     const QString ext = fi.suffix().toLower();
     const QString workDir = fi.dir().canonicalPath().isEmpty() ? fi.dir().absolutePath() : fi.dir().canonicalPath();
 
-    QString cmd;
-    if (ext == QStringLiteral("py")) {
-        cmd = QStringLiteral("python3 \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("js") || ext == QStringLiteral("mjs") || ext == QStringLiteral("cjs")) {
-        cmd = QStringLiteral("node \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("ts")) {
-        cmd = QStringLiteral("npx ts-node \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("sh") || ext == QStringLiteral("bash")) {
-        cmd = QStringLiteral("bash \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("zsh")) {
-        cmd = QStringLiteral("zsh \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("rb")) {
-        cmd = QStringLiteral("ruby \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("pl")) {
-        cmd = QStringLiteral("perl \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("php")) {
-        cmd = QStringLiteral("php \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("lua")) {
-        cmd = QStringLiteral("lua \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("go")) {
-        cmd = QStringLiteral("go run \"%1\"").arg(filePath);
-    } else if (ext == QStringLiteral("html") || ext == QStringLiteral("htm")) {
+    if (ext == QStringLiteral("html") || ext == QStringLiteral("htm")) {
         openInBrowser(filePath);
         return true;
-    } else {
-        // Check shebang on line 1
-        int lineLen = editor->lineLength(0);
-        if (lineLen > 2) {
-            QByteArray firstLineBytes = editor->getLine(0);
-            QString firstLine = QString::fromUtf8(firstLineBytes).trimmed();
-            if (firstLine.startsWith(QStringLiteral("#!"))) {
-                QString shebang = firstLine.mid(2).trimmed();
-                if (shebang.contains(QStringLiteral("python")))
-                    cmd = QStringLiteral("python3 \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("node")))
-                    cmd = QStringLiteral("node \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("bash")))
-                    cmd = QStringLiteral("bash \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("sh")))
-                    cmd = QStringLiteral("sh \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("perl")))
-                    cmd = QStringLiteral("perl \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("ruby")))
-                    cmd = QStringLiteral("ruby \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("php")))
-                    cmd = QStringLiteral("php \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("lua")))
-                    cmd = QStringLiteral("lua \"%1\"").arg(filePath);
-            }
-        }
     }
 
+    QString cmd = resolveInterpreterCommand(ext, filePath, editor);
     if (cmd.isEmpty()) {
         // Fallback: execute file directly if executable, or open in terminal
         cmd = QStringLiteral("\"%1\"").arg(filePath);
@@ -451,12 +450,7 @@ void ExternalToolManager::addCustomTool(const ExternalTool &tool) {
 
 void ExternalToolManager::deleteCustomTool(const QString &id) {
     auto tools = loadCustomTools();
-    for (int i = 0; i < tools.size(); ++i) {
-        if (tools.at(i).id == id) {
-            tools.removeAt(i);
-            break;
-        }
-    }
+    tools.removeIf([&id](const ExternalTool &tool) { return tool.id == id; });
     saveCustomTools(tools);
 }
 

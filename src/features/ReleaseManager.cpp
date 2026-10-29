@@ -93,9 +93,9 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
     request.setRawHeader("Accept", "application/vnd.github.v3+json");
 
     // ETag caching to avoid burning rate limits
-    QSettings settings;
-    const QString cachedEtag = settings.value(QStringLiteral("ReleaseManager/LatestETag")).toString();
-    if (!cachedEtag.isEmpty()) {
+    const QSettings settings;
+    if (const QString cachedEtag = settings.value(QStringLiteral("ReleaseManager/LatestETag")).toString();
+        !cachedEtag.isEmpty()) {
         request.setRawHeader("If-None-Match", cachedEtag.toUtf8());
     }
 
@@ -132,8 +132,7 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
     }
 
     // 3. Cache ETag if provided by GitHub
-    const QByteArray etag = reply->rawHeader("ETag");
-    if (!etag.isEmpty()) {
+    if (const QByteArray etag = reply->rawHeader("ETag"); !etag.isEmpty()) {
         QSettings settings;
         settings.setValue(QStringLiteral("ReleaseManager/LatestETag"), QString::fromUtf8(etag));
     }

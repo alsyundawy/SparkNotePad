@@ -7,7 +7,7 @@ class TestMimeTools : public QObject {
     Q_OBJECT
 
 private slots:
-    void testBase64Suite() {
+    void testBase64Suite() const {
         const QString plain = "Hello SparkNotePad!\nLine 2";
         const QString enc = MimeTools::base64Encode(plain);
         QCOMPARE(MimeTools::base64Decode(enc), plain);
@@ -40,7 +40,7 @@ private slots:
         QVERIFY(!badOk);
     }
 
-    void testQuotedPrintableSuite() {
+    void testQuotedPrintableSuite() const {
         const QString plain = "Hello = World! Special: äöü & 123";
         const QString qp = MimeTools::quotedPrintableEncode(plain);
         QVERIFY(qp.contains("=3D"));
@@ -48,7 +48,7 @@ private slots:
         QCOMPARE(dec, plain);
     }
 
-    void testUrlEncodingSuite() {
+    void testUrlEncodingSuite() const {
         const QString plain = "Hello World! @#$%";
         // RFC 1738 encodes space to +
         const QString rfc1738 = MimeTools::urlEncodeRfc1738(plain);

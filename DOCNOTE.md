@@ -74,6 +74,11 @@ SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity develope
 12. **13-Pillar Production Code Review & 100% Linter Eradication**:
     - Generated 459-entry unified compilation database (`build/compile_commands.json` & root symlink) via `scripts/generate_compilation_database.py`.
     - Unified `.vscode/settings.json`, `.clangd`, and `sonar-project.properties` with uniform build path resolution, completely resolving 1,288 IDE diagnostics and 756 SonarLint C++ warnings.
+    - `PreferencesDialog`: Modernized to pure RAII with `std::unique_ptr<Ui::PreferencesDialog>` and `std::make_unique`, eliminated `delete ui`, resolved variable shadowing on `idx`, replaced `std::bind` with `std::invoke`, completed alphabetical translation sorting (keeping system default at top), and un-nested ternary operators.
+    - `ShortcutCustomizerDialog`: Decomposed action registration into `registerAction` and `traverseMenu` reducing cognitive complexity from 54 to < 10, added `const` member qualifiers to `onFilterTextChanged` and `saveShortcuts`, enforced pointer-to-const for menu traversals, and un-nested conditional ternary styling.
+    - `MimeTools`: Converted `processByLine` to template helper taking arbitrary callable `Func &&func` to eliminate `std::function` heap allocation, fixed 64-bit `qsizetype` integer precision in `quotedPrintableDecode`, and refactored loop jumps into structured branches.
+    - `ExternalToolManager` & `ReleaseManager`: Implemented C++17/C++20 if-with-initializer statements (`if (const auto it = ...; it != ...)`), replaced C-style arrays with `std::array` static constexpr tables, and modernized deprecated macros.
+    - `MainWindow`: Extracted hash generation and verification helpers to anonymous namespace, keeping all lambda callbacks <= 17 lines, removed unused lambda captures `[this]` across 15 MIME and Hash tool handlers, and replaced legacy search with `std::ranges::find_if`.
     - Corrected all `ScintillaNext::getSelText()` Qt 6 type mismatches (`QByteArray` to `QString::fromUtf8()`).
     - 100% clean check across all translation units in `clangd`, `cppcheck-qt`, and `trunk check`.
 13. **Toolbar Tooltip Translucent Floating Pill Styling & Accessibility**:

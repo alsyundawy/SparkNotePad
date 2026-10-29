@@ -43,22 +43,24 @@ public:
     ~ShortcutCustomizerDialog() override = default;
 
 private slots:
-    void onFilterTextChanged(const QString &text);
+    void onFilterTextChanged(const QString &text) const;
     void onItemSelectionChanged();
     void onAssignClicked();
     void onClearClicked();
     void onResetSelectedClicked();
     void onResetAllClicked();
-    void onApplyClicked();
+    void onApplyClicked() const;
     void onOkClicked();
     void updateConflictWarning();
 
 private:
     void setupUi();
     void collectActions();
+    void registerAction(QAction *action, const QString &category);
+    void traverseMenu(const QMenu *menu, const QString &catPrefix);
     void populateTree();
     void applyThemeStyles();
-    void saveShortcuts();
+    void saveShortcuts() const;
     static QString cleanActionText(const QString &text);
 
     QMainWindow *m_mainWindow = nullptr;

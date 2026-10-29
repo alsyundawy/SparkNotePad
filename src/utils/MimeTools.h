@@ -15,6 +15,7 @@
 #define MIMETOOLS_H
 
 #include <QString>
+#include <QStringList>
 #include <QByteArray>
 
 class MimeTools {
@@ -42,7 +43,28 @@ public:
     static QString urlDecode(const QString &input);
 
 private:
-    static QString processByLine(const QString &input, QString (*func)(const QString &));
+    template <typename Func>
+    static QString processByLine(const QString &input, Func &&func) {
+        if (input.isEmpty())
+            return {};
+
+        const bool hasCrLf = input.contains(QLatin1String("\r\n"));
+        const QString eol = hasCrLf ? QStringLiteral("\r\n") : QStringLiteral("\n");
+
+        const QStringList lines = input.split(QChar('\n'));
+        QStringList processed;
+        processed.reserve(lines.size());
+
+        for (const QString &line : lines) {
+            QString cleanLine = line;
+            if (cleanLine.endsWith(QChar('\r'))) {
+                cleanLine.chop(1);
+            }
+            processed.append(func(cleanLine));
+        }
+
+        return processed.join(eol);
+    }
 };
 
 #endif  // MIMETOOLS_H

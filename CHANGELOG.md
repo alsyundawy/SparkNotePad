@@ -124,6 +124,12 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
   - Rebuilt `.clangd` with explicit C++ header mode mapping (`If: PathMatch: .*\.h$` -> `-xc++-header`, `-std=c++20`) and system SDK search paths, removing naked `-std=c++20` that broke C-mode compilation.
   - Configured `sonarlint.analysisExcludesStandalone` and `sonarqube.analysisExcludesStandalone` in `.vscode/settings.json` for `thirdparty/**`, `.cpm-cache/**`, `build/**`, and `i18n/**`, preventing false-positive analysis over 100,000+ lines of thirdparty code.
   - Updated `scripts/generate_compilation_database.py` with version 1.3.7 and generated comprehensive 312-entry compilation database.
+- **Deep Clean Linter, SonarLint & C++20 Zero-Defect Hardening**:
+  - `MimeTools`: Converted `processByLine` to template helper taking arbitrary callable `Func &&func` to eliminate `std::function` heap allocation, fixed 64-bit `qsizetype` integer precision in `quotedPrintableDecode`, and refactored loop jumps into structured branches.
+  - `PreferencesDialog`: Modernized UI pointer to `std::unique_ptr<Ui::PreferencesDialog>` initialized with `std::make_unique` (pure RAII), eliminated `delete ui`, resolved variable shadowing on `idx`, replaced `std::bind` with `std::invoke`, completed alphabetical translation sorting (keeping system default at top), and un-nested ternary operators.
+  - `ShortcutCustomizerDialog`: Decomposed action registration into `registerAction` and `traverseMenu` reducing cognitive complexity from 54 to < 10, added `const` member qualifiers to `onFilterTextChanged` and `saveShortcuts`, enforced pointer-to-const for menu traversals, and un-nested conditional ternary styling.
+  - `ExternalToolManager` & `ReleaseManager`: Implemented C++17/C++20 if-with-initializer statements (`if (const auto it = ...; it != ...)`), replaced C-style arrays with `std::array` static constexpr tables, and modernized deprecated macros.
+  - `MainWindow`: Extracted hash generation and verification helpers to anonymous namespace, keeping all lambda callbacks <= 17 lines, removed unused lambda captures `[this]` across 15 MIME and Hash tool handlers, and replaced legacy search with `std::ranges::find_if`.
 
 #### 🔧 Changed & Hardened
 
@@ -131,7 +137,7 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
   - Verified across `clangd --check` (0 diagnostics / 0 errors).
   - Sanitized header inclusions via `clang-tidy` (`misc-include-cleaner`) across all diff and forensic modules.
   - Hardened Shannon Entropy calculation with bounds-safe `.at(byte)` frequency lookups.
-  - 100% clean across all 26 modified files in `trunk check` (cppcheck-qt, clang-format, prettier, markdownlint).
+  - 100% clean across all modified files in `trunk check` (cppcheck-qt, clang-format, prettier, markdownlint).
   - Bumped SonarQube project version to `1.3.7`.
 
 ---

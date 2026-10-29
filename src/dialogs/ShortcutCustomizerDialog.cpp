@@ -57,7 +57,7 @@ void ShortcutCustomizerDialog::setupUi() {
     mainLayout->setContentsMargins(14, 14, 14, 14);
 
     // Filter bar
-    auto *filterLayout = new QHBoxLayout();
+    auto *filterLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     auto *filterLabel = new QLabel(tr("Filter:"), this);
     filterLayout->addWidget(filterLabel);
 
@@ -89,7 +89,7 @@ void ShortcutCustomizerDialog::setupUi() {
     m_selectedActionLabel->setStyleSheet(QStringLiteral("font-weight: bold;"));
     editLayout->addWidget(m_selectedActionLabel);
 
-    auto *inputRow = new QHBoxLayout();
+    auto *inputRow = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     auto *shortcutLabel = new QLabel(tr("Key Sequence:"), editGroup);
     inputRow->addWidget(shortcutLabel);
 
@@ -124,7 +124,7 @@ void ShortcutCustomizerDialog::setupUi() {
     mainLayout->addWidget(editGroup);
 
     // Bottom Action Buttons
-    auto *bottomRow = new QHBoxLayout();
+    auto *bottomRow = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     m_btnResetAll = new QPushButton(tr("Reset All to Defaults"), this);
     connect(m_btnResetAll, &QPushButton::clicked, this, &ShortcutCustomizerDialog::onResetAllClicked);
     bottomRow->addWidget(m_btnResetAll);
@@ -147,62 +147,64 @@ void ShortcutCustomizerDialog::setupUi() {
     mainLayout->addLayout(bottomRow);
 }
 
+void ShortcutCustomizerDialog::registerAction(QAction *action, const QString &category) {
+    if (!action || action->isSeparator())
+        return;
+
+    const QString cleanText = cleanActionText(action->text());
+    if (cleanText.isEmpty())
+        return;
+
+    QString objName = action->objectName();
+    if (objName.isEmpty()) {
+        objName = QStringLiteral("action_%1_%2")
+                      .arg(category.toLower().remove(QLatin1Char(' ')), cleanText.toLower().remove(QLatin1Char(' ')));
+        action->setObjectName(objName);
+    }
+
+    if (!m_entries.contains(objName)) {
+        ActionShortcutEntry entry;
+        entry.action = action;
+        entry.objectName = objName;
+        entry.category = category;
+        entry.description = cleanText;
+        entry.currentShortcut = action->shortcut();
+        entry.defaultShortcut = action->property("defaultShortcut").value<QKeySequence>();
+        if (entry.defaultShortcut.isEmpty() && !action->shortcut().isEmpty()) {
+            action->setProperty("defaultShortcut", action->shortcut());
+            entry.defaultShortcut = action->shortcut();
+        }
+        entry.isModified = false;
+        m_entries.insert(objName, entry);
+    }
+}
+
+void ShortcutCustomizerDialog::traverseMenu(const QMenu *menu, const QString &catPrefix) {
+    if (!menu)
+        return;
+
+    const QString menuTitle = cleanActionText(menu->title());
+    const QString fullCat = catPrefix.isEmpty() ? menuTitle : QStringLiteral("%1 > %2").arg(catPrefix, menuTitle);
+
+    for (QAction *action : menu->actions()) {
+        if (action && !action->isSeparator()) {
+            if (action->menu()) {
+                traverseMenu(action->menu(), fullCat);
+            } else {
+                registerAction(action, fullCat);
+            }
+        }
+    }
+}
+
 void ShortcutCustomizerDialog::collectActions() {
     if (!m_mainWindow)
         return;
 
     m_entries.clear();
 
-    // Helper to traverse menus
-    std::function<void(QMenu *, const QString &)> traverseMenu;
-    traverseMenu = [this, &traverseMenu](QMenu *menu, const QString &catPrefix) {
-        if (!menu)
-            return;
-        const QString menuTitle = cleanActionText(menu->title());
-        const QString fullCat = catPrefix.isEmpty() ? menuTitle : QStringLiteral("%1 > %2").arg(catPrefix, menuTitle);
-
-        for (QAction *action : menu->actions()) {
-            if (!action || action->isSeparator())
-                continue;
-            if (action->menu()) {
-                traverseMenu(action->menu(), fullCat);
-            } else {
-                const QString rawText = action->text();
-                const QString cleanText = cleanActionText(rawText);
-                if (cleanText.isEmpty())
-                    continue;
-
-                QString objName = action->objectName();
-                if (objName.isEmpty()) {
-                    // Generate stable fallback object name
-                    objName = QStringLiteral("action_%1_%2")
-                                  .arg(fullCat.toLower().remove(QLatin1Char(' ')),
-                                       cleanText.toLower().remove(QLatin1Char(' ')));
-                    action->setObjectName(objName);
-                }
-
-                if (!m_entries.contains(objName)) {
-                    ActionShortcutEntry entry;
-                    entry.action = action;
-                    entry.objectName = objName;
-                    entry.category = fullCat;
-                    entry.description = cleanText;
-                    entry.currentShortcut = action->shortcut();
-                    entry.defaultShortcut = action->property("defaultShortcut").value<QKeySequence>();
-                    if (entry.defaultShortcut.isEmpty() && !action->shortcut().isEmpty()) {
-                        // Remember initial shortcut as default
-                        action->setProperty("defaultShortcut", action->shortcut());
-                        entry.defaultShortcut = action->shortcut();
-                    }
-                    entry.isModified = false;
-                    m_entries.insert(objName, entry);
-                }
-            }
-        }
-    };
-
-    if (auto *menuBar = m_mainWindow->menuBar()) {
-        for (QAction *action : menuBar->actions()) {
+    if (const auto *menuBar = m_mainWindow->menuBar()) {
+        for (const QAction *action : menuBar->actions()) {
             if (action && action->menu()) {
                 traverseMenu(action->menu(), QString());
             }
@@ -211,33 +213,7 @@ void ShortcutCustomizerDialog::collectActions() {
 
     // Also include top-level main window actions (such as Command Palette, Side-by-Side Diff)
     for (QAction *action : m_mainWindow->actions()) {
-        if (!action || action->isSeparator())
-            continue;
-        const QString cleanText = cleanActionText(action->text());
-        if (cleanText.isEmpty())
-            continue;
-
-        QString objName = action->objectName();
-        if (objName.isEmpty()) {
-            objName = QStringLiteral("action_mw_%1").arg(cleanText.toLower().remove(QLatin1Char(' ')));
-            action->setObjectName(objName);
-        }
-
-        if (!m_entries.contains(objName)) {
-            ActionShortcutEntry entry;
-            entry.action = action;
-            entry.objectName = objName;
-            entry.category = tr("Global / Window");
-            entry.description = cleanText;
-            entry.currentShortcut = action->shortcut();
-            entry.defaultShortcut = action->property("defaultShortcut").value<QKeySequence>();
-            if (entry.defaultShortcut.isEmpty() && !action->shortcut().isEmpty()) {
-                action->setProperty("defaultShortcut", action->shortcut());
-                entry.defaultShortcut = action->shortcut();
-            }
-            entry.isModified = false;
-            m_entries.insert(objName, entry);
-        }
+        registerAction(action, tr("Global / Window"));
     }
 }
 
@@ -250,7 +226,7 @@ void ShortcutCustomizerDialog::populateTree() {
     for (const auto &entry : m_entries) {
         QTreeWidgetItem *parentItem = catItems.value(entry.category, nullptr);
         if (!parentItem) {
-            parentItem = new QTreeWidgetItem(m_treeWidget);
+            parentItem = new QTreeWidgetItem(m_treeWidget);  // NOSONAR(cpp:S5025)
             parentItem->setText(0, entry.category);
             parentItem->setExpanded(true);
             QFont f = parentItem->font(0);
@@ -259,7 +235,7 @@ void ShortcutCustomizerDialog::populateTree() {
             catItems.insert(entry.category, parentItem);
         }
 
-        auto *item = new QTreeWidgetItem(parentItem);
+        auto *item = new QTreeWidgetItem(parentItem);  // NOSONAR(cpp:S5025)
         item->setText(0, entry.description);
         item->setText(1, entry.currentShortcut.toString(QKeySequence::NativeText));
         item->setText(2, entry.isModified ? tr("Modified") : tr("Default"));
@@ -275,12 +251,13 @@ void ShortcutCustomizerDialog::applyThemeStyles() {
     const bool isDark = tm->isDarkActive();
     const ThemePalette *pal = tm->currentPalette();
 
-    const QString bg =
-        pal ? QString::fromLatin1(pal->win) : (isDark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f8f9fa"));
-    const QString textCol =
-        pal ? QString::fromLatin1(pal->txtPri) : (isDark ? QStringLiteral("#e0e0e0") : QStringLiteral("#212529"));
-    const QString borderCol =
-        pal ? QString::fromLatin1(pal->border) : (isDark ? QStringLiteral("#3c3c3c") : QStringLiteral("#ced4da"));
+    const QString defaultBg = isDark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f8f9fa");
+    const QString defaultTextCol = isDark ? QStringLiteral("#e0e0e0") : QStringLiteral("#212529");
+    const QString defaultBorderCol = isDark ? QStringLiteral("#3c3c3c") : QStringLiteral("#ced4da");
+
+    const QString bg = pal ? QString::fromLatin1(pal->win) : defaultBg;
+    const QString textCol = pal ? QString::fromLatin1(pal->txtPri) : defaultTextCol;
+    const QString borderCol = pal ? QString::fromLatin1(pal->border) : defaultBorderCol;
 
     setStyleSheet(
         QStringLiteral("QDialog { background-color: %1; color: %2; }"
@@ -289,7 +266,7 @@ void ShortcutCustomizerDialog::applyThemeStyles() {
             .arg(bg, textCol, borderCol));
 }
 
-void ShortcutCustomizerDialog::onFilterTextChanged(const QString &text) {
+void ShortcutCustomizerDialog::onFilterTextChanged(const QString &text) const {
     const QString query = text.trimmed();
 
     for (int i = 0; i < m_treeWidget->topLevelItemCount(); ++i) {
@@ -328,7 +305,7 @@ void ShortcutCustomizerDialog::onItemSelectionChanged() {
         return;
     }
 
-    QTreeWidgetItem *item = selected.first();
+    const QTreeWidgetItem *item = selected.first();
     const QString objName = item->data(0, Qt::UserRole).toString();
     if (!m_entries.contains(objName)) {
         // Parent category item selected
@@ -446,8 +423,8 @@ void ShortcutCustomizerDialog::onResetAllClicked() {
     onItemSelectionChanged();
 }
 
-void ShortcutCustomizerDialog::saveShortcuts() {
-    auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
+void ShortcutCustomizerDialog::saveShortcuts() const {
+    const auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
     ApplicationSettings *settings = app ? app->getSettings() : nullptr;
     if (!settings)
         return;
@@ -455,25 +432,26 @@ void ShortcutCustomizerDialog::saveShortcuts() {
     settings->beginGroup(QStringLiteral("Shortcuts"));
 
     for (const auto &entry : m_entries) {
-        if (!entry.action)
-            continue;
-
-        // Apply immediately to the live QAction
-        entry.action->setShortcut(entry.currentShortcut);
-
-        // Normalize setting key name (strip 'action' prefix if present for legacy compatibility)
-        QString keyName = entry.objectName;
-        if (keyName.startsWith(QStringLiteral("action"))) {
-            keyName.remove(0, 6);
-        }
-
-        if (entry.currentShortcut != entry.defaultShortcut) {
-            // Store modified shortcut string list
-            settings->setValue(keyName, QStringList{entry.currentShortcut.toString(QKeySequence::PortableText)});
+        if (!entry.action) {
+            // Skip invalid action
         } else {
-            // Restore default -> remove override
-            settings->remove(keyName);
-            settings->remove(entry.objectName);
+            // Apply immediately to the live QAction
+            entry.action->setShortcut(entry.currentShortcut);
+
+            // Normalize setting key name (strip 'action' prefix if present for legacy compatibility)
+            QString keyName = entry.objectName;
+            if (keyName.startsWith(QStringLiteral("action"))) {
+                keyName.remove(0, 6);
+            }
+
+            if (entry.currentShortcut != entry.defaultShortcut) {
+                // Store modified shortcut string list
+                settings->setValue(keyName, QStringList{entry.currentShortcut.toString(QKeySequence::PortableText)});
+            } else {
+                // Restore default -> remove override
+                settings->remove(keyName);
+                settings->remove(entry.objectName);
+            }
         }
     }
 
@@ -481,7 +459,7 @@ void ShortcutCustomizerDialog::saveShortcuts() {
     settings->sync();
 }
 
-void ShortcutCustomizerDialog::onApplyClicked() {
+void ShortcutCustomizerDialog::onApplyClicked() const {
     saveShortcuts();
 }
 

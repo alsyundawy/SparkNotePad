@@ -15,28 +15,6 @@
 #include <QUrl>
 #include <QStringList>
 
-QString MimeTools::processByLine(const QString &input, QString (*func)(const QString &)) {
-    if (input.isEmpty())
-        return {};
-
-    const bool hasCrLf = input.contains(QLatin1String("\r\n"));
-    const QString eol = hasCrLf ? QStringLiteral("\r\n") : QStringLiteral("\n");
-
-    const QStringList lines = input.split(QChar('\n'));
-    QStringList processed;
-    processed.reserve(lines.size());
-
-    for (const QString &line : lines) {
-        QString cleanLine = line;
-        if (cleanLine.endsWith(QChar('\r'))) {
-            cleanLine.chop(1);
-        }
-        processed.append(func(cleanLine));
-    }
-
-    return processed.join(eol);
-}
-
 QString MimeTools::base64Encode(const QString &input) {
     return QString::fromLatin1(input.toUtf8().toBase64(QByteArray::OmitTrailingEquals));
 }
@@ -69,9 +47,8 @@ QString MimeTools::base64Decode(const QString &input) {
 }
 
 QString MimeTools::base64DecodeStrict(const QString &input, bool *ok) {
-    const auto result =
-        QByteArray::fromBase64Encoding(input.toUtf8().trimmed(), QByteArray::AbortOnBase64DecodingErrors);
-    if (result) {
+    if (const auto result =
+            QByteArray::fromBase64Encoding(input.toUtf8().trimmed(), QByteArray::AbortOnBase64DecodingErrors)) {
         if (ok)
             *ok = true;
         return QString::fromUtf8(*result);
@@ -116,28 +93,30 @@ QString MimeTools::quotedPrintableDecode(const QString &input) {
     QByteArray out;
     out.reserve(src.size());
 
-    for (int i = 0; i < src.size(); ++i) {
+    qsizetype i = 0;
+    const qsizetype size = src.size();
+    while (i < size) {
         const char ch = src.at(i);
-        if (ch == '=') {
-            if (i + 2 < src.size() && src.at(i + 1) == '\r' && src.at(i + 2) == '\n') {
-                i += 2;  // Soft line break CRLF
-                continue;
-            }
-            if (i + 1 < src.size() && src.at(i + 1) == '\n') {
-                i += 1;  // Soft line break LF
-                continue;
-            }
-            if (i + 2 < src.size()) {
-                bool okHex = false;
-                const int val = src.mid(i + 1, 2).toInt(&okHex, 16);
-                if (okHex) {
-                    out.append(static_cast<char>(val));
-                    i += 2;
-                    continue;
-                }
+        if (ch != '=') {
+            out.append(ch);
+            ++i;
+        } else if (i + 2 < size && src.at(i + 1) == '\r' && src.at(i + 2) == '\n') {
+            // Soft line breaks CRLF
+            i += 3;
+        } else if (i + 1 < size && src.at(i + 1) == '\n') {
+            // Soft line breaks LF
+            i += 2;
+        } else {
+            bool okHex = false;
+            const int val = (i + 2 < size) ? src.mid(i + 1, 2).toInt(&okHex, 16) : 0;
+            if (okHex) {
+                out.append(static_cast<char>(val));
+                i += 3;
+            } else {
+                out.append(ch);
+                ++i;
             }
         }
-        out.append(ch);
     }
     return QString::fromUtf8(out);
 }

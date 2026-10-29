@@ -165,7 +165,86 @@
 
 #include "FadingIndicator.h"
 
+#include <algorithm>
+#include <array>
+#include <optional>
+
 #include "ActionUtils.h"
+
+namespace {
+std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &algStr) {
+    if (algStr == QLatin1String("MD5"))
+        return QCryptographicHash::Md5;
+    if (algStr == QLatin1String("SHA1"))
+        return QCryptographicHash::Sha1;
+    if (algStr == QLatin1String("SHA256"))
+        return QCryptographicHash::Sha256;
+    if (algStr == QLatin1String("SHA512"))
+        return QCryptographicHash::Sha512;
+    return std::nullopt;
+}
+
+QString computeHashString(const QString &algStr, const QByteArray &data, const QString &validatorSuffix = {}) {
+    if (const auto alg = getHashAlgorithm(algStr)) {
+        return QString::fromLatin1(QCryptographicHash::hash(data, *alg).toHex());
+    }
+    return QObject::tr("(Use Hash & Authenticity Validator for %1%2)").arg(algStr, validatorSuffix);
+}
+
+QString computeFileHash(const QString &algStr, const QString &filePath, QString *errorOut) {
+    QFile f(filePath);
+    if (!f.open(QFile::ReadOnly)) {
+        if (errorOut)
+            *errorOut = f.errorString();
+        return {};
+    }
+    if (const auto alg = getHashAlgorithm(algStr)) {
+        QCryptographicHash hasher(*alg);
+        hasher.addData(&f);
+        return QString::fromLatin1(hasher.result().toHex());
+    }
+    return QObject::tr("(Use Hash & Authenticity Validator for %1 files)").arg(algStr);
+}
+
+QAction *findActionByName(const MainWindow *window, const QString &actionName, const QList<QAction *> &allActions) {
+    QAction *action = window->findChild<QAction *>(QStringLiteral("action") + actionName, Qt::FindDirectChildrenOnly);
+    if (!action) {
+        action = window->findChild<QAction *>(actionName);
+    }
+    if (!action) {
+        const auto it = std::ranges::find_if(allActions, [&actionName](const QAction *act) {
+            return act &&
+                   (act->objectName() == actionName || act->objectName() == QStringLiteral("action") + actionName);
+        });
+        if (it != allActions.cend()) {
+            action = *it;
+        }
+    }
+    return action;
+}
+
+QList<QKeySequence> parseShortcutSequences(const QVariant &value) {
+    QStringList shortcutStrings;
+    if (value.canConvert<QStringList>()) {
+        shortcutStrings = value.toStringList();
+    } else if (value.canConvert<QString>()) {
+        shortcutStrings = QStringList{value.toString()};
+    }
+
+    QList<QKeySequence> shortcuts;
+    for (const QString &shortcutString : shortcutStrings) {
+        const auto sequence = QKeySequence(shortcutString);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if (!sequence.isEmpty() && sequence[0].key() != Qt::Key_unknown) {
+#else
+        if (!sequence.isEmpty() && (sequence[0] & ~Qt::KeyboardModifierMask) != Qt::Key_unknown) {
+#endif
+            shortcuts.append(sequence);
+        }
+    }
+    return shortcuts;
+}
+}  // namespace
 
 MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     : ui(new Ui::MainWindow),                         // NOSONAR(cpp:S5025)
@@ -931,13 +1010,18 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Hash submenu
     auto *menuHash = new QMenu(tr("&Hash"), this);
-    const struct {
+    struct HashAlgSpec {
         const char *label;
         const char *alg;
-    } hashAlgs[] = {
-        {"&MD5", "MD5"},    {"&CRC32", "CRC32"},    {"&XXHASH", "XXHASH"},
-        {"&SHA-1", "SHA1"}, {"SHA-&256", "SHA256"}, {"SHA-&512", "SHA512"},
     };
+    static constexpr std::array<HashAlgSpec, 6> hashAlgs = {{
+        {"&MD5", "MD5"},
+        {"&CRC32", "CRC32"},
+        {"&XXHASH", "XXHASH"},
+        {"&SHA-1", "SHA1"},
+        {"SHA-&256", "SHA256"},
+        {"SHA-&512", "SHA512"},
+    }};
     for (const auto &h : hashAlgs) {
         auto *subHash = new QMenu(tr(h.label), this);
         const QString algStr = QLatin1String(h.alg);
@@ -948,21 +1032,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
             if (!editor)
                 return;
             const QByteArray data = QByteArray::fromStdString(editor->getText(editor->length() + 1).toStdString());
-            QCryptographicHash::Algorithm qt_alg = QCryptographicHash::Md5;
-            if (algStr == QLatin1String("SHA1"))
-                qt_alg = QCryptographicHash::Sha1;
-            else if (algStr == QLatin1String("SHA256"))
-                qt_alg = QCryptographicHash::Sha256;
-            else if (algStr == QLatin1String("SHA512"))
-                qt_alg = QCryptographicHash::Sha512;
-            QString hash;
-            if (algStr == QLatin1String("CRC32") || algStr == QLatin1String("XXHASH")) {
-                hash = tr("(Use Hash & Authenticity Validator for %1)").arg(algStr);
-            } else {
-                hash = QString::fromLatin1(QCryptographicHash::hash(data, qt_alg).toHex());
-            }
-            QClipboard *cb = QApplication::clipboard();
-            cb->setText(hash);
+            const QString hash = computeHashString(algStr, data);
+            QApplication::clipboard()->setText(hash);
             ui->statusBar->showMessage(
                 tr("%1 hash copied to clipboard: %2")
                     .arg(algStr, hash.left(20) + (hash.size() > 20 ? QStringLiteral("...") : QString())),
@@ -975,29 +1046,13 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
             const QString path = QFileDialog::getOpenFileName(this, tr("Select File for %1 Hash").arg(algStr));
             if (path.isEmpty())
                 return;
-            QFile f(path);
-            if (!f.open(QFile::ReadOnly)) {
-                ModernMessageBox::critical(this, tr("Error"), tr("Cannot open file: %1").arg(path));
+            QString error;
+            const QString hash = computeFileHash(algStr, path, &error);
+            if (hash.isEmpty() && !error.isEmpty()) {
+                ModernMessageBox::critical(this, tr("Error"), tr("Cannot open file: %1 (%2)").arg(path, error));
                 return;
             }
-            QCryptographicHash::Algorithm qt_alg = QCryptographicHash::Md5;
-            if (algStr == QLatin1String("SHA1"))
-                qt_alg = QCryptographicHash::Sha1;
-            else if (algStr == QLatin1String("SHA256"))
-                qt_alg = QCryptographicHash::Sha256;
-            else if (algStr == QLatin1String("SHA512"))
-                qt_alg = QCryptographicHash::Sha512;
-            QString hash;
-            if (algStr == QLatin1String("CRC32") || algStr == QLatin1String("XXHASH")) {
-                hash = tr("(Use Hash & Authenticity Validator for %1 files)").arg(algStr);
-            } else {
-                QCryptographicHash hasher(qt_alg);
-                hasher.addData(&f);
-                hash = QString::fromLatin1(hasher.result().toHex());
-            }
-            f.close();
-            QClipboard *cb = QApplication::clipboard();
-            cb->setText(hash);
+            QApplication::clipboard()->setText(hash);
             ui->statusBar->showMessage(
                 tr("%1 hash of file: %2")
                     .arg(algStr, hash.left(20) + (hash.size() > 20 ? QStringLiteral("...") : QString())),
@@ -1011,27 +1066,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
             if (!editor)
                 return;
             const QByteArray selBytes = editor->getSelText();
-            const QString sel = QString::fromUtf8(selBytes);
-            if (sel.isEmpty()) {
+            if (const QString sel = QString::fromUtf8(selBytes); sel.isEmpty()) {
                 ui->statusBar->showMessage(tr("No selection to hash."), 3000);
                 return;
             }
-            const QByteArray data = selBytes;
-            QCryptographicHash::Algorithm qt_alg = QCryptographicHash::Md5;
-            if (algStr == QLatin1String("SHA1"))
-                qt_alg = QCryptographicHash::Sha1;
-            else if (algStr == QLatin1String("SHA256"))
-                qt_alg = QCryptographicHash::Sha256;
-            else if (algStr == QLatin1String("SHA512"))
-                qt_alg = QCryptographicHash::Sha512;
-            QString hash;
-            if (algStr == QLatin1String("CRC32") || algStr == QLatin1String("XXHASH")) {
-                hash = tr("(Use Hash & Authenticity Validator for %1 selection)").arg(algStr);
-            } else {
-                hash = QString::fromLatin1(QCryptographicHash::hash(data, qt_alg).toHex());
-            }
-            QClipboard *cb = QApplication::clipboard();
-            cb->setText(hash);
+            const QString hash = computeHashString(algStr, selBytes, QStringLiteral(" selection"));
+            QApplication::clipboard()->setText(hash);
             ui->statusBar->showMessage(
                 tr("%1 hash of selection copied: %2")
                     .arg(algStr, hash.left(20) + (hash.size() > 20 ? QStringLiteral("...") : QString())),
@@ -1071,14 +1111,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 1. Base64 Encode
     auto *actB64Enc = new QAction(tr("Base64 Encode"), this);
-    connect(actB64Enc, &QAction::triggered, this, [applyMime, this]() {
+    connect(actB64Enc, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::base64Encode(s); }, tr("Base64 encoded."));
     });
     menuMimeTools->addAction(actB64Enc);
 
     // 2. Base64 Encode with padding
     auto *actB64EncPad = new QAction(tr("Base64 Encode with padding"), this);
-    connect(actB64EncPad, &QAction::triggered, this, [applyMime, this]() {
+    connect(actB64EncPad, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::base64EncodeWithPadding(s); },
                   tr("Base64 encoded with padding."));
     });
@@ -1086,7 +1126,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 3. Base64 Encode with Unix EOL
     auto *actB64EncUnix = new QAction(tr("Base64 Encode with Unix EOL"), this);
-    connect(actB64EncUnix, &QAction::triggered, this, [applyMime, this]() {
+    connect(actB64EncUnix, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::base64EncodeUnixEol(s); },
                   tr("Base64 encoded with Unix EOL."));
     });
@@ -1094,14 +1134,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 4. Base64 Encode by line
     auto *actB64EncLine = new QAction(tr("Base64 Encode by line"), this);
-    connect(actB64EncLine, &QAction::triggered, this, [applyMime, this]() {
+    connect(actB64EncLine, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::base64EncodeByLine(s); }, tr("Base64 encoded by line."));
     });
     menuMimeTools->addAction(actB64EncLine);
 
     // 5. Base64 Decode
     auto *actB64Dec = new QAction(tr("Base64 Decode"), this);
-    connect(actB64Dec, &QAction::triggered, this, [applyMime, this]() {
+    connect(actB64Dec, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::base64Decode(s); }, tr("Base64 decoded."));
     });
     menuMimeTools->addAction(actB64Dec);
@@ -1122,18 +1162,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
                                  tr("Invalid Base64 data, illegal character, or incorrect padding detected."));
             return;
         }
-        if (hasSel) {
-            editor->replaceSel(result.toUtf8().constData());
-        } else {
-            editor->setText(result.toUtf8().constData());
-        }
+        const QByteArray bytes = result.toUtf8();
+        hasSel ? editor->replaceSel(bytes.constData()) : editor->setText(bytes.constData());
         ui->statusBar->showMessage(tr("Base64 strict decoded successfully."), 3000);
     });
     menuMimeTools->addAction(actB64DecStrict);
 
     // 7. Base64 Decode by line
     auto *actB64DecLine = new QAction(tr("Base64 Decode by line"), this);
-    connect(actB64DecLine, &QAction::triggered, this, [applyMime, this]() {
+    connect(actB64DecLine, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::base64DecodeByLine(s); }, tr("Base64 decoded by line."));
     });
     menuMimeTools->addAction(actB64DecLine);
@@ -1142,7 +1179,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 8. Quoted-printable Encode
     auto *actQpEnc = new QAction(tr("Quoted-printable Encode"), this);
-    connect(actQpEnc, &QAction::triggered, this, [applyMime, this]() {
+    connect(actQpEnc, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::quotedPrintableEncode(s); },
                   tr("Quoted-printable encoded."));
     });
@@ -1150,7 +1187,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 9. Quoted-printable Decode
     auto *actQpDec = new QAction(tr("Quoted-printable Decode"), this);
-    connect(actQpDec, &QAction::triggered, this, [applyMime, this]() {
+    connect(actQpDec, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::quotedPrintableDecode(s); },
                   tr("Quoted-printable decoded."));
     });
@@ -1160,14 +1197,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 10. URL Encode (RFC1738)
     auto *actUrlRfcEnc = new QAction(tr("URL Encode (RFC1738)"), this);
-    connect(actUrlRfcEnc, &QAction::triggered, this, [applyMime, this]() {
+    connect(actUrlRfcEnc, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::urlEncodeRfc1738(s); }, tr("URL encoded (RFC1738)."));
     });
     menuMimeTools->addAction(actUrlRfcEnc);
 
     // 11. URL Encode (RFC1738) by line
     auto *actUrlRfcEncLine = new QAction(tr("URL Encode (RFC1738) by line"), this);
-    connect(actUrlRfcEncLine, &QAction::triggered, this, [applyMime, this]() {
+    connect(actUrlRfcEncLine, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::urlEncodeRfc1738ByLine(s); },
                   tr("URL encoded (RFC1738) by line."));
     });
@@ -1175,14 +1212,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 12. URL Encode (Extended)
     auto *actUrlExtEnc = new QAction(tr("URL Encode (Extended)"), this);
-    connect(actUrlExtEnc, &QAction::triggered, this, [applyMime, this]() {
+    connect(actUrlExtEnc, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::urlEncodeExtended(s); }, tr("URL encoded (Extended)."));
     });
     menuMimeTools->addAction(actUrlExtEnc);
 
     // 13. URL Encode (Extended) by line
     auto *actUrlExtEncLine = new QAction(tr("URL Encode (Extended) by line"), this);
-    connect(actUrlExtEncLine, &QAction::triggered, this, [applyMime, this]() {
+    connect(actUrlExtEncLine, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::urlEncodeExtendedByLine(s); },
                   tr("URL encoded (Extended) by line."));
     });
@@ -1190,14 +1227,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 14. URL Encode (Full)
     auto *actUrlFullEnc = new QAction(tr("URL Encode (Full)"), this);
-    connect(actUrlFullEnc, &QAction::triggered, this, [applyMime, this]() {
+    connect(actUrlFullEnc, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::urlEncodeFull(s); }, tr("URL encoded (Full)."));
     });
     menuMimeTools->addAction(actUrlFullEnc);
 
     // 15. URL Encode (Full) by line
     auto *actUrlFullEncLine = new QAction(tr("URL Encode (Full) by line"), this);
-    connect(actUrlFullEncLine, &QAction::triggered, this, [applyMime, this]() {
+    connect(actUrlFullEncLine, &QAction::triggered, this, [applyMime]() {
         applyMime([](const QString &s) { return MimeTools::urlEncodeFullByLine(s); },
                   tr("URL encoded (Full) by line."));
     });
@@ -1205,9 +1242,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // 16. URL Decode
     auto *actUrlDec = new QAction(tr("URL Decode"), this);
-    connect(actUrlDec, &QAction::triggered, this, [applyMime, this]() {
-        applyMime([](const QString &s) { return MimeTools::urlDecode(s); }, tr("URL decoded."));
-    });
+    connect(actUrlDec, &QAction::triggered, this,
+            [applyMime]() { applyMime([](const QString &s) { return MimeTools::urlDecode(s); }, tr("URL decoded.")); });
     menuMimeTools->addAction(actUrlDec);
 
     menuTools->addMenu(menuMimeTools);
@@ -2321,53 +2357,15 @@ void MainWindow::applyCustomShortcuts() const {
     ApplicationSettings *settings = app->getSettings();
     settings->beginGroup("Shortcuts");
 
-    const auto allActions = findChildren<QAction *>();
+    const QList<QAction *> allActions = findChildren<QAction *>();
 
     for (const QString &actionName : settings->childKeys()) {
-        QAction *action = findChild<QAction *>(QStringLiteral("action") + actionName, Qt::FindDirectChildrenOnly);
-        if (!action) {
-            action = findChild<QAction *>(actionName);
-        }
-        if (!action) {
-            const auto it = std::find_if(allActions.cbegin(), allActions.cend(), [&actionName](QAction *act) {
-                return act &&
-                       (act->objectName() == actionName || act->objectName() == QStringLiteral("action") + actionName);
-            });
-            if (it != allActions.cend()) {
-                action = *it;
+        QAction *action = findActionByName(this, actionName, allActions);
+        if (action) {
+            const QList<QKeySequence> shortcuts = parseShortcutSequences(settings->value(actionName));
+            if (!shortcuts.isEmpty()) {
+                action->setShortcuts(shortcuts);
             }
-        }
-
-        if (!action) {
-            continue;
-        }
-
-        const QVariant value = settings->value(actionName);
-        QStringList shortcutStrings;
-        if (value.canConvert<QStringList>()) {
-            shortcutStrings = value.toStringList();
-        } else if (value.canConvert<QString>()) {
-            shortcutStrings = QStringList{value.toString()};
-        }
-
-        if (shortcutStrings.isEmpty()) {
-            continue;
-        }
-
-        QList<QKeySequence> shortcuts;
-        for (const QString &shortcutString : shortcutStrings) {
-            auto sequence = QKeySequence(shortcutString);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            if (!sequence.isEmpty() && sequence[0].key() != Qt::Key_unknown) {
-#else
-            if (!sequence.isEmpty() && (sequence[0] & ~Qt::KeyboardModifierMask) != Qt::Key_unknown) {
-#endif
-                shortcuts.append(sequence);
-            }
-        }
-
-        if (!shortcuts.isEmpty()) {
-            action->setShortcuts(shortcuts);
         }
     }
 

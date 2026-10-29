@@ -35,6 +35,8 @@
 #include <QSlider>
 #include <QSpinBox>
 
+#include <memory>
+
 namespace Ui {
 class PreferencesDialog;
 }
@@ -46,12 +48,12 @@ class PreferencesDialog : public QDialog {
 
 public:
     explicit PreferencesDialog(ApplicationSettings *settings, QWidget *parent = nullptr);
-    ~PreferencesDialog();
+    ~PreferencesDialog() override;
 
     void showApplicationRestartRequired() const;
 
 private:
-    Ui::PreferencesDialog *ui;
+    std::unique_ptr<Ui::PreferencesDialog> ui;
     ApplicationSettings *settings;
 
     template <typename Func1, typename Func2, typename Func3>
