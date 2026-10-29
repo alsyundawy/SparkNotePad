@@ -145,7 +145,7 @@ void QuickFindWidget::highlightMatches() {
 }
 
 void QuickFindWidget::showWrapIndicator() {
-    FadingIndicator::showPixmap(editor, QStringLiteral(":/icons/wrapindicator.png"));
+    FadingIndicator::showPixmap(editor, QStringLiteral(":/icons/wrapindicator.svg"));
 }
 
 void QuickFindWidget::navigateToNextMatch(bool skipCurrent) {

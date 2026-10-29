@@ -52,7 +52,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/cog.png</normaloff>:/icons/cog.png</iconset>
+          <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
         </property>
         <property name="popupMode">
          <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>

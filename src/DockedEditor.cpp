@@ -211,13 +211,13 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
 
     // Set the icon
     if (editor->readOnly()) {
-        dockWidget->tabWidget()->setIcon(QIcon(":/icons/readonly.png"));
+        dockWidget->tabWidget()->setIcon(QIcon(":/icons/readonly.svg"));
     } else {
-        dockWidget->tabWidget()->setIcon(QIcon(editor->canSaveToDisk() ? ":/icons/unsaved.png" : ":/icons/saved.png"));
+        dockWidget->tabWidget()->setIcon(QIcon(editor->canSaveToDisk() ? ":/icons/unsaved.svg" : ":/icons/saved.svg"));
         connect(editor, &ScintillaNext::savePointChanged, dockWidget, [=, this](bool dirty) {
             Q_UNUSED(dirty)
             const bool actuallyDirty = editor->canSaveToDisk();
-            const QString iconPath = actuallyDirty ? ":/icons/unsaved.png" : ":/icons/saved.png";
+            const QString iconPath = actuallyDirty ? ":/icons/unsaved.svg" : ":/icons/saved.svg";
             dockWidget->tabWidget()->setIcon(QIcon(iconPath));
         });
     }

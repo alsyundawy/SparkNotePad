@@ -143,7 +143,7 @@ bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
     qInfo(Q_FUNC_INFO);
 
 #ifndef Q_OS_MACOS
-    setWindowIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.png")));
+    setWindowIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.svg")));
 #endif
 
     settings = new ApplicationSettings(this);

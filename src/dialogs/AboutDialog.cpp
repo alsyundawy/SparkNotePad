@@ -559,8 +559,8 @@ QWidget *AboutDialog::createAboutTab() {
     headerLayout->setSpacing(14);
 
     auto *iconLabel = new QLabel(contentWidget);
-    if (const QPixmap iconPixmap(":/icons/SparkNotePad.png"); !iconPixmap.isNull()) {
-        iconLabel->setPixmap(iconPixmap.scaled(56, 56, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    if (const QIcon appIcon(QStringLiteral(":/icons/SparkNotePad.svg")); !appIcon.isNull()) {
+        iconLabel->setPixmap(appIcon.pixmap(56, 56));
     }
     iconLabel->setFixedSize(56, 56);
     headerLayout->addWidget(iconLabel, 0, Qt::AlignTop);

@@ -439,8 +439,8 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
     headerLayout->setSpacing(14);
 
     QLabel *iconLabel = new QLabel(this);
-    if (const QPixmap appIcon(QStringLiteral(":/icons/SparkNotePad.png")); !appIcon.isNull()) {
-        iconLabel->setPixmap(appIcon.scaled(58, 58, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    if (const QIcon appIcon(QStringLiteral(":/icons/SparkNotePad.svg")); !appIcon.isNull()) {
+        iconLabel->setPixmap(appIcon.pixmap(58, 58));
     } else {
         iconLabel->setPixmap(createBadgePixmap(DialogType::UpToDate));
     }

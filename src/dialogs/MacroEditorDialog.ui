@@ -98,9 +98,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normalon>:/icons/table_row_insert.png</normalon>
-            </iconset>
+            <iconset resource="../resources.qrc">
+             <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
            </property>
           </widget>
          </item>
@@ -113,9 +112,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normalon>:/icons/table_row_delete.png</normalon>
-            </iconset>
+            <iconset resource="../resources.qrc">
+             <normaloff>:/icons/table_delete.svg</normaloff>:/icons/table_delete.svg</iconset>
            </property>
           </widget>
          </item>
@@ -128,9 +126,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normalon>:/icons/arrow_up.png</normalon>
-            </iconset>
+            <iconset resource="../resources.qrc">
+             <normaloff>:/icons/arrow_up.svg</normaloff>:/icons/arrow_up.svg</iconset>
            </property>
           </widget>
          </item>
@@ -143,9 +140,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normalon>:/icons/arrow_down.png</normalon>
-            </iconset>
+            <iconset resource="../resources.qrc">
+             <normaloff>:/icons/arrow_down.svg</normaloff>:/icons/arrow_down.svg</iconset>
            </property>
           </widget>
          </item>
@@ -180,7 +176,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normalon>:/icons/copy.png</normalon>
+         <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg
         </iconset>
        </property>
       </widget>
@@ -195,7 +191,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normalon>:/icons/table_delete.png</normalon>
+         <normaloff>:/icons/table_delete.svg</normaloff>:/icons/table_delete.svg
         </iconset>
        </property>
       </widget>

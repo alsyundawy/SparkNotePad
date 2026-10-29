@@ -42,7 +42,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+          <normaloff>:/icons/copy.svg</normaloff>:/icons/copy.svg</iconset>
         </property>
        </widget>
       </item>
