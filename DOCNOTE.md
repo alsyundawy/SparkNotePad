@@ -88,16 +88,19 @@ SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity develope
 14. **Zero-Lag Menu Presentation & Native Icon Rendering**:
     - Eliminated high-overhead global `MenuIconEventFilter` event hook.
     - Enabled native menu icons via `QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);` before `QApplication` instantiation, restoring instant menu response.
-15. **Dedicated "Select All" Vector Icon & High-DPI Vector Suite**:
+15. **Cross-Platform Build & Documentation Matrix Expansion**:
+    - Expanded project READMEs with direct cross-references to `doc/MACOS_CODESIGN_AND_NOTARIZATION.md`, `doc/BUILD_UBUNTU_DEBIAN.md`, `doc/LINUX_DEB_RPM_PACKAGING.md`, and `doc/DEVELOPER_GUIDE.md`.
+    - Added standalone native macOS local DMG packaging guide (`cmake --build build --target dmg`) with verified ad-hoc codesigning and framework dependency bundling.
+16. **Dedicated "Select All" Vector Icon & High-DPI Vector Suite**:
     - Designed custom monoline `select_all.svg` matching user design specifications.
     - Upgraded all legacy 16x16 PNG menu icons to crisp vector SVGs.
     - Assigned SVGs to `actionAboutQt`, `actionShowCharacterInfo`, `actionBase64Encode`, `actionBase64Decode`, `actionURLEncode`, `actionURLDecode`.
     - Upgraded `ActionUtils::createSolidIcon` to render 2x anti-aliased rounded rects querying `qApp->devicePixelRatio()`.
-16. **Restoration of Main Toolbar Print Action & Menu Icon Sanitization**:
+17. **Restoration of Main Toolbar Print Action & Menu Icon Sanitization**:
     - Restored `actionPrint` with `printer.svg` directly after `actionCloseAll` on `mainToolBar`.
     - Sanitized 26 spurious menu icons from container `QMenu` dropdown headings in `MainWindow.ui` and `MainWindow.cpp`.
     - Removed duplicate `settings.svg` and `select_all.svg` across ~150 non-toolbar text actions, reserving `settings.svg` strictly for Preferences/Settings and `select_all.svg` strictly for Select All.
-17. **Static Analysis, Const-Correctness & Scope Hardening**:
+18. **Static Analysis, Const-Correctness & Scope Hardening**:
     - Enforced pointer-to-const for `QMenu *` variables in `MainWindow.cpp` (`ensureMenuIconsVisible`) and `SparkNotePadApplication.cpp` (`eventFilter`), directly resolving SonarQube `cpp:S5416` warnings.
     - Scoped variable declaration `isTip` into `if` init-statement in `SparkNotePadApplication.cpp`, resolving SonarQube `cpp:S5418` warnings and restricting variable lifetime.
 

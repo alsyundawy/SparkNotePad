@@ -79,8 +79,12 @@
 > 🐧 **[`Matriks Dukungan Platform (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
+> 🍏 **[`Panduan Codesign & Notarisasi macOS`](doc/MACOS_CODESIGN_AND_NOTARIZATION.md)** &nbsp;|&nbsp;
+> 🐧 **[`Panduan Build Ubuntu & Debian`](doc/BUILD_UBUNTU_DEBIAN.md)** &nbsp;|&nbsp;
+> 📦 **[`Panduan Packaging Linux DEB & RPM`](doc/LINUX_DEB_RPM_PACKAGING.md)** &nbsp;|&nbsp;
 > 🔱 **[`Panduan Build FreeBSD (KDE6 & XFCE)`](doc/BUILD_FREEBSD_KDE_XFCE.md)** &nbsp;|&nbsp;
 > 📋 **[`Analisis & Tasklist FreeBSD`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md)** &nbsp;|&nbsp;
+> 🛠️ **[`Panduan Pengembang Lintas Platform`](doc/DEVELOPER_GUIDE.md)** &nbsp;|&nbsp;
 > ⚖️ **[`Komparasi NotepadNext vs SparkNotePad`](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
 > 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
@@ -272,6 +276,21 @@ sudo gtk-update-icon-cache -f /usr/local/share/icons/hicolor 2>/dev/null || true
 ```
 
 _(Lihat panduan lengkap [Panduan Build FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md) serta [Analisis & Tasklist FreeBSD](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md))._
+
+### Build Native macOS & Pembuatan Paket DMG
+
+SparkNotePad dapat dikompilasi secara native di macOS menggunakan Apple Clang dan pustaka Qt 6.5–6.12, lengkap dengan otomatisasi `macdeployqt` dan pembuatan berkas DMG:
+
+```bash
+# 1. Konfigurasi dan kompilasi executable
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Qt/6.12.0/macos
+cmake --build build -j 4
+
+# 2. Pembuatan paket mandiri DMG macOS beserta framework embedded dan ad-hoc codesign
+cmake --build build --target dmg -j 4
+```
+
+_(Lihat panduan lengkap [Panduan Codesign & Notarisasi macOS](doc/MACOS_CODESIGN_AND_NOTARIZATION.md) serta [Panduan Pengembang](doc/DEVELOPER_GUIDE.md))._
 
 ---
 

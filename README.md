@@ -79,8 +79,12 @@
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
+> 🍏 **[`macOS Codesign & Notarization Guide`](doc/MACOS_CODESIGN_AND_NOTARIZATION.md)** &nbsp;|&nbsp;
+> 🐧 **[`Ubuntu & Debian Build Guide`](doc/BUILD_UBUNTU_DEBIAN.md)** &nbsp;|&nbsp;
+> 📦 **[`Linux DEB & RPM Packaging Guide`](doc/LINUX_DEB_RPM_PACKAGING.md)** &nbsp;|&nbsp;
 > 🔱 **[`FreeBSD Build Guide (KDE6 & XFCE)`](doc/BUILD_FREEBSD_KDE_XFCE.md)** &nbsp;|&nbsp;
 > 📋 **[`FreeBSD Analysis & Tasklist`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md)** &nbsp;|&nbsp;
+> 🛠️ **[`Cross-Platform Developer Guide`](doc/DEVELOPER_GUIDE.md)** &nbsp;|&nbsp;
 > ⚖️ **[`NotepadNext vs SparkNotePad Comparison`](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
 > 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
@@ -272,6 +276,21 @@ sudo gtk-update-icon-cache -f /usr/local/share/icons/hicolor 2>/dev/null || true
 ```
 
 _(See detailed [FreeBSD Native Build Guide](doc/BUILD_FREEBSD_KDE_XFCE.md) and [FreeBSD Analysis & Tasklist](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md))._
+
+### macOS Native Build & Local DMG Packaging
+
+SparkNotePad compiles natively on macOS with Apple Clang and Qt 6.5–6.12, with automated `macdeployqt` and DMG packaging:
+
+```bash
+# 1. Configure and build executable
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Qt/6.12.0/macos
+cmake --build build -j 4
+
+# 2. Package standalone macOS DMG with embedded frameworks & ad-hoc codesign
+cmake --build build --target dmg -j 4
+```
+
+_(See detailed [macOS Codesign & Notarization Guide](doc/MACOS_CODESIGN_AND_NOTARIZATION.md) and [Cross-Platform Developer Guide](doc/DEVELOPER_GUIDE.md))._
 
 ---
 

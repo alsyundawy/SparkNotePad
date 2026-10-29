@@ -86,6 +86,9 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
   - Fixed SVG rendering by replacing unsupported `currentColor` in `cross.svg`, `plus.svg`, and `list_with_icons.svg` with explicit solid vector colors (`#3b82f6` / `#ef4444`).
   - Populated crisp vector icons across all previously iconless menu actions (`actionAboutQt`, `actionShowCharacterInfo`, `actionBase64Encode`, `actionBase64Decode`, `actionURLEncode`, `actionURLDecode`, `actionSaveWithOriginalTime`, `actionUpdateFileTime`, `actionPreserveFileTime`, `actionRename`, `actionExportHtml`, `actionExportRtf`, `menuEncryption`, `actionEncryptDoc`, `actionDecryptDoc`, `actionQuickOpen`, `actionCommandPalette`, `menuClose_More`, `menuRecentFiles`, `menuExportAs`).
   - Upgraded `ActionUtils::createSolidIcon` to dynamically query `qApp->devicePixelRatio()` and render 2x anti-aliased rounded rects so color markers are razor-sharp on Retina and 4K displays.
+- **Multi-Platform Build & Documentation Matrix Expansion**:
+  - Expanded `README.md` and `README-id.md` documentation suites with direct links to `MACOS_CODESIGN_AND_NOTARIZATION.md`, `BUILD_UBUNTU_DEBIAN.md`, `LINUX_DEB_RPM_PACKAGING.md`, and `DEVELOPER_GUIDE.md`.
+  - Added dedicated macOS native build and standalone local DMG packaging instructions (`cmake --build build --target dmg`) to project READMEs.
 
 #### 🐛 Fixed
 
