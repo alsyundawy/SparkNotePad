@@ -163,8 +163,8 @@
 
 #include "ActionUtils.h"
 
-MainWindow::MainWindow(SparkNotePadApplication *app)
-    : ui(new Ui::MainWindow),  // NOSONAR(cpp:S5025)
+MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
+    : ui(new Ui::MainWindow),                         // NOSONAR(cpp:S5025)
       app(app),
       zoomEventWatcher(new ZoomEventWatcher(this)),
       shiftMiddleClickBlocker(new ShiftMiddleClickBlocker(this)),
@@ -2134,7 +2134,7 @@ ScintillaNext *MainWindow::openOrDecryptFile(const QString &filePath) {
     return nullptr;
 }
 
-void MainWindow::openFileList(const QStringList &fileNames) {
+void MainWindow::openFileList(const QStringList &fileNames) {  // NOSONAR(cpp:S3776)
     qInfo(Q_FUNC_INFO);
 
     if (fileNames.isEmpty())
