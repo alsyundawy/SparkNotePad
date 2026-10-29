@@ -60,14 +60,16 @@ SparkNotePad menyertakan dialog visual perbandingan berkas bawaan (`FileDiffDial
 
 ---
 
-## 6. Arsitektur Single-Instance & Mode Multi-Instance
+## 7. Rangkaian Menu Tools Gaya Notepad++
 
-Secara bawaan, membuka berkas melalui terminal atau klik dua kali pada pengelola berkas akan mengirimkan instruksi ke jendela SparkNotePad yang telah berjalan melalui IPC (_Inter-Process Communication_), mencegah penumpukan jendela berlebih di layar Anda.
+SparkNotePad v1.3.7 menyatukan utilitas pengembang tingkat lanjut ke dalam menu utama **Tools**:
 
-Jika Anda membutuhkan jendela terpisah yang sepenuhnya independen, cukup tambahkan parameter berikut:
+- **Submenu Hash Kriptografis**: Dukungan algoritma MD5, CRC32, XXHASH, SHA-1, SHA-256, dan SHA-512 dengan aksi Generate (seluruh berkas), Generate Dari Berkas, Generate Dari Teks Terpilih, serta Verifikasi Checksum.
+- **Validator Hash & Otentisitas**: Peluncur langsung verifikasi streaming hash berbasis buffer 64 KB.
+- **Submenu MIME Tools**: Encode/Decode Base64, URL Percent Encode/Decode, dan Quoted-Printable Encode.
+- **Submenu Konverter Format**: Konversi dua arah ASCII <-> Heksadesimal dan Desimal <-> Heksadesimal.
+- **Enkripsi Dokumen AES-256**: Enkripsi dokumen berkekuatan militer dengan PBKDF2 (100.000 putaran) kini terorganisasi rapi di menu Tools.
 
-```bash
-sparknotepad --multi-instance
-```
+---
 
 Lanjutkan ke bab berikutnya: [[Antarmuka dan Koleksi Tema|03-Antarmuka-dan-Tema]].
