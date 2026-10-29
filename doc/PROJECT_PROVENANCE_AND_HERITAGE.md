@@ -62,6 +62,18 @@ A deliberate, strategic decision was made to establish SparkNotePad as an indepe
    - Submitting thousands of non-contiguous feature commits and breaking structural overhauls as upstream pull requests would place an undue burden on upstream maintainers.
    - Operating as an independent project provides absolute clarity for bug reports, release lifecycles, and package registries, allowing both projects to pursue their distinct ideals without compromise.
 
+### 5. GPLv3 Compliance & Open Source Legal Analysis
+
+| Legal & Ethical Dimension | GPLv3 Legal Requirement                        | SparkNotePad Status            | Compliance Verdict |
+| :------------------------ | :--------------------------------------------- | :----------------------------- | :----------------: |
+| **Source Availability**   | Full source code must be freely accessible     | 100% public on GitHub          |   **COMPLIANT**    |
+| **Copyleft Continuity**   | Derivatives must remain under GPL-3.0-or-later | Full GPL-3.0 license preserved |   **COMPLIANT**    |
+| **Original Copyrights**   | Original author notices must be retained       | Justin Dailey copyright intact |   **COMPLIANT**    |
+| **Modification Notices**  | Must prominently state that code was modified  | Fully documented in docs & git |   **COMPLIANT**    |
+| **UI Legal Notices**      | Interactive GUI must display license notices   | Implemented in AboutDialog     |   **COMPLIANT**    |
+| **Repository Model**      | No requirement to use platform-specific fork   | Standalone repository is valid |   **COMPLIANT**    |
+| **Project Rebranding**    | Allowed and ethically protects trademarks      | Rebranded to SparkNotePad      |   **COMPLIANT**    |
+
 ---
 
 ## Bahasa Indonesia
@@ -115,3 +127,15 @@ Keputusan untuk membangun SparkNotePad sebagai proyek mandiri (_independent proj
 5. **Kejelasan Identitas & Menghormati Proyek Hulu**:
    - Mengajukan ratusan _pull request_ dengan perubahan arsitektural drastis akan membebani _maintainer_ NotepadNext.
    - Dengan berdiri sebagai entitas proyek mandiri, pengguna mendapatkan kejelasan kanal pelaporan _issue_, siklus rilis yang independen, dan kedua proyek dapat berkembang optimal sesuai visi masing-masing tanpa kompromi atau kebingungan identitas.
+
+### 5. Analisis Kepatuhan Lisensi GNU GPLv3
+
+| Dimensi Hukum & Etika        | Persyaratan Hukum GPLv3                     | Status SparkNotePad               |  Kesimpulan  |
+| :--------------------------- | :------------------------------------------ | :-------------------------------- | :----------: |
+| **Ketersediaan Source Code** | Kode sumber wajib dapat diakses publik      | 100% publik di GitHub             | **MEMATUHI** |
+| **Kontinuitas Copyleft**     | Modifikasi wajib tetap berlisensi GPL-3.0   | Lisensi GPL-3.0 tetap utuh        | **MEMATUHI** |
+| **Hak Cipta Asli**           | Nama pembuat awal tidak boleh dihapus       | Hak cipta Justin Dailey utuh      | **MEMATUHI** |
+| **Catatan Modifikasi**       | Wajib mencatat bahwa kode telah diubah      | Terdokumentasi di docs & git      | **MEMATUHI** |
+| **Pemberitahuan UI**         | GUI interaktif wajib memuat lisensi         | Tersedia di AboutDialog           | **MEMATUHI** |
+| **Model Repositori**         | Tidak wajib menggunakan fitur fork platform | Repositori mandiri sepenuhnya sah | **MEMATUHI** |
+| **Rebranding Proyek**        | Diperbolehkan dan melindungi merek dagang   | Sah berganti ke SparkNotePad      | **MEMATUHI** |
