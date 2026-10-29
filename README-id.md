@@ -106,8 +106,61 @@
 
 ---
 
+## 📜 Asal-Usul Proyek, Warisan Arsitektur & Evolusi
+
+### Awal Mula & Basis Kode Fondasional
+
+Fondasi teknis repositori ini berakar dari impor _source code_ awal yang tercatat pada commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9). Impor fondasional tersebut menjadi landasan rancangan awal yang diturunkan dari arsitektur Scintilla dan Qt lintas platform yang dirintis oleh **Justin Dailey ([@dail8859](https://github.com/dail8859))** bersama para kontributor _open-source_ **NotepadNext**.
+
+Pada fase eksperimental awal, basis kode ini dirawat dan dikembangkan di bawah nama kerja sementara _NoteSciPad_.
+
+### Transformasi Menjadi SparkNotePad (v1.3.0+)
+
+Mulai rilis **versi 1.3.0**, proyek ini secara resmi mengalami _rebranding_ arsitektur dan konseptual dengan menetapkan identitas permanennya: **SparkNotePad**. Transformasi ini bukan sekadar pergantian nama, melainkan lompatan paradigma menuju editor teks desktop mandiri berstandar industri dengan pengerasan keamanan modern, performa tinggi, dan fitur komprehensif bagi pengguna Linux, FreeBSD, dan macOS.
+
+### Rasa Terima Kasih Mendalam kepada Kontributor Asli
+
+Kami menyampaikan apresiasi dan rasa terima kasih yang sebesar-besarnya dengan penuh rasa hormat kepada:
+
+- **Justin Dailey ([@dail8859](https://github.com/dail8859))** dan seluruh kontributor **NotepadNext**, yang telah membangun kerangka GUI Qt yang elegan, integrasi engine Scintilla, serta konsep editor multi-tab lintas platform yang menjadi pijakan awal proyek ini.
+- **Neil Hodgson & Komunitas Scintilla/Lexilla**, yang terus menyediakan engine penyuntingan teks kelas dunia dengan kecepatan perenderan sub-milidetik yang tak tertandingi.
+
+### Alasan Memilih Proyek Mandiri Dibandingkan Mempertahankan Fork Git
+
+Keputusan untuk membangun SparkNotePad sebagai proyek mandiri (_independent project_) dan bukan sekadar _fork_ berkelanjutan dari NotepadNext diambil secara sadar dan matang atas dasar pertimbangan arsitektur, filosofi produk, dan kepraktisan:
+
+1. **Modernisasi Arsitektur Mendasar (ISO C++20 & Qt 6 Murni)**:
+   - NotepadNext secara bijak mempertahankan kompatibilitas mundur dengan toolchain lawas (C++14/C++17) dan lingkungan Qt 5.
+   - Sebaliknya, SparkNotePad melakukan lompatan arsitektural radikal ke standar modern **ISO C++20** (`std::ranges`, `std::string_view`, concepts, structured bindings) dan secara tegas hanya menargetkan **Qt 6.5 hingga 6.12 LTS**. Perubahan masif yang memutus kompatibilitas Qt 5 tentu tidak mungkin digabungkan (_merge_) ke proyek hulu tanpa merusak komitmen kompatibilitas mereka.
+
+2. **Pengerasan Keamanan Tingkat Tinggi (Zero-Trust Sandbox Isolation)**:
+   - SparkNotePad mengintegrasikan mekanisme pertahanan siber yang ketat untuk lingkungan pengembang profesional:
+     - **Isolasi Sandbox Lua (CVE-2026-42214)**: Penonaktifan total terhadap primitif eksekusi sistem operasi, manipulasi berkas, dan modul debug yang berbahaya, diverifikasi melalui unit test otomatis.
+     - **Mitigasi ReDoS (CVE-2026-4744)**: Pendeteksian dini terhadap regular expression berulang bertingkat (_catastrophic backtracking_) sebelum dieksekusi oleh Scintilla.
+     - **Penjaga Integritas Konfigurasi & Sesi (CVE-2026-48778 / CVE-2026-48800)**: Perlindungan terhadap injeksi perintah shell eksternal dan manipulasi sesi multi-pengguna.
+     - **Pratinjau Markdown Terisolasi (CVE-2026-20841)**: Pembatasan skema URI ketat yang memblokir eksekusi protokol berbahaya.
+     - **Keamanan Kriptografi Dokumen**: Enkripsi dokumen native AES-256 (PBKDF2 100.000 iterasi + HMAC-SHA256) serta verifikasi hash data _streaming_ (SHA-256/512/SHA-3).
+   - Pendekatan defensif ini berada di luar cakupan editor teks hulu yang berfokus minimalis.
+
+3. **Perbedaan Visi Produk & Fitur Power-User yang Jauh Meluas**:
+   - SparkNotePad menghadirkan perkakas pengembang tingkat lanjut yang tidak dirancang untuk editor teks sederhana:
+     - **Palet Perintah Omnibar & Quick Open (`Cmd+P` / `Ctrl+P`)**: Navigasi modal terinspirasi dari KDE Kate untuk pencarian tab, berkas terkini, dan eksekusi perintah editor secara cepat.
+     - **Mesin Visual Diff Berdampingan**: Perbandingan berkas berbasis algoritma Myers / LCS langsung di memori dengan sinkronisasi gulir dan penanda baris visual.
+     - **Paket Alat MIME Lengkap Setara Notepad++**: 16 aksi MIME Tools (Base64 pad/unpad/unix/line/strict, Quoted-Printable, varian enkode URL), pemformat XML/HTML/SQL, serta dekoder JWT dan analisis entropi Shannon.
+     - **Ekstensibilitas Runtime Modern**: Integrasi bridge scripting Python 3.13+, runner JavaScript terisolasi, dan pemantauan aliran log seketika (`tail -f`).
+
+4. **Manajemen Rilis & Distribusi Lintas Platform Khusus**:
+   - SparkNotePad memiliki alur _packaging_ mandiri untuk **FreeBSD 13–15 (KDE Plasma 6 & XFCE)**, distribusi Linux berbasis glibc 2.35 (Ubuntu 22.04–26.04, Debian, Fedora, openSUSE dalam format DEB/RPM/Flatpak/AppImage), serta Universal 2 DMG macOS di 5 cabang rilis Qt berbeda.
+
+5. **Kejelasan Identitas & Menghormati Proyek Hulu**:
+   - Mengajukan ratusan _pull request_ dengan perubahan arsitektural drastis akan membebani _maintainer_ NotepadNext.
+   - Dengan berdiri sebagai entitas proyek mandiri, pengguna mendapatkan kejelasan kanal pelaporan _issue_, siklus rilis yang independen, dan kedua proyek dapat berkembang optimal sesuai visi masing-masing tanpa kompromi atau kebingungan identitas.
+
+---
+
 ## 🧭 Navigasi
 
+- [Asal-Usul Proyek, Warisan Arsitektur & Evolusi](#-asal-usul-proyek-warisan-arsitektur--evolusi)
 - [Ikhtisar & Nilai Keunggulan](#ikhtisar--nilai-keunggulan)
 - [Fitur Utama & Matriks Kapabilitas](#fitur-utama--matriks-kapabilitas)
 - [Koleksi 25 Rumpun Tema Pengembang](#koleksi-25-rumpun-tema-pengembang)

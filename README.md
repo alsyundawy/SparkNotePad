@@ -106,8 +106,61 @@
 
 ---
 
+## 📜 Project Provenance, Architectural Heritage & Evolution
+
+### The Genesis & Foundational Codebase
+
+The technical foundation of this repository originates from the initial source code import recorded at commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9). That foundational import established the early baseline scaffolding derived from the cross-platform Qt and Scintilla architecture pioneered by **Justin Dailey ([@dail8859](https://github.com/dail8859))** and the open-source contributors of **NotepadNext**.
+
+During the initial experimental development phases, the codebase was maintained and developed under the preliminary project moniker _NoteSciPad_.
+
+### The Evolution into SparkNotePad (v1.3.0+)
+
+Commencing with **version 1.3.0**, the project underwent a formal architectural and conceptual rebranding, adopting its permanent identity: **SparkNotePad**. This milestone represented far more than a name change; it marked the transition from an experimental build into a fully autonomous, production-hardened developer text editor tailored for modern Linux, FreeBSD, and macOS operating environments.
+
+### Deep Gratitude to Original Contributors
+
+We extend our profound, heartfelt gratitude and highest respect to:
+
+- **Justin Dailey ([@dail8859](https://github.com/dail8859))** and all past contributors of **NotepadNext**, whose elegant Qt GUI scaffolding, Scintilla integration paradigms, and cross-platform multi-tabbed editor architecture provided the indispensable bedrock upon which this project was initiated.
+- **Neil Hodgson & the Scintilla/Lexilla Community**, whose world-class editing engine continues to deliver unbeatable sub-millisecond line-rendering performance.
+
+### Why an Independent Project Rather Than a Persistent Git Fork?
+
+A deliberate and conscious decision was made to establish SparkNotePad as an independent, standalone project rather than maintaining it as a continuous git fork of NotepadNext. The key architectural, philosophical, and operational rationales include:
+
+1. **Fundamental Architectural Modernization (ISO C++20 & Strict Qt 6)**:
+   - Upstream NotepadNext conscientiously maintains broad backwards compatibility with older toolchains (C++14/C++17) and legacy Qt 5 environments.
+   - In contrast, SparkNotePad made an aggressive architectural leap to **ISO C++20** (`std::ranges`, `std::string_view`, concepts, structured bindings) and strictly targets **Qt 6.5 through 6.12 LTS**. Upstream maintainers would understandably reject massive breaking refactors that drop legacy Qt 5 and older compiler support.
+
+2. **Proactive Security Hardening & Zero-Trust Sandbox Isolation**:
+   - SparkNotePad integrates stringent defensive security mechanisms designed for high-assurance developer workstations:
+     - **Lua Sandbox Hardening (CVE-2026-42214)**: Full stripping of dangerous OS, file system, and debug execution primitives with automated adversarial unit test suites.
+     - **ReDoS Mitigation (CVE-2026-4744)**: Pre-execution AST checks detecting catastrophic exponential backtracking in regular expressions.
+     - **Config & Session Integrity Guard (CVE-2026-48778 / CVE-2026-48800)**: Protection against shell command injection and multi-user session state tampering.
+     - **Sandboxed Markdown Preview (CVE-2026-20841)**: Strict URI scheme whitelisting blocking unauthorized protocol execution.
+     - **Cryptographic Document Security**: Native AES-256 document encryption (PBKDF2 100,000 rounds + HMAC-SHA256) and streaming hash verification (SHA-256/512/SHA-3).
+   - These rigorous defensive constraints exceed the lightweight scope of traditional text editors and require dedicated architectural oversight.
+
+3. **Substantial Feature Set & Product Vision Divergence**:
+   - SparkNotePad is engineered with a specialized power-user feature set that diverges significantly from NotepadNext's minimalist ethos:
+     - **Omnibar Command Palette & Quick Open (`Cmd+P` / `Ctrl+P`)**: Keyboard-centric fuzzy search across tabs, recent files, and editor commands inspired by KDE Kate.
+     - **Side-by-Side Dual-Editor Visual Diff**: In-memory Myers / LCS comparison engine with synchronized scrolling and visual line diff indicators.
+     - **Notepad++ Parity Tools Suite**: 16-action MIME Tools (Base64 pad/unpad/unix/line/strict, Quoted-Printable, URL encoding variants), and Code Prettifier/Forensics (XML, HTML, SQL, JWT decoding, Shannon entropy analysis).
+     - **Runtime Extensibility**: Embedded Python 3.13+ scripting engine, sandboxed JavaScript evaluator, and real-time log stream monitoring (`tail -f`).
+
+4. **Dedicated Multi-Platform Distribution Pipeline**:
+   - SparkNotePad maintains bespoke native build pipelines for **FreeBSD 13–15 (KDE Plasma 6 & XFCE)**, multi-distro Linux packages (Ubuntu 22.04–26.04 glibc 2.35 baseline, Debian, Fedora, openSUSE DEB/RPM/Flatpak/AppImage), and Universal 2 macOS DMG packaging across five separate Qt version streams.
+
+5. **Clarity of Identity & Upstream Consideration**:
+   - Submitting thousands of non-contiguous feature commits and breaking structural overhauls as upstream pull requests would place an undue burden on upstream maintainers.
+   - Operating as an independent project provides absolute clarity for bug reports, release lifecycles, and package registries, allowing both projects to pursue their distinct ideals without compromise.
+
+---
+
 ## 🧭 Navigation
 
+- [Project Provenance, Architectural Heritage & Evolution](#-project-provenance-architectural-heritage--evolution)
 - [Overview & Value Proposition](#overview--value-proposition)
 - [Key Features & Capabilities Matrix](#key-features--capabilities-matrix)
 - [Curated 25 Developer Theme Families](#curated-25-developer-theme-families)
