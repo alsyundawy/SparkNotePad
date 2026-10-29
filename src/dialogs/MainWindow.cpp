@@ -175,12 +175,22 @@ namespace {
 std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &algStr) {
     if (algStr == QLatin1String("MD5"))
         return QCryptographicHash::Md5;
-    if (algStr == QLatin1String("SHA1"))
+    if (algStr == QLatin1String("SHA1") || algStr == QLatin1String("SHA-1"))
         return QCryptographicHash::Sha1;
-    if (algStr == QLatin1String("SHA256"))
+    if (algStr == QLatin1String("SHA256") || algStr == QLatin1String("SHA-256"))
         return QCryptographicHash::Sha256;
-    if (algStr == QLatin1String("SHA512"))
+    if (algStr == QLatin1String("SHA384") || algStr == QLatin1String("SHA-384"))
+        return QCryptographicHash::Sha384;
+    if (algStr == QLatin1String("SHA512") || algStr == QLatin1String("SHA-512"))
         return QCryptographicHash::Sha512;
+    if (algStr == QLatin1String("SHA3-1") || algStr == QLatin1String("SHA3_224") || algStr == QLatin1String("SHA3-224"))
+        return QCryptographicHash::Sha3_224;
+    if (algStr == QLatin1String("SHA3-256") || algStr == QLatin1String("SHA3_256"))
+        return QCryptographicHash::Sha3_256;
+    if (algStr == QLatin1String("SHA3-384") || algStr == QLatin1String("SHA3_384"))
+        return QCryptographicHash::Sha3_384;
+    if (algStr == QLatin1String("SHA3-512") || algStr == QLatin1String("SHA3_512"))
+        return QCryptographicHash::Sha3_512;
     return std::nullopt;
 }
 
@@ -1014,13 +1024,18 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
         const char *label;
         const char *alg;
     };
-    static constexpr std::array<HashAlgSpec, 6> hashAlgs = {{
+    static constexpr std::array<HashAlgSpec, 11> hashAlgs = {{
         {"&MD5", "MD5"},
         {"&CRC32", "CRC32"},
         {"&XXHASH", "XXHASH"},
         {"&SHA-1", "SHA1"},
         {"SHA-&256", "SHA256"},
+        {"SHA-&384", "SHA384"},
         {"SHA-&512", "SHA512"},
+        {"SHA3-&1 (SHA3-224)", "SHA3-1"},
+        {"SHA3-2&56", "SHA3-256"},
+        {"SHA3-3&84", "SHA3-384"},
+        {"SHA3-51&2", "SHA3-512"},
     }};
     for (const auto &h : hashAlgs) {
         auto *subHash = new QMenu(tr(h.label), this);

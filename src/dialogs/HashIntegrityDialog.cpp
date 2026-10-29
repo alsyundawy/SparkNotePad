@@ -58,9 +58,14 @@ HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *current
     comboAlgorithm->setView(new QListView(comboAlgorithm));
     comboAlgorithm->addItem(QStringLiteral("SHA-256 (Standard / Recommended)"),
                             static_cast<int>(QCryptographicHash::Sha256));
+    comboAlgorithm->addItem(QStringLiteral("SHA-384"), static_cast<int>(QCryptographicHash::Sha384));
     comboAlgorithm->addItem(QStringLiteral("SHA-512 (High Security)"), static_cast<int>(QCryptographicHash::Sha512));
+    comboAlgorithm->addItem(QStringLiteral("SHA3-1 (SHA3-224)"), static_cast<int>(QCryptographicHash::Sha3_224));
     comboAlgorithm->addItem(QStringLiteral("SHA3-256"), static_cast<int>(QCryptographicHash::Sha3_256));
+    comboAlgorithm->addItem(QStringLiteral("SHA3-384"), static_cast<int>(QCryptographicHash::Sha3_384));
     comboAlgorithm->addItem(QStringLiteral("SHA3-512"), static_cast<int>(QCryptographicHash::Sha3_512));
+    comboAlgorithm->addItem(QStringLiteral("SHA-1"), static_cast<int>(QCryptographicHash::Sha1));
+    comboAlgorithm->addItem(QStringLiteral("MD5"), static_cast<int>(QCryptographicHash::Md5));
     formLayout->addRow(tr("Hash Algorithm:"), comboAlgorithm);
 
     mainLayout->addLayout(formLayout);

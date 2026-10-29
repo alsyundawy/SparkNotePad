@@ -17,12 +17,12 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
 
 - **Notepad++ Style Top-Level `Tools` Menu**:
   - Inserted between View and Settings menus with complete vector icon support.
-  - **Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-512 with sub-actions:
+  - **Hash Submenu**: Complete cryptographic and non-cryptographic checksum suite: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, and SHA3-512 with sub-actions:
     - _Generate_: Hashes entire active document and copies to clipboard with status bar confirmation.
     - _Generate From File_: File picker to calculate and copy checksum.
     - _Generate From Selection_: Hashes highlighted selection directly.
     - _Verify_: Cross-validates document hash against reference string.
-  - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation.
+  - **Cryptographic Hash & Authenticity Validator**: Direct standalone launcher for streaming hash validation supporting SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, SHA3-512, SHA-1, and MD5.
   - **Complete 16-Action MIME Tools Suite (`MimeTools`)**:
     - Full parity with Notepad++ MIME Tools plugin matching user specifications:
       - _Base64_: Encode (unpadded), Encode with padding (`=`), Encode with Unix EOL (`\n` line-wrapped), Encode by line, Decode, Decode strict (with strict error detection), Decode by line.
