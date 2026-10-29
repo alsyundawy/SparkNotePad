@@ -196,8 +196,7 @@ std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &alg
 }
 
 QString computeHashString(const QString &algStr, const QByteArray &data, const QString & /*validatorSuffix*/ = {}) {
-    const QString digest = GenerateHashDigestDialog::computeSingleDigest(algStr, data);
-    if (!digest.isEmpty()) {
+    if (const QString digest = GenerateHashDigestDialog::computeSingleDigest(algStr, data); !digest.isEmpty()) {
         return digest;
     }
     return QObject::tr("(Unknown algorithm %1)").arg(algStr);

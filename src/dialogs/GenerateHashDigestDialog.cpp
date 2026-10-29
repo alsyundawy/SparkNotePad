@@ -220,14 +220,14 @@ void GenerateHashDigestDialog::setupUi() {
     mainLayout->addWidget(m_textOutput, 1);
 
     // Action buttons row: Copy to Clipboard on the right
-    auto *copyRow = new QHBoxLayout();
+    auto *copyRow = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     copyRow->addStretch();
     m_btnCopy = new QPushButton(tr("&Copy to Clipboard"), this);
     copyRow->addWidget(m_btnCopy);
     mainLayout->addLayout(copyRow);
 
     // Close button centered below
-    auto *closeRow = new QHBoxLayout();
+    auto *closeRow = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     closeRow->addStretch();
     m_btnClose = new QPushButton(tr("&Close"), this);
     m_btnClose->setMinimumWidth(110);
