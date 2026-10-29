@@ -33,7 +33,7 @@ HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *current
     mainLayout->setSpacing(12);
 
     // Source selection
-    auto *sourceLayout = new QHBoxLayout();
+    auto *sourceLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     radioFile = new QRadioButton(tr("File on Disk"), this);
     radioCurrentEditor = new QRadioButton(tr("Current Editor Text"), this);
     sourceLayout->addWidget(radioFile);
@@ -42,7 +42,7 @@ HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *current
     mainLayout->addLayout(sourceLayout);
 
     // File path selection row
-    auto *fileRowLayout = new QHBoxLayout();
+    auto *fileRowLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     editFilePath = new QLineEdit(this);
     editFilePath->setPlaceholderText(tr("Select file to hash..."));
     btnBrowse = new QPushButton(tr("&Browse..."), this);
@@ -51,7 +51,7 @@ HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *current
     mainLayout->addLayout(fileRowLayout);
 
     // Form parameters
-    auto *formLayout = new QFormLayout();
+    auto *formLayout = new QFormLayout();  // NOSONAR(cpp:S5025)
     formLayout->setSpacing(8);
 
     comboAlgorithm = new QComboBox(this);
@@ -75,10 +75,10 @@ HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *current
     mainLayout->addWidget(btnCompute);
 
     // Output & Verification Form
-    auto *outputForm = new QFormLayout();
+    auto *outputForm = new QFormLayout();  // NOSONAR(cpp:S5025)
     outputForm->setSpacing(8);
 
-    auto *computedLayout = new QHBoxLayout();
+    auto *computedLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     editComputedHash = new QLineEdit(this);
     editComputedHash->setReadOnly(true);
     editComputedHash->setPlaceholderText(tr("Computed checksum will appear here..."));
@@ -101,7 +101,7 @@ HashIntegrityDialog::HashIntegrityDialog(QWidget *parent, ScintillaNext *current
     mainLayout->addWidget(labelComparisonResult);
 
     // Bottom close button
-    auto *btnBox = new QHBoxLayout();
+    auto *btnBox = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     btnBox->addStretch();
     auto *btnClose = new QPushButton(tr("Close"), this);
     btnBox->addWidget(btnClose);
@@ -172,7 +172,7 @@ void HashIntegrityDialog::onComputeHashClicked() {
     updateComparisonStatus();
 }
 
-void HashIntegrityDialog::onCopyComputedClicked() {
+void HashIntegrityDialog::onCopyComputedClicked() const {
     const QString hash = editComputedHash->text();
     if (!hash.isEmpty()) {
         QApplication::clipboard()->setText(hash);
