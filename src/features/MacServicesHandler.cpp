@@ -37,6 +37,10 @@ void MacServicesHandler::postVoiceOverAnnouncement(const QString &text) {
     Q_UNUSED(text);
 }
 
+void MacServicesHandler::makeWidgetWindowTranslucent(const QWidget *w) {
+    Q_UNUSED(w);
+}
+
 void MacServicesHandler::handleOpenSelection(const QString &text) {
     emit openSelectionRequested(text);
 }

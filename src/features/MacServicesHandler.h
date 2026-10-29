@@ -19,6 +19,7 @@
 
 class SparkNotePadApplication;
 class MainWindow;
+class QWidget;
 
 class MacServicesHandler : public QObject {
     Q_OBJECT
@@ -36,6 +37,7 @@ public:
     static void showEmojiAndSymbolsPalette();
     static void postVoiceOverAnnouncement(const QString &text);
     static void activateApplication();
+    static void makeWidgetWindowTranslucent(const QWidget *w);
 
     // Handling external actions
     void handleOpenSelection(const QString &text);
