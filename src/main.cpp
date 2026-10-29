@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
 
     // Ensure action icons are natively shown in all menus across macOS, Linux, and Windows
     QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
@@ -74,6 +75,7 @@ int main(int argc, char *argv[]) {
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     SparkNotePadApplication app(argc, argv);
+    SparkNotePadApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Log some debug info
     qInfo("=============================");
