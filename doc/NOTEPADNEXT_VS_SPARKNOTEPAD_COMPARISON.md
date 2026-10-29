@@ -47,25 +47,31 @@
 
 The development history of SparkNotePad is rooted in solving the fundamental limitations of upstream text editors on non-Windows platforms:
 
-1. **The Origins**: NotepadNext began as a proof-of-concept to emulate Notepad++ on Linux and macOS. However, upstream development prioritized basic desktop parity over platform-native polish, security, or strict architectural boundaries.
-2. **The Synthesis (`notepadnext-macos` + SparkNotePad)**: The `alsyundawy` initiative consolidated the specialized macOS enhancements of `notepadnext-macos` (Retina rendering, Apple HIG compliance, native shortcuts) with the multi-branch performance refactorings of SparkNotePad (`v1.0.0` through `v1.3.5`).
-3. **Cross-Pollination with Leading Open-Source Engines**:
-   - **From `zufuliu/notepad4`**: Adopted high-performance URL threshold scanning (`UrlThreshold`), optimized lexer properties, and atomic whitespace/line transformation algorithms.
-   - **From `rizonesoft/Notepad3`**: Adopted intuitive text utility workflows, including in-place radix conversions, focused viewing, and Unicode code-point inspection.
-   - **From `donho/notepad-plus-plus`**: Retained full muscle-memory keyboard shortcuts, session management, and docking paradigms.
-4. **Architectural Invariant**: Upstream dumps new features directly into `MainWindow.cpp`, causing sprawling cognitive complexity (>300). In contrast, SparkNotePad enforces the **Dedicated Class Invariant**: every distinct capability must reside in its own encapsulated module under `src/features/` or `src/utils/`.
+1. **The Origins & Foundational Baseline**: The technical baseline of this repository was established via the initial source code import recorded at commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9). That import derived from the cross-platform Qt scaffolding pioneered by **Justin Dailey ([@dail8859](https://github.com/dail8859))** and the **NotepadNext** contributors, maintained initially under the working moniker _NoteSciPad_.
+2. **Rebranding to SparkNotePad (v1.3.0+)**: Starting with version 1.3.0, the project formally evolved and rebranded to **SparkNotePad** to reflect an autonomous, hardened C++20 desktop text editor architecture.
+3. **Heartfelt Gratitude to Upstream**: We extend our deepest gratitude and respect to Justin Dailey (@dail8859) and the NotepadNext community. Their foundational work on Qt bindings and Scintilla integration provided the indispensable starting point.
+4. **Why an Independent Project Rather Than a Persistent Git Fork?**:
+   - **Radical Modernization**: SparkNotePad mandates strict ISO C++20 and Qt 6.5–6.12, discarding legacy C++14/Qt 5 layers that upstream must preserve.
+   - **Deep Security Hardening**: Lua sandbox isolation (CVE-2026-42214), ReDoS bounds (CVE-2026-4744), session tampering guards (CVE-2026-48778/48800), and native AES-256 PBKDF2/HMAC encryption.
+   - **Divergent Product Vision**: Advanced tooling such as the Omnibar Command Palette (`Cmd+P`), Myers visual diff engine, 16-action MIME Tools suite, and token forensics are outside upstream's minimalist scope.
+   - **Independent Multi-Distro Pipelines**: Native FreeBSD 13–15 (KDE6/XFCE), multi-distro Linux (glibc 2.35 baseline), and Universal 2 macOS DMG packaging across 5 Qt version streams.
+   - **Upstream Courtesy & Clear Identity**: Avoiding thousands of intrusive PRs on upstream while providing clear, unconfused identity for users and issue tracking.
+5. **Architectural Invariant**: Upstream dumps new features directly into `MainWindow.cpp`, causing sprawling cognitive complexity (>300). In contrast, SparkNotePad enforces the **Dedicated Class Invariant**: every distinct capability must reside in its own encapsulated module under `src/features/` or `src/utils/`.
 
 ### Bahasa Indonesia
 
 Sejarah perkembangan SparkNotePad berakar dari tekad untuk mengatasi keterbatasan mendasar editor teks upstream di luar lingkungan Windows:
 
-1. **Asal-Usul**: NotepadNext lahir sebagai bukti konsep (PoC) untuk meniru Notepad++ di Linux dan macOS. Sayangnya, pengembangan upstream lebih memprioritaskan paritas fitur dasar daripada keanggunan platform-native, aspek keamanan, atau batas arsitektur yang ketat.
-2. **Sintesis Akbar (`notepadnext-macos` + SparkNotePad)**: Inisiatif `alsyundawy` menyatukan repositori khusus macOS (`notepadnext-macos` yang menghadirkan rendering Retina, kepatuhan Apple HIG, dan pintasan macOS) dengan seluruh cabang evolusi SparkNotePad (`v1.0.0` sampai `v1.3.5`).
-3. **Penyempurnaan Bersilang dengan Editor Ternama**:
-   - **Dari `zufuliu/notepad4`**: Mengadopsi algoritma pemindaian ambang URL ultra-cepat (`UrlThreshold`), optimasi properti lexer, serta manipulasi spasi dan baris atomik.
-   - **Dari `rizonesoft/Notepad3`**: Mengadopsi utilitas teks ergonomis seperti konversi bilangan lintas-basis langsung di tempat, penelusuran fokus (_Focused View_), dan inspeksi karakter Unicode.
-   - **Dari `donho/notepad-plus-plus`**: Mempertahankan pintasan keyboard standar, manajemen sesi persisten, dan paradigma docking.
-4. **Invarian Arsitektural**: Upstream menumpuk logika fitur baru langsung ke dalam `MainWindow.cpp`, memicu kompleksitas kognitif ekstrem (>300). Sebaliknya, SparkNotePad mewajibkan **Invarian Kelas Khusus**: setiap kapabilitas wajib dienkapsulasi ke dalam modul independen di bawah direktori `src/features/` atau `src/utils/`.
+1. **Asal-Usul & Basis Fondasional**: Basis teknis repositori ini berakar dari impor _source code_ awal pada commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9). Impor ini mengadopsi kerangka Qt dari **Justin Dailey ([@dail8859](https://github.com/dail8859))** dan kontributor **NotepadNext**, yang awalnya dirawat dengan nama kerja _NoteSciPad_.
+2. **Transformasi Menjadi SparkNotePad (v1.3.0+)**: Mulai versi 1.3.0, proyek secara resmi berganti nama dan visi menjadi **SparkNotePad** sebagai editor teks C++20 modern dan mandiri.
+3. **Penghormatan & Rasa Terima Kasih**: Kami menyampaikan terima kasih yang tulus kepada Justin Dailey (@dail8859) dan seluruh komunitas NotepadNext atas fondasi awal yang telah mereka bangun.
+4. **Alasan Proyek Mandiri Bukan Fork Berkelanjutan**:
+   - **Modernisasi Total**: Menggunakan standar modern ISO C++20 dan Qt 6.5–6.12 murni tanpa beban kompatibilitas Qt 5 lawas.
+   - **Pengerasan Keamanan Berlapis**: Sandbox Lua aman (CVE-2026-42214), mitigasi ReDoS (CVE-2026-4744), pencegahan tamper sesi/shell (CVE-2026-48778/48800), serta enkripsi AES-256 dokumen.
+   - **Ekspansi Fitur Tingkat Lanjut**: Palet Perintah (`Cmd+P`), mesin visual diff Myers, paket 16 aksi MIME Tools, dan analisis token forensics.
+   - **Pipeline Rilis Khusus**: Port native FreeBSD 13–15, paket Linux multi-distro, dan Universal 2 macOS DMG di 5 versi Qt berbeda.
+   - **Etika & Kejelasan Identitas**: Menghindari beban _pull request_ ekstrem pada repositori upstream serta memberikan kejelasan identitas rilis bagi pengguna.
+5. **Invarian Arsitektural**: Upstream menumpuk logika fitur baru langsung ke dalam `MainWindow.cpp`, memicu kompleksitas kognitif ekstrem (>300). Sebaliknya, SparkNotePad mewajibkan **Invarian Kelas Khusus**: setiap kapabilitas wajib dienkapsulasi ke dalam modul independen di bawah direktori `src/features/` atau `src/utils/`.
 
 ---
 

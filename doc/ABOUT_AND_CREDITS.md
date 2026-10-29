@@ -69,3 +69,14 @@ SparkNotePad features a native, tabbed `AboutDialog` (`src/dialogs/AboutDialog.h
 4. **Diagnostics Tab (`&Diagnostics`):** Real-time host OS, kernel version, CPU architecture, Qt version, DPR display scale, engine versions, and one-click clipboard copy.
 5. **Shortcuts Tab (`&Shortcuts`):** Comprehensive table of key productivity keyboard shortcuts.
 6. **License Tab (`&License`):** GNU General Public License v3.0 (GPLv3) terms and conditions.
+
+---
+
+## 4. Project Provenance, Initial Commit Baseline & Standalone Project Rationale
+
+For the full detailed historical and architectural breakdown, refer to [PROJECT_PROVENANCE_AND_HERITAGE.md](PROJECT_PROVENANCE_AND_HERITAGE.md).
+
+- **Historical Source Import**: Initial codebase imported at commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9), deriving foundational Qt/Scintilla scaffolding from **Justin Dailey ([@dail8859](https://github.com/dail8859))** and **NotepadNext** under early working moniker _NoteSciPad_.
+- **v1.3.0 Rebranding**: Permanently transformed into **SparkNotePad** to deliver an autonomous, hardened C++20 desktop text editor.
+- **Upstream Gratitude**: Sincere, enduring gratitude to Justin Dailey and NotepadNext contributors for providing the foundational architecture.
+- **Why Standalone**: ISO C++20 and Qt 6.5–6.12 exclusivity, deep zero-trust security sandboxing (Lua, ReDoS, config guards, AES-256 PBKDF2), power-user feature set (Command Palette, Myers visual diff, 16-action MIME Tools, token forensics), and bespoke multi-distro release pipelines (FreeBSD 13–15, Linux DEB/RPM/AppImage, macOS Universal 2).
