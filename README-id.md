@@ -220,7 +220,7 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | :------------------------------- | :--------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
 | **Menu Tools Gaya Notepad++**    | Menu tingkat atas: Hash (MD5/CRC32/XXHASH/SHA1/256/512), 16 Alat MIME Lengkap, Konverter (ASCII/Hex/Dec)               |          `Tools >> *`           |
 | **16 Alat MIME Lengkap**         | Base64 (Standar/Padding/Unix EOL/Per Baris/Ketat), Quoted-Printable, dan URL (RFC1738/Extended/Full/Decode)            |   `Tools >> MIME Tools >> *`    |
-| **Pemetaan Pintasan Interaktif** | Pengatur shortcut GUI dengan pencarian, deteksi konflik, reset default, dan pembaruan langsung tanpa restart           |  `Settings >> Shortcut Mapper`  |
+| **Pemetaan Pintasan Interaktif** | Pengatur shortcut GUI dengan pencarian, deteksi konflik, reset default, dan pembaruan langsung tanpa restart           | `Preferences >> Tab Shortcuts`  |
 | **Bantuan Dev & Web Search**     | Navigasi dokumentasi instan: PHP Help (`Alt+F1`), Rust Docs (`Alt+F2`), Python Docs (`Alt+F3`), Pencarian Wikipedia    |          `Run >> Help`          |
 | **Pembaruan Bebas Batas API**    | Pemeriksa rilis GitHub tanpa limit kuota menggunakan HTTP ETag (`If-None-Match`) & fallback redirect web pada HTTP 403 |        `Help >> Updates`        |
 | **Enkripsi AES-256 di Tools**    | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) & HMAC-SHA256, kini di dalam menu Tools            |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |

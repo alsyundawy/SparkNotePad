@@ -1335,8 +1335,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     // Encryption (AES-256) moved into Tools
     menuTools->addMenu(menuEncryption);
 
-    // Insert Tools menu before Settings in menubar
-    menuBar()->insertMenu(ui->menuSettings->menuAction(), menuTools);
+    // Insert Tools menu before Macro in menubar
+    menuBar()->insertMenu(ui->menuMacro->menuAction(), menuTools);
 
     menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
     actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
@@ -2066,7 +2066,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     actionCustomizeShortcuts->setObjectName(QStringLiteral("actionCustomizeShortcuts"));
     actionCustomizeShortcuts->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
     connect(actionCustomizeShortcuts, &QAction::triggered, this, &MainWindow::onCustomizeShortcutsTriggered);
-    ui->menuSettings->addAction(actionCustomizeShortcuts);
+    addAction(actionCustomizeShortcuts);
 
     // The macro manager has already loaded any saved macros, so it might have some already
     ui->actionRunMacroMultipleTimes->setEnabled(macroManager.availableMacros().size() > 0);

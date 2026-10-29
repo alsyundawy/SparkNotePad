@@ -36,7 +36,7 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
       - "Wikipedia Search" (`Alt+Shift+F1` / `Ctrl+Alt+W`) -> `https://en.wikipedia.org/wiki/Special:Search?search=`.
   - **Interactive Shortcut Mapper & Customizer (`ShortcutCustomizerWidget` / `PreferencesDialog`)**:
     - Embedded dedicated **Shortcuts** tab directly inside `PreferencesDialog` (`m_tabWidget`) alongside `General` settings.
-    - Mirrored menu routing: clicking `Settings >> Shortcut Mapper / Customize Shortcuts...` directly opens Preferences switched to the Shortcuts tab.
+    - Streamlined menubar architecture: eliminated redundant top-level `Settings` navigation menu. Settings and preferences are natively consolidated in the platform-standard System / Application Menu (`SparkNotePad -> Preferences...` / `Cmd+,` on macOS, `Edit -> Preferences...` on Linux/Windows, and the primary toolbar). Shortcut mapping is cleanly integrated within `Preferences > Shortcuts`.
     - Integrated in-tab Apply and Reset All buttons with real-time signal dispatching to `applyCustomShortcuts()`.
     - Real-time search/filter by action name, category, or shortcut.
     - Key sequence capture via `QKeySequenceEdit` with collision & conflict warning badges.
