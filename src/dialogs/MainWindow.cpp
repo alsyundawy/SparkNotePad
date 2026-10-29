@@ -3077,6 +3077,7 @@ void MainWindow::applyStyleSheet() {
     if (qApp) {
         qApp->setStyleSheet(sheet);
     }
+    ensureMenuIconsVisible(this);
 }
 
 void MainWindow::setLanguage(ScintillaNext *editor, const QString &languageName) const {
