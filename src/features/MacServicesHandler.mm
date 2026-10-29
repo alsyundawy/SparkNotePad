@@ -12,6 +12,7 @@
 #include "SparkNotePadApplication.h"
 #include "dialogs/MainWindow.h"
 #include "ScintillaNext.h"
+#include <QWidget>
 
 #import <Cocoa/Cocoa.h>
 
@@ -148,6 +149,30 @@ void MacServicesHandler::activateApplication()
 {
     @autoreleasepool {
         [NSApp activateIgnoringOtherApps:YES];
+    }
+}
+
+void MacServicesHandler::makeWidgetWindowTranslucent(const QWidget *w)
+{
+    if (!w) {
+        return;
+    }
+    @autoreleasepool {
+        const WId viewId = w->winId();
+        if (!viewId) {
+            return;
+        }
+        NSView *view = (__bridge NSView *)reinterpret_cast<void *>(viewId);
+        if (!view) {
+            return;
+        }
+        NSWindow *window = [view window];
+        if (!window) {
+            return;
+        }
+        [window setOpaque:NO];
+        [window setBackgroundColor:[NSColor clearColor]];
+        [window invalidateShadow];
     }
 }
 

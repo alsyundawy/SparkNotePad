@@ -56,64 +56,41 @@
 #define APP_DISTRIBUTION ""
 #endif
 
-#ifdef __APPLE__
-#include <objc/message.h>
-#include <objc/runtime.h>
-
-static void makeNativeWindowTranslucent(QWidget *w) {
-    if (!w)
-        return;
-    auto view = reinterpret_cast<id>(w->winId());
-    if (!view)
-        return;
-
-    SEL windowSel = sel_registerName("window");
-    using WindowSend = id (*)(id, SEL);
-    id window = reinterpret_cast<WindowSend>(objc_msgSend)(view, windowSel);
-    if (!window)
-        return;
-
-    SEL setOpaqueSel = sel_registerName("setOpaque:");
-    using SetOpaqueSend = void (*)(id, SEL, BOOL);
-    reinterpret_cast<SetOpaqueSend>(objc_msgSend)(window, setOpaqueSel, static_cast<BOOL>(0));
-
-    SEL clearColorSel = sel_registerName("clearColor");
-    Class nsColorClass = objc_getClass("NSColor");
-    if (nsColorClass) {
-        using ClearColorSend = id (*)(Class, SEL);
-        id clearColor = reinterpret_cast<ClearColorSend>(objc_msgSend)(nsColorClass, clearColorSel);
-
-        SEL setBgSel = sel_registerName("setBackgroundColor:");
-        using SetBgSend = void (*)(id, SEL, id);
-        reinterpret_cast<SetBgSend>(objc_msgSend)(window, setBgSel, clearColor);
-    }
-
-    SEL invShadowSel = sel_registerName("invalidateShadow");
-    using InvShadowSend = void (*)(id, SEL);
-    reinterpret_cast<InvShadowSend>(objc_msgSend)(window, invShadowSel);
-}
-#endif
-
 namespace {
 class ToolTipTranslucentFilter final : public QObject {
 public:
-    explicit ToolTipTranslucentFilter(QObject *parent = nullptr) : QObject(parent) {}
+    using QObject::QObject;
 
-protected:
+private:
     bool eventFilter(QObject *obj, QEvent *ev) override {
+        if (ev->type() != QEvent::Show && ev->type() != QEvent::Polish) {
+            return false;
+        }
+
+        auto *w = qobject_cast<QWidget *>(obj);
+        if (!w) {
+            return false;
+        }
+
         if (ev->type() == QEvent::Show || ev->type() == QEvent::Polish) {
-            if (auto *w = qobject_cast<QWidget *>(obj)) {
-                if (w->inherits("QTipLabel") || (w->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip) {
-                    w->setAttribute(Qt::WA_TranslucentBackground, true);
-#ifdef __APPLE__
-                    makeNativeWindowTranslucent(w);
-#endif
-                    if (auto *lbl = qobject_cast<QLabel *>(w)) {
-                        lbl->setMargin(0);
-                    }
+            if (auto *menu = qobject_cast<QMenu *>(obj); menu != nullptr) {
+                for (auto *act : menu->actions()) {
+                    act->setIconVisibleInMenu(true);
                 }
             }
         }
+
+        const bool isTip = w->inherits("QTipLabel") || ((w->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip);
+        if (!isTip) {
+            return false;
+        }
+
+        w->setAttribute(Qt::WA_TranslucentBackground, true);
+        MacServicesHandler::makeWidgetWindowTranslucent(w);
+        if (auto *lbl = qobject_cast<QLabel *>(w); lbl != nullptr) {
+            lbl->setMargin(0);
+        }
+
         return false;
     }
 };

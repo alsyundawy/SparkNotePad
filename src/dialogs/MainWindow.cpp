@@ -1875,6 +1875,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     initUpdateCheck();
 
     ensureMenuIconsVisible(this);
+    for (auto *menu : ui->menuBar->findChildren<QMenu *>()) {
+        connect(menu, &QMenu::aboutToShow, this, [this, menu]() { ensureMenuIconsVisible(menu); });
+    }
 }
 
 MainWindow::~MainWindow() {
@@ -2024,10 +2027,10 @@ ScintillaNext *MainWindow::getInitialEditor() const {
 }
 
 ScintillaNext *MainWindow::openOrDecryptFile(const QString &filePath) {
-    QFileInfo fileInfo(filePath);
+    const QFileInfo fileInfo(filePath);
     if (!fileInfo.isFile()) {
-        if (ModernMessageBox::question(this, tr("Create File"),
-                                       tr("<b>%1</b> does not exist. Do you want to create it?").arg(filePath))) {
+        if (const QString prompt = tr("<b>%1</b> does not exist. Do you want to create it?").arg(filePath);
+            ModernMessageBox::question(this, tr("Create File"), prompt)) {
             return app->getEditorManager()->createEditorFromFile(filePath, true);
         }
         app->getRecentFilesListManager()->removeFile(filePath);
@@ -2055,8 +2058,7 @@ ScintillaNext *MainWindow::openOrDecryptFile(const QString &filePath) {
             continue;
         }
 
-        ScintillaNext *editor = app->getEditorManager()->createEditorFromFile(filePath);
-        if (editor) {
+        if (ScintillaNext *editor = app->getEditorManager()->createEditorFromFile(filePath); editor != nullptr) {
             editor->clearAll();
             editor->setUndoCollection(false);
             editor->appendText(decRes.data.size(), decRes.data.constData());
@@ -2065,8 +2067,9 @@ ScintillaNext *MainWindow::openOrDecryptFile(const QString &filePath) {
             editor->QObject::setProperty("IsEncrypted", true);
             editor->QObject::setProperty("EncryptionPassword", pass);
             ui->statusBar->showMessage(tr("Unlocked encrypted file \"%1\" (AES-256)").arg(fileInfo.fileName()), 4000);
+            return editor;
         }
-        return editor;
+        break;
     }
 
     app->getRecentFilesListManager()->removeFile(filePath);
@@ -3527,15 +3530,16 @@ void MainWindow::initUpdateCheck() {
 void MainWindow::ensureMenuIconsVisible(QWidget *root) {
     QWidget *target = root ? root : this;
     for (auto *action : target->findChildren<QAction *>()) {
-        if (!action->icon().isNull()) {
+        action->setIconVisibleInMenu(true);
+    }
+    for (auto *menu : target->findChildren<QMenu *>()) {
+        for (auto *action : menu->actions()) {
             action->setIconVisibleInMenu(true);
         }
     }
     if (const auto *menu = qobject_cast<const QMenu *>(target)) {
         for (auto *action : menu->actions()) {
-            if (!action->icon().isNull()) {
-                action->setIconVisibleInMenu(true);
-            }
+            action->setIconVisibleInMenu(true);
         }
     }
 }

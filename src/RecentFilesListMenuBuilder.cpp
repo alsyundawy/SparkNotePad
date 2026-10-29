@@ -38,6 +38,8 @@ void RecentFilesListMenuBuilder::populateMenu(QMenu *menu) {
         ++i;
         QAction *action =
             new QAction(QString("%1%2: %3").arg(i < 10 ? "&" : "").arg(i).arg(QDir::toNativeSeparators(file)), menu);
+        action->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
+        action->setIconVisibleInMenu(true);
 
         action->setData(file);
         connect(action, &QAction::triggered, this, &RecentFilesListMenuBuilder::recentFileActionTriggered);

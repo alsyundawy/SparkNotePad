@@ -564,9 +564,8 @@
   <widget class="EditorInfoStatusBar" name="statusBar" />
   <action name="actionNew">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/newfile.svg</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/newfile.svg</normaloff>:/icons/newfile.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -1546,9 +1545,8 @@
   <property name="icon"><iconset resource="../resources.qrc">:/icons/newfile.svg<normaloff>:/icons/newfile.svg</normaloff></iconset></property></action>
   <action name="actionExportPdf">
    <property name="icon">
-    <iconset>
-     <normalon>:/icons/printer.svg</normalon>
-    </iconset>
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/printer.svg</normaloff>:/icons/printer.svg</iconset>
    </property>
    <property name="text">
     <string>Export to &amp;PDF...</string>
