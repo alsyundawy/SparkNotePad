@@ -425,7 +425,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(ui->actionMinifyJs, &QAction::triggered, this,
             [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, true); });
 
-
     ui->actionEvaluateMathAppend->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
     ui->actionEvaluateMathReplace->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
 
