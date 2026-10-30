@@ -126,10 +126,12 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
 
     for (const auto &p : kAllThemePalettes) {
         // Mode filter: 1 = Light only, 2 = Dark only
-        if (modeFilter == 1 && p.isDark)
+        if (modeFilter == 1 && p.isDark) {
             continue;
-        if (modeFilter == 2 && !p.isDark)
+        }
+        if (modeFilter == 2 && !p.isDark) {
             continue;
+        }
 
         // Text filter
         if (!filterText.isEmpty()) {
@@ -164,7 +166,7 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         for (int c = 0; c < 6; ++c) {
             painter.setBrush(QColor(colors[c]));
             painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(c * 26 + 2, 2, 22, 18, 4, 4);
+            painter.drawRoundedRect((c * 26) + 2, 2, 22, 18, 4, 4);
         }
         painter.end();
 
@@ -188,11 +190,11 @@ void ThemeSwitcherDialog::filterThemes() {
     populateTable(m_searchEdit->text(), filterId);
 }
 
-void ThemeSwitcherDialog::onThemeSelected(int row, int column) {
-    Q_UNUSED(column)
+void ThemeSwitcherDialog::onThemeSelected(int row, int /*column*/) {
     const QTableWidgetItem *item = m_table->item(row, 0);
-    if (!item)
+    if (!item) {
         return;
+    }
 
     const QString palId = item->data(Qt::UserRole).toString();
     ThemeManager::instance()->setPalette(palId, m_mainWindow);

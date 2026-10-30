@@ -13,6 +13,8 @@
 #include "FileTimeUtils.h"
 #include "ScintillaNext.h"
 
+#include <array>
+
 #include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
@@ -63,7 +65,7 @@ bool FileTimeUtils::setFileTimes(const QString &filePath, const QDateTime &modif
 
 #if defined(Q_OS_UNIX) || defined(Q_OS_MACOS)
     QByteArray localPath = QFile::encodeName(filePath);
-    struct timespec ts[2];
+    std::array<struct timespec, 2> ts{};
 
     // ts[0] = access time
     QDateTime atime = accessTime.isValid() ? accessTime : fi.lastRead();
@@ -77,24 +79,23 @@ bool FileTimeUtils::setFileTimes(const QString &filePath, const QDateTime &modif
     ts[1].tv_sec = modificationTime.toSecsSinceEpoch();
     ts[1].tv_nsec = static_cast<long>((modificationTime.toMSecsSinceEpoch() % 1000) * 1000000L);
 
-    if (utimensat(AT_FDCWD, localPath.constData(), ts, 0) == 0) {
+    if (utimensat(AT_FDCWD, localPath.constData(), ts.data(), 0) == 0) {
         return true;
     }
 
     // Fallback to utimes if utimensat is not supported on older kernels/APIs
-    struct timeval tv[2];
+    std::array<struct timeval, 2> tv{};
     tv[0].tv_sec = ts[0].tv_sec;
     tv[0].tv_usec = static_cast<suseconds_t>(ts[0].tv_nsec / 1000L);
     tv[1].tv_sec = ts[1].tv_sec;
     tv[1].tv_usec = static_cast<suseconds_t>(ts[1].tv_nsec / 1000L);
-    if (utimes(localPath.constData(), tv) == 0) {
+    if (utimes(localPath.constData(), tv.data()) == 0) {
         return true;
     }
 #endif
 
-    // Cross-platform fallback using Qt QFile::setFileTime
-    QFile file(filePath);
-    if (file.open(QFile::ReadWrite | QFile::ExistingOnly)) {
+    // Cross-platform fallback via Qt file timestamp API
+    if (QFile file(filePath); file.open(QFile::ReadWrite | QFile::ExistingOnly)) {
         bool ok = file.setFileTime(modificationTime, QFileDevice::FileModificationTime);
         if (accessTime.isValid()) {
             file.setFileTime(accessTime, QFileDevice::FileAccessTime);
@@ -151,9 +152,8 @@ FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath) 
     }
 #endif
 
-    // Fallback using Qt QFile::setFileTime
-    QFile file(filePath);
-    if (file.open(QFile::ReadWrite | QFile::ExistingOnly)) {
+    // Fallback via Qt file timestamp API
+    if (QFile file(filePath); file.open(QFile::ReadWrite | QFile::ExistingOnly)) {
         bool okMod = file.setFileTime(now, QFileDevice::FileModificationTime);
         file.setFileTime(now, QFileDevice::FileAccessTime);
         file.close();
@@ -218,8 +218,7 @@ FileTimeUtils::FileTimeResult FileTimeUtils::saveWithOriginalTime(ScintillaNext 
     const QDateTime originalAccessTime = fi.lastRead();
 
     // Perform save with preserveTimestamp flag enabled
-    QFileDevice::FileError err = editor->save(/*preserveTimestamp=*/true);
-    if (err != QFileDevice::NoError) {
+    if (const QFileDevice::FileError err = editor->save(/*preserveTimestamp=*/true); err != QFileDevice::NoError) {
         res.errorMessage = QCoreApplication::translate("FileTimeUtils", "Failed to save file: error code %1")
                                .arg(static_cast<int>(err));
         return res;

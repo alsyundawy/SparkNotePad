@@ -308,14 +308,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     // Split editor actions
     connect(ui->actionSplitHorizontal, &QAction::triggered, this, [this]() {
         newFile();
-        ScintillaNext *newEditor = currentEditor();
+        const ScintillaNext *newEditor = currentEditor();
         if (newEditor) {
             dockedEditor->splitToRight(newEditor);
         }
     });
     connect(ui->actionSplitVertical, &QAction::triggered, this, [this]() {
         newFile();
-        ScintillaNext *newEditor = currentEditor();
+        const ScintillaNext *newEditor = currentEditor();
         if (newEditor) {
             dockedEditor->splitToBottom(newEditor);
         }
@@ -2677,8 +2677,7 @@ void MainWindow::closeFile(ScintillaNext *editor) {
         return;
     }
 
-    // cppcheck-suppress knownConditionTrueFalse
-    if (!pEditor) {
+    if (pEditor.isNull()) {
         return;
     }
 
