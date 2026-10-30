@@ -115,7 +115,7 @@ void SessionManager::clearDirectory() {
     }
 }
 
-void SessionManager::saveSession(MainWindow *window) {
+void SessionManager::saveSession(const MainWindow *window) const {
     qInfo(Q_FUNC_INFO);
 
     clear();
@@ -165,14 +165,14 @@ void SessionManager::saveSession(MainWindow *window) {
     settings.endGroup();
 }
 
-void SessionManager::loadSession(MainWindow *window) {
+void SessionManager::loadSession(const MainWindow *window) {
     qInfo(Q_FUNC_INFO);
 
     ApplicationSettings settings;
 
     settings.beginGroup("CurrentSession");
 
-    ScintillaNext *currentEditor = Q_NULLPTR;
+    const ScintillaNext *currentEditor = nullptr;
     const int currentEditorIndex = settings.value("CurrentEditorIndex").toInt();
     const int size = settings.beginReadArray("OpenedFiles");
 
@@ -183,12 +183,10 @@ void SessionManager::loadSession(MainWindow *window) {
     for (int index = 0; index < size; ++index) {
         settings.setArrayIndex(index);
 
-        ScintillaNext *editor = Q_NULLPTR;
+        const ScintillaNext *editor = nullptr;
 
         if (settings.contains("Type")) {
-            const QString type = settings.value("Type").toString();
-
-            if (type == QStringLiteral("File")) {
+            if (const QString type = settings.value("Type").toString(); type == QStringLiteral("File")) {
                 editor = loadFileDetails(settings);
             } else if (type == QStringLiteral("UnsavedFile")) {
                 editor = loadUnsavedFileDetails(settings);

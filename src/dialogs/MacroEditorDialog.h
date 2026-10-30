@@ -25,6 +25,8 @@
 #ifndef MACROEDITORDIALOG_H
 #define MACROEDITORDIALOG_H
 
+#include <memory>
+
 #include <QDialog>
 
 #include "MacroListModel.h"
@@ -40,7 +42,7 @@ class MacroEditorDialog : public QDialog {
 
 public:
     explicit MacroEditorDialog(QWidget *parent, MacroManager *mm);
-    ~MacroEditorDialog();
+    ~MacroEditorDialog() override;
 
 private slots:
     void rowChanged(const QModelIndex &current, const QModelIndex &previous);
@@ -50,12 +52,12 @@ private slots:
     void copyCurrentMacro();
 
     void insertMacroStep();
-    void deleteMacroStep();
-    void moveMacroStepUp();
-    void moveMacroStepDown();
+    void deleteMacroStep() const;
+    void moveMacroStepUp() const;
+    void moveMacroStepDown() const;
 
 private:
-    Ui::MacroEditorDialog *ui;
+    std::unique_ptr<Ui::MacroEditorDialog> ui;
     MacroManager *macroManager;
     MacroListModel *model;
 };

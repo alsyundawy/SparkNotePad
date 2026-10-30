@@ -50,8 +50,8 @@ public:
 
     static void clear();
 
-    void saveSession(MainWindow *window);
-    void loadSession(MainWindow *window);
+    void saveSession(const MainWindow *window) const;
+    void loadSession(const MainWindow *window);
 
     bool willFileGetStoredInSession(const ScintillaNext *editor) const;
 

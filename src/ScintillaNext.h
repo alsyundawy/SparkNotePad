@@ -170,7 +170,7 @@ public:
     QString languageName;
     QByteArray languageSingleLineComment;
 
-#include "ScintillaEnums.h"  // IWYU pragma: keep // NOLINT // NOSONAR
+#include "ScintillaEnums.h"  // NOSONAR(cpp:S954) NOLINT(llvm-include-order)
 
 public slots:
     void close();  // NOLINT // NOSONAR(cpp:S5495)

@@ -64,8 +64,8 @@ void EditorConfigAppDecorator::doEditorConfig(ScintillaNext *editor) const {
     }
 
     if (settings.contains(QStringLiteral("indent_style"))) {
-        const QString indentStyle = settings[QStringLiteral("indent_style")];
-        if (indentStyle == QStringLiteral("tab")) {
+        if (const QString indentStyle = settings[QStringLiteral("indent_style")];
+            indentStyle == QStringLiteral("tab")) {
             editor->setUseTabs(true);
         } else if (indentStyle == QStringLiteral("space")) {
             editor->setUseTabs(false);
@@ -76,15 +76,13 @@ void EditorConfigAppDecorator::doEditorConfig(ScintillaNext *editor) const {
     }
 
     if (settings.contains(QStringLiteral("indent_size"))) {
-        const int indentSize = settings[QStringLiteral("indent_size")].toInt();
-        if (indentSize > 0) {
+        if (const int indentSize = settings[QStringLiteral("indent_size")].toInt(); indentSize > 0) {
             editor->setIndent(indentSize);
         }
     }
 
     if (settings.contains(QStringLiteral("tab_width"))) {
-        const int tabWidth = settings[QStringLiteral("tab_width")].toInt();
-        if (tabWidth > 0) {
+        if (const int tabWidth = settings[QStringLiteral("tab_width")].toInt(); tabWidth > 0) {
             editor->setTabWidth(tabWidth);
 
             // Set a flag so that the tab width won't get overridden
@@ -93,8 +91,7 @@ void EditorConfigAppDecorator::doEditorConfig(ScintillaNext *editor) const {
     }
 
     if (settings.contains(QStringLiteral("end_of_line"))) {
-        const QString eol = settings[QStringLiteral("end_of_line")];
-        if (eol == QStringLiteral("lf")) {
+        if (const QString eol = settings[QStringLiteral("end_of_line")]; eol == QStringLiteral("lf")) {
             editor->setEOLMode(SC_EOL_LF);
         } else if (eol == QStringLiteral("cr")) {
             editor->setEOLMode(SC_EOL_CR);
@@ -109,8 +106,8 @@ void EditorConfigAppDecorator::doEditorConfig(ScintillaNext *editor) const {
     }
 
     if (settings.contains(QStringLiteral("insert_final_newline"))) {
-        const QString newlineSetting = settings[QStringLiteral("insert_final_newline")];
-        if (newlineSetting == QStringLiteral("true")) {
+        if (const QString newlineSetting = settings[QStringLiteral("insert_final_newline")];
+            newlineSetting == QStringLiteral("true")) {
             connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::ensureFinalNewline);
         } else if (newlineSetting == QStringLiteral("false")) {
             connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::ensureNoFinalNewline);
@@ -132,8 +129,9 @@ void EditorConfigAppDecorator::trimTrailingWhitespace() const {
 void EditorConfigAppDecorator::ensureFinalNewline() const {
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
     const PreventUnfolding pu(editor);
-    const int lastLine = static_cast<int>(editor->lineCount() - 1);
-    const int lastLineLength = static_cast<int>(editor->lineEndPosition(lastLine) - editor->positionFromLine(lastLine));
+    const auto lastLine = static_cast<int>(editor->lineCount() - 1);
+    const auto lastLineLength =
+        static_cast<int>(editor->lineEndPosition(lastLine) - editor->positionFromLine(lastLine));
 
     if (lastLineLength != 0) {
         switch (editor->eOLMode()) {
