@@ -53,8 +53,8 @@ private slots:
 
     void itemClicked(const QListWidgetItem *item) const;
 
-    void editorSavePointChanged(bool dirty);
-    void editorRenamed();
+    void editorSavePointChanged(bool dirty) const;
+    void editorRenamed() const;
     void onVisibilityChanged(bool visible);
 
 private:

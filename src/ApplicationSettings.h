@@ -66,10 +66,6 @@ public:
     enum class DefaultDirectoryBehaviorEnum : std::uint8_t { FollowCurrentDocument, RememberLastUsed, HardCoded };
     Q_ENUM(DefaultDirectoryBehaviorEnum)
 
-    static constexpr auto FollowCurrentDocument = DefaultDirectoryBehaviorEnum::FollowCurrentDocument;
-    static constexpr auto RememberLastUsed = DefaultDirectoryBehaviorEnum::RememberLastUsed;
-    static constexpr auto HardCoded = DefaultDirectoryBehaviorEnum::HardCoded;
-
     template <typename T>
     T get(const char *key, const T &defaultValue) const {
         return value(QLatin1String(key), QVariant::fromValue(defaultValue)).template value<T>();

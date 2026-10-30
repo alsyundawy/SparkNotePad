@@ -161,7 +161,7 @@ void EditorManager::setupEditorDecoratorConnections() {
 }
 
 ScintillaNext *EditorManager::createEditor(const QString &name) {
-    auto *editor = new ScintillaNext(name);  // NOLINT // NOSONAR(cpp:S5018, cpp:S6011)
+    auto *editor = new ScintillaNext(name);  // NOSONAR
 
     manageEditor(editor);
 

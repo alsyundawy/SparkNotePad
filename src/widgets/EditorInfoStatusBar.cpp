@@ -24,19 +24,19 @@
 
 EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(window) {
     // Set up the status bar fields
-    docType = new StatusLabel();
+    docType = new StatusLabel(200, this);  // NOSONAR
     addWidget(docType, 1);
     docType->setToolTip(tr("Document Language / Syntax Scheme"));
 
-    docSize = new StatusLabel(180);
+    docSize = new StatusLabel(180, this);  // NOSONAR
     addPermanentWidget(docSize, 0);
     docSize->setToolTip(tr("Document Size & Line Count"));
 
-    docPos = new StatusLabel(230);
+    docPos = new StatusLabel(230, this);  // NOSONAR
     addPermanentWidget(docPos, 0);
     docPos->setToolTip(tr("Cursor Position & Selection"));
 
-    unicodeChar = new StatusLabel(90);
+    unicodeChar = new StatusLabel(90, this);  // NOSONAR
     addPermanentWidget(unicodeChar, 0);
     unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor (Click for full details)"));
     connect(qobject_cast<StatusLabel *>(unicodeChar), &StatusLabel::clicked, this, [this]() {
@@ -47,19 +47,19 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
         }
     });
 
-    occurrences = new StatusLabel(80);
+    occurrences = new StatusLabel(80, this);  // NOSONAR
     addPermanentWidget(occurrences, 0);
     occurrences->setToolTip(tr("Marked Occurrences Count"));
     occurrences->setText(tr("Occ: -"));
 
-    eolFormat = new StatusLabel(100);
+    eolFormat = new StatusLabel(100, this);  // NOSONAR
     addPermanentWidget(eolFormat, 0);
     eolFormat->setToolTip(tr("End of Line Format (Right-click to convert)"));
     eolFormat->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(qobject_cast<StatusLabel *>(eolFormat), &StatusLabel::customContextMenuRequested, this,
             [this](const QPoint &pos) { emit customContextMenuRequestedForEOLLabel(eolFormat->mapToGlobal(pos)); });
 
-    unicodeType = new StatusLabel(110);
+    unicodeType = new StatusLabel(110, this);  // NOSONAR
     addPermanentWidget(unicodeType, 0);
     unicodeType->setToolTip(tr("Encoding / BOM (Click to view or convert)"));
     connect(qobject_cast<StatusLabel *>(unicodeType), &StatusLabel::clicked, this, [this]() {
@@ -70,7 +70,7 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
         }
     });
 
-    overType = new StatusLabel(30);
+    overType = new StatusLabel(30, this);  // NOSONAR
     addPermanentWidget(overType, 0);
     overType->setToolTip(tr("Typing Mode: Insert (INS) / Overtype (OVR)"));
 

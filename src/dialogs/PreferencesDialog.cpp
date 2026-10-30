@@ -193,9 +193,11 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
 
     auto *buttonGroup = new QButtonGroup(this);
     buttonGroup->addButton(ui->radioFollowCurrentDirectory,
-                           static_cast<int>(ApplicationSettings::FollowCurrentDocument));
-    buttonGroup->addButton(ui->radioLastUsedDirectory, static_cast<int>(ApplicationSettings::RememberLastUsed));
-    buttonGroup->addButton(ui->radioHardCoded, static_cast<int>(ApplicationSettings::HardCoded));
+                           static_cast<int>(ApplicationSettings::DefaultDirectoryBehaviorEnum::FollowCurrentDocument));
+    buttonGroup->addButton(ui->radioLastUsedDirectory,
+                           static_cast<int>(ApplicationSettings::DefaultDirectoryBehaviorEnum::RememberLastUsed));
+    buttonGroup->addButton(ui->radioHardCoded,
+                           static_cast<int>(ApplicationSettings::DefaultDirectoryBehaviorEnum::HardCoded));
 
     connect(buttonGroup, &QButtonGroup::idClicked, this, [this](int id) {
         const auto e = static_cast<ApplicationSettings::DefaultDirectoryBehaviorEnum>(id);
@@ -226,7 +228,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
         b->setChecked(true);
     }
 
-    if (settings->defaultDirectoryBehavior() == ApplicationSettings::HardCoded) {
+    if (settings->defaultDirectoryBehavior() == ApplicationSettings::DefaultDirectoryBehaviorEnum::HardCoded) {
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(settings->defaultDirectory()));
     } else {
         ui->txtHardCodedPath->setText(QString());

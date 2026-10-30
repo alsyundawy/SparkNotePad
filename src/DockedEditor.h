@@ -52,15 +52,15 @@ public:
 
     int count() const;
 
-    void splitToRight(ScintillaNext *editor);
-    void splitToBottom(ScintillaNext *editor);
+    void splitToRight(const ScintillaNext *editor);
+    void splitToBottom(const ScintillaNext *editor);
 
 public slots:
     void addEditor(ScintillaNext *editor);
 
 private slots:
     void dockWidgetCloseRequested();
-    void editorRenamed(ScintillaNext *editor) const;
+    void editorRenamed(const ScintillaNext *editor) const;
 
 signals:
     void editorAdded(ScintillaNext *editor);

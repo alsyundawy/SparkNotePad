@@ -33,12 +33,12 @@ DefaultDirectoryManager::DefaultDirectoryManager(MainWindow *window, Application
 QString DefaultDirectoryManager::getDefaultDirectory() const {
     ApplicationSettings::DefaultDirectoryBehaviorEnum e = settings->defaultDirectoryBehavior();
 
-    if (e == ApplicationSettings::FollowCurrentDocument) {
+    if (e == ApplicationSettings::DefaultDirectoryBehaviorEnum::FollowCurrentDocument) {
         const ScintillaNext *editor = window->currentEditor();
         return editor->isFile() ? editor->getPath() : settings->defaultDirectory();
-    } else if (e == ApplicationSettings::RememberLastUsed) {
+    } else if (e == ApplicationSettings::DefaultDirectoryBehaviorEnum::RememberLastUsed) {
         return settings->defaultDirectory();
-    } else if (e == ApplicationSettings::HardCoded) {
+    } else if (e == ApplicationSettings::DefaultDirectoryBehaviorEnum::HardCoded) {
         return settings->defaultDirectory();
     }
 
@@ -46,13 +46,16 @@ QString DefaultDirectoryManager::getDefaultDirectory() const {
 }
 
 void DefaultDirectoryManager::editorActivated(ScintillaNext *editor) {
-    if (settings->defaultDirectoryBehavior() == ApplicationSettings::FollowCurrentDocument && editor->isFile()) {
+    if (settings->defaultDirectoryBehavior() ==
+            ApplicationSettings::DefaultDirectoryBehaviorEnum::FollowCurrentDocument &&
+        editor->isFile()) {
         settings->setDefaultDirectory(editor->getPath());
     }
 }
 
 void DefaultDirectoryManager::fileDialogAccepted(const QString &filePath) {
-    if (settings->defaultDirectoryBehavior() == ApplicationSettings::RememberLastUsed && !filePath.isEmpty()) {
+    if (settings->defaultDirectoryBehavior() == ApplicationSettings::DefaultDirectoryBehaviorEnum::RememberLastUsed &&
+        !filePath.isEmpty()) {
         settings->setDefaultDirectory(QFileInfo(filePath).absolutePath());
     }
 }

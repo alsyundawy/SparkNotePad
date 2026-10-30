@@ -54,7 +54,8 @@ CREATE_SETTING(App, RestoreUnsavedFiles, restoreUnsavedFiles, bool, false)
 CREATE_SETTING(App, RestoreTempFiles, restoreTempFiles, bool, false)
 
 CREATE_SETTING(App, DefaultDirectoryBehavior, defaultDirectoryBehavior,
-               ApplicationSettings::DefaultDirectoryBehaviorEnum, ApplicationSettings::FollowCurrentDocument)
+               ApplicationSettings::DefaultDirectoryBehaviorEnum,
+               ApplicationSettings::DefaultDirectoryBehaviorEnum::FollowCurrentDocument)
 CREATE_SETTING(App, DefaultDirectory, defaultDirectory, QString, QString())
 
 CREATE_SETTING(App, Translation, translation, QString, QStringLiteral(""))

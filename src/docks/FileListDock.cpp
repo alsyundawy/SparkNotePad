@@ -118,7 +118,7 @@ void FileListDock::removeEditor(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     if (const QListWidgetItem *item = lookupItemByEditor(editor); item) {
-        delete ui->listWidget->takeItem(ui->listWidget->row(item));
+        const std::unique_ptr<QListWidgetItem> itemHolder(ui->listWidget->takeItem(ui->listWidget->row(item)));
     }
 }
 
@@ -140,7 +140,7 @@ void FileListDock::itemClicked(const QListWidgetItem *item) const {
     window->getDockedEditor()->switchToEditor(editor);
 }
 
-void FileListDock::editorSavePointChanged(bool dirty) {
+void FileListDock::editorSavePointChanged(bool dirty) const {
     Q_UNUSED(dirty)
     qInfo(Q_FUNC_INFO);
 
@@ -152,7 +152,7 @@ void FileListDock::editorSavePointChanged(bool dirty) {
     }
 }
 
-void FileListDock::editorRenamed() {
+void FileListDock::editorRenamed() const {
     qInfo(Q_FUNC_INFO);
 
     if (const auto *editor = qobject_cast<const ScintillaNext *>(sender()); editor) {
