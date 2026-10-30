@@ -36,7 +36,7 @@ public:
     QString getDefaultDirectory() const;
 
 public slots:
-    void editorActivated(ScintillaNext *editor);
+    void editorActivated(const ScintillaNext *editor);
     void fileDialogAccepted(const QString &filePath);
 
 private:

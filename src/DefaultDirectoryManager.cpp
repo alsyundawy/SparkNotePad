@@ -31,31 +31,28 @@ DefaultDirectoryManager::DefaultDirectoryManager(MainWindow *window, Application
 }
 
 QString DefaultDirectoryManager::getDefaultDirectory() const {
-    ApplicationSettings::DefaultDirectoryBehaviorEnum e = settings->defaultDirectoryBehavior();
+    using enum ApplicationSettings::DefaultDirectoryBehaviorEnum;
 
-    if (e == ApplicationSettings::DefaultDirectoryBehaviorEnum::FollowCurrentDocument) {
+    if (const auto e = settings->defaultDirectoryBehavior(); e == FollowCurrentDocument) {
         const ScintillaNext *editor = window->currentEditor();
         return editor->isFile() ? editor->getPath() : settings->defaultDirectory();
-    } else if (e == ApplicationSettings::DefaultDirectoryBehaviorEnum::RememberLastUsed) {
-        return settings->defaultDirectory();
-    } else if (e == ApplicationSettings::DefaultDirectoryBehaviorEnum::HardCoded) {
+    } else if (e == RememberLastUsed || e == HardCoded) {
         return settings->defaultDirectory();
     }
 
     return QString();
 }
 
-void DefaultDirectoryManager::editorActivated(ScintillaNext *editor) {
-    if (settings->defaultDirectoryBehavior() ==
-            ApplicationSettings::DefaultDirectoryBehaviorEnum::FollowCurrentDocument &&
-        editor->isFile()) {
+void DefaultDirectoryManager::editorActivated(const ScintillaNext *editor) {
+    using enum ApplicationSettings::DefaultDirectoryBehaviorEnum;
+    if (settings->defaultDirectoryBehavior() == FollowCurrentDocument && editor && editor->isFile()) {
         settings->setDefaultDirectory(editor->getPath());
     }
 }
 
 void DefaultDirectoryManager::fileDialogAccepted(const QString &filePath) {
-    if (settings->defaultDirectoryBehavior() == ApplicationSettings::DefaultDirectoryBehaviorEnum::RememberLastUsed &&
-        !filePath.isEmpty()) {
+    using enum ApplicationSettings::DefaultDirectoryBehaviorEnum;
+    if (settings->defaultDirectoryBehavior() == RememberLastUsed && !filePath.isEmpty()) {
         settings->setDefaultDirectory(QFileInfo(filePath).absolutePath());
     }
 }

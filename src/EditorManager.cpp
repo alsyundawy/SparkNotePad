@@ -61,6 +61,11 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
 }
 
 void EditorManager::setupDisplaySettingsConnections() {
+    setupWrapAndWhitespaceConnections();
+    setupFontAndGuideConnections();
+}
+
+void EditorManager::setupWrapAndWhitespaceConnections() {
     connect(settings, &ApplicationSettings::showWrapSymbolChanged, this, [this](bool b) {
         for (const auto &editor : getEditors()) {
             editor->setWrapVisualFlags(b ? SC_WRAPVISUALFLAG_END : SC_WRAPVISUALFLAG_NONE);
@@ -78,7 +83,9 @@ void EditorManager::setupDisplaySettingsConnections() {
             editor->setViewEOL(b);
         }
     });
+}
 
+void EditorManager::setupFontAndGuideConnections() {
     connect(settings, &ApplicationSettings::showIndentGuideChanged, this, [this](bool b) {
         for (const auto &editor : getEditors()) {
             editor->setIndentationGuides(b ? SC_IV_LOOKBOTH : SC_IV_NONE);
@@ -117,6 +124,11 @@ void EditorManager::setupDisplaySettingsConnections() {
 }
 
 void EditorManager::setupEditorDecoratorConnections() {
+    setupUrlDecoratorConnections();
+    setupFeatureDecoratorConnections();
+}
+
+void EditorManager::setupUrlDecoratorConnections() {
     connect(settings, &ApplicationSettings::urlHighlightingChanged, this, [this](bool b) {
         for (const auto &editor : getEditors()) {
             if (auto *decorator = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -132,7 +144,9 @@ void EditorManager::setupEditorDecoratorConnections() {
             }
         }
     });
+}
 
+void EditorManager::setupFeatureDecoratorConnections() {
     connect(settings, &ApplicationSettings::showLineNumbersChanged, this, [this](bool b) {
         for (const auto &editor : getEditors()) {
             if (auto *decorator = editor->findChild<LineNumbers *>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -480,23 +494,27 @@ int EditorManager::detectEOLMode(const ScintillaNext *editor) const {
         chPrev = ch;
 
         // If any meet some minimum threshold then just declare victory
-        if (crlf == MIN_LINE_THRESHOLD)
+        if (crlf == MIN_LINE_THRESHOLD) {
             return SC_EOL_CRLF;
-        else if (cr == MIN_LINE_THRESHOLD)
+        }
+        if (cr == MIN_LINE_THRESHOLD) {
             return SC_EOL_CR;
-        else if (lf == MIN_LINE_THRESHOLD)
+        }
+        if (lf == MIN_LINE_THRESHOLD) {
             return SC_EOL_LF;
+        }
     }
 
     // There are either no lines or only a few, so make a best effort determination
 
     if (crlf > cr && crlf > lf) {
         return SC_EOL_CRLF;
-    } else if (cr > lf) {
-        return SC_EOL_CR;
-    } else if (lf > cr) {
-        return SC_EOL_LF;
-    } else {
-        return -1;
     }
+    if (cr > lf) {
+        return SC_EOL_CR;
+    }
+    if (lf > cr) {
+        return SC_EOL_LF;
+    }
+    return -1;
 }
