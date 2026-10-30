@@ -60,9 +60,18 @@ add_custom_target(dmg
     COMMAND hdiutil detach /Volumes/NoteSciPad -force 2>/dev/null || true
     COMMAND ${MACDEPLOYQT_EXECUTABLE}
         ${INSTALL_DIR}/NoteSciPad.app
-        -dmg
-    COMMAND ${CMAKE_COMMAND} -E rename
-        ${INSTALL_DIR}/NoteSciPad.dmg
-        ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
+    COMMAND ${CMAKE_COMMAND} -E rm -rf
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtPdf.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtQml.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtQmlMeta.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtQmlModels.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtQmlWorkerScript.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtQuick.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtVirtualKeyboard.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
+        ${INSTALL_DIR}/NoteSciPad.app/Contents/PlugIns/imageformats/libqpdf.dylib
+    COMMAND codesign --force --deep -s - ${INSTALL_DIR}/NoteSciPad.app
+    COMMAND hdiutil create -volname NoteSciPad -srcfolder ${INSTALL_DIR}/NoteSciPad.app -ov -format UDZO -imagekey zlib-level=9 ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
     DEPENDS install_local
 )
