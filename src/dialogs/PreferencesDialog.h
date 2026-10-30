@@ -35,23 +35,33 @@
 #include <QSlider>
 #include <QSpinBox>
 
+#include <memory>
+
 namespace Ui {
 class PreferencesDialog;
 }
 
 class Settings;
+class QTabWidget;
+class ShortcutCustomizerWidget;
 
 class PreferencesDialog : public QDialog {
     Q_OBJECT
 
 public:
     explicit PreferencesDialog(ApplicationSettings *settings, QWidget *parent = nullptr);
-    ~PreferencesDialog();
+    ~PreferencesDialog() override;
 
     void showApplicationRestartRequired() const;
+    void openShortcutsTab();
+    void setCurrentTab(int index);
+    void accept() override;
+
+signals:
+    void shortcutsChanged();
 
 private:
-    Ui::PreferencesDialog *ui;
+    std::unique_ptr<Ui::PreferencesDialog> ui;
     ApplicationSettings *settings;
 
     template <typename Func1, typename Func2, typename Func3>
@@ -63,6 +73,9 @@ private:
     void populateTranslationComboBox();
     void updateThemeColors();
     void setupThemeAndFeatureSettings();
+
+    QTabWidget *m_tabWidget = nullptr;
+    ShortcutCustomizerWidget *m_shortcutWidget = nullptr;
 
     QComboBox *comboBoxTheme = nullptr;
     QPushButton *btnToggleDarkLight = nullptr;

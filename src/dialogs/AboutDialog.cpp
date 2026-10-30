@@ -492,27 +492,52 @@ void AboutDialog::updateThemeColors() {
                 "<div style='color: %1; line-height: 1.5; font-size: 11px;'>"
                 "<h3 style='color: %1; margin-top: 0; font-size: 13px;'>%3</h3>"
                 "<table border='0' cellspacing='4' cellpadding='2' width='100%' style='color: %1; font-size: 11px;'>"
-                "<tr><td style='color: %2; font-weight: bold; width: 170px;'>Ctrl / Cmd + N</td><td>%4</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + N</td><td>%5</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + E</td><td>%6</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + T</td><td>%7</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + F</td><td>%8</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + P</td><td>%9</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + D</td><td>%10</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + /</td><td>%11</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + /</td><td>%12</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + U</td><td>%13</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + U</td><td>%14</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Alt + Click &amp; Drag</td><td>%15</td></tr>"
+                "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 4px;'>%4</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold; width: 190px;'>Ctrl / Cmd + N</td><td>%5</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + N</td><td>%6</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + P</td><td>%7</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + P</td><td>%8</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + D</td><td>%9</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + E</td><td>%10</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + T</td><td>%11</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + F</td><td>%12</td></tr>"
+                "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%13</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F1</td><td>%14</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F2</td><td>%15</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F3</td><td>%16</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Alt+Shift+F1 / Ctrl+Alt+W</td><td>%17</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>F5</td><td>%18</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + F5</td><td>%19</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + T</td><td>%20</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + R</td><td>%21</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + C</td><td>%22</td></tr>"
+                "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%23</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + D</td><td>%24</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + /</td><td>%25</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + /</td><td>%26</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + U</td><td>%27</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + U</td><td>%28</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + B</td><td>%29</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Alt + Click &amp; Drag</td><td>%30</td></tr>"
+                "<tr><td colspan='2' style='color: %2; font-style: italic; padding-top: 8px;'>%31</td></tr>"
                 "</table>"
                 "</div>")
-                .arg(txtPri, accentCol, tr("Key Productivity Shortcuts"), tr("Create New File"),
-                     tr("Open New Window (Independent Instance)"), tr("Evaluate Inline Math Expression"),
+                .arg(txtPri, accentCol, tr("SparkNotePad Keyboard Shortcuts &amp; Hotkeys"),
+                     tr("Core &amp; Productivity"), tr("Create New File"), tr("Open New Window (Independent Instance)"),
+                     tr("Command Palette (Quick Actions &amp; Navigation)"), tr("Quick Open File / Print Document"),
+                     tr("Side-by-Side Dual-Editor Diff View"), tr("Evaluate Inline Math Expression"),
                      tr("Interactive Theme Switcher (75 Palettes)"), tr("Find in Files / Workspace"),
-                     tr("Print Document / Export to PDF"), tr("Duplicate Current Line or Selection"),
-                     tr("Toggle Single-Line Comment"), tr("Toggle Block / Stream Comment"),
-                     tr("Convert Selection to UPPERCASE"), tr("Convert Selection to lowercase"),
-                     tr("Column / Rectangular Box Selection")));
+                     tr("Developer &amp; Documentation Tools"), tr("Get PHP Help (php.net)"),
+                     tr("Rust Documentation (rust-lang.org/learn)"), tr("Python Documentation (w3schools.com/python)"),
+                     tr("Wikipedia Search"), tr("Run External Tool"), tr("Run Current File with Interpreter"),
+                     tr("Open Terminal Here"), tr("Run Python Script / Selection (3.13+)"),
+                     tr("Generate Development SSL Certificate (mkcert/OpenSSL)"), tr("Editing &amp; Selection"),
+                     tr("Duplicate Current Line or Selection"), tr("Toggle Single-Line Comment"),
+                     tr("Toggle Block / Stream Comment"), tr("Convert Selection to UPPERCASE"),
+                     tr("Convert Selection to lowercase"), tr("Toggle Clipboard Monitoring"),
+                     tr("Column / Rectangular Box Selection"),
+                     tr("Customize all shortcuts anytime in <b>Preferences &gt; Shortcuts</b> (or <b>Settings &gt; "
+                        "Shortcut Mapper</b>).")));
     }
 
     if (m_licenseBrowser) {

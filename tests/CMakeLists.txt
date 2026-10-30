@@ -12,11 +12,13 @@ set(TEST_HEADERS
     test_code_compress_pretty.h
     test_lua_security.h
     TestLuaSandbox.h
+    test_mime_tools.h
 )
 
 set(TEST_SOURCES
     test_main.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Base64Utils.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/MimeTools.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/NumberConverter.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/GuidTimestampUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/CaseConverter.cpp

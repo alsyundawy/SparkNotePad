@@ -720,7 +720,8 @@ QMenuBar {
 }
 QMenuBar::item {
     background: transparent;
-    padding: 4px 8px;
+    padding: 3px 6px;
+    font-size: 12px;
     color: %2;
 }
 QMenuBar::item:selected {

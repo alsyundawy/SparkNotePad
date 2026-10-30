@@ -285,6 +285,8 @@
      <addaction name="actionEvaluateMathAppend" />
      <addaction name="actionEvaluateMathReplace" />
     </widget>
+    <addaction name="separator" />
+    <addaction name="actionPreferences" />
    </widget>
    <widget class="QMenu" name="menuSearch">
     <property name="title">
@@ -430,12 +432,6 @@
      <string>Language</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="actionPreferences" />
-   </widget>
    <widget class="QMenu" name="menuMacro">
     <property name="title">
      <string>Macro</string>
@@ -499,7 +495,6 @@
    <addaction name="menuView" />
    <addaction name="menuEncodings" />
    <addaction name="menuLanguage" />
-   <addaction name="menuSettings" />
    <addaction name="menuMacro" />
    <addaction name="menuHelp" />
   </widget>

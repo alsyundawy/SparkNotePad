@@ -250,9 +250,13 @@ private:
     void onOpenInBrowserTriggered() const;
     void onSearchGoogleTriggered() const;
     void onSearchWikipediaTriggered() const;
+    void onSearchPhpTriggered() const;
+    void onSearchRustTriggered() const;
+    void onSearchPythonTriggered() const;
     void onSearchGitHubTriggered() const;
     void onSearchStackOverflowTriggered() const;
     void onManageToolsTriggered();
+    void onCustomizeShortcutsTriggered();
     void onRegexHelperTriggered();
     void onEncryptDocumentTriggered();
     void onDecryptDocumentTriggered();
@@ -304,6 +308,7 @@ private:
     FocusedView *focusedView = nullptr;
     QMenu *menuWindow = nullptr;
     QMenu *menuTheme = nullptr;
+    QMenu *menuTools = nullptr;
     QAction *actionThemeSwitcher = nullptr;
     QAction *actionThemeAuto = nullptr;
     QAction *actionThemeLight = nullptr;

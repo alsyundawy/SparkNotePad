@@ -1,0 +1,12 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "files": {
+    "ignore": [
+      "i18n/**",
+      "**/*.ts",
+      "build/**",
+      "thirdparty/**",
+      ".cpm-cache/**"
+    ]
+  }
+}

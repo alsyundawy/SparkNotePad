@@ -73,4 +73,16 @@ Manage codebase files with an integrated file system dock:
 
 ---
 
+## 6. Notepad++ Style Tools Menu Suite
+
+SparkNotePad v1.3.7 organizes power developer utilities under a top-level **Tools** menu:
+
+- **Cryptographic Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-512 with Generate (entire file), Generate From File, Generate From Selection, and Verify actions.
+- **Cryptographic Hash & Authenticity Validator**: Direct launcher for streaming 64 KB chunk hash validation.
+- **MIME Tools Submenu**: Base64 Encode/Decode, URL Percent Encode/Decode, and Quoted-Printable Encode.
+- **Converter Submenu**: Bidirectional ASCII <-> HEX and Decimal <-> HEX conversion.
+- **Relocated AES-256 Encryption**: High-assurance document encryption with PBKDF2 (100,000 rounds) organized cleanly under Tools.
+
+---
+
 Next Chapter: **[[03. User Interface & Themes|03-User-Interface-and-Themes]]**

@@ -1,12 +1,12 @@
-# SparkNotePad v1.3.7 — Command Palette Omnibar, Visual Side-by-Side Diff, Upgraded Project Tree, Forensics Suite & Zero-Linter Hardening
+# SparkNotePad v1.3.7 — Tools Menu Suite, Command Palette Omnibar, Visual Diff, Project Tree & Linter Hardening
 
-**Release Version:** `v1.3.7`  
-**Release Date:** 2026-10-28  
-**Maintainer:** [HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)](https://github.com/alsyundawy) — [ALSYUNDAWY IT SOLUTION](https://alsyundawy.com)  
-**Core Editing Engine:** Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)  
-**Embedded Lua Core:** Sandboxed Lua 5.5.1 / 5.4.7 (Official Source)  
-**Scripting Runtime:** Python 3.13+ Engine Bridge  
-**Standard:** ISO C++20 / Qt 6.5–6.12  
+**Release Version:** `v1.3.7`<br/>
+**Release Date:** 2026-10-30<br/>
+**Maintainer:** [HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)](https://github.com/alsyundawy) — [ALSYUNDAWY IT SOLUTION](https://alsyundawy.com)<br/>
+**Core Editing Engine:** Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)<br/>
+**Embedded Lua Core:** Sandboxed Lua 5.5.1 / 5.4.7 (Official Source)<br/>
+**Scripting Runtime:** Python 3.13+ Engine Bridge<br/>
+**Standard:** ISO C++20 / Qt 6.5–6.12<br/>
 **Target Platforms:** macOS 11.0–26.0 (Universal: Apple Silicon ARM64 & Intel x86_64) | Linux (Ubuntu 22.04–26.04, Debian 12–14, Fedora 40–44, RHEL/Rocky 9–11, openSUSE, Slackware) | FreeBSD 13.x / 14.x / 15.x (KDE Plasma 6 & XFCE)
 
 ---
@@ -62,6 +62,21 @@
 ---
 
 ## ⚡ Highlights & Key Innovations in v1.3.7
+
+### 0. Notepad++ Style Tools Menu Suite & Ergonomics
+
+- **Dedicated Top-Level Tools Menu**: Positioned between View and Settings, providing rapid developer utilities without cluttering editor panels.
+- **Cryptographic Hash Submenu**: Full support for MD5, CRC32, XXHASH, SHA-1, SHA-256, and SHA-512 with four operational modes:
+  - _Generate_: Hashes the entire active document and copies checksum to the system clipboard.
+  - _Generate From File_: File dialog picker calculating cryptographic hash directly from disk.
+  - _Generate From Selection_: Hashes highlighted editor text with zero memory overhead.
+  - _Verify_: Cross-validates document contents against an expected checksum string.
+- **Standalone Hash & Authenticity Validator**: Direct launcher for streaming 64 KB chunk hash validation.
+- **MIME Tools Submenu**: Base64 Encode/Decode, URL Percent Encode/Decode, and Quoted-Printable Encode.
+- **Converter Submenu**: Bidirectional ASCII <-> HEX and Decimal <-> HEX conversion routines.
+- **AES-256 Document Encryption Relocation**: Migrated from the File menu into Tools for clean categorization.
+- **Ergonomic Quick Open Placement**: Repositioned `Ctrl+Alt+O` directly adjacent to Open in the File menu.
+- **Compact Menubar Typography**: Menubar padding calibrated to `3px 6px` with a crisp `12px` font size for distraction-free navigation.
 
 ### 1. Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)
 

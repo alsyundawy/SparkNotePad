@@ -16,11 +16,16 @@
 #include "test_code_compress_pretty.h"
 #include "test_lua_security.h"  // CVE-2026-42214 Lua injection regression tests
 #include "TestLuaSandbox.h"     // Lua sandbox restriction unit tests
+#include "test_mime_tools.h"    // Notepad++ MIME tools suite
 
 int runAllTests(int argc, char *argv[]) {
     int status = 0;
     {
         TestBase64 t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestMimeTools t;
         status |= QTest::qExec(&t, argc, argv);
     }
     {

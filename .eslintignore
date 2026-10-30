@@ -1,0 +1,5 @@
+i18n/**
+**/*.ts
+build/**
+thirdparty/**
+.cpm-cache/**

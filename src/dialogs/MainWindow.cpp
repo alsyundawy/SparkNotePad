@@ -48,6 +48,7 @@
 #include "ScintillaSorter.h"
 #include "URLFinder.h"
 #include "UrlUtils.h"
+#include "MimeTools.h"
 #include "EncodingSelectionDialog.h"
 #include "CharacterInfo.h"
 #include "CharacterInfoDialog.h"
@@ -58,6 +59,7 @@
 #include "ModernMessageBox.h"
 #include "docks/MarkdownSafePreviewDock.h"
 #include "dialogs/HashIntegrityDialog.h"
+#include "dialogs/GenerateHashDigestDialog.h"
 #include "ui_MainWindow.h"
 
 #include <QFileDialog>
@@ -81,6 +83,8 @@
 #include <QProcess>
 #include <QScreen>
 #include <QFontDatabase>
+#include <QCryptographicHash>
+#include <QUrl>
 
 #ifdef Q_OS_WIN
 #include <QSimpleUpdater.h>
@@ -141,6 +145,7 @@
 #include "MacroRunDialog.h"
 #include "MacroSaveDialog.h"
 #include "PreferencesDialog.h"
+#include "ShortcutCustomizerDialog.h"
 #include "ColumnEditorDialog.h"
 
 #include "TabsQuickActionsBar.h"
@@ -161,7 +166,97 @@
 
 #include "FadingIndicator.h"
 
+#include <algorithm>
+#include <array>
+#include <optional>
+
 #include "ActionUtils.h"
+
+namespace {
+std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &algStr) {
+    if (algStr == QLatin1String("MD5"))
+        return QCryptographicHash::Md5;
+    if (algStr == QLatin1String("SHA1") || algStr == QLatin1String("SHA-1"))
+        return QCryptographicHash::Sha1;
+    if (algStr == QLatin1String("SHA256") || algStr == QLatin1String("SHA-256"))
+        return QCryptographicHash::Sha256;
+    if (algStr == QLatin1String("SHA384") || algStr == QLatin1String("SHA-384"))
+        return QCryptographicHash::Sha384;
+    if (algStr == QLatin1String("SHA512") || algStr == QLatin1String("SHA-512"))
+        return QCryptographicHash::Sha512;
+    if (algStr == QLatin1String("SHA3-1") || algStr == QLatin1String("SHA3_224") || algStr == QLatin1String("SHA3-224"))
+        return QCryptographicHash::Sha3_224;
+    if (algStr == QLatin1String("SHA3-256") || algStr == QLatin1String("SHA3_256"))
+        return QCryptographicHash::Sha3_256;
+    if (algStr == QLatin1String("SHA3-384") || algStr == QLatin1String("SHA3_384"))
+        return QCryptographicHash::Sha3_384;
+    if (algStr == QLatin1String("SHA3-512") || algStr == QLatin1String("SHA3_512"))
+        return QCryptographicHash::Sha3_512;
+    return std::nullopt;
+}
+
+QString computeHashString(const QString &algStr, const QByteArray &data, const QString & /*validatorSuffix*/ = {}) {
+    if (const QString digest = GenerateHashDigestDialog::computeSingleDigest(algStr, data); !digest.isEmpty()) {
+        return digest;
+    }
+    return QObject::tr("(Unknown algorithm %1)").arg(algStr);
+}
+
+QString computeFileHash(const QString &algStr, const QString &filePath, QString *errorOut) {
+    QFile f(filePath);
+    if (!f.open(QFile::ReadOnly)) {
+        if (errorOut)
+            *errorOut = f.errorString();
+        return {};
+    }
+    if (const auto alg = getHashAlgorithm(algStr)) {
+        QCryptographicHash hasher(*alg);
+        hasher.addData(&f);
+        return QString::fromLatin1(hasher.result().toHex());
+    }
+    const QByteArray data = f.readAll();
+    return GenerateHashDigestDialog::computeSingleDigest(algStr, data);
+}
+
+QAction *findActionByName(const MainWindow *window, const QString &actionName, const QList<QAction *> &allActions) {
+    QAction *action = window->findChild<QAction *>(QStringLiteral("action") + actionName, Qt::FindDirectChildrenOnly);
+    if (!action) {
+        action = window->findChild<QAction *>(actionName);
+    }
+    if (!action) {
+        const auto it = std::ranges::find_if(allActions, [&actionName](const QAction *act) {
+            return act &&
+                   (act->objectName() == actionName || act->objectName() == QStringLiteral("action") + actionName);
+        });
+        if (it != allActions.cend()) {
+            action = *it;
+        }
+    }
+    return action;
+}
+
+QList<QKeySequence> parseShortcutSequences(const QVariant &value) {
+    QStringList shortcutStrings;
+    if (value.canConvert<QStringList>()) {
+        shortcutStrings = value.toStringList();
+    } else if (value.canConvert<QString>()) {
+        shortcutStrings = QStringList{value.toString()};
+    }
+
+    QList<QKeySequence> shortcuts;
+    for (const QString &shortcutString : shortcutStrings) {
+        const auto sequence = QKeySequence(shortcutString);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if (!sequence.isEmpty() && sequence[0].key() != Qt::Key_unknown) {
+#else
+        if (!sequence.isEmpty() && (sequence[0] & ~Qt::KeyboardModifierMask) != Qt::Key_unknown) {
+#endif
+            shortcuts.append(sequence);
+        }
+    }
+    return shortcuts;
+}
+}  // namespace
 
 MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     : ui(new Ui::MainWindow),                         // NOSONAR(cpp:S5025)
@@ -907,6 +1002,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(actionRegexHelper, &QAction::triggered, this, &MainWindow::onRegexHelperTriggered);
     ui->menuSearch->addAction(actionRegexHelper);
 
+    // --- Encryption (AES-256) sub-menu (will be added to Tools menu below) ---
     menuEncryption = new QMenu(tr("&Encryption (AES-256)"), this);
     actionEncryptDoc = new QAction(tr("&Encrypt Current Document..."), this);
     actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
@@ -917,11 +1013,349 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     actionDecryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
-    ui->menuFile->addMenu(menuEncryption);
 
-    auto *actionHashValidator = new QAction(tr("Cryptographic &Hash & Authenticity Validator..."), this);
+    auto *actionHashValidator = new QAction(tr("&Hash && Authenticity Validator..."), this);
     connect(actionHashValidator, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
-    ui->menuFile->addAction(actionHashValidator);
+
+    // --- Tools top-level menu (Notepad++ style) ---
+    menuTools = new QMenu(tr("&Tools"), this);
+
+    // Hash submenu
+    auto *menuHash = new QMenu(tr("&Hash"), this);
+    struct HashAlgSpec {
+        const char *label;
+        const char *alg;
+    };
+    static constexpr std::array<HashAlgSpec, 11> hashAlgs = {{
+        {"&MD5", "MD5"},
+        {"&CRC32", "CRC32"},
+        {"&XXHASH", "XXHASH"},
+        {"&SHA-1", "SHA1"},
+        {"SHA-&256", "SHA256"},
+        {"SHA-&384", "SHA384"},
+        {"SHA-&512", "SHA512"},
+        {"SHA3-&1 (SHA3-224)", "SHA3-1"},
+        {"SHA3-2&56", "SHA3-256"},
+        {"SHA3-3&84", "SHA3-384"},
+        {"SHA3-51&2", "SHA3-512"},
+    }};
+    for (const auto &h : hashAlgs) {
+        auto *subHash = new QMenu(tr(h.label), this);
+        const QString algStr = QLatin1String(h.alg);
+
+        auto *actGen = new QAction(tr("&Generate..."), this);
+        connect(actGen, &QAction::triggered, this, [this, algStr]() {
+            QString text;
+            if (ScintillaNext *editor = currentEditor()) {
+                const QByteArray sel = editor->getSelText();
+                if (!sel.isEmpty()) {
+                    text = QString::fromUtf8(sel);
+                } else {
+                    text = QString::fromUtf8(editor->getText(editor->length() + 1));
+                }
+            }
+            auto *dlg = new GenerateHashDigestDialog(algStr, text, this);
+            dlg->setAttribute(Qt::WA_DeleteOnClose);
+            dlg->show();
+        });
+        subHash->addAction(actGen);
+
+        auto *actGenFile = new QAction(tr("Generate &From File..."), this);
+        connect(actGenFile, &QAction::triggered, this, [this, algStr]() {
+            const QString path = QFileDialog::getOpenFileName(this, tr("Select File for %1 Hash").arg(algStr));
+            if (path.isEmpty())
+                return;
+            QString error;
+            const QString hash = computeFileHash(algStr, path, &error);
+            if (hash.isEmpty() && !error.isEmpty()) {
+                ModernMessageBox::critical(this, tr("Error"), tr("Cannot open file: %1 (%2)").arg(path, error));
+                return;
+            }
+            QApplication::clipboard()->setText(hash);
+            ui->statusBar->showMessage(
+                tr("%1 hash of file: %2")
+                    .arg(algStr, hash.left(20) + (hash.size() > 20 ? QStringLiteral("...") : QString())),
+                5000);
+        });
+        subHash->addAction(actGenFile);
+
+        auto *actGenSel = new QAction(tr("Generate From &Selection"), this);
+        connect(actGenSel, &QAction::triggered, this, [this, algStr]() {
+            ScintillaNext *editor = currentEditor();
+            if (!editor)
+                return;
+            const QByteArray selBytes = editor->getSelText();
+            if (const QString sel = QString::fromUtf8(selBytes); sel.isEmpty()) {
+                ui->statusBar->showMessage(tr("No selection to hash."), 3000);
+                return;
+            }
+            const QString hash = computeHashString(algStr, selBytes, QStringLiteral(" selection"));
+            QApplication::clipboard()->setText(hash);
+            ui->statusBar->showMessage(
+                tr("%1 hash of selection copied: %2")
+                    .arg(algStr, hash.left(20) + (hash.size() > 20 ? QStringLiteral("...") : QString())),
+                4000);
+        });
+        subHash->addAction(actGenSel);
+
+        subHash->addSeparator();
+        auto *actVerify = new QAction(tr("&Verify / Hash Authenticity Validator..."), this);
+        connect(actVerify, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
+        subHash->addAction(actVerify);
+
+        menuHash->addMenu(subHash);
+    }
+    menuTools->addMenu(menuHash);
+    menuTools->addAction(actionHashValidator);
+    menuTools->addSeparator();
+
+    // MIME Tools submenu (Full Notepad++ MIME Tools Suite)
+    auto *menuMimeTools = new QMenu(tr("&MIME Tools"), this);
+
+    auto applyMime = [this](auto func, const QString &statusMsg) {
+        ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        const bool hasSel = !editor->selectionEmpty();
+        const QString text =
+            hasSel ? QString::fromUtf8(editor->getSelText()) : QString::fromUtf8(editor->getText(editor->length() + 1));
+        const QString result = func(text);
+        if (hasSel) {
+            editor->replaceSel(result.toUtf8().constData());
+        } else {
+            editor->setText(result.toUtf8().constData());
+        }
+        ui->statusBar->showMessage(statusMsg, 3000);
+    };
+
+    // 1. Base64 Encode
+    auto *actB64Enc = new QAction(tr("Base64 Encode"), this);
+    connect(actB64Enc, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::base64Encode(s); }, tr("Base64 encoded."));
+    });
+    menuMimeTools->addAction(actB64Enc);
+
+    // 2. Base64 Encode with padding
+    auto *actB64EncPad = new QAction(tr("Base64 Encode with padding"), this);
+    connect(actB64EncPad, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::base64EncodeWithPadding(s); },
+                  tr("Base64 encoded with padding."));
+    });
+    menuMimeTools->addAction(actB64EncPad);
+
+    // 3. Base64 Encode with Unix EOL
+    auto *actB64EncUnix = new QAction(tr("Base64 Encode with Unix EOL"), this);
+    connect(actB64EncUnix, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::base64EncodeUnixEol(s); },
+                  tr("Base64 encoded with Unix EOL."));
+    });
+    menuMimeTools->addAction(actB64EncUnix);
+
+    // 4. Base64 Encode by line
+    auto *actB64EncLine = new QAction(tr("Base64 Encode by line"), this);
+    connect(actB64EncLine, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::base64EncodeByLine(s); }, tr("Base64 encoded by line."));
+    });
+    menuMimeTools->addAction(actB64EncLine);
+
+    // 5. Base64 Decode
+    auto *actB64Dec = new QAction(tr("Base64 Decode"), this);
+    connect(actB64Dec, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::base64Decode(s); }, tr("Base64 decoded."));
+    });
+    menuMimeTools->addAction(actB64Dec);
+
+    // 6. Base64 Decode strict
+    auto *actB64DecStrict = new QAction(tr("Base64 Decode strict"), this);
+    connect(actB64DecStrict, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        const bool hasSel = !editor->selectionEmpty();
+        const QString text =
+            hasSel ? QString::fromUtf8(editor->getSelText()) : QString::fromUtf8(editor->getText(editor->length() + 1));
+        bool ok = false;
+        const QString result = MimeTools::base64DecodeStrict(text, &ok);
+        if (!ok) {
+            QMessageBox::warning(this, tr("Base64 Decode Strict Error"),
+                                 tr("Invalid Base64 data, illegal character, or incorrect padding detected."));
+            return;
+        }
+        const QByteArray bytes = result.toUtf8();
+        hasSel ? editor->replaceSel(bytes.constData()) : editor->setText(bytes.constData());
+        ui->statusBar->showMessage(tr("Base64 strict decoded successfully."), 3000);
+    });
+    menuMimeTools->addAction(actB64DecStrict);
+
+    // 7. Base64 Decode by line
+    auto *actB64DecLine = new QAction(tr("Base64 Decode by line"), this);
+    connect(actB64DecLine, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::base64DecodeByLine(s); }, tr("Base64 decoded by line."));
+    });
+    menuMimeTools->addAction(actB64DecLine);
+
+    menuMimeTools->addSeparator();
+
+    // 8. Quoted-printable Encode
+    auto *actQpEnc = new QAction(tr("Quoted-printable Encode"), this);
+    connect(actQpEnc, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::quotedPrintableEncode(s); },
+                  tr("Quoted-printable encoded."));
+    });
+    menuMimeTools->addAction(actQpEnc);
+
+    // 9. Quoted-printable Decode
+    auto *actQpDec = new QAction(tr("Quoted-printable Decode"), this);
+    connect(actQpDec, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::quotedPrintableDecode(s); },
+                  tr("Quoted-printable decoded."));
+    });
+    menuMimeTools->addAction(actQpDec);
+
+    menuMimeTools->addSeparator();
+
+    // 10. URL Encode (RFC1738)
+    auto *actUrlRfcEnc = new QAction(tr("URL Encode (RFC1738)"), this);
+    connect(actUrlRfcEnc, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::urlEncodeRfc1738(s); }, tr("URL encoded (RFC1738)."));
+    });
+    menuMimeTools->addAction(actUrlRfcEnc);
+
+    // 11. URL Encode (RFC1738) by line
+    auto *actUrlRfcEncLine = new QAction(tr("URL Encode (RFC1738) by line"), this);
+    connect(actUrlRfcEncLine, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::urlEncodeRfc1738ByLine(s); },
+                  tr("URL encoded (RFC1738) by line."));
+    });
+    menuMimeTools->addAction(actUrlRfcEncLine);
+
+    // 12. URL Encode (Extended)
+    auto *actUrlExtEnc = new QAction(tr("URL Encode (Extended)"), this);
+    connect(actUrlExtEnc, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::urlEncodeExtended(s); }, tr("URL encoded (Extended)."));
+    });
+    menuMimeTools->addAction(actUrlExtEnc);
+
+    // 13. URL Encode (Extended) by line
+    auto *actUrlExtEncLine = new QAction(tr("URL Encode (Extended) by line"), this);
+    connect(actUrlExtEncLine, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::urlEncodeExtendedByLine(s); },
+                  tr("URL encoded (Extended) by line."));
+    });
+    menuMimeTools->addAction(actUrlExtEncLine);
+
+    // 14. URL Encode (Full)
+    auto *actUrlFullEnc = new QAction(tr("URL Encode (Full)"), this);
+    connect(actUrlFullEnc, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::urlEncodeFull(s); }, tr("URL encoded (Full)."));
+    });
+    menuMimeTools->addAction(actUrlFullEnc);
+
+    // 15. URL Encode (Full) by line
+    auto *actUrlFullEncLine = new QAction(tr("URL Encode (Full) by line"), this);
+    connect(actUrlFullEncLine, &QAction::triggered, this, [applyMime]() {
+        applyMime([](const QString &s) { return MimeTools::urlEncodeFullByLine(s); },
+                  tr("URL encoded (Full) by line."));
+    });
+    menuMimeTools->addAction(actUrlFullEncLine);
+
+    // 16. URL Decode
+    auto *actUrlDec = new QAction(tr("URL Decode"), this);
+    connect(actUrlDec, &QAction::triggered, this,
+            [applyMime]() { applyMime([](const QString &s) { return MimeTools::urlDecode(s); }, tr("URL decoded.")); });
+    menuMimeTools->addAction(actUrlDec);
+
+    menuTools->addMenu(menuMimeTools);
+    menuTools->addSeparator();
+
+    // Converter submenu (ASCII <-> HEX)
+    auto *menuConverter = new QMenu(tr("&Converter"), this);
+
+    auto *actAsciiToHex = new QAction(tr("&ASCII to HEX"), this);
+    connect(actAsciiToHex, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        const QByteArray src = editor->getSelText();
+        if (src.isEmpty()) {
+            ui->statusBar->showMessage(tr("No selection."), 3000);
+            return;
+        }
+        const QString hex = QString::fromLatin1(src.toHex(' '));
+        editor->replaceSel(hex.toUtf8().constData());
+        ui->statusBar->showMessage(tr("ASCII converted to HEX."), 3000);
+    });
+    menuConverter->addAction(actAsciiToHex);
+
+    auto *actHexToAscii = new QAction(tr("&HEX to ASCII"), this);
+    connect(actHexToAscii, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        const QString sel = QString::fromUtf8(editor->getSelText()).trimmed().remove(QLatin1Char(' '));
+        bool ok = false;
+        QByteArray bytes;
+        for (int i = 0; i + 1 < sel.size(); i += 2) {
+            bytes.append(static_cast<char>(sel.mid(i, 2).toUShort(&ok, 16)));
+            if (!ok)
+                break;
+        }
+        if (!ok && sel.size() % 2 != 0) {
+            ui->statusBar->showMessage(tr("Invalid HEX input."), 3000);
+            return;
+        }
+        editor->replaceSel(bytes.constData());
+        ui->statusBar->showMessage(tr("HEX converted to ASCII."), 3000);
+    });
+    menuConverter->addAction(actHexToAscii);
+
+    menuConverter->addSeparator();
+
+    auto *actDecToHex = new QAction(tr("&Decimal to HEX"), this);
+    connect(actDecToHex, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        bool ok;
+        const long long val = QString::fromUtf8(editor->getSelText().trimmed()).toLongLong(&ok);
+        if (!ok) {
+            ui->statusBar->showMessage(tr("Selection is not a valid decimal number."), 3000);
+            return;
+        }
+        const QString hex = QStringLiteral("0x") + QString::number(val, 16).toUpper();
+        editor->replaceSel(hex.toUtf8().constData());
+        ui->statusBar->showMessage(tr("Decimal converted to HEX: %1").arg(hex), 3000);
+    });
+    menuConverter->addAction(actDecToHex);
+
+    auto *actHexToDec = new QAction(tr("HEX to &Decimal"), this);
+    connect(actHexToDec, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        bool ok;
+        QString sel = QString::fromUtf8(editor->getSelText().trimmed());
+        if (sel.startsWith(QLatin1String("0x"), Qt::CaseInsensitive))
+            sel = sel.mid(2);
+        const long long val = sel.toLongLong(&ok, 16);
+        if (!ok) {
+            ui->statusBar->showMessage(tr("Selection is not a valid HEX number."), 3000);
+            return;
+        }
+        const QString dec = QString::number(val);
+        editor->replaceSel(dec.toUtf8().constData());
+        ui->statusBar->showMessage(tr("HEX converted to Decimal: %1").arg(dec), 3000);
+    });
+    menuConverter->addAction(actHexToDec);
+
+    menuTools->addMenu(menuConverter);
+    menuTools->addSeparator();
+
+    // Encryption (AES-256) moved into Tools
+    menuTools->addMenu(menuEncryption);
+
+    // Insert Tools menu before Macro in menubar
+    menuBar()->insertMenu(ui->menuMacro->menuAction(), menuTools);
 
     menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
     actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
@@ -1555,12 +1989,13 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     });
     ui->menuView->addAction(actionPrevChange);
 
-    // Quick Open (Cmd+P / Ctrl+P, Kate: Ctrl+Alt+O)
+    // Quick Open: inserted directly after actionOpen in the File menu
     auto *actionQuickOpen = new QAction(tr("&Quick Open..."), this);
     actionQuickOpen->setShortcuts({QKeySequence(Qt::CTRL | Qt::Key_P), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O)});
     actionQuickOpen->setStatusTip(tr("Quickly switch open tabs, recent files, or jump to line"));
     connect(actionQuickOpen, &QAction::triggered, this, [this]() { showCommandPalette(false); });
-    ui->menuFile->addAction(actionQuickOpen);
+    // Insert Quick Open directly after the Open action
+    ui->menuFile->insertAction(ui->actionOpenFolderasWorkspace, actionQuickOpen);
 
     // Command Palette (Cmd+Shift+P / Ctrl+Shift+P, Kate: Ctrl+Alt+I)
     auto *actionCommandPalette = new QAction(tr("&Command Palette..."), this);
@@ -1637,12 +2072,20 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
         if (pd == Q_NULLPTR) {
             pd = new PreferencesDialog(app->getSettings(), this);
+            connect(pd, &PreferencesDialog::shortcutsChanged, this, &MainWindow::applyCustomShortcuts);
         }
 
+        pd->setCurrentTab(0);
         pd->show();
         pd->raise();
         pd->activateWindow();
     });
+
+    auto *actionCustomizeShortcuts = new QAction(tr("Shortcut &Mapper / Customize Shortcuts..."), this);
+    actionCustomizeShortcuts->setObjectName(QStringLiteral("actionCustomizeShortcuts"));
+    actionCustomizeShortcuts->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
+    connect(actionCustomizeShortcuts, &QAction::triggered, this, &MainWindow::onCustomizeShortcutsTriggered);
+    addAction(actionCustomizeShortcuts);
 
     // The macro manager has already loaded any saved macros, so it might have some already
     ui->actionRunMacroMultipleTimes->setEnabled(macroManager.availableMacros().size() > 0);
@@ -1935,37 +2378,15 @@ void MainWindow::applyCustomShortcuts() const {
     ApplicationSettings *settings = app->getSettings();
     settings->beginGroup("Shortcuts");
 
+    const QList<QAction *> allActions = findChildren<QAction *>();
+
     for (const QString &actionName : settings->childKeys()) {
-        QAction *action = findChild<QAction *>(QStringLiteral("action") + actionName, Qt::FindDirectChildrenOnly);
-
-        if (!action) {
-            qWarning() << "CustomShortcut: Cannot find action" << actionName;
-            continue;
-        }
-
-        const QVariant value = settings->value(actionName);
-        if (!value.canConvert<QStringList>()) {
-            qWarning() << "CustomShortcut: Invalid shortcut format for" << actionName;
-            continue;
-        }
-
-        QList<QKeySequence> shortcuts;
-        for (const QString &shortcutString : value.toStringList()) {
-            auto sequence = QKeySequence(shortcutString);
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            if (!sequence.isEmpty() && sequence[0].key() != Qt::Key_unknown) {
-#else
-            if (!sequence.isEmpty() && (sequence[0] & ~Qt::KeyboardModifierMask) != Qt::Key_unknown) {
-#endif
-                shortcuts.append(sequence);
-            } else {
-                qWarning() << "CustomShortcut: Cannot create QKeySequence(" << shortcutString << ") for " << actionName;
+        QAction *action = findActionByName(this, actionName, allActions);
+        if (action) {
+            const QList<QKeySequence> shortcuts = parseShortcutSequences(settings->value(actionName));
+            if (!shortcuts.isEmpty()) {
+                action->setShortcuts(shortcuts);
             }
-        }
-
-        if (!shortcuts.isEmpty()) {
-            action->setShortcuts(shortcuts);
         }
     }
 
@@ -3810,15 +4231,31 @@ void MainWindow::setupRunMenu() {
 
     menuRun->addSeparator();
 
-    // 6. Web Searches
+    // 6. Web Searches & Developer Help References
     auto *actionGoogle = new QAction(tr("Search on &Google"), this);
     connect(actionGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
     menuRun->addAction(actionGoogle);
 
     auto *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
-    actionWiki->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_W));
+    actionWiki->setShortcuts(
+        {QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_W), QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F1)});
     connect(actionWiki, &QAction::triggered, this, &MainWindow::onSearchWikipediaTriggered);
     menuRun->addAction(actionWiki);
+
+    auto *actionPhpHelp = new QAction(tr("Get &PHP Help"), this);
+    actionPhpHelp->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F1));
+    connect(actionPhpHelp, &QAction::triggered, this, &MainWindow::onSearchPhpTriggered);
+    menuRun->addAction(actionPhpHelp);
+
+    auto *actionRustHelp = new QAction(tr("&Rust Documentation"), this);
+    actionRustHelp->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F2));
+    connect(actionRustHelp, &QAction::triggered, this, &MainWindow::onSearchRustTriggered);
+    menuRun->addAction(actionRustHelp);
+
+    auto *actionPythonHelp = new QAction(tr("P&ython Documentation"), this);
+    actionPythonHelp->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F3));
+    connect(actionPythonHelp, &QAction::triggered, this, &MainWindow::onSearchPythonTriggered);
+    menuRun->addAction(actionPythonHelp);
 
     auto *actionGitHub = new QAction(tr("Search on &GitHub"), this);
     connect(actionGitHub, &QAction::triggered, this, &MainWindow::onSearchGitHubTriggered);
@@ -3911,6 +4348,21 @@ void MainWindow::onSearchWikipediaTriggered() const {
                                    QStringLiteral("wikipedia"));
 }
 
+void MainWindow::onSearchPhpTriggered() const {
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
+                                   QStringLiteral("php"));
+}
+
+void MainWindow::onSearchRustTriggered() const {
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
+                                   QStringLiteral("rust"));
+}
+
+void MainWindow::onSearchPythonTriggered() const {
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
+                                   QStringLiteral("python"));
+}
+
 void MainWindow::onSearchGitHubTriggered() const {
     ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
                                    QStringLiteral("github"));
@@ -3926,6 +4378,20 @@ void MainWindow::onManageToolsTriggered() {
     if (dlg.exec() == QDialog::Accepted) {
         updateCustomToolsMenu();
     }
+}
+
+void MainWindow::onCustomizeShortcutsTriggered() {
+    PreferencesDialog *pd = findChild<PreferencesDialog *>(QString(), Qt::FindDirectChildrenOnly);
+
+    if (pd == Q_NULLPTR) {
+        pd = new PreferencesDialog(app->getSettings(), this);
+        connect(pd, &PreferencesDialog::shortcutsChanged, this, &MainWindow::applyCustomShortcuts);
+    }
+
+    pd->openShortcutsTab();
+    pd->show();
+    pd->raise();
+    pd->activateWindow();
 }
 
 void MainWindow::onGenerateCertTriggered() {

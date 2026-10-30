@@ -33,7 +33,7 @@ private slots:
     void onBrowseFileClicked();
     void onComputeHashClicked();
     void onExpectedHashChanged(const QString &text);
-    void onCopyComputedClicked();
+    void onCopyComputedClicked() const;
 
 private:
     void updateComparisonStatus();

@@ -23,6 +23,8 @@
 #include <QDebug>
 #include <QRegularExpression>
 
+#include <QSettings>
+
 ReleaseManager &ReleaseManager::instance() {
     static ReleaseManager inst;
     return inst;
@@ -30,7 +32,6 @@ ReleaseManager &ReleaseManager::instance() {
 
 ReleaseManager::ReleaseManager(QObject *parent) : QObject(parent) {
     m_netManager = new QNetworkAccessManager(this);
-    connect(m_netManager, &QNetworkAccessManager::finished, this, &ReleaseManager::onReplyFinished);
 }
 
 QString ReleaseManager::currentVersion() const {
@@ -90,29 +91,59 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
     QNetworkRequest request(apiUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, QString("SparkNotePad-App/%1").arg(currentVersion()));
     request.setRawHeader("Accept", "application/vnd.github.v3+json");
+
+    // ETag caching to avoid burning rate limits
+    const QSettings settings;
+    if (const QString cachedEtag = settings.value(QStringLiteral("ReleaseManager/LatestETag")).toString();
+        !cachedEtag.isEmpty()) {
+        request.setRawHeader("If-None-Match", cachedEtag.toUtf8());
+    }
+
     // Security: CVE-2026-95620 & CVE-2025-14575 mitigations
     NetworkSecurityPolicy::applySecureTlsConfiguration(request);
 
     qInfo() << "[ReleaseManager] Checking for updates via:" << apiUrl.toString();
-    m_netManager->get(request);
+    QNetworkReply *reply = m_netManager->get(request);
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() { onReplyFinished(reply); });
 }
 
 void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
     reply->deleteLater();
 
-    if (reply->error() != QNetworkReply::NoError) {
-        qWarning() << "[ReleaseManager] Network request failed:" << reply->errorString();
+    const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // 1. HTTP 304 Not Modified: Cache is fresh, no rate limit consumed, app is up-to-date
+    if (statusCode == 304) {
+        qInfo() << "[ReleaseManager] Release check returned 304 Not Modified. App is up-to-date.";
+        emit updateCheckFinished(false, ReleaseInfo{});
         if (!m_silent && m_parentWidget) {
-            UpdateDialog::showCheckFailed(m_parentWidget, reply->errorString(), m_parentWidget);
+            UpdateDialog::showUpToDate(m_parentWidget, currentVersion());
         }
         return;
+    }
+
+    // 2. HTTP 403 (Rate limit exceeded) or other network failure -> Fall back to unmetered web redirect
+    if (statusCode == 403 || reply->error() == QNetworkReply::ContentAccessDenied ||
+        reply->error() != QNetworkReply::NoError) {
+        qWarning() << "[ReleaseManager] GitHub REST API rate limit hit or error (HTTP" << statusCode << ":"
+                   << reply->errorString() << "). Activating unmetered GitHub web redirect fallback...";
+        triggerWebFallback();
+        return;
+    }
+
+    // 3. Cache ETag if provided by GitHub
+    if (const QByteArray etag = reply->rawHeader("ETag"); !etag.isEmpty()) {
+        QSettings settings;
+        settings.setValue(QStringLiteral("ReleaseManager/LatestETag"), QString::fromUtf8(etag));
     }
 
     QByteArray data = reply->readAll();
     QJsonParseError parseErr;
     QJsonDocument doc = QJsonDocument::fromJson(data, &parseErr);
     if (parseErr.error != QJsonParseError::NoError || !doc.isObject()) {
-        qWarning() << "[ReleaseManager] Failed to parse JSON response:" << parseErr.errorString();
+        qWarning() << "[ReleaseManager] Failed to parse JSON response:" << parseErr.errorString()
+                   << ". Falling back to web redirect...";
+        triggerWebFallback();
         return;
     }
 
@@ -138,5 +169,73 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
         if (!m_silent && m_parentWidget) {
             UpdateDialog::showUpToDate(m_parentWidget, curVer);
         }
+    }
+}
+
+void ReleaseManager::triggerWebFallback() {
+    QUrl webUrl("https://github.com/alsyundawy/SparkNotePad/releases/latest");
+    QNetworkRequest request(webUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, QString("SparkNotePad-App/%1").arg(currentVersion()));
+    NetworkSecurityPolicy::applySecureTlsConfiguration(request);
+
+    qInfo() << "[ReleaseManager] Triggering unmetered web redirect fallback via:" << webUrl.toString();
+    QNetworkReply *fallbackReply = m_netManager->get(request);
+    connect(fallbackReply, &QNetworkReply::finished, this,
+            [this, fallbackReply]() { onFallbackReplyFinished(fallbackReply); });
+}
+
+void ReleaseManager::onFallbackReplyFinished(QNetworkReply *reply) {
+    reply->deleteLater();
+
+    // Check redirect target or final redirected URL
+    QUrl targetUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (targetUrl.isEmpty()) {
+        targetUrl = reply->url();
+    }
+
+    QString fullUrl = targetUrl.toString();
+    static const QRegularExpression tagRegex(QStringLiteral("tag/(v?[0-9]+\\.[0-9]+(?:\\.[0-9]+)?)"));
+    auto match = tagRegex.match(fullUrl);
+
+    if (!match.hasMatch()) {
+        const QByteArray locHeader = reply->rawHeader("Location");
+        if (!locHeader.isEmpty()) {
+            match = tagRegex.match(QString::fromUtf8(locHeader));
+        }
+    }
+
+    if (match.hasMatch()) {
+        const QString versionTag = match.captured(1);
+        qInfo() << "[ReleaseManager] Unmetered web fallback successfully resolved latest release tag:" << versionTag;
+
+        ReleaseInfo info;
+        info.versionTag = versionTag;
+        info.releaseName = QStringLiteral("SparkNotePad %1").arg(versionTag);
+        info.releaseNotes = tr("SparkNotePad %1 is available on GitHub.").arg(versionTag);
+        info.htmlUrl = QStringLiteral("https://github.com/alsyundawy/SparkNotePad/releases/tag/%1").arg(versionTag);
+        info.isPrerelease = false;
+
+        const QString curVer = currentVersion();
+        const bool updateAvail = isNewerVersion(info.versionTag, curVer);
+
+        emit updateCheckFinished(updateAvail, info);
+
+        if (updateAvail) {
+            if (m_parentWidget) {
+                UpdateDialog::showUpdateAvailable(m_parentWidget, curVer, info);
+            }
+        } else {
+            if (!m_silent && m_parentWidget) {
+                UpdateDialog::showUpToDate(m_parentWidget, curVer);
+            }
+        }
+        return;
+    }
+
+    qWarning() << "[ReleaseManager] Web fallback failed or could not parse tag from URL:" << fullUrl;
+    if (!m_silent && m_parentWidget) {
+        UpdateDialog::showCheckFailed(
+            m_parentWidget, tr("Unable to check for updates. GitHub rate limit exceeded and fallback redirect failed."),
+            m_parentWidget);
     }
 }

@@ -136,6 +136,8 @@ qt_add_executable(SparkNotePad
 	features/CharacterInfo.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
+	utils/MimeTools.h
+	utils/MimeTools.cpp
 	utils/NumberConverter.h
 	utils/NumberConverter.cpp
 	utils/GuidTimestampUtils.h
@@ -230,6 +232,8 @@ qt_add_executable(SparkNotePad
 	dialogs/PreferencesDialog.cpp
 	dialogs/PreferencesDialog.h
 	dialogs/PreferencesDialog.ui
+	dialogs/ShortcutCustomizerDialog.cpp
+	dialogs/ShortcutCustomizerDialog.h
 	dialogs/StatusBarCustomizerDialog.cpp
 	dialogs/StatusBarCustomizerDialog.h
 	dialogs/EncodingSelectionDialog.cpp
@@ -285,6 +289,8 @@ qt_add_executable(SparkNotePad
 	dialogs/MkcertDialog.cpp
 	dialogs/HashIntegrityDialog.h
 	dialogs/HashIntegrityDialog.cpp
+	dialogs/GenerateHashDigestDialog.h
+	dialogs/GenerateHashDigestDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
