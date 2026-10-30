@@ -24,6 +24,7 @@
 #include <QItemSelectionModel>
 #include <QMessageBox>
 #include <QModelIndex>
+#include <utility>
 
 #include "MacroEditorDialog.h"
 #include "ComboBoxDelegate.h"
@@ -145,7 +146,7 @@ void MacroEditorDialog::copyCurrentMacro() {
 
         newMacro->setName(originalMacro->getName() + " " + tr("(Copy)"));
 
-        for (const MacroStep &step : qAsConst(originalMacro->getSteps())) {
+        for (const MacroStep &step : std::as_const(originalMacro->getSteps())) {
             newMacro->addMacroStep(step);
         }
 

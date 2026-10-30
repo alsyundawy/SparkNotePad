@@ -18,7 +18,7 @@
 #include <QFileInfo>
 #include <QCoreApplication>
 
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) || defined(Q_OS_MACOS)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -61,7 +61,7 @@ bool FileTimeUtils::setFileTimes(const QString &filePath, const QDateTime &modif
     if (!fi.exists())
         return false;
 
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) || defined(Q_OS_MACOS)
     QByteArray localPath = QFile::encodeName(filePath);
     struct timespec ts[2];
 
@@ -129,7 +129,7 @@ FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath) 
     result.originalTime = fi.lastModified();
     const QDateTime now = QDateTime::currentDateTime();
 
-#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) || defined(Q_OS_MACOS)
     QByteArray localPath = QFile::encodeName(filePath);
     // Passing NULL to utimensat sets both times to current system time
     if (utimensat(AT_FDCWD, localPath.constData(), nullptr, 0) == 0) {

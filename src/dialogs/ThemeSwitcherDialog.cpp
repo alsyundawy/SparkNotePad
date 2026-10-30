@@ -19,6 +19,7 @@
 #include <QHeaderView>
 #include <QPainter>
 #include <QKeySequence>
+#include <memory>
 
 ThemeSwitcherDialog::ThemeSwitcherDialog(MainWindow *mainWindow, QWidget *parent)
     : QDialog(parent ? parent : mainWindow),
@@ -45,7 +46,7 @@ void ThemeSwitcherDialog::setupUi() {
     mainLayout->addWidget(titleLabel);
 
     // Filter bar
-    auto *filterLayout = new QHBoxLayout();
+    auto filterLayout = std::make_unique<QHBoxLayout>();
     filterLayout->setSpacing(12);
     filterLayout->setContentsMargins(0, 2, 0, 2);
     m_searchEdit = new QLineEdit(this);
@@ -66,7 +67,7 @@ void ThemeSwitcherDialog::setupUi() {
     filterLayout->addWidget(m_radioAll);
     filterLayout->addWidget(m_radioLight);
     filterLayout->addWidget(m_radioDark);
-    mainLayout->addLayout(filterLayout);
+    mainLayout->addLayout(filterLayout.release());
 
     // Table
     m_table = new QTableWidget(this);
@@ -86,7 +87,7 @@ void ThemeSwitcherDialog::setupUi() {
     mainLayout->addWidget(m_table);
 
     // Buttons
-    auto *btnLayout = new QHBoxLayout();
+    auto btnLayout = std::make_unique<QHBoxLayout>();
     auto *shortcutHint = new QLabel(
         tr("<small style='opacity: 0.8;'>Tip: Press Esc to revert or Ctrl+Shift+T to open again.</small>"), this);
     btnLayout->addWidget(shortcutHint);
@@ -97,7 +98,7 @@ void ThemeSwitcherDialog::setupUi() {
     m_applyBtn->setDefault(true);
     btnLayout->addWidget(m_cancelBtn);
     btnLayout->addWidget(m_applyBtn);
-    mainLayout->addLayout(btnLayout);
+    mainLayout->addLayout(btnLayout.release());
 
     // Connections
     connect(m_searchEdit, &QLineEdit::textChanged, this, &ThemeSwitcherDialog::filterThemes);
@@ -143,15 +144,15 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         const int row = m_table->rowCount();
         m_table->insertRow(row);
 
-        auto *item0 = new QTableWidgetItem(QString::fromUtf8(p.displayName));
+        auto item0 = std::make_unique<QTableWidgetItem>(QString::fromUtf8(p.displayName));
         item0->setData(Qt::UserRole, QString::fromLatin1(p.id));
-        m_table->setItem(row, 0, item0);
+        m_table->setItem(row, 0, item0.release());
 
-        auto *item1 = new QTableWidgetItem(QString::fromUtf8(p.family));
-        m_table->setItem(row, 1, item1);
+        auto item1 = std::make_unique<QTableWidgetItem>(QString::fromUtf8(p.family));
+        m_table->setItem(row, 1, item1.release());
 
-        auto *item2 = new QTableWidgetItem(p.isDark ? tr("Dark") : tr("Light"));
-        m_table->setItem(row, 2, item2);
+        auto item2 = std::make_unique<QTableWidgetItem>(p.isDark ? tr("Dark") : tr("Light"));
+        m_table->setItem(row, 2, item2.release());
 
         // Render preview swatches (Win, Card, TxtPri, Accent, Cyan, Net)
         QPixmap pix(160, 22);
@@ -167,9 +168,9 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         }
         painter.end();
 
-        auto *item3 = new QTableWidgetItem();
+        auto item3 = std::make_unique<QTableWidgetItem>();
         item3->setIcon(QIcon(pix));
-        m_table->setItem(row, 3, item3);
+        m_table->setItem(row, 3, item3.release());
 
         if (activeId.compare(QLatin1String(p.id), Qt::CaseInsensitive) == 0) {
             selectedRow = row;
