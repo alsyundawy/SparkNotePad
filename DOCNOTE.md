@@ -205,7 +205,9 @@ SparkNotePad v1.3.7 achieves **zero defects** across all static analysis and lin
 | **clangd**      | All `src/**/*.cpp`, `*.h` | ISO C++20, AppleClang AST validation               | **0 Errors / 0 Alerts** |
 | **cppcheck-qt** | All C++ translation units | Memory leaks, uninitialized members, Qt best-rules | **0 Issues**            |
 | **SonarLint**   | All C++ files             | `cpp:S5416` (const pointers), `cpp:S5418` (scope)  | **0 Warnings**          |
+| **oxlint**      | Repository-wide           | JavaScript/TypeScript, `.oxlintrc.json` ignores    | **0 Errors / 0 Alerts** |
 | **trunk check** | Repository-wide           | `clang-format`, `markdownlint`, `yamllint`, git    | **0 Issues**            |
+| **Qt Linguist** | `i18n/*.ts` (EN / ID)     | 1,748 / 1,748 strings translated (0 unfinished)    | **100% Finished**       |
 | **CodeQL**      | Full codebase             | OWASP Top 10, CWE Top 25 Security Analysis         | **Passing**             |
 
 ---

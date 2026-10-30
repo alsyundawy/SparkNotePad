@@ -53,6 +53,15 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
   - Relocated Quick Open (`Ctrl+Alt+O`) directly adjacent to Open in the File menu.
 - **Compact Menubar Typography**:
   - Reduced menubar padding (`3px 6px`) and enforced compact `12px` font size for tighter, modern navigation bar spacing.
+- **Comprehensive i18n Synchronization & 100% Indonesian Translation Parity**:
+  - Synchronized translation catalogs `SparkNotePad_id.ts` and `SparkNotePad_en.ts` via `lupdate -no-obsolete` to match the latest codebase changes.
+  - Added 79 newly exposed UI strings for the automatic updater (`Downloader`, `Updater`), download authentication modal (`AuthenticateDialog`), Advanced Docking System (`ads::CAutoHideTab`, `ads::CDockAreaTitleBar`, `ads::CDockManager`, `ads::CDockWidgetTab`), and hash algorithm fallback errors in `QObject`.
+  - Pruned 4 obsolete strings from consolidated menus and redesigned dialogs.
+  - Compiled 1,748/1,748 translations (100% finished, 0 unfinished) to `SparkNotePad_id.qm` and `SparkNotePad_en.qm`.
+- **Zero-Defect Linter & Workspace Hygiene Hardening**:
+  - Cleaned up 120 stray, uncommitted `ui_*.h` build files from `src/`, `src/dialogs/`, `src/docks/`, and `src/widgets/` to ensure linters (`cppcheck`, `clangd`, `SonarLint`) inspect only canonical code and CMake autogen headers.
+  - Added `.oxlintrc.json` and `.eslintignore` to eliminate TypeScript parsing errors on Qt XML translation catalogs in the IDE.
+  - Declared `retranslateUi` and `setupUi` in dock UI headers as `static`, achieving zero warnings in `cppcheck`.
 - **Compilation Database Synchronization & Linter Zero-Defect Hardening**:
   - Generated and synchronized 312-entry `build/compile_commands.json` and root `compile_commands.json`.
   - Eradicated all 1,288 IDE diagnostics and 756 SonarQube / SonarLint errors by aligning `.vscode/settings.json`, `.clangd`, and `sonar-project.properties`.
