@@ -1150,7 +1150,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     }
 
     auto mark_callback = [this, app]() {
-        if (auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (const auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             decorator && decorator->isEnabled() && sender()->property("MarkerNumber").isValid()) {
             ScintillaNext *editor = currentEditor();
             decorator->mark(editor, sender()->property("MarkerNumber").toInt());
@@ -1158,7 +1158,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     };
 
     auto clear_mark_callback = [this, app]() {
-        if (auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (const auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             decorator && decorator->isEnabled() && sender()->property("MarkerNumber").isValid()) {
             ScintillaNext *editor = currentEditor();
             decorator->clear(editor, sender()->property("MarkerNumber").toInt());
@@ -1293,7 +1293,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(ui->actionClearStyle3, &QAction::triggered, this, clear_mark_callback);
 
     connect(ui->actionClearAllStyles, &QAction::triggered, this, [this, app]() {
-        if (auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (const auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             decorator && decorator->isEnabled()) {
             decorator->clearAll(currentEditor());
         }
@@ -3430,7 +3430,7 @@ void MainWindow::restoreWindowState() {
     srDock->hide();
 }
 
-void MainWindow::switchToEditor(const ScintillaNext *editor) {
+void MainWindow::switchToEditor(const ScintillaNext *editor) const {
     dockedEditor->switchToEditor(editor);
 }
 
@@ -4179,7 +4179,7 @@ void MainWindow::setupWindowMenu() {
     ensureMenuIconsVisible(menuWindow);
 }
 
-void MainWindow::onNextDocumentTriggered() {
+void MainWindow::onNextDocumentTriggered() const {
     QVector<ScintillaNext *> allEditors = editors();
     if (allEditors.size() <= 1)
         return;
@@ -4190,7 +4190,7 @@ void MainWindow::onNextDocumentTriggered() {
     allEditors[nextIdx]->grabFocus();
 }
 
-void MainWindow::onPreviousDocumentTriggered() {
+void MainWindow::onPreviousDocumentTriggered() const {
     QVector<ScintillaNext *> allEditors = editors();
     if (allEditors.size() <= 1)
         return;

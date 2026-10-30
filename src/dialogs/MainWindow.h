@@ -164,7 +164,7 @@ public slots:
 
     void restoreWindowState();
 
-    void switchToEditor(const ScintillaNext *editor);
+    void switchToEditor(const ScintillaNext *editor) const;
 
 signals:
     void editorActivated(ScintillaNext *editor);
@@ -269,8 +269,8 @@ private:
     void onDecreaseOpacityTriggered();
     void onTransparencyOptionsTriggered();
     void onTransparencyChanged(bool enabled, int opacity, TransparentWindowManager::TransparencyMode mode);
-    void onNextDocumentTriggered();
-    void onPreviousDocumentTriggered();
+    void onNextDocumentTriggered() const;
+    void onPreviousDocumentTriggered() const;
     void populateWindowMenuDocuments();
     void setupWindowMenu();
     void setupThemeMenu();

@@ -50,6 +50,8 @@ signals:
 
 private:
     void setupEditor(ScintillaNext *editor) const;
+    void setupDisplaySettingsConnections();
+    void setupEditorDecoratorConnections();
     void purgeOldEditorPointers();
     QList<QPointer<ScintillaNext>> getEditors();
     int detectEOLMode(const ScintillaNext *editor) const;
