@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,8 +20,7 @@ namespace Ui {
 class ManageToolsDialog;
 }
 
-class ManageToolsDialog : public QDialog
-{
+class ManageToolsDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -40,4 +40,4 @@ private:
     QList<ExternalTool> m_tools;
 };
 
-#endif // MANAGETOOLSDIALOG_H
+#endif  // MANAGETOOLSDIALOG_H

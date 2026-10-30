@@ -26,13 +26,9 @@
 #include <QEvent>
 #include <QMouseEvent>
 
-ShiftMiddleClickBlocker::ShiftMiddleClickBlocker(QObject *parent)
-    : QObject(parent)
-{
-}
+ShiftMiddleClickBlocker::ShiftMiddleClickBlocker(QObject *parent) : QObject(parent) {}
 
-bool ShiftMiddleClickBlocker::eventFilter(QObject *obj, QEvent *event)
-{
+bool ShiftMiddleClickBlocker::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() != QEvent::MouseButtonPress && event->type() != QEvent::MouseButtonDblClick) {
         return QObject::eventFilter(obj, event);
     }

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -18,8 +19,7 @@ class MainWindow;
 class QWidget;
 class ScintillaNext;
 
-class AccessibilityManager : public QObject
-{
+class AccessibilityManager : public QObject {
     Q_OBJECT
 
 public:
@@ -37,4 +37,4 @@ private:
     MainWindow *m_window = nullptr;
 };
 
-#endif // ACCESSIBILITYMANAGER_H
+#endif  // ACCESSIBILITYMANAGER_H

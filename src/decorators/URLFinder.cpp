@@ -17,11 +17,7 @@
 #include "URLFinder.h"
 #include "UrlUtils.h"
 
-URLFinder::URLFinder(ScintillaNext *editor) :
-    EditorDecorator(editor),
-    timer(new QTimer(this)),
-    m_urlThresholdMB(5)
-{
+URLFinder::URLFinder(ScintillaNext *editor) : EditorDecorator(editor), timer(new QTimer(this)), m_urlThresholdMB(5) {
     // Setup the indicator
     indicator = editor->allocateIndicator("url_finder");
 
@@ -43,24 +39,21 @@ URLFinder::URLFinder(ScintillaNext *editor) :
             connect(editor, &ScintillaNext::resized, timer, qOverload<>(&QTimer::start));
             connect(editor, &ScintillaNext::reloaded, timer, qOverload<>(&QTimer::start));
             findURLs();
-        }
-        else {
+        } else {
             disconnect(editor, &ScintillaNext::resized, timer, qOverload<>(&QTimer::start));
             clearURLs();
         }
     });
 }
 
-void URLFinder::setUrlThreshold(int thresholdMB)
-{
+void URLFinder::setUrlThreshold(int thresholdMB) {
     if (m_urlThresholdMB != thresholdMB) {
         m_urlThresholdMB = thresholdMB;
         findURLs();
     }
 }
 
-void URLFinder::findURLs()
-{
+void URLFinder::findURLs() {
     clearURLs();
 
     if (!isEnabled()) {
@@ -76,7 +69,7 @@ void URLFinder::findURLs()
     const int flags = SCFIND_REGEXP;
     const QByteArray reg = QByteArray(UrlUtils::urlRegexPattern());
 
-    while(linesLeftToProcess >= 0 && currentLine < editor->lineCount()) {
+    while (linesLeftToProcess >= 0 && currentLine < editor->lineCount()) {
         // Should only happen if the line is hidden
         if (!editor->lineVisible(currentLine)) {
             currentLine++;
@@ -86,7 +79,7 @@ void URLFinder::findURLs()
         const int startPos = editor->positionFromLine(currentLine);
         const int endPos = editor->lineEndPosition(currentLine);
 
-        Sci_TextToFind ttf {{startPos, (Sci_PositionCR)endPos}, reg.constData(), {-1, -1}};
+        Sci_TextToFind ttf{{startPos, (Sci_PositionCR)endPos}, reg.constData(), {-1, -1}};
         while (editor->send(SCI_FINDTEXT, flags, (sptr_t)&ttf) != -1) {
             const int startUrl = ttf.chrgText.cpMin;
             int endUrl = ttf.chrgText.cpMax;
@@ -95,10 +88,8 @@ void URLFinder::findURLs()
                 const int prevChar = static_cast<int>(editor->charAt(startUrl - 1));
                 const int nextChar = static_cast<int>(editor->charAt(endUrl - 1));
 
-                if ((prevChar == '(' && nextChar == ')') ||
-                    (prevChar == '[' && nextChar == ']') ||
-                    (prevChar == '<' && nextChar == '>') ||
-                    (prevChar == '"' && nextChar == '"')) {
+                if ((prevChar == '(' && nextChar == ')') || (prevChar == '[' && nextChar == ']') ||
+                    (prevChar == '<' && nextChar == '>') || (prevChar == '"' && nextChar == '"')) {
                     endUrl--;
                 }
             }
@@ -111,38 +102,35 @@ void URLFinder::findURLs()
         linesLeftToProcess -= editor->wrapCount(currentLine);
 
         // If the current line is a fold header and the fold is not expanded, skip
-        if (((editor->foldLevel(currentLine) & SC_FOLDLEVELHEADERFLAG) == SC_FOLDLEVELHEADERFLAG) && (!editor->foldExpanded(currentLine))) {
+        if (((editor->foldLevel(currentLine) & SC_FOLDLEVELHEADERFLAG) == SC_FOLDLEVELHEADERFLAG) &&
+            (!editor->foldExpanded(currentLine))) {
             currentLine = editor->lastChild(currentLine, -1) + 1;
-        }
-        else {
+        } else {
             currentLine++;
         }
     }
 }
 
-void URLFinder::clearURLs()
-{
+void URLFinder::clearURLs() {
     editor->setIndicatorCurrent(indicator);
     editor->indicatorClearRange(0, editor->length());
 }
 
-void URLFinder::notify(const Scintilla::NotificationData *pscn)
-{
+void URLFinder::notify(const Scintilla::NotificationData *pscn) {
     // Reprocess any time the content was updated or the editor was vertically scrolled
     if ((pscn->nmhdr.code == Scintilla::Notification::UpdateUI)) {
         if (FlagSet(pscn->updated, Scintilla::Update::VScroll)) {
             timer->start();
         }
-    }
-    else if (pscn->nmhdr.code == Scintilla::Notification::Modified) {
-        if (FlagSet(pscn->modificationType, Scintilla::ModificationFlags::InsertText) || FlagSet(pscn->modificationType, Scintilla::ModificationFlags::DeleteText)) {
+    } else if (pscn->nmhdr.code == Scintilla::Notification::Modified) {
+        if (FlagSet(pscn->modificationType, Scintilla::ModificationFlags::InsertText) ||
+            FlagSet(pscn->modificationType, Scintilla::ModificationFlags::DeleteText)) {
             timer->start();
         }
-    }
-    else if (pscn->nmhdr.code == Scintilla::Notification::Zoom) {
+    } else if (pscn->nmhdr.code == Scintilla::Notification::Zoom) {
         timer->start();
-    }
-    else if (pscn->nmhdr.code == Scintilla::Notification::IndicatorClick && FlagSet(pscn->modifiers, Scintilla::KeyMod::Ctrl)) {
+    } else if (pscn->nmhdr.code == Scintilla::Notification::IndicatorClick &&
+               FlagSet(pscn->modifiers, Scintilla::KeyMod::Ctrl)) {
         const int indicators = editor->indicatorAllOnFor(pscn->position);
 
         if (indicators & (1 << indicator)) {
@@ -154,23 +142,21 @@ void URLFinder::notify(const Scintilla::NotificationData *pscn)
             if (url.isValid()) {
                 qInfo("URL hotspot click: \"%s\"", editor->get_text_range(indicatorStart, indicatorEnd).constData());
                 QDesktopServices::openUrl(url);
-            }
-            else {
+            } else {
                 qWarning("Invalid url \"%s\"", qUtf8Printable(url.errorString()));
             }
         }
     }
 }
 
-bool URLFinder::isURL(int position) const
-{
+bool URLFinder::isURL(int position) const {
     const int indicators = editor->indicatorAllOnFor(position);
     return indicators & (1 << indicator);
 }
 
-void URLFinder::openURLAt(int position) const
-{
-    if (!isURL(position)) return;
+void URLFinder::openURLAt(int position) const {
+    if (!isURL(position))
+        return;
 
     const int indicatorStart = editor->indicatorStart(indicator, position);
     const int indicatorEnd = editor->indicatorEnd(indicator, position);
@@ -180,14 +166,12 @@ void URLFinder::openURLAt(int position) const
     if (url.isValid()) {
         qInfo("Open URL: \"%s\"", editor->get_text_range(indicatorStart, indicatorEnd).constData());
         QDesktopServices::openUrl(url);
-    }
-    else {
+    } else {
         qWarning("Invalid url \"%s\"", qUtf8Printable(url.errorString()));
     }
 }
 
-void URLFinder::copyURLToClipboard(int position) const
-{
+void URLFinder::copyURLToClipboard(int position) const {
     const int indicatorStart = editor->indicatorStart(indicator, position);
     const int indicatorEnd = editor->indicatorEnd(indicator, position);
 
@@ -196,8 +180,7 @@ void URLFinder::copyURLToClipboard(int position) const
     if (url.isValid()) {
         qInfo("Copy URL to clipboard: \"%s\"", editor->get_text_range(indicatorStart, indicatorEnd).constData());
         editor->copyRange(indicatorStart, indicatorEnd);
-    }
-    else {
+    } else {
         qWarning("Invalid url \"%s\"", qUtf8Printable(url.errorString()));
     }
 }

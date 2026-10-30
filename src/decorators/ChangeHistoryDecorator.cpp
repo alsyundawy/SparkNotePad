@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Scintilla Change History and Notepad++ / Notepad4
  * change tracking margin concept.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -13,18 +13,13 @@
 #include "ChangeHistoryDecorator.h"
 #include "ScintillaNext.h"
 
-ChangeHistoryDecorator::ChangeHistoryDecorator(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+ChangeHistoryDecorator::ChangeHistoryDecorator(ScintillaNext *editor) : EditorDecorator(editor) {
     setupMarkers();
 }
 
-ChangeHistoryDecorator::~ChangeHistoryDecorator()
-{
-}
+ChangeHistoryDecorator::~ChangeHistoryDecorator() {}
 
-void ChangeHistoryDecorator::setupMarkers()
-{
+void ChangeHistoryDecorator::setupMarkers() {
     if (!editor)
         return;
 
@@ -60,8 +55,7 @@ void ChangeHistoryDecorator::setupMarkers()
     editor->markerSetBack(SC_MARKNUM_HISTORY_REVERTED_TO_MODIFIED, 0x1673F9);
 }
 
-void ChangeHistoryDecorator::setEnabled(bool b)
-{
+void ChangeHistoryDecorator::setEnabled(bool b) {
     enabled = b;
     if (!editor)
         return;
@@ -78,8 +72,7 @@ void ChangeHistoryDecorator::setEnabled(bool b)
     emit stateChanged(b);
 }
 
-int ChangeHistoryDecorator::nextChangeAfter(int line)
-{
+int ChangeHistoryDecorator::nextChangeAfter(int line) {
     if (!editor)
         return -1;
 
@@ -91,8 +84,7 @@ int ChangeHistoryDecorator::nextChangeAfter(int line)
     return nextLine;
 }
 
-int ChangeHistoryDecorator::previousChangeBefore(int line)
-{
+int ChangeHistoryDecorator::previousChangeBefore(int line) {
     if (!editor)
         return -1;
 
@@ -104,6 +96,4 @@ int ChangeHistoryDecorator::previousChangeBefore(int line)
     return prevLine;
 }
 
-void ChangeHistoryDecorator::notify(const Scintilla::NotificationData */*pscn*/)
-{
-}
+void ChangeHistoryDecorator::notify(const Scintilla::NotificationData * /*pscn*/) {}

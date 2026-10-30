@@ -27,8 +27,7 @@
 
 #include "Macro.h"
 
-class MacroStepTableModel : public QAbstractTableModel
-{
+class MacroStepTableModel : public QAbstractTableModel {
     Q_OBJECT
 
 public:
@@ -45,9 +44,10 @@ public:
     bool insertRows(int row, int count, const QModelIndex &parent) override;
     bool removeRows(int row, int count, const QModelIndex &parent) override;
 
-    bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild) override;
+    bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent,
+                  int destinationChild) override;
 
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
     Macro *macro;

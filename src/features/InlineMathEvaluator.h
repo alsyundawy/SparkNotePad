@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -22,11 +23,10 @@ struct MathResult {
     QString errorMessage;
 };
 
-class InlineMathEvaluator
-{
+class InlineMathEvaluator {
 public:
     static MathResult evaluate(const QString &expression);
     static bool evaluateInEditor(ScintillaNext *editor, bool appendResult, QString *outMessage = nullptr);
 };
 
-#endif // INLINEMATHEVALUATOR_H
+#endif  // INLINEMATHEVALUATOR_H

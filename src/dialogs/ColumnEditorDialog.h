@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef COLUMNEDITORDIALOG_H
 #define COLUMNEDITORDIALOG_H
 
@@ -32,15 +32,14 @@ namespace Ui {
 class ColumnEditorDialog;
 }
 
-class ColumnEditorDialog : public QDialog
-{
+class ColumnEditorDialog : public QDialog {
     Q_OBJECT
 
 public:
     explicit ColumnEditorDialog(MainWindow *parent);
     ~ColumnEditorDialog();
 
-    void insertTextStartingAtCurrentColumn(const std::function <QString (void)>& f);
+    void insertTextStartingAtCurrentColumn(const std::function<QString(void)> &f);
     void insertTextAtColumn(ScintillaNext *editor, int line, int column, const QString &str);
 
 private:
@@ -48,4 +47,4 @@ private:
     MainWindow *parent;
 };
 
-#endif // COLUMNEDITORDIALOG_H
+#endif  // COLUMNEDITORDIALOG_H

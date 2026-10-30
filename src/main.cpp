@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include <QDebug>
 #include <QSettings>
 #include <QSysInfo>
@@ -30,9 +29,11 @@
 
 #include "NotepadNextApplication.h"
 
-int main(int argc, char *argv[])
-{
-    qSetMessagePattern("[%{time process}] %{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: %{message}");
+int main(int argc, char *argv[]) {
+    qSetMessagePattern(
+        "[%{time process}] "
+        "%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: "
+        "%{message}");
 
     // Set these since other parts of the app references these
     QApplication::setOrganizationName("NoteSciPad");
@@ -55,18 +56,16 @@ int main(int argc, char *argv[])
 
     // Log some debug info
     qInfo("=============================");
-    for(const auto &d : app.debugInfo()){
+    for (const auto &d : app.debugInfo()) {
         qInfo("%s", qUtf8Printable(d));
     }
     qInfo("=============================");
 
-
-    if(app.isPrimary()) {
+    if (app.isPrimary()) {
         app.init();
 
         return app.exec();
-    }
-    else {
+    } else {
         qInfo() << "Primary instance already running. PID:" << app.primaryPid();
 
         app.sendInfoToPrimaryInstance();

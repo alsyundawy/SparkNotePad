@@ -27,7 +27,7 @@
 
 class SearchResultHighlighterDelegate : public QStyledItemDelegate {
 public:
-    SearchResultHighlighterDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
+    explicit SearchResultHighlighterDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };

@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,20 +22,24 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FILEDIALOGHELPERS_H
 #define FILEDIALOGHELPERS_H
 
 #include <QWidget>
 #include <QFileDialog>
 
-namespace FileDialogHelpers
-{
-    QList<QUrl> getOpenFileUrls(QWidget *parent, const QString &caption, const QString &dir, const QString &filter, QString *selectedFilter, QFileDialog::Options options, const QStringList &supportedSchemes);
-    QStringList getOpenFileNames(QWidget *parent = nullptr, const QString &caption = QString(), const QString &dir = QString(), const QString &filter = QString(), QString *selectedFilter = nullptr, QFileDialog::Options options = QFileDialog::Options());
+namespace FileDialogHelpers {
+QList<QUrl> getOpenFileUrls(QWidget *parent, const QString &caption, const QString &dir, const QString &filter,
+                            QString *selectedFilter, QFileDialog::Options options, const QStringList &supportedSchemes);
+QStringList getOpenFileNames(QWidget *parent = nullptr, const QString &caption = QString(),
+                             const QString &dir = QString(), const QString &filter = QString(),
+                             QString *selectedFilter = nullptr, QFileDialog::Options options = QFileDialog::Options());
 
-    QUrl getSaveFileUrl(QWidget *parent, const QString &caption, const QString &dir, const QString &filter, QString *selectedFilter, QFileDialog::Options options, const QStringList &supportedSchemes);
-    QString getSaveFileName(QWidget *parent = nullptr, const QString &caption = QString(), const QString &dir = QString(), const QString &filter = QString(), QString *selectedFilter = nullptr, QFileDialog::Options options = QFileDialog::Options());
-}
+QUrl getSaveFileUrl(QWidget *parent, const QString &caption, const QString &dir, const QString &filter,
+                    QString *selectedFilter, QFileDialog::Options options, const QStringList &supportedSchemes);
+QString getSaveFileName(QWidget *parent = nullptr, const QString &caption = QString(), const QString &dir = QString(),
+                        const QString &filter = QString(), QString *selectedFilter = nullptr,
+                        QFileDialog::Options options = QFileDialog::Options());
+}  // namespace FileDialogHelpers
 
-#endif // FILEDIALOGHELPERS_H
+#endif  // FILEDIALOGHELPERS_H

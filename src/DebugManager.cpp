@@ -21,25 +21,21 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "DebugManager.h"
 
 #include <QList>
-
 
 Q_GLOBAL_STATIC(QList<DebugOutputHandler>, handlers);
 Q_GLOBAL_STATIC(QStringList, buffered_debug_output);
 QtMessageHandler original = Q_NULLPTR;
 
-static void buffer_debug_output(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
+static void buffer_debug_output(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
     buffered_debug_output->append(qFormatLogMessage(type, context, msg));
 
     original(type, context, msg);
 }
 
-static void debug_manager_handler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
+static void debug_manager_handler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
     const QString log_message = qFormatLogMessage(type, context, msg);
     for (DebugOutputHandler handler : *handlers) {
         handler(log_message);
@@ -48,9 +44,7 @@ static void debug_manager_handler(QtMsgType type, const QMessageLogContext &cont
     original(type, context, msg);
 }
 
-
-void DebugManager::manageDebugOutput()
-{
+void DebugManager::manageDebugOutput() {
     // Just to be safe, restore the original message handler
     qInstallMessageHandler(0);
 
@@ -61,8 +55,7 @@ void DebugManager::manageDebugOutput()
     original = qInstallMessageHandler(debug_manager_handler);
 }
 
-void DebugManager::pauseDebugOutput()
-{
+void DebugManager::pauseDebugOutput() {
     // Just to be safe, restore the original message handler
     qInstallMessageHandler(0);
 
@@ -71,8 +64,7 @@ void DebugManager::pauseDebugOutput()
     original = qInstallMessageHandler(buffer_debug_output);
 }
 
-void DebugManager::resumeDebugOutput()
-{
+void DebugManager::resumeDebugOutput() {
     for (DebugOutputHandler handler : *handlers) {
         for (const QString &msg : *buffered_debug_output) {
             handler(msg);
@@ -84,7 +76,6 @@ void DebugManager::resumeDebugOutput()
     qInstallMessageHandler(debug_manager_handler);
 }
 
-void DebugManager::addMessageHandler(DebugOutputHandler handler)
-{
+void DebugManager::addMessageHandler(DebugOutputHandler handler) {
     handlers->append(handler);
 }

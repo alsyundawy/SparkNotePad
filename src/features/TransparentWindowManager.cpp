@@ -15,28 +15,23 @@
 #include <QSettings>
 #include <algorithm>
 
-TransparentWindowManager::TransparentWindowManager(QMainWindow *window, QObject *parent) :
-    QObject(parent),
-    m_window(window)
-{
+TransparentWindowManager::TransparentWindowManager(QMainWindow *window, QObject *parent)
+    : QObject(parent), m_window(window) {
     if (m_window) {
         m_window->installEventFilter(this);
     }
     loadSettings();
 }
 
-TransparentWindowManager::~TransparentWindowManager()
-{
+TransparentWindowManager::~TransparentWindowManager() {
     saveSettings();
 }
 
-bool TransparentWindowManager::isEnabled() const
-{
+bool TransparentWindowManager::isEnabled() const {
     return m_enabled;
 }
 
-void TransparentWindowManager::setEnabled(bool enabled)
-{
+void TransparentWindowManager::setEnabled(bool enabled) {
     if (m_enabled != enabled) {
         m_enabled = enabled;
         applyOpacity();
@@ -45,18 +40,15 @@ void TransparentWindowManager::setEnabled(bool enabled)
     }
 }
 
-void TransparentWindowManager::toggle()
-{
+void TransparentWindowManager::toggle() {
     setEnabled(!m_enabled);
 }
 
-int TransparentWindowManager::opacity() const
-{
+int TransparentWindowManager::opacity() const {
     return m_opacity;
 }
 
-void TransparentWindowManager::setOpacity(int percent)
-{
+void TransparentWindowManager::setOpacity(int percent) {
     int clamped = std::clamp(percent, 20, 100);
     if (m_opacity != clamped) {
         m_opacity = clamped;
@@ -68,23 +60,19 @@ void TransparentWindowManager::setOpacity(int percent)
     }
 }
 
-void TransparentWindowManager::increaseOpacity(int delta)
-{
+void TransparentWindowManager::increaseOpacity(int delta) {
     setOpacity(m_opacity + delta);
 }
 
-void TransparentWindowManager::decreaseOpacity(int delta)
-{
+void TransparentWindowManager::decreaseOpacity(int delta) {
     setOpacity(m_opacity - delta);
 }
 
-TransparentWindowManager::TransparencyMode TransparentWindowManager::mode() const
-{
+TransparentWindowManager::TransparencyMode TransparentWindowManager::mode() const {
     return m_mode;
 }
 
-void TransparentWindowManager::setMode(TransparencyMode targetMode)
-{
+void TransparentWindowManager::setMode(TransparencyMode targetMode) {
     if (m_mode != targetMode) {
         m_mode = targetMode;
         if (m_enabled) {
@@ -95,13 +83,11 @@ void TransparentWindowManager::setMode(TransparencyMode targetMode)
     }
 }
 
-bool TransparentWindowManager::isAlwaysOnTop() const
-{
+bool TransparentWindowManager::isAlwaysOnTop() const {
     return m_alwaysOnTop;
 }
 
-void TransparentWindowManager::setAlwaysOnTop(bool onTop)
-{
+void TransparentWindowManager::setAlwaysOnTop(bool onTop) {
     if (m_alwaysOnTop != onTop) {
         m_alwaysOnTop = onTop;
         updateWindowFlags();
@@ -110,9 +96,9 @@ void TransparentWindowManager::setAlwaysOnTop(bool onTop)
     }
 }
 
-void TransparentWindowManager::applyOpacity()
-{
-    if (!m_window) return;
+void TransparentWindowManager::applyOpacity() {
+    if (!m_window)
+        return;
 
     if (!m_enabled) {
         m_window->setWindowOpacity(1.0);
@@ -130,9 +116,9 @@ void TransparentWindowManager::applyOpacity()
     }
 }
 
-void TransparentWindowManager::updateWindowFlags()
-{
-    if (!m_window) return;
+void TransparentWindowManager::updateWindowFlags() {
+    if (!m_window)
+        return;
 
     Qt::WindowFlags flags = m_window->windowFlags();
     if (m_alwaysOnTop) {
@@ -148,8 +134,7 @@ void TransparentWindowManager::updateWindowFlags()
     }
 }
 
-bool TransparentWindowManager::eventFilter(QObject *watched, QEvent *event)
-{
+bool TransparentWindowManager::eventFilter(QObject *watched, QEvent *event) {
     if (watched == m_window && m_enabled && m_mode == TransparencyMode::OnlyWhenInactive) {
         if (event->type() == QEvent::WindowActivate || event->type() == QEvent::WindowDeactivate) {
             applyOpacity();
@@ -158,8 +143,7 @@ bool TransparentWindowManager::eventFilter(QObject *watched, QEvent *event)
     return QObject::eventFilter(watched, event);
 }
 
-void TransparentWindowManager::loadSettings()
-{
+void TransparentWindowManager::loadSettings() {
     QSettings settings;
     settings.beginGroup(QStringLiteral("Transparency"));
     m_enabled = settings.value(QStringLiteral("Enabled"), false).toBool();
@@ -177,8 +161,7 @@ void TransparentWindowManager::loadSettings()
     }
 }
 
-void TransparentWindowManager::saveSettings() const
-{
+void TransparentWindowManager::saveSettings() const {
     QSettings settings;
     settings.beginGroup(QStringLiteral("Transparency"));
     settings.setValue(QStringLiteral("Enabled"), m_enabled);

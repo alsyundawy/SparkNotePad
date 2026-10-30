@@ -23,16 +23,13 @@
 
 #pragma once
 
+#include <cstdint>
 #include <QList>
 #include <QByteArray>
 
-class Sorter
-{
+class Sorter {
 public:
-    enum class Direction {
-        Ascending,
-        Descending
-    };
+    enum class Direction : std::uint8_t { Ascending, Descending };
 
     explicit Sorter(Direction direction) : direction(direction) {}
     virtual ~Sorter() = default;
@@ -43,35 +40,26 @@ protected:
     Direction direction;
 };
 
-
-class CaseInsensitiveSorter : public Sorter
-{
+class CaseInsensitiveSorter : public Sorter {
 public:
     using Sorter::Sorter;
     void sort(QVector<QByteArrayView> &lines) const override;
 };
 
-
-class CaseSensitiveSorter : public Sorter
-{
+class CaseSensitiveSorter : public Sorter {
 public:
     using Sorter::Sorter;
     void sort(QVector<QByteArrayView> &lines) const override;
 };
 
-
-class LineLengthSorter : public Sorter
-{
+class LineLengthSorter : public Sorter {
 public:
     using Sorter::Sorter;
     void sort(QVector<QByteArrayView> &lines) const override;
 };
 
-
-class ReverseSorter : public Sorter
-{
+class ReverseSorter : public Sorter {
 public:
     using Sorter::Sorter;
     void sort(QVector<QByteArrayView> &lines) const override;
 };
-

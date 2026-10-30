@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -27,8 +28,7 @@ struct ReleaseInfo {
     bool isPrerelease = false;
 };
 
-class ReleaseManager : public QObject
-{
+class ReleaseManager : public QObject {
     Q_OBJECT
 
 public:
@@ -55,4 +55,4 @@ private:
     bool m_silent = false;
 };
 
-#endif // RELEASEMANAGER_H
+#endif  // RELEASEMANAGER_H

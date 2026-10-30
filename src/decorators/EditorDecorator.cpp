@@ -21,17 +21,14 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "EditorDecorator.h"
 
-void EditorDecorator::setEnabled(bool b)
-{
+void EditorDecorator::setEnabled(bool b) {
     enabled = b;
 
     if (enabled) {
         connect(editor, &ScintillaEdit::notify, this, &EditorDecorator::notify);
-    }
-    else {
+    } else {
         disconnect(editor, &ScintillaEdit::notify, this, nullptr);
     }
 

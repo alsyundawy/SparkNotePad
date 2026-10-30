@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4, Encoding.c) and Notepad3 (rizonesoft/Notepad3)
  * with Mozilla Universal Charset Detector (uchardet).
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -13,18 +13,18 @@
 #include "EncodingDetector.h"
 #include "uchardet.h"
 
+#include <algorithm>
 #include <QStringDecoder>
 #include <QStringEncoder>
 #include <QTextCodec>
 #include <QRegularExpression>
 #include <QtGlobal>
 
-static const QByteArray BOM_UTF8_BYTES    = QByteArray::fromHex("EFBBBF");
+static const QByteArray BOM_UTF8_BYTES = QByteArray::fromHex("EFBBBF");
 static const QByteArray BOM_UTF16LE_BYTES = QByteArray::fromHex("FFFE");
 static const QByteArray BOM_UTF16BE_BYTES = QByteArray::fromHex("FEFF");
 
-EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &data)
-{
+EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &data) {
     DetectionResult result;
     if (data.isEmpty()) {
         result.encoding = QStringLiteral("UTF-8");
@@ -67,13 +67,8 @@ EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &dat
     }
 
     // Stage 6: Fallback for 8-bit text with high-order bytes (>= 0x80)
-    bool hasHighBytes = false;
-    for (unsigned char c : data) {
-        if (c >= 0x80) {
-            hasHighBytes = true;
-            break;
-        }
-    }
+    const bool hasHighBytes =
+        std::any_of(data.cbegin(), data.cend(), [](char c) { return static_cast<unsigned char>(c) >= 0x80; });
 
     if (hasHighBytes) {
         result.encoding = QStringLiteral("windows-1252");
@@ -93,8 +88,7 @@ EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &dat
     return result;
 }
 
-bool EncodingDetector::detectBom(const QByteArray &data, DetectionResult &result)
-{
+bool EncodingDetector::detectBom(const QByteArray &data, DetectionResult &result) {
     if (data.startsWith(BOM_UTF8_BYTES)) {
         result.encoding = QStringLiteral("UTF-8");
         result.bomType = ScintillaNext::BomType::Utf8;
@@ -122,10 +116,10 @@ bool EncodingDetector::detectBom(const QByteArray &data, DetectionResult &result
     return false;
 }
 
-bool EncodingDetector::detectInterleavedUtf16(const QByteArray &data, DetectionResult &result)
-{
+bool EncodingDetector::detectInterleavedUtf16(const QByteArray &data, DetectionResult &result) {
     const int sampleSize = qMin(static_cast<int>(data.size()), 4096);
-    if (sampleSize < 16) return false;
+    if (sampleSize < 16)
+        return false;
 
     int nullsEven = 0;
     int nullsOdd = 0;
@@ -136,11 +130,15 @@ bool EncodingDetector::detectInterleavedUtf16(const QByteArray &data, DetectionR
         const unsigned char c = static_cast<unsigned char>(data.at(i));
         const bool isAscii = (c >= 0x20 && c <= 0x7E) || c == '\t' || c == '\r' || c == '\n';
         if (i % 2 == 0) {
-            if (c == 0x00) nullsEven++;
-            if (isAscii) asciiEven++;
+            if (c == 0x00)
+                nullsEven++;
+            if (isAscii)
+                asciiEven++;
         } else {
-            if (c == 0x00) nullsOdd++;
-            if (isAscii) asciiOdd++;
+            if (c == 0x00)
+                nullsOdd++;
+            if (isAscii)
+                asciiOdd++;
         }
     }
 
@@ -168,13 +166,13 @@ bool EncodingDetector::detectInterleavedUtf16(const QByteArray &data, DetectionR
     return false;
 }
 
-bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, DetectionResult &result)
-{
+bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, DetectionResult &result) {
     const int headLen = qMin(static_cast<int>(data.size()), 2048);
     const QString head = QString::fromLatin1(data.constData(), headLen);
 
     // 1. XML: <?xml version="1.0" encoding="XYZ"?>
-    static const QRegularExpression xmlRegex(QStringLiteral(R"(<\?xml\s+[^>]*encoding=["']([a-zA-Z0-9_\-]+)["'])"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression xmlRegex(QStringLiteral(R"(<\?xml\s+[^>]*encoding=["']([a-zA-Z0-9_\-]+)["'])"),
+                                             QRegularExpression::CaseInsensitiveOption);
     auto xmlMatch = xmlRegex.match(head);
     if (xmlMatch.hasMatch()) {
         QString enc = canonicalizeEncodingName(xmlMatch.captured(1));
@@ -189,7 +187,8 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     }
 
     // 2. HTML: <meta charset="XYZ"> or <meta http-equiv="Content-Type" content="...; charset=XYZ">
-    static const QRegularExpression htmlRegex1(QStringLiteral(R"(<meta\s+[^>]*charset=["']?([a-zA-Z0-9_\-]+)["']?)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression htmlRegex1(QStringLiteral(R"(<meta\s+[^>]*charset=["']?([a-zA-Z0-9_\-]+)["']?)"),
+                                               QRegularExpression::CaseInsensitiveOption);
     auto htmlMatch1 = htmlRegex1.match(head);
     if (htmlMatch1.hasMatch()) {
         QString enc = canonicalizeEncodingName(htmlMatch1.captured(1));
@@ -203,7 +202,9 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
         }
     }
 
-    static const QRegularExpression htmlRegex2(QStringLiteral(R"(<meta\s+[^>]*content=["'][^"']*charset=([a-zA-Z0-9_\-]+)["'])"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression htmlRegex2(
+        QStringLiteral(R"(<meta\s+[^>]*content=["'][^"']*charset=([a-zA-Z0-9_\-]+)["'])"),
+        QRegularExpression::CaseInsensitiveOption);
     auto htmlMatch2 = htmlRegex2.match(head);
     if (htmlMatch2.hasMatch()) {
         QString enc = canonicalizeEncodingName(htmlMatch2.captured(1));
@@ -218,7 +219,9 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     }
 
     // 3. Shebang / Python / Ruby coding cookies: # -*- coding: utf-8 -*- or # coding=utf-8
-    static const QRegularExpression cookieRegex(QStringLiteral(R"(^[#;].*coding[:=]\s*([a-zA-Z0-9_\-]+))"), QRegularExpression::CaseInsensitiveOption | QRegularExpression::MultilineOption);
+    static const QRegularExpression cookieRegex(
+        QStringLiteral(R"(^[#;].*coding[:=]\s*([a-zA-Z0-9_\-]+))"),
+        QRegularExpression::CaseInsensitiveOption | QRegularExpression::MultilineOption);
     auto cookieMatch = cookieRegex.match(head);
     if (cookieMatch.hasMatch()) {
         QString enc = canonicalizeEncodingName(cookieMatch.captured(1));
@@ -233,7 +236,8 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     }
 
     // 4. CSS: @charset "XYZ";
-    static const QRegularExpression cssRegex(QStringLiteral(R"(@charset\s+["']([a-zA-Z0-9_\-]+)["'])"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression cssRegex(QStringLiteral(R"(@charset\s+["']([a-zA-Z0-9_\-]+)["'])"),
+                                             QRegularExpression::CaseInsensitiveOption);
     auto cssMatch = cssRegex.match(head);
     if (cssMatch.hasMatch()) {
         QString enc = canonicalizeEncodingName(cssMatch.captured(1));
@@ -250,8 +254,7 @@ bool EncodingDetector::detectHeaderDeclaration(const QByteArray &data, Detection
     return false;
 }
 
-bool EncodingDetector::detectStrictUtf8(const QByteArray &data, DetectionResult &result)
-{
+bool EncodingDetector::detectStrictUtf8(const QByteArray &data, DetectionResult &result) {
     const int len = qMin(static_cast<int>(data.size()), 65536);
     const unsigned char *bytes = reinterpret_cast<const unsigned char *>(data.constData());
 
@@ -266,60 +269,74 @@ bool EncodingDetector::detectStrictUtf8(const QByteArray &data, DetectionResult 
             i++;
         } else if ((b0 >= 0xC2) && (b0 <= 0xDF)) {
             // 2-byte sequence
-            if (i + 1 >= len) break;
+            if (i + 1 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
-            if (b1 < 0x80 || b1 > 0xBF) return false;
+            if (b1 < 0x80 || b1 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 2;
         } else if (b0 == 0xE0) {
             // 3-byte sequence starting with 0xE0
-            if (i + 2 >= len) break;
+            if (i + 2 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
             const unsigned char b2 = bytes[i + 2];
-            if (b1 < 0xA0 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF) return false;
+            if (b1 < 0xA0 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 3;
         } else if ((b0 >= 0xE1 && b0 <= 0xEC) || b0 == 0xEE || b0 == 0xEF) {
             // 3-byte sequence
-            if (i + 2 >= len) break;
+            if (i + 2 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
             const unsigned char b2 = bytes[i + 2];
-            if (b1 < 0x80 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF) return false;
+            if (b1 < 0x80 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 3;
         } else if (b0 == 0xED) {
             // 3-byte sequence starting with 0xED (exclude surrogates U+D800..U+DFFF)
-            if (i + 2 >= len) break;
+            if (i + 2 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
             const unsigned char b2 = bytes[i + 2];
-            if (b1 < 0x80 || b1 > 0x9F || b2 < 0x80 || b2 > 0xBF) return false;
+            if (b1 < 0x80 || b1 > 0x9F || b2 < 0x80 || b2 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 3;
         } else if (b0 == 0xF0) {
             // 4-byte sequence starting with 0xF0
-            if (i + 3 >= len) break;
+            if (i + 3 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
             const unsigned char b2 = bytes[i + 2];
             const unsigned char b3 = bytes[i + 3];
-            if (b1 < 0x90 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF || b3 < 0x80 || b3 > 0xBF) return false;
+            if (b1 < 0x90 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF || b3 < 0x80 || b3 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 4;
         } else if (b0 >= 0xF1 && b0 <= 0xF3) {
             // 4-byte sequence
-            if (i + 3 >= len) break;
+            if (i + 3 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
             const unsigned char b2 = bytes[i + 2];
             const unsigned char b3 = bytes[i + 3];
-            if (b1 < 0x80 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF || b3 < 0x80 || b3 > 0xBF) return false;
+            if (b1 < 0x80 || b1 > 0xBF || b2 < 0x80 || b2 > 0xBF || b3 < 0x80 || b3 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 4;
         } else if (b0 == 0xF4) {
             // 4-byte sequence starting with 0xF4 (limit to U+10FFFF)
-            if (i + 3 >= len) break;
+            if (i + 3 >= len)
+                break;
             const unsigned char b1 = bytes[i + 1];
             const unsigned char b2 = bytes[i + 2];
             const unsigned char b3 = bytes[i + 3];
-            if (b1 < 0x80 || b1 > 0x8F || b2 < 0x80 || b2 > 0xBF || b3 < 0x80 || b3 > 0xBF) return false;
+            if (b1 < 0x80 || b1 > 0x8F || b2 < 0x80 || b2 > 0xBF || b3 < 0x80 || b3 > 0xBF)
+                return false;
             validUtf8Count++;
             i += 4;
         } else {
@@ -348,10 +365,10 @@ bool EncodingDetector::detectStrictUtf8(const QByteArray &data, DetectionResult 
     return false;
 }
 
-bool EncodingDetector::detectUchardet(const QByteArray &data, DetectionResult &result)
-{
+bool EncodingDetector::detectUchardet(const QByteArray &data, DetectionResult &result) {
     uchardet_t ud = uchardet_new();
-    if (!ud) return false;
+    if (!ud)
+        return false;
 
     const size_t sampleLen = static_cast<size_t>(qMin(static_cast<int>(data.size()), 65536));
     int err = uchardet_handle_data(ud, data.constData(), sampleLen);
@@ -378,13 +395,15 @@ bool EncodingDetector::detectUchardet(const QByteArray &data, DetectionResult &r
     return false;
 }
 
-QByteArray EncodingDetector::decodeToUtf8(const QByteArray &data, const QString &encodingName, ScintillaNext::BomType bom, bool *ok)
-{
-    if (ok) *ok = true;
+QByteArray EncodingDetector::decodeToUtf8(const QByteArray &data, const QString &encodingName,
+                                          ScintillaNext::BomType bom, bool *ok) {
+    if (ok)
+        *ok = true;
     const QString encUpper = encodingName.toUpper();
 
     // 1. Direct UTF-8
-    if (encUpper == QStringLiteral("UTF-8") || encUpper == QStringLiteral("ASCII") || encUpper == QStringLiteral("US-ASCII")) {
+    if (encUpper == QStringLiteral("UTF-8") || encUpper == QStringLiteral("ASCII") ||
+        encUpper == QStringLiteral("US-ASCII")) {
         int offset = 0;
         if (bom == ScintillaNext::BomType::Utf8 && data.startsWith(BOM_UTF8_BYTES)) {
             offset = 3;
@@ -396,8 +415,10 @@ QByteArray EncodingDetector::decodeToUtf8(const QByteArray &data, const QString 
     if (encUpper == QStringLiteral("UTF-16LE") || encUpper == QStringLiteral("UTF-16BE")) {
         const bool isBE = (encUpper == QStringLiteral("UTF-16BE"));
         int offset = 0;
-        if (isBE && data.startsWith(BOM_UTF16BE_BYTES)) offset = 2;
-        else if (!isBE && data.startsWith(BOM_UTF16LE_BYTES)) offset = 2;
+        if (isBE && data.startsWith(BOM_UTF16BE_BYTES))
+            offset = 2;
+        else if (!isBE && data.startsWith(BOM_UTF16LE_BYTES))
+            offset = 2;
 
         QStringDecoder decoder(isBE ? QStringDecoder::Utf16BE : QStringDecoder::Utf16LE);
         QString text = decoder(QByteArrayView(data.constData() + offset, data.size() - offset));
@@ -415,26 +436,36 @@ QByteArray EncodingDetector::decodeToUtf8(const QByteArray &data, const QString 
 
     if (codec) {
         int offset = 0;
-        if (bom == ScintillaNext::BomType::Utf8 && data.startsWith(BOM_UTF8_BYTES)) offset = 3;
+        if (bom == ScintillaNext::BomType::Utf8 && data.startsWith(BOM_UTF8_BYTES))
+            offset = 3;
         QString text = codec->toUnicode(data.constData() + offset, data.size() - offset);
         return text.toUtf8();
     }
 
-    if (ok) *ok = false;
+    if (ok)
+        *ok = false;
     return data;
 }
 
-QByteArray EncodingDetector::encodeFromUtf8(const QByteArray &utf8Data, const QString &encodingName, ScintillaNext::BomType bom, bool *ok)
-{
-    if (ok) *ok = true;
+QByteArray EncodingDetector::encodeFromUtf8(const QByteArray &utf8Data, const QString &encodingName,
+                                            ScintillaNext::BomType bom, bool *ok) {
+    if (ok)
+        *ok = true;
     const QString encUpper = encodingName.toUpper();
 
     QByteArray bomBytes;
     switch (bom) {
-    case ScintillaNext::BomType::Utf8:    bomBytes = BOM_UTF8_BYTES; break;
-    case ScintillaNext::BomType::Utf16LE: bomBytes = BOM_UTF16LE_BYTES; break;
-    case ScintillaNext::BomType::Utf16BE: bomBytes = BOM_UTF16BE_BYTES; break;
-    case ScintillaNext::BomType::None:    break;
+        case ScintillaNext::BomType::Utf8:
+            bomBytes = BOM_UTF8_BYTES;
+            break;
+        case ScintillaNext::BomType::Utf16LE:
+            bomBytes = BOM_UTF16LE_BYTES;
+            break;
+        case ScintillaNext::BomType::Utf16BE:
+            bomBytes = BOM_UTF16BE_BYTES;
+            break;
+        case ScintillaNext::BomType::None:
+            break;
     }
 
     // 1. Target is UTF-8
@@ -465,53 +496,75 @@ QByteArray EncodingDetector::encodeFromUtf8(const QByteArray &utf8Data, const QS
         return bomBytes + encoded;
     }
 
-    if (ok) *ok = false;
+    if (ok)
+        *ok = false;
     return bomBytes + utf8Data;
 }
 
-QString EncodingDetector::canonicalizeEncodingName(const QString &rawName)
-{
+QString EncodingDetector::canonicalizeEncodingName(const QString &rawName) {
     QString s = rawName.trimmed();
     QString lower = s.toLower().remove('-').remove('_');
 
-    if (lower == "utf8") return QStringLiteral("UTF-8");
-    if (lower == "utf16" || lower == "utf16le") return QStringLiteral("UTF-16LE");
-    if (lower == "utf16be") return QStringLiteral("UTF-16BE");
-    if (lower == "ascii" || lower == "usascii") return QStringLiteral("UTF-8");
-    if (lower == "cp1252" || lower == "windows1252" || lower == "win1252" || lower == "ansi") return QStringLiteral("windows-1252");
-    if (lower == "latin1" || lower == "iso88591") return QStringLiteral("ISO-8859-1");
-    if (lower == "latin9" || lower == "iso885915") return QStringLiteral("ISO-8859-15");
-    if (lower == "cp1250" || lower == "windows1250" || lower == "win1250") return QStringLiteral("windows-1250");
-    if (lower == "cp1251" || lower == "windows1251" || lower == "win1251") return QStringLiteral("windows-1251");
-    if (lower == "cp1253" || lower == "windows1253") return QStringLiteral("windows-1253");
-    if (lower == "cp1254" || lower == "windows1254") return QStringLiteral("windows-1254");
-    if (lower == "cp1255" || lower == "windows1255") return QStringLiteral("windows-1255");
-    if (lower == "cp1256" || lower == "windows1256") return QStringLiteral("windows-1256");
-    if (lower == "cp1257" || lower == "windows1257") return QStringLiteral("windows-1257");
-    if (lower == "sjis" || lower == "shiftjis" || lower == "cp932") return QStringLiteral("Shift-JIS");
-    if (lower == "eucjp") return QStringLiteral("EUC-JP");
-    if (lower == "gb2312" || lower == "gbk" || lower == "gb18030" || lower == "cp936") return QStringLiteral("GB18030");
-    if (lower == "big5" || lower == "big5hkscs" || lower == "cp950") return QStringLiteral("Big5");
-    if (lower == "euckr" || lower == "cp949") return QStringLiteral("EUC-KR");
-    if (lower == "koi8r") return QStringLiteral("KOI8-R");
-    if (lower == "koi8u") return QStringLiteral("KOI8-U");
-    if (lower == "cp437" || lower == "ibm437" || lower == "oem437") return QStringLiteral("IBM850");
-    if (lower == "macroman" || lower == "macintosh") return QStringLiteral("macintosh");
+    if (lower == "utf8")
+        return QStringLiteral("UTF-8");
+    if (lower == "utf16" || lower == "utf16le")
+        return QStringLiteral("UTF-16LE");
+    if (lower == "utf16be")
+        return QStringLiteral("UTF-16BE");
+    if (lower == "ascii" || lower == "usascii")
+        return QStringLiteral("UTF-8");
+    if (lower == "cp1252" || lower == "windows1252" || lower == "win1252" || lower == "ansi")
+        return QStringLiteral("windows-1252");
+    if (lower == "latin1" || lower == "iso88591")
+        return QStringLiteral("ISO-8859-1");
+    if (lower == "latin9" || lower == "iso885915")
+        return QStringLiteral("ISO-8859-15");
+    if (lower == "cp1250" || lower == "windows1250" || lower == "win1250")
+        return QStringLiteral("windows-1250");
+    if (lower == "cp1251" || lower == "windows1251" || lower == "win1251")
+        return QStringLiteral("windows-1251");
+    if (lower == "cp1253" || lower == "windows1253")
+        return QStringLiteral("windows-1253");
+    if (lower == "cp1254" || lower == "windows1254")
+        return QStringLiteral("windows-1254");
+    if (lower == "cp1255" || lower == "windows1255")
+        return QStringLiteral("windows-1255");
+    if (lower == "cp1256" || lower == "windows1256")
+        return QStringLiteral("windows-1256");
+    if (lower == "cp1257" || lower == "windows1257")
+        return QStringLiteral("windows-1257");
+    if (lower == "sjis" || lower == "shiftjis" || lower == "cp932")
+        return QStringLiteral("Shift-JIS");
+    if (lower == "eucjp")
+        return QStringLiteral("EUC-JP");
+    if (lower == "gb2312" || lower == "gbk" || lower == "gb18030" || lower == "cp936")
+        return QStringLiteral("GB18030");
+    if (lower == "big5" || lower == "big5hkscs" || lower == "cp950")
+        return QStringLiteral("Big5");
+    if (lower == "euckr" || lower == "cp949")
+        return QStringLiteral("EUC-KR");
+    if (lower == "koi8r")
+        return QStringLiteral("KOI8-R");
+    if (lower == "koi8u")
+        return QStringLiteral("KOI8-U");
+    if (lower == "cp437" || lower == "ibm437" || lower == "oem437")
+        return QStringLiteral("IBM850");
+    if (lower == "macroman" || lower == "macintosh")
+        return QStringLiteral("macintosh");
 
     return s;
 }
 
-bool EncodingDetector::isSupportedEncoding(const QString &encodingName)
-{
+bool EncodingDetector::isSupportedEncoding(const QString &encodingName) {
     const QString encUpper = encodingName.toUpper();
-    if (encUpper == "UTF-8" || encUpper == "UTF-16LE" || encUpper == "UTF-16BE") return true;
+    if (encUpper == "UTF-8" || encUpper == "UTF-16LE" || encUpper == "UTF-16BE")
+        return true;
 
-    QTextCodec *codec = QTextCodec::codecForName(encodingName.toUtf8());
+    const QTextCodec *codec = QTextCodec::codecForName(encodingName.toUtf8());
     return codec != nullptr;
 }
 
-QString EncodingDetector::formatDisplayName(const QString &encodingName, ScintillaNext::BomType bom)
-{
+QString EncodingDetector::formatDisplayName(const QString &encodingName, ScintillaNext::BomType bom) {
     const QString encUpper = encodingName.toUpper();
     if (encUpper == "UTF-8") {
         return (bom == ScintillaNext::BomType::Utf8) ? QStringLiteral("UTF-8 BOM") : QStringLiteral("UTF-8");
@@ -528,8 +581,7 @@ QString EncodingDetector::formatDisplayName(const QString &encodingName, Scintil
     return encodingName;
 }
 
-QList<EncodingDetector::EncodingInfo> EncodingDetector::supportedEncodings()
-{
+QList<EncodingDetector::EncodingInfo> EncodingDetector::supportedEncodings() {
     return {
         // Unicode
         {QStringLiteral("UTF-8"), QStringLiteral("Unicode"), QStringLiteral("UTF-8")},
@@ -537,15 +589,18 @@ QList<EncodingDetector::EncodingInfo> EncodingDetector::supportedEncodings()
         {QStringLiteral("UTF-16BE"), QStringLiteral("Unicode"), QStringLiteral("UTF-16 Big Endian (BE)")},
 
         // Western European & ANSI
-        {QStringLiteral("windows-1252"), QStringLiteral("Western European"), QStringLiteral("Windows-1252 (ANSI / Western)")},
+        {QStringLiteral("windows-1252"), QStringLiteral("Western European"),
+         QStringLiteral("Windows-1252 (ANSI / Western)")},
         {QStringLiteral("ISO-8859-1"), QStringLiteral("Western European"), QStringLiteral("ISO-8859-1 (Latin-1)")},
         {QStringLiteral("ISO-8859-15"), QStringLiteral("Western European"), QStringLiteral("ISO-8859-15 (Latin-9)")},
         {QStringLiteral("macintosh"), QStringLiteral("Western European"), QStringLiteral("Macintosh (Mac Roman)")},
         {QStringLiteral("IBM850"), QStringLiteral("Legacy DOS/OEM"), QStringLiteral("DOS-850 (Western European)")},
 
         // Central & Eastern European
-        {QStringLiteral("windows-1250"), QStringLiteral("Central European"), QStringLiteral("Windows-1250 (Central European)")},
-        {QStringLiteral("ISO-8859-2"), QStringLiteral("Central European"), QStringLiteral("ISO-8859-2 (Central European)")},
+        {QStringLiteral("windows-1250"), QStringLiteral("Central European"),
+         QStringLiteral("Windows-1250 (Central European)")},
+        {QStringLiteral("ISO-8859-2"), QStringLiteral("Central European"),
+         QStringLiteral("ISO-8859-2 (Central European)")},
 
         // Cyrillic
         {QStringLiteral("windows-1251"), QStringLiteral("Cyrillic"), QStringLiteral("Windows-1251 (Cyrillic)")},
@@ -566,6 +621,5 @@ QList<EncodingDetector::EncodingInfo> EncodingDetector::supportedEncodings()
         {QStringLiteral("windows-1253"), QStringLiteral("Middle Eastern"), QStringLiteral("Windows-1253 (Greek)")},
 
         // Baltic
-        {QStringLiteral("windows-1257"), QStringLiteral("Baltic"), QStringLiteral("Windows-1257 (Baltic)")}
-    };
+        {QStringLiteral("windows-1257"), QStringLiteral("Baltic"), QStringLiteral("Windows-1257 (Baltic)")}};
 }

@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "EditorPrintPreviewRenderer.h"
 #include "ScintillaNext.h"
 
@@ -29,13 +28,9 @@
 #include <QDebug>
 #include <QPainter>
 
-EditorPrintPreviewRenderer::EditorPrintPreviewRenderer(ScintillaNext *editor)
-    : QObject(), editor(editor)
-{
-}
+EditorPrintPreviewRenderer::EditorPrintPreviewRenderer(ScintillaNext *editor) : QObject(), editor(editor) {}
 
-void EditorPrintPreviewRenderer::render(QPrinter *printer)
-{
+void EditorPrintPreviewRenderer::render(QPrinter *printer) {
     QRectF printableArea(QPointF(0, 0), printer->pageRect(QPrinter::DevicePixel).size());
 
     qInfo() << "Print from page" << printer->fromPage() << "to" << printer->toPage();
@@ -60,15 +55,13 @@ void EditorPrintPreviewRenderer::render(QPrinter *printer)
         if (needsToDraw) {
             if (needsNewPage) {
                 printer->newPage();
-            }
-            else {
+            } else {
                 needsNewPage = true;
             }
         }
 
-        startPos = editor->formatRange(needsToDraw, printer, printer,
-                                    printableArea.toRect(), printer->paperRect(QPrinter::DevicePixel).toRect(),
-                                    startPos, editor->length());
+        startPos = editor->formatRange(needsToDraw, printer, printer, printableArea.toRect(),
+                                       printer->paperRect(QPrinter::DevicePixel).toRect(), startPos, editor->length());
 
         pageNum++;
     } while (startPos < editor->length());

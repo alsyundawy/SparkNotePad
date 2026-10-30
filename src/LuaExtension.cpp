@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -40,8 +39,8 @@
 IFaceTableMixer ifacemixer;
 
 // From lua.c
-#define EOFMARK         "<eof>"
-#define marklen         (sizeof(EOFMARK)/sizeof(char) - 1)
+#define EOFMARK "<eof>"
+#define marklen (sizeof(EOFMARK) / sizeof(char) - 1)
 
 #if !defined(LUA_QL)
 #define LUA_QL(x) "'" x "'"
@@ -76,7 +75,6 @@ static bool call_function(lua_State *L, int nargs, bool ignoreFunctionReturnValu
     return ret;
 }
 
-
 // A note on naming conventions:
 // I've gone back and forth on this a bit, trying different styles.
 // It isn't easy to get something that feels consistent, considering
@@ -96,12 +94,10 @@ static bool luaDisabled = false;
 static bool tracebackEnabled = true;
 
 typedef int NppExtensionAPIPane;
-void hostTrace(const char *s)
-{
+void hostTrace(const char *s) {
     qInfo("%s", s);
 }
-void hostTraceError(const char *s)
-{
+void hostTraceError(const char *s) {
     qWarning("%s", s);
 }
 
@@ -110,7 +106,7 @@ static NppExtensionAPIPane check_pane_object(lua_State *L, int index);
 static void push_pane_object(lua_State *L, NppExtensionAPIPane p);
 static int iface_function_helper(lua_State *L, const IFaceFunction &func);
 
-inline void raise_error(lua_State *L, const char *errMsg=NULL) {
+inline void raise_error(lua_State *L, const char *errMsg = NULL) {
     luaL_where(L, 1);
     if (errMsg) {
         lua_pushstring(L, errMsg);
@@ -152,7 +148,8 @@ inline int absolute_index(lua_State *L, int index) {
 
     if (func == nullptr) {
         propfunc = SciIFaceTable.GetPropertyFuncByMessage(message);
-        if (propfunc.value != -1) func = &propfunc;
+        if (propfunc.value != -1)
+            func = &propfunc;
     }
 
     if (func != nullptr) {
@@ -184,29 +181,27 @@ inline int absolute_index(lua_State *L, int index) {
     }
 }
 
-void stackdump(lua_State* l)
-{
+void stackdump(lua_State *l) {
     int i;
     int top = lua_gettop(l);
 
-    for (i = 1; i <= top; i++)
-    {  /* repeat for each level */
+    for (i = 1; i <= top; i++) { /* repeat for each level */
         int t = lua_type(l, i);
         hostTrace(lua_typename(l, t));
-        hostTrace("  ");  /* put a separator */
+        hostTrace("  "); /* put a separator */
     }
-    hostTrace("\n");  /* end the listing */
+    hostTrace("\n"); /* end the listing */
 }
 
 static NppExtensionAPIPane check_pane_object(lua_State *L, int index) {
-    NppExtensionAPIPane *pPane = static_cast<NppExtensionAPIPane *>(luaL_testudata(L, index, "Nn_MT_Pane"));
+    const NppExtensionAPIPane *pPane = static_cast<const NppExtensionAPIPane *>(luaL_testudata(L, index, "Nn_MT_Pane"));
 
     if ((!pPane) && lua_istable(L, index)) {
         // so that nested objects have a convenient way to do a back reference
         int absIndex = absolute_index(L, index);
         lua_pushliteral(L, "pane");
         lua_gettable(L, absIndex);
-        pPane = static_cast<NppExtensionAPIPane *>(luaL_testudata(L, -1, "Nn_MT_Pane"));
+        pPane = static_cast<const NppExtensionAPIPane *>(luaL_testudata(L, -1, "Nn_MT_Pane"));
     }
 
     if (pPane) {
@@ -230,7 +225,7 @@ static NppExtensionAPIPane check_pane_object(lua_State *L, int index) {
         lua_pushliteral(L, "Pane object expected.");
 
     raise_error(L);
-    return 0; // this line never reached
+    return 0;  // this line never reached
 }
 
 static int cf_global_print(lua_State *L) {
@@ -246,7 +241,7 @@ static int cf_global_print(lua_State *L) {
         if (argStr) {
             hostTrace(argStr);
         } else {
-            lua_pushvalue(L, -1); // tostring
+            lua_pushvalue(L, -1);  // tostring
             lua_pushvalue(L, i);
             lua_call(L, 1, 1);
             argStr = lua_tostring(L, -1);
@@ -263,7 +258,7 @@ static int cf_global_print(lua_State *L) {
     return 0;
 }
 
-[[maybe_unused]] static bool call_function(lua_State *L, int nargs, bool ignoreFunctionReturnValue=false) {
+[[maybe_unused]] static bool call_function(lua_State *L, int nargs, bool ignoreFunctionReturnValue = false) {
     bool handled = false;
     if (L) {
         int traceback = 0;
@@ -294,7 +289,7 @@ static int cf_global_print(lua_State *L) {
             }
         } else if (result == LUA_ERRRUN) {
             lua_getglobal(L, "print");
-            lua_insert(L, -2); // use pushed error message
+            lua_insert(L, -2);  // use pushed error message
             lua_pcall(L, 1, 0, 0);
         } else {
             lua_pop(L, 1);
@@ -312,8 +307,7 @@ static int cf_global_print(lua_State *L) {
 
 struct ScintillaFailure {
     sptr_t status;
-    explicit ScintillaFailure(sptr_t status_) : status(status_) {
-    }
+    explicit ScintillaFailure(sptr_t status_) : status(status_) {}
 };
 
 static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
@@ -322,7 +316,7 @@ static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
 
     int arg = 2;
 
-    sptr_t params[2] = {0,0};
+    sptr_t params[2] = {0, 0};
 
     char *stringResult = 0;
     enum stringResultType { none, string, tstring } needStringResult = none;
@@ -333,7 +327,7 @@ static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
         params[1] = reinterpret_cast<sptr_t>(params[0] ? lua_tostring(L, arg) : "");
         loopParamCount = 0;
     } else if ((func.paramType[1] == iface_stringresult) || (func.returnType == iface_stringresult)) {
-        needStringResult = (func.paramType[1] == iface_stringresult) || (func.returnType == iface_stringresult) ? string : tstring;
+        needStringResult = string;
         // The buffer will be allocated later, so it won't leak if Lua does
         // a longjmp in response to a bad arg.
         if (func.paramType[0] == iface_length) {
@@ -346,16 +340,15 @@ static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
     // Specifically handle these 2 messages because they carry the setter in the 2nd param
     if (func.value == SCI_SETMARGINLEFT || func.value == SCI_SETMARGINRIGHT) {
         params[1] = static_cast<sptr_t>(luaL_checkinteger(L, arg++));
-    }
-    else {
+    } else {
         for (int i = 0; i < loopParamCount; ++i) {
             if (func.paramType[i] == iface_string) {
                 const char *s = lua_tostring(L, arg++);
                 params[i] = reinterpret_cast<sptr_t>(s ? s : "");
             } else if (func.paramType[i] == iface_keymod) {
                 int keycode = static_cast<int>(luaL_checkinteger(L, arg++)) & 0xFFFF;
-                int modifiers = static_cast<int>(luaL_checkinteger(L, arg++)) & (SCMOD_SHIFT|SCMOD_CTRL|SCMOD_ALT);
-                params[i] = keycode | (modifiers<<16);
+                int modifiers = static_cast<int>(luaL_checkinteger(L, arg++)) & (SCMOD_SHIFT | SCMOD_CTRL | SCMOD_ALT);
+                params[i] = keycode | (modifiers << 16);
             } else if (func.paramType[i] == iface_bool) {
                 params[i] = lua_toboolean(L, arg++);
             } else if (IFaceTypeIsNumeric(func.paramType[i])) {
@@ -370,8 +363,8 @@ static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
             stringResultLen = editor->send(func.value, params[0], 0);
             if (stringResultLen > 0) {
                 // not all string result methods are guaranteed to add a null terminator
-                stringResult = new char[stringResultLen+1];
-                stringResult[stringResultLen]='\0';
+                stringResult = new char[stringResultLen + 1];
+                stringResult[stringResultLen] = '\0';
                 params[1] = reinterpret_cast<sptr_t>(stringResult);
             } else {
                 // Is this an error?  Are there any cases where it's not an error,
@@ -393,8 +386,7 @@ static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
     sptr_t result = 0;
     try {
         result = editor->send(func.value, params[0], params[1]);
-    }
-    catch (ScintillaFailure &sf) {
+    } catch (ScintillaFailure &sf) {
         std::string failureExplanation;
         failureExplanation += "Lua: Scintilla failure ";
         failureExplanation += std::to_string(sf.status);
@@ -433,7 +425,8 @@ struct IFacePropertyBinding {
 static int cf_ifaceprop_metatable_index(lua_State *L) {
     // if there is a getter, __index calls it
     // otherwise, __index raises "property 'name' is write-only".
-    IFacePropertyBinding *ipb = static_cast<IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
+    const IFacePropertyBinding *ipb =
+        static_cast<const IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
     if (!(ipb && IFacePropertyIsScriptable(*(ipb->prop)))) {
         raise_error(L, "Internal error: property binding is improperly set up");
         return 0;
@@ -452,7 +445,8 @@ static int cf_ifaceprop_metatable_index(lua_State *L) {
 }
 
 static int cf_ifaceprop_metatable_newindex(lua_State *L) {
-    IFacePropertyBinding *ipb = static_cast<IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
+    const IFacePropertyBinding *ipb =
+        static_cast<const IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
     if (!(ipb && IFacePropertyIsScriptable(*(ipb->prop)))) {
         raise_error(L, "Internal error: property binding is improperly set up");
         return 0;
@@ -482,11 +476,11 @@ static int cf_pane_iface_function(lua_State *L) {
     }
 }
 
-static int push_iface_function(lua_State *L, const char *name, IFaceTableInterface *iface) {
+static int push_iface_function(lua_State *L, const char *name, const IFaceTableInterface *iface) {
     auto func = iface->FindFunction(name);
     if (func != nullptr) {
         if (IFaceFunctionIsScriptable(*func)) {
-            lua_pushlightuserdata(L, (void*)func);
+            lua_pushlightuserdata(L, const_cast<IFaceFunction *>(func));
             lua_pushcclosure(L, cf_pane_iface_function, 1);
 
             // Since Lua experts say it is inefficient to create closures / cfunctions
@@ -497,10 +491,10 @@ static int push_iface_function(lua_State *L, const char *name, IFaceTableInterfa
             return 1;
         }
     }
-    return -1; // signal to try next pane index handler
+    return -1;  // signal to try next pane index handler
 }
 
-static int push_iface_propval(lua_State *L, const char *name, IFaceTableInterface *iface) {
+static int push_iface_propval(lua_State *L, const char *name, const IFaceTableInterface *iface) {
     // this function doesn't raise errors, but returns 0 if the function is not handled.
 
     auto prop = iface->FindProperty(name);
@@ -538,7 +532,8 @@ static int push_iface_propval(lua_State *L, const char *name, IFaceTableInterfac
             // if there is a setter, __newindex calls it
             // otherwise, __newindex raises "property 'name' is read-only"
 
-            IFacePropertyBinding *ipb = static_cast<IFacePropertyBinding *>(lua_newuserdata(L, sizeof(IFacePropertyBinding)));
+            IFacePropertyBinding *ipb =
+                static_cast<IFacePropertyBinding *>(lua_newuserdata(L, sizeof(IFacePropertyBinding)));
             if (ipb) {
                 ipb->pane = check_pane_object(L, 1);
                 ipb->prop = prop;
@@ -559,11 +554,11 @@ static int push_iface_propval(lua_State *L, const char *name, IFaceTableInterfac
         }
     }
 
-    return -1; // signal to try next pane index handler
+    return -1;  // signal to try next pane index handler
 }
 
 static int cf_pane_metatable_index(lua_State *L) {
-    IFaceTableInterface *iface = static_cast<IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
+    const IFaceTableInterface *iface = static_cast<const IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
     if (lua_isstring(L, 2)) {
         const char *name = lua_tostring(L, 2);
 
@@ -590,7 +585,7 @@ static int cf_pane_metatable_index(lua_State *L) {
 }
 
 static int cf_pane_metatable_newindex(lua_State *L) {
-    IFaceTableInterface *iface = static_cast<IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
+    const IFaceTableInterface *iface = static_cast<const IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
     if (lua_isstring(L, 2)) {
         auto prop = iface->FindProperty(lua_tostring(L, 2));
         if (prop != nullptr) {
@@ -670,9 +665,10 @@ static int cf_global_metatable_index(lua_State *L) {
         }
     }
 
-    return 0; // global namespace access should not raise errors
+    return 0;  // global namespace access should not raise errors
 }
 
+// cppcheck-suppress constParameterCallback
 static int LuaPanicFunction(lua_State *L) {
     if (L == luaState) {
         lua_close(luaState);
@@ -694,8 +690,7 @@ static bool InitGlobalScope() {
         }
         lua_atpanic(luaState, LuaPanicFunction);
 
-    }
-    else {
+    } else {
         return false;
     }
 
@@ -725,7 +720,6 @@ static bool InitGlobalScope() {
 
     return true;
 }
-
 
 LuaExtension::LuaExtension() {}
 LuaExtension::~LuaExtension() {}
@@ -781,29 +775,28 @@ bool LuaExtension::RunString(const char *s) {
 }
 
 bool LuaExtension::OnExecute(const char *s) {
-    static bool isFirstLine = true;
-    static std::string chunk;
-    int status = 0;
-
     if (luaState || InitGlobalScope()) {
+        static bool isFirstLine = true;
+        static std::string chunk;
+        int status = 0;
         if (isFirstLine) {
             // First try to compile the chunk as a return statement
             const char *retline = lua_pushfstring(luaState, "return %s;", s);
             status = luaL_loadbuffer(luaState, retline, strlen(retline), "=Console");
-            if (status == 0) lua_remove(luaState, -2);
-            else lua_pop(luaState, 2);
+            if (status == 0)
+                lua_remove(luaState, -2);
+            else
+                lua_pop(luaState, 2);
 
             if (status == LUA_OK) {
                 // It worked, let's call it
                 status = lua_pcall(luaState, 0, LUA_MULTRET, 0);
-            }
-            else {
+            } else {
                 // Else let's just try it as is
                 status = luaL_loadbuffer(luaState, s, strlen(s), "=Console");
                 if (status == LUA_OK) {
                     status = lua_pcall(luaState, 0, LUA_MULTRET, 0);
-                }
-                else if (status == LUA_ERRSYNTAX) {
+                } else if (status == LUA_ERRSYNTAX) {
                     size_t lmsg;
                     const char *msg = lua_tolstring(luaState, -1, &lmsg);
                     if (lmsg >= marklen && strcmp(msg + lmsg - marklen, EOFMARK) == 0) {
@@ -814,16 +807,14 @@ bool LuaExtension::OnExecute(const char *s) {
                     }
                 }
             }
-        }
-        else {
+        } else {
             // Append the new line to what we've gotten so far
             chunk.append("\n");
             chunk.append(s);
             status = luaL_loadbuffer(luaState, chunk.c_str(), chunk.length(), "=Console");
             if (status == LUA_OK) {
                 status = lua_pcall(luaState, 0, LUA_MULTRET, 0);
-            }
-            else if (status == LUA_ERRSYNTAX) {
+            } else if (status == LUA_ERRSYNTAX) {
                 size_t lmsg;
                 const char *msg = lua_tolstring(luaState, -1, &lmsg);
                 if (lmsg >= marklen && strcmp(msg + lmsg - marklen, EOFMARK) == 0) {
@@ -838,22 +829,20 @@ bool LuaExtension::OnExecute(const char *s) {
         isFirstLine = true;
 
         if (status == LUA_OK) {
-            if (lua_gettop(luaState) > 0) {  /* any result to print? */
+            if (lua_gettop(luaState) > 0) { /* any result to print? */
                 lua_getglobal(luaState, "print");
                 lua_insert(luaState, 1);
                 if (lua_pcall(luaState, lua_gettop(luaState) - 1, 0, 0) != 0)
                     hostTraceError("error calling 'print'");
             }
             // else everything finished fine but had no return value
-        }
-        else {
+        } else {
             // Print an error message if possible
             const char *errmsg = lua_tostring(luaState, -1);
             if (errmsg) {
                 hostTraceError(errmsg);
                 hostTraceError("\n");
-            }
-            else {
+            } else {
                 hostTraceError("error\n");
             }
         }

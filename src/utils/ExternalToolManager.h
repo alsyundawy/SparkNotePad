@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -30,8 +31,7 @@ struct ExternalTool {
     bool saveBeforeRun = true;
 };
 
-class ExternalToolManager : public QObject
-{
+class ExternalToolManager : public QObject {
     Q_OBJECT
 
 public:
@@ -39,7 +39,8 @@ public:
     static QString expandVariables(const QString &cmdTemplate, ScintillaNext *editor);
 
     // Command execution
-    static bool executeCommand(const QString &commandLine, const QString &workingDir, bool inTerminal, QString *errorOut = nullptr);
+    static bool executeCommand(const QString &commandLine, const QString &workingDir, bool inTerminal,
+                               QString *errorOut = nullptr);
     static bool executeTool(const ExternalTool &tool, ScintillaNext *editor, QString *errorOut = nullptr);
 
     // Common system actions
@@ -64,4 +65,4 @@ public:
     static QString getSelectedOrCurrentWord(ScintillaNext *editor);
 };
 
-#endif // EXTERNALTOOLMANAGER_H
+#endif  // EXTERNALTOOLMANAGER_H

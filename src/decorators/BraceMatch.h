@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,19 +22,16 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef BRACEMATCH_H
 #define BRACEMATCH_H
 
 #include "EditorDecorator.h"
 
-
-class BraceMatch : public EditorDecorator
-{
+class BraceMatch : public EditorDecorator {
     Q_OBJECT
 
 public:
-    BraceMatch(ScintillaNext *editor);
+    explicit BraceMatch(ScintillaNext *editor);
 
 private:
     void doHighlighting();
@@ -43,4 +41,4 @@ public slots:
     void notify(const Scintilla::NotificationData *pscn) override;
 };
 
-#endif // BRACEMATCH_H
+#endif  // BRACEMATCH_H

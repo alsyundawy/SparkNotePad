@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -20,12 +21,11 @@
 class ScintillaNext;
 #endif
 
-class Base64Utils
-{
+class Base64Utils {
 public:
     struct Result {
-        bool success {false};
-        bool wholeDocument {false};
+        bool success{false};
+        bool wholeDocument{false};
         QString errorMessage;
     };
 
@@ -42,4 +42,4 @@ public:
     static QString decodeUrlSafe(const QString &base64Text, bool *ok = nullptr);
 };
 
-#endif // BASE64UTILS_H
+#endif  // BASE64UTILS_H

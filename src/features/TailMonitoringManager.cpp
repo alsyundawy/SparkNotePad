@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Monitoring / Tail Mode (tail -f).
  * Adapted from Notepad++ and Notepad4 monitoring architectures.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,8 +18,7 @@
 
 TailMonitoringManager *TailMonitoringManager::s_instance = nullptr;
 
-TailMonitoringManager *TailMonitoringManager::instance()
-{
+TailMonitoringManager *TailMonitoringManager::instance() {
     if (!s_instance) {
         s_instance = new TailMonitoringManager();
     }
@@ -27,23 +26,18 @@ TailMonitoringManager *TailMonitoringManager::instance()
 }
 
 TailMonitoringManager::TailMonitoringManager(QObject *parent)
-    : QObject(parent)
-    , m_fileWatcher(new QFileSystemWatcher(this))
-    , m_timer(new QTimer(this))
-{
+    : QObject(parent), m_fileWatcher(new QFileSystemWatcher(this)), m_timer(new QTimer(this)) {
     connect(m_fileWatcher, &QFileSystemWatcher::fileChanged, this, &TailMonitoringManager::onFileSystemChanged);
 
     connect(m_timer, &QTimer::timeout, this, &TailMonitoringManager::onHeartbeatTimer);
     m_timer->setInterval(m_pollIntervalMs);
 }
 
-bool TailMonitoringManager::isMonitoring(ScintillaNext *editor) const
-{
-    return editor && m_monitored.contains(editor);
+bool TailMonitoringManager::isMonitoring(const ScintillaNext *editor) const {
+    return editor && m_monitored.contains(const_cast<ScintillaNext *>(editor));
 }
 
-bool TailMonitoringManager::toggleMonitoring(ScintillaNext *editor)
-{
+bool TailMonitoringManager::toggleMonitoring(ScintillaNext *editor) {
     if (isMonitoring(editor)) {
         stopMonitoring(editor);
         return false;
@@ -52,9 +46,9 @@ bool TailMonitoringManager::toggleMonitoring(ScintillaNext *editor)
     }
 }
 
-bool TailMonitoringManager::startMonitoring(ScintillaNext *editor)
-{
-    if (!editor) return false;
+bool TailMonitoringManager::startMonitoring(ScintillaNext *editor) {
+    if (!editor)
+        return false;
 
     const QString filePath = editor->getFilePath();
     if (filePath.isEmpty() || !QFile::exists(filePath)) {
@@ -91,9 +85,9 @@ bool TailMonitoringManager::startMonitoring(ScintillaNext *editor)
     return true;
 }
 
-void TailMonitoringManager::stopMonitoring(ScintillaNext *editor)
-{
-    if (!editor || !m_monitored.contains(editor)) return;
+void TailMonitoringManager::stopMonitoring(ScintillaNext *editor) {
+    if (!editor || !m_monitored.contains(editor))
+        return;
 
     auto state = m_monitored.take(editor);
 
@@ -121,22 +115,20 @@ void TailMonitoringManager::stopMonitoring(ScintillaNext *editor)
     emit statusMessage(tr("Monitoring (tail -f) stopped for %1").arg(info.fileName()));
 }
 
-void TailMonitoringManager::stopAll()
-{
+void TailMonitoringManager::stopAll() {
     const auto editors = m_monitored.keys();
     for (auto *ed : editors) {
         stopMonitoring(ed);
     }
 }
 
-bool TailMonitoringManager::autoScrollToEnd(ScintillaNext *editor) const
-{
-    if (!editor || !m_monitored.contains(editor)) return true;
-    return m_monitored.value(editor).autoScrollToEnd;
+bool TailMonitoringManager::autoScrollToEnd(const ScintillaNext *editor) const {
+    if (!editor || !m_monitored.contains(const_cast<ScintillaNext *>(editor)))
+        return true;
+    return m_monitored.value(const_cast<ScintillaNext *>(editor)).autoScrollToEnd;
 }
 
-void TailMonitoringManager::setAutoScrollToEnd(ScintillaNext *editor, bool enable)
-{
+void TailMonitoringManager::setAutoScrollToEnd(ScintillaNext *editor, bool enable) {
     if (editor && m_monitored.contains(editor)) {
         m_monitored[editor].autoScrollToEnd = enable;
         if (enable) {
@@ -146,29 +138,25 @@ void TailMonitoringManager::setAutoScrollToEnd(ScintillaNext *editor, bool enabl
     }
 }
 
-void TailMonitoringManager::setPollIntervalMs(int ms)
-{
+void TailMonitoringManager::setPollIntervalMs(int ms) {
     m_pollIntervalMs = qMax(100, ms);
     m_timer->setInterval(m_pollIntervalMs);
 }
 
-void TailMonitoringManager::forceCheck(ScintillaNext *editor)
-{
+void TailMonitoringManager::forceCheck(ScintillaNext *editor) {
     if (editor && m_monitored.contains(editor)) {
         checkEditorFile(editor);
     }
 }
 
-void TailMonitoringManager::onHeartbeatTimer()
-{
+void TailMonitoringManager::onHeartbeatTimer() {
     const auto editors = m_monitored.keys();
     for (auto *ed : editors) {
         checkEditorFile(ed);
     }
 }
 
-void TailMonitoringManager::onFileSystemChanged(const QString &path)
-{
+void TailMonitoringManager::onFileSystemChanged(const QString &path) {
     if (QFile::exists(path)) {
         m_fileWatcher->addPath(path);
     }
@@ -180,11 +168,10 @@ void TailMonitoringManager::onFileSystemChanged(const QString &path)
     }
 }
 
-void TailMonitoringManager::onEditorDestroyed(QObject *obj)
-{
-    auto *editor = static_cast<ScintillaNext *>(obj);
-    if (m_monitored.contains(editor)) {
-        auto state = m_monitored.take(editor);
+void TailMonitoringManager::onEditorDestroyed(const QObject *obj) {
+    const auto *editor = static_cast<const ScintillaNext *>(obj);
+    if (m_monitored.contains(const_cast<ScintillaNext *>(editor))) {
+        auto state = m_monitored.take(const_cast<ScintillaNext *>(editor));
         bool pathStillUsed = false;
         for (auto it = m_monitored.constBegin(); it != m_monitored.constEnd(); ++it) {
             if (it.value().filePath == state.filePath) {
@@ -201,9 +188,9 @@ void TailMonitoringManager::onEditorDestroyed(QObject *obj)
     }
 }
 
-void TailMonitoringManager::checkEditorFile(ScintillaNext *editor)
-{
-    if (!editor || !m_monitored.contains(editor)) return;
+void TailMonitoringManager::checkEditorFile(ScintillaNext *editor) {
+    if (!editor || !m_monitored.contains(editor))
+        return;
 
     auto &state = m_monitored[editor];
     QFileInfo info(state.filePath);

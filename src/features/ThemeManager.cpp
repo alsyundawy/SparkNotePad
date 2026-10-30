@@ -19,9 +19,7 @@
 #include <QColor>
 
 static const ThemePalette kLightPalette = {
-    "light",
-    "Light Mode",
-    false,
+    "light",   "Light Mode", false,
     "#f0f2f5",  // win (NotepadNext default workspace window)
     "#fafbfc",  // card (NotepadNext default workspace canvas)
     "#e1e4e8",  // border
@@ -36,46 +34,39 @@ static const ThemePalette kLightPalette = {
 };
 
 static const ThemePalette kDarkPalette = {
-    "dark",
-    "Dracula Dark Mode",
-    true,
-    "#1e1f29", // win (Dracula window background)
-    "#282a36", // card (Dracula editor background)
-    "#44475a", // border
-    "#f8f8f2", // txtPri (Dracula foreground)
-    "#6272a4", // txtSec (Dracula comment)
-    "#8be9fd", // cyan (Dracula cyan)
-    "#bd93f9", // blue / purple (Dracula purple)
-    "#ff79c6", // net / pink (Dracula pink)
-    "#ffb86c", // sub / orange (Dracula orange)
-    "#f1fa8c", // host / yellow (Dracula yellow)
-    "#50fa7b"  // sep / green (Dracula green)
+    "dark",    "Dracula Dark Mode", true,
+    "#1e1f29",  // win (Dracula window background)
+    "#282a36",  // card (Dracula editor background)
+    "#44475a",  // border
+    "#f8f8f2",  // txtPri (Dracula foreground)
+    "#6272a4",  // txtSec (Dracula comment)
+    "#8be9fd",  // cyan (Dracula cyan)
+    "#bd93f9",  // blue / purple (Dracula purple)
+    "#ff79c6",  // net / pink (Dracula pink)
+    "#ffb86c",  // sub / orange (Dracula orange)
+    "#f1fa8c",  // host / yellow (Dracula yellow)
+    "#50fa7b"   // sep / green (Dracula green)
 };
 
-ThemeManager *ThemeManager::instance()
-{
+ThemeManager *ThemeManager::instance() {
     static ThemeManager s_instance;
     return &s_instance;
 }
 
-ThemeManager::ThemeManager(QObject *parent)
-    : QObject(parent)
-{
+ThemeManager::ThemeManager(QObject *parent) : QObject(parent) {
     if (QGuiApplication::styleHints()) {
-        connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
-                this, &ThemeManager::onSystemColorSchemeChanged);
+        connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
+                &ThemeManager::onSystemColorSchemeChanged);
     }
 }
 
-ThemeManager::~ThemeManager()
-{
-}
+ThemeManager::~ThemeManager() {}
 
-void ThemeManager::initialize(ApplicationSettings *settings)
-{
+void ThemeManager::initialize(ApplicationSettings *settings) {
     m_settings = settings;
     if (m_settings) {
-        QString savedMode = m_settings->value(QStringLiteral("App/ThemeMode"), QStringLiteral("Light")).toString().toLower();
+        QString savedMode =
+            m_settings->value(QStringLiteral("App/ThemeMode"), QStringLiteral("Light")).toString().toLower();
         if (savedMode == QStringLiteral("dark")) {
             m_themeMode = ThemeMode::Dark;
         } else if (savedMode == QStringLiteral("auto")) {
@@ -86,8 +77,7 @@ void ThemeManager::initialize(ApplicationSettings *settings)
     }
 }
 
-bool ThemeManager::isDarkActive() const
-{
+bool ThemeManager::isDarkActive() const {
     if (m_themeMode == ThemeMode::Dark)
         return true;
     if (m_themeMode == ThemeMode::Light)
@@ -100,13 +90,11 @@ bool ThemeManager::isDarkActive() const
     return QGuiApplication::palette().color(QPalette::Window).lightness() < 128;
 }
 
-const ThemePalette *ThemeManager::currentPalette() const
-{
+const ThemePalette *ThemeManager::currentPalette() const {
     return isDarkActive() ? &kDarkPalette : &kLightPalette;
 }
 
-void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
-{
+void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     m_themeMode = mode;
     if (window) {
         m_activeWindow = window;
@@ -114,8 +102,10 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
 
     if (m_settings) {
         QString modeStr = QStringLiteral("Auto");
-        if (mode == ThemeMode::Dark) modeStr = QStringLiteral("Dark");
-        else if (mode == ThemeMode::Light) modeStr = QStringLiteral("Light");
+        if (mode == ThemeMode::Dark)
+            modeStr = QStringLiteral("Dark");
+        else if (mode == ThemeMode::Light)
+            modeStr = QStringLiteral("Light");
         m_settings->setValue(QStringLiteral("App/ThemeMode"), modeStr);
     }
 
@@ -126,22 +116,19 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
     emit themeChanged(isDarkActive());
 }
 
-void ThemeManager::toggleTheme(MainWindow *window)
-{
+void ThemeManager::toggleTheme(MainWindow *window) {
     bool currentlyDark = isDarkActive();
     setThemeMode(currentlyDark ? ThemeMode::Light : ThemeMode::Dark, window);
 }
 
-void ThemeManager::onSystemColorSchemeChanged()
-{
+void ThemeManager::onSystemColorSchemeChanged() {
     if (m_themeMode == ThemeMode::Auto && m_activeWindow) {
         applyTheme(m_activeWindow);
         emit themeChanged(isDarkActive());
     }
 }
 
-void ThemeManager::applyTheme(MainWindow *window)
-{
+void ThemeManager::applyTheme(MainWindow *window) {
     m_activeWindow = window;
     if (!window)
         return;
@@ -153,8 +140,7 @@ void ThemeManager::applyTheme(MainWindow *window)
     }
 }
 
-void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
-{
+void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
     if (!editor)
         return;
 
@@ -300,8 +286,7 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
     editor->styleSetFore(24, scFromRgb(cyan.rgb()));
 }
 
-QString ThemeManager::getThemeStyleSheet() const
-{
+QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? &kDarkPalette : &kLightPalette;

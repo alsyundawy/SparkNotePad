@@ -21,15 +21,11 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "SmartHighlighter.h"
 
 using namespace Scintilla;
 
-
-SmartHighlighter::SmartHighlighter(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+SmartHighlighter::SmartHighlighter(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName("SmartHighlighter");
 
     indicator = editor->allocateIndicator("smart_highlighter");
@@ -41,15 +37,14 @@ SmartHighlighter::SmartHighlighter(ScintillaNext *editor) :
     editor->indicSetUnder(indicator, true);
 }
 
-void SmartHighlighter::notify(const NotificationData *pscn)
-{
-    if (pscn->nmhdr.code == Notification::UpdateUI && (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection))) {
+void SmartHighlighter::notify(const NotificationData *pscn) {
+    if (pscn->nmhdr.code == Notification::UpdateUI &&
+        (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection))) {
         highlightCurrentView();
     }
 }
 
-void SmartHighlighter::highlightCurrentView()
-{
+void SmartHighlighter::highlightCurrentView() {
     editor->setIndicatorCurrent(indicator);
     editor->indicatorClearRange(0, editor->length());
 
@@ -82,14 +77,14 @@ void SmartHighlighter::highlightCurrentView()
     // have minimal impact. For large files, Qt can have a timer set to 0 to do heavier processing.
     // Using threads seems to be a bit overkill and too burdensome to do it properly.
 
-    //const int startLine = editor->firstVisibleLine();
-    //const int linesOnScreen = editor->linesOnScreen();
-    //const int startPos = editor->positionFromLine(startLine);
-    //const int endPos = editor->lineEndPosition(startLine + linesOnScreen);
+    // const int startLine = editor->firstVisibleLine();
+    // const int linesOnScreen = editor->linesOnScreen();
+    // const int startPos = editor->positionFromLine(startLine);
+    // const int endPos = editor->lineEndPosition(startLine + linesOnScreen);
 
     // TODO: skip hidden or folded lines?
 
-    Sci_TextToFind ttf {{0, (Sci_PositionCR)editor->length()}, selText.constData(), {-1, -1}};
+    Sci_TextToFind ttf{{0, (Sci_PositionCR)editor->length()}, selText.constData(), {-1, -1}};
     const int flags = SCFIND_MATCHCASE | SCFIND_WHOLEWORD;
 
     while (editor->send(SCI_FINDTEXT, flags, (sptr_t)&ttf) != -1) {

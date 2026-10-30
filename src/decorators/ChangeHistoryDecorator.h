@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Scintilla Change History and Notepad++ / Notepad4
  * change tracking margin concept.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,8 +16,7 @@
 
 #include "EditorDecorator.h"
 
-class ChangeHistoryDecorator : public EditorDecorator
-{
+class ChangeHistoryDecorator : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -32,10 +32,10 @@ public:
     int previousChangeBefore(int line);
 
 public slots:
-    void setEnabled(bool b);
+    void setEnabled(bool b) override;
 
 private:
     void setupMarkers();
 };
 
-#endif // CHANGEHISTORYDECORATOR_H
+#endif  // CHANGEHISTORYDECORATOR_H

@@ -21,36 +21,30 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "Macro.h"
 
 using namespace Scintilla;
 
 Macro::Macro() : name("<Current Recorded Macro>") {}
 
-Macro::~Macro()
-{
-}
+Macro::~Macro() {}
 
-void Macro::addMacroStep(Message message, uptr_t wParam, sptr_t lParam)
-{
+void Macro::addMacroStep(Message message, uptr_t wParam, sptr_t lParam) {
     qInfo(Q_FUNC_INFO);
 
     // Combine ReplaceSel messages into a single string
     if (message == Message::ReplaceSel && !steps.empty() && steps.constLast().message == Message::ReplaceSel) {
-        steps.last().str.append(reinterpret_cast<const char*>(lParam));
+        steps.last().str.append(reinterpret_cast<const char *>(lParam));
     }
     // Combine DeleteBack (backspace) with ReplaceSel
     else if (message == Message::DeleteBack && !steps.empty() && steps.constLast().message == Message::ReplaceSel) {
         if (steps.last().str.size() == 1) {
             // A single char left so just remove the action
             steps.takeLast();
-        }
-        else {
+        } else {
             steps.last().str.chop(1);
         }
-    }
-    else {
+    } else {
         steps.append(MacroStep(message, wParam, lParam));
     }
 
@@ -61,13 +55,11 @@ void Macro::addMacroStep(Message message, uptr_t wParam, sptr_t lParam)
 #endif
 }
 
-void Macro::addMacroStep(MacroStep step)
-{
+void Macro::addMacroStep(const MacroStep &step) {
     steps.append(step);
 }
 
-void Macro::replay(ScintillaNext *editor, int n) const
-{
+void Macro::replay(ScintillaNext *editor, int n) const {
     qInfo(Q_FUNC_INFO);
 
     editor->beginUndoAction();
@@ -83,15 +75,14 @@ void Macro::replay(ScintillaNext *editor, int n) const
     editor->endUndoAction();
 }
 
-void Macro::replayTillEndOfFile(ScintillaNext *editor) const
-{
+void Macro::replayTillEndOfFile(ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
     editor->beginUndoAction();
 
     do {
-        int length = editor->length();
-        int curPos = editor->currentPos();
+        sptr_t length = editor->length();
+        sptr_t curPos = editor->currentPos();
 
         replay(editor);
 
@@ -100,10 +91,10 @@ void Macro::replayTillEndOfFile(ScintillaNext *editor) const
             continue;
         }
         // The doc can grow...
-        else if(editor->length() > length) {
+        else if (editor->length() > length) {
             // are we going to catch up?
-            int deltaLength = editor->length() - length;
-            int deltaPos = editor->currentPos() - curPos;
+            sptr_t deltaLength = editor->length() - length;
+            sptr_t deltaPos = editor->currentPos() - curPos;
             if (deltaPos > deltaLength) {
                 // Cursor position is moving forward more than document is growing
                 continue;
@@ -123,22 +114,18 @@ void Macro::replayTillEndOfFile(ScintillaNext *editor) const
     editor->endUndoAction();
 }
 
-QString Macro::getName() const
-{
+const QString &Macro::getName() const {
     return name;
 }
 
-void Macro::setName(const QString &value)
-{
+void Macro::setName(const QString &value) {
     name = value;
 }
 
-QDataStream &operator<<(QDataStream& stream, const Macro &macro)
-{
+QDataStream &operator<<(QDataStream &stream, const Macro &macro) {
     return stream << macro.name << macro.steps;
 }
 
-QDataStream &operator>>(QDataStream& stream, Macro &macro)
-{
+QDataStream &operator>>(QDataStream &stream, Macro &macro) {
     return stream >> macro.name >> macro.steps;
 }

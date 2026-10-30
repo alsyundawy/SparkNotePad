@@ -21,15 +21,13 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 #include <QTextStream>
 
 #include "ScintillaNext.h"
 
-class Converter
-{
+class Converter {
 public:
     Converter(ScintillaNext *editor);
 
@@ -41,4 +39,3 @@ protected:
 
     ScintillaNext *editor;
 };
-

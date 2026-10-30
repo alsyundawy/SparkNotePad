@@ -1,9 +1,9 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Clipboard History & Monitoring Dialog.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,11 +18,8 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-ClipboardHistoryDialog::ClipboardHistoryDialog(QWidget *parent, ScintillaNext *currentEditor) :
-    QDialog(parent),
-    ui(new Ui::ClipboardHistoryDialog),
-    m_editor(currentEditor)
-{
+ClipboardHistoryDialog::ClipboardHistoryDialog(QWidget *parent, ScintillaNext *currentEditor)
+    : QDialog(parent), ui(new Ui::ClipboardHistoryDialog), m_editor(currentEditor) {
     ui->setupUi(this);
 
     ClipboardMonitor *mon = ClipboardMonitor::instance();
@@ -61,46 +58,42 @@ ClipboardHistoryDialog::ClipboardHistoryDialog(QWidget *parent, ScintillaNext *c
     updateStatusLabel();
 }
 
-ClipboardHistoryDialog::~ClipboardHistoryDialog()
-{
+ClipboardHistoryDialog::~ClipboardHistoryDialog() {
     delete ui;
 }
 
-void ClipboardHistoryDialog::onToggleMonitoring()
-{
+void ClipboardHistoryDialog::onToggleMonitoring() {
     ClipboardMonitor *mon = ClipboardMonitor::instance();
     mon->toggleMonitoring(m_editor);
 }
 
-void ClipboardHistoryDialog::onMonitoringStateChanged(bool active)
-{
+void ClipboardHistoryDialog::onMonitoringStateChanged(bool active) {
     Q_UNUSED(active);
     updateStatusLabel();
 }
 
-void ClipboardHistoryDialog::updateStatusLabel()
-{
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+void ClipboardHistoryDialog::updateStatusLabel() {
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     if (mon->isMonitoring()) {
-        ui->labelStatus->setText(tr("<b>Clipboard Monitoring:</b> <font color='#5cb85c'>ACTIVE</font> (%1 captured)").arg(mon->capturedCount()));
+        ui->labelStatus->setText(tr("<b>Clipboard Monitoring:</b> <font color='#5cb85c'>ACTIVE</font> (%1 captured)")
+                                     .arg(mon->capturedCount()));
         ui->btnToggleMonitor->setText(tr("Stop Monitoring"));
     } else {
-        ui->labelStatus->setText(tr("<b>Clipboard Monitoring:</b> <font color='#888888'>INACTIVE</font> (%1 captured)").arg(mon->capturedCount()));
+        ui->labelStatus->setText(tr("<b>Clipboard Monitoring:</b> <font color='#888888'>INACTIVE</font> (%1 captured)")
+                                     .arg(mon->capturedCount()));
         ui->btnToggleMonitor->setText(tr("Start Monitoring"));
     }
 }
 
-void ClipboardHistoryDialog::onClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount)
-{
+void ClipboardHistoryDialog::onClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount) {
     Q_UNUSED(clip);
     Q_UNUSED(totalCount);
     refreshHistoryTable();
     updateStatusLabel();
 }
 
-void ClipboardHistoryDialog::refreshHistoryTable()
-{
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+void ClipboardHistoryDialog::refreshHistoryTable() {
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     ui->tableHistory->setRowCount(hist.size());
@@ -118,7 +111,7 @@ void ClipboardHistoryDialog::refreshHistoryTable()
         ui->tableHistory->setItem(i, 2, new QTableWidgetItem(preview));
         ui->tableHistory->setItem(i, 3, new QTableWidgetItem(QString::number(clip.charCount)));
         ui->tableHistory->setItem(i, 4, new QTableWidgetItem(QString::number(clip.lineCount)));
-        ui->tableHistory->setItem(i, 5, new QTableWidgetItem(clip.internal ? tr("NoteSciPad") : tr("External")));
+        ui->tableHistory->setItem(i, 5, new QTableWidgetItem(clip.internal ? tr("SparkNotePad") : tr("External")));
     }
 
     if (!hist.isEmpty()) {
@@ -126,10 +119,9 @@ void ClipboardHistoryDialog::refreshHistoryTable()
     }
 }
 
-void ClipboardHistoryDialog::onSelectionChanged()
-{
+void ClipboardHistoryDialog::onSelectionChanged() {
     int row = ui->tableHistory->currentRow();
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     if (row >= 0 && row < hist.size()) {
@@ -143,10 +135,9 @@ void ClipboardHistoryDialog::onSelectionChanged()
     }
 }
 
-void ClipboardHistoryDialog::onInsertClicked()
-{
+void ClipboardHistoryDialog::onInsertClicked() {
     int row = ui->tableHistory->currentRow();
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     if (row >= 0 && row < hist.size() && m_editor) {
@@ -158,10 +149,9 @@ void ClipboardHistoryDialog::onInsertClicked()
     }
 }
 
-void ClipboardHistoryDialog::onCopyClicked()
-{
+void ClipboardHistoryDialog::onCopyClicked() {
     int row = ui->tableHistory->currentRow();
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     if (row >= 0 && row < hist.size()) {
@@ -169,8 +159,7 @@ void ClipboardHistoryDialog::onCopyClicked()
     }
 }
 
-void ClipboardHistoryDialog::onClearClicked()
-{
+void ClipboardHistoryDialog::onClearClicked() {
     ClipboardMonitor *mon = ClipboardMonitor::instance();
     mon->clearHistory();
     ui->editPreview->clear();
@@ -178,8 +167,7 @@ void ClipboardHistoryDialog::onClearClicked()
     updateStatusLabel();
 }
 
-void ClipboardHistoryDialog::onOptionsChanged()
-{
+void ClipboardHistoryDialog::onOptionsChanged() {
     ClipboardMonitor *mon = ClipboardMonitor::instance();
     mon->setAppendToDocument(ui->checkAutoAppend->isChecked());
     mon->setAddTimestamp(ui->checkAddTimestamp->isChecked());

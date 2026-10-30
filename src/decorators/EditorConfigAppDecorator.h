@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -28,8 +29,7 @@
 
 class ScintillaNext;
 
-class EditorConfigAppDecorator : public ApplicationDecorator
-{
+class EditorConfigAppDecorator : public ApplicationDecorator {
     Q_OBJECT
 
 public:
@@ -43,4 +43,4 @@ private slots:
     void ensureNoFinalNewline();
 };
 
-#endif // EDITORCONFIGAPPDECORATOR_H
+#endif  // EDITORCONFIGAPPDECORATOR_H

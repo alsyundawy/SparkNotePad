@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SURROUNDSELECTION_H
 #define SURROUNDSELECTION_H
 
@@ -30,13 +30,11 @@
 
 #include "EditorDecorator.h"
 
-
-class SurroundSelection : public EditorDecorator
-{
+class SurroundSelection : public EditorDecorator {
     Q_OBJECT
 
 public:
-    SurroundSelection(ScintillaNext *editor);
+    explicit SurroundSelection(ScintillaNext *editor);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
@@ -48,4 +46,4 @@ private:
     void surroundSelections(const char ch1, const char ch2);
 };
 
-#endif // SURROUNDSELECTION_H
+#endif  // SURROUNDSELECTION_H

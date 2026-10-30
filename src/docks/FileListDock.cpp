@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "FileListDock.h"
 #include "ApplicationSettings.h"
 #include "ui_FileListDock.h"
@@ -30,11 +29,7 @@
 
 ApplicationSetting<bool> sortByName{"FileList/SortByName", false};
 
-FileListDock::FileListDock(MainWindow *parent) :
-    QDockWidget(parent),
-    ui(new Ui::FileList),
-    window(parent)
-{
+FileListDock::FileListDock(MainWindow *parent) : QDockWidget(parent), ui(new Ui::FileList), window(parent) {
     qInfo(Q_FUNC_INFO);
 
     ui->setupUi(this);
@@ -57,20 +52,21 @@ FileListDock::FileListDock(MainWindow *parent) :
             connect(window->getDockedEditor(), &DockedEditor::editorAdded, this, [=, this](ScintillaNext *editor) {
                 Q_UNUSED(editor);
 
-                // The editor could get added on any DockArea and doesn't necessarily get appended to the end of the FileList, so refresh everything
+                // The editor could get added on any DockArea and doesn't necessarily get appended to the end of the
+                // FileList, so refresh everything
                 refreshList();
             });
-            connect(window->getDockedEditor(), &DockedEditor::editorActivated, this, &FileListDock::selectCurrentEditor);
+            connect(window->getDockedEditor(), &DockedEditor::editorActivated, this,
+                    &FileListDock::selectCurrentEditor);
             connect(window->getDockedEditor(), &DockedEditor::editorClosed, this, &FileListDock::removeEditor);
             connect(window->getDockedEditor(), &DockedEditor::editorOrderChanged, this, &FileListDock::refreshList);
 
             refreshList();
             selectCurrentEditor();
-        }
-        else {
+        } else {
             // Disconnect all the editors
-            for(int i = 0; i < ui->listWidget->count(); ++i) {
-                QListWidgetItem* item = ui->listWidget->item(i);
+            for (int i = 0; i < ui->listWidget->count(); ++i) {
+                QListWidgetItem *item = ui->listWidget->item(i);
                 const ScintillaNext *other = item->data(Qt::UserRole).value<ScintillaNext *>();
 
                 disconnect(other, Q_NULLPTR, this, Q_NULLPTR);
@@ -87,22 +83,20 @@ FileListDock::FileListDock(MainWindow *parent) :
     connect(ui->listWidget, &QListWidget::itemClicked, this, &FileListDock::itemClicked);
 }
 
-FileListDock::~FileListDock()
-{
+FileListDock::~FileListDock() {
     delete ui;
 }
 
-void FileListDock::refreshList()
-{
+void FileListDock::refreshList() {
     qInfo(Q_FUNC_INFO);
 
     ui->listWidget->clear();
 
-    QVector<ScintillaNext*> editors = window->getDockedEditor()->editors();
+    QVector<ScintillaNext *> editors = window->getDockedEditor()->editors();
     ApplicationSettings settings;
 
     if (settings.get(sortByName)) {
-        std::sort(editors.begin(), editors.end(), [](const ScintillaNext* e1, const ScintillaNext* e2) {
+        std::sort(editors.begin(), editors.end(), [](const ScintillaNext *e1, const ScintillaNext *e2) {
             return QString::compare(e1->getName(), e2->getName(), Qt::CaseInsensitive) < 0;
         });
     }
@@ -114,8 +108,7 @@ void FileListDock::refreshList()
     selectCurrentEditor();
 }
 
-void FileListDock::addEditor(ScintillaNext *editor)
-{
+void FileListDock::addEditor(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     QListWidgetItem *item = new QListWidgetItem(editor->getName());
@@ -126,38 +119,37 @@ void FileListDock::addEditor(ScintillaNext *editor)
 
     // Need some notifications from the editor itself
     // NOTE: Cannot use a lambda here because item is not a QObject, and thus cannot be used as a context for Qt to know
-    // when to cancel the connection. If item was a QObject, the lambda is disconnected when the sender or context is destroyed
-    connect(editor, &ScintillaNext::savePointChanged, this, &FileListDock::editorSavePointChanged, Qt::UniqueConnection);
+    // when to cancel the connection. If item was a QObject, the lambda is disconnected when the sender or context is
+    // destroyed
+    connect(editor, &ScintillaNext::savePointChanged, this, &FileListDock::editorSavePointChanged,
+            Qt::UniqueConnection);
     connect(editor, &ScintillaNext::renamed, this, &FileListDock::editorRenamed, Qt::UniqueConnection);
 
     ui->listWidget->addItem(item);
 }
 
-void FileListDock::removeEditor(ScintillaNext *editor)
-{
+void FileListDock::removeEditor(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
-    QListWidgetItem* item = lookupItemByEditor(editor);
+    QListWidgetItem *item = lookupItemByEditor(editor);
 
     if (item) {
         delete ui->listWidget->takeItem(ui->listWidget->row(item));
     }
 }
 
-void FileListDock::selectCurrentEditor()
-{
+void FileListDock::selectCurrentEditor() {
     qInfo(Q_FUNC_INFO);
 
-    ScintillaNext *editor = window->currentEditor();
-    QListWidgetItem* item = lookupItemByEditor(editor);
+    const ScintillaNext *editor = window->currentEditor();
+    QListWidgetItem *item = lookupItemByEditor(editor);
 
     if (item) {
         ui->listWidget->setCurrentItem(item);
     }
 }
 
-void FileListDock::itemClicked(QListWidgetItem *item)
-{
+void FileListDock::itemClicked(QListWidgetItem *item) {
     qInfo(Q_FUNC_INFO);
 
     ScintillaNext *editor = item->data(Qt::UserRole).value<ScintillaNext *>();
@@ -165,15 +157,14 @@ void FileListDock::itemClicked(QListWidgetItem *item)
     window->getDockedEditor()->switchToEditor(editor);
 }
 
-void FileListDock::editorSavePointChanged(bool dirty)
-{
+void FileListDock::editorSavePointChanged(bool dirty) {
     Q_UNUSED(dirty);
     qInfo(Q_FUNC_INFO);
 
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
 
     if (editor) {
-        QListWidgetItem* item = lookupItemByEditor(editor);
+        QListWidgetItem *item = lookupItemByEditor(editor);
 
         if (item) {
             const QString iconPath = editor->canSaveToDisk() ? ":/icons/unsaved.png" : ":/icons/saved.png";
@@ -182,14 +173,13 @@ void FileListDock::editorSavePointChanged(bool dirty)
     }
 }
 
-void FileListDock::editorRenamed()
-{
+void FileListDock::editorRenamed() {
     qInfo(Q_FUNC_INFO);
 
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
 
     if (editor) {
-        QListWidgetItem* item = lookupItemByEditor(editor);
+        QListWidgetItem *item = lookupItemByEditor(editor);
 
         if (item) {
             item->setText(editor->getName());
@@ -198,10 +188,9 @@ void FileListDock::editorRenamed()
     }
 }
 
-QListWidgetItem *FileListDock::lookupItemByEditor(ScintillaNext *editor)
-{
-    for(int i = 0; i < ui->listWidget->count(); ++i) {
-        QListWidgetItem* item = ui->listWidget->item(i);
+QListWidgetItem *FileListDock::lookupItemByEditor(const ScintillaNext *editor) {
+    for (int i = 0; i < ui->listWidget->count(); ++i) {
+        QListWidgetItem *item = ui->listWidget->item(i);
         const ScintillaNext *other = item->data(Qt::UserRole).value<ScintillaNext *>();
 
         if (other == editor) {

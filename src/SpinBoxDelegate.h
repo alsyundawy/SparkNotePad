@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -27,24 +28,24 @@
 #include <QSpinBox>
 #include <QStyledItemDelegate>
 
-typedef QSpinBox*(*QSpinBoxFactory)();
+typedef QSpinBox *(*QSpinBoxFactory)();
 
-class SpinBoxDelegate : public QStyledItemDelegate
-{
+class SpinBoxDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
 public:
-    SpinBoxDelegate(QSpinBoxFactory factory, QObject *parent = nullptr);
+    explicit SpinBoxDelegate(QSpinBoxFactory factory, QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const override;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
+                              const QModelIndex &index) const override;
 
 private:
     QSpinBoxFactory factory;
 };
 
-#endif // SPINBOXDELEGATE_H
+#endif  // SPINBOXDELEGATE_H

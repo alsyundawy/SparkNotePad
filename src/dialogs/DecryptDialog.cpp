@@ -14,10 +14,7 @@
 
 #include <QPushButton>
 
-DecryptDialog::DecryptDialog(QWidget *parent, const QString &fileName) :
-    QDialog(parent),
-    ui(new Ui::DecryptDialog)
-{
+DecryptDialog::DecryptDialog(QWidget *parent, const QString &fileName) : QDialog(parent), ui(new Ui::DecryptDialog) {
     ui->setupUi(this);
 
     if (!fileName.isEmpty()) {
@@ -35,26 +32,22 @@ DecryptDialog::DecryptDialog(QWidget *parent, const QString &fileName) :
     ui->editPassword->setFocus();
 }
 
-DecryptDialog::~DecryptDialog()
-{
+DecryptDialog::~DecryptDialog() {
     delete ui;
 }
 
-QString DecryptDialog::passphrase() const
-{
+QString DecryptDialog::passphrase() const {
     return ui->editPassword->text();
 }
 
-void DecryptDialog::setErrorMessage(const QString &msg)
-{
+void DecryptDialog::setErrorMessage(const QString &msg) {
     ui->labelError->setText(msg);
     ui->labelError->setVisible(!msg.isEmpty());
     ui->editPassword->selectAll();
     ui->editPassword->setFocus();
 }
 
-void DecryptDialog::onTogglePassVisibility()
-{
+void DecryptDialog::onTogglePassVisibility() {
     if (ui->editPassword->echoMode() == QLineEdit::Password) {
         ui->editPassword->setEchoMode(QLineEdit::Normal);
     } else {
@@ -62,8 +55,7 @@ void DecryptDialog::onTogglePassVisibility()
     }
 }
 
-void DecryptDialog::onTextChanged(const QString &text)
-{
+void DecryptDialog::onTextChanged(const QString &text) {
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
     ui->labelError->clear();
 }

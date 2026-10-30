@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef QUICKFINDWIDGET_H
 #define QUICKFINDWIDGET_H
 
@@ -38,9 +38,7 @@ namespace Ui {
 class QuickFindWidget;
 }
 
-
-class QuickFindWidget : public QFrame
-{
+class QuickFindWidget : public QFrame {
     Q_OBJECT
 
 public:
@@ -50,7 +48,7 @@ public:
     void setEditor(ScintillaNext *newEditor);
 
 protected:
-   bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private slots:
     void performNewSearch();
@@ -90,4 +88,4 @@ private:
     qsizetype currentMatchIndex = -1;
 };
 
-#endif // QUICKFINDWIDGET_H
+#endif  // QUICKFINDWIDGET_H

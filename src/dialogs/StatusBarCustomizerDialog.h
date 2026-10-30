@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -20,8 +21,7 @@ class QCheckBox;
 class QPushButton;
 class EditorInfoStatusBar;
 
-class StatusBarCustomizerDialog : public QDialog
-{
+class StatusBarCustomizerDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -37,7 +37,7 @@ private:
     void setupUi();
 
     EditorInfoStatusBar *m_statusBar;
-    QMap<int, QCheckBox*> m_checkBoxes;
+    QMap<int, QCheckBox *> m_checkBoxes;
 };
 
-#endif // STATUSBARCUSTOMIZERDIALOG_H
+#endif  // STATUSBARCUSTOMIZERDIALOG_H

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,8 +20,7 @@ namespace Ui {
 class DecryptDialog;
 }
 
-class DecryptDialog : public QDialog
-{
+class DecryptDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -38,4 +38,4 @@ private:
     Ui::DecryptDialog *ui;
 };
 
-#endif // DECRYPTDIALOG_H
+#endif  // DECRYPTDIALOG_H

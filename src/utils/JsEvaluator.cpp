@@ -23,9 +23,9 @@
 
 namespace {
 
-QString jsStringToQString(JSStringRef jsStr)
-{
-    if (!jsStr) return QString();
+QString jsStringToQString(JSStringRef jsStr) {
+    if (!jsStr)
+        return QString();
     size_t maxBytes = JSStringGetMaximumUTF8CStringSize(jsStr);
     QByteArray bytes(static_cast<int>(maxBytes), '\0');
     size_t actualBytes = JSStringGetUTF8CString(jsStr, bytes.data(), maxBytes);
@@ -35,11 +35,13 @@ QString jsStringToQString(JSStringRef jsStr)
     return QString::fromUtf8(bytes);
 }
 
-QString formatJsValue(JSContextRef ctx, JSValueRef val)
-{
-    if (JSValueIsNull(ctx, val)) return QStringLiteral("null");
-    if (JSValueIsUndefined(ctx, val)) return QStringLiteral("undefined");
-    if (JSValueIsBoolean(ctx, val)) return JSValueToBoolean(ctx, val) ? QStringLiteral("true") : QStringLiteral("false");
+QString formatJsValue(JSContextRef ctx, JSValueRef val) {
+    if (JSValueIsNull(ctx, val))
+        return QStringLiteral("null");
+    if (JSValueIsUndefined(ctx, val))
+        return QStringLiteral("undefined");
+    if (JSValueIsBoolean(ctx, val))
+        return JSValueToBoolean(ctx, val) ? QStringLiteral("true") : QStringLiteral("false");
 
     // If object or array, try formatting via JSON.stringify(val, null, 2)
     if (JSValueIsObject(ctx, val)) {
@@ -53,7 +55,7 @@ QString formatJsValue(JSContextRef ctx, JSValueRef val)
             JSStringRelease(stringifyName);
             if (stringifyVal && JSValueIsObject(ctx, stringifyVal)) {
                 JSObjectRef fn = (JSObjectRef)stringifyVal;
-                JSValueRef args[3] = { val, JSValueMakeNull(ctx), JSValueMakeNumber(ctx, 2) };
+                JSValueRef args[3] = {val, JSValueMakeNull(ctx), JSValueMakeNumber(ctx, 2)};
                 JSValueRef jsonRes = JSObjectCallAsFunction(ctx, fn, jsonObj, 3, args, nullptr);
                 if (jsonRes && !JSValueIsUndefined(ctx, jsonRes)) {
                     JSStringRef s = JSValueToStringCopy(ctx, jsonRes, nullptr);
@@ -71,12 +73,11 @@ QString formatJsValue(JSContextRef ctx, JSValueRef val)
     return out;
 }
 
-} // namespace
+}  // namespace
 
 #endif
 
-JsEvaluator::Result JsEvaluator::evaluate(const QString &script)
-{
+JsEvaluator::Result JsEvaluator::evaluate(const QString &script) {
     const QString trimmed = script.trimmed();
     if (trimmed.isEmpty()) {
         return {false, script, QString(), QStringLiteral("Empty script expression"), 0.0};
@@ -112,27 +113,19 @@ JsEvaluator::Result JsEvaluator::evaluate(const QString &script)
 
 #else
     // Linux / Portable Fallback: Check for node, bun, deno, or qjs
-    QStringList runners = {
-        QStringLiteral("node"),
-        QStringLiteral("bun"),
-        QStringLiteral("deno"),
-        QStringLiteral("qjs")
-    };
+    QStringList runners = {QStringLiteral("node"), QStringLiteral("bun"), QStringLiteral("deno"),
+                           QStringLiteral("qjs")};
 
     QString runtimePath;
     for (const auto &r : runners) {
         runtimePath = QStandardPaths::findExecutable(r);
-        if (!runtimePath.isEmpty()) break;
+        if (!runtimePath.isEmpty())
+            break;
     }
 
     if (runtimePath.isEmpty()) {
-        return {
-            false,
-            trimmed,
-            QString(),
-            QStringLiteral("No JavaScript runtime found. Please install node, bun, or deno on your system."),
-            0.0
-        };
+        return {false, trimmed, QString(),
+                QStringLiteral("No JavaScript runtime found. Please install node, bun, or deno on your system."), 0.0};
     }
 
     QProcess proc;
@@ -154,15 +147,15 @@ JsEvaluator::Result JsEvaluator::evaluate(const QString &script)
     const QString stdErr = QString::fromUtf8(proc.readAllStandardError()).trimmed();
 
     if (proc.exitCode() != 0 || !stdErr.isEmpty()) {
-        return {false, trimmed, QString(), stdErr.isEmpty() ? QStringLiteral("Runtime exited with error") : stdErr, elapsedMs};
+        return {false, trimmed, QString(), stdErr.isEmpty() ? QStringLiteral("Runtime exited with error") : stdErr,
+                elapsedMs};
     }
 
     return {true, trimmed, stdOut, QString(), elapsedMs};
 #endif
 }
 
-JsEvaluator::Result JsEvaluator::evaluateInEditor(ScintillaNext *editor, Action action)
-{
+JsEvaluator::Result JsEvaluator::evaluateInEditor(ScintillaNext *editor, Action action) {
     if (!editor) {
         return {false, QString(), QString(), QStringLiteral("No active editor"), 0.0};
     }

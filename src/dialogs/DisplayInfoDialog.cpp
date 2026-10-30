@@ -22,15 +22,12 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-DisplayInfoDialog::DisplayInfoDialog(QWidget *parent)
-    : QDialog(parent)
-{
+DisplayInfoDialog::DisplayInfoDialog(QWidget *parent) : QDialog(parent) {
     setupUi();
     refreshDisplays();
 }
 
-void DisplayInfoDialog::setupUi()
-{
+void DisplayInfoDialog::setupUi() {
     setWindowTitle(tr("Display & Retina Diagnostics — NoteSciPad"));
     resize(760, 420);
 
@@ -42,34 +39,28 @@ void DisplayInfoDialog::setupUi()
     m_summaryLabel->setWordWrap(true);
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     bool dark = ThemeManager::instance()->isDarkActive();
-    QString cardBg = pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#282a36") : QStringLiteral("#fafbfc"));
-    QString borderCol = pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#44475a") : QStringLiteral("#e1e4e8"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8f8f2") : QStringLiteral("#24292f"));
-    m_summaryLabel->setStyleSheet(
-        QString(
-            "QLabel {"
-            "  font-size: 13px;"
-            "  padding: 10px;"
-            "  background-color: %1;"
-            "  border: 1px solid %2;"
-            "  border-radius: 6px;"
-            "  color: %3;"
-            "}"
-        ).arg(cardBg, borderCol, txtPri)
-    );
+    QString cardBg =
+        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#282a36") : QStringLiteral("#fafbfc"));
+    QString borderCol =
+        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#44475a") : QStringLiteral("#e1e4e8"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8f8f2") : QStringLiteral("#24292f"));
+    m_summaryLabel->setStyleSheet(QString("QLabel {"
+                                          "  font-size: 13px;"
+                                          "  padding: 10px;"
+                                          "  background-color: %1;"
+                                          "  border: 1px solid %2;"
+                                          "  border-radius: 6px;"
+                                          "  color: %3;"
+                                          "}")
+                                      .arg(cardBg, borderCol, txtPri));
     mainLayout->addWidget(m_summaryLabel);
 
     // Table of Displays
     m_tableWidget = new QTableWidget(this);
     m_tableWidget->setColumnCount(6);
-    m_tableWidget->setHorizontalHeaderLabels({
-        tr("Display Name"),
-        tr("Resolution"),
-        tr("DPR / Retina"),
-        tr("Refresh Rate"),
-        tr("Logical / Phys DPI"),
-        tr("Role / Status")
-    });
+    m_tableWidget->setHorizontalHeaderLabels({tr("Display Name"), tr("Resolution"), tr("DPR / Retina"),
+                                              tr("Refresh Rate"), tr("Logical / Phys DPI"), tr("Role / Status")});
     m_tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
@@ -83,7 +74,7 @@ void DisplayInfoDialog::setupUi()
 
     // Multi-Monitor Action Buttons
     QHBoxLayout *actionLayout = new QHBoxLayout();
-    
+
     QPushButton *btnNext = new QPushButton(tr("Move to &Next Screen"), this);
     btnNext->setToolTip(tr("Move NoteSciPad window to the next connected monitor (Cmd+Alt+Right)"));
     connect(btnNext, &QPushButton::clicked, this, &DisplayInfoDialog::onMoveToNextClicked);
@@ -118,8 +109,7 @@ void DisplayInfoDialog::setupUi()
     mainLayout->addWidget(buttonBox);
 }
 
-void DisplayInfoDialog::refreshDisplays()
-{
+void DisplayInfoDialog::refreshDisplays() {
     QWidget *parentWin = parentWidget();
     const auto displays = ScreenDisplayManager::instance().getConnectedDisplaysInfo(parentWin);
 
@@ -131,7 +121,8 @@ void DisplayInfoDialog::refreshDisplays()
 
     for (int r = 0; r < displays.size(); ++r) {
         const auto &d = displays.at(r);
-        if (d.isRetina) retinaCount++;
+        if (d.isRetina)
+            retinaCount++;
         if (d.hasWindow) {
             activeName = d.name;
             activeDpr = d.devicePixelRatio;
@@ -146,16 +137,16 @@ void DisplayInfoDialog::refreshDisplays()
 
         // Resolution
         QString resStr = QString("%1x%2 (avail: %3x%4)")
-            .arg(d.geometry.width())
-            .arg(d.geometry.height())
-            .arg(d.availableGeometry.width())
-            .arg(d.availableGeometry.height());
+                             .arg(d.geometry.width())
+                             .arg(d.geometry.height())
+                             .arg(d.availableGeometry.width())
+                             .arg(d.availableGeometry.height());
         m_tableWidget->setItem(r, 1, new QTableWidgetItem(resStr));
 
         // DPR / Retina
         QString dprStr = QString("%1x %2")
-            .arg(d.devicePixelRatio, 0, 'f', 1)
-            .arg(d.isRetina ? tr("[Retina / HiDPI]") : tr("[Standard]"));
+                             .arg(d.devicePixelRatio, 0, 'f', 1)
+                             .arg(d.isRetina ? tr("[Retina / HiDPI]") : tr("[Standard]"));
         m_tableWidget->setItem(r, 2, new QTableWidgetItem(dprStr));
 
         // Refresh Rate
@@ -163,31 +154,31 @@ void DisplayInfoDialog::refreshDisplays()
         m_tableWidget->setItem(r, 3, new QTableWidgetItem(rateStr));
 
         // DPI
-        QString dpiStr = QString("%1 / %2")
-            .arg(qRound(d.logicalDpi))
-            .arg(qRound(d.physicalDpi));
+        QString dpiStr = QString("%1 / %2").arg(qRound(d.logicalDpi)).arg(qRound(d.physicalDpi));
         m_tableWidget->setItem(r, 4, new QTableWidgetItem(dpiStr));
 
         // Role / Status
         QStringList roles;
-        if (d.isPrimary) roles << tr("Primary");
-        if (d.hasWindow) roles << tr("Active Window");
-        if (roles.isEmpty()) roles << tr("Secondary");
+        if (d.isPrimary)
+            roles << tr("Primary");
+        if (d.hasWindow)
+            roles << tr("Active Window");
+        if (roles.isEmpty())
+            roles << tr("Secondary");
         m_tableWidget->setItem(r, 5, new QTableWidgetItem(roles.join(", ")));
     }
 
     QString summary = tr("<b>Connected Displays:</b> %1 total (%2 Retina/HiDPI)<br/>"
                          "<b>Active Window Display:</b> %3 (Scale: %4x DPR)<br/>"
                          "<b>Fractional Scale Policy:</b> PassThrough (Subpixel Sharpness Enabled)")
-        .arg(displays.size())
-        .arg(retinaCount)
-        .arg(activeName)
-        .arg(activeDpr, 0, 'f', 1);
+                          .arg(displays.size())
+                          .arg(retinaCount)
+                          .arg(activeName)
+                          .arg(activeDpr, 0, 'f', 1);
     m_summaryLabel->setText(summary);
 }
 
-void DisplayInfoDialog::onMoveToNextClicked()
-{
+void DisplayInfoDialog::onMoveToNextClicked() {
     QWidget *parentWin = parentWidget();
     if (parentWin) {
         ScreenDisplayManager::instance().moveToNextScreen(parentWin);
@@ -195,8 +186,7 @@ void DisplayInfoDialog::onMoveToNextClicked()
     }
 }
 
-void DisplayInfoDialog::onMoveToPrevClicked()
-{
+void DisplayInfoDialog::onMoveToPrevClicked() {
     QWidget *parentWin = parentWidget();
     if (parentWin) {
         ScreenDisplayManager::instance().moveToPreviousScreen(parentWin);
@@ -204,8 +194,7 @@ void DisplayInfoDialog::onMoveToPrevClicked()
     }
 }
 
-void DisplayInfoDialog::onCenterWindowClicked()
-{
+void DisplayInfoDialog::onCenterWindowClicked() {
     QWidget *parentWin = parentWidget();
     if (parentWin) {
         ScreenDisplayManager::instance().centerOnCurrentScreen(parentWin);
@@ -213,8 +202,7 @@ void DisplayInfoDialog::onCenterWindowClicked()
     }
 }
 
-void DisplayInfoDialog::onMoveToPrimaryClicked()
-{
+void DisplayInfoDialog::onMoveToPrimaryClicked() {
     QWidget *parentWin = parentWidget();
     if (parentWin) {
         ScreenDisplayManager::instance().moveToPrimaryScreen(parentWin);

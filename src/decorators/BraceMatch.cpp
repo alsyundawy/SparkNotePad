@@ -21,17 +21,13 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "Sci_Position.h"
 
 #include "BraceMatch.h"
 
 using namespace Scintilla;
 
-
-BraceMatch::BraceMatch(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+BraceMatch::BraceMatch(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName("BraceMatch");
 
     const int braceHighlight = editor->allocateIndicator("brace_highlight");
@@ -54,15 +50,13 @@ BraceMatch::BraceMatch(ScintillaNext *editor) :
     connect(this, &EditorDecorator::stateChanged, [=, this](bool b) {
         if (b) {
             doHighlighting();
-        }
-        else {
+        } else {
             clearHighlighting();
         }
     });
 }
 
-void BraceMatch::doHighlighting()
-{
+void BraceMatch::doHighlighting() {
     static const QList<char> braces = {'[', ']', '(', ')', '{', '}'};
 
     const Sci_Position pos = static_cast<Sci_Position>(editor->currentPos());
@@ -71,29 +65,25 @@ void BraceMatch::doHighlighting()
     int match = editor->braceMatch(pos - 1, 0);
 
     if (match != INVALID_POSITION) {
-         editor->braceHighlight(pos - 1, match);
-         editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos - 1))));
-    }
-    else {
+        editor->braceHighlight(pos - 1, match);
+        editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos - 1))));
+    } else {
         // Check the character after the caret
         match = editor->braceMatch(pos, 0);
         if (match != INVALID_POSITION) {
-             editor->braceHighlight(pos, match);
-             editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos))));
-        }
-        else {
+            editor->braceHighlight(pos, match);
+            editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos))));
+        } else {
             // Nothing was found, now check to see if we need to badlight something
             // by checking the characters
             char c = static_cast<char>(editor->charAt(pos - 1));
             if (braces.contains(c)) {
                 editor->braceBadLight(pos - 1);
-            }
-            else {
+            } else {
                 c = static_cast<char>(editor->charAt(pos));
                 if (braces.contains(c)) {
                     editor->braceBadLight(pos);
-                }
-                else {
+                } else {
                     clearHighlighting();
                 }
             }
@@ -101,14 +91,12 @@ void BraceMatch::doHighlighting()
     }
 }
 
-void BraceMatch::clearHighlighting()
-{
+void BraceMatch::clearHighlighting() {
     editor->braceHighlight(INVALID_POSITION, INVALID_POSITION);
     editor->setHighlightGuide(0);
 }
 
-void BraceMatch::notify(const NotificationData *pscn)
-{
+void BraceMatch::notify(const NotificationData *pscn) {
     if (pscn->nmhdr.code == Notification::UpdateUI) {
         if (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection)) {
             doHighlighting();

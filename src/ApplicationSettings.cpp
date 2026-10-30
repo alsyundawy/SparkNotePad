@@ -26,24 +26,17 @@
 #include <QApplication>
 #include <QFont>
 
-#define CREATE_SETTING(group, name, lname, type, default) \
-ApplicationSetting<type> name{#group "/" #name, default};\
-    type ApplicationSettings::lname() const\
-{\
-        return get(name);\
-}\
-    void ApplicationSettings::set##name(type lname)\
-{\
-        set(name, lname);\
-        emit lname##Changed(lname);\
-}
+#define CREATE_SETTING(group, name, lname, type, default)       \
+    ApplicationSetting<type> name{#group "/" #name, (default)}; \
+    type ApplicationSettings::lname() const {                   \
+        return get(name);                                       \
+    }                                                           \
+    void ApplicationSettings::set##name(const type &val) {      \
+        set(name, val);                                         \
+        emit lname##Changed(val);                               \
+    }
 
-
-
-ApplicationSettings::ApplicationSettings(QObject *parent)
-    : QSettings{parent}
-{
-}
+ApplicationSettings::ApplicationSettings(QObject *parent) : QSettings{parent} {}
 
 CREATE_SETTING(Gui, ShowMenuBar, showMenuBar, bool, true)
 CREATE_SETTING(Gui, ShowToolBar, showToolBar, bool, true)
@@ -60,7 +53,8 @@ CREATE_SETTING(App, RestorePreviousSession, restorePreviousSession, bool, false)
 CREATE_SETTING(App, RestoreUnsavedFiles, restoreUnsavedFiles, bool, false)
 CREATE_SETTING(App, RestoreTempFiles, restoreTempFiles, bool, false)
 
-CREATE_SETTING(App, DefaultDirectoryBehavior, defaultDirectoryBehavior, ApplicationSettings::DefaultDirectoryBehaviorEnum, ApplicationSettings::FollowCurrentDocument)
+CREATE_SETTING(App, DefaultDirectoryBehavior, defaultDirectoryBehavior,
+               ApplicationSettings::DefaultDirectoryBehaviorEnum, ApplicationSettings::FollowCurrentDocument)
 CREATE_SETTING(App, DefaultDirectory, defaultDirectory, QString, QString())
 
 CREATE_SETTING(App, Translation, translation, QString, QStringLiteral(""))
@@ -77,7 +71,7 @@ CREATE_SETTING(Editor, DefaultEOLMode, defaultEOLMode, QString, QStringLiteral("
 CREATE_SETTING(Editor, URLHighlighting, urlHighlighting, bool, true)
 CREATE_SETTING(Editor, UrlThreshold, urlThreshold, int, 5)
 CREATE_SETTING(Editor, ShowLineNumbers, showLineNumbers, bool, true)
-    CREATE_SETTING(Editor, ShowChangeHistory, showChangeHistory, bool, true)
+CREATE_SETTING(Editor, ShowChangeHistory, showChangeHistory, bool, true)
 CREATE_SETTING(Editor, AutoCompletion, autoCompletion, bool, true)
 CREATE_SETTING(Editor, AutoCloseBrackets, autoCloseBrackets, bool, true)
 CREATE_SETTING(Editor, AutoCloseQuotes, autoCloseQuotes, bool, true)

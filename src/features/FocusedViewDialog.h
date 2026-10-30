@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -24,8 +25,7 @@ class QPushButton;
 class MainWindow;
 class ScintillaNext;
 
-class FocusedViewDialog : public QDialog
-{
+class FocusedViewDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -45,17 +45,17 @@ private:
     FocusedView *m_focusedView;
     MainWindow *m_mainWindow;
 
-    QLineEdit *m_queryEdit {nullptr};
-    QCheckBox *m_caseSensitive {nullptr};
-    QCheckBox *m_wholeWord {nullptr};
-    QCheckBox *m_useRegex {nullptr};
-    QCheckBox *m_invertFilter {nullptr};
-    QCheckBox *m_bookmarksOnly {nullptr};
-    QSpinBox *m_contextLines {nullptr};
-    QLabel *m_statusLabel {nullptr};
-    QPushButton *m_applyBtn {nullptr};
-    QPushButton *m_clearBtn {nullptr};
-    QPushButton *m_closeBtn {nullptr};
+    QLineEdit *m_queryEdit{nullptr};
+    QCheckBox *m_caseSensitive{nullptr};
+    QCheckBox *m_wholeWord{nullptr};
+    QCheckBox *m_useRegex{nullptr};
+    QCheckBox *m_invertFilter{nullptr};
+    QCheckBox *m_bookmarksOnly{nullptr};
+    QSpinBox *m_contextLines{nullptr};
+    QLabel *m_statusLabel{nullptr};
+    QPushButton *m_applyBtn{nullptr};
+    QPushButton *m_clearBtn{nullptr};
+    QPushButton *m_closeBtn{nullptr};
 };
 
-#endif // FOCUSEDVIEWDIALOG_H
+#endif  // FOCUSEDVIEWDIALOG_H

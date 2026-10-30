@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad++ Run menu and variable macro expansion concept
  * ($(FULL_CURRENT_PATH), $(CURRENT_DIRECTORY), $(FILE_NAME), etc.)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -13,6 +13,7 @@
 #include "ExternalToolManager.h"
 #include "ScintillaNext.h"
 
+#include <algorithm>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -23,8 +24,7 @@
 #include <QStandardPaths>
 #include <QUuid>
 
-QString ExternalToolManager::getSelectedOrCurrentWord(ScintillaNext *editor)
-{
+QString ExternalToolManager::getSelectedOrCurrentWord(ScintillaNext *editor) {
     if (!editor)
         return {};
 
@@ -54,8 +54,7 @@ QString ExternalToolManager::getSelectedOrCurrentWord(ScintillaNext *editor)
     return {};
 }
 
-QString ExternalToolManager::expandVariables(const QString &cmdTemplate, ScintillaNext *editor)
-{
+QString ExternalToolManager::expandVariables(const QString &cmdTemplate, ScintillaNext *editor) {
     QString result = cmdTemplate;
     if (result.isEmpty())
         return result;
@@ -103,11 +102,12 @@ QString ExternalToolManager::expandVariables(const QString &cmdTemplate, Scintil
     return result;
 }
 
-bool ExternalToolManager::executeCommand(const QString &commandLine, const QString &workingDir, bool inTerminal, QString *errorOut)
-{
+bool ExternalToolManager::executeCommand(const QString &commandLine, const QString &workingDir, bool inTerminal,
+                                         QString *errorOut) {
     const QString trimmed = commandLine.trimmed();
     if (trimmed.isEmpty()) {
-        if (errorOut) *errorOut = tr("Command line is empty.");
+        if (errorOut)
+            *errorOut = tr("Command line is empty.");
         return false;
     }
 
@@ -129,8 +129,7 @@ bool ExternalToolManager::executeCommand(const QString &commandLine, const QStri
     return ok;
 }
 
-bool ExternalToolManager::executeTool(const ExternalTool &tool, ScintillaNext *editor, QString *errorOut)
-{
+bool ExternalToolManager::executeTool(const ExternalTool &tool, ScintillaNext *editor, QString *errorOut) {
     if (tool.saveBeforeRun && editor && !editor->isSavedToDisk()) {
         editor->save();
     }
@@ -145,8 +144,7 @@ bool ExternalToolManager::executeTool(const ExternalTool &tool, ScintillaNext *e
     return executeCommand(expandedCmd, expandedDir, tool.runInTerminal, errorOut);
 }
 
-void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cmdToRun)
-{
+void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cmdToRun) {
     QString workDir = dirPath;
     if (workDir.isEmpty()) {
         workDir = QDir::currentPath();
@@ -163,35 +161,31 @@ void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cm
             escapedCmd = QStringLiteral("cd \"%1\" && %2").arg(workDir, escapedCmd);
         }
         QString appleScript = QStringLiteral("tell application \"Terminal\" to do script \"%1\"").arg(escapedCmd);
-        QProcess::startDetached(QStringLiteral("osascript"), {
-            QStringLiteral("-e"), QStringLiteral("tell application \"Terminal\" to activate"),
-            QStringLiteral("-e"), appleScript
-        });
+        QProcess::startDetached(QStringLiteral("osascript"),
+                                {QStringLiteral("-e"), QStringLiteral("tell application \"Terminal\" to activate"),
+                                 QStringLiteral("-e"), appleScript});
     }
 #elif defined(Q_OS_WIN)
     QString finalCmd = cmdToRun;
     if (finalCmd.isEmpty()) {
-        finalCmd = QStringLiteral("title NoteSciPad Terminal");
+        finalCmd = QStringLiteral("title SparkNotePad Terminal");
     }
     QProcess::startDetached(QStringLiteral("cmd.exe"), {QStringLiteral("/k"), finalCmd}, workDir);
 #else
     // Linux / BSD
     QString term = qEnvironmentVariable("TERMINAL");
     if (term.isEmpty()) {
-        const QStringList candidates = {
-            QStringLiteral("x-terminal-emulator"),
-            QStringLiteral("gnome-terminal"),
-            QStringLiteral("konsole"),
-            QStringLiteral("xfce4-terminal"),
-            QStringLiteral("alacritty"),
-            QStringLiteral("kitty"),
-            QStringLiteral("xterm")
-        };
-        for (const auto &c : candidates) {
-            if (!QStandardPaths::findExecutable(c).isEmpty()) {
-                term = c;
-                break;
-            }
+        const QStringList candidates = {QStringLiteral("x-terminal-emulator"),
+                                        QStringLiteral("gnome-terminal"),
+                                        QStringLiteral("konsole"),
+                                        QStringLiteral("xfce4-terminal"),
+                                        QStringLiteral("alacritty"),
+                                        QStringLiteral("kitty"),
+                                        QStringLiteral("xterm")};
+        const auto it = std::find_if(candidates.cbegin(), candidates.cend(),
+                                     [](const QString &c) { return !QStandardPaths::findExecutable(c).isEmpty(); });
+        if (it != candidates.cend()) {
+            term = *it;
         }
     }
     if (term.isEmpty()) {
@@ -202,25 +196,32 @@ void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cm
         QProcess::startDetached(term, {}, workDir);
     } else {
         if (term.contains(QStringLiteral("gnome-terminal"))) {
-            QProcess::startDetached(term, {QStringLiteral("--working-directory=") + workDir, QStringLiteral("--"), QStringLiteral("bash"), QStringLiteral("-c"), cmdToRun + QStringLiteral("; exec bash")});
+            QProcess::startDetached(
+                term, {QStringLiteral("--working-directory=") + workDir, QStringLiteral("--"), QStringLiteral("bash"),
+                       QStringLiteral("-c"), cmdToRun + QStringLiteral("; exec bash")});
         } else if (term.contains(QStringLiteral("konsole"))) {
-            QProcess::startDetached(term, {QStringLiteral("--workdir"), workDir, QStringLiteral("-e"), QStringLiteral("bash"), QStringLiteral("-c"), cmdToRun + QStringLiteral("; exec bash")});
+            QProcess::startDetached(term,
+                                    {QStringLiteral("--workdir"), workDir, QStringLiteral("-e"), QStringLiteral("bash"),
+                                     QStringLiteral("-c"), cmdToRun + QStringLiteral("; exec bash")});
         } else {
-            QProcess::startDetached(term, {QStringLiteral("-e"), QStringLiteral("bash"), QStringLiteral("-c"), cmdToRun + QStringLiteral("; exec bash")}, workDir);
+            QProcess::startDetached(term,
+                                    {QStringLiteral("-e"), QStringLiteral("bash"), QStringLiteral("-c"),
+                                     cmdToRun + QStringLiteral("; exec bash")},
+                                    workDir);
         }
     }
 #endif
 }
 
-void ExternalToolManager::revealInFileManager(const QString &filePath)
-{
+void ExternalToolManager::revealInFileManager(const QString &filePath) {
     if (filePath.isEmpty())
         return;
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
     QProcess::startDetached(QStringLiteral("open"), {QStringLiteral("-R"), filePath});
 #elif defined(Q_OS_WIN)
-    QProcess::startDetached(QStringLiteral("explorer.exe"), {QStringLiteral("/select,"), QDir::toNativeSeparators(filePath)});
+    QProcess::startDetached(QStringLiteral("explorer.exe"),
+                            {QStringLiteral("/select,"), QDir::toNativeSeparators(filePath)});
 #else
     QFileInfo fi(filePath);
     QString dir = fi.isDir() ? filePath : fi.dir().absolutePath();
@@ -228,8 +229,7 @@ void ExternalToolManager::revealInFileManager(const QString &filePath)
 #endif
 }
 
-void ExternalToolManager::openInBrowser(const QString &pathOrUrl)
-{
+void ExternalToolManager::openInBrowser(const QString &pathOrUrl) {
     if (pathOrUrl.isEmpty())
         return;
 
@@ -242,8 +242,7 @@ void ExternalToolManager::openInBrowser(const QString &pathOrUrl)
     }
 }
 
-void ExternalToolManager::webSearch(const QString &query, const QString &service)
-{
+void ExternalToolManager::webSearch(const QString &query, const QString &service) {
     const QString trimmed = query.trimmed();
     if (trimmed.isEmpty())
         return;
@@ -265,15 +264,16 @@ void ExternalToolManager::webSearch(const QString &query, const QString &service
     QDesktopServices::openUrl(QUrl(urlStr));
 }
 
-bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, QString *errorOut)
-{
+bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, QString *errorOut) {
     if (!editor) {
-        if (errorOut) *errorOut = tr("No active editor.");
+        if (errorOut)
+            *errorOut = tr("No active editor.");
         return false;
     }
 
     if (!editor->isFile()) {
-        if (errorOut) *errorOut = tr("Current file must be saved to disk before running.");
+        if (errorOut)
+            *errorOut = tr("Current file must be saved to disk before running.");
         return false;
     }
 
@@ -318,14 +318,22 @@ bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, Q
             QString firstLine = QString::fromUtf8(firstLineBytes).trimmed();
             if (firstLine.startsWith(QStringLiteral("#!"))) {
                 QString shebang = firstLine.mid(2).trimmed();
-                if (shebang.contains(QStringLiteral("python"))) cmd = QStringLiteral("python3 \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("node"))) cmd = QStringLiteral("node \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("bash"))) cmd = QStringLiteral("bash \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("sh"))) cmd = QStringLiteral("sh \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("perl"))) cmd = QStringLiteral("perl \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("ruby"))) cmd = QStringLiteral("ruby \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("php"))) cmd = QStringLiteral("php \"%1\"").arg(filePath);
-                else if (shebang.contains(QStringLiteral("lua"))) cmd = QStringLiteral("lua \"%1\"").arg(filePath);
+                if (shebang.contains(QStringLiteral("python")))
+                    cmd = QStringLiteral("python3 \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("node")))
+                    cmd = QStringLiteral("node \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("bash")))
+                    cmd = QStringLiteral("bash \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("sh")))
+                    cmd = QStringLiteral("sh \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("perl")))
+                    cmd = QStringLiteral("perl \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("ruby")))
+                    cmd = QStringLiteral("ruby \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("php")))
+                    cmd = QStringLiteral("php \"%1\"").arg(filePath);
+                else if (shebang.contains(QStringLiteral("lua")))
+                    cmd = QStringLiteral("lua \"%1\"").arg(filePath);
             }
         }
     }
@@ -339,10 +347,9 @@ bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, Q
     return true;
 }
 
-QList<ExternalTool> ExternalToolManager::loadCustomTools()
-{
+QList<ExternalTool> ExternalToolManager::loadCustomTools() {
     QList<ExternalTool> tools;
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     int size = settings.beginReadArray(QStringLiteral("ExternalTools"));
 
     if (size == 0) {
@@ -402,14 +409,14 @@ QList<ExternalTool> ExternalToolManager::loadCustomTools()
     return tools;
 }
 
-void ExternalToolManager::saveCustomTools(const QList<ExternalTool> &tools)
-{
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+void ExternalToolManager::saveCustomTools(const QList<ExternalTool> &tools) {
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     settings.beginWriteArray(QStringLiteral("ExternalTools"));
     for (int i = 0; i < tools.size(); ++i) {
         settings.setArrayIndex(i);
         const auto &t = tools.at(i);
-        settings.setValue(QStringLiteral("id"), t.id.isEmpty() ? QUuid::createUuid().toString(QUuid::WithoutBraces) : t.id);
+        settings.setValue(QStringLiteral("id"),
+                          t.id.isEmpty() ? QUuid::createUuid().toString(QUuid::WithoutBraces) : t.id);
         settings.setValue(QStringLiteral("name"), t.name);
         settings.setValue(QStringLiteral("command"), t.command);
         settings.setValue(QStringLiteral("workingDirectory"), t.workingDirectory);
@@ -420,8 +427,7 @@ void ExternalToolManager::saveCustomTools(const QList<ExternalTool> &tools)
     settings.endArray();
 }
 
-void ExternalToolManager::addCustomTool(const ExternalTool &tool)
-{
+void ExternalToolManager::addCustomTool(const ExternalTool &tool) {
     auto tools = loadCustomTools();
     ExternalTool t = tool;
     if (t.id.isEmpty()) {
@@ -431,8 +437,7 @@ void ExternalToolManager::addCustomTool(const ExternalTool &tool)
     saveCustomTools(tools);
 }
 
-void ExternalToolManager::deleteCustomTool(const QString &id)
-{
+void ExternalToolManager::deleteCustomTool(const QString &id) {
     auto tools = loadCustomTools();
     for (int i = 0; i < tools.size(); ++i) {
         if (tools.at(i).id == id) {
@@ -443,14 +448,12 @@ void ExternalToolManager::deleteCustomTool(const QString &id)
     saveCustomTools(tools);
 }
 
-QStringList ExternalToolManager::loadCommandHistory()
-{
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+QStringList ExternalToolManager::loadCommandHistory() {
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     return settings.value(QStringLiteral("RunDialog/History")).toStringList();
 }
 
-void ExternalToolManager::addCommandToHistory(const QString &cmd)
-{
+void ExternalToolManager::addCommandToHistory(const QString &cmd) {
     if (cmd.trimmed().isEmpty())
         return;
 
@@ -460,6 +463,6 @@ void ExternalToolManager::addCommandToHistory(const QString &cmd)
     while (history.size() > 25) {
         history.removeLast();
     }
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     settings.setValue(QStringLiteral("RunDialog/History"), history);
 }

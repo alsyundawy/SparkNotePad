@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -21,12 +22,12 @@ class JsEvaluationDialog;
 
 class ScintillaNext;
 
-class JsEvaluationDialog : public QDialog
-{
+class JsEvaluationDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit JsEvaluationDialog(QWidget *parent = nullptr, ScintillaNext *activeEditor = nullptr, const QString &initialCode = QString());
+    explicit JsEvaluationDialog(QWidget *parent = nullptr, ScintillaNext *activeEditor = nullptr,
+                                const QString &initialCode = QString());
     ~JsEvaluationDialog() override;
 
     void setCode(const QString &code);
@@ -42,7 +43,7 @@ private:
     void setupPresets();
 
     Ui::JsEvaluationDialog *ui;
-    ScintillaNext *m_editor {nullptr};
+    ScintillaNext *m_editor{nullptr};
 };
 
-#endif // JSEVALUATIONDIALOG_H
+#endif  // JSEVALUATIONDIALOG_H

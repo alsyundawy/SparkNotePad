@@ -21,13 +21,11 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "ZoomEventWatcher.h"
 
 #include <QEvent>
 #include <QWheelEvent>
 #include <QApplication>
-
 
 static bool isWheelEventHorizontal(QWheelEvent *event) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
@@ -45,14 +43,9 @@ static int wheelEventYDelta(QWheelEvent *event) {
 #endif
 }
 
+ZoomEventWatcher::ZoomEventWatcher(QObject *parent) : QObject{parent} {}
 
-ZoomEventWatcher::ZoomEventWatcher(QObject *parent)
-    : QObject{parent}
-{
-}
-
-bool ZoomEventWatcher::eventFilter(QObject *obj, QEvent *event)
-{
+bool ZoomEventWatcher::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::Wheel) {
         QWheelEvent *wheelEvent = static_cast<QWheelEvent *>(event);
 

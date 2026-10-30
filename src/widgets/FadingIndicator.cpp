@@ -32,17 +32,13 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-
 namespace Internal {
 
-class FadingIndicatorPrivate : public QWidget
-{
+class FadingIndicatorPrivate : public QWidget {
     Q_OBJECT
 
 public:
-    FadingIndicatorPrivate(QWidget *parent, FadingIndicator::TextSize size)
-        : QWidget(parent)
-    {
+    FadingIndicatorPrivate(QWidget *parent, FadingIndicator::TextSize size) : QWidget(parent) {
         setAttribute(Qt::WA_TransparentForMouseEvents, true);
         m_effect = new QGraphicsOpacityEffect(this);
         setGraphicsEffect(m_effect);
@@ -60,11 +56,10 @@ public:
         layout->addWidget(m_label);
     }
 
-    void setText(const QString &text)
-    {
+    void setText(const QString &text) {
         m_pixmap = QPixmap();
         m_label->setText(text);
-        m_effect->setOpacity(.6); // because of the fat opaque background color
+        m_effect->setOpacity(.6);  // because of the fat opaque background color
         layout()->setSizeConstraint(QLayout::SetFixedSize);
         adjustSize();
         QWidget *parent = parentWidget();
@@ -74,8 +69,7 @@ public:
         move(pos);
     }
 
-    void setPixmap(const QString &uri)
-    {
+    void setPixmap(const QString &uri) {
         m_label->hide();
         m_pixmap.load(uri);
         layout()->setSizeConstraint(QLayout::SetNoConstraint);
@@ -87,8 +81,7 @@ public:
         move(pos);
     }
 
-    void run(int ms)
-    {
+    void run(int ms) {
         show();
         raise();
         QTimer::singleShot(ms, this, &FadingIndicatorPrivate::runInternal);
@@ -98,8 +91,7 @@ public:
     static QPointer<FadingIndicatorPrivate> pixmapIndicator;
 
 protected:
-    void paintEvent(QPaintEvent *) override
-    {
+    void paintEvent(QPaintEvent *) override {
         QPainter p(this);
         p.setRenderHint(QPainter::Antialiasing);
         if (!m_pixmap.isNull()) {
@@ -112,8 +104,7 @@ protected:
     }
 
 private:
-    void runInternal()
-    {
+    void runInternal() {
         QPropertyAnimation *anim = new QPropertyAnimation(m_effect, "opacity", this);
         anim->setDuration(200);
         anim->setEndValue(0.);
@@ -129,13 +120,11 @@ private:
 QPointer<FadingIndicatorPrivate> FadingIndicatorPrivate::textIndicator;
 QPointer<FadingIndicatorPrivate> FadingIndicatorPrivate::pixmapIndicator;
 
-} // Internal
-
+}  // namespace Internal
 
 namespace FadingIndicator {
 
-void showText(QWidget *parent, const QString &text, TextSize size)
-{
+void showText(QWidget *parent, const QString &text, TextSize size) {
     QPointer<Internal::FadingIndicatorPrivate> &indicator = Internal::FadingIndicatorPrivate::textIndicator;
 
     if (indicator)
@@ -143,11 +132,10 @@ void showText(QWidget *parent, const QString &text, TextSize size)
 
     indicator = new Internal::FadingIndicatorPrivate(parent, size);
     indicator->setText(text);
-    indicator->run(2500); // deletes itself
+    indicator->run(2500);  // deletes itself
 }
 
-void showPixmap(QWidget *parent, const QString &pixmap)
-{
+void showPixmap(QWidget *parent, const QString &pixmap) {
     QPointer<Internal::FadingIndicatorPrivate> &indicator = Internal::FadingIndicatorPrivate::pixmapIndicator;
 
     if (indicator)
@@ -155,9 +143,9 @@ void showPixmap(QWidget *parent, const QString &pixmap)
 
     indicator = new Internal::FadingIndicatorPrivate(parent, LargeText);
     indicator->setPixmap(pixmap);
-    indicator->run(300); // deletes itself
+    indicator->run(300);  // deletes itself
 }
 
-}
+}  // namespace FadingIndicator
 
 #include "FadingIndicator.moc"

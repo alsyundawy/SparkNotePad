@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,8 +20,7 @@ namespace Ui {
 class CharacterInfoDialog;
 }
 
-class CharacterInfoDialog : public QDialog
-{
+class CharacterInfoDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -38,4 +38,4 @@ private:
     CharacterInfo::Details m_details;
 };
 
-#endif // CHARACTERINFODIALOG_H
+#endif  // CHARACTERINFODIALOG_H

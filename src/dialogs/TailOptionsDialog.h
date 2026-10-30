@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -20,8 +21,7 @@ class TailOptionsDialog;
 
 class ScintillaNext;
 
-class TailOptionsDialog : public QDialog
-{
+class TailOptionsDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -35,7 +35,7 @@ private:
     void loadSettings();
 
     Ui::TailOptionsDialog *ui;
-    ScintillaNext *m_editor {nullptr};
+    ScintillaNext *m_editor{nullptr};
 };
 
-#endif // TAILOPTIONSDIALOG_H
+#endif  // TAILOPTIONSDIALOG_H

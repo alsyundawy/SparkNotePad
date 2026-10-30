@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -26,8 +27,7 @@ class MainWindow;
 class ScintillaNext;
 class QTreeWidgetItem;
 
-class FunctionListDock : public QDockWidget
-{
+class FunctionListDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -52,7 +52,7 @@ private:
 
     Ui::FunctionListDock *ui;
     MainWindow *m_window;
-    ScintillaNext *m_editor {nullptr};
+    ScintillaNext *m_editor{nullptr};
     QVector<FunctionSymbol> m_symbols;
     QTimer *m_debounceTimer;
     bool m_sortAlpha = false;
@@ -62,4 +62,4 @@ private:
     QMetaObject::Connection m_lexerConn;
 };
 
-#endif // FUNCTIONLISTDOCK_H
+#endif  // FUNCTIONLISTDOCK_H

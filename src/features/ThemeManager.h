@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -36,25 +37,18 @@ struct ThemePalette {
     const char *sep;
 };
 
-class ThemeManager : public QObject
-{
+class ThemeManager : public QObject {
     Q_OBJECT
 
 public:
-    enum class ThemeMode {
-        Auto = 0,
-        Light = 1,
-        Dark = 2
-    };
+    enum class ThemeMode { Auto = 0, Light = 1, Dark = 2 };
     Q_ENUM(ThemeMode)
 
     // Helper to construct Scintilla BGR colour from RGB components
     static constexpr quint32 scColor(int red, int green, int blue) {
         return static_cast<quint32>((red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16));
     }
-    static inline quint32 scFromRgb(QRgb rgb) {
-        return scColor(qRed(rgb), qGreen(rgb), qBlue(rgb));
-    }
+    static inline quint32 scFromRgb(QRgb rgb) { return scColor(qRed(rgb), qGreen(rgb), qBlue(rgb)); }
     static inline quint32 scFromHex(const char *hex) {
         QColor c(hex);
         return scFromRgb(c.rgb());
@@ -91,4 +85,4 @@ private:
     MainWindow *m_activeWindow = nullptr;
 };
 
-#endif // THEMEMANAGER_H
+#endif  // THEMEMANAGER_H

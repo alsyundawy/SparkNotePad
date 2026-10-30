@@ -21,38 +21,24 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "ScintillaCommenter.h"
 #include "SelectionTracker.h"
 
-ScintillaCommenter::ScintillaCommenter(ScintillaNext *editor) :
-    editor(editor), st(editor), ua(editor)
-{
+ScintillaCommenter::ScintillaCommenter(ScintillaNext *editor) : editor(editor), st(editor), ua(editor) {}
+
+void ScintillaCommenter::toggleSelection() {
+    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) { toggleLine(line); });
 }
 
-void ScintillaCommenter::toggleSelection()
-{
-    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) {
-        toggleLine(line);
-    });
+void ScintillaCommenter::commentSelection() {
+    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) { commentLine(line); });
 }
 
-void ScintillaCommenter::commentSelection()
-{
-    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) {
-        commentLine(line);
-    });
+void ScintillaCommenter::uncommentSelection() {
+    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) { uncommentLine(line); });
 }
 
-void ScintillaCommenter::uncommentSelection()
-{
-    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) {
-        uncommentLine(line);
-    });
-}
-
-void ScintillaCommenter::toggleLine(int line)
-{
+void ScintillaCommenter::toggleLine(int line) {
     auto indentPos = editor->lineIndentPosition(line);
     auto lineEnd = qMin(indentPos + editor->languageSingleLineComment.length(), editor->lineEndPosition(line));
     const QByteArray commentText = editor->get_text_range(indentPos, lineEnd);
@@ -61,8 +47,7 @@ void ScintillaCommenter::toggleLine(int line)
         editor->deleteRange(indentPos, editor->languageSingleLineComment.length());
 
         st.trackDeletion(indentPos, editor->languageSingleLineComment.length());
-    }
-    else {
+    } else {
         if (indentPos == editor->lineEndPosition(line)) {
             return;
         }
@@ -73,8 +58,7 @@ void ScintillaCommenter::toggleLine(int line)
     }
 }
 
-void ScintillaCommenter::commentLine(int line)
-{
+void ScintillaCommenter::commentLine(int line) {
     auto indentPos = editor->lineIndentPosition(line);
 
     // Don't comment lines with only indentation
@@ -87,8 +71,7 @@ void ScintillaCommenter::commentLine(int line)
     st.trackInsertion(indentPos, editor->languageSingleLineComment.length());
 }
 
-void ScintillaCommenter::uncommentLine(int line)
-{
+void ScintillaCommenter::uncommentLine(int line) {
     auto indentPos = editor->lineIndentPosition(line);
     auto lineEnd = qMin(indentPos + editor->languageSingleLineComment.length(), editor->lineEndPosition(line));
     const QByteArray commentText = editor->get_text_range(indentPos, lineEnd);

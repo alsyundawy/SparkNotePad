@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef MACROSAVEDIALOG_H
 #define MACROSAVEDIALOG_H
 
@@ -31,8 +31,7 @@ namespace Ui {
 class MacroSaveDialog;
 }
 
-class MacroSaveDialog : public QDialog
-{
+class MacroSaveDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -46,4 +45,4 @@ private:
     Ui::MacroSaveDialog *ui;
 };
 
-#endif // MACROSAVEDIALOG_H
+#endif  // MACROSAVEDIALOG_H

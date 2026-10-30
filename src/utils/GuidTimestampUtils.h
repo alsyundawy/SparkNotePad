@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,8 +20,7 @@
 class ScintillaNext;
 #endif
 
-class GuidTimestampUtils
-{
+class GuidTimestampUtils {
 public:
     enum GuidFormat {
         GuidHyphenatedLower,  // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (RFC 4122)
@@ -32,18 +32,18 @@ public:
     };
 
     enum TimestampFormat {
-        DateTimeShort,        // yyyy-MM-dd HH:mm:ss
-        DateTimeLong,         // Locale long date & time
-        Iso8601Local,         // yyyy-MM-ddTHH:mm:ss±HH:mm
-        Iso8601Utc,           // yyyy-MM-ddTHH:mm:ssZ
-        DateOnly,             // yyyy-MM-dd
-        TimeOnly,             // HH:mm:ss
-        UnixTimestampSecs,    // 1792352700
-        UnixTimestampMillis   // 1792352700000
+        DateTimeShort,       // yyyy-MM-dd HH:mm:ss
+        DateTimeLong,        // Locale long date & time
+        Iso8601Local,        // yyyy-MM-ddTHH:mm:ss±HH:mm
+        Iso8601Utc,          // yyyy-MM-ddTHH:mm:ssZ
+        DateOnly,            // yyyy-MM-dd
+        TimeOnly,            // HH:mm:ss
+        UnixTimestampSecs,   // 1792352700
+        UnixTimestampMillis  // 1792352700000
     };
 
     struct Result {
-        bool success {false};
+        bool success{false};
         QString insertedText;
         QString errorMessage;
     };
@@ -58,4 +58,4 @@ public:
 #endif
 };
 
-#endif // GUIDTIMESTAMPUTILS_H
+#endif  // GUIDTIMESTAMPUTILS_H

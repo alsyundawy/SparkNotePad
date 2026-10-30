@@ -21,35 +21,28 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 #include "ScintillaNext.h"
 
-struct FindOptions
-{
+struct FindOptions {
     QString text;
     Scintilla::FindOption flags = {};
     bool wrapAround = false;
 };
 
-struct FindResult
-{
+struct FindResult {
     Sci_CharacterRange range = {INVALID_POSITION, INVALID_POSITION};
     bool wrapped = false;
 
-    explicit operator bool() const
-    {
-        return range.cpMin != INVALID_POSITION;
-    }
+    explicit operator bool() const { return range.cpMin != INVALID_POSITION; }
 };
 
-class Finder
-{
+class Finder {
 public:
     explicit Finder(ScintillaNext *editor);
 
-    void setEditor(ScintillaNext *editor);
+    void setEditor(ScintillaNext *targetEditor);
 
     FindOptions &options() { return find_options; }
     const FindOptions &options() const { return find_options; }
@@ -63,13 +56,12 @@ public:
     FindResult replaceSelectionIfMatch(const QString &replaceText);
     int replaceAll(const QString &replaceText);
 
-    template<typename Func>
-    void forEachMatch(Func callback)
-    {
+    template <typename Func>
+    void forEachMatch(Func callback) {
         forEachMatchInRange(callback, {0, static_cast<Sci_PositionCR>(editor->length())});
     }
 
-    template<typename Func>
+    template <typename Func>
     void forEachMatchInRange(Func callback, Sci_CharacterRange range);
 
 private:
@@ -81,9 +73,8 @@ private:
     FindOptions find_options;
 };
 
-template<typename Func>
-void Finder::forEachMatchInRange(Func callback, Sci_CharacterRange range)
-{
+template <typename Func>
+void Finder::forEachMatchInRange(Func callback, Sci_CharacterRange range) {
     editor->setSearchFlags(searchFlags());
     editor->forEachMatchInRange(find_options.text.toUtf8(), callback, range);
 }

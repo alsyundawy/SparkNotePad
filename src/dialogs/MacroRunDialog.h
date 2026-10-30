@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,10 +22,8 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef MACRORUNDIALOG_H
 #define MACRORUNDIALOG_H
-
 
 #include <QDialog>
 
@@ -35,8 +34,7 @@ namespace Ui {
 class MacroRunDialog;
 }
 
-class MacroRunDialog : public QDialog
-{
+class MacroRunDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -54,4 +52,4 @@ private:
     MacroManager *macroManager;
 };
 
-#endif // MACRORUNDIALOG_H
+#endif  // MACRORUNDIALOG_H

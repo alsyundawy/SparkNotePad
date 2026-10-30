@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,20 +19,19 @@
 
 class ScintillaNext;
 
-class JsEvaluator
-{
+class JsEvaluator {
 public:
     enum Action {
-        ReplaceSelection, // Replace selection with evaluation result
-        AppendComment     // Append " // -> <result>"
+        ReplaceSelection,  // Replace selection with evaluation result
+        AppendComment      // Append " // -> <result>"
     };
 
     struct Result {
-        bool success {false};
+        bool success{false};
         QString expression;
         QString resultString;
         QString errorMessage;
-        double executionTimeMs {0.0};
+        double executionTimeMs{0.0};
     };
 
     // Evaluates a JavaScript expression or script snippet
@@ -41,4 +41,4 @@ public:
     static Result evaluateInEditor(ScintillaNext *editor, Action action = ReplaceSelection);
 };
 
-#endif // JSEVALUATOR_H
+#endif  // JSEVALUATOR_H

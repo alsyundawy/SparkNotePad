@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad3 Focused View & line filtering architecture.
  * Sources: rizonesoft/Notepad3 (src/Edit.c, FocusedView) & Scintilla line visibility APIs
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -22,34 +22,29 @@
 #define SC_ELEMENT_HIDDEN_LINE 81
 #endif
 
-FocusedView::FocusedView(QObject *parent)
-    : QObject(parent)
-{
-}
+FocusedView::FocusedView(QObject *parent) : QObject(parent) {}
 
-bool FocusedView::isFocused(ScintillaNext *editor) const
-{
-    if (!editor) return false;
+bool FocusedView::isFocused(const ScintillaNext *editor) const {
+    if (!editor)
+        return false;
     return m_editorOptions.contains(editor);
 }
 
-void FocusedView::ensureHiddenLineStyle(ScintillaNext *editor)
-{
-    if (!editor) return;
+void FocusedView::ensureHiddenLineStyle(ScintillaNext *editor) {
+    if (!editor)
+        return;
     // Set subtle horizontal indicator line for hidden blocks: RGBA grey (0x808080 | alpha 0xC0)
     editor->setElementColour(SC_ELEMENT_HIDDEN_LINE, 0x808080 | (0xC0 << 24));
 }
 
-FocusedView::FilterOptions FocusedView::currentOptions(ScintillaNext *editor) const
-{
+FocusedView::FilterOptions FocusedView::currentOptions(const ScintillaNext *editor) const {
     if (!editor || !isFocused(editor)) {
         return m_lastOptions;
     }
     return m_editorOptions.value(editor, m_lastOptions);
 }
 
-FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, bool *dialogNeeded)
-{
+FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, bool *dialogNeeded) {
     if (dialogNeeded) {
         *dialogNeeded = false;
     }
@@ -84,7 +79,9 @@ FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, 
         if (dialogNeeded) {
             *dialogNeeded = true;
         }
-        return {false, static_cast<int>(editor->lineCount()), 0, static_cast<int>(editor->lineCount()), QString(), tr("Open filter dialog")};
+        return {false,     static_cast<int>(editor->lineCount()),
+                0,         static_cast<int>(editor->lineCount()),
+                QString(), tr("Open filter dialog")};
     }
 
     FilterOptions opts;
@@ -99,8 +96,7 @@ FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, 
     return applyFilter(editor, opts);
 }
 
-FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const FilterOptions &options)
-{
+FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const FilterOptions &options) {
     if (!editor) {
         return {false, 0, 0, 0, QString(), tr("No active editor")};
     }
@@ -114,7 +110,7 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
     QVector<bool> lineHasMatch(lineCount, false);
 
     if (options.bookmarksOnly) {
-        BookMarkDecorator *bm = editor->findChild<BookMarkDecorator*>(QString(), Qt::FindDirectChildrenOnly);
+        BookMarkDecorator *bm = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
         if (!bm) {
             return {false, lineCount, 0, lineCount, tr("[Bookmarks]"), tr("Bookmark decorator unavailable")};
         }
@@ -135,7 +131,8 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
             }
             QRegularExpression re(pattern, regexOptions);
             if (!re.isValid()) {
-                return {false, lineCount, 0, lineCount, options.query, tr("Invalid regular expression: %1").arg(re.errorString())};
+                return {false,     lineCount,     0,
+                        lineCount, options.query, tr("Invalid regular expression: %1").arg(re.errorString())};
             }
             for (int line = 0; line < lineCount; ++line) {
                 const QString lineStr = QString::fromUtf8(editor->getLine(line));
@@ -148,7 +145,8 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
             if (options.wholeWord) {
                 const QString escaped = QRegularExpression::escape(options.query);
                 const QRegularExpression re(QStringLiteral("\\b%1\\b").arg(escaped),
-                                            options.matchCase ? QRegularExpression::NoPatternOption : QRegularExpression::CaseInsensitiveOption);
+                                            options.matchCase ? QRegularExpression::NoPatternOption
+                                                              : QRegularExpression::CaseInsensitiveOption);
                 for (int line = 0; line < lineCount; ++line) {
                     const QString lineStr = QString::fromUtf8(editor->getLine(line));
                     if (lineStr.contains(re)) {
@@ -175,8 +173,10 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
         for (int line = 0; line < lineCount; ++line) {
             if (lineHasMatch[line]) {
                 for (int c = 1; c <= options.contextLines; ++c) {
-                    if (line - c >= 0) visible[line - c] = true;
-                    if (line + c < lineCount) visible[line + c] = true;
+                    if (line - c >= 0)
+                        visible[line - c] = true;
+                    if (line + c < lineCount)
+                        visible[line + c] = true;
                 }
             }
         }
@@ -192,14 +192,16 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
     int matchedCount = 0;
     int visibleCount = 0;
     for (int line = 0; line < lineCount; ++line) {
-        if (lineHasMatch[line]) matchedCount++;
-        if (visible[line]) visibleCount++;
+        if (lineHasMatch[line])
+            matchedCount++;
+        if (visible[line])
+            visibleCount++;
     }
 
     if (visibleCount == 0) {
         QString msg = options.bookmarksOnly
-            ? tr("No bookmarked lines found. Filter not applied.")
-            : tr("No matching lines found for '%1'. Filter not applied.").arg(options.query);
+                          ? tr("No bookmarked lines found. Filter not applied.")
+                          : tr("No matching lines found for '%1'. Filter not applied.").arg(options.query);
         return {false, lineCount, 0, lineCount, options.query, msg};
     }
 
@@ -229,11 +231,9 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
     // Ensure caret is on a visible line
     const int curLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
     if (!editor->lineVisible(curLine)) {
-        for (int l = 0; l < lineCount; ++l) {
-            if (visible[l]) {
-                editor->gotoLine(l);
-                break;
-            }
+        const auto it = std::find(visible.cbegin(), visible.cend(), true);
+        if (it != visible.cend()) {
+            editor->gotoLine(static_cast<sptr_t>(std::distance(visible.cbegin(), it)));
         }
     }
 
@@ -247,14 +247,14 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
     res.matchedLines = matchedCount;
     res.visibleLines = visibleCount;
     res.filterQuery = options.bookmarksOnly ? tr("[Bookmarks]") : options.query;
-    res.message = tr("Focused View: %1 / %2 lines visible (%3 matched)").arg(visibleCount).arg(lineCount).arg(matchedCount);
+    res.message =
+        tr("Focused View: %1 / %2 lines visible (%3 matched)").arg(visibleCount).arg(lineCount).arg(matchedCount);
 
     emit filterApplied(editor, res);
     return res;
 }
 
-FocusedView::FilterResult FocusedView::clearFilter(ScintillaNext *editor)
-{
+FocusedView::FilterResult FocusedView::clearFilter(ScintillaNext *editor) {
     if (!editor) {
         return {false, 0, 0, 0, QString(), tr("No active editor")};
     }
@@ -278,9 +278,9 @@ FocusedView::FilterResult FocusedView::clearFilter(ScintillaNext *editor)
     return res;
 }
 
-FocusedView::FilterResult FocusedView::filterBySelectionOrWord(ScintillaNext *editor, bool invert)
-{
-    if (!editor) return {false, 0, 0, 0, QString(), tr("No active editor")};
+FocusedView::FilterResult FocusedView::filterBySelectionOrWord(ScintillaNext *editor, bool invert) {
+    if (!editor)
+        return {false, 0, 0, 0, QString(), tr("No active editor")};
 
     int selectionStart = editor->selectionStart();
     int selectionEnd = editor->selectionEnd();
@@ -300,7 +300,8 @@ FocusedView::FilterResult FocusedView::filterBySelectionOrWord(ScintillaNext *ed
     }
 
     if (query.isEmpty()) {
-        return {false, static_cast<int>(editor->lineCount()), 0, static_cast<int>(editor->lineCount()), QString(), tr("No text selected or under cursor")};
+        return {false,     static_cast<int>(editor->lineCount()), 0, static_cast<int>(editor->lineCount()),
+                QString(), tr("No text selected or under cursor")};
     }
 
     FilterOptions opts;
@@ -315,9 +316,9 @@ FocusedView::FilterResult FocusedView::filterBySelectionOrWord(ScintillaNext *ed
     return applyFilter(editor, opts);
 }
 
-FocusedView::FilterResult FocusedView::filterByBookmarks(ScintillaNext *editor, bool invert)
-{
-    if (!editor) return {false, 0, 0, 0, QString(), tr("No active editor")};
+FocusedView::FilterResult FocusedView::filterByBookmarks(ScintillaNext *editor, bool invert) {
+    if (!editor)
+        return {false, 0, 0, 0, QString(), tr("No active editor")};
 
     FilterOptions opts;
     opts.query = QString();

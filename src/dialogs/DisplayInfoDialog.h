@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -16,8 +17,7 @@
 class QTableWidget;
 class QLabel;
 
-class DisplayInfoDialog : public QDialog
-{
+class DisplayInfoDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -38,4 +38,4 @@ private:
     QTableWidget *m_tableWidget = nullptr;
 };
 
-#endif // DISPLAYINFODIALOG_H
+#endif  // DISPLAYINFODIALOG_H

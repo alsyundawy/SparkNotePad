@@ -46,19 +46,13 @@
 #include "ChangeHistoryDecorator.h"
 #include "HTMLAutoCompleteDecorator.h"
 
-
 const int MARK_HIDELINESBEGIN = 23;
 const int MARK_HIDELINESEND = 22;
 const int MARK_HIDELINESUNDERLINE = 21;
 
-
-EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
-    : QObject(parent), settings(settings)
-{
+EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : QObject(parent), settings(settings) {
     connect(this, &EditorManager::editorCreated, this, [=, this](ScintillaNext *editor) {
-        connect(editor, &ScintillaNext::closed, this, [=, this]() {
-            emit editorClosed(editor);
-        });
+        connect(editor, &ScintillaNext::closed, this, [=, this]() { emit editorClosed(editor); });
     });
 
     connect(settings, &ApplicationSettings::showWrapSymbolChanged, this, [=, this](bool b) {
@@ -66,7 +60,6 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
             editor->setWrapVisualFlags(b ? SC_WRAPVISUALFLAG_END : SC_WRAPVISUALFLAG_NONE);
         }
     });
-
 
     connect(settings, &ApplicationSettings::showWhitespaceChanged, this, [=, this](bool b) {
         // TODO: could make SCWS_VISIBLEALWAYS configurable via settings. Probably not worth
@@ -93,8 +86,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
             for (auto &editor : getEditors()) {
                 editor->setWrapMode(SC_WRAP_WORD);
             }
-        }
-        else {
+        } else {
             for (auto &editor : getEditors()) {
                 // Store the top line and restore it after the lines have been unwrapped
                 int topLine = editor->docLineFromVisible(editor->firstVisibleLine());
@@ -104,7 +96,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
-    connect(settings, &ApplicationSettings::fontNameChanged, this, [=, this](QString fontName){
+    connect(settings, &ApplicationSettings::fontNameChanged, this, [=, this](QString fontName) {
         for (auto &editor : getEditors()) {
             for (int i = 0; i <= STYLE_MAX; ++i) {
                 editor->styleSetFont(i, fontName.toUtf8().data());
@@ -112,7 +104,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
-    connect(settings, &ApplicationSettings::fontSizeChanged, this, [=, this](int fontSize){
+    connect(settings, &ApplicationSettings::fontSizeChanged, this, [=, this](int fontSize) {
         for (auto &editor : getEditors()) {
             for (int i = 0; i <= STYLE_MAX; ++i) {
                 editor->styleSetSize(i, fontSize);
@@ -120,7 +112,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
-    connect(settings, &ApplicationSettings::urlHighlightingChanged, this, [=, this](bool b){
+    connect(settings, &ApplicationSettings::urlHighlightingChanged, this, [=, this](bool b) {
         for (auto &editor : getEditors()) {
             URLFinder *decorator = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
             if (decorator) {
@@ -129,7 +121,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
-    connect(settings, &ApplicationSettings::urlThresholdChanged, this, [=, this](int thresholdMB){
+    connect(settings, &ApplicationSettings::urlThresholdChanged, this, [=, this](int thresholdMB) {
         for (auto &editor : getEditors()) {
             URLFinder *decorator = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
             if (decorator) {
@@ -138,7 +130,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
-    connect(settings, &ApplicationSettings::showLineNumbersChanged, this, [=, this](bool b){
+    connect(settings, &ApplicationSettings::showLineNumbersChanged, this, [=, this](bool b) {
         for (auto &editor : getEditors()) {
             LineNumbers *decorator = editor->findChild<LineNumbers *>(QString(), Qt::FindDirectChildrenOnly);
             if (decorator) {
@@ -147,16 +139,17 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
-    connect(settings, &ApplicationSettings::showChangeHistoryChanged, this, [=, this](bool b){
+    connect(settings, &ApplicationSettings::showChangeHistoryChanged, this, [=, this](bool b) {
         for (auto &editor : getEditors()) {
-            ChangeHistoryDecorator *decorator = editor->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+            ChangeHistoryDecorator *decorator =
+                editor->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             if (decorator) {
                 decorator->setEnabled(b);
             }
         }
     });
 
-    connect(settings, &ApplicationSettings::autoCompletionChanged, this, [=, this](bool b){
+    connect(settings, &ApplicationSettings::autoCompletionChanged, this, [=, this](bool b) {
         for (auto &editor : getEditors()) {
             AutoCompletion *decorator = editor->findChild<AutoCompletion *>(QString(), Qt::FindDirectChildrenOnly);
             if (decorator) {
@@ -168,8 +161,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
     });
 }
 
-ScintillaNext *EditorManager::createEditor(const QString &name)
-{
+ScintillaNext *EditorManager::createEditor(const QString &name) {
     ScintillaNext *editor = new ScintillaNext(name);
 
     manageEditor(editor);
@@ -177,8 +169,7 @@ ScintillaNext *EditorManager::createEditor(const QString &name)
     return editor;
 }
 
-ScintillaNext *EditorManager::createEditorFromFile(const QString &filePath, bool tryToCreate)
-{
+ScintillaNext *EditorManager::createEditorFromFile(const QString &filePath, bool tryToCreate) {
     ScintillaNext *editor = ScintillaNext::fromFile(filePath, tryToCreate);
 
     if (editor) {
@@ -188,24 +179,19 @@ ScintillaNext *EditorManager::createEditorFromFile(const QString &filePath, bool
     return editor;
 }
 
-ScintillaNext *EditorManager::getEditorByFilePath(const QString &filePath)
-{
+ScintillaNext *EditorManager::getEditorByFilePath(const QString &filePath) {
     QFileInfo newInfo(filePath);
     newInfo.makeAbsolute();
 
     purgeOldEditorPointers();
 
-    for (ScintillaNext *editor : qAsConst(editors)) {
-        if (editor->isFile() && editor->getFileInfo() == newInfo) {
-            return editor;
-        }
-    }
-
-    return Q_NULLPTR;
+    const auto it = std::find_if(editors.cbegin(), editors.cend(), [&newInfo](const QPointer<ScintillaNext> &editor) {
+        return editor && editor->isFile() && editor->getFileInfo() == newInfo;
+    });
+    return (it != editors.cend()) ? it->data() : nullptr;
 }
 
-void EditorManager::manageEditor(ScintillaNext *editor)
-{
+void EditorManager::manageEditor(ScintillaNext *editor) {
     editors.append(QPointer<ScintillaNext>(editor));
 
     setupEditor(editor);
@@ -222,8 +208,7 @@ void EditorManager::manageEditor(ScintillaNext *editor)
 //
 // On macOS Qt reports Command as Qt::ControlModifier (i.e. SCMOD_CTRL) and Option as
 // Qt::AltModifier (SCMOD_ALT).
-static void setupMacOsKeys(ScintillaNext *editor)
-{
+static void setupMacOsKeys(ScintillaNext *editor) {
     constexpr int Cmd = SCMOD_CTRL;
     constexpr int Opt = SCMOD_ALT;
     constexpr int Shift = SCMOD_SHIFT;
@@ -236,35 +221,35 @@ static void setupMacOsKeys(ScintillaNext *editor)
 
     constexpr KeyBinding bindings[] = {
         // Command + arrow keys move to the start/end of the line and of the document
-        {SCK_LEFT,  Cmd,               SCI_VCHOME},
-        {SCK_LEFT,  Cmd | Shift,       SCI_VCHOMEEXTEND},
-        {SCK_RIGHT, Cmd,               SCI_LINEEND},
-        {SCK_RIGHT, Cmd | Shift,       SCI_LINEENDEXTEND},
-        {SCK_UP,    Cmd,               SCI_DOCUMENTSTART},
-        {SCK_DOWN,  Cmd,               SCI_DOCUMENTEND},
+        {SCK_LEFT, Cmd, SCI_VCHOME},
+        {SCK_LEFT, Cmd | Shift, SCI_VCHOMEEXTEND},
+        {SCK_RIGHT, Cmd, SCI_LINEEND},
+        {SCK_RIGHT, Cmd | Shift, SCI_LINEENDEXTEND},
+        {SCK_UP, Cmd, SCI_DOCUMENTSTART},
+        {SCK_DOWN, Cmd, SCI_DOCUMENTEND},
 
         // Command + Shift + Up/Down are deliberately left alone. They are already used by
         // the Move Selected Lines Up/Down actions, and those actions receive the key press
         // before the editor does.
 
         // Option + arrow keys move by word
-        {SCK_LEFT,  Opt,               SCI_WORDLEFT},
-        {SCK_LEFT,  Opt | Shift,       SCI_WORDLEFTEXTEND},
-        {SCK_RIGHT, Opt,               SCI_WORDRIGHT},
-        {SCK_RIGHT, Opt | Shift,       SCI_WORDRIGHTEXTEND},
+        {SCK_LEFT, Opt, SCI_WORDLEFT},
+        {SCK_LEFT, Opt | Shift, SCI_WORDLEFTEXTEND},
+        {SCK_RIGHT, Opt, SCI_WORDRIGHT},
+        {SCK_RIGHT, Opt | Shift, SCI_WORDRIGHTEXTEND},
 
         // Option + Shift + Left/Right now select by word, so add Command + Option + Shift +
         // arrow keys for rectangular selection. Option + Shift + Up/Down are left with
         // Scintilla's default rectangular behaviour since nothing else uses them.
-        {SCK_LEFT,  Cmd | Opt | Shift, SCI_CHARLEFTRECTEXTEND},
+        {SCK_LEFT, Cmd | Opt | Shift, SCI_CHARLEFTRECTEXTEND},
         {SCK_RIGHT, Cmd | Opt | Shift, SCI_CHARRIGHTRECTEXTEND},
-        {SCK_UP,    Cmd | Opt | Shift, SCI_LINEUPRECTEXTEND},
-        {SCK_DOWN,  Cmd | Opt | Shift, SCI_LINEDOWNRECTEXTEND},
+        {SCK_UP, Cmd | Opt | Shift, SCI_LINEUPRECTEXTEND},
+        {SCK_DOWN, Cmd | Opt | Shift, SCI_LINEDOWNRECTEXTEND},
 
         // Deleting by word/to the start of the line, and redo
-        {SCK_BACK,  Opt,               SCI_DELWORDLEFT},
-        {SCK_BACK,  Cmd,               SCI_DELLINELEFT},
-        {'Z',       Cmd | Shift,       SCI_REDO},
+        {SCK_BACK, Opt, SCI_DELWORDLEFT},
+        {SCK_BACK, Cmd, SCI_DELLINELEFT},
+        {'Z', Cmd | Shift, SCI_REDO},
     };
 
     for (const KeyBinding &binding : bindings) {
@@ -273,8 +258,7 @@ static void setupMacOsKeys(ScintillaNext *editor)
 }
 #endif
 
-void EditorManager::setupEditor(ScintillaNext *editor)
-{
+void EditorManager::setupEditor(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     editor->clearCmdKey(SCK_INSERT);
@@ -303,7 +287,7 @@ void EditorManager::setupEditor(ScintillaNext *editor)
     editor->setMarginLeft(2);
 
     editor->setMarginWidthN(0, 30);
-    editor->setMarginMaskN(1, (1<<MARK_HIDELINESBEGIN) | (1<<MARK_HIDELINESEND) | (1<<MARK_HIDELINESUNDERLINE));
+    editor->setMarginMaskN(1, (1 << MARK_HIDELINESBEGIN) | (1 << MARK_HIDELINESEND) | (1 << MARK_HIDELINESUNDERLINE));
     editor->setMarginMaskN(2, SC_MASK_FOLDERS);
     editor->setMarginWidthN(2, 14);
 
@@ -401,8 +385,7 @@ void EditorManager::setupEditor(ScintillaNext *editor)
                 qWarning("Unexpected DefaultEOLMode: %s", qUtf8Printable(settings->defaultEOLMode()));
         }
         // else it will just stay whatever EOL mode it was when it was created
-    }
-    else {
+    } else {
         editor->setEOLMode(detectedEOLMode);
     }
 
@@ -454,8 +437,7 @@ void EditorManager::setupEditor(ScintillaNext *editor)
     new HTMLAutoCompleteDecorator(editor);
 }
 
-void EditorManager::purgeOldEditorPointers()
-{
+void EditorManager::purgeOldEditorPointers() {
     QMutableListIterator<QPointer<ScintillaNext>> it(editors);
 
     while (it.hasNext()) {
@@ -465,18 +447,16 @@ void EditorManager::purgeOldEditorPointers()
     }
 }
 
-QList<QPointer<ScintillaNext> > EditorManager::getEditors()
-{
+QList<QPointer<ScintillaNext>> EditorManager::getEditors() {
     purgeOldEditorPointers();
     return editors;
 }
 
-int EditorManager::detectEOLMode(ScintillaNext *editor) const
-{
+int EditorManager::detectEOLMode(ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
     const int MIN_LINE_THRESHOLD = 3;
-    const int MAX_BYTES_TO_CHECK = 10*1024;
+    const int MAX_BYTES_TO_CHECK = 10 * 1024;
 
     int index = 0;
     int lf = 0;
@@ -485,38 +465,40 @@ int EditorManager::detectEOLMode(ScintillaNext *editor) const
     int chPrev = ' ';
     int chNext = editor->charAt(index);
 
-    for (int i = 0; i < qMin(MAX_BYTES_TO_CHECK, (int) editor->length()); ++i) {
+    for (int i = 0; i < qMin(MAX_BYTES_TO_CHECK, (int)editor->length()); ++i) {
         int ch = chNext;
         chNext = editor->charAt(i + 1);
 
         if (ch == '\r') {
-            if (chNext == '\n') crlf++;
-            else cr++;
-        }
-        else if (ch == '\n') {
-            if (chPrev != '\r') lf++;
+            if (chNext == '\n')
+                crlf++;
+            else
+                cr++;
+        } else if (ch == '\n') {
+            if (chPrev != '\r')
+                lf++;
         }
 
         chPrev = ch;
 
         // If any meet some minimum threshold then just declare victory
-        if (crlf == MIN_LINE_THRESHOLD) return SC_EOL_CRLF;
-        else if (cr == MIN_LINE_THRESHOLD) return SC_EOL_CR;
-        else if (lf == MIN_LINE_THRESHOLD) return SC_EOL_LF;
+        if (crlf == MIN_LINE_THRESHOLD)
+            return SC_EOL_CRLF;
+        else if (cr == MIN_LINE_THRESHOLD)
+            return SC_EOL_CR;
+        else if (lf == MIN_LINE_THRESHOLD)
+            return SC_EOL_LF;
     }
 
     // There are either no lines or only a few, so make a best effort determination
 
     if (crlf > cr && crlf > lf) {
         return SC_EOL_CRLF;
-    }
-    else if (cr > lf) {
+    } else if (cr > lf) {
         return SC_EOL_CR;
-    }
-    else if (lf > cr) {
+    } else if (lf > cr) {
         return SC_EOL_LF;
-    }
-    else {
+    } else {
         return -1;
     }
 }

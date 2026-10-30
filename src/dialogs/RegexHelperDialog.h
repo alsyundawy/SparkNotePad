@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,8 +19,7 @@ namespace Ui {
 class RegexHelperDialog;
 }
 
-class RegexHelperDialog : public QDialog
-{
+class RegexHelperDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -35,4 +35,4 @@ private:
     Ui::RegexHelperDialog *ui;
 };
 
-#endif // REGEXHELPERDIALOG_H
+#endif  // REGEXHELPERDIALOG_H

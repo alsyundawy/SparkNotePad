@@ -21,21 +21,19 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "FileDialogHelpers.h"
-
 
 /*
  * NOTE: This code is nearly identical to the QFileDialog implementation of several static methods.
  * Since the QDir filter options were not exposed, there was no way to specify QDir::Hidden.
  */
 
+constexpr QDir::Filters default_filters =
+    QDir::AllEntries | QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files | QDir::Hidden;
 
-constexpr QDir::Filters default_filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files | QDir::Hidden;
-
-
-QList<QUrl> FileDialogHelpers::getOpenFileUrls(QWidget *parent, const QString &caption, const QString &dir, const QString &filter, QString *selectedFilter, QFileDialog::Options options, const QStringList &supportedSchemes)
-{
+QList<QUrl> FileDialogHelpers::getOpenFileUrls(QWidget *parent, const QString &caption, const QString &dir,
+                                               const QString &filter, QString *selectedFilter,
+                                               QFileDialog::Options options, const QStringList &supportedSchemes) {
     QFileDialog dialog(parent, caption, dir, filter);
 
     dialog.setSupportedSchemes(supportedSchemes);
@@ -53,8 +51,9 @@ QList<QUrl> FileDialogHelpers::getOpenFileUrls(QWidget *parent, const QString &c
     return QList<QUrl>();
 }
 
-QStringList FileDialogHelpers::getOpenFileNames(QWidget *parent, const QString &caption, const QString &dir, const QString &filter, QString *selectedFilter, QFileDialog::Options options)
-{
+QStringList FileDialogHelpers::getOpenFileNames(QWidget *parent, const QString &caption, const QString &dir,
+                                                const QString &filter, QString *selectedFilter,
+                                                QFileDialog::Options options) {
     const QStringList schemes = QStringList(QStringLiteral("file"));
     const QList<QUrl> selectedUrls = getOpenFileUrls(parent, caption, dir, filter, selectedFilter, options, schemes);
     QStringList fileNames;
@@ -69,8 +68,9 @@ QStringList FileDialogHelpers::getOpenFileNames(QWidget *parent, const QString &
     return fileNames;
 }
 
-QUrl FileDialogHelpers::getSaveFileUrl(QWidget *parent, const QString &caption, const QString &dir, const QString &filter, QString *selectedFilter, QFileDialog::Options options, const QStringList &supportedSchemes)
-{
+QUrl FileDialogHelpers::getSaveFileUrl(QWidget *parent, const QString &caption, const QString &dir,
+                                       const QString &filter, QString *selectedFilter, QFileDialog::Options options,
+                                       const QStringList &supportedSchemes) {
     QFileDialog dialog(parent, caption, dir, filter);
 
     dialog.setSupportedSchemes(supportedSchemes);
@@ -88,8 +88,9 @@ QUrl FileDialogHelpers::getSaveFileUrl(QWidget *parent, const QString &caption, 
     return QUrl();
 }
 
-QString FileDialogHelpers::getSaveFileName(QWidget *parent, const QString &caption, const QString &dir, const QString &filter, QString *selectedFilter, QFileDialog::Options options)
-{
+QString FileDialogHelpers::getSaveFileName(QWidget *parent, const QString &caption, const QString &dir,
+                                           const QString &filter, QString *selectedFilter,
+                                           QFileDialog::Options options) {
     const QStringList schemes = QStringList(QStringLiteral("file"));
     const QUrl selectedUrl = getSaveFileUrl(parent, caption, dir, filter, selectedFilter, options, schemes);
     if (selectedUrl.isLocalFile() || selectedUrl.isEmpty())

@@ -29,27 +29,22 @@
 
 #include <memory>
 
-QString TranslationFileNameToLocaleName(const QString &baseName)
-{
+QString TranslationFileNameToLocaleName(const QString &baseName) {
     // return "zh_CN" from "NotepadNext_zh_CN"
-    return baseName.mid(QApplication::applicationName().length() + 1); // +1 for the underscore
+    return baseName.mid(QApplication::applicationName().length() + 1);  // +1 for the underscore
 }
 
+TranslationManager::TranslationManager(QObject *parent, const QString &path) : QObject(parent), path(path) {}
 
-TranslationManager::TranslationManager(QObject *parent, const QString &path)
-    : QObject(parent), path(path)
-{
-}
-
-QStringList TranslationManager::availableTranslations() const
-{
+QStringList TranslationManager::availableTranslations() const {
     QStringList translations;
     QDirIterator it(path);
 
     while (it.hasNext()) {
         it.next();
 
-        if (it.fileName().startsWith(QApplication::applicationName())) { // Some are Qt translation files, not for the application
+        if (it.fileName().startsWith(
+                QApplication::applicationName())) {  // Some are Qt translation files, not for the application
             QString localeName = TranslationFileNameToLocaleName(it.fileInfo().baseName());
 
             translations.append(localeName);
@@ -59,8 +54,7 @@ QStringList TranslationManager::availableTranslations() const
     return translations;
 }
 
-QString TranslationManager::FormatLocaleTerritoryAndLanguage(QLocale &locale)
-{
+QString TranslationManager::FormatLocaleTerritoryAndLanguage(QLocale &locale) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 2, 0)
     const QString territory = QLocale::countryToString(locale.country());
 #else
@@ -70,19 +64,18 @@ QString TranslationManager::FormatLocaleTerritoryAndLanguage(QLocale &locale)
     return QStringLiteral("%1 (%2)").arg(language, territory);
 }
 
-void TranslationManager::loadSystemDefaultTranslation()
-{
-    // The wrong translation file may be loaded when passing Locale::system() to loadTranslation function, e.g. "zh_CN" translation file will be loaded when the locale is "en_US". It's probably a Qt bug.
+void TranslationManager::loadSystemDefaultTranslation() {
+    // The wrong translation file may be loaded when passing Locale::system() to loadTranslation function, e.g. "zh_CN"
+    // translation file will be loaded when the locale is "en_US". It's probably a Qt bug.
     loadTranslation(QLocale(QLocale::system().name()));
 }
 
-void TranslationManager::loadTranslation(QLocale locale)
-{
+void TranslationManager::loadTranslation(QLocale locale) {
     qInfo(Q_FUNC_INFO);
 
     const QStringList filenames{QStringList{QApplication::applicationName(), "qt", "qtbase"}};
 
-    for (const auto& filename : filenames) {
+    for (const auto &filename : filenames) {
         std::unique_ptr<QTranslator> translator = std::make_unique<QTranslator>();
 
         if (translator->load(locale, filename, QStringLiteral("_"), path)) {
@@ -94,7 +87,6 @@ void TranslationManager::loadTranslation(QLocale locale)
     }
 }
 
-void TranslationManager::loadTranslation(QString localeName)
-{
+void TranslationManager::loadTranslation(QString localeName) {
     loadTranslation(QLocale(localeName));
 }

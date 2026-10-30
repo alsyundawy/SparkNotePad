@@ -18,8 +18,7 @@ class QTabWidget;
 class QLabel;
 class QTextBrowser;
 
-class AboutDialog : public QDialog
-{
+class AboutDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -48,4 +47,4 @@ private:
     QTextBrowser *m_licenseBrowser = nullptr;
 };
 
-#endif // ABOUTDIALOG_H
+#endif  // ABOUTDIALOG_H

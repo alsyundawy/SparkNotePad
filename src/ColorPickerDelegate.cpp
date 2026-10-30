@@ -25,33 +25,28 @@
 
 #include <QColorDialog>
 
-ColorPickerDelegate::ColorPickerDelegate(QObject *parent)
-    : QStyledItemDelegate(parent)
-{
-}
+ColorPickerDelegate::ColorPickerDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
 
-QWidget *ColorPickerDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+QWidget *ColorPickerDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                                           const QModelIndex &index) const {
     Q_UNUSED(option)
     Q_UNUSED(index)
 
-    QColorDialog* colorDialog = new QColorDialog(parent);
+    QColorDialog *colorDialog = new QColorDialog(parent);
     colorDialog->setModal(true);
 
     return colorDialog;
 }
 
-void ColorPickerDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    QColorDialog *colorDialog = static_cast<QColorDialog*>(editor);
+void ColorPickerDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
+    QColorDialog *colorDialog = static_cast<QColorDialog *>(editor);
     const QColor color = index.model()->data(index, Qt::DecorationRole).value<QColor>();
 
     colorDialog->setCurrentColor(color);
 }
 
-void ColorPickerDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    QColorDialog *colorDialog = static_cast<QColorDialog*>(editor);
+void ColorPickerDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
+    QColorDialog *colorDialog = static_cast<QColorDialog *>(editor);
     QColor color = colorDialog->selectedColor();
 
     if (color.isValid()) {

@@ -19,63 +19,60 @@
 #include <QDateTime>
 #include <QLocale>
 
-QString GuidTimestampUtils::generateGuid(GuidFormat format)
-{
+QString GuidTimestampUtils::generateGuid(GuidFormat format) {
     const QUuid uuid = QUuid::createUuid();
     QString result;
 
     switch (format) {
-    case GuidHyphenatedLower:
-        result = uuid.toString(QUuid::WithoutBraces).toLower();
-        break;
-    case GuidHyphenatedUpper:
-        result = uuid.toString(QUuid::WithoutBraces).toUpper();
-        break;
-    case GuidWithBracesUpper:
-        result = uuid.toString(QUuid::WithBraces).toUpper();
-        break;
-    case GuidWithBracesLower:
-        result = uuid.toString(QUuid::WithBraces).toLower();
-        break;
-    case GuidCompactUpper:
-        result = uuid.toString(QUuid::Id128).toUpper();
-        break;
-    case GuidCompactLower:
-        result = uuid.toString(QUuid::Id128).toLower();
-        break;
+        case GuidHyphenatedLower:
+            result = uuid.toString(QUuid::WithoutBraces).toLower();
+            break;
+        case GuidHyphenatedUpper:
+            result = uuid.toString(QUuid::WithoutBraces).toUpper();
+            break;
+        case GuidWithBracesUpper:
+            result = uuid.toString(QUuid::WithBraces).toUpper();
+            break;
+        case GuidWithBracesLower:
+            result = uuid.toString(QUuid::WithBraces).toLower();
+            break;
+        case GuidCompactUpper:
+            result = uuid.toString(QUuid::Id128).toUpper();
+            break;
+        case GuidCompactLower:
+            result = uuid.toString(QUuid::Id128).toLower();
+            break;
     }
     return result;
 }
 
-QString GuidTimestampUtils::generateTimestamp(TimestampFormat format)
-{
+QString GuidTimestampUtils::generateTimestamp(TimestampFormat format) {
     const QDateTime now = QDateTime::currentDateTime();
 
     switch (format) {
-    case DateTimeShort:
-        return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
-    case DateTimeLong:
-        return QLocale::system().toString(now, QLocale::LongFormat);
-    case Iso8601Local:
-        return now.toString(Qt::ISODate);
-    case Iso8601Utc:
-        return QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-    case DateOnly:
-        return now.toString(QStringLiteral("yyyy-MM-dd"));
-    case TimeOnly:
-        return now.toString(QStringLiteral("HH:mm:ss"));
-    case UnixTimestampSecs:
-        return QString::number(now.toSecsSinceEpoch());
-    case UnixTimestampMillis:
-        return QString::number(now.toMSecsSinceEpoch());
+        case DateTimeShort:
+            return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
+        case DateTimeLong:
+            return QLocale::system().toString(now, QLocale::LongFormat);
+        case Iso8601Local:
+            return now.toString(Qt::ISODate);
+        case Iso8601Utc:
+            return QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+        case DateOnly:
+            return now.toString(QStringLiteral("yyyy-MM-dd"));
+        case TimeOnly:
+            return now.toString(QStringLiteral("HH:mm:ss"));
+        case UnixTimestampSecs:
+            return QString::number(now.toSecsSinceEpoch());
+        case UnixTimestampMillis:
+            return QString::number(now.toMSecsSinceEpoch());
     }
 
     return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
 }
 
 #if !defined(UNIT_TESTING)
-GuidTimestampUtils::Result GuidTimestampUtils::insertText(ScintillaNext *editor, const QString &text)
-{
+GuidTimestampUtils::Result GuidTimestampUtils::insertText(ScintillaNext *editor, const QString &text) {
     if (!editor) {
         return {false, QString(), QStringLiteral("No active editor")};
     }
@@ -104,14 +101,12 @@ GuidTimestampUtils::Result GuidTimestampUtils::insertText(ScintillaNext *editor,
     return {true, text, QString()};
 }
 
-GuidTimestampUtils::Result GuidTimestampUtils::insertGuid(ScintillaNext *editor, GuidFormat format)
-{
+GuidTimestampUtils::Result GuidTimestampUtils::insertGuid(ScintillaNext *editor, GuidFormat format) {
     const QString guid = generateGuid(format);
     return insertText(editor, guid);
 }
 
-GuidTimestampUtils::Result GuidTimestampUtils::insertTimestamp(ScintillaNext *editor, TimestampFormat format)
-{
+GuidTimestampUtils::Result GuidTimestampUtils::insertTimestamp(ScintillaNext *editor, TimestampFormat format) {
     const QString ts = generateTimestamp(format);
     return insertText(editor, ts);
 }

@@ -21,15 +21,12 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "HtmlConverter.h"
 
 #include <QSet>
 #include <QTextStream>
 
-
-static QByteArray ScintillaColorToCssColor(int color)
-{
+static QByteArray ScintillaColorToCssColor(int color) {
     int r = color & 0xFF;
     int g = (color >> 8) & 0xFF;
     int b = (color >> 16) & 0xFF;
@@ -37,8 +34,7 @@ static QByteArray ScintillaColorToCssColor(int color)
     return QStringLiteral("rgb(%1, %2, %3)").arg(r).arg(g).arg(b).toLatin1();
 }
 
-static void StyleToCss(QTextStream &stream, ScintillaNext *editor, int style)
-{
+static void StyleToCss(QTextStream &stream, ScintillaNext *editor, int style) {
     stream << ".s" << style << " {" << Qt::endl;
     stream << "  font-family: '" << editor->styleFont(style) << "';" << Qt::endl;
     stream << "  font-size: " << editor->styleSize(style) << "pt;" << Qt::endl;
@@ -57,25 +53,23 @@ static void StyleToCss(QTextStream &stream, ScintillaNext *editor, int style)
     stream << "}" << Qt::endl;
 }
 
-static void AddCharEscaped(QTextStream &stream, int ch)
-{
+static void AddCharEscaped(QTextStream &stream, int ch) {
     switch (ch) {
-    case '<':
-        stream << QByteArrayLiteral("&lt;");
-        break;
-    case '>':
-        stream << QByteArrayLiteral("&gt;");
-        break;
-    case '&':
-        stream << QByteArrayLiteral("&amp;");
-        break;
-    default:
-        stream << static_cast<char>(ch);
+        case '<':
+            stream << QByteArrayLiteral("&lt;");
+            break;
+        case '>':
+            stream << QByteArrayLiteral("&gt;");
+            break;
+        case '&':
+            stream << QByteArrayLiteral("&amp;");
+            break;
+        default:
+            stream << static_cast<char>(ch);
     }
 }
 
-void HtmlConverter::convertRange(QTextStream &stream, int start, int end)
-{
+void HtmlConverter::convertRange(QTextStream &stream, int start, int end) {
     ensureDocumentStyled(start, end);
 
     // Create the raw html and keep track of the used styles
@@ -95,17 +89,15 @@ void HtmlConverter::convertRange(QTextStream &stream, int start, int end)
         }
 
         const int ch = editor->charAt(i);
-        if (ch == '\r'){
+        if (ch == '\r') {
             if (editor->charAt(i + 1) != '\n') {
                 AddCharEscaped(html_stream, ch);
             }
-        }
-        else {
+        } else {
             AddCharEscaped(html_stream, ch);
         }
     }
     html_stream.flush();
-
 
     // Generate the CSS for just the styles that were used
     QByteArray css;
@@ -115,9 +107,10 @@ void HtmlConverter::convertRange(QTextStream &stream, int start, int end)
     }
     css_stream.flush();
 
-
     // Generate the entire document
-    stream << "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd\">" << Qt::endl;
+    stream << "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" "
+              "\"http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd\">"
+           << Qt::endl;
     stream << "<html>" << Qt::endl;
     stream << "<head>" << Qt::endl;
     stream << "<meta http-equiv=Content-Type content=\"text/html; charset=UTF-8\">" << Qt::endl;

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -20,8 +21,7 @@ namespace Ui {
 class EncodingSelectionDialog;
 }
 
-class EncodingSelectionDialog : public QDialog
-{
+class EncodingSelectionDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -48,4 +48,4 @@ private:
     QList<EncodingDetector::EncodingInfo> m_allEncodings;
 };
 
-#endif // ENCODINGSELECTIONDIALOG_H
+#endif  // ENCODINGSELECTIONDIALOG_H

@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef QREGEXSEARCH_H
 #define QREGEXSEARCH_H
 
@@ -32,10 +32,8 @@
 #include <memory>
 #include <stdexcept>
 
-
 // TODO: Fix this mess. Scintilla makes you include everything...in the correct order...
 // this was copied from Editor.cxx just to get it to compile
-
 
 #include <cstddef>
 #include <cstdlib>
@@ -90,12 +88,12 @@
 
 using namespace Scintilla::Internal;
 
-class QRegexSearch : public RegexSearchBase
-{
+class QRegexSearch : public RegexSearchBase {
 public:
     QRegexSearch();
 
-    Sci::Position FindText(Document *doc, Sci::Position minPos, Sci::Position maxPos, const char *s, bool caseSensitive, bool word, bool wordStart, Scintilla::FindOption flags, Sci::Position *length) override;
+    Sci::Position FindText(Document *doc, Sci::Position minPos, Sci::Position maxPos, const char *s, bool caseSensitive,
+                           bool word, bool wordStart, Scintilla::FindOption flags, Sci::Position *length) override;
     const char *SubstituteByPosition(Document *doc, const char *text, Sci::Position *length) override;
 
 private:
@@ -103,4 +101,4 @@ private:
     QByteArray *substituted = Q_NULLPTR;
 };
 
-#endif // QREGEXSEARCH_H
+#endif  // QREGEXSEARCH_H

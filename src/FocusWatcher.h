@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,32 +22,29 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FOCUSWATCHER_H
 #define FOCUSWATCHER_H
 
 #include <QEvent>
 #include <QObject>
 
-
 class FocusWatcher : public QObject {
     Q_OBJECT
 
 public:
-    explicit FocusWatcher(QObject* parent = nullptr) : QObject(parent) {
+    explicit FocusWatcher(QObject *parent = nullptr) : QObject(parent) {
         if (parent)
             parent->installEventFilter(this);
     }
 
- protected:
+protected:
     bool eventFilter(QObject *obj, QEvent *event) override {
         Q_UNUSED(obj)
 
         if (event->type() == QEvent::FocusIn) {
             emit focusChanged(true);
             emit focusIn();
-        }
-        else if (event->type() == QEvent::FocusOut) {
+        } else if (event->type() == QEvent::FocusOut) {
             emit focusChanged(false);
             emit focusOut();
         }
@@ -60,4 +58,4 @@ signals:
     void focusOut();
 };
 
-#endif // FOCUSWATCHER_H
+#endif  // FOCUSWATCHER_H

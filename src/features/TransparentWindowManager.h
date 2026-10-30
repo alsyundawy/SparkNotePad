@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -17,15 +18,11 @@
 #include <QMainWindow>
 #include <QEvent>
 
-class TransparentWindowManager : public QObject
-{
+class TransparentWindowManager : public QObject {
     Q_OBJECT
 
 public:
-    enum class TransparencyMode {
-        Always = 0,
-        OnlyWhenInactive = 1
-    };
+    enum class TransparencyMode { Always = 0, OnlyWhenInactive = 1 };
 
     explicit TransparentWindowManager(QMainWindow *window, QObject *parent = nullptr);
     ~TransparentWindowManager() override;
@@ -34,7 +31,7 @@ public:
     void setEnabled(bool enabled);
     void toggle();
 
-    int opacity() const; // 20..100
+    int opacity() const;  // 20..100
     void setOpacity(int percent);
     void increaseOpacity(int delta = 10);
     void decreaseOpacity(int delta = 10);
@@ -66,4 +63,4 @@ private:
     bool m_alwaysOnTop = false;
 };
 
-#endif // TRANSPARENTWINDOWMANAGER_H
+#endif  // TRANSPARENTWINDOWMANAGER_H

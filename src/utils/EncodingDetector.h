@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,17 +19,18 @@
 #include <QList>
 #include "ScintillaNext.h"
 
-class EncodingDetector
-{
+class EncodingDetector {
 public:
     struct DetectionResult {
-        QString encoding {"UTF-8"};               // Canonical codec name (e.g. "UTF-8", "windows-1252", "Shift-JIS", "GB18030", "UTF-16LE")
-        QString friendlyName {"UTF-8"};           // Human-readable name
-        ScintillaNext::BomType bomType {ScintillaNext::BomType::None};
-        int bomLength {0};
-        int confidence {100};                     // 0 - 100
-        QString detectionMethod;                  // "BOM", "XML/HTML Declaration", "Coding Cookie", "Strict UTF-8 Validator", "UTF-16 Interleaved NULs", "Mozilla uchardet", "ANSI Fallback"
-        bool isBinary {false};
+        QString encoding{
+            "UTF-8"};  // Canonical codec name (e.g. "UTF-8", "windows-1252", "Shift-JIS", "GB18030", "UTF-16LE")
+        QString friendlyName{"UTF-8"};  // Human-readable name
+        ScintillaNext::BomType bomType{ScintillaNext::BomType::None};
+        int bomLength{0};
+        int confidence{100};      // 0 - 100
+        QString detectionMethod;  // "BOM", "XML/HTML Declaration", "Coding Cookie", "Strict UTF-8 Validator", "UTF-16
+                                  // Interleaved NULs", "Mozilla uchardet", "ANSI Fallback"
+        bool isBinary{false};
     };
 
     struct EncodingInfo {
@@ -41,10 +43,12 @@ public:
     static DetectionResult detect(const QByteArray &data);
 
     // Decodes raw data from given encoding into UTF-8 suitable for Scintilla
-    static QByteArray decodeToUtf8(const QByteArray &data, const QString &encodingName, ScintillaNext::BomType bom, bool *ok = nullptr);
+    static QByteArray decodeToUtf8(const QByteArray &data, const QString &encodingName, ScintillaNext::BomType bom,
+                                   bool *ok = nullptr);
 
     // Encodes UTF-8 data from Scintilla into target encoding, prepending BOM if specified
-    static QByteArray encodeFromUtf8(const QByteArray &utf8Data, const QString &encodingName, ScintillaNext::BomType bom, bool *ok = nullptr);
+    static QByteArray encodeFromUtf8(const QByteArray &utf8Data, const QString &encodingName,
+                                     ScintillaNext::BomType bom, bool *ok = nullptr);
 
     // List of supported encodings grouped by category
     static QList<EncodingInfo> supportedEncodings();
@@ -66,4 +70,4 @@ private:
     static bool detectUchardet(const QByteArray &data, DetectionResult &result);
 };
 
-#endif // ENCODINGDETECTOR_H
+#endif  // ENCODINGDETECTOR_H

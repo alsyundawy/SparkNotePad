@@ -28,8 +28,7 @@
 #include <cstring>
 #endif
 
-QDateTime FileTimeUtils::getFileModificationTime(const QString &filePath)
-{
+QDateTime FileTimeUtils::getFileModificationTime(const QString &filePath) {
     if (filePath.isEmpty())
         return QDateTime();
 
@@ -41,8 +40,7 @@ QDateTime FileTimeUtils::getFileModificationTime(const QString &filePath)
     return fi.lastModified();
 }
 
-QDateTime FileTimeUtils::getFileAccessTime(const QString &filePath)
-{
+QDateTime FileTimeUtils::getFileAccessTime(const QString &filePath) {
     if (filePath.isEmpty())
         return QDateTime();
 
@@ -54,8 +52,8 @@ QDateTime FileTimeUtils::getFileAccessTime(const QString &filePath)
     return fi.lastRead();
 }
 
-bool FileTimeUtils::setFileTimes(const QString &filePath, const QDateTime &modificationTime, const QDateTime &accessTime)
-{
+bool FileTimeUtils::setFileTimes(const QString &filePath, const QDateTime &modificationTime,
+                                 const QDateTime &accessTime) {
     if (filePath.isEmpty() || !modificationTime.isValid())
         return false;
 
@@ -108,13 +106,11 @@ bool FileTimeUtils::setFileTimes(const QString &filePath, const QDateTime &modif
     return false;
 }
 
-bool FileTimeUtils::setFileModificationTime(const QString &filePath, const QDateTime &time)
-{
+bool FileTimeUtils::setFileModificationTime(const QString &filePath, const QDateTime &time) {
     return setFileTimes(filePath, time, QDateTime());
 }
 
-FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath)
-{
+FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath) {
     FileTimeResult result;
     if (filePath.isEmpty()) {
         result.success = false;
@@ -141,7 +137,7 @@ FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath)
         result.success = true;
         result.newTime = fi.lastModified();
         result.message = QCoreApplication::translate("FileTimeUtils", "File timestamp successfully updated to %1.")
-            .arg(result.newTime.toString(Qt::ISODate));
+                             .arg(result.newTime.toString(Qt::ISODate));
         return result;
     }
 
@@ -150,7 +146,7 @@ FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath)
         result.success = true;
         result.newTime = fi.lastModified();
         result.message = QCoreApplication::translate("FileTimeUtils", "File timestamp successfully updated to %1.")
-            .arg(result.newTime.toString(Qt::ISODate));
+                             .arg(result.newTime.toString(Qt::ISODate));
         return result;
     }
 #endif
@@ -166,18 +162,18 @@ FileTimeUtils::FileTimeResult FileTimeUtils::touchFile(const QString &filePath)
             result.success = true;
             result.newTime = fi.lastModified();
             result.message = QCoreApplication::translate("FileTimeUtils", "File timestamp successfully updated to %1.")
-                .arg(result.newTime.toString(Qt::ISODate));
+                                 .arg(result.newTime.toString(Qt::ISODate));
             return result;
         }
     }
 
     result.success = false;
-    result.errorMessage = QCoreApplication::translate("FileTimeUtils", "Failed to update file timestamp (permission denied or I/O error).");
+    result.errorMessage = QCoreApplication::translate(
+        "FileTimeUtils", "Failed to update file timestamp (permission denied or I/O error).");
     return result;
 }
 
-FileTimeUtils::FileTimeResult FileTimeUtils::touchEditorFile(ScintillaNext *editor)
-{
+FileTimeUtils::FileTimeResult FileTimeUtils::touchEditorFile(ScintillaNext *editor) {
     FileTimeResult res;
     if (!editor) {
         res.errorMessage = QCoreApplication::translate("FileTimeUtils", "No active editor.");
@@ -198,8 +194,7 @@ FileTimeUtils::FileTimeResult FileTimeUtils::touchEditorFile(ScintillaNext *edit
     return res;
 }
 
-FileTimeUtils::FileTimeResult FileTimeUtils::saveWithOriginalTime(ScintillaNext *editor)
-{
+FileTimeUtils::FileTimeResult FileTimeUtils::saveWithOriginalTime(ScintillaNext *editor) {
     FileTimeResult res;
     if (!editor) {
         res.errorMessage = QCoreApplication::translate("FileTimeUtils", "No active editor.");
@@ -225,14 +220,16 @@ FileTimeUtils::FileTimeResult FileTimeUtils::saveWithOriginalTime(ScintillaNext 
     // Perform save with preserveTimestamp flag enabled
     QFileDevice::FileError err = editor->save(/*preserveTimestamp=*/true);
     if (err != QFileDevice::NoError) {
-        res.errorMessage = QCoreApplication::translate("FileTimeUtils", "Failed to save file: error code %1").arg(static_cast<int>(err));
+        res.errorMessage = QCoreApplication::translate("FileTimeUtils", "Failed to save file: error code %1")
+                               .arg(static_cast<int>(err));
         return res;
     }
 
     res.success = true;
     res.originalTime = originalTime;
     res.newTime = originalTime;
-    res.message = QCoreApplication::translate("FileTimeUtils", "File \"%1\" saved with original timestamp preserved (%2)")
-        .arg(editor->getName(), originalTime.toString(Qt::ISODate));
+    res.message =
+        QCoreApplication::translate("FileTimeUtils", "File \"%1\" saved with original timestamp preserved (%2)")
+            .arg(editor->getName(), originalTime.toString(Qt::ISODate));
     return res;
 }

@@ -21,16 +21,11 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "RecentFilesListManager.h"
 
-RecentFilesListManager::RecentFilesListManager(QObject *parent) :
-    QObject(parent)
-{
-}
+RecentFilesListManager::RecentFilesListManager(QObject *parent) : QObject(parent) {}
 
-void RecentFilesListManager::addFile(const QString &filePath)
-{
+void RecentFilesListManager::addFile(const QString &filePath) {
     qInfo(Q_FUNC_INFO);
 
     // Attempt to remove it first to make sure it is not added twice
@@ -44,31 +39,26 @@ void RecentFilesListManager::addFile(const QString &filePath)
     recentFiles.prepend(filePath);
 }
 
-void RecentFilesListManager::removeFile(const QString &filePath)
-{
+void RecentFilesListManager::removeFile(const QString &filePath) {
     recentFiles.removeOne(filePath);
 }
 
-void RecentFilesListManager::clear()
-{
+void RecentFilesListManager::clear() {
     // Clear the file list
     recentFiles.clear();
 }
 
-QString RecentFilesListManager::mostRecentFile() const
-{
+QString RecentFilesListManager::mostRecentFile() const {
     Q_ASSERT(!recentFiles.empty());
 
     return recentFiles.first();
 }
 
-QStringList RecentFilesListManager::fileList() const
-{
+const QStringList &RecentFilesListManager::fileList() const {
     return recentFiles;
 }
 
-void RecentFilesListManager::setFileList(const QStringList &list)
-{
+void RecentFilesListManager::setFileList(const QStringList &list) {
     clear();
     recentFiles.append(list);
 }

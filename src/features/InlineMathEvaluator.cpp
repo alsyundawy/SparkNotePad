@@ -1,8 +1,8 @@
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -22,7 +22,7 @@ namespace {
 #define M_PI 3.14159265358979323846
 #endif
 #ifndef M_E
-#define M_E  2.71828182845904523536
+#define M_E 2.71828182845904523536
 #endif
 
 class MathParser {
@@ -108,7 +108,7 @@ private:
         double base = parsePrimary();
         if (peek() == '^') {
             get();
-            double exp = parseFactor(); // right-associative
+            double exp = parseFactor();  // right-associative
             base = std::pow(base, exp);
         }
         return base;
@@ -160,10 +160,13 @@ private:
                 m_pos++;
             }
             std::string ident = m_s.substr(start, m_pos - start);
-            for (char &ch : ident) ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+            std::transform(ident.begin(), ident.end(), ident.begin(),
+                           [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
 
-            if (ident == "pi") return M_PI;
-            if (ident == "e") return M_E;
+            if (ident == "pi")
+                return M_PI;
+            if (ident == "e")
+                return M_E;
 
             if (peek() == '(') {
                 get();
@@ -180,39 +183,59 @@ private:
                 }
                 get();
 
-                if (ident == "sin") return std::sin(arg1);
-                if (ident == "cos") return std::cos(arg1);
-                if (ident == "tan") return std::tan(arg1);
-                if (ident == "asin") return std::asin(arg1);
-                if (ident == "acos") return std::acos(arg1);
-                if (ident == "atan") return std::atan(arg1);
-                if (ident == "sinh") return std::sinh(arg1);
-                if (ident == "cosh") return std::cosh(arg1);
-                if (ident == "tanh") return std::tanh(arg1);
+                if (ident == "sin")
+                    return std::sin(arg1);
+                if (ident == "cos")
+                    return std::cos(arg1);
+                if (ident == "tan")
+                    return std::tan(arg1);
+                if (ident == "asin")
+                    return std::asin(arg1);
+                if (ident == "acos")
+                    return std::acos(arg1);
+                if (ident == "atan")
+                    return std::atan(arg1);
+                if (ident == "sinh")
+                    return std::sinh(arg1);
+                if (ident == "cosh")
+                    return std::cosh(arg1);
+                if (ident == "tanh")
+                    return std::tanh(arg1);
                 if (ident == "sqrt") {
-                    if (arg1 < 0.0) throw std::runtime_error("Domain error in sqrt (negative argument)");
+                    if (arg1 < 0.0)
+                        throw std::runtime_error("Domain error in sqrt (negative argument)");
                     return std::sqrt(arg1);
                 }
-                if (ident == "cbrt") return std::cbrt(arg1);
-                if (ident == "exp") return std::exp(arg1);
+                if (ident == "cbrt")
+                    return std::cbrt(arg1);
+                if (ident == "exp")
+                    return std::exp(arg1);
                 if (ident == "log" || ident == "ln") {
-                    if (arg1 <= 0.0) throw std::runtime_error("Domain error in log (argument <= 0)");
+                    if (arg1 <= 0.0)
+                        throw std::runtime_error("Domain error in log (argument <= 0)");
                     return std::log(arg1);
                 }
                 if (ident == "log10") {
-                    if (arg1 <= 0.0) throw std::runtime_error("Domain error in log10 (argument <= 0)");
+                    if (arg1 <= 0.0)
+                        throw std::runtime_error("Domain error in log10 (argument <= 0)");
                     return std::log10(arg1);
                 }
                 if (ident == "log2") {
-                    if (arg1 <= 0.0) throw std::runtime_error("Domain error in log2 (argument <= 0)");
+                    if (arg1 <= 0.0)
+                        throw std::runtime_error("Domain error in log2 (argument <= 0)");
                     return std::log2(arg1);
                 }
-                if (ident == "abs" || ident == "fabs") return std::abs(arg1);
-                if (ident == "floor") return std::floor(arg1);
-                if (ident == "ceil") return std::ceil(arg1);
-                if (ident == "round") return std::round(arg1);
+                if (ident == "abs" || ident == "fabs")
+                    return std::abs(arg1);
+                if (ident == "floor")
+                    return std::floor(arg1);
+                if (ident == "ceil")
+                    return std::ceil(arg1);
+                if (ident == "round")
+                    return std::round(arg1);
                 if (ident == "pow") {
-                    if (!hasArg2) throw std::runtime_error("pow() requires two arguments: pow(base, exp)");
+                    if (!hasArg2)
+                        throw std::runtime_error("pow() requires two arguments: pow(base, exp)");
                     return std::pow(arg1, arg2);
                 }
 
@@ -229,10 +252,9 @@ private:
     size_t m_pos;
 };
 
-} // namespace
+}  // namespace
 
-MathResult InlineMathEvaluator::evaluate(const QString &expression)
-{
+MathResult InlineMathEvaluator::evaluate(const QString &expression) {
     MathResult res;
     QString clean = expression.trimmed();
     if (clean.isEmpty()) {
@@ -259,10 +281,10 @@ MathResult InlineMathEvaluator::evaluate(const QString &expression)
     return res;
 }
 
-bool InlineMathEvaluator::evaluateInEditor(ScintillaNext *editor, bool appendResult, QString *outMessage)
-{
+bool InlineMathEvaluator::evaluateInEditor(ScintillaNext *editor, bool appendResult, QString *outMessage) {
     if (!editor) {
-        if (outMessage) *outMessage = QStringLiteral("No active editor");
+        if (outMessage)
+            *outMessage = QStringLiteral("No active editor");
         return false;
     }
 
@@ -292,7 +314,8 @@ bool InlineMathEvaluator::evaluateInEditor(ScintillaNext *editor, bool appendRes
 
     MathResult res = evaluate(cleanExpr);
     if (!res.success) {
-        if (outMessage) *outMessage = QStringLiteral("Math Error: ") + res.errorMessage;
+        if (outMessage)
+            *outMessage = QStringLiteral("Math Error: ") + res.errorMessage;
         return false;
     }
 

@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FINDREPLACEDIALOG_H
 #define FINDREPLACEDIALOG_H
 
@@ -33,7 +33,6 @@
 #include "Finder.h"
 #include "ISearchResultsHandler.h"
 
-
 class ScintillaNext;
 class MainWindow;
 class BookMarkDecorator;
@@ -42,22 +41,13 @@ namespace Ui {
 class FindReplaceDialog;
 }
 
-class FindReplaceDialog : public QDialog
-{
+class FindReplaceDialog : public QDialog {
     Q_OBJECT
 
 public:
-    enum {
-        FIND_TAB = 0,
-        REPLACE_TAB = 1,
-        MARK_TAB = 2
-    };
+    enum { FIND_TAB = 0, REPLACE_TAB = 1, MARK_TAB = 2 };
 
-    enum class SearchDirection
-    {
-        Forwards,
-        Backwards
-    };
+    enum class SearchDirection { Forwards, Backwards };
 
     explicit FindReplaceDialog(ISearchResultsHandler *searchResults, MainWindow *window = nullptr);
     ~FindReplaceDialog() override;
@@ -104,7 +94,7 @@ private slots:
 private:
     QString findString() const;
     void performFind(SearchDirection direction);
-    void prepareToPerformSearch(bool replace=false);
+    void prepareToPerformSearch(bool replace = false);
     void loadSettings();
     void saveSettings();
 
@@ -132,4 +122,4 @@ private:
     Finder *finder;
 };
 
-#endif // FINDREPLACEDIALOG_H
+#endif  // FINDREPLACEDIALOG_H

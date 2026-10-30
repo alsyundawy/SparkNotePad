@@ -15,20 +15,17 @@
 #include <QClipboard>
 #include <QApplication>
 
-CharacterInfoDialog::CharacterInfoDialog(const CharacterInfo::Details &d, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::CharacterInfoDialog),
-    m_details(d)
-{
+CharacterInfoDialog::CharacterInfoDialog(const CharacterInfo::Details &d, QWidget *parent)
+    : QDialog(parent), ui(new Ui::CharacterInfoDialog), m_details(d) {
     ui->setupUi(this);
 
     // Header section
     ui->labelGlyph->setText(d.displayGlyph);
     ui->labelCharName->setText(d.name);
     ui->labelCodePoint->setText(QStringLiteral("%1  (Dec: %2,  Oct: 0%3)")
-                               .arg(CharacterInfo::formatCodePoint(d.codePoint))
-                               .arg(d.codePoint)
-                               .arg(QString::number(d.codePoint, 8)));
+                                    .arg(CharacterInfo::formatCodePoint(d.codePoint))
+                                    .arg(d.codePoint)
+                                    .arg(QString::number(d.codePoint, 8)));
     ui->labelBlock->setText(QStringLiteral("Block: %1").arg(d.block));
 
     // Classification
@@ -57,28 +54,23 @@ CharacterInfoDialog::CharacterInfoDialog(const CharacterInfo::Details &d, QWidge
     connect(ui->btnCopyHtml, &QPushButton::clicked, this, &CharacterInfoDialog::copyHtmlEntity);
 }
 
-CharacterInfoDialog::~CharacterInfoDialog()
-{
+CharacterInfoDialog::~CharacterInfoDialog() {
     delete ui;
 }
 
-void CharacterInfoDialog::copyCharacter()
-{
+void CharacterInfoDialog::copyCharacter() {
     QApplication::clipboard()->setText(m_details.glyph);
 }
 
-void CharacterInfoDialog::copyCodePoint()
-{
+void CharacterInfoDialog::copyCodePoint() {
     QApplication::clipboard()->setText(CharacterInfo::formatCodePoint(m_details.codePoint));
 }
 
-void CharacterInfoDialog::copyUtf8()
-{
+void CharacterInfoDialog::copyUtf8() {
     QApplication::clipboard()->setText(m_details.utf8Hex);
 }
 
-void CharacterInfoDialog::copyHtmlEntity()
-{
+void CharacterInfoDialog::copyHtmlEntity() {
     if (!m_details.htmlNamedEntity.isEmpty()) {
         QApplication::clipboard()->setText(m_details.htmlNamedEntity);
     } else {

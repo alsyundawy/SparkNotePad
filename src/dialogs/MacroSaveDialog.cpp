@@ -21,34 +21,26 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "MacroSaveDialog.h"
 #include "ui_MacroSaveDialog.h"
 
-MacroSaveDialog::MacroSaveDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::MacroSaveDialog)
-{
+MacroSaveDialog::MacroSaveDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroSaveDialog) {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->setupUi(this);
 
-    connect(ui->editName, &QLineEdit::textChanged, [=, this](const QString &text) {
-        ui->buttonOk->setEnabled(text.trimmed().size() > 0);
-    });
+    connect(ui->editName, &QLineEdit::textChanged,
+            [=, this](const QString &text) { ui->buttonOk->setEnabled(text.trimmed().size() > 0); });
 }
 
-MacroSaveDialog::~MacroSaveDialog()
-{
+MacroSaveDialog::~MacroSaveDialog() {
     delete ui;
 }
 
-QString MacroSaveDialog::getName() const
-{
+QString MacroSaveDialog::getName() const {
     return ui->editName->text();
 }
 
-QKeySequence MacroSaveDialog::getShortcut() const
-{
+QKeySequence MacroSaveDialog::getShortcut() const {
     return ui->keySequenceEdit->keySequence();
 }

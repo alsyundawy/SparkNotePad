@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,33 +19,32 @@
 
 class ScintillaNext;
 
-class CharacterInfo
-{
+class CharacterInfo {
 public:
     struct Details {
-        uint32_t codePoint {0};
-        QString glyph;               // Raw character string
-        QString displayGlyph;        // Printable visual glyph (e.g. for controls NUL, TAB, CR, LF, Space)
-        QString name;                // Unicode character name
-        QString block;               // Unicode block (e.g. "Basic Latin", "Currency Symbols", "Emoticons")
-        QString categoryCode;        // Category short code (e.g. "Lu", "Ll", "Sm", "Sc", "Cc")
-        QString categoryDescription; // Full category description (e.g. "Letter, Uppercase", "Symbol, Currency")
-        QString script;              // Writing script (e.g. "Latin", "Greek", "Cyrillic", "Common")
-        QString direction;           // Bidirectional class (e.g. "Left-to-Right", "Right-to-Left")
-        QByteArray utf8Bytes;        // Raw UTF-8 bytes
-        QString utf8Hex;             // Hex representation: "0xXX 0xXX..."
-        QString utf8Dec;             // Dec representation: "NNN, NNN..."
-        QString utf16Hex;            // UTF-16 code units: "0xXXXX" or "0xXXXX 0xXXXX"
-        QString utf16Dec;            // UTF-16 decimal
-        QString utf32Hex;            // UTF-32 hex: "0xXXXXXXXX"
-        QString htmlNamedEntity;     // Named HTML entity (e.g. "&euro;", "&copy;")
-        QString htmlDecEntity;       // Decimal entity: "&#NNN;"
-        QString htmlHexEntity;       // Hex entity: "&#xXXXX;"
-        QString cEscape;             // C/C++ escape sequence: "\uXXXX" or "\UXXXXXXXX"
-        QString jsonEscape;          // JSON escape: "\uXXXX"
-        QString cssEscape;           // CSS escape: "\XXXX "
-        QString urlPercent;          // Percent-encoded: "%XX%XX..."
-        bool isValid {false};
+        uint32_t codePoint{0};
+        QString glyph;                // Raw character string
+        QString displayGlyph;         // Printable visual glyph (e.g. for controls NUL, TAB, CR, LF, Space)
+        QString name;                 // Unicode character name
+        QString block;                // Unicode block (e.g. "Basic Latin", "Currency Symbols", "Emoticons")
+        QString categoryCode;         // Category short code (e.g. "Lu", "Ll", "Sm", "Sc", "Cc")
+        QString categoryDescription;  // Full category description (e.g. "Letter, Uppercase", "Symbol, Currency")
+        QString script;               // Writing script (e.g. "Latin", "Greek", "Cyrillic", "Common")
+        QString direction;            // Bidirectional class (e.g. "Left-to-Right", "Right-to-Left")
+        QByteArray utf8Bytes;         // Raw UTF-8 bytes
+        QString utf8Hex;              // Hex representation: "0xXX 0xXX..."
+        QString utf8Dec;              // Dec representation: "NNN, NNN..."
+        QString utf16Hex;             // UTF-16 code units: "0xXXXX" or "0xXXXX 0xXXXX"
+        QString utf16Dec;             // UTF-16 decimal
+        QString utf32Hex;             // UTF-32 hex: "0xXXXXXXXX"
+        QString htmlNamedEntity;      // Named HTML entity (e.g. "&euro;", "&copy;")
+        QString htmlDecEntity;        // Decimal entity: "&#NNN;"
+        QString htmlHexEntity;        // Hex entity: "&#xXXXX;"
+        QString cEscape;              // C/C++ escape sequence: "\uXXXX" or "\UXXXXXXXX"
+        QString jsonEscape;           // JSON escape: "\uXXXX"
+        QString cssEscape;            // CSS escape: "\XXXX "
+        QString urlPercent;           // Percent-encoded: "%XX%XX..."
+        bool isValid{false};
     };
 
     // Extracts character details at given position in editor.
@@ -61,4 +61,4 @@ public:
     static QString formatCodePoint(uint32_t cp);
 };
 
-#endif // CHARACTERINFO_H
+#endif  // CHARACTERINFO_H
