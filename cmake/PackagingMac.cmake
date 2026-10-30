@@ -56,6 +56,8 @@ set(MAC_DMG_NAME "NoteSciPad-v${PROJECT_VERSION}-${MAC_ARCH_SUFFIX}.dmg")
 find_program(MACDEPLOYQT_EXECUTABLE macdeployqt REQUIRED)
 
 add_custom_target(dmg
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${INSTALL_DIR}/NoteSciPad.dmg ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
+    COMMAND hdiutil detach /Volumes/NoteSciPad -force 2>/dev/null || true
     COMMAND ${MACDEPLOYQT_EXECUTABLE}
         ${INSTALL_DIR}/NoteSciPad.app
         -dmg
