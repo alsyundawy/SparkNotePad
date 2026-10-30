@@ -192,9 +192,10 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
                          &ApplicationSettings::setStrictOfflineMode, &ApplicationSettings::strictOfflineModeChanged);
 
     auto *buttonGroup = new QButtonGroup(this);
-    buttonGroup->addButton(ui->radioFollowCurrentDirectory, ApplicationSettings::FollowCurrentDocument);
-    buttonGroup->addButton(ui->radioLastUsedDirectory, ApplicationSettings::RememberLastUsed);
-    buttonGroup->addButton(ui->radioHardCoded, ApplicationSettings::HardCoded);
+    buttonGroup->addButton(ui->radioFollowCurrentDirectory,
+                           static_cast<int>(ApplicationSettings::FollowCurrentDocument));
+    buttonGroup->addButton(ui->radioLastUsedDirectory, static_cast<int>(ApplicationSettings::RememberLastUsed));
+    buttonGroup->addButton(ui->radioHardCoded, static_cast<int>(ApplicationSettings::HardCoded));
 
     connect(buttonGroup, &QButtonGroup::idClicked, this, [this](int id) {
         const auto e = static_cast<ApplicationSettings::DefaultDirectoryBehaviorEnum>(id);
@@ -221,7 +222,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(dir));
     });
 
-    if (auto b = buttonGroup->button(settings->defaultDirectoryBehavior())) {
+    if (auto b = buttonGroup->button(static_cast<int>(settings->defaultDirectoryBehavior()))) {
         b->setChecked(true);
     }
 

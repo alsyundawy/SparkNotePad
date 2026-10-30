@@ -57,18 +57,22 @@ public slots:                             \
     Q_SIGNAL                              \
     void lname##Changed(const type &val);
 
-class ApplicationSettings : public QSettings {
+class ApplicationSettings : public QSettings {  // NOSONAR(cpp:S1448)
     Q_OBJECT
 
 public:
     explicit ApplicationSettings(QObject *parent = nullptr);
 
-    enum DefaultDirectoryBehaviorEnum : std::uint8_t { FollowCurrentDocument, RememberLastUsed, HardCoded };
+    enum class DefaultDirectoryBehaviorEnum : std::uint8_t { FollowCurrentDocument, RememberLastUsed, HardCoded };
     Q_ENUM(DefaultDirectoryBehaviorEnum)
+
+    static constexpr auto FollowCurrentDocument = DefaultDirectoryBehaviorEnum::FollowCurrentDocument;
+    static constexpr auto RememberLastUsed = DefaultDirectoryBehaviorEnum::RememberLastUsed;
+    static constexpr auto HardCoded = DefaultDirectoryBehaviorEnum::HardCoded;
 
     template <typename T>
     T get(const char *key, const T &defaultValue) const {
-        return value(QLatin1String(key), defaultValue).template value<T>();
+        return value(QLatin1String(key), QVariant::fromValue(defaultValue)).template value<T>();
     }
 
     template <typename T>
@@ -78,7 +82,7 @@ public:
 
     template <typename T>
     void set(const ApplicationSetting<T> &setting, const T &value) {
-        setValue(QLatin1String(setting.key()), value);
+        setValue(QLatin1String(setting.key()), QVariant::fromValue(value));
     }
 
     DEFINE_SETTING(ShowMenuBar, showMenuBar, bool)

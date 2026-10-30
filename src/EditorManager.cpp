@@ -56,6 +56,11 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
         connect(ed, &ScintillaNext::closed, this, [this, ed]() { emit editorClosed(ed); });
     });
 
+    setupDisplaySettingsConnections();
+    setupEditorDecoratorConnections();
+}
+
+void EditorManager::setupDisplaySettingsConnections() {
     connect(settings, &ApplicationSettings::showWrapSymbolChanged, this, [this](bool b) {
         for (const auto &editor : getEditors()) {
             editor->setWrapVisualFlags(b ? SC_WRAPVISUALFLAG_END : SC_WRAPVISUALFLAG_NONE);
@@ -63,7 +68,6 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
     });
 
     connect(settings, &ApplicationSettings::showWhitespaceChanged, this, [this](bool b) {
-        // Note: SCWS_VISIBLEALWAYS configured directly via settings.
         for (const auto &editor : getEditors()) {
             editor->setViewWS(b ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE);
         }
@@ -88,7 +92,6 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
             }
         } else {
             for (const auto &editor : getEditors()) {
-                // Store the top line and restore it after the lines have been unwrapped
                 const auto topLine = static_cast<int>(editor->docLineFromVisible(editor->firstVisibleLine()));
                 editor->setWrapMode(SC_WRAP_NONE);
                 editor->setFirstVisibleLine(topLine);
@@ -111,7 +114,9 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
             }
         }
     });
+}
 
+void EditorManager::setupEditorDecoratorConnections() {
     connect(settings, &ApplicationSettings::urlHighlightingChanged, this, [this](bool b) {
         for (const auto &editor : getEditors()) {
             if (auto *decorator = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -156,7 +161,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
 }
 
 ScintillaNext *EditorManager::createEditor(const QString &name) {
-    auto *editor = new ScintillaNext(name);
+    auto *editor = new ScintillaNext(name);  // NOLINT // NOSONAR(cpp:S5018, cpp:S6011)
 
     manageEditor(editor);
 

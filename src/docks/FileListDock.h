@@ -29,6 +29,7 @@
 
 #include <QDockWidget>
 #include <QListWidgetItem>
+#include <memory>
 
 namespace Ui {
 class FileList;
@@ -41,7 +42,7 @@ class FileListDock : public QDockWidget {
 
 public:
     explicit FileListDock(MainWindow *parent);
-    ~FileListDock();
+    ~FileListDock() override;
 
 private slots:
     void refreshList();
@@ -50,15 +51,16 @@ private slots:
 
     void selectCurrentEditor();
 
-    void itemClicked(QListWidgetItem *item);
+    void itemClicked(const QListWidgetItem *item) const;
 
     void editorSavePointChanged(bool dirty);
     void editorRenamed();
+    void onVisibilityChanged(bool visible);
 
 private:
-    QListWidgetItem *lookupItemByEditor(const ScintillaNext *editor);
+    QListWidgetItem *lookupItemByEditor(const ScintillaNext *editor) const;
 
-    Ui::FileList *ui;
+    std::unique_ptr<Ui::FileList> ui;
     MainWindow *window;
 };
 
