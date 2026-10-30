@@ -57,9 +57,18 @@ add_custom_target(dmg
     COMMAND hdiutil detach /Volumes/SparkNotePad -force 2>/dev/null || true
     COMMAND ${MACDEPLOYQT_EXECUTABLE}
         ${INSTALL_DIR}/SparkNotePad.app
-        -dmg
-    COMMAND ${CMAKE_COMMAND} -E rename
-        ${INSTALL_DIR}/SparkNotePad.dmg
-        ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
+    COMMAND ${CMAKE_COMMAND} -E rm -rf
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlModels.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlWorkerScript.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQuick.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboard.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib
+    COMMAND codesign --force --deep -s - ${INSTALL_DIR}/SparkNotePad.app
+    COMMAND hdiutil create -volname SparkNotePad -srcfolder ${INSTALL_DIR}/SparkNotePad.app -ov -format UDZO -imagekey zlib-level=9 ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
     DEPENDS install_local
 )
