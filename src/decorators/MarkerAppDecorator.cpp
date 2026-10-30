@@ -26,7 +26,7 @@
 #include "ScintillaNext.h"
 
 static const QList<QColor> &markerColors() {
-    static const QList<QColor> colors = {QColor(0x00, 0xFF, 0xFF), QColor(0xFF, 0x80, 0x00), QColor(0xFF, 0xFF, 0x00)};
+    static const QList colors = {QColor(0x00, 0xFF, 0xFF), QColor(0xFF, 0x80, 0x00), QColor(0xFF, 0xFF, 0x00)};
     return colors;
 }
 
@@ -39,7 +39,7 @@ MarkerAppDecorator::MarkerAppDecorator(SparkNotePadApplication *app) : Applicati
     connect(app->getEditorManager(), &EditorManager::editorCreated, this, [](ScintillaNext *editor) {
         const auto &colors = markerColors();
         for (int i = 0; i < colors.size(); i++) {
-            int indicator = editor->allocateIndicator(QString("marker_%1").arg(i));
+            const int indicator = editor->allocateIndicator(QString("marker_%1").arg(i));
             editor->indicSetFore(indicator, QColorToScintillaColour(colors[i]));
             editor->indicSetStyle(indicator, INDIC_ROUNDBOX);
             editor->indicSetOutlineAlpha(indicator, 150);
@@ -53,15 +53,15 @@ QColor MarkerAppDecorator::markerColor(int i) const {
     return markerColors().value(i);
 }
 
-void MarkerAppDecorator::mark(ScintillaNext *editor, int i) {
-    int selectionStart = static_cast<int>(editor->selectionStart());
-    int selectionEnd = static_cast<int>(editor->selectionEnd());
+void MarkerAppDecorator::mark(ScintillaNext *editor, int i) const {
+    auto selectionStart = static_cast<int>(editor->selectionStart());
+    auto selectionEnd = static_cast<int>(editor->selectionEnd());
     bool isWholeWord = false;
 
     // If there is no selection, get the word at the cursor, else use it verbatim
     if (selectionStart == selectionEnd) {
         isWholeWord = true;
-        const int curPos = static_cast<int>(editor->currentPos());
+        const auto curPos = static_cast<int>(editor->currentPos());
         selectionStart = static_cast<int>(editor->wordStartPosition(curPos, true));
         selectionEnd = static_cast<int>(editor->wordEndPosition(curPos, true));
 
@@ -76,26 +76,26 @@ void MarkerAppDecorator::mark(ScintillaNext *editor, int i) {
         return;
     }
 
-    int indicator = editor->allocateIndicator(QStringLiteral("marker_%1").arg(i));
+    const int indicator = editor->allocateIndicator(QStringLiteral("marker_%1").arg(i));
     editor->setIndicatorCurrent(indicator);
 
     const QByteArray selText = editor->get_text_range(selectionStart, selectionEnd);
     const int flags = isWholeWord ? SCFIND_WHOLEWORD : 0;
 
     editor->setSearchFlags(flags);
-    editor->forEachMatch(selText, [&](int start, int end) {
+    editor->forEachMatch(selText, [editor](int start, int end) {
         editor->indicatorFillRange(start, end - start);
         return end;
     });
 }
 
-void MarkerAppDecorator::clear(ScintillaNext *editor, int i) {
-    int indicator = editor->allocateIndicator(QString("marker_%1").arg(i));
+void MarkerAppDecorator::clear(ScintillaNext *editor, int i) const {
+    const int indicator = editor->allocateIndicator(QString("marker_%1").arg(i));
     editor->setIndicatorCurrent(indicator);
     editor->indicatorClearRange(0, editor->length());
 }
 
-void MarkerAppDecorator::clearAll(ScintillaNext *editor) {
+void MarkerAppDecorator::clearAll(ScintillaNext *editor) const {
     const auto &colors = markerColors();
     for (int i = 0; i < colors.size(); i++) {
         clear(editor, i);

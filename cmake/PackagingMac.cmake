@@ -8,7 +8,13 @@ set_target_properties(SparkNotePad PROPERTIES
 )
 
 # Application icon
-set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/SparkNotePad.icns)
+if(EXISTS "${CMAKE_SOURCE_DIR}/icon/SparkNotePad.icns")
+    set(APP_ICON_MACOS "${CMAKE_SOURCE_DIR}/icon/SparkNotePad.icns")
+elseif(EXISTS "${CMAKE_CURRENT_LIST_DIR}/../icon/SparkNotePad.icns")
+    set(APP_ICON_MACOS "${CMAKE_CURRENT_LIST_DIR}/../icon/SparkNotePad.icns")
+else()
+    set(APP_ICON_MACOS "${CMAKE_CURRENT_LIST_DIR}/icon/SparkNotePad.icns")
+endif()
 
 set_source_files_properties(${APP_ICON_MACOS}
     PROPERTIES MACOSX_PACKAGE_LOCATION "Resources"

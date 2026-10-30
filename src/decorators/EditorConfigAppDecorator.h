@@ -36,11 +36,11 @@ public:
     explicit EditorConfigAppDecorator(SparkNotePadApplication *app);
 
 private slots:
-    void doEditorConfig(ScintillaNext *editor);
+    void doEditorConfig(ScintillaNext *editor) const;
 
-    void trimTrailingWhitespace();
-    void ensureFinalNewline();
-    void ensureNoFinalNewline();
+    void trimTrailingWhitespace() const;
+    void ensureFinalNewline() const;
+    void ensureNoFinalNewline() const;
 };
 
 #endif  // EDITORCONFIGAPPDECORATOR_H

@@ -27,7 +27,7 @@ using namespace Scintilla;
 
 Macro::Macro() : name("<Current Recorded Macro>") {}
 
-Macro::~Macro() {}
+Macro::~Macro() = default;
 
 void Macro::addMacroStep(Message message, uptr_t wParam, sptr_t lParam) {
     qInfo(Q_FUNC_INFO);
@@ -120,12 +120,4 @@ const QString &Macro::getName() const {
 
 void Macro::setName(const QString &value) {
     name = value;
-}
-
-QDataStream &operator<<(QDataStream &stream, const Macro &macro) {
-    return stream << macro.name << macro.steps;
-}
-
-QDataStream &operator>>(QDataStream &stream, Macro &macro) {
-    return stream >> macro.name >> macro.steps;
 }

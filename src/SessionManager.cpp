@@ -41,7 +41,7 @@ static QString RandomSessionFileName() {
 static QVariantList QListToQVariantList(const QList<int> &intList) {
     QVariantList vl;
     vl.reserve(intList.size());
-    std::transform(intList.cbegin(), intList.cend(), std::back_inserter(vl), [](int i) { return QVariant(i); });
+    std::ranges::transform(intList, std::back_inserter(vl), [](int i) { return QVariant(i); });
     return vl;
 }
 
@@ -49,8 +49,8 @@ static QVariantList QListToQVariantList(const QList<int> &intList) {
 static QList<int> QVariantListToQList(const QVariantList &variantList) {
     QList<int> intList;
     intList.reserve(variantList.size());
-    std::transform(variantList.cbegin(), variantList.cend(), std::back_inserter(intList),
-                   [](const QVariant &variant) { return variant.toInt(); });
+    std::ranges::transform(variantList, std::back_inserter(intList),
+                           [](const QVariant &variant) { return variant.toInt(); });
     return intList;
 }
 
@@ -101,7 +101,6 @@ void SessionManager::clear() {
 
 void SessionManager::clearSettings() {
     ApplicationSettings settings;
-    ;
 
     // Clear everything out. There can be left over entries that are no longer needed
     settings.beginGroup("CurrentSession");
@@ -129,7 +128,6 @@ void SessionManager::saveSession(MainWindow *window) {
     const ScintillaNext *currentEditor = window->currentEditor();
     int currentEditorIndex = 0;
     ApplicationSettings settings;
-    ;
 
     settings.beginGroup("CurrentSession");
 
@@ -171,7 +169,6 @@ void SessionManager::loadSession(MainWindow *window) {
     qInfo(Q_FUNC_INFO);
 
     ApplicationSettings settings;
-    ;
 
     settings.beginGroup("CurrentSession");
 
@@ -201,10 +198,8 @@ void SessionManager::loadSession(MainWindow *window) {
                 qDebug("Unknown session entry type: %s", qUtf8Printable(type));
             }
 
-            if (editor) {
-                if (currentEditorIndex == index) {
-                    currentEditor = editor;
-                }
+            if (editor && currentEditorIndex == index) {
+                currentEditor = editor;
             }
         } else {
             qDebug("Unknown session entry type for index %d", index);
@@ -221,13 +216,13 @@ void SessionManager::loadSession(MainWindow *window) {
 }
 
 bool SessionManager::willFileGetStoredInSession(const ScintillaNext *editor) const {
-    SessionFileType editorType = determineType(editor);
+    const SessionFileType editorType = determineType(editor);
 
     // See if the editor type is in the currently supported file types
     return fileTypes.testFlag(editorType);
 }
 
-void SessionManager::storeFileDetails(ScintillaNext *editor, QSettings &settings) {
+void SessionManager::storeFileDetails(const ScintillaNext *editor, QSettings &settings) const {
     settings.setValue("Type", "File");
     settings.setValue("FilePath", editor->getFilePath());
 
@@ -266,7 +261,7 @@ ScintillaNext *SessionManager::loadFileDetails(const QSettings &settings) {
     }
 }
 
-void SessionManager::storeUnsavedFileDetails(ScintillaNext *editor, QSettings &settings) {
+void SessionManager::storeUnsavedFileDetails(const ScintillaNext *editor, QSettings &settings) const {
     const QString sessionFileName = RandomSessionFileName();
 
     settings.setValue("Type", "UnsavedFile");
@@ -288,8 +283,8 @@ ScintillaNext *SessionManager::loadUnsavedFileDetails(const QSettings &settings)
     qDebug("Session file: \"%s\"", qUtf8Printable(filePath));
     qDebug("  temp loc: \"%s\"", qUtf8Printable(sessionFilePath));
 
-    const ScintillaNext *existingEditor = app->getEditorManager()->getEditorByFilePath(filePath);
-    if (existingEditor != Q_NULLPTR) {
+    if (const ScintillaNext *existingEditor = app->getEditorManager()->getEditorByFilePath(filePath);
+        existingEditor != Q_NULLPTR) {
         qDebug("  file is already open, ignoring");
         return Q_NULLPTR;
     }
@@ -318,7 +313,7 @@ ScintillaNext *SessionManager::loadUnsavedFileDetails(const QSettings &settings)
     }
 }
 
-void SessionManager::storeTempFile(ScintillaNext *editor, QSettings &settings) {
+void SessionManager::storeTempFile(const ScintillaNext *editor, QSettings &settings) const {
     const QString sessionFileName = RandomSessionFileName();
 
     settings.setValue("Type", "Temp");
@@ -342,8 +337,7 @@ ScintillaNext *SessionManager::loadTempFile(const QSettings &settings) {
     qDebug("Session temp file: \"%s\"", qUtf8Printable(fullFilePath));
 
     if (QFileInfo::exists(fullFilePath)) {
-        QString integrityError;
-        if (!ConfigIntegrityGuard::verifyFileIntegrity(fullFilePath, &integrityError)) {
+        if (QString integrityError; !ConfigIntegrityGuard::verifyFileIntegrity(fullFilePath, &integrityError)) {
             qWarning("Session file integrity failed: %s", qUtf8Printable(integrityError));
             return Q_NULLPTR;
         }
@@ -374,24 +368,24 @@ ScintillaNext *SessionManager::loadTempFile(const QSettings &settings) {
     }
 }
 
-void SessionManager::storeEditorViewDetails(ScintillaNext *editor, QSettings &settings) {
+void SessionManager::storeEditorViewDetails(const ScintillaNext *editor, QSettings &settings) const {
     settings.setValue("FirstVisibleLine",
                       static_cast<int>(editor->firstVisibleLine() +
                                        1));  // Keep it 1-based in the settings just for human-readability
     settings.setValue("CurrentPosition", static_cast<int>(editor->currentPos()));
 
-    BookMarkDecorator *decorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+    const BookMarkDecorator *decorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
     if (decorator == Q_NULLPTR) {
         qWarning("Editor has no BookMarkDecorator, unable to store bookmarks");
         return;
     }
 
-    QList<int> bookMarkedLines = decorator->bookMarkedLines();
-    if (bookMarkedLines.length() > 0)
+    const QList<int> bookMarkedLines = decorator->bookMarkedLines();
+    if (!bookMarkedLines.isEmpty())
         settings.setValue("BookMarks", QListToQVariantList(bookMarkedLines));
 }
 
-void SessionManager::loadEditorViewDetails(ScintillaNext *editor, const QSettings &settings) {
+void SessionManager::loadEditorViewDetails(ScintillaNext *editor, const QSettings &settings) const {
     const int firstVisibleLine = settings.value("FirstVisibleLine").toInt() - 1;
     const int currentPosition = settings.value("CurrentPosition").toInt();
 
@@ -399,7 +393,7 @@ void SessionManager::loadEditorViewDetails(ScintillaNext *editor, const QSetting
     editor->setEmptySelection(currentPosition);
 
     if (settings.contains("BookMarks")) {
-        QList<int> bookMarkedLines =
+        const QList<int> bookMarkedLines =
             QVariantListToQList(settings.value("BookMarks")
                                     .toList());  // just using .value<QList<int>>() does not work...possibly a Qt bug?
 

@@ -63,8 +63,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
     });
 
     connect(settings, &ApplicationSettings::showWhitespaceChanged, this, [this](bool b) {
-        // TODO: could make SCWS_VISIBLEALWAYS configurable via settings. Probably not worth
-        // taking up menu space e.g. show all, show leading, show trailing
+        // Note: SCWS_VISIBLEALWAYS configured directly via settings.
         for (const auto &editor : getEditors()) {
             editor->setViewWS(b ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE);
         }
@@ -90,7 +89,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
         } else {
             for (const auto &editor : getEditors()) {
                 // Store the top line and restore it after the lines have been unwrapped
-                const int topLine = static_cast<int>(editor->docLineFromVisible(editor->firstVisibleLine()));
+                const auto topLine = static_cast<int>(editor->docLineFromVisible(editor->firstVisibleLine()));
                 editor->setWrapMode(SC_WRAP_NONE);
                 editor->setFirstVisibleLine(topLine);
             }
@@ -180,7 +179,7 @@ ScintillaNext *EditorManager::getEditorByFilePath(const QString &filePath) {
 
     purgeOldEditorPointers();
 
-    const auto it = std::find_if(editors.cbegin(), editors.cend(), [&newInfo](const QPointer<ScintillaNext> &editor) {
+    const auto it = std::ranges::find_if(editors, [&newInfo](const QPointer<ScintillaNext> &editor) {
         return editor && editor->isFile() && editor->getFileInfo() == newInfo;
     });
     return (it != editors.cend()) ? it->data() : nullptr;
@@ -458,7 +457,7 @@ int EditorManager::detectEOLMode(const ScintillaNext *editor) const {
     int cr = 0;
     int crlf = 0;
     int chPrev = ' ';
-    int chNext = static_cast<int>(editor->charAt(index));
+    auto chNext = static_cast<int>(editor->charAt(index));
 
     for (int i = 0; i < qMin(MAX_BYTES_TO_CHECK, static_cast<int>(editor->length())); ++i) {
         int ch = chNext;

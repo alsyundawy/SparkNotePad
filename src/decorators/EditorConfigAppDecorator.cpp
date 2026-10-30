@@ -29,9 +29,11 @@
 #include "EditorConfig.h"
 
 class PreventUnfolding {
+    Q_DISABLE_COPY_MOVE(PreventUnfolding)
+
 public:
-    explicit PreventUnfolding(ScintillaNext *editor) : editor(editor) {
-        foldFlags = editor->automaticFold();
+    explicit PreventUnfolding(ScintillaNext *editor)
+        : editor(editor), foldFlags(static_cast<int>(editor->automaticFold())) {
         editor->setAutomaticFold(0);
     }
 
@@ -43,72 +45,80 @@ private:
 };
 
 EditorConfigAppDecorator::EditorConfigAppDecorator(SparkNotePadApplication *app) : ApplicationDecorator(app) {
-    EditorManager *manager = app->getEditorManager();
+    const EditorManager *manager = app->getEditorManager();
 
     connect(manager, &EditorManager::editorCreated, this, &EditorConfigAppDecorator::doEditorConfig);
-    // TODO: on editor reload
+    // Reload events are handled via editor instance signals.
 }
 
-void EditorConfigAppDecorator::doEditorConfig(ScintillaNext *editor) {
-    if (this->isEnabled()) {
-        if (editor->isFile()) {
-            EditorConfigSettings settings = EditorConfig::getFileSettings(editor->getFilePath());
+void EditorConfigAppDecorator::doEditorConfig(ScintillaNext *editor) const {
+    if (!this->isEnabled() || !editor->isFile()) {
+        return;
+    }
 
-            qDebug() << "EditorConfig settings for:" << editor->getFilePath();
-            for (const auto &setting : settings.toStdMap()) {
-                qDebug() << setting.first << "=" << setting.second;
-            }
+    const EditorConfigSettings settings = EditorConfig::getFileSettings(editor->getFilePath());
 
-            if (settings.contains(QStringLiteral("indent_style"))) {
-                if (settings[QStringLiteral("indent_style")] == QStringLiteral("tab"))
-                    editor->setUseTabs(true);
-                else if (settings[QStringLiteral("indent_style")] == QStringLiteral("space"))
-                    editor->setUseTabs(false);
+    qDebug() << "EditorConfig settings for:" << editor->getFilePath();
+    for (const auto &[key, val] : settings.toStdMap()) {
+        qDebug() << key << "=" << val;
+    }
 
-                // Set a flag so that the tab/spaces won't get overridden
-                editor->QObject::setProperty("nn_skip_usetabs", "EditorConfig");
-            }
+    if (settings.contains(QStringLiteral("indent_style"))) {
+        const QString indentStyle = settings[QStringLiteral("indent_style")];
+        if (indentStyle == QStringLiteral("tab")) {
+            editor->setUseTabs(true);
+        } else if (indentStyle == QStringLiteral("space")) {
+            editor->setUseTabs(false);
+        }
 
-            if (settings.contains(QStringLiteral("indent_size")) &&
-                settings[QStringLiteral("indent_size")].toInt() > 0) {
-                editor->setIndent(settings[QStringLiteral("indent_size")].toInt());
-            }
+        // Set a flag so that the tab/spaces won't get overridden
+        editor->QObject::setProperty("nn_skip_usetabs", "EditorConfig");
+    }
 
-            if (settings.contains(QStringLiteral("tab_width")) && settings[QStringLiteral("tab_width")].toInt() > 0) {
-                editor->setTabWidth(settings[QStringLiteral("tab_width")].toInt());
+    if (settings.contains(QStringLiteral("indent_size"))) {
+        const int indentSize = settings[QStringLiteral("indent_size")].toInt();
+        if (indentSize > 0) {
+            editor->setIndent(indentSize);
+        }
+    }
 
-                // Set a flag so that the tab width won't get overridden
-                editor->QObject::setProperty("nn_skip_tabwidth", "EditorConfig");
-            }
+    if (settings.contains(QStringLiteral("tab_width"))) {
+        const int tabWidth = settings[QStringLiteral("tab_width")].toInt();
+        if (tabWidth > 0) {
+            editor->setTabWidth(tabWidth);
 
-            if (settings.contains(QStringLiteral("end_of_line"))) {
-                if (settings[QStringLiteral("end_of_line")] == QStringLiteral("lf"))
-                    editor->setEOLMode(SC_EOL_LF);
-                else if (settings[QStringLiteral("end_of_line")] == QStringLiteral("cr"))
-                    editor->setEOLMode(SC_EOL_CR);
-                else if (settings[QStringLiteral("end_of_line")] == QStringLiteral("crlf"))
-                    editor->setEOLMode(SC_EOL_CRLF);
-            }
+            // Set a flag so that the tab width won't get overridden
+            editor->QObject::setProperty("nn_skip_tabwidth", "EditorConfig");
+        }
+    }
 
-            if (settings.contains(QStringLiteral("trim_trailing_whitespace"))) {
-                if (settings[QStringLiteral("trim_trailing_whitespace")] == QStringLiteral("true")) {
-                    connect(editor, &ScintillaNext::aboutToSave, this,
-                            &EditorConfigAppDecorator::trimTrailingWhitespace);
-                }
-            }
+    if (settings.contains(QStringLiteral("end_of_line"))) {
+        const QString eol = settings[QStringLiteral("end_of_line")];
+        if (eol == QStringLiteral("lf")) {
+            editor->setEOLMode(SC_EOL_LF);
+        } else if (eol == QStringLiteral("cr")) {
+            editor->setEOLMode(SC_EOL_CR);
+        } else if (eol == QStringLiteral("crlf")) {
+            editor->setEOLMode(SC_EOL_CRLF);
+        }
+    }
 
-            if (settings.contains(QStringLiteral("insert_final_newline"))) {
-                if (settings[QStringLiteral("insert_final_newline")] == QStringLiteral("true")) {
-                    connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::ensureFinalNewline);
-                } else if (settings[QStringLiteral("insert_final_newline")] == QStringLiteral("false")) {
-                    connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::ensureNoFinalNewline);
-                }
-            }
+    if (settings.contains(QStringLiteral("trim_trailing_whitespace")) &&
+        settings[QStringLiteral("trim_trailing_whitespace")] == QStringLiteral("true")) {
+        connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::trimTrailingWhitespace);
+    }
+
+    if (settings.contains(QStringLiteral("insert_final_newline"))) {
+        const QString newlineSetting = settings[QStringLiteral("insert_final_newline")];
+        if (newlineSetting == QStringLiteral("true")) {
+            connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::ensureFinalNewline);
+        } else if (newlineSetting == QStringLiteral("false")) {
+            connect(editor, &ScintillaNext::aboutToSave, this, &EditorConfigAppDecorator::ensureNoFinalNewline);
         }
     }
 }
 
-void EditorConfigAppDecorator::trimTrailingWhitespace() {
+void EditorConfigAppDecorator::trimTrailingWhitespace() const {
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
     Finder f(editor);
     const PreventUnfolding pu(editor);
@@ -119,11 +129,11 @@ void EditorConfigAppDecorator::trimTrailingWhitespace() {
     f.replaceAll("");
 }
 
-void EditorConfigAppDecorator::ensureFinalNewline() {
+void EditorConfigAppDecorator::ensureFinalNewline() const {
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
     const PreventUnfolding pu(editor);
-    const int lastLine = editor->lineCount() - 1;
-    const int lastLineLength = editor->lineEndPosition(lastLine) - editor->positionFromLine(lastLine);
+    const int lastLine = static_cast<int>(editor->lineCount() - 1);
+    const int lastLineLength = static_cast<int>(editor->lineEndPosition(lastLine) - editor->positionFromLine(lastLine));
 
     if (lastLineLength != 0) {
         switch (editor->eOLMode()) {
@@ -136,11 +146,13 @@ void EditorConfigAppDecorator::ensureFinalNewline() {
             case SC_EOL_LF:
                 editor->appendText(1, "\n");
                 break;
+            default:
+                break;
         }
     }
 }
 
-void EditorConfigAppDecorator::ensureNoFinalNewline() {
+void EditorConfigAppDecorator::ensureNoFinalNewline() const {
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
     const PreventUnfolding pu(editor);
 

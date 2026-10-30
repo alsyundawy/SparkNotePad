@@ -65,17 +65,17 @@ private:
     static void clearSettings();
     static void clearDirectory();
 
-    void storeFileDetails(ScintillaNext *editor, QSettings &settings);
+    void storeFileDetails(const ScintillaNext *editor, QSettings &settings) const;
     ScintillaNext *loadFileDetails(const QSettings &settings);
 
-    void storeUnsavedFileDetails(ScintillaNext *editor, QSettings &settings);
+    void storeUnsavedFileDetails(const ScintillaNext *editor, QSettings &settings) const;
     ScintillaNext *loadUnsavedFileDetails(const QSettings &settings);
 
-    void storeTempFile(ScintillaNext *editor, QSettings &settings);
+    void storeTempFile(const ScintillaNext *editor, QSettings &settings) const;
     ScintillaNext *loadTempFile(const QSettings &settings);
 
-    void storeEditorViewDetails(ScintillaNext *editor, QSettings &settings);
-    void loadEditorViewDetails(ScintillaNext *editor, const QSettings &settings);
+    void storeEditorViewDetails(const ScintillaNext *editor, QSettings &settings) const;
+    void loadEditorViewDetails(ScintillaNext *editor, const QSettings &settings) const;
 
     SparkNotePadApplication *app;
     SessionFileTypes fileTypes;

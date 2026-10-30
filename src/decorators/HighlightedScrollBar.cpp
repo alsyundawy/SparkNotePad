@@ -39,7 +39,7 @@ HighlightedScrollBarDecorator::HighlightedScrollBarDecorator(ScintillaNext *edit
     editor->setVerticalScrollBar(scrollBar);
 }
 
-HighlightedScrollBarDecorator::~HighlightedScrollBarDecorator() {}
+HighlightedScrollBarDecorator::~HighlightedScrollBarDecorator() = default;
 
 void HighlightedScrollBarDecorator::notify(const NotificationData *pscn) {
     if ((pscn->nmhdr.code == Notification::UpdateUI &&
@@ -83,11 +83,12 @@ void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
     }
 
     sptr_t curPos = 0;
-    const int color = static_cast<int>(editor->indicFore(indicator));
+    const auto color = static_cast<int>(editor->indicFore(indicator));
     int safetyCount = 0;
 
-    while (curPos < docLength && safetyCount++ < 1500) {
-        sptr_t nextPos = editor->indicatorEnd(indicator, curPos);
+    while (curPos < docLength && safetyCount < 1500) {
+        safetyCount++;
+        const sptr_t nextPos = editor->indicatorEnd(indicator, curPos);
         if (nextPos <= curPos) {
             break;
         }
@@ -101,8 +102,8 @@ void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
 void HighlightedScrollBar::drawCursors(QPainter &p) {
     const sptr_t numSelections = editor->selections();
     for (sptr_t i = 0; i < numSelections; i++) {
-        int startCaretY = posToScrollBarY(editor->selectionNCaret(i));
-        int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i));
+        const int startCaretY = posToScrollBarY(editor->selectionNCaret(i));
+        const int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i));
 
         if (startCaretY != startAnchorY) {
             const int topY = qMin(startCaretY, startAnchorY);
@@ -114,13 +115,13 @@ void HighlightedScrollBar::drawCursors(QPainter &p) {
     }
 }
 
-void HighlightedScrollBar::drawTickMark(QPainter &p, int y, int height, QColor color) {
+void HighlightedScrollBar::drawTickMark(QPainter &p, int y, int height, const QColor &color) const {
     p.fillRect(rect().x() + DEFAULT_TICK_PADDING, y + scrollbarArrowHeight(),
                rect().width() - (DEFAULT_TICK_PADDING * 2), height, color);
 }
 
 int HighlightedScrollBar::posToScrollBarY(sptr_t pos) const {
-    sptr_t line = editor->visibleFromDocLine(editor->lineFromPosition(pos));
+    const sptr_t line = editor->visibleFromDocLine(editor->lineFromPosition(pos));
 
     return lineToScrollBarY(line);
 }
@@ -137,7 +138,7 @@ int HighlightedScrollBar::lineToScrollBarY(sptr_t line) const {
     }
 
     return static_cast<int>(static_cast<double>(line) / static_cast<double>(lineCount) *
-                            static_cast<double>(rect().height() - scrollbarArrowHeight() * 2));
+                            static_cast<double>(rect().height() - (scrollbarArrowHeight() * 2)));
 }
 
 int HighlightedScrollBar::scrollbarArrowHeight() const {

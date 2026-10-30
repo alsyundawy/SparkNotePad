@@ -46,8 +46,10 @@ public:
 
     QVector<MacroStep> &getSteps() { return steps; }
 
-    friend QDataStream &operator<<(QDataStream &stream, const Macro &Macro);
-    friend QDataStream &operator>>(QDataStream &stream, Macro &Macro);
+    friend QDataStream &operator<<(QDataStream &stream, const Macro &macro) {
+        return stream << macro.name << macro.steps;
+    }
+    friend QDataStream &operator>>(QDataStream &stream, Macro &macro) { return stream >> macro.name >> macro.steps; }
 
 private:
     QVector<MacroStep> steps;
