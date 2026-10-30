@@ -142,23 +142,22 @@ void MkcertDialog::applyTheme() {
 void MkcertDialog::checkToolsStatus() {
     m_mkcertPath = QStandardPaths::findExecutable("mkcert");
     if (m_mkcertPath.isEmpty()) {
-        const QStringList extraPaths = {"/usr/local/bin/mkcert", "/opt/homebrew/bin/mkcert"};
-        for (const QString &p : extraPaths) {
-            if (QFileInfo::exists(p)) {
-                m_mkcertPath = p;
-                break;
-            }
+        static const QStringList extraPaths = {"/usr/local/bin/mkcert", "/opt/homebrew/bin/mkcert"};
+        const auto it =
+            std::find_if(extraPaths.cbegin(), extraPaths.cend(), [](const QString &p) { return QFileInfo::exists(p); });
+        if (it != extraPaths.cend()) {
+            m_mkcertPath = *it;
         }
     }
 
     m_opensslPath = QStandardPaths::findExecutable("openssl");
     if (m_opensslPath.isEmpty()) {
-        const QStringList extraPaths = {"/usr/bin/openssl", "/usr/local/bin/openssl", "/opt/homebrew/bin/openssl"};
-        for (const QString &p : extraPaths) {
-            if (QFileInfo::exists(p)) {
-                m_opensslPath = p;
-                break;
-            }
+        static const QStringList extraPaths = {"/usr/bin/openssl", "/usr/local/bin/openssl",
+                                               "/opt/homebrew/bin/openssl"};
+        const auto it =
+            std::find_if(extraPaths.cbegin(), extraPaths.cend(), [](const QString &p) { return QFileInfo::exists(p); });
+        if (it != extraPaths.cend()) {
+            m_opensslPath = *it;
         }
     }
 

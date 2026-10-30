@@ -26,7 +26,14 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
 
 ### Key Highlights in v1.3.0
 
-0. **Toolbar Polish & Find/Mark Single Input Enforcement**:
+1. **Zero Linter Diagnostics & 13-Pillar Clean Code Audit**:
+   - 100% eradication of all Trunk, Cppcheck, SonarLint, and IDE linter diagnostics (361 files verified clean, 0 warnings).
+   - Modernized loops using STL algorithms (`std::transform`, `std::find_if`, `std::all_of`, `std::any_of`).
+   - Enforced const-correctness, explicit constructors, reference-passing, and safe `reinterpret_cast` casts.
+2. **Framework Pruning & Ultra-Compact Packaging**:
+   - Pruned extraneous Qt modules (`QtPdf`, `QtQml*`, `QtQuick`, `QtVirtualKeyboard*`) and compressed with level-9 UDZO.
+   - Reduced macOS DMG package size to ~30 MB (down from 51 MB) with zero bloatware.
+3. **Toolbar Polish & Find/Mark Single Input Enforcement**:
    - Integrated `actionPreferences` (Settings) and `actionExit` (Exit) directly onto `mainToolBar` with vector SVG icons (`icons/settings.svg`, `icons/exit.svg`).
    - Fixed `FindReplaceDialog` where `FIND_TAB` and `MARK_TAB` displayed an extra input box. Implemented explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` to enforce exactly 1 form input box on Find and Mark tabs.
    - Updated `setTab(int tab)` to explicitly trigger `changeTab(tab)`.

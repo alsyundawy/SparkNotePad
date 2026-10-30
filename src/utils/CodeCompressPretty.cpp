@@ -149,7 +149,7 @@ CodeCompressPretty::Result CodeCompressPretty::compressCss(const QString &text) 
 
 CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text) {
     // First normalize to compressed base
-    const auto compressed = compressCss(text);
+    auto compressed = compressCss(text);
     if (!compressed.success) {
         return compressed;
     }
@@ -164,15 +164,15 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text) 
         if (ch == '{') {
             res += QStringLiteral(" {\n");
             indent++;
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
         } else if (ch == '}') {
             res += QStringLiteral("\n");
             indent = qMax(0, indent - 1);
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
             res += QStringLiteral("}\n");
         } else if (ch == ';') {
             res += QStringLiteral(";\n");
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
         } else if (ch == ':') {
             res += QStringLiteral(": ");
         } else if (ch == ',') {
@@ -192,9 +192,9 @@ CodeCompressPretty::Result CodeCompressPretty::compressJs(const QString &text) {
     bool inSingle = false;
     bool inDouble = false;
     bool inBacktick = false;
-    const int n = text.length();
+    const qsizetype n = text.length();
 
-    for (int i = 0; i < n; ++i) {
+    for (qsizetype i = 0; i < n; ++i) {
         const QChar c = text[i];
         if (inSingle) {
             res += c;
@@ -261,9 +261,9 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text) {
     bool inDouble = false;
     bool inBacktick = false;
     int parenDepth = 0;
-    const int n = text.length();
+    const qsizetype n = text.length();
 
-    for (int i = 0; i < n; ++i) {
+    for (qsizetype i = 0; i < n; ++i) {
         const QChar c = text[i];
         if (inSingle) {
             res += c;
@@ -301,16 +301,16 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text) {
         } else if (c == '{') {
             res += QStringLiteral(" {\n");
             indent++;
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
         } else if (c == '}') {
             res += QStringLiteral("\n");
             indent = qMax(0, indent - 1);
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
             res += QStringLiteral("}\n");
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
         } else if (c == ';' && parenDepth == 0) {
             res += QStringLiteral(";\n");
-            res += QString(indent * 4, ' ');
+            res += QString(static_cast<qsizetype>(indent) * 4, ' ');
         } else {
             res += c;
         }
@@ -366,8 +366,8 @@ CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, L
         return {false, false, lang, QString(), QString(), QStringLiteral("Document is read-only")};
     }
 
-    int startPos = editor->selectionStart();
-    int endPos = editor->selectionEnd();
+    sptr_t startPos = editor->selectionStart();
+    sptr_t endPos = editor->selectionEnd();
     const bool wholeDoc = (startPos == endPos);
 
     if (wholeDoc) {
@@ -391,8 +391,8 @@ CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, L
         editor->beginUndoAction();
         editor->setTargetRange(startPos, endPos);
         const QByteArray utf8 = result.formatted.toUtf8();
-        editor->replaceTarget(utf8.length(), utf8.constData());
-        editor->setSelection(startPos, startPos + utf8.length());
+        editor->replaceTarget(static_cast<sptr_t>(utf8.length()), utf8.constData());
+        editor->setSelection(startPos, startPos + static_cast<sptr_t>(utf8.length()));
         editor->endUndoAction();
     }
 
@@ -407,8 +407,8 @@ CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, L
         return {false, false, lang, QString(), QString(), QStringLiteral("Document is read-only")};
     }
 
-    int startPos = editor->selectionStart();
-    int endPos = editor->selectionEnd();
+    sptr_t startPos = editor->selectionStart();
+    sptr_t endPos = editor->selectionEnd();
     const bool wholeDoc = (startPos == endPos);
 
     if (wholeDoc) {
@@ -432,8 +432,8 @@ CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, L
         editor->beginUndoAction();
         editor->setTargetRange(startPos, endPos);
         const QByteArray utf8 = result.formatted.toUtf8();
-        editor->replaceTarget(utf8.length(), utf8.constData());
-        editor->setSelection(startPos, startPos + utf8.length());
+        editor->replaceTarget(static_cast<sptr_t>(utf8.length()), utf8.constData());
+        editor->setSelection(startPos, startPos + static_cast<sptr_t>(utf8.length()));
         editor->endUndoAction();
     }
 

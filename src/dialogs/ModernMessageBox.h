@@ -12,6 +12,7 @@
 #ifndef MODERNMESSAGEBOX_H
 #define MODERNMESSAGEBOX_H
 
+#include <cstdint>
 #include <QDialog>
 #include <QString>
 #include <QVector>
@@ -24,9 +25,9 @@ class ModernMessageBox : public QDialog {
     Q_OBJECT
 
 public:
-    enum class IconType { Question, Information, Warning, Critical };
+    enum class IconType : std::uint8_t { Question, Information, Warning, Critical };
 
-    enum class ActionChoice { SaveOrAccept, Discard, Cancel };
+    enum class ActionChoice : std::uint8_t { SaveOrAccept, Discard, Cancel };
 
     explicit ModernMessageBox(QWidget *parent = nullptr, IconType iconType = IconType::Question,
                               const QString &title = QString(), const QString &message = QString(),

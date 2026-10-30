@@ -81,8 +81,8 @@ void Macro::replayTillEndOfFile(ScintillaNext *editor) const {
     editor->beginUndoAction();
 
     do {
-        int length = editor->length();
-        int curPos = editor->currentPos();
+        sptr_t length = editor->length();
+        sptr_t curPos = editor->currentPos();
 
         replay(editor);
 
@@ -93,8 +93,8 @@ void Macro::replayTillEndOfFile(ScintillaNext *editor) const {
         // The doc can grow...
         else if (editor->length() > length) {
             // are we going to catch up?
-            int deltaLength = editor->length() - length;
-            int deltaPos = editor->currentPos() - curPos;
+            sptr_t deltaLength = editor->length() - length;
+            sptr_t deltaPos = editor->currentPos() - curPos;
             if (deltaPos > deltaLength) {
                 // Cursor position is moving forward more than document is growing
                 continue;
@@ -114,7 +114,7 @@ void Macro::replayTillEndOfFile(ScintillaNext *editor) const {
     editor->endUndoAction();
 }
 
-QString Macro::getName() const {
+const QString &Macro::getName() const {
     return name;
 }
 

@@ -54,7 +54,7 @@ QString RecentFilesListManager::mostRecentFile() const {
     return recentFiles.first();
 }
 
-QStringList RecentFilesListManager::fileList() const {
+const QStringList &RecentFilesListManager::fileList() const {
     return recentFiles;
 }
 

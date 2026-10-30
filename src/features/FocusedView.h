@@ -48,7 +48,7 @@ public:
     ~FocusedView() override = default;
 
     // Checks whether Focused View is currently active on the given editor
-    bool isFocused(ScintillaNext *editor) const;
+    bool isFocused(const ScintillaNext *editor) const;
 
     // Toggles Focused View:
     // If active -> restores all lines (turns off)
@@ -66,7 +66,7 @@ public:
     FilterResult filterByBookmarks(ScintillaNext *editor, bool invert = false);
 
     // Returns current or last-used filter options for the editor
-    FilterOptions currentOptions(ScintillaNext *editor) const;
+    FilterOptions currentOptions(const ScintillaNext *editor) const;
 
 signals:
     void filterApplied(ScintillaNext *editor, const FilterResult &result);
@@ -75,7 +75,7 @@ signals:
 private:
     static void ensureHiddenLineStyle(ScintillaNext *editor);
 
-    QMap<ScintillaNext *, FilterOptions> m_editorOptions;
+    QMap<const ScintillaNext *, FilterOptions> m_editorOptions;
     FilterOptions m_lastOptions;
 };
 

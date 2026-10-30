@@ -28,9 +28,9 @@ bool ClipboardMonitor::isMonitoring() const {
     return m_isMonitoring;
 }
 
-void ClipboardMonitor::startMonitoring(ScintillaNext *targetEditor) {
-    if (targetEditor) {
-        m_targetEditor = targetEditor;
+void ClipboardMonitor::startMonitoring(ScintillaNext *editor) {
+    if (editor) {
+        m_targetEditor = editor;
     }
 
     if (!m_isMonitoring) {
@@ -50,11 +50,11 @@ void ClipboardMonitor::stopMonitoring() {
     }
 }
 
-void ClipboardMonitor::toggleMonitoring(ScintillaNext *targetEditor) {
+void ClipboardMonitor::toggleMonitoring(ScintillaNext *editor) {
     if (m_isMonitoring) {
         stopMonitoring();
     } else {
-        startMonitoring(targetEditor);
+        startMonitoring(editor);
     }
 }
 

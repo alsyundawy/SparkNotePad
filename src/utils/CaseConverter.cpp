@@ -128,31 +128,31 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
     }
 
     struct SelectionRange {
-        int index;
-        int start;
-        int end;
-        bool caretAtEnd;
+        int index = 0;
+        sptr_t start = 0;
+        sptr_t end = 0;
+        bool caretAtEnd = false;
     };
 
     std::vector<SelectionRange> ranges;
-    int numSelections = editor->selections();
+    const sptr_t numSelections = editor->selections();
 
-    for (int i = 0; i < numSelections; ++i) {
-        int start = editor->selectionNStart(i);
-        int end = editor->selectionNEnd(i);
-        int caret = editor->selectionNCaret(i);
-        int anchor = editor->selectionNAnchor(i);
+    for (sptr_t i = 0; i < numSelections; ++i) {
+        sptr_t start = editor->selectionNStart(i);
+        sptr_t end = editor->selectionNEnd(i);
+        sptr_t caret = editor->selectionNCaret(i);
+        sptr_t anchor = editor->selectionNAnchor(i);
         if (end > start) {
-            ranges.push_back({i, start, end, caret >= anchor});
+            ranges.push_back({static_cast<int>(i), start, end, caret >= anchor});
         }
     }
 
     bool wasWordExpanded = false;
     if (ranges.empty()) {
         // No explicit selection; expand to word under caret
-        int pos = editor->currentPos();
-        int wStart = editor->wordStartPosition(pos, true);
-        int wEnd = editor->wordEndPosition(pos, true);
+        sptr_t pos = editor->currentPos();
+        sptr_t wStart = editor->wordStartPosition(pos, true);
+        sptr_t wEnd = editor->wordEndPosition(pos, true);
         if (wEnd > wStart) {
             ranges.push_back({0, wStart, wEnd, true});
             wasWordExpanded = true;
@@ -170,10 +170,10 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
               [](const SelectionRange &a, const SelectionRange &b) { return a.start > b.start; });
 
     struct UpdatedSel {
-        int index;
-        int newStart;
-        int newEnd;
-        bool caretAtEnd;
+        int index = 0;
+        sptr_t newStart = 0;
+        sptr_t newEnd = 0;
+        bool caretAtEnd = false;
     };
     std::vector<UpdatedSel> updated;
     updated.reserve(ranges.size());
@@ -181,7 +181,7 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
     const UndoAction ua(editor);
 
     for (const auto &r : ranges) {
-        int len = r.end - r.start;
+        sptr_t len = r.end - r.start;
         QByteArray originalBytes(len + 1, '\0');
         editor->getRange(r.start, r.end, originalBytes.data());
         originalBytes.resize(len);
@@ -194,9 +194,9 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
             editor->setTargetRange(r.start, r.end);
             editor->replaceTarget(newBytes.length(), newBytes.constData());
 
-            int newEnd = r.start + newBytes.length();
+            sptr_t newEnd = r.start + static_cast<sptr_t>(newBytes.length());
             updated.push_back({r.index, r.start, newEnd, r.caretAtEnd});
-            res.charactersChanged += originalStr.length();
+            res.charactersChanged += static_cast<int>(originalStr.length());
         } else {
             updated.push_back({r.index, r.start, r.end, r.caretAtEnd});
         }

@@ -144,7 +144,7 @@ public slots:
     void updateContentBasedUi(ScintillaNext *editor);
     void updateSaveStatusBasedUi(ScintillaNext *editor);
     void updateEditorPositionBasedUi();
-    void updateLanguageBasedUi(ScintillaNext *editor);
+    void updateLanguageBasedUi(const ScintillaNext *editor);
     void updateGui(ScintillaNext *editor);
 
     void detectLanguage(ScintillaNext *editor);
@@ -245,8 +245,8 @@ private:
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);
     void onToggleTailMonitoringTriggered();
-    void onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring);
-    void updateTailMonitoringUi(ScintillaNext *editor);
+    void onTailMonitoringStateChanged(const ScintillaNext *editor, bool isMonitoring);
+    void updateTailMonitoringUi(const ScintillaNext *editor);
     void onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount);
     void onToggleTransparencyTriggered();
     void onIncreaseOpacityTriggered();

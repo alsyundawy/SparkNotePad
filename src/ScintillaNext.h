@@ -44,8 +44,8 @@ public:
     using ScintillaEdit::setFocus;
     using ScintillaEdit::setProperty;
     QByteArray getText() { return getText(length() + 1); }
-    QVariant qtProperty(const char *name) const { return QObject::property(name); }
-    bool setQtProperty(const char *name, const QVariant &value) { return QObject::setProperty(name, value); }
+    QVariant qtProperty(const char *propName) const { return QObject::property(propName); }
+    bool setQtProperty(const char *propName, const QVariant &value) { return QObject::setProperty(propName, value); }
     QPoint pointFromPosition(Sci_Position pos) {
         return QPoint(static_cast<int>(pointXFromPosition(pos)), static_cast<int>(pointYFromPosition(pos)));
     }
@@ -76,9 +76,9 @@ public:
 
     static ScintillaNext *fromFile(const QString &filePath, bool tryToCreate = false);
     static QString eolModeToString(int eolMode);
-    static int stringToEolMode(QString eolMode);
+    static int stringToEolMode(const QString &eolMode);
 
-    int allocateIndicator(const QString &name);
+    int allocateIndicator(const QString &resourceName);
 
     template <typename Func>
     void forEachMatch(const QString &text, Func callback) {
@@ -122,13 +122,13 @@ public:
     bool isSavedToDisk() const;
     bool canSaveToDisk() const;
 
-    QString getName() const { return name; }
-    void setName(const QString &name);
+    const QString &getName() const { return name; }
+    void setName(const QString &newName);
     QString getPath() const;
     QString getFilePath() const;
 
     // NOTE: this is dangerous and should only be used in very rare situations
-    void setFileInfo(const QString &filePath);
+    void setFileInfo(const QString &targetFilePath);
 
     void detachFileInfo(const QString &newName);
 
@@ -148,9 +148,9 @@ public:
     enum class BomType { None, Utf8, Utf16LE, Utf16BE };
 
     BomType bom() const { return bomType; }
-    void setBom(BomType bom) { bomType = bom; }
+    void setBom(BomType b) { bomType = b; }
 
-    QString encodingName() const { return fileEncoding; }
+    const QString &encodingName() const { return fileEncoding; }
     void setFileEncoding(const QString &encoding) { fileEncoding = encoding; }
 
     void convertToEncoding(const QString &newEncoding, BomType newBom);
@@ -174,7 +174,7 @@ public slots:
     void reload();
     void omitModifications();
     QFileDevice::FileError saveAs(const QString &newFilePath);
-    QFileDevice::FileError saveCopyAs(const QString &filePath);
+    QFileDevice::FileError saveCopyAs(const QString &targetFilePath) const;
     bool rename(const QString &newFilePath);
     ScintillaNext::FileStateChange checkFileForStateChange();
     bool moveToTrash();

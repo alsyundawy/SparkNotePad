@@ -27,26 +27,27 @@
 ScintillaCommenter::ScintillaCommenter(ScintillaNext *editor) : editor(editor), st(editor), ua(editor) {}
 
 void ScintillaCommenter::toggleSelection() {
-    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) { toggleLine(line); });
+    editor->forEachLineInSelection(editor->mainSelection(), [&](sptr_t line) { toggleLine(line); });
 }
 
 void ScintillaCommenter::commentSelection() {
-    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) { commentLine(line); });
+    editor->forEachLineInSelection(editor->mainSelection(), [&](sptr_t line) { commentLine(line); });
 }
 
 void ScintillaCommenter::uncommentSelection() {
-    editor->forEachLineInSelection(editor->mainSelection(), [&](int line) { uncommentLine(line); });
+    editor->forEachLineInSelection(editor->mainSelection(), [&](sptr_t line) { uncommentLine(line); });
 }
 
-void ScintillaCommenter::toggleLine(int line) {
-    auto indentPos = editor->lineIndentPosition(line);
-    auto lineEnd = qMin(indentPos + editor->languageSingleLineComment.length(), editor->lineEndPosition(line));
+void ScintillaCommenter::toggleLine(sptr_t line) {
+    const sptr_t indentPos = editor->lineIndentPosition(line);
+    const sptr_t commentLen = static_cast<sptr_t>(editor->languageSingleLineComment.length());
+    const sptr_t lineEnd = qMin(indentPos + commentLen, editor->lineEndPosition(line));
     const QByteArray commentText = editor->get_text_range(indentPos, lineEnd);
 
     if (commentText == editor->languageSingleLineComment) {
-        editor->deleteRange(indentPos, editor->languageSingleLineComment.length());
+        editor->deleteRange(indentPos, commentLen);
 
-        st.trackDeletion(indentPos, editor->languageSingleLineComment.length());
+        st.trackDeletion(static_cast<int>(indentPos), static_cast<int>(commentLen));
     } else {
         if (indentPos == editor->lineEndPosition(line)) {
             return;
@@ -54,12 +55,12 @@ void ScintillaCommenter::toggleLine(int line) {
 
         editor->insertText(indentPos, editor->languageSingleLineComment.constData());
 
-        st.trackInsertion(indentPos, editor->languageSingleLineComment.length());
+        st.trackInsertion(static_cast<int>(indentPos), static_cast<int>(commentLen));
     }
 }
 
-void ScintillaCommenter::commentLine(int line) {
-    auto indentPos = editor->lineIndentPosition(line);
+void ScintillaCommenter::commentLine(sptr_t line) {
+    const sptr_t indentPos = editor->lineIndentPosition(line);
 
     // Don't comment lines with only indentation
     if (indentPos == editor->lineEndPosition(line)) {
@@ -68,17 +69,19 @@ void ScintillaCommenter::commentLine(int line) {
 
     editor->insertText(indentPos, editor->languageSingleLineComment.constData());
 
-    st.trackInsertion(indentPos, editor->languageSingleLineComment.length());
+    const sptr_t commentLen = static_cast<sptr_t>(editor->languageSingleLineComment.length());
+    st.trackInsertion(static_cast<int>(indentPos), static_cast<int>(commentLen));
 }
 
-void ScintillaCommenter::uncommentLine(int line) {
-    auto indentPos = editor->lineIndentPosition(line);
-    auto lineEnd = qMin(indentPos + editor->languageSingleLineComment.length(), editor->lineEndPosition(line));
+void ScintillaCommenter::uncommentLine(sptr_t line) {
+    const sptr_t indentPos = editor->lineIndentPosition(line);
+    const sptr_t commentLen = static_cast<sptr_t>(editor->languageSingleLineComment.length());
+    const sptr_t lineEnd = qMin(indentPos + commentLen, editor->lineEndPosition(line));
     const QByteArray commentText = editor->get_text_range(indentPos, lineEnd);
 
     if (commentText == editor->languageSingleLineComment) {
-        editor->deleteRange(indentPos, editor->languageSingleLineComment.length());
+        editor->deleteRange(indentPos, commentLen);
 
-        st.trackDeletion(indentPos, editor->languageSingleLineComment.length());
+        st.trackDeletion(static_cast<int>(indentPos), static_cast<int>(commentLen));
     }
 }

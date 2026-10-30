@@ -46,7 +46,7 @@ public:
 private slots:
     void refreshList();
     void addEditor(ScintillaNext *editor);
-    void removeEditor(ScintillaNext *editor);
+    void removeEditor(const ScintillaNext *editor);
 
     void selectCurrentEditor();
 
@@ -56,7 +56,7 @@ private slots:
     void editorRenamed();
 
 private:
-    QListWidgetItem *lookupItemByEditor(ScintillaNext *editor);
+    QListWidgetItem *lookupItemByEditor(const ScintillaNext *editor);
 
     Ui::FileList *ui;
     MainWindow *window;

@@ -40,13 +40,13 @@ public:
 
     static TailMonitoringManager *instance();
 
-    bool isMonitoring(ScintillaNext *editor) const;
+    bool isMonitoring(const ScintillaNext *editor) const;
     bool toggleMonitoring(ScintillaNext *editor);
     bool startMonitoring(ScintillaNext *editor);
     void stopMonitoring(ScintillaNext *editor);
     void stopAll();
 
-    bool autoScrollToEnd(ScintillaNext *editor) const;
+    bool autoScrollToEnd(const ScintillaNext *editor) const;
     void setAutoScrollToEnd(ScintillaNext *editor, bool enable);
 
     int pollIntervalMs() const { return m_pollIntervalMs; }
@@ -61,7 +61,7 @@ public:
     void forceCheck(ScintillaNext *editor);
 
 signals:
-    void monitoringStateChanged(ScintillaNext *editor, bool isMonitoring);
+    void monitoringStateChanged(const ScintillaNext *editor, bool isMonitoring);
     void fileTailed(ScintillaNext *editor, qint64 bytesAdded, int newLines);
     void fileRotatedOrTruncated(ScintillaNext *editor);
     void statusMessage(const QString &message);
@@ -69,7 +69,7 @@ signals:
 private slots:
     void onHeartbeatTimer();
     void onFileSystemChanged(const QString &path);
-    void onEditorDestroyed(QObject *obj);
+    void onEditorDestroyed(const QObject *obj);
 
 private:
     explicit TailMonitoringManager(QObject *parent = nullptr);

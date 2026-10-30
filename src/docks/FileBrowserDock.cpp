@@ -127,9 +127,8 @@ void FileBrowserDock::onFilterChanged(const QString &filterText) {
         const QStringList rawFilters = filterText.split(QLatin1Char(';'), Qt::SkipEmptyParts);
         QStringList cleanedFilters;
         cleanedFilters.reserve(rawFilters.size());
-        for (const QString &f : rawFilters) {
-            cleanedFilters.append(f.trimmed());
-        }
+        std::transform(rawFilters.cbegin(), rawFilters.cend(), std::back_inserter(cleanedFilters),
+                       [](const QString &f) { return f.trimmed(); });
         m_model->setNameFilters(cleanedFilters);
     }
 }

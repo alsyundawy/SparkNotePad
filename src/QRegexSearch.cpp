@@ -71,9 +71,9 @@ Sci::Position QRegexSearch::FindText(Document *doc, Sci::Position minPos, Sci::P
         if (!m.hasMatch())
             return -1;
 
-        match = m;
-        const int positionStart = doc->GetRelativePositionUTF16(startPos, match.capturedStart(0));
-        const int positionEnd = doc->GetRelativePositionUTF16(positionStart, match.capturedLength(0));
+        match = std::move(m);
+        const Sci::Position positionStart = doc->GetRelativePositionUTF16(startPos, match.capturedStart(0));
+        const Sci::Position positionEnd = doc->GetRelativePositionUTF16(positionStart, match.capturedLength(0));
         *length = positionEnd - positionStart;
         return positionStart;
     } else {
@@ -87,9 +87,9 @@ Sci::Position QRegexSearch::FindText(Document *doc, Sci::Position minPos, Sci::P
         if (!lastMatch.hasMatch())
             return -1;
 
-        match = lastMatch;
-        const int positionStart = doc->GetRelativePositionUTF16(startPos, match.capturedStart(0));
-        const int positionEnd = doc->GetRelativePositionUTF16(positionStart, match.capturedLength(0));
+        match = std::move(lastMatch);
+        const Sci::Position positionStart = doc->GetRelativePositionUTF16(startPos, match.capturedStart(0));
+        const Sci::Position positionEnd = doc->GetRelativePositionUTF16(positionStart, match.capturedLength(0));
         *length = positionEnd - positionStart;
         return positionStart;
     }

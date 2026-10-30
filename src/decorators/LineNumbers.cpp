@@ -57,8 +57,10 @@ LineNumbers::LineNumbers(ScintillaNext *editor) : EditorDecorator(editor) {
 }
 
 void LineNumbers::adjustMarginWidth() {
-    int lineCount = editor->lineCount();
-    int pixelWidth = 8 + (qMax(countDigits(lineCount), 3)) * editor->textWidth(STYLE_LINENUMBER, "8");
+    const sptr_t lineCount = editor->lineCount();
+    const sptr_t charWidth = editor->textWidth(STYLE_LINENUMBER, "8");
+    const int digits = qMax(countDigits(static_cast<quint32>(lineCount)), 3);
+    const int pixelWidth = static_cast<int>(8 + digits * charWidth);
     editor->setMarginWidthN(0, pixelWidth);
 }
 

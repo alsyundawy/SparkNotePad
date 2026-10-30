@@ -24,7 +24,7 @@
 
 FocusedView::FocusedView(QObject *parent) : QObject(parent) {}
 
-bool FocusedView::isFocused(ScintillaNext *editor) const {
+bool FocusedView::isFocused(const ScintillaNext *editor) const {
     if (!editor)
         return false;
     return m_editorOptions.contains(editor);
@@ -37,7 +37,7 @@ void FocusedView::ensureHiddenLineStyle(ScintillaNext *editor) {
     editor->setElementColour(SC_ELEMENT_HIDDEN_LINE, 0x808080 | (0xC0 << 24));
 }
 
-FocusedView::FilterOptions FocusedView::currentOptions(ScintillaNext *editor) const {
+FocusedView::FilterOptions FocusedView::currentOptions(const ScintillaNext *editor) const {
     if (!editor || !isFocused(editor)) {
         return m_lastOptions;
     }
@@ -231,11 +231,9 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
     // Ensure caret is on a visible line
     const int curLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
     if (!editor->lineVisible(curLine)) {
-        for (int l = 0; l < lineCount; ++l) {
-            if (visible[l]) {
-                editor->gotoLine(l);
-                break;
-            }
+        const auto it = std::find(visible.cbegin(), visible.cend(), true);
+        if (it != visible.cend()) {
+            editor->gotoLine(static_cast<sptr_t>(std::distance(visible.cbegin(), it)));
         }
     }
 

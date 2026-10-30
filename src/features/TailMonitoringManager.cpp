@@ -33,8 +33,8 @@ TailMonitoringManager::TailMonitoringManager(QObject *parent)
     m_timer->setInterval(m_pollIntervalMs);
 }
 
-bool TailMonitoringManager::isMonitoring(ScintillaNext *editor) const {
-    return editor && m_monitored.contains(editor);
+bool TailMonitoringManager::isMonitoring(const ScintillaNext *editor) const {
+    return editor && m_monitored.contains(const_cast<ScintillaNext *>(editor));
 }
 
 bool TailMonitoringManager::toggleMonitoring(ScintillaNext *editor) {
@@ -122,10 +122,10 @@ void TailMonitoringManager::stopAll() {
     }
 }
 
-bool TailMonitoringManager::autoScrollToEnd(ScintillaNext *editor) const {
-    if (!editor || !m_monitored.contains(editor))
+bool TailMonitoringManager::autoScrollToEnd(const ScintillaNext *editor) const {
+    if (!editor || !m_monitored.contains(const_cast<ScintillaNext *>(editor)))
         return true;
-    return m_monitored.value(editor).autoScrollToEnd;
+    return m_monitored.value(const_cast<ScintillaNext *>(editor)).autoScrollToEnd;
 }
 
 void TailMonitoringManager::setAutoScrollToEnd(ScintillaNext *editor, bool enable) {
@@ -168,10 +168,10 @@ void TailMonitoringManager::onFileSystemChanged(const QString &path) {
     }
 }
 
-void TailMonitoringManager::onEditorDestroyed(QObject *obj) {
-    auto *editor = static_cast<ScintillaNext *>(obj);
-    if (m_monitored.contains(editor)) {
-        auto state = m_monitored.take(editor);
+void TailMonitoringManager::onEditorDestroyed(const QObject *obj) {
+    const auto *editor = static_cast<const ScintillaNext *>(obj);
+    if (m_monitored.contains(const_cast<ScintillaNext *>(editor))) {
+        auto state = m_monitored.take(const_cast<ScintillaNext *>(editor));
         bool pathStillUsed = false;
         for (auto it = m_monitored.constBegin(); it != m_monitored.constEnd(); ++it) {
             if (it.value().filePath == state.filePath) {

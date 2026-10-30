@@ -62,8 +62,8 @@ private:
 
     void drawTickMark(QPainter &p, int y, int height, QColor color);
 
-    int posToScrollBarY(int pos) const;
-    int lineToScrollBarY(int line) const;
+    int posToScrollBarY(sptr_t pos) const;
+    int lineToScrollBarY(sptr_t line) const;
     int scrollbarArrowHeight() const;
 
     ScintillaNext *editor;

@@ -245,7 +245,7 @@ void ModernMessageBox::keyPressEvent(QKeyEvent *event) {
 
 ModernMessageBox::ActionChoice ModernMessageBox::promptForSave(QWidget *parent,
                                                                const QVector<ScintillaNext *> &editors) {
-    const int count = editors.count();
+    const qsizetype count = editors.size();
     QString mainText = (count == 1) ? tr("Save changes to <b>%1</b>?").arg(editors.first()->getName())
                                     : tr("There are %1 files with unsaved changes.").arg(count);
 

@@ -32,7 +32,7 @@ public:
     int previousChangeBefore(int line);
 
 public slots:
-    void setEnabled(bool b);
+    void setEnabled(bool b) override;
 
 private:
     void setupMarkers();

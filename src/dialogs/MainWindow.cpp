@@ -1944,14 +1944,10 @@ void MainWindow::newFile() {
     int count = 1;
     forever {
         QString newFileName = tr("New %1").arg(count);
-        bool canUseName = true;
-
-        for (const ScintillaNext *editor : editors()) {
-            if (!editor->isFile() && editor->getName() == newFileName) {
-                canUseName = false;
-                break;
-            }
-        }
+        const auto allEditors = editors();
+        const bool canUseName = !std::any_of(
+            allEditors.cbegin(), allEditors.cend(),
+            [&newFileName](const ScintillaNext *ed) { return !ed->isFile() && ed->getName() == newFileName; });
 
         if (canUseName) {
             ScintillaNext *editor = app->getEditorManager()->createEditor(newFileName);
@@ -2543,13 +2539,8 @@ bool MainWindow::saveAll() {
 }
 
 bool MainWindow::saveAllEditors(const QVector<ScintillaNext *> &editorList) {
-    for (ScintillaNext *editor : editorList) {
-        if (!saveFile(editor)) {
-            return false;
-        }
-    }
-
-    return true;
+    return std::all_of(editorList.cbegin(), editorList.cend(),
+                       [this](ScintillaNext *editor) { return saveFile(editor); });
 }
 
 void MainWindow::exportAsFormat(Converter *converter, const QString &filter) {
@@ -2755,13 +2746,9 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor) {
 }
 
 bool MainWindow::isAnyUnsaved() const {
-    for (const ScintillaNext *editor : editors()) {
-        if (!editor->isSavedToDisk()) {
-            return true;
-        }
-    }
-
-    return false;
+    const auto allEditors = editors();
+    return std::any_of(allEditors.cbegin(), allEditors.cend(),
+                       [](const ScintillaNext *editor) { return !editor->isSavedToDisk(); });
 }
 
 void MainWindow::updateEOLBasedUi(ScintillaNext *editor) {
@@ -2811,18 +2798,19 @@ void MainWindow::updateEditorPositionBasedUi() {
     ui->actionCloseAllExceptActive->setEnabled(editorCount() > 1);
 }
 
-void MainWindow::updateLanguageBasedUi(ScintillaNext *editor) {
+void MainWindow::updateLanguageBasedUi(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     const QString language_name = editor->languageName;
+    const auto actions = languageActionGroup->actions();
 
-    for (QAction *action : languageActionGroup->actions()) {
-        if (action->data().toString() == language_name) {
-            action->setChecked(true);
+    const auto it = std::find_if(actions.cbegin(), actions.cend(), [&language_name](const QAction *action) {
+        return action->data().toString() == language_name;
+    });
 
-            // Found one, so we are completely done
-            return;
-        }
+    if (it != actions.cend()) {
+        (*it)->setChecked(true);
+        return;
     }
 
     // The above loop did not set any action as checked, so make sure they are all unchecked now
@@ -3907,7 +3895,7 @@ void MainWindow::onToggleTailMonitoringTriggered() {
     TailMonitoringManager::instance()->toggleMonitoring(editor);
 }
 
-void MainWindow::onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring) {
+void MainWindow::onTailMonitoringStateChanged(const ScintillaNext *editor, bool isMonitoring) {
     if (editor == currentEditor() && actionToggleTailMonitoring) {
         actionToggleTailMonitoring->setChecked(isMonitoring);
         if (actionTailAutoScroll) {
@@ -3916,7 +3904,7 @@ void MainWindow::onTailMonitoringStateChanged(ScintillaNext *editor, bool isMoni
     }
 }
 
-void MainWindow::updateTailMonitoringUi(ScintillaNext *editor) {
+void MainWindow::updateTailMonitoringUi(const ScintillaNext *editor) {
     if (!actionToggleTailMonitoring)
         return;
     const bool isMon = TailMonitoringManager::instance()->isMonitoring(editor);
@@ -4048,7 +4036,7 @@ void MainWindow::populateWindowMenuDocuments() {
     QActionGroup *docGroup = new QActionGroup(this);
     docGroup->setExclusive(true);
 
-    ScintillaNext *current = currentEditor();
+    const ScintillaNext *current = currentEditor();
     int idx = 1;
     for (ScintillaNext *ed : allEditors) {
         QString name = ed->getName();

@@ -41,10 +41,10 @@ QString DocumentationManager::localDocumentationPath(const QString &docFilename)
                               "/usr/share/doc/SparkNotePad/" + docFilename,
                               "/usr/local/share/doc/SparkNotePad/" + docFilename};
 
-    for (const QString &path : candidates) {
-        if (QFile::exists(path)) {
-            return QFileInfo(path).canonicalFilePath();
-        }
+    const auto it =
+        std::find_if(candidates.cbegin(), candidates.cend(), [](const QString &path) { return QFile::exists(path); });
+    if (it != candidates.cend()) {
+        return QFileInfo(*it).canonicalFilePath();
     }
 
     return QString();

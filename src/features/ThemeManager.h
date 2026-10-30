@@ -12,6 +12,7 @@
 #ifndef THEMEMANAGER_H
 #define THEMEMANAGER_H
 
+#include <cstdint>
 #include <QObject>
 #include <QString>
 #include <QColor>
@@ -26,7 +27,7 @@ class ThemeManager : public QObject {
     Q_OBJECT
 
 public:
-    enum class ThemeMode { Auto = 0, Light = 1, Dark = 2 };
+    enum class ThemeMode : std::uint8_t { Auto = 0, Light = 1, Dark = 2 };
     Q_ENUM(ThemeMode)
 
     // Helper to construct Scintilla BGR colour from RGB components

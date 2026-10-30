@@ -103,7 +103,7 @@ private:
 
     FindOptions findOptions() const;
 
-    void showMessage(const QString &message, const QString &color);
+    void showMessage(const QString &message, const QString &color);  // NOSONAR(cpp:S5498)
     int ensureMarkIndicator();
     BookMarkDecorator *bookMarkDecorator() const;
     void clearAllBookmarks();

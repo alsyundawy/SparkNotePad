@@ -35,10 +35,10 @@ public:
     explicit RecentFilesListManager(QObject *parent = Q_NULLPTR);
 
     QString mostRecentFile() const;
-    QStringList fileList() const;
+    const QStringList &fileList() const;
     void setFileList(const QStringList &list);
 
-    int count() const { return recentFiles.size(); }
+    qsizetype count() const { return recentFiles.size(); }
 
 public slots:
     void addFile(const QString &filePath);

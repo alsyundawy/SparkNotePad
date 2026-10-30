@@ -152,7 +152,7 @@ QString ScintillaNext::eolModeToString(int eolMode) {
         return QString();  // unknown
 }
 
-int ScintillaNext::stringToEolMode(QString eolMode) {
+int ScintillaNext::stringToEolMode(const QString &eolMode) {
     if (eolMode == QStringLiteral("crlf"))
         return SC_EOL_CRLF;
     else if (eolMode == QStringLiteral("cr"))
@@ -163,8 +163,8 @@ int ScintillaNext::stringToEolMode(QString eolMode) {
         return -1;
 }
 
-int ScintillaNext::allocateIndicator(const QString &name) {
-    return indicatorResources.requestResource(name);
+int ScintillaNext::allocateIndicator(const QString &resourceName) {
+    return indicatorResources.requestResource(resourceName);
 }
 
 void ScintillaNext::goToRange(const Sci_CharacterRange &range) {
@@ -288,18 +288,18 @@ bool ScintillaNext::canSaveToDisk() const {
     // - It is marked as a temporary since as soon as it gets saved it is no longer a temporary buffer
     // - A modified file
     // - A missing file since as soon as it is saved it is no longer missing.
-    return temporary || (bufferType == ScintillaNext::New && modify()) ||
-           (bufferType == ScintillaNext::File && modify()) || (bufferType == ScintillaNext::FileMissing);
+    return temporary || (bufferType == BufferType::New && modify()) || (bufferType == BufferType::File && modify()) ||
+           (bufferType == BufferType::FileMissing);
 }
 
-void ScintillaNext::setName(const QString &name) {
-    this->name = name;
+void ScintillaNext::setName(const QString &newName) {
+    this->name = newName;
 
     emit renamed();
 }
 
 bool ScintillaNext::isFile() const {
-    return bufferType == ScintillaNext::File || bufferType == ScintillaNext::FileMissing;
+    return bufferType == BufferType::File || bufferType == BufferType::FileMissing;
 }
 
 QFileInfo ScintillaNext::getFileInfo() const {
@@ -368,7 +368,7 @@ QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp) {
         originalAccessTime = fileInfo.lastRead();
     }
 
-    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     const QString path = fileInfo.filePath();
     QFileDevice::FileError writeSuccessful = writeToDisk(data, path, bomType, fileEncoding);
 
@@ -441,11 +441,11 @@ void ScintillaNext::omitModifications() {
 }
 
 QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
-    bool isRenamed = bufferType == ScintillaNext::New || fileInfo.canonicalFilePath() != newFilePath;
+    bool isRenamed = bufferType == BufferType::New || fileInfo.canonicalFilePath() != newFilePath;
 
     emit aboutToSave();
 
-    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     QFileDevice::FileError saveSuccessful = writeToDisk(data, newFilePath, bomType, fileEncoding);
 
     if (saveSuccessful == QFileDevice::NoError) {
@@ -465,9 +465,9 @@ QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
     return saveSuccessful;
 }
 
-QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &filePath) {
-    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
-    return writeToDisk(data, filePath, bomType, fileEncoding);
+QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &targetFilePath) const {
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
+    return writeToDisk(data, targetFilePath, bomType, fileEncoding);
 }
 
 bool ScintillaNext::rename(const QString &newFilePath) {
@@ -562,7 +562,7 @@ void ScintillaNext::uncommentLineSelection() {
 }
 
 void ScintillaNext::removeDuplicateLines() {
-    QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
@@ -581,7 +581,7 @@ void ScintillaNext::removeDuplicateLines() {
 }
 
 void ScintillaNext::removeConsecutiveDuplicateLines() {
-    QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
@@ -693,7 +693,7 @@ bool ScintillaNext::readFromDisk(QFile &file) {
 }
 
 QDateTime ScintillaNext::fileTimestamp() {
-    Q_ASSERT(bufferType != ScintillaNext::New);
+    Q_ASSERT(bufferType != BufferType::New);
 
     fileInfo.refresh();
     qInfo("%s last modified %s", qUtf8Printable(fileInfo.fileName()),
@@ -705,14 +705,14 @@ void ScintillaNext::updateTimestamp() {
     modifiedTime = fileTimestamp();
 }
 
-void ScintillaNext::setFileInfo(const QString &filePath) {
-    fileInfo.setFile(filePath);
+void ScintillaNext::setFileInfo(const QString &targetFilePath) {
+    fileInfo.setFile(targetFilePath);
     fileInfo.makeAbsolute();
 
     Q_ASSERT(fileInfo.exists());
 
     name = fileInfo.fileName();
-    bufferType = ScintillaNext::File;
+    bufferType = BufferType::File;
 
     updateTimestamp();
 }
@@ -720,7 +720,7 @@ void ScintillaNext::setFileInfo(const QString &filePath) {
 void ScintillaNext::detachFileInfo(const QString &newName) {
     setName(newName);
 
-    bufferType = ScintillaNext::New;
+    bufferType = BufferType::New;
 }
 
 void ScintillaNext::setTemporary(bool temp) {

@@ -309,7 +309,7 @@ void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
     }
 }
 
-void EditorInfoStatusBar::updateLanguage(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateLanguage(const ScintillaNext *editor) {
     if (!editor || !docType)
         return;
     docType->setText(editor->languageName);
