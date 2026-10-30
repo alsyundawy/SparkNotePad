@@ -23,12 +23,13 @@
 
 #pragma once
 
+#include <cstdint>
 #include <QList>
 #include <QByteArray>
 
 class Sorter {
 public:
-    enum class Direction { Ascending, Descending };
+    enum class Direction : std::uint8_t { Ascending, Descending };
 
     explicit Sorter(Direction direction) : direction(direction) {}
     virtual ~Sorter() = default;

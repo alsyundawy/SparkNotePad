@@ -36,12 +36,12 @@ public:
     void addMacroStep(Scintilla::Message message, Scintilla::uptr_t wParam, Scintilla::sptr_t lParam);
     void addMacroStep(const MacroStep &step);
 
-    int size() const { return steps.size(); }
+    qsizetype size() const { return steps.size(); }
 
     void replay(ScintillaNext *editor, int n = 1) const;
     void replayTillEndOfFile(ScintillaNext *editor) const;
 
-    QString getName() const;
+    const QString &getName() const;
     void setName(const QString &value);
 
     QVector<MacroStep> &getSteps() { return steps; }

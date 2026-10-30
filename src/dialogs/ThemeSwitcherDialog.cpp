@@ -21,8 +21,9 @@
 #include <QKeySequence>
 
 ThemeSwitcherDialog::ThemeSwitcherDialog(MainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent ? parent : mainWindow), m_mainWindow(mainWindow) {
-    m_initialPaletteId = ThemeManager::instance()->currentPaletteId();
+    : QDialog(parent ? parent : mainWindow),
+      m_mainWindow(mainWindow),
+      m_initialPaletteId(ThemeManager::instance()->currentPaletteId()) {
     setupUi();
     populateTable();
 }

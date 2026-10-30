@@ -31,6 +31,10 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
    - Fixed `FindReplaceDialog` where `FIND_TAB` and `MARK_TAB` displayed an extra input box. Implemented explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` to enforce exactly 1 form input box on Find and Mark tabs.
    - Updated `setTab(int tab)` to explicitly trigger `changeTab(tab)`.
 
+0b. **Zero-Diagnostic Trunk, Cppcheck, SonarQube & Lean 29MB DMG**:
+   - Resolved all 945 IDE/Trunk and SonarLint diagnostics across `src/` (const-correctness, explicit constructors, std algorithm modernization, C-style cast elimination).
+   - Produced lean ~29 MB release DMG with level-9 UDZO compression and unused Qt framework pruning.
+
 1. **Brand Identity & Application Rename**:
    - Complete project and executable rename to `SparkNotePad`.
    - Updated application metadata, reverse-DNS identifiers (`io.github.alsyundawy.SparkNotePad`), and desktop file entries.

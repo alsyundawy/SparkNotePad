@@ -45,17 +45,15 @@ void DisplayInfoDialog::setupUi() {
         pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#44475a") : QStringLiteral("#e1e4e8"));
     QString txtPri =
         pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8f8f2") : QStringLiteral("#24292f"));
-    m_summaryLabel->setStyleSheet(
-        QString(
-            "QLabel {"
-            "  font-size: 13px;"
-            "  padding: 10px;"
-            "  background-color: %1;"
-            "  border: 1px solid %2;"
-            "  border-radius: 6px;"
-            "  color: %3;"
-            "}")
-            .arg(cardBg, borderCol, txtPri));
+    m_summaryLabel->setStyleSheet(QString("QLabel {"
+                                          "  font-size: 13px;"
+                                          "  padding: 10px;"
+                                          "  background-color: %1;"
+                                          "  border: 1px solid %2;"
+                                          "  border-radius: 6px;"
+                                          "  color: %3;"
+                                          "}")
+                                      .arg(cardBg, borderCol, txtPri));
     mainLayout->addWidget(m_summaryLabel);
 
     // Table of Displays

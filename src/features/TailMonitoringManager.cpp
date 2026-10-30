@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Monitoring / Tail Mode (tail -f).
  * Adapted from Notepad++ and Notepad4 monitoring architectures.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -33,8 +33,8 @@ TailMonitoringManager::TailMonitoringManager(QObject *parent)
     m_timer->setInterval(m_pollIntervalMs);
 }
 
-bool TailMonitoringManager::isMonitoring(ScintillaNext *editor) const {
-    return editor && m_monitored.contains(editor);
+bool TailMonitoringManager::isMonitoring(const ScintillaNext *editor) const {
+    return editor && m_monitored.contains(const_cast<ScintillaNext *>(editor));
 }
 
 bool TailMonitoringManager::toggleMonitoring(ScintillaNext *editor) {
@@ -81,7 +81,7 @@ bool TailMonitoringManager::startMonitoring(ScintillaNext *editor) {
     }
 
     emit monitoringStateChanged(editor, true);
-    emit statusMessage(tr("Monitoring (tail -f) started on %1").arg(info.fileName()));
+    emit statusMessage(tr("👁️ Monitoring (tail -f) started on %1").arg(info.fileName()));
     return true;
 }
 
@@ -122,10 +122,10 @@ void TailMonitoringManager::stopAll() {
     }
 }
 
-bool TailMonitoringManager::autoScrollToEnd(ScintillaNext *editor) const {
-    if (!editor || !m_monitored.contains(editor))
+bool TailMonitoringManager::autoScrollToEnd(const ScintillaNext *editor) const {
+    if (!editor || !m_monitored.contains(const_cast<ScintillaNext *>(editor)))
         return true;
-    return m_monitored.value(editor).autoScrollToEnd;
+    return m_monitored.value(const_cast<ScintillaNext *>(editor)).autoScrollToEnd;
 }
 
 void TailMonitoringManager::setAutoScrollToEnd(ScintillaNext *editor, bool enable) {
@@ -168,10 +168,10 @@ void TailMonitoringManager::onFileSystemChanged(const QString &path) {
     }
 }
 
-void TailMonitoringManager::onEditorDestroyed(QObject *obj) {
-    auto *editor = static_cast<ScintillaNext *>(obj);
-    if (m_monitored.contains(editor)) {
-        auto state = m_monitored.take(editor);
+void TailMonitoringManager::onEditorDestroyed(const QObject *obj) {
+    const auto *editor = static_cast<const ScintillaNext *>(obj);
+    if (m_monitored.contains(const_cast<ScintillaNext *>(editor))) {
+        auto state = m_monitored.take(const_cast<ScintillaNext *>(editor));
         bool pathStillUsed = false;
         for (auto it = m_monitored.constBegin(); it != m_monitored.constEnd(); ++it) {
             if (it.value().filePath == state.filePath) {
@@ -219,7 +219,7 @@ void TailMonitoringManager::checkEditorFile(ScintillaNext *editor) {
             editor->scrollCaret();
         }
         emit fileRotatedOrTruncated(editor);
-        emit statusMessage(tr("Tail: File rotated or truncated, reloaded (%1)").arg(info.fileName()));
+        emit statusMessage(tr("👁️ Tail: File rotated or truncated, reloaded (%1)").arg(info.fileName()));
         return;
     }
 
@@ -248,7 +248,7 @@ void TailMonitoringManager::checkEditorFile(ScintillaNext *editor) {
                 }
 
                 emit fileTailed(editor, newBytes.length(), addedLines);
-                emit statusMessage(tr("Tail: +%1 lines streamed (%2 bytes)").arg(addedLines).arg(newBytes.length()));
+                emit statusMessage(tr("👁️ Tail: +%1 lines streamed (%2 bytes)").arg(addedLines).arg(newBytes.length()));
             }
         }
     }

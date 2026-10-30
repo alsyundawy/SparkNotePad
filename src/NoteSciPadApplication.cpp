@@ -390,20 +390,18 @@ void NotepadNextApplication::receiveInfoFromSecondaryInstance(quint32 instanceId
 
     stream >> args;
 
-    QCommandLineParser parser;
-    parseCommandLine(parser, args);
+    QCommandLineParser cmdParser;
+    parseCommandLine(cmdParser, args);
 
-    openFiles(parser.positionalArguments());
+    openFiles(cmdParser.positionalArguments());
 }
 
 bool NotepadNextApplication::isRunningAsAdmin() const {
+#ifdef Q_OS_WIN
     static bool initialized = false;
     static bool isAdmin = false;
 
     if (!initialized) {
-        initialized = true;
-
-#ifdef Q_OS_WIN
         BOOL isMember;
         SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
         PSID administratorsGroupSid = NULL;
@@ -416,16 +414,19 @@ bool NotepadNextApplication::isRunningAsAdmin() const {
             }
             FreeSid(administratorsGroupSid);
         }
-#endif
+        initialized = true;
     }
 
     return isAdmin;
+#else
+    return false;
+#endif
 }
 
-bool NotepadNextApplication::event(QEvent *event) {
+bool NotepadNextApplication::event(QEvent *e) {
     // Handle the QFileOpenEvent to open files on MacOS X.
-    if (event->type() == QEvent::FileOpen) {
-        QFileOpenEvent *fileOpenEvent = static_cast<QFileOpenEvent *>(event);
+    if (e->type() == QEvent::FileOpen) {
+        QFileOpenEvent *fileOpenEvent = static_cast<QFileOpenEvent *>(e);
 
         qInfo("QFileOpenEvent %s", qUtf8Printable(fileOpenEvent->file()));
 
@@ -434,7 +435,7 @@ bool NotepadNextApplication::event(QEvent *event) {
         return true;
     }
 
-    return SingleApplication::event(event);
+    return SingleApplication::event(e);
 }
 
 void NotepadNextApplication::openFiles(const QStringList &files) {

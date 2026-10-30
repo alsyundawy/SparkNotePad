@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Clipboard Monitoring Mode.
  * Adapted from Notepad3 (rizonesoft/notepad3) clipboard monitoring architecture.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -28,9 +28,9 @@ bool ClipboardMonitor::isMonitoring() const {
     return m_isMonitoring;
 }
 
-void ClipboardMonitor::startMonitoring(ScintillaNext *targetEditor) {
-    if (targetEditor) {
-        m_targetEditor = targetEditor;
+void ClipboardMonitor::startMonitoring(ScintillaNext *editor) {
+    if (editor) {
+        m_targetEditor = editor;
     }
 
     if (!m_isMonitoring) {
@@ -50,11 +50,11 @@ void ClipboardMonitor::stopMonitoring() {
     }
 }
 
-void ClipboardMonitor::toggleMonitoring(ScintillaNext *targetEditor) {
+void ClipboardMonitor::toggleMonitoring(ScintillaNext *editor) {
     if (m_isMonitoring) {
         stopMonitoring();
     } else {
-        startMonitoring(targetEditor);
+        startMonitoring(editor);
     }
 }
 

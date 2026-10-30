@@ -1,11 +1,11 @@
 #pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad3 Focused View & line filtering architecture.
  * Sources: rizonesoft/Notepad3 (src/Edit.c, FocusedView) & Scintilla line visibility APIs
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -48,7 +48,7 @@ public:
     ~FocusedView() override = default;
 
     // Checks whether Focused View is currently active on the given editor
-    bool isFocused(ScintillaNext *editor) const;
+    bool isFocused(const ScintillaNext *editor) const;
 
     // Toggles Focused View:
     // If active -> restores all lines (turns off)
@@ -66,7 +66,7 @@ public:
     FilterResult filterByBookmarks(ScintillaNext *editor, bool invert = false);
 
     // Returns current or last-used filter options for the editor
-    FilterOptions currentOptions(ScintillaNext *editor) const;
+    FilterOptions currentOptions(const ScintillaNext *editor) const;
 
 signals:
     void filterApplied(ScintillaNext *editor, const FilterResult &result);
@@ -75,7 +75,7 @@ signals:
 private:
     static void ensureHiddenLineStyle(ScintillaNext *editor);
 
-    QMap<ScintillaNext *, FilterOptions> m_editorOptions;
+    QMap<const ScintillaNext *, FilterOptions> m_editorOptions;
     FilterOptions m_lastOptions;
 };
 

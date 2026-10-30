@@ -128,7 +128,7 @@ void FileListDock::addEditor(ScintillaNext *editor) {
     ui->listWidget->addItem(item);
 }
 
-void FileListDock::removeEditor(ScintillaNext *editor) {
+void FileListDock::removeEditor(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     QListWidgetItem *item = lookupItemByEditor(editor);
@@ -141,7 +141,7 @@ void FileListDock::removeEditor(ScintillaNext *editor) {
 void FileListDock::selectCurrentEditor() {
     qInfo(Q_FUNC_INFO);
 
-    ScintillaNext *editor = window->currentEditor();
+    const ScintillaNext *editor = window->currentEditor();
     QListWidgetItem *item = lookupItemByEditor(editor);
 
     if (item) {
@@ -188,7 +188,7 @@ void FileListDock::editorRenamed() {
     }
 }
 
-QListWidgetItem *FileListDock::lookupItemByEditor(ScintillaNext *editor) {
+QListWidgetItem *FileListDock::lookupItemByEditor(const ScintillaNext *editor) {
     for (int i = 0; i < ui->listWidget->count(); ++i) {
         QListWidgetItem *item = ui->listWidget->item(i);
         const ScintillaNext *other = item->data(Qt::UserRole).value<ScintillaNext *>();

@@ -1,11 +1,11 @@
 #pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad3 status bar customization architecture.
  * Sources: rizonesoft/Notepad3 (src/Notepad3.ini, Statusbar Settings)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -67,7 +67,7 @@ private slots:
     void updateDocumentSize(ScintillaNext *editor);
     void updateSelectionInfo(ScintillaNext *editor);
     void updateUnicodeChar(ScintillaNext *editor);
-    void updateLanguage(ScintillaNext *editor);
+    void updateLanguage(const ScintillaNext *editor);
     void updateEol(ScintillaNext *editor);
     void updateOverType(ScintillaNext *editor);
 

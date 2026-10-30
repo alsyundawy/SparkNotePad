@@ -26,14 +26,14 @@
 #include <QApplication>
 #include <QFont>
 
-#define CREATE_SETTING(group, name, lname, type, default)     \
-    ApplicationSetting<type> name{#group "/" #name, default}; \
-    type ApplicationSettings::lname() const {                 \
-        return get(name);                                     \
-    }                                                         \
-    void ApplicationSettings::set##name(type val) {           \
-        set(name, val);                                       \
-        emit lname##Changed(val);                             \
+#define CREATE_SETTING(group, name, lname, type, default)       \
+    ApplicationSetting<type> name{#group "/" #name, (default)}; \
+    type ApplicationSettings::lname() const {                   \
+        return get(name);                                       \
+    }                                                           \
+    void ApplicationSettings::set##name(const type &val) {      \
+        set(name, val);                                         \
+        emit lname##Changed(val);                               \
     }
 
 ApplicationSettings::ApplicationSettings(QObject *parent) : QSettings{parent} {}

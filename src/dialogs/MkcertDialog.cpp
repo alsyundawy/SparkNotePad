@@ -1,8 +1,8 @@
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -142,23 +142,22 @@ void MkcertDialog::applyTheme() {
 void MkcertDialog::checkToolsStatus() {
     m_mkcertPath = QStandardPaths::findExecutable("mkcert");
     if (m_mkcertPath.isEmpty()) {
-        const QStringList extraPaths = {"/usr/local/bin/mkcert", "/opt/homebrew/bin/mkcert"};
-        for (const QString &p : extraPaths) {
-            if (QFileInfo::exists(p)) {
-                m_mkcertPath = p;
-                break;
-            }
+        static const QStringList extraPaths = {"/usr/local/bin/mkcert", "/opt/homebrew/bin/mkcert"};
+        const auto it =
+            std::find_if(extraPaths.cbegin(), extraPaths.cend(), [](const QString &p) { return QFileInfo::exists(p); });
+        if (it != extraPaths.cend()) {
+            m_mkcertPath = *it;
         }
     }
 
     m_opensslPath = QStandardPaths::findExecutable("openssl");
     if (m_opensslPath.isEmpty()) {
-        const QStringList extraPaths = {"/usr/bin/openssl", "/usr/local/bin/openssl", "/opt/homebrew/bin/openssl"};
-        for (const QString &p : extraPaths) {
-            if (QFileInfo::exists(p)) {
-                m_opensslPath = p;
-                break;
-            }
+        static const QStringList extraPaths = {"/usr/bin/openssl", "/usr/local/bin/openssl",
+                                               "/opt/homebrew/bin/openssl"};
+        const auto it =
+            std::find_if(extraPaths.cbegin(), extraPaths.cend(), [](const QString &p) { return QFileInfo::exists(p); });
+        if (it != extraPaths.cend()) {
+            m_opensslPath = *it;
         }
     }
 
@@ -287,7 +286,7 @@ void MkcertDialog::onGenerateClicked() {
         args << "req" << "-x509" << "-newkey" << "rsa:2048" << "-nodes" << "-sha256"
              << "-days" << "365"
              << "-keyout" << keyFile << "-out" << certFile << "-subj"
-             << QStringLiteral("/CN=%1/O=NoteSciPad Dev").arg(domainList.first());
+             << QStringLiteral("/CN=%1/O=SparkNotePad Dev").arg(domainList.first());
 
         proc.start(m_opensslPath, args);
         if (proc.waitForFinished(15000)) {

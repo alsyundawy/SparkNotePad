@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad++ Run menu and variable macro expansion concept
  * ($(FULL_CURRENT_PATH), $(CURRENT_DIRECTORY), $(FILE_NAME), etc.)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -13,6 +13,7 @@
 #include "ExternalToolManager.h"
 #include "ScintillaNext.h"
 
+#include <algorithm>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -167,7 +168,7 @@ void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cm
 #elif defined(Q_OS_WIN)
     QString finalCmd = cmdToRun;
     if (finalCmd.isEmpty()) {
-        finalCmd = QStringLiteral("title NoteSciPad Terminal");
+        finalCmd = QStringLiteral("title SparkNotePad Terminal");
     }
     QProcess::startDetached(QStringLiteral("cmd.exe"), {QStringLiteral("/k"), finalCmd}, workDir);
 #else
@@ -181,11 +182,10 @@ void ExternalToolManager::openTerminal(const QString &dirPath, const QString &cm
                                         QStringLiteral("alacritty"),
                                         QStringLiteral("kitty"),
                                         QStringLiteral("xterm")};
-        for (const auto &c : candidates) {
-            if (!QStandardPaths::findExecutable(c).isEmpty()) {
-                term = c;
-                break;
-            }
+        const auto it = std::find_if(candidates.cbegin(), candidates.cend(),
+                                     [](const QString &c) { return !QStandardPaths::findExecutable(c).isEmpty(); });
+        if (it != candidates.cend()) {
+            term = *it;
         }
     }
     if (term.isEmpty()) {
@@ -349,7 +349,7 @@ bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, Q
 
 QList<ExternalTool> ExternalToolManager::loadCustomTools() {
     QList<ExternalTool> tools;
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     int size = settings.beginReadArray(QStringLiteral("ExternalTools"));
 
     if (size == 0) {
@@ -410,7 +410,7 @@ QList<ExternalTool> ExternalToolManager::loadCustomTools() {
 }
 
 void ExternalToolManager::saveCustomTools(const QList<ExternalTool> &tools) {
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     settings.beginWriteArray(QStringLiteral("ExternalTools"));
     for (int i = 0; i < tools.size(); ++i) {
         settings.setArrayIndex(i);
@@ -449,7 +449,7 @@ void ExternalToolManager::deleteCustomTool(const QString &id) {
 }
 
 QStringList ExternalToolManager::loadCommandHistory() {
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     return settings.value(QStringLiteral("RunDialog/History")).toStringList();
 }
 
@@ -463,6 +463,6 @@ void ExternalToolManager::addCommandToHistory(const QString &cmd) {
     while (history.size() > 25) {
         history.removeLast();
     }
-    QSettings settings(QStringLiteral("NoteSciPad"), QStringLiteral("NoteSciPad"));
+    QSettings settings(QStringLiteral("SparkNotePad"), QStringLiteral("SparkNotePad"));
     settings.setValue(QStringLiteral("RunDialog/History"), history);
 }

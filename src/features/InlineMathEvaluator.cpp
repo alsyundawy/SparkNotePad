@@ -1,8 +1,8 @@
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -160,8 +160,8 @@ private:
                 m_pos++;
             }
             std::string ident = m_s.substr(start, m_pos - start);
-            for (char &ch : ident)
-                ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+            std::transform(ident.begin(), ident.end(), ident.begin(),
+                           [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
 
             if (ident == "pi")
                 return M_PI;

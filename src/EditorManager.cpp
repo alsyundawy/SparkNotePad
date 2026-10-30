@@ -185,13 +185,10 @@ ScintillaNext *EditorManager::getEditorByFilePath(const QString &filePath) {
 
     purgeOldEditorPointers();
 
-    for (ScintillaNext *editor : qAsConst(editors)) {
-        if (editor->isFile() && editor->getFileInfo() == newInfo) {
-            return editor;
-        }
-    }
-
-    return Q_NULLPTR;
+    const auto it = std::find_if(editors.cbegin(), editors.cend(), [&newInfo](const QPointer<ScintillaNext> &editor) {
+        return editor && editor->isFile() && editor->getFileInfo() == newInfo;
+    });
+    return (it != editors.cend()) ? it->data() : nullptr;
 }
 
 void EditorManager::manageEditor(ScintillaNext *editor) {

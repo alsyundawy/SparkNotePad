@@ -42,13 +42,13 @@ public:
 
     ~LuaExtension();
 
-    bool Initialise(lua_State *L, ScintillaNext *editor_);
-    void setEditor(ScintillaEdit *editor_);
-    bool Finalise();
+    static bool Initialise(lua_State *L, ScintillaNext *editor_);
+    static void setEditor(ScintillaEdit *editor_);
+    static bool Finalise();
 
     // Helper methods
-    bool RunString(const char *s);
-    bool OnExecute(const char *s);
+    static bool RunString(const char *s);
+    static bool OnExecute(const char *s);
     void CallShortcut(int id);
 
     // Scintilla callbacks

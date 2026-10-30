@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 matepath explorer integration.
  * Source: zufuliu/Notepad4 & Notepad3 file browser concept
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -127,9 +127,8 @@ void FileBrowserDock::onFilterChanged(const QString &filterText) {
         const QStringList rawFilters = filterText.split(QLatin1Char(';'), Qt::SkipEmptyParts);
         QStringList cleanedFilters;
         cleanedFilters.reserve(rawFilters.size());
-        for (const QString &f : rawFilters) {
-            cleanedFilters.append(f.trimmed());
-        }
+        std::transform(rawFilters.cbegin(), rawFilters.cend(), std::back_inserter(cleanedFilters),
+                       [](const QString &f) { return f.trimmed(); });
         m_model->setNameFilters(cleanedFilters);
     }
 }
@@ -142,7 +141,7 @@ void FileBrowserDock::onCustomContextMenu(const QPoint &pos) {
     QMenu menu(this);
 
     if (fileInfo.isFile()) {
-        QAction *openAct = menu.addAction(tr("Open in NoteSciPad"));
+        QAction *openAct = menu.addAction(tr("Open in SparkNotePad"));
         connect(openAct, &QAction::triggered, this, [this, filePath]() { emit fileOpenRequested(filePath); });
     } else if (fileInfo.isDir()) {
         QAction *enterAct = menu.addAction(tr("Enter Directory"));

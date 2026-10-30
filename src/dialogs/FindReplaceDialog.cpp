@@ -146,7 +146,7 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
 
         int totalReplaced = 0;
         ScintillaNext *current_editor = editor;
-        MainWindow *window = qobject_cast<MainWindow *>(parent());
+        const MainWindow *window = qobject_cast<MainWindow *>(parent());
 
         for (ScintillaNext *targetEd : window->editors()) {
             setEditor(targetEd);
@@ -191,17 +191,17 @@ void FindReplaceDialog::setTab(int tab) {
     changeTab(tab);
 }
 
-bool FindReplaceDialog::event(QEvent *event) {
-    if (event->type() == QEvent::WindowActivate) {
+bool FindReplaceDialog::event(QEvent *e) {
+    if (e->type() == QEvent::WindowActivate) {
         emit windowActivated();
-    } else if (event->type() == QEvent::WindowDeactivate) {
+    } else if (e->type() == QEvent::WindowDeactivate) {
         emit windowDeactivated();
     }
 
-    return QDialog::event(event);
+    return QDialog::event(e);
 }
 
-void FindReplaceDialog::showEvent(QShowEvent *event) {
+void FindReplaceDialog::showEvent(QShowEvent *showEvt) {
     qInfo(Q_FUNC_INFO);
 
     if (!isFirstTime)
@@ -209,13 +209,13 @@ void FindReplaceDialog::showEvent(QShowEvent *event) {
 
     isFirstTime = false;
 
-    QDialog::showEvent(event);
+    QDialog::showEvent(showEvt);
 }
 
-void FindReplaceDialog::closeEvent(QCloseEvent *event) {
+void FindReplaceDialog::closeEvent(QCloseEvent *closeEvt) {
     saveSettings();
 
-    QDialog::closeEvent(event);
+    QDialog::closeEvent(closeEvt);
 }
 
 static void updateComboList(QComboBox *comboBox, const QString &text) {
@@ -296,7 +296,7 @@ void FindReplaceDialog::findAllInDocuments() {
     qInfo(Q_FUNC_INFO);
 
     ScintillaNext *current_editor = editor;
-    MainWindow *window = qobject_cast<MainWindow *>(parent());
+    const MainWindow *window = qobject_cast<MainWindow *>(parent());
 
     for (ScintillaNext *ed : window->editors()) {
         setEditor(ed);

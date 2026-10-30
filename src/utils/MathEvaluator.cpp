@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4) Calculate Expression feature.
  * Source: zufuliu/notepad4 (src/Edit.cpp, PR #1230)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,6 +15,7 @@
 #include "ScintillaNext.h"
 #endif
 
+#include <algorithm>
 #include <cmath>
 #include <QList>
 #include <QtMath>
@@ -267,16 +268,10 @@ private:
             return std::pow(args[0], args[1]);
         }
         if (fn == QStringLiteral("min")) {
-            double m = args[0];
-            for (int i = 1; i < args.size(); ++i)
-                m = std::min(m, args[i]);
-            return m;
+            return *std::min_element(args.cbegin(), args.cend());
         }
         if (fn == QStringLiteral("max")) {
-            double m = args[0];
-            for (int i = 1; i < args.size(); ++i)
-                m = std::max(m, args[i]);
-            return m;
+            return *std::max_element(args.cbegin(), args.cend());
         }
 
         throw QStringLiteral("Unknown math function: %1()").arg(fn);

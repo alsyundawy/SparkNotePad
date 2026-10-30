@@ -1,8 +1,8 @@
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -33,23 +33,25 @@ QString DocumentationManager::localDocumentationPath(const QString &docFilename)
     // Check possible local doc paths:
     // 1. Inside macOS app bundle: <App.app>/Contents/Resources/doc/
     // 2. Relative to build dir: <build>/doc/ or <build>/../doc/
-    // 3. System shared path: /usr/share/doc/NoteSciPad/
-    QStringList candidates = {
-        appDir + "/../Resources/doc/" + docFilename, appDir + "/doc/" + docFilename,
-        appDir + "/../doc/" + docFilename,           appDir + "/../../doc/" + docFilename,
-        "/usr/share/doc/NoteSciPad/" + docFilename,  "/usr/local/share/doc/NoteSciPad/" + docFilename};
+    // 3. System shared path: /usr/share/doc/SparkNotePad/
+    QStringList candidates = {appDir + "/../Resources/doc/" + docFilename,
+                              appDir + "/doc/" + docFilename,
+                              appDir + "/../doc/" + docFilename,
+                              appDir + "/../../doc/" + docFilename,
+                              "/usr/share/doc/SparkNotePad/" + docFilename,
+                              "/usr/local/share/doc/SparkNotePad/" + docFilename};
 
-    for (const QString &path : candidates) {
-        if (QFile::exists(path)) {
-            return QFileInfo(path).canonicalFilePath();
-        }
+    const auto it =
+        std::find_if(candidates.cbegin(), candidates.cend(), [](const QString &path) { return QFile::exists(path); });
+    if (it != candidates.cend()) {
+        return QFileInfo(*it).canonicalFilePath();
     }
 
     return QString();
 }
 
 QString DocumentationManager::onlineDocumentationUrl(const QString &docFilename) const {
-    return QString("https://github.com/alsyundawy/NoteSciPad/blob/main/doc/%1").arg(docFilename);
+    return QString("https://github.com/alsyundawy/SparkNotePad/blob/main/doc/%1").arg(docFilename);
 }
 
 void DocumentationManager::openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent) {
@@ -83,7 +85,7 @@ void DocumentationManager::openDeveloperGuide(QWidget *parent) {
 
 void DocumentationManager::openOnlineRepository(QWidget *parent) {
     Q_UNUSED(parent);
-    QDesktopServices::openUrl(QUrl("https://github.com/alsyundawy/NoteSciPad"));
+    QDesktopServices::openUrl(QUrl("https://github.com/alsyundawy/SparkNotePad"));
 }
 
 void DocumentationManager::openKeyboardShortcutsGuide(QWidget *parent) {

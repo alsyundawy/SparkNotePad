@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad3 status bar customization architecture.
  * Sources: rizonesoft/Notepad3 (src/Notepad3.ini, Statusbar Settings)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -309,7 +309,7 @@ void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
     }
 }
 
-void EditorInfoStatusBar::updateLanguage(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateLanguage(const ScintillaNext *editor) {
     if (!editor || !docType)
         return;
     docType->setText(editor->languageName);

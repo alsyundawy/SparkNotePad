@@ -39,13 +39,9 @@ QList<ComboBoxItem> caseItems{{"SC_CASE_MIXED", SC_CASE_MIXED},
                               {"SC_CASE_CAMEL", SC_CASE_CAMEL}};
 
 QString val_to_case_str(int val) {
-    for (const ComboBoxItem &item : caseItems) {
-        if (item.second == val) {
-            return item.first;
-        }
-    }
-
-    return QString();
+    const auto it = std::find_if(caseItems.cbegin(), caseItems.cend(),
+                                 [val](const ComboBoxItem &item) { return item.second == val; });
+    return (it != caseItems.cend()) ? it->first : QString();
 }
 
 QStringList columns{

@@ -51,10 +51,12 @@ MacroEditorDialog::MacroEditorDialog(QWidget *parent, MacroManager *mm)
     connect(ui->btnMoveMacroStepUp, &QPushButton::clicked, this, &MacroEditorDialog::moveMacroStepUp);
     connect(ui->btnMoveMacroStepDown, &QPushButton::clicked, this, &MacroEditorDialog::moveMacroStepDown);
 
+    const auto msgs = MacroStep::RecordableMacroMessages();
     QList<ComboBoxItem> recordableMacroMessages;
-    for (Scintilla::Message msg : MacroStep::RecordableMacroMessages()) {
-        recordableMacroMessages.append(qMakePair(MacroStep::NameOfMessage(msg), static_cast<int>(msg)));
-    }
+    recordableMacroMessages.reserve(msgs.size());
+    std::transform(msgs.cbegin(), msgs.cend(), std::back_inserter(recordableMacroMessages), [](Scintilla::Message msg) {
+        return qMakePair(MacroStep::NameOfMessage(msg), static_cast<int>(msg));
+    });
     ui->tblMacroSteps->setItemDelegateForColumn(0, new ComboBoxDelegate(recordableMacroMessages, this));
 
     ui->listMacros->setCurrentIndex(model->index(0));
@@ -71,8 +73,8 @@ void MacroEditorDialog::rowChanged(const QModelIndex &current, const QModelIndex
         ui->editMacroName->setReadOnly(true);
         ui->editMacroName->clear();
         ui->keyMacroShortcut->clear();
-        if (auto model = ui->tblMacroSteps->model()) {
-            model->deleteLater();
+        if (auto oldModel = ui->tblMacroSteps->model()) {
+            oldModel->deleteLater();
         }
         return;
     } else {
@@ -83,8 +85,8 @@ void MacroEditorDialog::rowChanged(const QModelIndex &current, const QModelIndex
         ui->editMacroName->setText(macro->getName());
 
         // Replace the existing model
-        if (auto model = ui->tblMacroSteps->model()) {
-            model->deleteLater();
+        if (auto oldModel = ui->tblMacroSteps->model()) {
+            oldModel->deleteLater();
         }
         ui->tblMacroSteps->setModel(new MacroStepTableModel(macro, this));
 
