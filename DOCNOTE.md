@@ -24,6 +24,13 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity developer ergonomics inspired by primary-source research into **KDE Kate**, **Pluma (MATE)**, **Notepad-- (cxasm/ndd)**, and **Notepad++** without breaking or regressing any existing functionality:
 
+0. **Zero-Diagnostic Trunk, Clang-Tidy, SonarQube & Cppcheck Certification**:
+   - Established official repository `.clang-tidy` configuration with tailored Qt checks.
+   - Wrapped `main()` entrypoint in standard ISO C++ `try-catch` handlers resolving `bugprone-exception-escape`.
+   - Applied `std::move` on `ApplicationSetting` constructors eliminating unnecessary copies.
+   - Removed redundant `inline` keywords on `ApplicationSetting` getters and refactored `else-after-return` in `main.cpp`.
+   - Verified 100% clean check status across `trunk check` (430 files clean) and `clangd --check`.
+
 1. **Notepad++ Style Top-Level `Tools` Menu & 16-Action MIME Tools Suite**:
    - Integrated top-level Tools menu located between View and Settings menus with complete vector icon support.
    - **Hash Submenu**: Complete cryptographic and non-cryptographic checksum suite: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, and SHA3-512, each equipped with `Generate...` (Notepad++ style interactive digest modal with real-time computation and per-line string hashing), Generate From File, Generate From Selection, and Verify / Hash Authenticity Validator actions.

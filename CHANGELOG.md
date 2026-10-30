@@ -15,6 +15,13 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
 
 #### 🆕 Added
 
+- **Quality Gates & Linter Hardening (Trunk, Clang-Tidy, SonarQube, Cppcheck)**:
+  - Official repository `.clang-tidy` configuration targeting bugprone, performance, and readability invariants.
+  - Wrapped `main()` entrypoint in standard ISO C++ `try-catch` handlers, catching standard exceptions and eliminating `bugprone-exception-escape`.
+  - Applied `std::move` to `ApplicationSetting` value constructors avoiding heap copy overhead, and removed redundant inline specifiers on class method declarations.
+  - Cleaned up `else-after-return` in `main.cpp` for straightforward control flow.
+  - Verified 0 issues across `trunk check` (430 files clean), `cppcheck`, and `clangd --check`.
+
 - **Notepad++ Style Top-Level `Tools` Menu**:
   - Inserted between View and Settings menus with complete vector icon support.
   - **Hash Submenu**: Complete cryptographic and non-cryptographic checksum suite: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-1 (SHA3-224), SHA3-256, SHA3-384, and SHA3-512 with sub-actions:

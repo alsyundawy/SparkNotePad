@@ -39,72 +39,75 @@
 #endif
 
 int main(int argc, char *argv[]) {
-    qSetMessagePattern(
-        "[%{time process}] "
-        "%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: "
-        "%{message}");
+    try {
+        qSetMessagePattern(
+            "[%{time process}] "
+            "%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: "
+            "%{message}");
 
-    const std::vector<std::string_view> argList(argv + 1, argv + argc);
-    const bool isMultiInstance = std::ranges::any_of(argList, [](std::string_view arg) {
-        return arg == "--multi-instance" || arg == "--new-window" || arg == "-m";
-    });
+        const std::vector<std::string_view> argList(argv + 1, argv + argc);
+        const bool isMultiInstance = std::ranges::any_of(argList, [](std::string_view arg) {
+            return arg == "--multi-instance" || arg == "--new-window" || arg == "-m";
+        });
 
-    // Set these since other parts of the app references these
-    QApplication::setOrganizationName("SparkNotePad");
-    if (isMultiInstance) {
-        QApplication::setApplicationName(QStringLiteral("SparkNotePad_%1").arg(QDateTime::currentMSecsSinceEpoch()));
-    } else {
-        QApplication::setApplicationName("SparkNotePad");
-    }
-    QGuiApplication::setApplicationDisplayName("SparkNotePad");
-    QGuiApplication::setApplicationVersion(APP_VERSION);
+        // Set these since other parts of the app references these
+        QApplication::setOrganizationName("SparkNotePad");
+        if (isMultiInstance) {
+            QApplication::setApplicationName(
+                QStringLiteral("SparkNotePad_%1").arg(QDateTime::currentMSecsSinceEpoch()));
+        } else {
+            QApplication::setApplicationName("SparkNotePad");
+        }
+        QGuiApplication::setApplicationDisplayName("SparkNotePad");
+        QGuiApplication::setApplicationVersion(APP_VERSION);
 
-    // Ensure action icons are natively shown in all menus across macOS, Linux, and Windows
-    QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
-    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+        // Ensure action icons are natively shown in all menus across macOS, Linux, and Windows
+        QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+        QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    // Default settings format
-    QSettings::setDefaultFormat(QSettings::IniFormat);
+        // Default settings format
+        QSettings::setDefaultFormat(QSettings::IniFormat);
 
-    SparkNotePadApplication app(argc, argv);
-    SparkNotePadApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+        SparkNotePadApplication app(argc, argv);
+        SparkNotePadApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
-    // Log some debug info
-    qInfo("=============================");
-    for (const auto &d : app.debugInfo()) {
-        qInfo("%s", qUtf8Printable(d));
-    }
-    qInfo("=============================");
+        // Log some debug info
+        qInfo("=============================");
+        for (const auto &d : app.debugInfo()) {
+            qInfo("%s", qUtf8Printable(d));
+        }
+        qInfo("=============================");
 
-    // Establish universal modern GUI font fallback for cross-platform visual consistency
-    QFont defaultGuiFont;
-#if defined(Q_OS_MACOS)
-    defaultGuiFont.setFamilies(
-        {"-apple-system", "BlinkMacSystemFont", "SF Pro Text", "Helvetica Neue", "Arial", "sans-serif"});
-    defaultGuiFont.setPointSize(12);
+        // Establish universal modern GUI font fallback for cross-platform visual consistency
+        QFont defaultGuiFont;
+#ifdef Q_OS_MACOS
+        defaultGuiFont.setFamilies(
+            {"-apple-system", "BlinkMacSystemFont", "SF Pro Text", "Helvetica Neue", "Arial", "sans-serif"});
+        defaultGuiFont.setPointSize(12);
 #elif defined(Q_OS_LINUX)
-    defaultGuiFont.setFamilies(
-        {"Inter", "Ubuntu", "Roboto", "Segoe UI", "DejaVu Sans", "Liberation Sans", "sans-serif"});
-    defaultGuiFont.setPointSize(10);
+        defaultGuiFont.setFamilies(
+            {"Inter", "Ubuntu", "Roboto", "Segoe UI", "DejaVu Sans", "Liberation Sans", "sans-serif"});
+        defaultGuiFont.setPointSize(10);
 #else
-    defaultGuiFont.setFamilies({"Segoe UI", "Arial", "sans-serif"});
-    defaultGuiFont.setPointSize(10);
+        defaultGuiFont.setFamilies({"Segoe UI", "Arial", "sans-serif"});
+        defaultGuiFont.setPointSize(10);
 #endif
-    QApplication::setFont(defaultGuiFont);
+        QApplication::setFont(defaultGuiFont);
 
-    if (app.isPrimary()) {
-        app.init();
+        if (app.isPrimary()) {
+            app.init();
 
-        return SparkNotePadApplication::exec();
-    } else {
+            return SparkNotePadApplication::exec();
+        }
+
         qInfo() << "Primary instance already running. PID:" << app.primaryPid();
 
         app.sendInfoToPrimaryInstance();
@@ -114,5 +117,11 @@ int main(int argc, char *argv[]) {
         SparkNotePadApplication::exit(0);
 
         return 0;
+    } catch (const std::exception &e) {
+        qCritical("Unhandled exception in main: %s", e.what());
+        return 1;
+    } catch (...) {
+        qCritical("Unknown fatal exception in main");
+        return 1;
     }
 }
