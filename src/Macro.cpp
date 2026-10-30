@@ -34,7 +34,7 @@ void Macro::addMacroStep(Message message, uptr_t wParam, sptr_t lParam) {
 
     // Combine ReplaceSel messages into a single string
     if (message == Message::ReplaceSel && !steps.empty() && steps.constLast().message == Message::ReplaceSel) {
-        steps.last().str.append(reinterpret_cast<const char *>(lParam));
+        steps.last().str.append(reinterpret_cast<const char *>(lParam));  // NOSONAR
     }
     // Combine DeleteBack (backspace) with ReplaceSel
     else if (message == Message::DeleteBack && !steps.empty() && steps.constLast().message == Message::ReplaceSel) {

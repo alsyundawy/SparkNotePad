@@ -68,7 +68,7 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
     dockManager->setStyleSheet("");
 
     connect(dockManager, &ads::CDockManager::focusedDockWidgetChanged, this,
-            [this](ads::CDockWidget *old, ads::CDockWidget *now) {
+            [this](const ads::CDockWidget *old, const ads::CDockWidget *now) {
                 Q_UNUSED(old)
                 if (!now || !now->widget()) {
                     auto edList = editors();
@@ -89,8 +89,8 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
                 emit editorActivated(editor);
             });
 
-    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](ads::CDockAreaWidget *DockArea) {
-        auto *titleBar = qobject_cast<DockedEditorTitleBar *>(DockArea->titleBar());
+    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](const ads::CDockAreaWidget *DockArea) {
+        const auto *titleBar = qobject_cast<const DockedEditorTitleBar *>(DockArea->titleBar());
         connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);
 
         connect(DockArea->titleBar()->tabBar(), &ads::CDockAreaTabBar::tabMoved, this, [this](int from, int to) {
@@ -149,7 +149,7 @@ void DockedEditor::switchToEditor(const ScintillaNext *editor) const {
 }
 
 void DockedEditor::dockWidgetCloseRequested() {
-    auto *dockWidget = qobject_cast<ads::CDockWidget *>(sender());
+    const auto *dockWidget = qobject_cast<const ads::CDockWidget *>(sender());
     if (!dockWidget || !dockWidget->widget()) {
         return;
     }
@@ -244,7 +244,7 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
     emit editorAdded(editor);
 }
 
-void DockedEditor::editorRenamed(ScintillaNext *editor) const {
+void DockedEditor::editorRenamed(const ScintillaNext *editor) const {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
@@ -258,7 +258,7 @@ void DockedEditor::editorRenamed(ScintillaNext *editor) const {
     }
 }
 
-void DockedEditor::splitToRight(ScintillaNext *editor) {
+void DockedEditor::splitToRight(const ScintillaNext *editor) {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *newDockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
@@ -270,7 +270,7 @@ void DockedEditor::splitToRight(ScintillaNext *editor) {
     }
 }
 
-void DockedEditor::splitToBottom(ScintillaNext *editor) {
+void DockedEditor::splitToBottom(const ScintillaNext *editor) {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *newDockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());

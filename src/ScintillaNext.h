@@ -219,6 +219,7 @@ private:
     bool temporary = false;  // Temporary file loaded from a session. It can either be a 'New' file or actual 'File'
 
     bool readFromDisk(QFile &file);
+    QByteArray rawBufferData() const;
 };
 
 template <typename Func>

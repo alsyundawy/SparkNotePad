@@ -65,7 +65,7 @@ void HighlightedScrollBar::paintEvent(QPaintEvent *event) {
     drawCursors(p);
 }
 
-void HighlightedScrollBar::drawMarker(QPainter &p, int marker) {
+void HighlightedScrollBar::drawMarker(QPainter &p, int marker) const {
     // NOTE: SCI_MARKERGETBACK doesn't exist...so can't use the marker color
     sptr_t curLine = 0;
 
@@ -76,7 +76,7 @@ void HighlightedScrollBar::drawMarker(QPainter &p, int marker) {
     }
 }
 
-void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
+void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) const {
     const sptr_t docLength = editor->length();
     if (docLength <= 0) {
         return;
@@ -99,13 +99,11 @@ void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
     }
 }
 
-void HighlightedScrollBar::drawCursors(QPainter &p) {
+void HighlightedScrollBar::drawCursors(QPainter &p) const {
     const sptr_t numSelections = editor->selections();
     for (sptr_t i = 0; i < numSelections; i++) {
         const int startCaretY = posToScrollBarY(editor->selectionNCaret(i));
-        const int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i));
-
-        if (startCaretY != startAnchorY) {
+        if (const int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i)); startCaretY != startAnchorY) {
             const int topY = qMin(startCaretY, startAnchorY);
             const int h = qMax(1, qAbs(startCaretY - startAnchorY));
             drawTickMark(p, topY, h, CURSOR_SELECTION_COLOR);
