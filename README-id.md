@@ -535,3 +535,5 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 ```
+
+![Alt](https://repobeats.axiom.co/api/embed/6e64b6b48a0afc46c8196981d099cbd69f5c108a.svg "Repobeats analytics image")
