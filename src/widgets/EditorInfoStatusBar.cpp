@@ -260,10 +260,10 @@ void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated) {
     }
 }
 
-void EditorInfoStatusBar::updateDocumentSize(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateDocumentSize(const ScintillaNext *editor) {
     if (!editor || !docSize)
         return;
-    QString sizeText = tr("Length: %L1    Lines: %L2").arg(editor->length()).arg(editor->lineCount());
+    const QString sizeText = tr("Length: %L1    Lines: %L2").arg(editor->length()).arg(editor->lineCount());
     docSize->setText(sizeText);
 }
 
@@ -275,10 +275,10 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
     if (editor->selections() > 1) {
         selectionText = tr("    [%1 Cursors]").arg(editor->selections());
     } else {
-        const int start = static_cast<int>(editor->selectionStart());
-        const int end = static_cast<int>(editor->selectionEnd());
+        const auto start = static_cast<int>(editor->selectionStart());
+        const auto end = static_cast<int>(editor->selectionEnd());
         if (start != end) {
-            const int lines = static_cast<int>(editor->lineFromPosition(end) - editor->lineFromPosition(start) + 1);
+            const auto lines = static_cast<int>(editor->lineFromPosition(end) - editor->lineFromPosition(start) + 1);
             int charCount = 0;
             // On huge selections (e.g. Select All on tens of megabytes), countCharacters byte-by-byte
             // stalls the main thread. Fallback to byte range above 2MB.
@@ -291,8 +291,8 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
         }
     }
 
-    const int pos = static_cast<int>(editor->currentPos());
-    QString positionText =
+    const auto pos = static_cast<int>(editor->currentPos());
+    const QString positionText =
         tr("Ln: %L1    Col: %L2    ").arg(editor->lineFromPosition(pos) + 1).arg(editor->column(pos) + 1);
     docPos->setText(positionText + selectionText);
 }
@@ -317,7 +317,7 @@ void EditorInfoStatusBar::updateLanguage(const ScintillaNext *editor) {
     docType->setText(editor->languageName);
 }
 
-void EditorInfoStatusBar::updateEol(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateEol(const ScintillaNext *editor) {
     if (!editor || !eolFormat)
         return;
     switch (editor->eOLMode()) {
@@ -342,7 +342,7 @@ void EditorInfoStatusBar::updateEncoding(const ScintillaNext *editor) {
     unicodeType->setText(EncodingDetector::formatDisplayName(editor->encodingName(), editor->bom()));
 }
 
-void EditorInfoStatusBar::updateOverType(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateOverType(const ScintillaNext *editor) {
     if (!editor || !overType)
         return;
     if (editor->overtype()) {

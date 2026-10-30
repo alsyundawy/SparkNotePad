@@ -28,24 +28,24 @@ ThemeSwitcherDialog::ThemeSwitcherDialog(MainWindow *mainWindow, QWidget *parent
     populateTable();
 }
 
-ThemeSwitcherDialog::~ThemeSwitcherDialog() {}
+ThemeSwitcherDialog::~ThemeSwitcherDialog() = default;
 
 void ThemeSwitcherDialog::setupUi() {
     setWindowTitle(tr("Theme Switcher — SparkNotePad"));
     resize(720, 520);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(18, 18, 18, 18);
     mainLayout->setSpacing(12);
 
-    QLabel *titleLabel = new QLabel(tr("<h2>Select Visual Theme</h2><p style='opacity: 0.8;'>Choose from %1 "
-                                       "professional themes across curated families with real-time preview.</p>")
-                                        .arg(kTotalThemePaletteCount),
-                                    this);
+    auto *titleLabel = new QLabel(tr("<h2>Select Visual Theme</h2><p style='opacity: 0.8;'>Choose from %1 "
+                                     "professional themes across curated families with real-time preview.</p>")
+                                      .arg(kTotalThemePaletteCount),
+                                  this);
     mainLayout->addWidget(titleLabel);
 
     // Filter bar
-    QHBoxLayout *filterLayout = new QHBoxLayout();
+    auto *filterLayout = new QHBoxLayout();
     filterLayout->setSpacing(12);
     filterLayout->setContentsMargins(0, 2, 0, 2);
     m_searchEdit = new QLineEdit(this);
@@ -86,8 +86,8 @@ void ThemeSwitcherDialog::setupUi() {
     mainLayout->addWidget(m_table);
 
     // Buttons
-    QHBoxLayout *btnLayout = new QHBoxLayout();
-    QLabel *shortcutHint = new QLabel(
+    auto *btnLayout = new QHBoxLayout();
+    auto *shortcutHint = new QLabel(
         tr("<small style='opacity: 0.8;'>Tip: Press Esc to revert or Ctrl+Shift+T to open again.</small>"), this);
     btnLayout->addWidget(shortcutHint);
     btnLayout->addStretch();
@@ -120,12 +120,10 @@ void ThemeSwitcherDialog::setupUi() {
 void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilter) {
     m_table->setRowCount(0);
     const ThemePalette *curPal = ThemeManager::instance()->currentPalette();
-    QString activeId = curPal ? QString::fromLatin1(curPal->id) : ThemeManager::instance()->currentPaletteId();
+    const QString activeId = curPal ? QString::fromLatin1(curPal->id) : ThemeManager::instance()->currentPaletteId();
     int selectedRow = -1;
 
-    for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        const ThemePalette &p = kAllThemePalettes[i];
-
+    for (const auto &p : kAllThemePalettes) {
         // Mode filter: 1 = Light only, 2 = Dark only
         if (modeFilter == 1 && p.isDark)
             continue;
@@ -134,25 +132,25 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
 
         // Text filter
         if (!filterText.isEmpty()) {
-            QString query = filterText.trimmed();
-            QString name = QString::fromUtf8(p.displayName);
-            QString fam = QString::fromUtf8(p.family);
+            const QString query = filterText.trimmed();
+            const QString name = QString::fromUtf8(p.displayName);
+            const QString fam = QString::fromUtf8(p.family);
             if (!name.contains(query, Qt::CaseInsensitive) && !fam.contains(query, Qt::CaseInsensitive)) {
                 continue;
             }
         }
 
-        int row = m_table->rowCount();
+        const int row = m_table->rowCount();
         m_table->insertRow(row);
 
-        QTableWidgetItem *item0 = new QTableWidgetItem(QString::fromUtf8(p.displayName));
+        auto *item0 = new QTableWidgetItem(QString::fromUtf8(p.displayName));
         item0->setData(Qt::UserRole, QString::fromLatin1(p.id));
         m_table->setItem(row, 0, item0);
 
-        QTableWidgetItem *item1 = new QTableWidgetItem(QString::fromUtf8(p.family));
+        auto *item1 = new QTableWidgetItem(QString::fromUtf8(p.family));
         m_table->setItem(row, 1, item1);
 
-        QTableWidgetItem *item2 = new QTableWidgetItem(p.isDark ? tr("Dark") : tr("Light"));
+        auto *item2 = new QTableWidgetItem(p.isDark ? tr("Dark") : tr("Light"));
         m_table->setItem(row, 2, item2);
 
         // Render preview swatches (Win, Card, TxtPri, Accent, Cyan, Net)
@@ -161,7 +159,7 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         QPainter painter(&pix);
         painter.setRenderHint(QPainter::Antialiasing, true);
 
-        const char *colors[] = {p.win, p.card, p.border, p.txtPri, p.blue, p.cyan};
+        const std::array<const char *, 6> colors = {p.win, p.card, p.border, p.txtPri, p.blue, p.cyan};
         for (int c = 0; c < 6; ++c) {
             painter.setBrush(QColor(colors[c]));
             painter.setPen(Qt::NoPen);
@@ -169,7 +167,7 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         }
         painter.end();
 
-        QTableWidgetItem *item3 = new QTableWidgetItem();
+        auto *item3 = new QTableWidgetItem();
         item3->setIcon(QIcon(pix));
         m_table->setItem(row, 3, item3);
 
@@ -185,26 +183,25 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
 }
 
 void ThemeSwitcherDialog::filterThemes() {
-    int filterId = m_filterGroup->checkedId();
+    const int filterId = m_filterGroup->checkedId();
     populateTable(m_searchEdit->text(), filterId);
 }
 
 void ThemeSwitcherDialog::onThemeSelected(int row, int column) {
     Q_UNUSED(column)
-    QTableWidgetItem *item = m_table->item(row, 0);
+    const QTableWidgetItem *item = m_table->item(row, 0);
     if (!item)
         return;
 
-    QString palId = item->data(Qt::UserRole).toString();
+    const QString palId = item->data(Qt::UserRole).toString();
     ThemeManager::instance()->setPalette(palId, m_mainWindow);
 }
 
 void ThemeSwitcherDialog::applyAndClose() {
-    int row = m_table->currentRow();
-    if (row >= 0) {
-        QTableWidgetItem *item = m_table->item(row, 0);
+    if (const int row = m_table->currentRow(); row >= 0) {
+        const QTableWidgetItem *item = m_table->item(row, 0);
         if (item) {
-            QString palId = item->data(Qt::UserRole).toString();
+            const QString palId = item->data(Qt::UserRole).toString();
             ThemeManager::instance()->setPalette(palId, m_mainWindow);
         }
     }

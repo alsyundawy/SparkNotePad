@@ -33,7 +33,7 @@ public:
 
     QColor markerColor(int i) const;
 
-    void mark(ScintillaNext *editor, int i);
-    void clear(ScintillaNext *editor, int i);
-    void clearAll(ScintillaNext *editor);
+    void mark(ScintillaNext *editor, int i) const;
+    void clear(ScintillaNext *editor, int i) const;
+    void clearAll(ScintillaNext *editor) const;
 };

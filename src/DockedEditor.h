@@ -48,7 +48,7 @@ public:
 
     QVector<ScintillaNext *> editors() const;
 
-    void switchToEditor(const ScintillaNext *editor);
+    void switchToEditor(const ScintillaNext *editor) const;
 
     int count() const;
 
@@ -60,7 +60,7 @@ public slots:
 
 private slots:
     void dockWidgetCloseRequested();
-    void editorRenamed(ScintillaNext *editor);
+    void editorRenamed(ScintillaNext *editor) const;
 
 signals:
     void editorAdded(ScintillaNext *editor);

@@ -35,8 +35,8 @@
 
 class DockedEditorComponentsFactory : public ads::CDockComponentsFactory {
 public:
-    ads::CDockAreaTitleBar *createDockAreaTitleBar(ads::CDockAreaWidget *DockArea) const {
-        DockedEditorTitleBar *titleBar = new DockedEditorTitleBar(DockArea);
+    ads::CDockAreaTitleBar *createDockAreaTitleBar(ads::CDockAreaWidget *DockArea) const override {
+        auto *titleBar = new DockedEditorTitleBar(DockArea);
 
         // Disable the built in context menu for the title bar since it has options we don't want
         titleBar->setContextMenuPolicy(Qt::NoContextMenu);
@@ -89,13 +89,13 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
                 emit editorActivated(editor);
             });
 
-    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [=, this](ads::CDockAreaWidget *DockArea) {
-        DockedEditorTitleBar *titleBar = qobject_cast<DockedEditorTitleBar *>(DockArea->titleBar());
+    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](ads::CDockAreaWidget *DockArea) {
+        auto *titleBar = qobject_cast<DockedEditorTitleBar *>(DockArea->titleBar());
         connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);
 
-        connect(DockArea->titleBar()->tabBar(), &ads::CDockAreaTabBar::tabMoved, this, [=, this](int from, int to) {
-            Q_UNUSED(from);
-            Q_UNUSED(to);
+        connect(DockArea->titleBar()->tabBar(), &ads::CDockAreaTabBar::tabMoved, this, [this](int from, int to) {
+            Q_UNUSED(from)
+            Q_UNUSED(to)
 
             emit editorOrderChanged();
         });
@@ -126,15 +126,15 @@ QVector<ScintillaNext *> DockedEditor::editors() const {
     // For each area, for each widget, append it to our list
     for (const ads::CDockAreaWidget *areaWidget : dockManager->openedDockAreas()) {
         const auto &widgets = areaWidget->dockWidgets();
-        std::transform(
-            widgets.cbegin(), widgets.cend(), std::back_inserter(editors),
-            [](const ads::CDockWidget *dockWidget) { return qobject_cast<ScintillaNext *>(dockWidget->widget()); });
+        std::ranges::transform(widgets, std::back_inserter(editors), [](const ads::CDockWidget *dockWidget) {
+            return qobject_cast<ScintillaNext *>(dockWidget->widget());
+        });
     }
 
     return editors;
 }
 
-void DockedEditor::switchToEditor(const ScintillaNext *editor) {
+void DockedEditor::switchToEditor(const ScintillaNext *editor) const {
     if (!editor) {
         return;
     }
@@ -149,7 +149,7 @@ void DockedEditor::switchToEditor(const ScintillaNext *editor) {
 }
 
 void DockedEditor::dockWidgetCloseRequested() {
-    ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(sender());
+    auto *dockWidget = qobject_cast<ads::CDockWidget *>(sender());
     if (!dockWidget || !dockWidget->widget()) {
         return;
     }
@@ -196,7 +196,7 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
     dockWidget->setFeature(ads::CDockWidget::DockWidgetFeature::DockWidgetFloatable, false);
 
     dockWidget->tabWidget()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(dockWidget->tabWidget(), &QWidget::customContextMenuRequested, this, [=, this](const QPoint &pos) {
+    connect(dockWidget->tabWidget(), &QWidget::customContextMenuRequested, this, [this, editor](const QPoint &pos) {
         Q_UNUSED(pos)
 
         emit contextMenuRequestedForEditor(editor);
@@ -214,7 +214,7 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
         dockWidget->tabWidget()->setIcon(QIcon(":/icons/readonly.svg"));
     } else {
         dockWidget->tabWidget()->setIcon(QIcon(editor->canSaveToDisk() ? ":/icons/unsaved.svg" : ":/icons/saved.svg"));
-        connect(editor, &ScintillaNext::savePointChanged, dockWidget, [=, this](bool dirty) {
+        connect(editor, &ScintillaNext::savePointChanged, dockWidget, [editor, dockWidget](bool dirty) {
             Q_UNUSED(dirty)
             const bool actuallyDirty = editor->canSaveToDisk();
             const QString iconPath = actuallyDirty ? ":/icons/unsaved.svg" : ":/icons/saved.svg";
@@ -223,8 +223,8 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
     }
 
     connect(editor, &ScintillaNext::closed, dockWidget, &ads::CDockWidget::closeDockWidget);
-    connect(editor, &ScintillaNext::closed, this, [=, this]() { emit editorClosed(editor); });
-    connect(editor, &ScintillaNext::renamed, this, [=, this]() { editorRenamed(editor); });
+    connect(editor, &ScintillaNext::closed, this, [this, editor]() { emit editorClosed(editor); });
+    connect(editor, &ScintillaNext::renamed, this, [this, editor]() { editorRenamed(editor); });
     connect(editor, &QObject::destroyed, this, [this](QObject *obj) {
         if (currentEditor == obj) {
             currentEditor = nullptr;
@@ -244,7 +244,7 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
     emit editorAdded(editor);
 }
 
-void DockedEditor::editorRenamed(ScintillaNext *editor) {
+void DockedEditor::editorRenamed(ScintillaNext *editor) const {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());

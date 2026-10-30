@@ -237,17 +237,13 @@ void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, S
     Sci_TextToFind ttf{range, text.constData(), {INVALID_POSITION, INVALID_POSITION}};
     const auto flags = static_cast<int>(searchFlags());
 
-    while (send(SCI_FINDTEXT, flags, reinterpret_cast<sptr_t>(&ttf)) != INVALID_POSITION) {
-        if (ttf.chrgText.cpMin >= ttf.chrgText.cpMax)
-            break;
-        const auto nextMin = callback(static_cast<int>(ttf.chrgText.cpMin), static_cast<int>(ttf.chrgText.cpMax));
-        if (nextMin <= ttf.chrgText.cpMin) {
+    while (send(SCI_FINDTEXT, flags, reinterpret_cast<sptr_t>(&ttf)) != INVALID_POSITION &&
+           ttf.chrgText.cpMin < ttf.chrgText.cpMax && ttf.chrg.cpMin < range.cpMax) {
+        if (const auto nextMin = callback(static_cast<int>(ttf.chrgText.cpMin), static_cast<int>(ttf.chrgText.cpMax));
+            nextMin <= ttf.chrgText.cpMin) {
             ttf.chrg.cpMin = ttf.chrgText.cpMax;
         } else {
             ttf.chrg.cpMin = nextMin;
-        }
-        if (ttf.chrg.cpMin >= range.cpMax) {
-            break;
         }
     }
 }
