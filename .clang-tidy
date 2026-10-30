@@ -1,0 +1,23 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  performance-*,
+  readability-*,
+  misc-*,
+  -misc-include-cleaner,
+  -misc-use-internal-linkage,
+  -bugprone-throwing-static-initialization,
+  -bugprone-macro-parentheses,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-signed-bitwise,
+  -readability-implicit-bool-conversion,
+  -readability-magic-numbers,
+  -readability-function-cognitive-complexity,
+  -readability-isolate-declaration,
+  -readability-named-parameter,
+  -readability-identifier-length,
+  -readability-redundant-access-specifiers
+WarningsAsErrors: ''
+HeaderFilterRegex: 'src/.*'
+FormatStyle: none

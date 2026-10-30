@@ -23,6 +23,13 @@ Architecture        : 100% Additive Safe Enhancements Inspired by KDE Kate, Plum
 
 SparkNotePad **v1.3.7** delivers a suite of high-velocity developer ergonomics inspired by primary-source research into **KDE Kate**, **Pluma (MATE)**, and **Notepad-- (cxasm/ndd)** without breaking or regressing any existing functionality:
 
+0. **Zero-Diagnostic Trunk, Clang-Tidy, SonarQube & Cppcheck Certification**:
+   - Established official repository `.clang-tidy` configuration with tailored Qt checks.
+   - Wrapped `main()` entrypoint in standard ISO C++ `try-catch` handlers resolving `bugprone-exception-escape`.
+   - Applied `std::move` on `ApplicationSetting` constructors eliminating unnecessary copies.
+   - Removed redundant `inline` keywords on `ApplicationSetting` getters and refactored `else-after-return` in `main.cpp`.
+   - Verified 100% clean check status across `trunk check` (424 files clean) and `clangd --check`.
+
 1. **Omnibar Command Palette & Quick Open (`Cmd+P` / `Ctrl+P`)**: Keyboard-driven floating modal for fast tab switching, recent file navigation, `:line` jumping, and executing any editor action.
 2. **Native Side-by-Side Visual Diff & File Compare Engine**: Pure C++20 Myers/LCS difference algorithm with synchronized vertical scrolling, color-coded line markers, and fast navigation (`F7` / `Shift+F7`).
 3. **Upgraded Project & Workspace Tree Dock**: Real-time bottom filter bar (`filterEdit`), toolbar controls (Refresh, Collapse All), comprehensive context menu (Open, Open with System, Show in Finder, Copy Paths), and `.sparkproject` JSON detection.

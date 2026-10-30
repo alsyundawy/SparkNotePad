@@ -15,6 +15,13 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
 
 #### 🆕 Added
 
+- **Quality Gates & Linter Hardening (Trunk, Clang-Tidy, SonarQube, Cppcheck)**:
+  - Official repository `.clang-tidy` configuration targeting bugprone, performance, and readability invariants.
+  - Wrapped `main()` entrypoint in standard ISO C++ `try-catch` handlers, catching standard exceptions and eliminating `bugprone-exception-escape`.
+  - Applied `std::move` to `ApplicationSetting` value constructors avoiding heap copy overhead, and removed redundant inline specifiers on class method declarations.
+  - Cleaned up `else-after-return` in `main.cpp` for straightforward control flow.
+  - Verified 0 issues across `trunk check` (424 files clean), `cppcheck`, and `clangd --check`.
+
 - **Omnibar Command Palette & Quick Open (`CommandPaletteDialog`)**:
   - Global floating modal spotlight bound to `Cmd+P` / `Ctrl+P` (and Kate `Ctrl+Alt+O`).
   - Fast fuzzy-search tab switcher across all open document buffers and recent files.

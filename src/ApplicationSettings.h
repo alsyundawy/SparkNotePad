@@ -35,13 +35,13 @@ template <typename T>
 class ApplicationSetting {
 public:
     explicit ApplicationSetting(const char *const key, T defaultValue = T())
-        : mKey(key), mDefault(defaultValue), mCallable(Q_NULLPTR) {}
+        : mKey(key), mDefault(std::move(defaultValue)), mCallable(nullptr) {}
 
     explicit ApplicationSetting(const char *const key, std::function<T()> callable)
-        : mKey(key), mDefault(T()), mCallable(callable) {}
+        : mKey(key), mDefault(T()), mCallable(std::move(callable)) {}
 
-    inline T getDefault() const { return mCallable ? mCallable() : mDefault; }
-    inline const char *key() const { return mKey; }
+    T getDefault() const { return mCallable ? mCallable() : mDefault; }
+    const char *key() const { return mKey; }
 
 private:
     const char *const mKey;
