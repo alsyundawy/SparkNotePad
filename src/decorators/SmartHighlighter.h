@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,19 +22,16 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SMARTHIGHLIGHTER_H
 #define SMARTHIGHLIGHTER_H
 
 #include "EditorDecorator.h"
 
-
-class SmartHighlighter : public EditorDecorator
-{
+class SmartHighlighter : public EditorDecorator {
     Q_OBJECT
 
 public:
-    SmartHighlighter(ScintillaNext *editor);
+    explicit SmartHighlighter(ScintillaNext *editor);
 
 private:
     void highlightCurrentView();
@@ -43,4 +41,4 @@ public slots:
     void notify(const Scintilla::NotificationData *pscn) override;
 };
 
-#endif // SMARTHIGHLIGHTER_H
+#endif  // SMARTHIGHLIGHTER_H

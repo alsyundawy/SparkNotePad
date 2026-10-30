@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,8 +19,7 @@
 
 class ScintillaNext;
 
-class UrlUtils
-{
+class UrlUtils {
 public:
     // Checks if the document size exceeds the given UrlThreshold in MB.
     // If thresholdMB is 0, returns true (indicating threshold exceeded / disabled).
@@ -38,4 +38,4 @@ public:
     static const char *urlRegexPattern();
 };
 
-#endif // URLUTILS_H
+#endif  // URLUTILS_H

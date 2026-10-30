@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef HIGHLIGHTEDSCROLLBAR_H
 #define HIGHLIGHTEDSCROLLBAR_H
 
@@ -30,11 +30,9 @@
 
 #include "EditorDecorator.h"
 
-
 class HighlightedScrollBar;
 
-class HighlightedScrollBarDecorator : public EditorDecorator
-{
+class HighlightedScrollBarDecorator : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -48,9 +46,7 @@ private:
     HighlightedScrollBar *scrollBar;
 };
 
-
-class HighlightedScrollBar : public QScrollBar
-{
+class HighlightedScrollBar : public QScrollBar {
     Q_OBJECT
 
 public:
@@ -66,12 +62,12 @@ private:
 
     void drawTickMark(QPainter &p, int y, int height, QColor color);
 
-    int posToScrollBarY(int pos) const;
-    int lineToScrollBarY(int line) const;
+    int posToScrollBarY(sptr_t pos) const;
+    int lineToScrollBarY(sptr_t line) const;
     int scrollbarArrowHeight() const;
 
     ScintillaNext *editor;
     int smartHighlighterIndicator;
 };
 
-#endif // HIGHLIGHTEDSCROLLBAR_H
+#endif  // HIGHLIGHTEDSCROLLBAR_H

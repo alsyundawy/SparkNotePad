@@ -16,8 +16,7 @@
 #include <QDateTime>
 #include <QSettings>
 
-bool LogAutoTimestamp::hasLogHeader(ScintillaNext *editor)
-{
+bool LogAutoTimestamp::hasLogHeader(ScintillaNext *editor) {
     if (!editor || editor->lineCount() <= 0) {
         return false;
     }
@@ -27,8 +26,7 @@ bool LogAutoTimestamp::hasLogHeader(ScintillaNext *editor)
     return (lineStr == QLatin1String(".LOG"));
 }
 
-QString LogAutoTimestamp::currentLogTimestampString()
-{
+QString LogAutoTimestamp::currentLogTimestampString() {
     QSettings settings;
     const QString customFmt = settings.value(QStringLiteral("Settings/LogTimestampFormat")).toString();
 
@@ -41,10 +39,11 @@ QString LogAutoTimestamp::currentLogTimestampString()
     return now.toString(QStringLiteral("hh:mm AP MM/dd/yyyy"));
 }
 
-bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool force)
-{
-    if (!editor) return false;
-    if (editor->readOnly()) return false;
+bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool force) {
+    if (!editor)
+        return false;
+    if (editor->readOnly())
+        return false;
 
     if (!force && editor->QObject::property("LogTimestampApplied").toBool()) {
         return false;
@@ -82,9 +81,9 @@ bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool for
     return true;
 }
 
-bool LogAutoTimestamp::appendLogTimestamp(ScintillaNext *editor)
-{
-    if (!editor || editor->readOnly()) return false;
+bool LogAutoTimestamp::appendLogTimestamp(ScintillaNext *editor) {
+    if (!editor || editor->readOnly())
+        return false;
 
     const int docLen = editor->length();
     const QString eol = (editor->eOLMode() == SC_EOL_CRLF) ? QStringLiteral("\r\n") : QStringLiteral("\n");
@@ -111,10 +110,11 @@ bool LogAutoTimestamp::appendLogTimestamp(ScintillaNext *editor)
     return true;
 }
 
-bool LogAutoTimestamp::insertLogHeader(ScintillaNext *editor)
-{
-    if (!editor || editor->readOnly()) return false;
-    if (hasLogHeader(editor)) return false;
+bool LogAutoTimestamp::insertLogHeader(ScintillaNext *editor) {
+    if (!editor || editor->readOnly())
+        return false;
+    if (hasLogHeader(editor))
+        return false;
 
     const QString eol = (editor->eOLMode() == SC_EOL_CRLF) ? QStringLiteral("\r\n") : QStringLiteral("\n");
     const QString header = QStringLiteral(".LOG") + eol;
@@ -126,14 +126,12 @@ bool LogAutoTimestamp::insertLogHeader(ScintillaNext *editor)
     return true;
 }
 
-bool LogAutoTimestamp::isAutoLogEnabled()
-{
+bool LogAutoTimestamp::isAutoLogEnabled() {
     QSettings settings;
     return settings.value(QStringLiteral("Settings/AutoLogTimestamp"), true).toBool();
 }
 
-void LogAutoTimestamp::setAutoLogEnabled(bool enabled)
-{
+void LogAutoTimestamp::setAutoLogEnabled(bool enabled) {
     QSettings settings;
     settings.setValue(QStringLiteral("Settings/AutoLogTimestamp"), enabled);
 }

@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,40 +22,38 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef MACRO_H
 #define MACRO_H
 
 #include "MacroStep.h"
 
-class Macro
-{
+class Macro {
 public:
     Macro();
 
     ~Macro();
 
     void addMacroStep(Scintilla::Message message, Scintilla::uptr_t wParam, Scintilla::sptr_t lParam);
-    void addMacroStep(MacroStep step);
+    void addMacroStep(const MacroStep &step);
 
-    int size() const { return steps.size(); }
+    qsizetype size() const { return steps.size(); }
 
     void replay(ScintillaNext *editor, int n = 1) const;
     void replayTillEndOfFile(ScintillaNext *editor) const;
 
-    QString getName() const;
+    const QString &getName() const;
     void setName(const QString &value);
 
     QVector<MacroStep> &getSteps() { return steps; }
 
-    friend QDataStream &operator<<(QDataStream& stream, const Macro &Macro);
-    friend QDataStream &operator>>(QDataStream& stream, Macro &Macro);
+    friend QDataStream &operator<<(QDataStream &stream, const Macro &Macro);
+    friend QDataStream &operator>>(QDataStream &stream, Macro &Macro);
 
 private:
     QVector<MacroStep> steps;
     QString name;
 };
 Q_DECLARE_METATYPE(Macro)
-Q_DECLARE_METATYPE(Macro*)
+Q_DECLARE_METATYPE(Macro *)
 
-#endif // MACRO_H
+#endif  // MACRO_H

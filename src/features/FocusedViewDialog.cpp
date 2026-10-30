@@ -26,17 +26,13 @@
 #include <QStatusBar>
 
 FocusedViewDialog::FocusedViewDialog(FocusedView *focusedView, MainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent)
-    , m_focusedView(focusedView)
-    , m_mainWindow(mainWindow)
-{
+    : QDialog(parent), m_focusedView(focusedView), m_mainWindow(mainWindow) {
     setWindowTitle(tr("Focused View — Filter Lines"));
     setMinimumWidth(420);
     setupUi();
 }
 
-void FocusedViewDialog::setupUi()
-{
+void FocusedViewDialog::setupUi() {
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(10);
 
@@ -102,17 +98,16 @@ void FocusedViewDialog::setupUi()
     connect(m_bookmarksOnly, &QCheckBox::toggled, this, &FocusedViewDialog::onBookmarksToggled);
 }
 
-void FocusedViewDialog::onBookmarksToggled(bool checked)
-{
+void FocusedViewDialog::onBookmarksToggled(bool checked) {
     m_queryEdit->setEnabled(!checked);
     m_caseSensitive->setEnabled(!checked);
     m_wholeWord->setEnabled(!checked);
     m_useRegex->setEnabled(!checked);
 }
 
-void FocusedViewDialog::prepareForEditor(ScintillaNext *editor)
-{
-    if (!editor) return;
+void FocusedViewDialog::prepareForEditor(ScintillaNext *editor) {
+    if (!editor)
+        return;
 
     if (m_focusedView->isFocused(editor)) {
         auto opts = m_focusedView->currentOptions(editor);
@@ -148,9 +143,9 @@ void FocusedViewDialog::prepareForEditor(ScintillaNext *editor)
     m_queryEdit->setFocus();
 }
 
-void FocusedViewDialog::onApplyClicked()
-{
-    if (!m_mainWindow || !m_focusedView) return;
+void FocusedViewDialog::onApplyClicked() {
+    if (!m_mainWindow || !m_focusedView)
+        return;
     ScintillaNext *editor = m_mainWindow->currentEditor();
     if (!editor) {
         m_statusLabel->setText(tr("No active editor"));
@@ -173,9 +168,9 @@ void FocusedViewDialog::onApplyClicked()
     }
 }
 
-void FocusedViewDialog::onClearClicked()
-{
-    if (!m_mainWindow || !m_focusedView) return;
+void FocusedViewDialog::onClearClicked() {
+    if (!m_mainWindow || !m_focusedView)
+        return;
     ScintillaNext *editor = m_mainWindow->currentEditor();
     if (!editor) {
         m_statusLabel->setText(tr("No active editor"));

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,28 +20,20 @@
 class ScintillaNext;
 
 struct FunctionSymbol {
-    enum Type {
-        Function,
-        Method,
-        Class,
-        Struct,
-        Heading,
-        Property
-    };
+    enum Type { Function, Method, Class, Struct, Heading, Property };
 
     QString name;
     QString signature;
     QString parentScope;
-    int line = 1;       // 1-indexed line number
-    int position = 0;   // Character / byte position in Scintilla
+    int line = 1;      // 1-indexed line number
+    int position = 0;  // Character / byte position in Scintilla
     Type type = Function;
 };
 
-class FunctionParser
-{
+class FunctionParser {
 public:
     static QVector<FunctionSymbol> parse(ScintillaNext *editor);
     static QVector<FunctionSymbol> parseText(const QString &text, const QString &languageName);
 };
 
-#endif // FUNCTIONPARSER_H
+#endif  // FUNCTIONPARSER_H

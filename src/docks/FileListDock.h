@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FILELISTDOCK_H
 #define FILELISTDOCK_H
 
@@ -36,8 +36,7 @@ class FileList;
 
 class MainWindow;
 
-class FileListDock : public QDockWidget
-{
+class FileListDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -47,7 +46,7 @@ public:
 private slots:
     void refreshList();
     void addEditor(ScintillaNext *editor);
-    void removeEditor(ScintillaNext *editor);
+    void removeEditor(const ScintillaNext *editor);
 
     void selectCurrentEditor();
 
@@ -57,10 +56,10 @@ private slots:
     void editorRenamed();
 
 private:
-    QListWidgetItem *lookupItemByEditor(ScintillaNext *editor);
+    QListWidgetItem *lookupItemByEditor(const ScintillaNext *editor);
 
     Ui::FileList *ui;
     MainWindow *window;
 };
 
-#endif // FILELISTDOCK_H
+#endif  // FILELISTDOCK_H

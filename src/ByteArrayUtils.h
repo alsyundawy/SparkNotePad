@@ -22,6 +22,7 @@
  */
 #pragma once
 
+#include <numeric>
 #include <QByteArray>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QByteArrayView>
@@ -30,23 +31,23 @@
 #include <cstring>
 
 // WARNING: Dirty QT5 compat. Tested on Debian 13.
-class QByteArrayView
-{
+class QByteArrayView {
 public:
     QByteArrayView() : m_data(nullptr), m_size(0) {}
-    QByteArrayView(const char* data, qsizetype size) : m_data(data), m_size(size) {}
-    QByteArrayView(const QByteArray& ba) : m_data(ba.constData()), m_size(ba.size()) {}
-    const char* data() const { return m_data; }
+    QByteArrayView(const char *data, qsizetype size) : m_data(data), m_size(size) {}
+    // cppcheck-suppress noExplicitConstructor
+    QByteArrayView(const QByteArray &ba) : m_data(ba.constData()), m_size(ba.size()) {}
+    const char *data() const { return m_data; }
     qsizetype size() const { return m_size; }
     bool isEmpty() const { return m_size == 0; }
-    bool operator==(const QByteArrayView& other) const
-    {
-        return m_size == other.m_size && (m_data == other.m_data || (m_size > 0 && std::memcmp(m_data, other.m_data, m_size) == 0));
+    bool operator==(const QByteArrayView &other) const {
+        return m_size == other.m_size &&
+               (m_data == other.m_data || (m_size > 0 && std::memcmp(m_data, other.m_data, m_size) == 0));
     }
-    bool operator!=(const QByteArrayView& other) const { return !(*this == other); }
+    bool operator!=(const QByteArrayView &other) const { return !(*this == other); }
 
 private:
-    const char* m_data;
+    const char *m_data;
     qsizetype m_size;
 };
 #endif
@@ -56,16 +57,14 @@ private:
 #include <cstring>
 #include <unordered_set>
 
-namespace ByteArrayUtils
-{
+namespace ByteArrayUtils {
 
 // Zero-copy split: returns views into 'source'.
 // The source QByteArray must remain alive while using the views.
-inline QList<QByteArrayView> split(const QByteArray& source, const QByteArray& delimiter)
-{
+inline QList<QByteArrayView> split(const QByteArray &source, const QByteArray &delimiter) {
     QList<QByteArrayView> out;
 
-    const char* base = source.constData();
+    const char *base = source.constData();
     qsizetype len = source.size();
     qsizetype dlen = delimiter.size();
 
@@ -86,45 +85,38 @@ inline QList<QByteArrayView> split(const QByteArray& source, const QByteArray& d
 }
 
 // Remove duplicates and preserve order.
-inline void removeDuplicates(QList<QByteArrayView>& parts)
-{
+inline void removeDuplicates(QList<QByteArrayView> &parts) {
     std::unordered_set<QByteArray, std::hash<QByteArray>> seen;
 
-    auto newEnd = std::remove_if(parts.begin(), parts.end(), [&seen](const QByteArrayView& v) {
-        QByteArray key(v.data(), v.size()); // copy once per unique value
+    auto newEnd = std::remove_if(parts.begin(), parts.end(), [&seen](const QByteArrayView &v) {
+        QByteArray key(v.data(), v.size());  // copy once per unique value
         if (seen.find(key) != seen.end())
-            return true; // duplicate, remove
+            return true;  // duplicate, remove
         seen.insert(std::move(key));
-        return false;    // first occurrence, keep
+        return false;  // first occurrence, keep
     });
 
     parts.erase(newEnd, parts.end());
 }
-
 
 // Remove only *consecutive* duplicates.
 // Example: A A B B B C A  →  A B C A
-inline void removeConsecutiveDuplicates(QList<QByteArrayView>& parts)
-{
-    auto newEnd = std::unique(parts.begin(), parts.end(), [](const QByteArrayView& a, const QByteArrayView& b) {
-        return a == b;
-    });
+inline void removeConsecutiveDuplicates(QList<QByteArrayView> &parts) {
+    auto newEnd = std::unique(parts.begin(), parts.end(),
+                              [](const QByteArrayView &a, const QByteArrayView &b) { return a == b; });
 
     parts.erase(newEnd, parts.end());
 }
 
-
-inline QByteArray join(const QList<QByteArrayView>& parts, const QByteArray& delimiter)
-{
+inline QByteArray join(const QList<QByteArrayView> &parts, const QByteArray &delimiter) {
     if (parts.isEmpty())
         return QByteArray();
 
     const qsizetype dlen = delimiter.size();
 
     // Compute total size
-    qsizetype total = 0;
-    for (const auto& v : parts)
-        total += v.size();
+    qsizetype total = std::accumulate(parts.cbegin(), parts.cend(), qsizetype{0},
+                                      [](qsizetype sum, const QByteArrayView &v) { return sum + v.size(); });
     total += dlen * (parts.size() - 1);
 
     // Allocate final QByteArray
@@ -132,9 +124,9 @@ inline QByteArray join(const QList<QByteArrayView>& parts, const QByteArray& del
     out.resize(total);
 
     // Copy segments
-    char* dst = out.data();
+    char *dst = out.data();
     for (int i = 0; i < parts.size(); ++i) {
-        const auto& v = parts[i];
+        const auto &v = parts[i];
 
         memcpy(dst, v.data(), v.size());
         dst += v.size();
@@ -148,4 +140,4 @@ inline QByteArray join(const QList<QByteArrayView>& parts, const QByteArray& del
     return out;
 }
 
-} // namespace ByteArrayViewUtils
+}  // namespace ByteArrayUtils

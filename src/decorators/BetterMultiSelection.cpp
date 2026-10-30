@@ -21,13 +21,10 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include <QEvent>
 #include <QKeyEvent>
 
 #include "BetterMultiSelection.h"
-
-
 
 struct Selection {
     int caret;
@@ -39,12 +36,14 @@ struct Selection {
     int end() const { return qMax(caret, anchor); }
     int length() const { return end() - start(); }
     void set(int pos) { anchor = caret = pos; }
-    void offset(int offset) { anchor += offset; caret += offset; }
+    void offset(int offset) {
+        anchor += offset;
+        caret += offset;
+    }
 };
 
-template<typename It>
-It uniquify(It begin, It const end)
-{
+template <typename It>
+It uniquify(It begin, It const end) {
     std::vector<It> v;
     v.reserve(static_cast<size_t>(std::distance(begin, end)));
 
@@ -55,16 +54,19 @@ It uniquify(It begin, It const end)
         return (*lhs).start() < (*rhs).start() || (!((*rhs).start() < (*lhs).start()) && (*lhs).end() < (*rhs).end());
     });
 
-    v.erase(std::unique(v.begin(), v.end(), [](const auto &lhs, const auto &rhs) {
-        return (*lhs).start() == (*rhs).start() && (*lhs).end() == (*rhs).end();
-    }), v.end());
+    v.erase(std::unique(v.begin(), v.end(),
+                        [](const auto &lhs, const auto &rhs) {
+                            return (*lhs).start() == (*rhs).start() && (*lhs).end() == (*rhs).end();
+                        }),
+            v.end());
 
     std::sort(v.begin(), v.end());
 
     size_t j = 0;
     for (It i = begin; i != end && j != v.size(); ++i) {
         if (i == v[j]) {
-            using std::iter_swap; iter_swap(i, begin);
+            using std::iter_swap;
+            iter_swap(i, begin);
             ++j;
             ++begin;
         }
@@ -72,9 +74,7 @@ It uniquify(It begin, It const end)
     return begin;
 }
 
-BetterMultiSelection::BetterMultiSelection(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+BetterMultiSelection::BetterMultiSelection(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName("BetterMultiSelection");
 
     // Allow insertion of autocompletion at each cursor
@@ -83,8 +83,7 @@ BetterMultiSelection::BetterMultiSelection(ScintillaNext *editor) :
     editor->installEventFilter(this);
 }
 
-bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event)
-{
+bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event) {
     Q_UNUSED(obj)
 
     if (event->type() == QEvent::KeyPress) {
@@ -101,70 +100,59 @@ bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event)
                 if (keyEvent->key() == Qt::Key_Left) {
                     EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDLEFTEXTEND : SCI_WORDLEFT));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Right) {
+                } else if (keyEvent->key() == Qt::Key_Right) {
                     EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDRIGHTENDEXTEND : SCI_WORDRIGHT));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Back) {
+                } else if (keyEvent->key() == Qt::Key_Back) {
                     EditSelections(SimpleEdit(SCI_DELWORDLEFT));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Delete) {
+                } else if (keyEvent->key() == Qt::Key_Delete) {
                     EditSelections(SimpleEdit(SCI_DELWORDRIGHT));
                     return true;
                 }
-                //else if (keyEvent->key() == Qt::Key_X || keyEvent->key() == Qt::Key_C) {
-                //    if (CopyToClipboard(editor)) {
-                //        if (keyEvent->key() == Qt::Key_X) {
-                //            EditSelections(SimpleEdit(SCI_DELETEBACK));
-                //        }
-                //        return true;
-                //    }
-                //}
-                //else if (keyEvent->key() == Qt::Key_V) {
-                //    if (Paste(editor)) {
-                //        return true;
-                //    }
-                //}
-            }
-            else {
+                // else if (keyEvent->key() == Qt::Key_X || keyEvent->key() == Qt::Key_C) {
+                //     if (CopyToClipboard(editor)) {
+                //         if (keyEvent->key() == Qt::Key_X) {
+                //             EditSelections(SimpleEdit(SCI_DELETEBACK));
+                //         }
+                //         return true;
+                //     }
+                // }
+                // else if (keyEvent->key() == Qt::Key_V) {
+                //     if (Paste(editor)) {
+                //         return true;
+                //     }
+                // }
+            } else {
                 if (keyEvent->key() == Qt::Key_Escape) {
                     int caret = editor->selectionNCaret(editor->mainSelection());
                     editor->setSelection(caret, caret);
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Left) {
+                } else if (keyEvent->key() == Qt::Key_Left) {
                     EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARLEFTEXTEND : SCI_CHARLEFT));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Right) {
+                } else if (keyEvent->key() == Qt::Key_Right) {
                     EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARRIGHTEXTEND : SCI_CHARRIGHT));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Home) {
+                } else if (keyEvent->key() == Qt::Key_Home) {
                     EditSelections(SimpleEdit(isShiftPressed ? SCI_VCHOMEWRAPEXTEND : SCI_VCHOMEWRAP));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_End) {
+                } else if (keyEvent->key() == Qt::Key_End) {
                     EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEENDWRAPEXTEND : SCI_LINEENDWRAP));
                     return true;
-                }
-                else if (keyEvent->key() == Qt::Key_Return) {
+                } else if (keyEvent->key() == Qt::Key_Return) {
                     if (!editor->autoCActive()) {
                         EditSelections(SimpleEdit(SCI_NEWLINE));
                         return true;
                     }
                     // else just let Scintilla handle the insertion of autocompletion
-                }
-                else if (keyEvent->key() == Qt::Key_Up) {
+                } else if (keyEvent->key() == Qt::Key_Up) {
                     if (!editor->autoCActive()) {
                         EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEUPEXTEND : SCI_LINEUP));
                         return true;
                     }
                     // else just let Scintilla handle the navigation of autocompletion
-                }
-                else if (keyEvent->key() == Qt::Key_Down) {
+                } else if (keyEvent->key() == Qt::Key_Down) {
                     if (!editor->autoCActive()) {
                         EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEDOWNEXTEND : SCI_LINEDOWN));
                         return true;
@@ -178,8 +166,7 @@ bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
-void BetterMultiSelection::notify(const Scintilla::NotificationData *pscn)
-{
+void BetterMultiSelection::notify(const Scintilla::NotificationData *pscn) {
     Q_UNUSED(pscn);
 }
 
@@ -190,7 +177,7 @@ QVector<Selection> BetterMultiSelection::GetSelections() {
     for (int i = 0; i < num; ++i) {
         int caret = editor->selectionNCaret(i);
         int anchor = editor->selectionNAnchor(i);
-        selections.append(Selection{ caret, anchor });
+        selections.append(Selection{caret, anchor});
     }
 
     return selections;

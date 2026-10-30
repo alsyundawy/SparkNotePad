@@ -16,19 +16,15 @@
 
 static const char *kIndicatorName = "notesci_mark_all";
 
-static int QColorToScintillaColour(const QColor &c)
-{
+static int QColorToScintillaColour(const QColor &c) {
     return c.red() | (c.green() << 8) | (c.blue() << 16);
 }
 
-MarkOccurrences::MarkOccurrences(QObject *parent)
-    : QObject(parent)
-{
-}
+MarkOccurrences::MarkOccurrences(QObject *parent) : QObject(parent) {}
 
-void MarkOccurrences::setupIndicator(ScintillaNext *editor, int indicator)
-{
-    if (!editor || indicator < 0) return;
+void MarkOccurrences::setupIndicator(ScintillaNext *editor, int indicator) {
+    if (!editor || indicator < 0)
+        return;
 
     editor->indicSetFore(indicator, QColorToScintillaColour(m_indicatorColor));
     editor->indicSetStyle(indicator, INDIC_ROUNDBOX);
@@ -37,15 +33,15 @@ void MarkOccurrences::setupIndicator(ScintillaNext *editor, int indicator)
     editor->indicSetUnder(indicator, true);
 }
 
-int MarkOccurrences::indicatorForEditor(ScintillaNext *editor) const
-{
-    if (!editor) return -1;
+int MarkOccurrences::indicatorForEditor(ScintillaNext *editor) const {
+    if (!editor)
+        return -1;
     return editor->allocateIndicator(QString::fromLatin1(kIndicatorName));
 }
 
-int MarkOccurrences::markAll(ScintillaNext *editor, bool matchCase, bool wholeWord, bool useRegex)
-{
-    if (!editor) return 0;
+int MarkOccurrences::markAll(ScintillaNext *editor, bool matchCase, bool wholeWord, bool useRegex) {
+    if (!editor)
+        return 0;
 
     int selectionStart = editor->selectionStart();
     int selectionEnd = editor->selectionEnd();
@@ -73,8 +69,8 @@ int MarkOccurrences::markAll(ScintillaNext *editor, bool matchCase, bool wholeWo
     return markText(editor, QString::fromUtf8(selText), matchCase, isWord, useRegex);
 }
 
-int MarkOccurrences::markText(ScintillaNext *editor, const QString &text, bool matchCase, bool wholeWord, bool useRegex)
-{
+int MarkOccurrences::markText(ScintillaNext *editor, const QString &text, bool matchCase, bool wholeWord,
+                              bool useRegex) {
     if (!editor || text.isEmpty()) {
         m_lastMatchCount = 0;
         m_lastQuery.clear();
@@ -89,9 +85,12 @@ int MarkOccurrences::markText(ScintillaNext *editor, const QString &text, bool m
     editor->indicatorClearRange(0, editor->length());
 
     int flags = 0;
-    if (matchCase) flags |= SCFIND_MATCHCASE;
-    if (wholeWord) flags |= SCFIND_WHOLEWORD;
-    if (useRegex) flags |= SCFIND_REGEXP;
+    if (matchCase)
+        flags |= SCFIND_MATCHCASE;
+    if (wholeWord)
+        flags |= SCFIND_WHOLEWORD;
+    if (useRegex)
+        flags |= SCFIND_REGEXP;
 
     editor->setSearchFlags(flags);
 
@@ -113,9 +112,9 @@ int MarkOccurrences::markText(ScintillaNext *editor, const QString &text, bool m
     return count;
 }
 
-void MarkOccurrences::clearMarks(ScintillaNext *editor)
-{
-    if (!editor) return;
+void MarkOccurrences::clearMarks(ScintillaNext *editor) {
+    if (!editor)
+        return;
 
     const int indicator = indicatorForEditor(editor);
     if (indicator >= 0) {

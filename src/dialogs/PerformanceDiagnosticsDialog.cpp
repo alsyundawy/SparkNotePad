@@ -18,11 +18,10 @@
 #include <QGuiApplication>
 
 PerformanceDiagnosticsDialog::PerformanceDiagnosticsDialog(QWidget *parent, ScintillaNext *currentEditor)
-    : QDialog(parent)
-    , ui(new Ui::PerformanceDiagnosticsDialog)
-    , m_editor(currentEditor)
-    , m_refreshTimer(new QTimer(this))
-{
+    : QDialog(parent),
+      ui(new Ui::PerformanceDiagnosticsDialog),
+      m_editor(currentEditor),
+      m_refreshTimer(new QTimer(this)) {
     ui->setupUi(this);
 
     setupUiData();
@@ -34,23 +33,21 @@ PerformanceDiagnosticsDialog::PerformanceDiagnosticsDialog(QWidget *parent, Scin
     connect(ui->btnClose, &QPushButton::clicked, this, &QDialog::accept);
 
     connect(m_refreshTimer, &QTimer::timeout, this, &PerformanceDiagnosticsDialog::refreshMetrics);
-    m_refreshTimer->start(1000); // 1-second live memory polling
+    m_refreshTimer->start(1000);  // 1-second live memory polling
 }
 
-PerformanceDiagnosticsDialog::~PerformanceDiagnosticsDialog()
-{
+PerformanceDiagnosticsDialog::~PerformanceDiagnosticsDialog() {
     delete ui;
 }
 
-void PerformanceDiagnosticsDialog::setupUiData()
-{
+void PerformanceDiagnosticsDialog::setupUiData() {
     const auto sys = PerformanceProfiler::getSystemInfo();
     ui->lblOsVal->setText(sys.osName);
     ui->lblCpuVal->setText(sys.cpuModel);
     ui->lblArchVal->setText(QStringLiteral("%1 (%2 logical cores)%3")
-        .arg(sys.cpuArchitecture)
-        .arg(sys.logicalCores)
-        .arg(sys.isAppleSilicon ? QStringLiteral(" - Apple Silicon Native") : QString()));
+                                .arg(sys.cpuArchitecture)
+                                .arg(sys.logicalCores)
+                                .arg(sys.isAppleSilicon ? QStringLiteral(" - Apple Silicon Native") : QString()));
 
     if (m_editor) {
         ui->chkHighPerf->setChecked(PerformanceProfiler::isHighPerformanceMode(m_editor));
@@ -59,8 +56,7 @@ void PerformanceDiagnosticsDialog::setupUiData()
     }
 }
 
-void PerformanceDiagnosticsDialog::refreshMetrics()
-{
+void PerformanceDiagnosticsDialog::refreshMetrics() {
     const auto mem = PerformanceProfiler::getMemoryMetrics();
     ui->lblRssVal->setText(QStringLiteral("%1 MB").arg(QString::number(mem.rssMegabytes, 'f', 2)));
     ui->lblVmsVal->setText(QStringLiteral("%1 MB").arg(QString::number(mem.virtualMegabytes, 'f', 2)));
@@ -68,16 +64,15 @@ void PerformanceDiagnosticsDialog::refreshMetrics()
     if (m_editor) {
         const auto doc = PerformanceProfiler::getDocumentMetrics(m_editor);
         ui->lblDocVal->setText(QStringLiteral("%1 (%2 lines, %3 MB)")
-            .arg(doc.fileName)
-            .arg(doc.lineCount)
-            .arg(QString::number(doc.byteSize / (1024.0 * 1024.0), 'f', 2)));
+                                   .arg(doc.fileName)
+                                   .arg(doc.lineCount)
+                                   .arg(QString::number(doc.byteSize / (1024.0 * 1024.0), 'f', 2)));
     } else {
         ui->lblDocVal->setText(tr("None"));
     }
 }
 
-void PerformanceDiagnosticsDialog::runBenchmark()
-{
+void PerformanceDiagnosticsDialog::runBenchmark() {
     ui->lblBenchmarkStatus->setText(tr("Benchmarking Scintilla throughput (50,000 lines)..."));
     ui->lblBenchmarkStatus->setStyleSheet(QStringLiteral("color: #1565c0; font-weight: bold;"));
     QGuiApplication::processEvents();
@@ -90,16 +85,14 @@ void PerformanceDiagnosticsDialog::runBenchmark()
     refreshMetrics();
 }
 
-void PerformanceDiagnosticsDialog::toggleHighPerformanceMode(bool checked)
-{
+void PerformanceDiagnosticsDialog::toggleHighPerformanceMode(bool checked) {
     if (m_editor) {
         PerformanceProfiler::setHighPerformanceMode(m_editor, checked);
         refreshMetrics();
     }
 }
 
-void PerformanceDiagnosticsDialog::copyReport()
-{
+void PerformanceDiagnosticsDialog::copyReport() {
     const QString report = PerformanceProfiler::generateDiagnosticReport(m_editor);
     QGuiApplication::clipboard()->setText(report);
     ui->lblBenchmarkStatus->setText(tr("Report copied to clipboard!"));

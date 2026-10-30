@@ -21,9 +21,9 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
+#include <cstdint>
 #include <functional>
 
 #include <QObject>
@@ -31,67 +31,55 @@
 #include <QString>
 #include <QMetaEnum>
 
-
-template<typename T>
-class ApplicationSetting
-{
+template <typename T>
+class ApplicationSetting {
 public:
-    ApplicationSetting(const char * const key, T defaultValue = T())
-        : mKey(key)
-        , mDefault(defaultValue)
-        , mCallable(Q_NULLPTR)
-    {}
+    explicit ApplicationSetting(const char *const key, T defaultValue = T())
+        : mKey(key), mDefault(defaultValue), mCallable(Q_NULLPTR) {}
 
-    ApplicationSetting(const char * const key, std::function<T()> callable)
-        : mKey(key)
-        , mDefault(T())
-        , mCallable(callable)
-    {}
+    explicit ApplicationSetting(const char *const key, std::function<T()> callable)
+        : mKey(key), mDefault(T()), mCallable(callable) {}
 
-    inline T getDefault() const { return mCallable ? mCallable() : mDefault ; }
-    inline const char * key() const { return mKey; }
+    inline T getDefault() const { return mCallable ? mCallable() : mDefault; }
+    inline const char *key() const { return mKey; }
 
 private:
-    const char * const mKey;
+    const char *const mKey;
     const T mDefault;
     std::function<T()> mCallable;
 };
 
+#define DEFINE_SETTING(name, lname, type) \
+public:                                   \
+    type lname() const;                   \
+public slots:                             \
+    void set##name(const type &val);      \
+    Q_SIGNAL                              \
+    void lname##Changed(const type &val);
 
-#define DEFINE_SETTING(name, lname, type)\
-public:\
-    type lname() const;\
-public slots:\
-    void set##name(type lname);\
-Q_SIGNAL\
-    void lname##Changed(type lname);\
-
-
-class ApplicationSettings : public QSettings
-{
+class ApplicationSettings : public QSettings {
     Q_OBJECT
 
 public:
     explicit ApplicationSettings(QObject *parent = nullptr);
 
-    enum DefaultDirectoryBehaviorEnum {
-        FollowCurrentDocument,
-        RememberLastUsed,
-        HardCoded
-    };
+    enum DefaultDirectoryBehaviorEnum : std::uint8_t { FollowCurrentDocument, RememberLastUsed, HardCoded };
     Q_ENUM(DefaultDirectoryBehaviorEnum)
 
     template <typename T>
-    T get(const char *key, const T &defaultValue) const
-    { return value(QLatin1String(key), defaultValue).template value<T>(); }
+    T get(const char *key, const T &defaultValue) const {
+        return value(QLatin1String(key), defaultValue).template value<T>();
+    }
 
     template <typename T>
-    T get(const ApplicationSetting<T> &setting) const
-    { return get(setting.key(), setting.getDefault()); }
+    T get(const ApplicationSetting<T> &setting) const {
+        return get(setting.key(), setting.getDefault());
+    }
 
     template <typename T>
-    void set(const ApplicationSetting<T> &setting, const T &value)
-    { setValue(QLatin1String(setting.key()), value); }
+    void set(const ApplicationSetting<T> &setting, const T &value) {
+        setValue(QLatin1String(setting.key()), value);
+    }
 
     DEFINE_SETTING(ShowMenuBar, showMenuBar, bool)
     DEFINE_SETTING(ShowToolBar, showToolBar, bool)

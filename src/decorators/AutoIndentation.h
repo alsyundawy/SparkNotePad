@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,19 +22,16 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef AUTOINDENTATION_H
 #define AUTOINDENTATION_H
 
 #include "EditorDecorator.h"
 
-
-class AutoIndentation : public EditorDecorator
-{
+class AutoIndentation : public EditorDecorator {
     Q_OBJECT
 
 public:
-    AutoIndentation(ScintillaNext *editor);
+    explicit AutoIndentation(ScintillaNext *editor);
 
 public slots:
     void notify(const Scintilla::NotificationData *pscn) override;
@@ -42,4 +40,4 @@ private:
     void autoIndentLine(int line) const;
 };
 
-#endif // AUTOINDENTATION_H
+#endif  // AUTOINDENTATION_H

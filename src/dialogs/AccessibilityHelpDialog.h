@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -19,8 +20,7 @@ class AccessibilityHelpDialog;
 
 class QTreeWidgetItem;
 
-class AccessibilityHelpDialog : public QDialog
-{
+class AccessibilityHelpDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -33,7 +33,8 @@ private slots:
 private:
     Ui::AccessibilityHelpDialog *ui;
     void populateShortcuts();
-    void addShortcutItem(const QString &action, const QString &shortcut, const QString &category, const QString &description);
+    void addShortcutItem(const QString &action, const QString &shortcut, const QString &category,
+                         const QString &description);
 };
 
-#endif // ACCESSIBILITYHELPDIALOG_H
+#endif  // ACCESSIBILITYHELPDIALOG_H

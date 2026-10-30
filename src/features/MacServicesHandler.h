@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -18,8 +19,7 @@
 class NotepadNextApplication;
 class MainWindow;
 
-class MacServicesHandler : public QObject
-{
+class MacServicesHandler : public QObject {
     Q_OBJECT
 
 public:
@@ -53,4 +53,4 @@ private:
     MainWindow *m_activeWindow = nullptr;
 };
 
-#endif // MACSERVICESHANDLER_H
+#endif  // MACSERVICESHANDLER_H

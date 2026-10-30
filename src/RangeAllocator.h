@@ -21,24 +21,20 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 #include <QBitArray>
 #include <QMap>
 
-
-class RangeAllocator
-{
+class RangeAllocator {
 public:
     explicit RangeAllocator(int total);
 
     void disableRange(int start, int end);
 
-    int requestResource(const QString name);
+    int requestResource(const QString &name);
 
 private:
     QBitArray resource;
     QMap<QString, int> allocation;
 };
-

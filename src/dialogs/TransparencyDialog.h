@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,8 +20,7 @@ namespace Ui {
 class TransparencyDialog;
 }
 
-class TransparencyDialog : public QDialog
-{
+class TransparencyDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -40,4 +40,4 @@ private:
     TransparentWindowManager *m_manager;
 };
 
-#endif // TRANSPARENCYDIALOG_H
+#endif  // TRANSPARENCYDIALOG_H

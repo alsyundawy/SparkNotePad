@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -24,8 +25,7 @@ class QFileSystemModel;
 class QModelIndex;
 class QPoint;
 
-class FileBrowserDock : public QDockWidget
-{
+class FileBrowserDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -33,7 +33,7 @@ public:
     ~FileBrowserDock() override;
 
     void setCurrentDirectory(const QString &dirPath);
-    QString currentDirectory() const;
+    const QString &currentDirectory() const;
 
 signals:
     void fileOpenRequested(const QString &filePath);
@@ -54,8 +54,8 @@ private:
     void restoreSettings();
 
     Ui::FileBrowserDock *ui;
-    QFileSystemModel *m_model {nullptr};
+    QFileSystemModel *m_model{nullptr};
     QString m_currentPath;
 };
 
-#endif // FILEBROWSERDOCK_H
+#endif  // FILEBROWSERDOCK_H

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -17,8 +18,7 @@
 
 class ScintillaNext;
 
-class LogAutoTimestamp
-{
+class LogAutoTimestamp {
 public:
     // Returns true if document starts with .LOG header on line 0
     static bool hasLogHeader(ScintillaNext *editor);
@@ -41,4 +41,4 @@ public:
     static QString currentLogTimestampString();
 };
 
-#endif // LOGAUTOTIMESTAMP_H
+#endif  // LOGAUTOTIMESTAMP_H

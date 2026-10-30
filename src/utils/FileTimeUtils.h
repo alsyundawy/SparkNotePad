@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,8 +19,7 @@
 
 class ScintillaNext;
 
-class FileTimeUtils
-{
+class FileTimeUtils {
 public:
     struct FileTimeResult {
         bool success = false;
@@ -33,7 +33,8 @@ public:
     static QDateTime getFileModificationTime(const QString &filePath);
     static QDateTime getFileAccessTime(const QString &filePath);
     static bool setFileModificationTime(const QString &filePath, const QDateTime &time);
-    static bool setFileTimes(const QString &filePath, const QDateTime &modificationTime, const QDateTime &accessTime = QDateTime());
+    static bool setFileTimes(const QString &filePath, const QDateTime &modificationTime,
+                             const QDateTime &accessTime = QDateTime());
 
     // Touch file operation (sets mtime & atime to current time on disk without altering contents)
     static FileTimeResult touchFile(const QString &filePath);
@@ -43,4 +44,4 @@ public:
     static FileTimeResult saveWithOriginalTime(ScintillaNext *editor);
 };
 
-#endif // FILETIMEUTILS_H
+#endif  // FILETIMEUTILS_H

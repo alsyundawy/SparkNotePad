@@ -15,10 +15,7 @@
 #include "ScintillaNext.h"
 
 TailOptionsDialog::TailOptionsDialog(QWidget *parent, ScintillaNext *currentEditor)
-    : QDialog(parent)
-    , ui(new Ui::TailOptionsDialog)
-    , m_editor(currentEditor)
-{
+    : QDialog(parent), ui(new Ui::TailOptionsDialog), m_editor(currentEditor) {
     ui->setupUi(this);
 
     loadSettings();
@@ -27,24 +24,28 @@ TailOptionsDialog::TailOptionsDialog(QWidget *parent, ScintillaNext *currentEdit
     connect(ui->btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-TailOptionsDialog::~TailOptionsDialog()
-{
+TailOptionsDialog::~TailOptionsDialog() {
     delete ui;
 }
 
-void TailOptionsDialog::loadSettings()
-{
+void TailOptionsDialog::loadSettings() {
     auto *mon = TailMonitoringManager::instance();
 
     // Poll interval
     const int currentInterval = mon->pollIntervalMs();
-    int intervalIndex = 1; // default 750
-    if (currentInterval <= 250) intervalIndex = 0;
-    else if (currentInterval <= 500) intervalIndex = 1;
-    else if (currentInterval <= 750) intervalIndex = 2;
-    else if (currentInterval <= 1000) intervalIndex = 3;
-    else if (currentInterval <= 2000) intervalIndex = 4;
-    else intervalIndex = 5;
+    int intervalIndex = 1;  // default 750
+    if (currentInterval <= 250)
+        intervalIndex = 0;
+    else if (currentInterval <= 500)
+        intervalIndex = 1;
+    else if (currentInterval <= 750)
+        intervalIndex = 2;
+    else if (currentInterval <= 1000)
+        intervalIndex = 3;
+    else if (currentInterval <= 2000)
+        intervalIndex = 4;
+    else
+        intervalIndex = 5;
     ui->comboPollInterval->setCurrentIndex(intervalIndex);
 
     // Read only lock
@@ -59,24 +60,39 @@ void TailOptionsDialog::loadSettings()
 
     // Max chunk
     const qint64 maxChunk = mon->maxChunkBytes();
-    if (maxChunk <= 1024 * 1024) ui->comboMaxChunk->setCurrentIndex(0);
-    else if (maxChunk <= 5 * 1024 * 1024) ui->comboMaxChunk->setCurrentIndex(1);
-    else if (maxChunk <= 10 * 1024 * 1024) ui->comboMaxChunk->setCurrentIndex(2);
-    else ui->comboMaxChunk->setCurrentIndex(3);
+    if (maxChunk <= 1024 * 1024)
+        ui->comboMaxChunk->setCurrentIndex(0);
+    else if (maxChunk <= 5 * 1024 * 1024)
+        ui->comboMaxChunk->setCurrentIndex(1);
+    else if (maxChunk <= 10 * 1024 * 1024)
+        ui->comboMaxChunk->setCurrentIndex(2);
+    else
+        ui->comboMaxChunk->setCurrentIndex(3);
 }
 
-void TailOptionsDialog::onApplyClicked()
-{
+void TailOptionsDialog::onApplyClicked() {
     auto *mon = TailMonitoringManager::instance();
 
     int intervalMs = 750;
     switch (ui->comboPollInterval->currentIndex()) {
-        case 0: intervalMs = 250; break;
-        case 1: intervalMs = 500; break;
-        case 2: intervalMs = 750; break;
-        case 3: intervalMs = 1000; break;
-        case 4: intervalMs = 2000; break;
-        case 5: intervalMs = 5000; break;
+        case 0:
+            intervalMs = 250;
+            break;
+        case 1:
+            intervalMs = 500;
+            break;
+        case 2:
+            intervalMs = 750;
+            break;
+        case 3:
+            intervalMs = 1000;
+            break;
+        case 4:
+            intervalMs = 2000;
+            break;
+        case 5:
+            intervalMs = 5000;
+            break;
     }
     mon->setPollIntervalMs(intervalMs);
 
@@ -88,10 +104,18 @@ void TailOptionsDialog::onApplyClicked()
 
     qint64 maxChunk = 10 * 1024 * 1024;
     switch (ui->comboMaxChunk->currentIndex()) {
-        case 0: maxChunk = 1024 * 1024; break;
-        case 1: maxChunk = 5 * 1024 * 1024; break;
-        case 2: maxChunk = 10 * 1024 * 1024; break;
-        case 3: maxChunk = 25 * 1024 * 1024; break;
+        case 0:
+            maxChunk = 1024 * 1024;
+            break;
+        case 1:
+            maxChunk = 5 * 1024 * 1024;
+            break;
+        case 2:
+            maxChunk = 10 * 1024 * 1024;
+            break;
+        case 3:
+            maxChunk = 25 * 1024 * 1024;
+            break;
     }
     mon->setMaxChunkBytes(maxChunk);
 

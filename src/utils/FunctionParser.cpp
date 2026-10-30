@@ -16,8 +16,7 @@
 #include <QRegularExpression>
 #include <QStringList>
 
-QVector<FunctionSymbol> FunctionParser::parse(ScintillaNext *editor)
-{
+QVector<FunctionSymbol> FunctionParser::parse(ScintillaNext *editor) {
     if (!editor || editor->textLength() <= 0)
         return {};
 
@@ -30,26 +29,37 @@ QVector<FunctionSymbol> FunctionParser::parse(ScintillaNext *editor)
     QString lang = editor->languageName;
     if (lang.isEmpty() && editor->isFile()) {
         const QString ext = editor->getFileInfo().suffix().toLower();
-        if (ext == QStringLiteral("py")) lang = QStringLiteral("Python");
+        if (ext == QStringLiteral("py"))
+            lang = QStringLiteral("Python");
         else if (ext == QStringLiteral("cpp") || ext == QStringLiteral("cxx") || ext == QStringLiteral("cc") ||
-                 ext == QStringLiteral("c") || ext == QStringLiteral("h") || ext == QStringLiteral("hpp")) lang = QStringLiteral("C++");
-        else if (ext == QStringLiteral("js") || ext == QStringLiteral("mjs") || ext == QStringLiteral("cjs")) lang = QStringLiteral("JavaScript");
-        else if (ext == QStringLiteral("ts") || ext == QStringLiteral("tsx") || ext == QStringLiteral("jsx")) lang = QStringLiteral("TypeScript");
-        else if (ext == QStringLiteral("md") || ext == QStringLiteral("markdown")) lang = QStringLiteral("Markdown");
-        else if (ext == QStringLiteral("php")) lang = QStringLiteral("PHP");
-        else if (ext == QStringLiteral("rs")) lang = QStringLiteral("Rust");
-        else if (ext == QStringLiteral("go")) lang = QStringLiteral("Go");
-        else if (ext == QStringLiteral("lua")) lang = QStringLiteral("Lua");
-        else if (ext == QStringLiteral("sh") || ext == QStringLiteral("bash") || ext == QStringLiteral("zsh")) lang = QStringLiteral("Bash");
-        else if (ext == QStringLiteral("java")) lang = QStringLiteral("Java");
-        else if (ext == QStringLiteral("cs")) lang = QStringLiteral("C#");
+                 ext == QStringLiteral("c") || ext == QStringLiteral("h") || ext == QStringLiteral("hpp"))
+            lang = QStringLiteral("C++");
+        else if (ext == QStringLiteral("js") || ext == QStringLiteral("mjs") || ext == QStringLiteral("cjs"))
+            lang = QStringLiteral("JavaScript");
+        else if (ext == QStringLiteral("ts") || ext == QStringLiteral("tsx") || ext == QStringLiteral("jsx"))
+            lang = QStringLiteral("TypeScript");
+        else if (ext == QStringLiteral("md") || ext == QStringLiteral("markdown"))
+            lang = QStringLiteral("Markdown");
+        else if (ext == QStringLiteral("php"))
+            lang = QStringLiteral("PHP");
+        else if (ext == QStringLiteral("rs"))
+            lang = QStringLiteral("Rust");
+        else if (ext == QStringLiteral("go"))
+            lang = QStringLiteral("Go");
+        else if (ext == QStringLiteral("lua"))
+            lang = QStringLiteral("Lua");
+        else if (ext == QStringLiteral("sh") || ext == QStringLiteral("bash") || ext == QStringLiteral("zsh"))
+            lang = QStringLiteral("Bash");
+        else if (ext == QStringLiteral("java"))
+            lang = QStringLiteral("Java");
+        else if (ext == QStringLiteral("cs"))
+            lang = QStringLiteral("C#");
     }
 
     return parseText(text, lang);
 }
 
-QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QString &languageName)
-{
+QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QString &languageName) {
     QVector<FunctionSymbol> symbols;
     if (text.isEmpty())
         return symbols;
@@ -65,33 +75,51 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
     static const QRegularExpression mdRe(QStringLiteral("^(#{1,6})\\s+(.+)$"));
 
     static const QRegularExpression pyClassRe(QStringLiteral(R"(^(\s*)class\s+([A-Za-z_][A-Za-z0-9_]*))"));
-    static const QRegularExpression pyDefRe(QStringLiteral(R"(^(\s*)(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
+    static const QRegularExpression pyDefRe(
+        QStringLiteral(R"(^(\s*)(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
 
-    static const QRegularExpression cppClassRe(QStringLiteral(R"(^\s*(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*final)?\s*(?::|{|$))"));
-    static const QRegularExpression cppFuncRe(QStringLiteral(R"(^\s*(?:(?:inline|static|virtual|explicit|constexpr|const|friend)\s+)*(?:[A-Za-z_][A-Za-z0-9_:*&<>\s]+)\s+([A-Za-z_][A-Za-z0-9_:]*)\s*\(([^;{]*)\)\s*(?:const)?\s*(?:override|noexcept)?\s*(?:{|$))"));
+    static const QRegularExpression cppClassRe(
+        QStringLiteral(R"(^\s*(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*final)?\s*(?::|{|$))"));
+    static const QRegularExpression cppFuncRe(QStringLiteral(
+        R"(^\s*(?:(?:inline|static|virtual|explicit|constexpr|const|friend)\s+)*(?:[A-Za-z_][A-Za-z0-9_:*&<>\s]+)\s+([A-Za-z_][A-Za-z0-9_:]*)\s*\(([^;{]*)\)\s*(?:const)?\s*(?:override|noexcept)?\s*(?:{|$))"));
 
-    static const QRegularExpression jsClassRe(QStringLiteral(R"(^\s*(?:export\s+)?(?:default\s+)?class\s+([A-Za-z_][A-Za-z0-9_]*))"));
-    static const QRegularExpression jsFuncRe(QStringLiteral(R"(^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function(?:\s+([A-Za-z_][A-Za-z0-9_]*))?\s*\(([^)]*)\))"));
-    static const QRegularExpression jsArrowRe(QStringLiteral(R"(^\s*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(?:async\s*)?(?:\(([^)]*)\)|[A-Za-z_][A-Za-z0-9_]*)\s*=>)"));
-    static const QRegularExpression jsMethodRe(QStringLiteral(R"(^\s*(?:async\s+)?(?:static\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*\{)"));
+    static const QRegularExpression jsClassRe(
+        QStringLiteral(R"(^\s*(?:export\s+)?(?:default\s+)?class\s+([A-Za-z_][A-Za-z0-9_]*))"));
+    static const QRegularExpression jsFuncRe(QStringLiteral(
+        R"(^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function(?:\s+([A-Za-z_][A-Za-z0-9_]*))?\s*\(([^)]*)\))"));
+    static const QRegularExpression jsArrowRe(QStringLiteral(
+        R"(^\s*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(?:async\s*)?(?:\(([^)]*)\)|[A-Za-z_][A-Za-z0-9_]*)\s*=>)"));
+    static const QRegularExpression jsMethodRe(
+        QStringLiteral(R"(^\s*(?:async\s+)?(?:static\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*\{)"));
 
-    static const QRegularExpression phpClassRe(QStringLiteral(R"(^\s*(?:(?:abstract|final)\s+)*(?:class|interface|trait|enum)\s+([A-Za-z_][A-Za-z0-9_]*))"));
-    static const QRegularExpression phpFuncRe(QStringLiteral(R"(^\s*(?:(?:public|protected|private|static|abstract|final)\s+)*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
+    static const QRegularExpression phpClassRe(
+        QStringLiteral(R"(^\s*(?:(?:abstract|final)\s+)*(?:class|interface|trait|enum)\s+([A-Za-z_][A-Za-z0-9_]*))"));
+    static const QRegularExpression phpFuncRe(QStringLiteral(
+        R"(^\s*(?:(?:public|protected|private|static|abstract|final)\s+)*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
 
-    static const QRegularExpression rsFnRe(QStringLiteral(R"(^\s*(?:pub(?:\([^)]+\))?\s+)?(?:async\s+)?fn\s+([A-Za-z_][A-Za-z0-9_]*)\s*(?:<[^>]+>)?\s*\(([^)]*)\))"));
-    static const QRegularExpression rsStructRe(QStringLiteral(R"(^\s*(?:pub(?:\([^)]+\))?\s+)?(?:struct|enum|trait|union)\s+([A-Za-z_][A-Za-z0-9_]*))"));
-    static const QRegularExpression rsImplRe(QStringLiteral(R"(^\s*impl(?:\s*<[^>]+>)?\s+(?:[A-Za-z_][A-Za-z0-9_:]*\s+for\s+)?([A-Za-z_][A-Za-z0-9_:]*))"));
+    static const QRegularExpression rsFnRe(QStringLiteral(
+        R"(^\s*(?:pub(?:\([^)]+\))?\s+)?(?:async\s+)?fn\s+([A-Za-z_][A-Za-z0-9_]*)\s*(?:<[^>]+>)?\s*\(([^)]*)\))"));
+    static const QRegularExpression rsStructRe(
+        QStringLiteral(R"(^\s*(?:pub(?:\([^)]+\))?\s+)?(?:struct|enum|trait|union)\s+([A-Za-z_][A-Za-z0-9_]*))"));
+    static const QRegularExpression rsImplRe(
+        QStringLiteral(R"(^\s*impl(?:\s*<[^>]+>)?\s+(?:[A-Za-z_][A-Za-z0-9_:]*\s+for\s+)?([A-Za-z_][A-Za-z0-9_:]*))"));
 
     static const QRegularExpression goFuncRe(QStringLiteral(R"(^\s*func\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
-    static const QRegularExpression goMethodRe(QStringLiteral(R"(^\s*func\s*\(\s*(?:[A-Za-z_][A-Za-z0-9_]*\s+)?\*?([A-Za-z_][A-Za-z0-9_]*)\s*\)\s*([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
-    static const QRegularExpression goTypeRe(QStringLiteral(R"(^\s*type\s+([A-Za-z_][A-Za-z0-9_]*)\s+(?:struct|interface))"));
+    static const QRegularExpression goMethodRe(QStringLiteral(
+        R"(^\s*func\s*\(\s*(?:[A-Za-z_][A-Za-z0-9_]*\s+)?\*?([A-Za-z_][A-Za-z0-9_]*)\s*\)\s*([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
+    static const QRegularExpression goTypeRe(
+        QStringLiteral(R"(^\s*type\s+([A-Za-z_][A-Za-z0-9_]*)\s+(?:struct|interface))"));
 
-    static const QRegularExpression luaFuncRe(QStringLiteral(R"(^\s*(?:local\s+)?function\s+([A-Za-z_][A-Za-z0-9_.:]*)\s*\(([^)]*)\))"));
+    static const QRegularExpression luaFuncRe(
+        QStringLiteral(R"(^\s*(?:local\s+)?function\s+([A-Za-z_][A-Za-z0-9_.:]*)\s*\(([^)]*)\))"));
 
-    static const QRegularExpression shFunc1Re(QStringLiteral(R"(^\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*\)\s*\{?)"));
+    static const QRegularExpression shFunc1Re(
+        QStringLiteral(R"(^\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*\)\s*\{?)"));
     static const QRegularExpression shFunc2Re(QStringLiteral(R"(^\s*function\s+([A-Za-z_][A-Za-z0-9_]+)\s*\{?)"));
 
-    static const QRegularExpression genericFuncRe(QStringLiteral(R"((?:sub|def|func|function|fn|procedure)\s+([A-Za-z_][A-Za-z0-9_]*))"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression genericFuncRe(
+        QStringLiteral(R"((?:sub|def|func|function|fn|procedure)\s+([A-Za-z_][A-Za-z0-9_]*))"),
+        QRegularExpression::CaseInsensitiveOption);
 
     for (int i = 0; i < lines.size(); ++i) {
         const QString &lineStr = lines.at(i);
@@ -235,7 +263,8 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
         }
 
         // 5. JavaScript / TypeScript
-        if (lang.contains(QStringLiteral("javascript")) || lang.contains(QStringLiteral("typescript")) || lang == QStringLiteral("js") || lang == QStringLiteral("ts")) {
+        if (lang.contains(QStringLiteral("javascript")) || lang.contains(QStringLiteral("typescript")) ||
+            lang == QStringLiteral("js") || lang == QStringLiteral("ts")) {
             auto classMatch = jsClassRe.match(lineStr);
             if (classMatch.hasMatch()) {
                 currentClass = classMatch.captured(1);
@@ -272,7 +301,8 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
             auto methodMatch = jsMethodRe.match(lineStr);
             if (methodMatch.hasMatch()) {
                 const QString mName = methodMatch.captured(1);
-                if (mName != QStringLiteral("if") && mName != QStringLiteral("for") && mName != QStringLiteral("while") && mName != QStringLiteral("switch")) {
+                if (mName != QStringLiteral("if") && mName != QStringLiteral("for") &&
+                    mName != QStringLiteral("while") && mName != QStringLiteral("switch")) {
                     FunctionSymbol sym;
                     sym.name = mName;
                     sym.signature = QStringLiteral("(%1)").arg(methodMatch.captured(2).trimmed());
@@ -324,7 +354,9 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
                 sym.signature = QStringLiteral("(%1)").arg(luaMatch.captured(2).trimmed());
                 sym.line = lineNumber;
                 sym.position = linePos;
-                sym.type = sym.name.contains(QLatin1Char(':')) || sym.name.contains(QLatin1Char('.')) ? FunctionSymbol::Method : FunctionSymbol::Function;
+                sym.type = sym.name.contains(QLatin1Char(':')) || sym.name.contains(QLatin1Char('.'))
+                               ? FunctionSymbol::Method
+                               : FunctionSymbol::Function;
                 symbols.push_back(sym);
                 continue;
             }
@@ -332,7 +364,8 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
         }
 
         // 8. Shell / Bash
-        if (lang.contains(QStringLiteral("bash")) || lang.contains(QStringLiteral("shell")) || lang == QStringLiteral("sh")) {
+        if (lang.contains(QStringLiteral("bash")) || lang.contains(QStringLiteral("shell")) ||
+            lang == QStringLiteral("sh")) {
             auto sh1 = shFunc1Re.match(lineStr);
             if (sh1.hasMatch()) {
                 FunctionSymbol sym;
@@ -357,7 +390,9 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
         }
 
         // 9. C / C++
-        if (lang.contains(QStringLiteral("c++")) || lang.contains(QStringLiteral("cpp")) || lang == QStringLiteral("c") || lang.contains(QStringLiteral("java")) || lang.contains(QStringLiteral("c#"))) {
+        if (lang.contains(QStringLiteral("c++")) || lang.contains(QStringLiteral("cpp")) ||
+            lang == QStringLiteral("c") || lang.contains(QStringLiteral("java")) ||
+            lang.contains(QStringLiteral("c#"))) {
             auto classMatch = cppClassRe.match(lineStr);
             if (classMatch.hasMatch()) {
                 currentClass = classMatch.captured(1);
@@ -372,7 +407,9 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
             auto funcMatch = cppFuncRe.match(lineStr);
             if (funcMatch.hasMatch()) {
                 const QString fnName = funcMatch.captured(1);
-                if (fnName != QStringLiteral("if") && fnName != QStringLiteral("while") && fnName != QStringLiteral("for") && fnName != QStringLiteral("switch") && fnName != QStringLiteral("catch")) {
+                if (fnName != QStringLiteral("if") && fnName != QStringLiteral("while") &&
+                    fnName != QStringLiteral("for") && fnName != QStringLiteral("switch") &&
+                    fnName != QStringLiteral("catch")) {
                     FunctionSymbol sym;
                     if (fnName.contains(QStringLiteral("::"))) {
                         sym.parentScope = fnName.section(QStringLiteral("::"), 0, -2);

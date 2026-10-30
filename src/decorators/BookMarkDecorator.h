@@ -21,14 +21,11 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 #include "EditorDecorator.h"
 
-
-class BookMarkDecorator : public EditorDecorator
-{
+class BookMarkDecorator : public EditorDecorator {
     Q_OBJECT
 
 public:

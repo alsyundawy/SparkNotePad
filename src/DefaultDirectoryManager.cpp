@@ -25,39 +25,33 @@
 #include "ApplicationSettings.h"
 
 DefaultDirectoryManager::DefaultDirectoryManager(MainWindow *window, ApplicationSettings *settings)
-    : QObject{window}, window(window), settings(settings)
-{
+    : QObject{window}, window(window), settings(settings) {
     connect(window, &MainWindow::editorActivated, this, &DefaultDirectoryManager::editorActivated);
     connect(window, &MainWindow::fileDialogAccepted, this, &DefaultDirectoryManager::fileDialogAccepted);
 }
 
-QString DefaultDirectoryManager::getDefaultDirectory() const
-{
+QString DefaultDirectoryManager::getDefaultDirectory() const {
     ApplicationSettings::DefaultDirectoryBehaviorEnum e = settings->defaultDirectoryBehavior();
 
-    if (e == ApplicationSettings::FollowCurrentDocument){
+    if (e == ApplicationSettings::FollowCurrentDocument) {
         const ScintillaNext *editor = window->currentEditor();
         return editor->isFile() ? editor->getPath() : settings->defaultDirectory();
-    }
-    else if (e == ApplicationSettings::RememberLastUsed) {
+    } else if (e == ApplicationSettings::RememberLastUsed) {
         return settings->defaultDirectory();
-    }
-    else if (e == ApplicationSettings::HardCoded) {
+    } else if (e == ApplicationSettings::HardCoded) {
         return settings->defaultDirectory();
     }
 
     return QString();
 }
 
-void DefaultDirectoryManager::editorActivated(ScintillaNext *editor)
-{
+void DefaultDirectoryManager::editorActivated(ScintillaNext *editor) {
     if (settings->defaultDirectoryBehavior() == ApplicationSettings::FollowCurrentDocument && editor->isFile()) {
         settings->setDefaultDirectory(editor->getPath());
     }
 }
 
-void DefaultDirectoryManager::fileDialogAccepted(const QString &filePath)
-{
+void DefaultDirectoryManager::fileDialogAccepted(const QString &filePath) {
     if (settings->defaultDirectoryBehavior() == ApplicationSettings::RememberLastUsed && !filePath.isEmpty()) {
         settings->setDefaultDirectory(QFileInfo(filePath).absolutePath());
     }

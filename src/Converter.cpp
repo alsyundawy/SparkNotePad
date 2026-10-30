@@ -21,21 +21,15 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "Converter.h"
 
-Converter::Converter(ScintillaNext *editor) :
-    editor(editor)
-{
+Converter::Converter(ScintillaNext *editor) : editor(editor) {}
+
+void Converter::convert(QTextStream &stream) {
+    convertRange(stream, 0, static_cast<int>(editor->length()));
 }
 
-void Converter::convert(QTextStream &stream)
-{
-    convertRange(stream, 0, editor->length());
-}
-
-void Converter::ensureDocumentStyled(int start, int end)
-{
+void Converter::ensureDocumentStyled(int start, int end) {
     // If idle styling is used, then the document may not have styling information yet
     editor->colourise(start, end);
 }

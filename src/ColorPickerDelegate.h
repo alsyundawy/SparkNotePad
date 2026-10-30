@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -26,12 +27,11 @@
 
 #include <QStyledItemDelegate>
 
-class ColorPickerDelegate : public QStyledItemDelegate
-{
+class ColorPickerDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
 public:
-    ColorPickerDelegate(QObject *parent = nullptr);
+    explicit ColorPickerDelegate(QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
@@ -39,4 +39,4 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 };
 
-#endif // COLORPICKERDELEGATE_H
+#endif  // COLORPICKERDELEGATE_H

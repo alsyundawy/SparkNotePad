@@ -27,9 +27,7 @@
 #include <QEvent>
 #include <QWheelEvent>
 
-
-static bool isHorizontalWheelEvent(QWheelEvent *event)
-{
+static bool isHorizontalWheelEvent(QWheelEvent *event) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     return event->angleDelta().y() == 0;
 #else
@@ -37,22 +35,17 @@ static bool isHorizontalWheelEvent(QWheelEvent *event)
 #endif
 }
 
-ShiftWheelToHorizontalScrollFilter::ShiftWheelToHorizontalScrollFilter(QObject *parent)
-    : QObject(parent)
-{
-}
+ShiftWheelToHorizontalScrollFilter::ShiftWheelToHorizontalScrollFilter(QObject *parent) : QObject(parent) {}
 
-bool ShiftWheelToHorizontalScrollFilter::eventFilter(QObject *obj, QEvent *event)
-{
+bool ShiftWheelToHorizontalScrollFilter::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() != QEvent::Wheel) {
         return QObject::eventFilter(obj, event);
     }
 
     auto *wheelEvent = static_cast<QWheelEvent *>(event);
 
-    if (!(wheelEvent->modifiers() & Qt::ShiftModifier)
-        || (wheelEvent->modifiers() & Qt::ControlModifier)
-        || isHorizontalWheelEvent(wheelEvent)) {
+    if (!(wheelEvent->modifiers() & Qt::ShiftModifier) || (wheelEvent->modifiers() & Qt::ControlModifier) ||
+        isHorizontalWheelEvent(wheelEvent)) {
         return QObject::eventFilter(obj, event);
     }
 
@@ -60,17 +53,10 @@ bool ShiftWheelToHorizontalScrollFilter::eventFilter(QObject *obj, QEvent *event
 
     const QPoint pixelDelta(wheelEvent->pixelDelta().y(), wheelEvent->pixelDelta().x());
 
-    QWheelEvent horizontalEvent(
-        wheelEvent->position(),
-        wheelEvent->globalPosition(),
-        pixelDelta,
-        angleDelta,
-        wheelEvent->buttons(),
-        wheelEvent->modifiers() & ~Qt::ShiftModifier,
-        wheelEvent->phase(),
-        wheelEvent->inverted(),
-        wheelEvent->source(),
-        wheelEvent->pointingDevice());
+    QWheelEvent horizontalEvent(wheelEvent->position(), wheelEvent->globalPosition(), pixelDelta, angleDelta,
+                                wheelEvent->buttons(), wheelEvent->modifiers() & ~Qt::ShiftModifier,
+                                wheelEvent->phase(), wheelEvent->inverted(), wheelEvent->source(),
+                                wheelEvent->pointingDevice());
 
     QApplication::sendEvent(obj, &horizontalEvent);
     return true;

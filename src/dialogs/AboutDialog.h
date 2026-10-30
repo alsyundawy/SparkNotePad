@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -15,8 +16,7 @@
 
 class QTabWidget;
 
-class AboutDialog : public QDialog
-{
+class AboutDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -36,4 +36,4 @@ private:
     QTabWidget *m_tabWidget = nullptr;
 };
 
-#endif // ABOUTDIALOG_H
+#endif  // ABOUTDIALOG_H

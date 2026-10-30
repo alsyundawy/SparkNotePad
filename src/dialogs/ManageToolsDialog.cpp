@@ -23,12 +23,9 @@
 
 namespace {
 
-class ToolEditDialog : public QDialog
-{
+class ToolEditDialog : public QDialog {
 public:
-    explicit ToolEditDialog(QWidget *parent, const ExternalTool &tool = {})
-        : QDialog(parent)
-    {
+    explicit ToolEditDialog(QWidget *parent, const ExternalTool &tool = {}) : QDialog(parent) {
         setWindowTitle(tool.name.isEmpty() ? tr("Add External Tool") : tr("Edit External Tool"));
         resize(480, 220);
 
@@ -69,8 +66,7 @@ public:
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     }
 
-    ExternalTool getTool(const QString &origId = QString()) const
-    {
+    ExternalTool getTool(const QString &origId = QString()) const {
         ExternalTool t;
         t.id = origId;
         t.name = editName->text().trimmed();
@@ -89,12 +85,9 @@ private:
     QCheckBox *chkSave;
 };
 
-} // namespace
+}  // namespace
 
-ManageToolsDialog::ManageToolsDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ManageToolsDialog)
-{
+ManageToolsDialog::ManageToolsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ManageToolsDialog) {
     ui->setupUi(this);
 
     ui->treeTools->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
@@ -106,20 +99,17 @@ ManageToolsDialog::ManageToolsDialog(QWidget *parent) :
     connect(ui->btnDelete, &QPushButton::clicked, this, &ManageToolsDialog::onDeleteClicked);
     connect(ui->btnClose, &QPushButton::clicked, this, &QDialog::accept);
 
-    connect(ui->treeTools, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem */*item*/, int /*col*/) {
-        onEditClicked();
-    });
+    connect(ui->treeTools, &QTreeWidget::itemDoubleClicked, this,
+            [this](QTreeWidgetItem * /*item*/, int /*col*/) { onEditClicked(); });
 
     populateList();
 }
 
-ManageToolsDialog::~ManageToolsDialog()
-{
+ManageToolsDialog::~ManageToolsDialog() {
     delete ui;
 }
 
-void ManageToolsDialog::populateList()
-{
+void ManageToolsDialog::populateList() {
     ui->treeTools->clear();
     m_tools = ExternalToolManager::loadCustomTools();
 
@@ -132,8 +122,7 @@ void ManageToolsDialog::populateList()
     }
 }
 
-void ManageToolsDialog::onAddClicked()
-{
+void ManageToolsDialog::onAddClicked() {
     ToolEditDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted) {
         ExternalTool newTool = dlg.getTool();
@@ -142,8 +131,7 @@ void ManageToolsDialog::onAddClicked()
     }
 }
 
-void ManageToolsDialog::onEditClicked()
-{
+void ManageToolsDialog::onEditClicked() {
     QTreeWidgetItem *cur = ui->treeTools->currentItem();
     if (!cur)
         return;
@@ -154,8 +142,7 @@ void ManageToolsDialog::onEditClicked()
     }
 }
 
-void ManageToolsDialog::editTool(int index)
-{
+void ManageToolsDialog::editTool(int index) {
     const ExternalTool orig = m_tools.at(index);
     ToolEditDialog dlg(this, orig);
     if (dlg.exec() == QDialog::Accepted) {
@@ -166,8 +153,7 @@ void ManageToolsDialog::editTool(int index)
     }
 }
 
-void ManageToolsDialog::onDeleteClicked()
-{
+void ManageToolsDialog::onDeleteClicked() {
     QTreeWidgetItem *cur = ui->treeTools->currentItem();
     if (!cur)
         return;
@@ -177,7 +163,9 @@ void ManageToolsDialog::onDeleteClicked()
         return;
 
     const auto &tool = m_tools.at(idx);
-    auto res = QMessageBox::question(this, tr("Delete Tool"), tr("Are you sure you want to delete tool '%1'?").arg(tool.name), QMessageBox::Yes | QMessageBox::No);
+    auto res =
+        QMessageBox::question(this, tr("Delete Tool"), tr("Are you sure you want to delete tool '%1'?").arg(tool.name),
+                              QMessageBox::Yes | QMessageBox::No);
     if (res == QMessageBox::Yes) {
         ExternalToolManager::deleteCustomTool(tool.id);
         populateList();

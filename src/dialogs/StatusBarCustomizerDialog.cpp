@@ -21,16 +21,13 @@
 #include <QLabel>
 
 StatusBarCustomizerDialog::StatusBarCustomizerDialog(EditorInfoStatusBar *statusBar, QWidget *parent)
-    : QDialog(parent)
-    , m_statusBar(statusBar)
-{
+    : QDialog(parent), m_statusBar(statusBar) {
     setWindowTitle(tr("Customize Status Bar Fields"));
     setMinimumWidth(380);
     setupUi();
 }
 
-void StatusBarCustomizerDialog::setupUi()
-{
+void StatusBarCustomizerDialog::setupUi() {
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(12);
 
@@ -48,15 +45,21 @@ void StatusBarCustomizerDialog::setupUi()
     };
 
     QList<FieldMeta> fields = {
-        {EditorInfoStatusBar::FieldLanguage, tr("Document Language / Syntax Scheme"), tr("Current language syntax highlighter (e.g. C++, HTML, Markdown)")},
-        {EditorInfoStatusBar::FieldDocSize, tr("Document Size (Length / Lines)"), tr("Total character length and line count")},
-        {EditorInfoStatusBar::FieldDocPos, tr("Cursor Position & Selection (Ln / Col / Sel)"), tr("Current line, column, and selection range")},
-        {EditorInfoStatusBar::FieldUnicodeChar, tr("Unicode Code Point (U+XXXX)"), tr("Hexadecimal Unicode code point of character at cursor")},
-        {EditorInfoStatusBar::FieldOccurrences, tr("Marked Occurrences Count (Occ: N)"), tr("Count of marked occurrences in document")},
-        {EditorInfoStatusBar::FieldEol, tr("End-of-Line Format (CRLF / LF)"), tr("Line break mode (Windows, Unix, Mac)")},
+        {EditorInfoStatusBar::FieldLanguage, tr("Document Language / Syntax Scheme"),
+         tr("Current language syntax highlighter (e.g. C++, HTML, Markdown)")},
+        {EditorInfoStatusBar::FieldDocSize, tr("Document Size (Length / Lines)"),
+         tr("Total character length and line count")},
+        {EditorInfoStatusBar::FieldDocPos, tr("Cursor Position & Selection (Ln / Col / Sel)"),
+         tr("Current line, column, and selection range")},
+        {EditorInfoStatusBar::FieldUnicodeChar, tr("Unicode Code Point (U+XXXX)"),
+         tr("Hexadecimal Unicode code point of character at cursor")},
+        {EditorInfoStatusBar::FieldOccurrences, tr("Marked Occurrences Count (Occ: N)"),
+         tr("Count of marked occurrences in document")},
+        {EditorInfoStatusBar::FieldEol, tr("End-of-Line Format (CRLF / LF)"),
+         tr("Line break mode (Windows, Unix, Mac)")},
         {EditorInfoStatusBar::FieldEncoding, tr("File Encoding (UTF-8 / ANSI)"), tr("Active encoding and BOM status")},
-        {EditorInfoStatusBar::FieldOverType, tr("Insert / Overtype Mode (INS / OVR)"), tr("Keyboard typing insert or replace mode")}
-    };
+        {EditorInfoStatusBar::FieldOverType, tr("Insert / Overtype Mode (INS / OVR)"),
+         tr("Keyboard typing insert or replace mode")}};
 
     for (const auto &fm : fields) {
         auto *cb = new QCheckBox(fm.name, group);
@@ -98,22 +101,19 @@ void StatusBarCustomizerDialog::setupUi()
     mainLayout->addLayout(bottomLayout);
 }
 
-void StatusBarCustomizerDialog::onSelectAll()
-{
+void StatusBarCustomizerDialog::onSelectAll() {
     for (auto it = m_checkBoxes.begin(); it != m_checkBoxes.end(); ++it) {
         it.value()->setChecked(true);
     }
 }
 
-void StatusBarCustomizerDialog::onClearAll()
-{
+void StatusBarCustomizerDialog::onClearAll() {
     for (auto it = m_checkBoxes.begin(); it != m_checkBoxes.end(); ++it) {
         it.value()->setChecked(false);
     }
 }
 
-void StatusBarCustomizerDialog::onResetDefaults()
-{
+void StatusBarCustomizerDialog::onResetDefaults() {
     if (m_statusBar) {
         m_statusBar->resetToDefaults();
         for (auto it = m_checkBoxes.begin(); it != m_checkBoxes.end(); ++it) {

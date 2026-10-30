@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,33 +22,24 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef TABSQUICKACTIONSBAR_H
 #define TABSQUICKACTIONSBAR_H
 
 #include <QToolBar>
 
-class TabsQuickActionsBar : public QToolBar
-{
+class TabsQuickActionsBar : public QToolBar {
     Q_OBJECT
 
-    Q_PROPERTY(
-        Buttons visibileButtons
-        READ    getVisibileButtons
-        WRITE   setVisibileButtons
-        NOTIFY  visibileButtonsChanged
-    )
+    Q_PROPERTY(Buttons visibileButtons READ getVisibileButtons WRITE setVisibileButtons NOTIFY visibileButtonsChanged)
 
 public:
     enum Button {
-        None            = 0x00,
-        CreateNewTab    = 0x01,
-        ShowTabsMenu    = 0x02,
+        None = 0x00,
+        CreateNewTab = 0x01,
+        ShowTabsMenu = 0x02,
         CloseCurrentTab = 0x04,
 
-        All = CreateNewTab |
-              ShowTabsMenu |
-              CloseCurrentTab
+        All = CreateNewTab | ShowTabsMenu | CloseCurrentTab
     };
 
     Q_FLAG(Button)
@@ -62,7 +54,7 @@ signals:
     void visibileButtonsChanged(const TabsQuickActionsBar::Buttons &visibileButtons);
 
 public:
-    inline TabsQuickActionsBar(QWidget *parent = nullptr) : TabsQuickActionsBar(Button::All, parent) { }
+    explicit inline TabsQuickActionsBar(QWidget *parent = nullptr) : TabsQuickActionsBar(Button::All, parent) {}
     explicit TabsQuickActionsBar(const Buttons &visibileButtons = Button::All, QWidget *parent = nullptr);
     virtual ~TabsQuickActionsBar() = default;
 
@@ -80,4 +72,4 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TabsQuickActionsBar::Buttons);
 
-#endif // TABSQUICKACTIONSBAR_H
+#endif  // TABSQUICKACTIONSBAR_H

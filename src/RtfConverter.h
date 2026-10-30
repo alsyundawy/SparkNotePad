@@ -21,16 +21,13 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 #include "Converter.h"
 
-class RtfConverter : public Converter
-{
+class RtfConverter : public Converter {
     using Converter::Converter;
 
 public:
     void convertRange(QTextStream &stream, int start, int end) override;
 };
-

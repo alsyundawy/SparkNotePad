@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SEARCHRESULTSDOCK_H
 #define SEARCHRESULTSDOCK_H
 
@@ -36,17 +36,17 @@ class SearchResultsDock;
 class QTreeWidgetItem;
 class ScintillaNext;
 
-class SearchResultsDock : public QDockWidget, public ISearchResultsHandler
-{
+class SearchResultsDock : public QDockWidget, public ISearchResultsHandler {
     Q_OBJECT
 
 public:
     explicit SearchResultsDock(QWidget *parent = nullptr);
     ~SearchResultsDock();
 
-    void newSearch(const QString searchTerm) override;
+    void newSearch(const QString &searchTerm) override;
     void newFileEntry(ScintillaNext *editor) override;
-    void newResultsEntry(const QString line, int lineNumber, int startPositionFromBeginning, int endPositionFromBeginning, int hitCount=1) override;
+    void newResultsEntry(const QString &line, int lineNumber, int startPositionFromBeginning,
+                         int endPositionFromBeginning, int hitCount = 1) override;
     void completeSearch() override;
 
 public slots:
@@ -61,9 +61,9 @@ private slots:
     void copyAllSearchResultsToClipboard();
     void copySelectedSearchResultsToClipboard();
 
-
 signals:
-    void searchResultActivated(ScintillaNext *editor, int lineNumber, int startPositionFromBeginning, int endPositionFromBeginning);
+    void searchResultActivated(ScintillaNext *editor, int lineNumber, int startPositionFromBeginning,
+                               int endPositionFromBeginning);
 
 private:
     void updateSearchStatus();
@@ -80,4 +80,4 @@ private:
     QTreeWidgetItem *currentFile = Q_NULLPTR;
 };
 
-#endif // SEARCHRESULTSDOCK_H
+#endif  // SEARCHRESULTSDOCK_H

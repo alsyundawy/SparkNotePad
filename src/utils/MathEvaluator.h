@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,17 +20,16 @@
 class ScintillaNext;
 #endif
 
-class MathEvaluator
-{
+class MathEvaluator {
 public:
     enum Action {
-        AppendResult,     // "15 * 4" -> "15 * 4 = 60"
-        ReplaceExpression // "15 * 4" -> "60"
+        AppendResult,      // "15 * 4" -> "15 * 4 = 60"
+        ReplaceExpression  // "15 * 4" -> "60"
     };
 
     struct Result {
-        bool success {false};
-        double value {0.0};
+        bool success{false};
+        double value{0.0};
         QString expression;
         QString formattedResult;
         QString errorMessage;
@@ -46,4 +46,4 @@ public:
     static QString formatValue(double val);
 };
 
-#endif // MATHEVALUATOR_H
+#endif  // MATHEVALUATOR_H

@@ -24,21 +24,17 @@
 #include <QDebug>
 #include <QRegularExpression>
 
-ReleaseManager &ReleaseManager::instance()
-{
+ReleaseManager &ReleaseManager::instance() {
     static ReleaseManager inst;
     return inst;
 }
 
-ReleaseManager::ReleaseManager(QObject *parent)
-    : QObject(parent)
-{
+ReleaseManager::ReleaseManager(QObject *parent) : QObject(parent) {
     m_netManager = new QNetworkAccessManager(this);
     connect(m_netManager, &QNetworkAccessManager::finished, this, &ReleaseManager::onReplyFinished);
 }
 
-QString ReleaseManager::currentVersion() const
-{
+QString ReleaseManager::currentVersion() const {
 #ifdef APP_VERSION
     return QString(APP_VERSION);
 #else
@@ -46,14 +42,13 @@ QString ReleaseManager::currentVersion() const
 #endif
 }
 
-bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString &currentVersion) const
-{
+bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) const {
     // Clean versions: strip 'v' or 'V'
     QString l = latestVersion.trimmed();
     if (l.startsWith("v", Qt::CaseInsensitive)) {
         l.remove(0, 1);
     }
-    QString c = currentVersion.trimmed();
+    QString c = currentVersionStr.trimmed();
     if (c.startsWith("v", Qt::CaseInsensitive)) {
         c.remove(0, 1);
     }
@@ -69,20 +64,22 @@ bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString 
     for (int i = 0; i < maxLen; ++i) {
         int lNum = (i < lParts.size()) ? lParts[i].toInt() : 0;
         int cNum = (i < cParts.size()) ? cParts[i].toInt() : 0;
-        if (lNum > cNum) return true;
-        if (lNum < cNum) return false;
+        if (lNum > cNum)
+            return true;
+        if (lNum < cNum)
+            return false;
     }
 
     // If core numeric parts are equal, check pre-release tags
     bool lHasPre = l.contains('-');
     bool cHasPre = c.contains('-');
-    if (!lHasPre && cHasPre) return true; // Full release is newer than pre-release
+    if (!lHasPre && cHasPre)
+        return true;  // Full release is newer than pre-release
 
     return false;
 }
 
-void ReleaseManager::checkForUpdates(QWidget *parent, bool silent)
-{
+void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
     m_parentWidget = parent;
     m_silent = silent;
 
@@ -95,8 +92,7 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent)
     m_netManager->get(request);
 }
 
-void ReleaseManager::onReplyFinished(QNetworkReply *reply)
-{
+void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
     reply->deleteLater();
 
     if (reply->error() != QNetworkReply::NoError) {
@@ -104,7 +100,7 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply)
         if (!m_silent && m_parentWidget) {
             QMessageBox::warning(m_parentWidget, tr("Update Check Failed"),
                                  tr("Unable to connect to update server:\n%1\n\nPlease check your internet connection.")
-                                 .arg(reply->errorString()));
+                                     .arg(reply->errorString()));
         }
         return;
     }
@@ -138,22 +134,23 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply)
                              "<b>Latest Version:</b> %2 (%3)</p>"
                              "<p>%4</p>"
                              "<p>Would you like to open the download page now?</p>")
-                .arg(curVer)
-                .arg(info.versionTag)
-                .arg(info.releaseName)
-                .arg(info.releaseNotes.left(400).toHtmlEscaped().replace("\n", "<br/>"));
+                              .arg(curVer)
+                              .arg(info.versionTag)
+                              .arg(info.releaseName)
+                              .arg(info.releaseNotes.left(400).toHtmlEscaped().replace("\n", "<br/>"));
 
             QMessageBox msgBox(m_parentWidget);
             msgBox.setWindowTitle(tr("NoteSciPad Update Available"));
             msgBox.setText(msg);
             msgBox.setIcon(QMessageBox::Information);
-            QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
+            const QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
             QAbstractButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
             Q_UNUSED(btnLater);
 
             msgBox.exec();
             if (msgBox.clickedButton() == btnDownload) {
-                QString url = !info.htmlUrl.isEmpty() ? info.htmlUrl : "https://github.com/alsyundawy/NoteSciPad/releases";
+                QString url =
+                    !info.htmlUrl.isEmpty() ? info.htmlUrl : "https://github.com/alsyundawy/NoteSciPad/releases";
                 QDesktopServices::openUrl(QUrl(url));
             }
         }
@@ -162,7 +159,7 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply)
             QMessageBox::information(m_parentWidget, tr("NoteSciPad Up to Date"),
                                      tr("<h3>You are running the latest version!</h3>"
                                         "<p><b>NoteSciPad version %1</b> is currently up to date.</p>")
-                                     .arg(curVer));
+                                         .arg(curVer));
         }
     }
 }

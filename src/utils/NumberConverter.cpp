@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 number conversion logic.
  * Source: zufuliu/Notepad4 (src/Edit.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,10 +15,11 @@
 #include "ScintillaNext.h"
 #endif
 
+#include <algorithm>
 #include <QByteArray>
 
-NumberConverter::Result NumberConverter::convertString(const QString &input, TargetBase targetBase, bool uppercaseHex, bool addPrefix)
-{
+NumberConverter::Result NumberConverter::convertString(const QString &input, TargetBase targetBase, bool uppercaseHex,
+                                                       bool addPrefix) {
     const QString text = input.trimmed();
     if (text.isEmpty()) {
         return {false, input, QString(), QStringLiteral("Empty number string")};
@@ -35,13 +36,9 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
         value = text.mid(2).toULongLong(&ok, 8);
     } else {
         // Check if string contains hex digits A-F
-        bool hasHexAlpha = false;
-        for (const QChar &ch : text) {
-            if ((ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
-                hasHexAlpha = true;
-                break;
-            }
-        }
+        const bool hasHexAlpha = std::any_of(text.cbegin(), text.cend(), [](const QChar &ch) {
+            return (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
+        });
 
         if (hasHexAlpha) {
             value = text.toULongLong(&ok, 16);
@@ -59,36 +56,36 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
 
     QString formatted;
     switch (targetBase) {
-    case ToHex: {
-        QString hex = QString::number(value, 16);
-        if (uppercaseHex) {
-            hex = hex.toUpper();
+        case ToHex: {
+            QString hex = QString::number(value, 16);
+            if (uppercaseHex) {
+                hex = hex.toUpper();
+            }
+            formatted = addPrefix ? (QStringLiteral("0x") + hex) : hex;
+            break;
         }
-        formatted = addPrefix ? (QStringLiteral("0x") + hex) : hex;
-        break;
-    }
-    case ToDec: {
-        formatted = QString::number(value, 10);
-        break;
-    }
-    case ToBin: {
-        QString bin = QString::number(value, 2);
-        formatted = addPrefix ? (QStringLiteral("0b") + bin) : bin;
-        break;
-    }
-    case ToOct: {
-        QString oct = QString::number(value, 8);
-        formatted = addPrefix ? (QStringLiteral("0o") + oct) : oct;
-        break;
-    }
+        case ToDec: {
+            formatted = QString::number(value, 10);
+            break;
+        }
+        case ToBin: {
+            QString bin = QString::number(value, 2);
+            formatted = addPrefix ? (QStringLiteral("0b") + bin) : bin;
+            break;
+        }
+        case ToOct: {
+            QString oct = QString::number(value, 8);
+            formatted = addPrefix ? (QStringLiteral("0o") + oct) : oct;
+            break;
+        }
     }
 
     return {true, text, formatted, QString()};
 }
 
 #if !defined(UNIT_TESTING)
-NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex, bool addPrefix)
-{
+NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex,
+                                                 bool addPrefix) {
     if (!editor) {
         return {false, QString(), QString(), QStringLiteral("No active editor")};
     }
@@ -105,7 +102,8 @@ NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBa
         startPos = curPos;
         while (startPos > 0) {
             const char ch = editor->charAt(startPos - 1);
-            if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == 'x' || ch == 'X' || ch == 'b' || ch == 'B' || ch == 'o' || ch == 'O') {
+            if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == 'x' ||
+                ch == 'X' || ch == 'b' || ch == 'B' || ch == 'o' || ch == 'O') {
                 startPos--;
             } else {
                 break;

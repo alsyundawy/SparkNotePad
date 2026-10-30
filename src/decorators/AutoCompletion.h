@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef AUTOCOMPLETION_H
 #define AUTOCOMPLETION_H
 
@@ -29,9 +29,7 @@
 
 #include <QStringList>
 
-
-class AutoCompletion : public EditorDecorator
-{
+class AutoCompletion : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -45,4 +43,4 @@ private:
     QStringList keywords;
 };
 
-#endif // AUTOCOMPLETION_H
+#endif  // AUTOCOMPLETION_H

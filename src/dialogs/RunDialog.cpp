@@ -22,12 +22,8 @@
 #include <QMessageBox>
 #include <QLineEdit>
 
-RunDialog::RunDialog(MainWindow *parent, ScintillaNext *editor) :
-    QDialog(parent),
-    ui(new Ui::RunDialog),
-    m_window(parent),
-    m_editor(editor)
-{
+RunDialog::RunDialog(MainWindow *parent, ScintillaNext *editor)
+    : QDialog(parent), ui(new Ui::RunDialog), m_window(parent), m_editor(editor) {
     ui->setupUi(this);
 
     // Setup history
@@ -50,44 +46,37 @@ RunDialog::RunDialog(MainWindow *parent, ScintillaNext *editor) :
     updatePreview();
 }
 
-RunDialog::~RunDialog()
-{
+RunDialog::~RunDialog() {
     delete ui;
 }
 
-void RunDialog::setupInsertVarMenu()
-{
+void RunDialog::setupInsertVarMenu() {
     QMenu *varMenu = new QMenu(ui->btnInsertVar);
 
     const struct VarEntry {
         const char *var;
         const char *desc;
-    } entries[] = {
-        {"$(FULL_CURRENT_PATH)", "Full native file path"},
-        {"$(CURRENT_DIRECTORY)", "Directory of current file"},
-        {"$(FILE_NAME)", "File name with extension"},
-        {"$(NAME_PART)", "Base name without extension"},
-        {"$(EXT_PART)", "Extension (suffix)"},
-        {"$(CURRENT_WORD)", "Selected text or word under cursor"},
-        {"$(CURRENT_LINE)", "Current line number (1-based)"},
-        {"$(CURRENT_COLUMN)", "Current column number (1-based)"},
-        {"$(APP_DIR)", "NoteSciPad application directory"}
-    };
+    } entries[] = {{"$(FULL_CURRENT_PATH)", "Full native file path"},
+                   {"$(CURRENT_DIRECTORY)", "Directory of current file"},
+                   {"$(FILE_NAME)", "File name with extension"},
+                   {"$(NAME_PART)", "Base name without extension"},
+                   {"$(EXT_PART)", "Extension (suffix)"},
+                   {"$(CURRENT_WORD)", "Selected text or word under cursor"},
+                   {"$(CURRENT_LINE)", "Current line number (1-based)"},
+                   {"$(CURRENT_COLUMN)", "Current column number (1-based)"},
+                   {"$(APP_DIR)", "NoteSciPad application directory"}};
 
     for (const auto &e : entries) {
         QString varStr = QString::fromLatin1(e.var);
         QString descStr = QString::fromLatin1(e.desc);
         QAction *act = varMenu->addAction(QStringLiteral("%1 (%2)").arg(varStr, descStr));
-        connect(act, &QAction::triggered, this, [this, varStr]() {
-            onInsertVarTriggered(varStr);
-        });
+        connect(act, &QAction::triggered, this, [this, varStr]() { onInsertVarTriggered(varStr); });
     }
 
     ui->btnInsertVar->setMenu(varMenu);
 }
 
-void RunDialog::onInsertVarTriggered(const QString &varName)
-{
+void RunDialog::onInsertVarTriggered(const QString &varName) {
     QLineEdit *lineEdit = ui->comboCommand->lineEdit();
     if (lineEdit) {
         lineEdit->insert(varName);
@@ -95,20 +84,17 @@ void RunDialog::onInsertVarTriggered(const QString &varName)
     }
 }
 
-void RunDialog::onCommandTextChanged(const QString & /*text*/)
-{
+void RunDialog::onCommandTextChanged(const QString & /*text*/) {
     updatePreview();
 }
 
-void RunDialog::updatePreview()
-{
+void RunDialog::updatePreview() {
     const QString cmd = ui->comboCommand->currentText();
     const QString expanded = ExternalToolManager::expandVariables(cmd, m_editor);
     ui->editPreview->setText(expanded);
 }
 
-void RunDialog::onBrowseClicked()
-{
+void RunDialog::onBrowseClicked() {
     QString dir;
     if (m_editor && m_editor->isFile()) {
         dir = m_editor->getFileInfo().dir().absolutePath();
@@ -120,8 +106,7 @@ void RunDialog::onBrowseClicked()
     }
 }
 
-void RunDialog::onRunClicked()
-{
+void RunDialog::onRunClicked() {
     const QString cmd = ui->comboCommand->currentText().trimmed();
     if (cmd.isEmpty()) {
         QMessageBox::information(this, tr("Run"), tr("Please specify a program or command to run."));
@@ -150,8 +135,7 @@ void RunDialog::onRunClicked()
     accept();
 }
 
-void RunDialog::onSaveClicked()
-{
+void RunDialog::onSaveClicked() {
     const QString cmd = ui->comboCommand->currentText().trimmed();
     if (cmd.isEmpty()) {
         QMessageBox::information(this, tr("Save Tool"), tr("Please specify a command before saving."));
@@ -159,7 +143,8 @@ void RunDialog::onSaveClicked()
     }
 
     bool ok = false;
-    QString toolName = QInputDialog::getText(this, tr("Save as External Tool"), tr("Tool Name:"), QLineEdit::Normal, tr("My Custom Tool"), &ok);
+    QString toolName = QInputDialog::getText(this, tr("Save as External Tool"), tr("Tool Name:"), QLineEdit::Normal,
+                                             tr("My Custom Tool"), &ok);
     if (ok && !toolName.trimmed().isEmpty()) {
         ExternalTool tool;
         tool.name = toolName.trimmed();
@@ -168,6 +153,7 @@ void RunDialog::onSaveClicked()
         tool.saveBeforeRun = ui->chkSaveBeforeRun->isChecked();
         ExternalToolManager::addCustomTool(tool);
 
-        QMessageBox::information(this, tr("Tool Saved"), tr("Tool '%1' was successfully added to the Run menu.").arg(tool.name));
+        QMessageBox::information(this, tr("Tool Saved"),
+                                 tr("Tool '%1' was successfully added to the Run menu.").arg(tool.name));
     }
 }

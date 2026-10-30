@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EDITORDECORATOR_H
 #define EDITORDECORATOR_H
 
@@ -29,8 +29,7 @@
 
 #include "ScintillaNext.h"
 
-class EditorDecorator : public QObject
-{
+class EditorDecorator : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY stateChanged)
 
@@ -42,7 +41,7 @@ public:
     ScintillaNext *getEditor() const { return editor; }
 
 public slots:
-    void setEnabled(bool b);
+    virtual void setEnabled(bool b);
     virtual void notify(const Scintilla::NotificationData *pscn) = 0;
 
 signals:
@@ -53,4 +52,4 @@ protected:
     bool enabled = false;
 };
 
-#endif // EDITORDECORATOR_H
+#endif  // EDITORDECORATOR_H

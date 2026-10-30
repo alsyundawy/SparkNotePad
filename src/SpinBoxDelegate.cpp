@@ -26,12 +26,10 @@
 #include <QSpinBox>
 
 SpinBoxDelegate::SpinBoxDelegate(QSpinBoxFactory factory, QObject *parent)
-    : QStyledItemDelegate(parent), factory(factory)
-{
-}
+    : QStyledItemDelegate(parent), factory(factory) {}
 
-QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                                       const QModelIndex &index) const {
     Q_UNUSED(option)
     Q_UNUSED(index)
 
@@ -41,25 +39,23 @@ QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewIt
     return spinBox;
 }
 
-void SpinBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
+void SpinBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     int value = index.model()->data(index, Qt::EditRole).toInt();
 
-    QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
+    QSpinBox *spinBox = static_cast<QSpinBox *>(editor);
     spinBox->setValue(value);
 }
 
-void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
+void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
+    QSpinBox *spinBox = static_cast<QSpinBox *>(editor);
     spinBox->interpretText();
     int value = spinBox->value();
 
     model->setData(index, value, Qt::EditRole);
 }
 
-void SpinBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+void SpinBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
+                                           const QModelIndex &index) const {
     Q_UNUSED(index)
 
     editor->setGeometry(option.rect);

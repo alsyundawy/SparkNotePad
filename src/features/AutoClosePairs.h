@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -15,8 +16,7 @@
 
 #include "EditorDecorator.h"
 
-class AutoClosePairs : public EditorDecorator
-{
+class AutoClosePairs : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -37,10 +37,10 @@ public slots:
 
 private:
     bool handleKeyPress(class QKeyEvent *keyEvent);
-    bool isWordChar(char ch) const;
+    static bool isWordChar(char ch);
 
-    bool m_autoCloseBrackets {true};
-    bool m_autoCloseQuotes {true};
+    bool m_autoCloseBrackets{true};
+    bool m_autoCloseQuotes{true};
 };
 
-#endif // AUTOCLOSEPAIRS_H
+#endif  // AUTOCLOSEPAIRS_H

@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4) and NotepadNext Copy as RTF syntax coloring.
  * Source: zufuliu/notepad4 (src/Edit.cpp, src/Styles.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -17,13 +17,11 @@
 #include <QTextStream>
 #include <QVector>
 
-static inline QColor ScintillaColorToQColor(int color)
-{
+static inline QColor ScintillaColorToQColor(int color) {
     return QColor::fromRgb(color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF);
 }
 
-static void AddCharToRtf(QTextStream &stream, uint ucs4)
-{
+static void AddCharToRtf(QTextStream &stream, uint ucs4) {
     if (ucs4 == '\\') {
         stream << "\\\\";
     } else if (ucs4 == '{') {
@@ -40,20 +38,20 @@ static void AddCharToRtf(QTextStream &stream, uint ucs4)
         stream << static_cast<char>(ucs4);
     } else if (ucs4 <= 0xFFFF) {
         // RTF signed 16-bit integer for unicode
-        const short val = (ucs4 < 32768) ? static_cast<short>(ucs4) : static_cast<short>(static_cast<int>(ucs4) - 65536);
+        const short val =
+            (ucs4 < 32768) ? static_cast<short>(ucs4) : static_cast<short>(static_cast<int>(ucs4) - 65536);
         stream << "\\u" << val << '?';
     } else if (ucs4 <= 0x10FFFF) {
         // Astral plane surrogate pair
         const uint high = 0xD800 + ((ucs4 - 0x10000) >> 10);
         const uint low = 0xDC00 + ((ucs4 - 0x10000) & 0x3FF);
-        const short val_h = (high < 32768) ? static_cast<short>(high) : static_cast<short>(static_cast<int>(high) - 65536);
-        const short val_l = (low < 32768) ? static_cast<short>(low) : static_cast<short>(static_cast<int>(low) - 65536);
+        const short val_h = static_cast<short>(static_cast<int>(high) - 65536);
+        const short val_l = static_cast<short>(static_cast<int>(low) - 65536);
         stream << "\\u" << val_h << "?\\u" << val_l << '?';
     }
 }
 
-void RtfConverter::convertRange(QTextStream &stream, int start, int end)
-{
+void RtfConverter::convertRange(QTextStream &stream, int start, int end) {
     if (!editor || start >= end) {
         return;
     }
@@ -78,7 +76,7 @@ void RtfConverter::convertRange(QTextStream &stream, int start, int end)
             if (!styleColors.contains(foreColor)) {
                 styleColors.append(foreColor);
             }
-            const int colorIndex = styleColors.indexOf(foreColor) + 1; // 1-based index in RTF colortbl
+            const int colorIndex = styleColors.indexOf(foreColor) + 1;  // 1-based index in RTF colortbl
 
             // Font weight (bold)
             const bool bold = editor->styleBold(style);
@@ -120,9 +118,12 @@ void RtfConverter::convertRange(QTextStream &stream, int start, int end)
     }
 
     // Reset styles at the end
-    if (prevBold) rtf_stream << "\\b0 ";
-    if (prevItalic) rtf_stream << "\\i0 ";
-    if (prevUnderline) rtf_stream << "\\ulnone ";
+    if (prevBold)
+        rtf_stream << "\\b0 ";
+    if (prevItalic)
+        rtf_stream << "\\i0 ";
+    if (prevUnderline)
+        rtf_stream << "\\ulnone ";
 
     rtf_stream.flush();
 

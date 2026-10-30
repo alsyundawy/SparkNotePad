@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -21,8 +22,7 @@ class PerformanceDiagnosticsDialog;
 
 class ScintillaNext;
 
-class PerformanceDiagnosticsDialog : public QDialog
-{
+class PerformanceDiagnosticsDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -39,8 +39,8 @@ private:
     void setupUiData();
 
     Ui::PerformanceDiagnosticsDialog *ui;
-    ScintillaNext *m_editor {nullptr};
-    QTimer *m_refreshTimer {nullptr};
+    ScintillaNext *m_editor{nullptr};
+    QTimer *m_refreshTimer{nullptr};
 };
 
-#endif // PERFORMANCEDIAGNOSTICSDIALOG_H
+#endif  // PERFORMANCEDIAGNOSTICSDIALOG_H

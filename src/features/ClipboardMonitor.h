@@ -1,12 +1,13 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Clipboard Monitoring Mode.
  * Adapted from Notepad3 (rizonesoft/notepad3) clipboard monitoring architecture.
  * Captures system clipboard text changes and automatically appends them to the active document
  * or stores them in the session history.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -23,8 +24,7 @@
 
 class ScintillaNext;
 
-class ClipboardMonitor : public QObject
-{
+class ClipboardMonitor : public QObject {
     Q_OBJECT
 
 public:
@@ -39,9 +39,9 @@ public:
     static ClipboardMonitor *instance();
 
     bool isMonitoring() const;
-    void startMonitoring(ScintillaNext *targetEditor = nullptr);
+    void startMonitoring(ScintillaNext *editor = nullptr);
     void stopMonitoring();
-    void toggleMonitoring(ScintillaNext *targetEditor = nullptr);
+    void toggleMonitoring(ScintillaNext *editor = nullptr);
 
     void setTargetEditor(ScintillaNext *editor);
     ScintillaNext *targetEditor() const;
@@ -87,4 +87,4 @@ private:
     QPointer<ScintillaNext> m_targetEditor;
 };
 
-#endif // CLIPBOARDMONITOR_H
+#endif  // CLIPBOARDMONITOR_H

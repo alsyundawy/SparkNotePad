@@ -23,33 +23,26 @@
 
 #include "Sorter.h"
 
-void CaseInsensitiveSorter::sort(QVector<QByteArrayView> &lines) const
-{
-    std::stable_sort(lines.begin(), lines.end(),
-        [dir = direction](const QByteArrayView &a, const QByteArrayView &b) {
-            int result = a.compare(b, Qt::CaseInsensitive);
-            return dir == Direction::Ascending ? (result < 0) : (result > 0);
-        });
+void CaseInsensitiveSorter::sort(QVector<QByteArrayView> &lines) const {
+    std::stable_sort(lines.begin(), lines.end(), [dir = direction](const QByteArrayView &a, const QByteArrayView &b) {
+        int result = a.compare(b, Qt::CaseInsensitive);
+        return dir == Direction::Ascending ? (result < 0) : (result > 0);
+    });
 }
 
-void CaseSensitiveSorter::sort(QVector<QByteArrayView> &lines) const
-{
-    std::stable_sort(lines.begin(), lines.end(),
-        [dir = direction](const QByteArrayView &a, const QByteArrayView &b) {
-            int result = a.compare(b, Qt::CaseSensitive);
-            return dir == Direction::Ascending ? (result < 0) : (result > 0);
-        });
+void CaseSensitiveSorter::sort(QVector<QByteArrayView> &lines) const {
+    std::stable_sort(lines.begin(), lines.end(), [dir = direction](const QByteArrayView &a, const QByteArrayView &b) {
+        int result = a.compare(b, Qt::CaseSensitive);
+        return dir == Direction::Ascending ? (result < 0) : (result > 0);
+    });
 }
 
-void LineLengthSorter::sort(QVector<QByteArrayView> &lines) const
-{
-    std::stable_sort(lines.begin(), lines.end(),
-        [dir = direction](const QByteArrayView &a, const QByteArrayView &b) {
-            return dir == Direction::Ascending ? (a.size() < b.size()) : (a.size() > b.size());
-        });
+void LineLengthSorter::sort(QVector<QByteArrayView> &lines) const {
+    std::stable_sort(lines.begin(), lines.end(), [dir = direction](const QByteArrayView &a, const QByteArrayView &b) {
+        return dir == Direction::Ascending ? (a.size() < b.size()) : (a.size() > b.size());
+    });
 }
 
-void ReverseSorter::sort(QVector<QByteArrayView> &lines) const
-{
+void ReverseSorter::sort(QVector<QByteArrayView> &lines) const {
     std::reverse(lines.begin(), lines.end());
 }

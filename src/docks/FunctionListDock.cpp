@@ -19,12 +19,8 @@
 #include <QStyle>
 #include <QHeaderView>
 
-FunctionListDock::FunctionListDock(MainWindow *parent) :
-    QDockWidget(parent),
-    ui(new Ui::FunctionListDock),
-    m_window(parent),
-    m_debounceTimer(new QTimer(this))
-{
+FunctionListDock::FunctionListDock(MainWindow *parent)
+    : QDockWidget(parent), ui(new Ui::FunctionListDock), m_window(parent), m_debounceTimer(new QTimer(this)) {
     ui->setupUi(this);
 
     // Setup tree view columns & behavior
@@ -41,13 +37,12 @@ FunctionListDock::FunctionListDock(MainWindow *parent) :
     connect(ui->searchEdit, &QLineEdit::textChanged, this, &FunctionListDock::onSearchTextChanged);
     connect(ui->btnSortAlpha, &QToolButton::toggled, this, &FunctionListDock::onSortAlphaToggled);
     connect(ui->btnGroupScope, &QToolButton::toggled, this, &FunctionListDock::onGroupScopeToggled);
-    ui->btnGroupScope->setChecked(true); // Default to grouped
+    ui->btnGroupScope->setChecked(true);  // Default to grouped
     connect(ui->btnRefresh, &QToolButton::clicked, this, &FunctionListDock::refreshFunctions);
 
     // Item activation (double click or enter)
-    connect(ui->treeWidget, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem *item, int col) {
-        onItemActivated(item, col);
-    });
+    connect(ui->treeWidget, &QTreeWidget::itemDoubleClicked, this,
+            [this](QTreeWidgetItem *item, int col) { onItemActivated(item, col); });
     connect(ui->treeWidget, &QTreeWidget::itemActivated, this, &FunctionListDock::onItemActivated);
 
     // CPU preservation: only active when visible
@@ -55,7 +50,8 @@ FunctionListDock::FunctionListDock(MainWindow *parent) :
         if (visible) {
             connectToEditor(m_window ? m_window->currentEditor() : nullptr);
             if (m_window) {
-                connect(m_window, &MainWindow::editorActivated, this, &FunctionListDock::setEditor, Qt::UniqueConnection);
+                connect(m_window, &MainWindow::editorActivated, this, &FunctionListDock::setEditor,
+                        Qt::UniqueConnection);
             }
         } else {
             disconnectFromEditor();
@@ -66,21 +62,18 @@ FunctionListDock::FunctionListDock(MainWindow *parent) :
     });
 }
 
-FunctionListDock::~FunctionListDock()
-{
+FunctionListDock::~FunctionListDock() {
     delete ui;
 }
 
-void FunctionListDock::setEditor(ScintillaNext *editor)
-{
+void FunctionListDock::setEditor(ScintillaNext *editor) {
     if (m_editor == editor)
         return;
 
     connectToEditor(editor);
 }
 
-void FunctionListDock::connectToEditor(ScintillaNext *editor)
-{
+void FunctionListDock::connectToEditor(ScintillaNext *editor) {
     disconnectFromEditor();
     m_editor = editor;
 
@@ -94,8 +87,7 @@ void FunctionListDock::connectToEditor(ScintillaNext *editor)
     }
 }
 
-void FunctionListDock::disconnectFromEditor()
-{
+void FunctionListDock::disconnectFromEditor() {
     if (m_modifiedConn) {
         disconnect(m_modifiedConn);
     }
@@ -105,16 +97,14 @@ void FunctionListDock::disconnectFromEditor()
     m_editor = nullptr;
 }
 
-void FunctionListDock::onEditorModified()
-{
+void FunctionListDock::onEditorModified() {
     // Debounce reparse while typing
     if (isVisible() && m_editor) {
         m_debounceTimer->start();
     }
 }
 
-void FunctionListDock::refreshFunctions()
-{
+void FunctionListDock::refreshFunctions() {
     if (!isVisible() || !m_editor)
         return;
 
@@ -122,26 +112,22 @@ void FunctionListDock::refreshFunctions()
     populateTree();
 }
 
-void FunctionListDock::onSearchTextChanged(const QString &text)
-{
+void FunctionListDock::onSearchTextChanged(const QString &text) {
     m_filterText = text.trimmed();
     populateTree();
 }
 
-void FunctionListDock::onSortAlphaToggled(bool checked)
-{
+void FunctionListDock::onSortAlphaToggled(bool checked) {
     m_sortAlpha = checked;
     populateTree();
 }
 
-void FunctionListDock::onGroupScopeToggled(bool checked)
-{
+void FunctionListDock::onGroupScopeToggled(bool checked) {
     m_groupByScope = checked;
     populateTree();
 }
 
-void FunctionListDock::onItemActivated(QTreeWidgetItem *item, int /*column*/)
-{
+void FunctionListDock::onItemActivated(QTreeWidgetItem *item, int /*column*/) {
     if (!item || !m_editor)
         return;
 
@@ -156,8 +142,7 @@ void FunctionListDock::onItemActivated(QTreeWidgetItem *item, int /*column*/)
     }
 }
 
-void FunctionListDock::populateTree()
-{
+void FunctionListDock::populateTree() {
     ui->treeWidget->clear();
     if (!m_editor) {
         ui->labelStatus->setText(tr("No active editor"));
@@ -190,7 +175,7 @@ void FunctionListDock::populateTree()
     QIcon classIcon = style()->standardIcon(QStyle::SP_DirIcon);
 
     if (m_groupByScope) {
-        QMap<QString, QTreeWidgetItem*> scopeItems;
+        QMap<QString, QTreeWidgetItem *> scopeItems;
         QVector<FunctionSymbol> standalone;
 
         for (const auto &sym : filtered) {
@@ -212,7 +197,8 @@ void FunctionListDock::populateTree()
                     scopeItems[sym.parentScope] = parentItem;
                 }
                 QTreeWidgetItem *childItem = new QTreeWidgetItem(parentItem);
-                QString displayName = sym.signature.isEmpty() ? sym.name : QStringLiteral("%1%2").arg(sym.name, sym.signature);
+                QString displayName =
+                    sym.signature.isEmpty() ? sym.name : QStringLiteral("%1%2").arg(sym.name, sym.signature);
                 childItem->setText(0, displayName);
                 childItem->setText(1, QString::number(sym.line));
                 childItem->setIcon(0, funcIcon);
@@ -226,7 +212,8 @@ void FunctionListDock::populateTree()
         // Add standalone / global functions
         for (const auto &sym : standalone) {
             QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-            QString displayName = sym.signature.isEmpty() ? sym.name : QStringLiteral("%1%2").arg(sym.name, sym.signature);
+            QString displayName =
+                sym.signature.isEmpty() ? sym.name : QStringLiteral("%1%2").arg(sym.name, sym.signature);
             item->setText(0, displayName);
             item->setText(1, QString::number(sym.line));
             item->setIcon(0, sym.type == FunctionSymbol::Heading ? classIcon : funcIcon);
@@ -243,7 +230,10 @@ void FunctionListDock::populateTree()
             QString displayName = QStringLiteral("%1%2%3").arg(prefix, sym.name, sym.signature);
             item->setText(0, displayName);
             item->setText(1, QString::number(sym.line));
-            item->setIcon(0, (sym.type == FunctionSymbol::Class || sym.type == FunctionSymbol::Struct || sym.type == FunctionSymbol::Heading) ? classIcon : funcIcon);
+            item->setIcon(0, (sym.type == FunctionSymbol::Class || sym.type == FunctionSymbol::Struct ||
+                              sym.type == FunctionSymbol::Heading)
+                                 ? classIcon
+                                 : funcIcon);
             item->setData(0, Qt::UserRole, sym.line);
             item->setData(0, Qt::UserRole + 1, sym.position);
         }

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -16,8 +17,7 @@
 
 class QWidget;
 
-class DocumentationManager : public QObject
-{
+class DocumentationManager : public QObject {
     Q_OBJECT
 
 public:
@@ -40,4 +40,4 @@ private:
     void openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent);
 };
 
-#endif // DOCUMENTATIONMANAGER_H
+#endif  // DOCUMENTATIONMANAGER_H

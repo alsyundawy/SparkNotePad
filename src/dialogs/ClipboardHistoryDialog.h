@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -21,8 +22,7 @@ class ClipboardHistoryDialog;
 
 class ScintillaNext;
 
-class ClipboardHistoryDialog : public QDialog
-{
+class ClipboardHistoryDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -47,4 +47,4 @@ private:
     ScintillaNext *m_editor;
 };
 
-#endif // CLIPBOARDHISTORYDIALOG_H
+#endif  // CLIPBOARDHISTORYDIALOG_H

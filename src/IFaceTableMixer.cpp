@@ -21,69 +21,76 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "IFaceTableMixer.h"
 
 const IFaceConstant *IFaceTableMixer::FindConstant(const char *name) const {
-	for (auto const &iface : ifaces) {
-		const IFaceConstant *ret = iface->FindConstant(name);
-		if (ret != nullptr) return ret;
-	}
-	return nullptr;
+    for (const IFaceTableInterface *iface : ifaces) {
+        const IFaceConstant *ret = iface->FindConstant(name);
+        if (ret != nullptr)
+            return ret;
+    }
+    return nullptr;
 }
 
 const IFaceFunction *IFaceTableMixer::FindFunction(const char *name) const {
-	for (auto const &iface : ifaces) {
-		const IFaceFunction *ret = iface->FindFunction(name);
-		if (ret != nullptr) return ret;
-	}
-	return nullptr;
+    for (const IFaceTableInterface *iface : ifaces) {
+        const IFaceFunction *ret = iface->FindFunction(name);
+        if (ret != nullptr)
+            return ret;
+    }
+    return nullptr;
 }
 
 const IFaceFunction *IFaceTableMixer::FindFunctionByConstantName(const char *name) const {
-	for (auto const &iface : ifaces) {
-		const IFaceFunction *ret = iface->FindFunctionByConstantName(name);
-		if (ret != nullptr) return ret;
-	}
-	return nullptr;
+    for (const IFaceTableInterface *iface : ifaces) {
+        const IFaceFunction *ret = iface->FindFunctionByConstantName(name);
+        if (ret != nullptr)
+            return ret;
+    }
+    return nullptr;
 }
 
 const IFaceFunction *IFaceTableMixer::FindFunctionByValue(int value) const {
-	for (auto const &iface : ifaces) {
-		const IFaceFunction *ret = iface->FindFunctionByValue(value);
-		if (ret != nullptr) return ret;
-	}
-	return nullptr;
+    for (const IFaceTableInterface *iface : ifaces) {
+        const IFaceFunction *ret = iface->FindFunctionByValue(value);
+        if (ret != nullptr)
+            return ret;
+    }
+    return nullptr;
 }
 
 const IFaceProperty *IFaceTableMixer::FindProperty(const char *name) const {
-	for (auto const &iface : ifaces) {
-		const IFaceProperty *ret = iface->FindProperty(name);
-		if (ret != nullptr) return ret;
-	}
-	return nullptr;
+    for (const IFaceTableInterface *iface : ifaces) {
+        const IFaceProperty *ret = iface->FindProperty(name);
+        if (ret != nullptr)
+            return ret;
+    }
+    return nullptr;
 }
 
 int IFaceTableMixer::GetConstantName(int value, char *nameOut, unsigned nameBufferLen, const char *hint) const {
-	for (auto const &iface : ifaces) {
-		int ret = iface->GetConstantName(value, nameOut, nameBufferLen, hint);
-		if (ret != 0) return ret;
-	}
-	return 0;
+    for (const IFaceTableInterface *iface : ifaces) {
+        int ret = iface->GetConstantName(value, nameOut, nameBufferLen, hint);
+        if (ret != 0)
+            return ret;
+    }
+    return 0;
 }
 
 const IFaceFunction *IFaceTableMixer::GetFunctionByMessage(int message) const {
-	for (auto const &iface : ifaces) {
-		const IFaceFunction *ret = iface->GetFunctionByMessage(message);
-		if (ret != nullptr) return ret;
-	}
-	return nullptr;
+    for (const IFaceTableInterface *iface : ifaces) {
+        const IFaceFunction *ret = iface->GetFunctionByMessage(message);
+        if (ret != nullptr)
+            return ret;
+    }
+    return nullptr;
 }
 
 IFaceFunction IFaceTableMixer::GetPropertyFuncByMessage(int message) const {
-	for (auto const &iface : ifaces) {
-		IFaceFunction ret = iface->GetPropertyFuncByMessage(message);
-		if (ret.value != -1) return ret;
-	}
-	return{ "invalid", -1, iface_void, { iface_void, iface_void } };
+    for (const IFaceTableInterface *iface : ifaces) {
+        IFaceFunction ret = iface->GetPropertyFuncByMessage(message);
+        if (ret.value != -1)
+            return ret;
+    }
+    return {"invalid", -1, iface_void, {iface_void, iface_void}};
 }

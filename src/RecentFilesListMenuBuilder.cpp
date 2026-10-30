@@ -21,27 +21,23 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "RecentFilesListMenuBuilder.h"
 
 #include <QAction>
 #include <QMenu>
 #include <QDir>
 
-RecentFilesListMenuBuilder::RecentFilesListMenuBuilder(RecentFilesListManager *manager) :
-    QObject(manager),
-    manager(manager)
-{
-}
+RecentFilesListMenuBuilder::RecentFilesListMenuBuilder(RecentFilesListManager *manager)
+    : QObject(manager), manager(manager) {}
 
-void RecentFilesListMenuBuilder::populateMenu(QMenu *menu)
-{
+void RecentFilesListMenuBuilder::populateMenu(QMenu *menu) {
     int i = 0;
 
     QList<QAction *> recentFileListActions;
     for (const QString &file : manager->fileList()) {
         ++i;
-        QAction *action = new QAction(QString("%1%2: %3").arg(i < 10 ? "&" : "").arg(i).arg(QDir::toNativeSeparators(file)), menu);
+        QAction *action =
+            new QAction(QString("%1%2: %3").arg(i < 10 ? "&" : "").arg(i).arg(QDir::toNativeSeparators(file)), menu);
 
         action->setData(file);
         connect(action, &QAction::triggered, this, &RecentFilesListMenuBuilder::recentFileActionTriggered);
@@ -52,8 +48,7 @@ void RecentFilesListMenuBuilder::populateMenu(QMenu *menu)
     menu->addActions(recentFileListActions);
 }
 
-void RecentFilesListMenuBuilder::recentFileActionTriggered()
-{
+void RecentFilesListMenuBuilder::recentFileActionTriggered() {
     qInfo(Q_FUNC_INFO);
 
     const QAction *action = qobject_cast<const QAction *>(sender());

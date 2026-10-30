@@ -18,27 +18,21 @@
 #include <QPalette>
 #include <QColor>
 
-ThemeManager *ThemeManager::instance()
-{
+ThemeManager *ThemeManager::instance() {
     static ThemeManager s_instance;
     return &s_instance;
 }
 
-ThemeManager::ThemeManager(QObject *parent)
-    : QObject(parent)
-{
+ThemeManager::ThemeManager(QObject *parent) : QObject(parent) {
     if (QGuiApplication::styleHints()) {
-        connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
-                this, &ThemeManager::onSystemColorSchemeChanged);
+        connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
+                &ThemeManager::onSystemColorSchemeChanged);
     }
 }
 
-ThemeManager::~ThemeManager()
-{
-}
+ThemeManager::~ThemeManager() {}
 
-void ThemeManager::initialize(ApplicationSettings *settings)
-{
+void ThemeManager::initialize(ApplicationSettings *settings) {
     m_settings = settings;
     if (m_settings) {
         QString savedMode = m_settings->value("App/ThemeMode", QStringLiteral("Light")).toString().toLower();
@@ -52,8 +46,7 @@ void ThemeManager::initialize(ApplicationSettings *settings)
     }
 }
 
-bool ThemeManager::isDarkActive() const
-{
+bool ThemeManager::isDarkActive() const {
     if (m_themeMode == ThemeMode::Dark)
         return true;
     if (m_themeMode == ThemeMode::Light)
@@ -66,8 +59,7 @@ bool ThemeManager::isDarkActive() const
     return QGuiApplication::palette().color(QPalette::Window).lightness() < 128;
 }
 
-void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
-{
+void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     m_themeMode = mode;
     if (window) {
         m_activeWindow = window;
@@ -75,8 +67,10 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
 
     if (m_settings) {
         QString modeStr = QStringLiteral("Auto");
-        if (mode == ThemeMode::Dark) modeStr = QStringLiteral("Dark");
-        else if (mode == ThemeMode::Light) modeStr = QStringLiteral("Light");
+        if (mode == ThemeMode::Dark)
+            modeStr = QStringLiteral("Dark");
+        else if (mode == ThemeMode::Light)
+            modeStr = QStringLiteral("Light");
         m_settings->setValue("App/ThemeMode", modeStr);
     }
 
@@ -87,22 +81,19 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
     emit themeChanged(isDarkActive());
 }
 
-void ThemeManager::toggleTheme(MainWindow *window)
-{
+void ThemeManager::toggleTheme(MainWindow *window) {
     bool currentlyDark = isDarkActive();
     setThemeMode(currentlyDark ? ThemeMode::Light : ThemeMode::Dark, window);
 }
 
-void ThemeManager::onSystemColorSchemeChanged()
-{
+void ThemeManager::onSystemColorSchemeChanged() {
     if (m_themeMode == ThemeMode::Auto && m_activeWindow) {
         applyTheme(m_activeWindow);
         emit themeChanged(isDarkActive());
     }
 }
 
-void ThemeManager::applyTheme(MainWindow *window)
-{
+void ThemeManager::applyTheme(MainWindow *window) {
     m_activeWindow = window;
     if (!window)
         return;
@@ -114,8 +105,7 @@ void ThemeManager::applyTheme(MainWindow *window)
     }
 }
 
-void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
-{
+void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
     if (!editor)
         return;
 
@@ -180,196 +170,193 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
     }
 }
 
-QString ThemeManager::getThemeStyleSheet() const
-{
+QString ThemeManager::getThemeStyleSheet() const {
     if (isDarkActive()) {
         return QStringLiteral(
-"QStatusBar {\n"
-"    background-color: #1e1e1e;\n"
-"    color: #cccccc;\n"
-"    border-top: 1px solid #33373e;\n"
-"}\n"
-"QStatusBar::item {\n"
-"    border: none;\n"
-"}\n"
-"ads--CDockWidgetTab ads--CElidingLabel {\n"
-"    color: #9aa0a6;\n"
-"}\n"
-"ads--CDockWidgetTab {\n"
-"    background: #25282c;\n"
-"    margin-top: 2px;\n"
-"    border-left: 1px solid #1e1e1e;\n"
-"    border-top: 2px solid #33373e;\n"
-"    border-right: 1px solid #1e1e1e;\n"
-"    padding: 3px 6px 1px 6px;\n"
-"    border-top-left-radius: 4px;\n"
-"    border-top-right-radius: 4px;\n"
-"}\n"
-"ads--CDockWidgetTab:hover[activeTab=\"false\"] {\n"
-"    background: #2f333a;\n"
-"    color: #e0e0e0;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] {\n"
-"    background: #181a1f;\n"
-"    border-top: 3px solid #388bfd;\n"
-"    padding-bottom: 3px;\n"
-"    margin-top: 0px;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel {\n"
-"    color: #ffffff;\n"
-"    font-weight: bold;\n"
-"}\n"
-"ads--CDockWidgetTab[focused=\"true\"] {\n"
-"    background: #181a1f;\n"
-"    border-top: 3px solid #58a6ff;\n"
-"}\n"
-"ads--CDockAreaTitleBar {\n"
-"    background: #212429;\n"
-"    border-bottom: 1px solid #33373e;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"#tabCloseButton {\n"
-"    background: transparent;\n"
-"    margin-bottom: 1px;\n"
-"    margin-left: 4px;\n"
-"    border: none;\n"
-"    padding: 0px 0px;\n"
-"    border-radius: 3px;\n"
-"}\n"
-"#tabCloseButton:hover {\n"
-"    background-color: rgba(235, 87, 87, 0.4);\n"
-"    color: #ffffff;\n"
-"}\n"
-"#tabCloseButton:pressed {\n"
-"    background-color: #eb5757;\n"
-"}\n"
-"#QuickFindWidget {\n"
-"    border-left: 1px solid #33373e;\n"
-"    border-right: 1px solid #33373e;\n"
-"    border-bottom: 3px solid #388bfd;\n"
-"    background: #212429;\n"
-"    color: #e0e0e0;\n"
-"}\n"
-"QToolBar {\n"
-"    background-color: #1e1e1e;\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #33373e;\n"
-"    spacing: 3px;\n"
-"    padding: 2px 6px;\n"
-"}\n"
-"QToolBar QToolButton {\n"
-"    background: transparent;\n"
-"    color: #cccccc;\n"
-"    border: 1px solid transparent;\n"
-"    border-radius: 4px;\n"
-"    padding: 3px;\n"
-"    margin: 1px;\n"
-"}\n"
-"QToolBar QToolButton:hover {\n"
-"    background-color: rgba(255, 255, 255, 0.12);\n"
-"    border-color: #33373e;\n"
-"}\n"
-"QToolBar QToolButton:pressed {\n"
-"    background-color: #388bfd;\n"
-"    color: #ffffff;\n"
-"}\n"
-"QToolBar::separator {\n"
-"    width: 1px;\n"
-"    background-color: #33373e;\n"
-"    margin: 4px 6px;\n"
-"}\n"
-        );
+            "QStatusBar {\n"
+            "    background-color: #1e1e1e;\n"
+            "    color: #cccccc;\n"
+            "    border-top: 1px solid #33373e;\n"
+            "}\n"
+            "QStatusBar::item {\n"
+            "    border: none;\n"
+            "}\n"
+            "ads--CDockWidgetTab ads--CElidingLabel {\n"
+            "    color: #9aa0a6;\n"
+            "}\n"
+            "ads--CDockWidgetTab {\n"
+            "    background: #25282c;\n"
+            "    margin-top: 2px;\n"
+            "    border-left: 1px solid #1e1e1e;\n"
+            "    border-top: 2px solid #33373e;\n"
+            "    border-right: 1px solid #1e1e1e;\n"
+            "    padding: 3px 6px 1px 6px;\n"
+            "    border-top-left-radius: 4px;\n"
+            "    border-top-right-radius: 4px;\n"
+            "}\n"
+            "ads--CDockWidgetTab:hover[activeTab=\"false\"] {\n"
+            "    background: #2f333a;\n"
+            "    color: #e0e0e0;\n"
+            "}\n"
+            "ads--CDockWidgetTab[activeTab=\"true\"] {\n"
+            "    background: #181a1f;\n"
+            "    border-top: 3px solid #388bfd;\n"
+            "    padding-bottom: 3px;\n"
+            "    margin-top: 0px;\n"
+            "}\n"
+            "ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel {\n"
+            "    color: #ffffff;\n"
+            "    font-weight: bold;\n"
+            "}\n"
+            "ads--CDockWidgetTab[focused=\"true\"] {\n"
+            "    background: #181a1f;\n"
+            "    border-top: 3px solid #58a6ff;\n"
+            "}\n"
+            "ads--CDockAreaTitleBar {\n"
+            "    background: #212429;\n"
+            "    border-bottom: 1px solid #33373e;\n"
+            "    padding-bottom: 0px;\n"
+            "}\n"
+            "#tabCloseButton {\n"
+            "    background: transparent;\n"
+            "    margin-bottom: 1px;\n"
+            "    margin-left: 4px;\n"
+            "    border: none;\n"
+            "    padding: 0px 0px;\n"
+            "    border-radius: 3px;\n"
+            "}\n"
+            "#tabCloseButton:hover {\n"
+            "    background-color: rgba(235, 87, 87, 0.4);\n"
+            "    color: #ffffff;\n"
+            "}\n"
+            "#tabCloseButton:pressed {\n"
+            "    background-color: #eb5757;\n"
+            "}\n"
+            "#QuickFindWidget {\n"
+            "    border-left: 1px solid #33373e;\n"
+            "    border-right: 1px solid #33373e;\n"
+            "    border-bottom: 3px solid #388bfd;\n"
+            "    background: #212429;\n"
+            "    color: #e0e0e0;\n"
+            "}\n"
+            "QToolBar {\n"
+            "    background-color: #1e1e1e;\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #33373e;\n"
+            "    spacing: 3px;\n"
+            "    padding: 2px 6px;\n"
+            "}\n"
+            "QToolBar QToolButton {\n"
+            "    background: transparent;\n"
+            "    color: #cccccc;\n"
+            "    border: 1px solid transparent;\n"
+            "    border-radius: 4px;\n"
+            "    padding: 3px;\n"
+            "    margin: 1px;\n"
+            "}\n"
+            "QToolBar QToolButton:hover {\n"
+            "    background-color: rgba(255, 255, 255, 0.12);\n"
+            "    border-color: #33373e;\n"
+            "}\n"
+            "QToolBar QToolButton:pressed {\n"
+            "    background-color: #388bfd;\n"
+            "    color: #ffffff;\n"
+            "}\n"
+            "QToolBar::separator {\n"
+            "    width: 1px;\n"
+            "    background-color: #33373e;\n"
+            "    margin: 4px 6px;\n"
+            "}\n");
     } else {
         return QStringLiteral(
-"QStatusBar {\n"
-"    border-top: 1px solid #d0d7de;\n"
-"    background: #f6f8fa;\n"
-"    color: #24292f;\n"
-"}\n"
-"ads--CDockWidgetTab ads--CElidingLabel {\n"
-"    color: #57606a;\n"
-"}\n"
-"ads--CDockWidgetTab {\n"
-"    background: #e1e4e8;\n"
-"    margin-top: 2px;\n"
-"    border-left: 1px solid #d0d7de;\n"
-"    border-top: 2px solid #d0d7de;\n"
-"    border-right: 1px solid #d0d7de;\n"
-"    padding: 3px 6px 1px 6px;\n"
-"    border-top-left-radius: 4px;\n"
-"    border-top-right-radius: 4px;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] {\n"
-"    background: #ffffff;\n"
-"    border-top: 3px solid #0969da;\n"
-"    padding-bottom: 3px;\n"
-"    margin-top: 0px;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel {\n"
-"    color: #24292f;\n"
-"    font-weight: bold;\n"
-"}\n"
-"ads--CDockWidgetTab[focused=\"true\"] {\n"
-"    background: #ffffff;\n"
-"    border-top: 3px solid #218bff;\n"
-"}\n"
-"ads--CDockWidgetTab:hover[activeTab=\"false\"] {\n"
-"    background: #eaeef2;\n"
-"}\n"
-"ads--CDockAreaTitleBar {\n"
-"    background: #f6f8fa;\n"
-"    border-bottom: 1px solid #d0d7de;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"#tabCloseButton {\n"
-"    background: transparent;\n"
-"    margin-bottom: 1px;\n"
-"    margin-left: 4px;\n"
-"    border: none;\n"
-"    padding: 0px 0px;\n"
-"    border-radius: 3px;\n"
-"}\n"
-"#tabCloseButton:hover {\n"
-"    background-color: rgba(207, 34, 46, 0.2);\n"
-"    color: #cf222e;\n"
-"}\n"
-"#tabCloseButton:pressed {\n"
-"    background: #cf222e;\n"
-"}\n"
-"#QuickFindWidget {\n"
-"    border-left: 1px solid #d0d7de;\n"
-"    border-right: 1px solid #d0d7de;\n"
-"    border-bottom: 3px solid #0969da;\n"
-"    background: #ffffff;\n"
-"}\n"
-"QToolBar {\n"
-"    background-color: #21252b;\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #181a1f;\n"
-"    spacing: 3px;\n"
-"    padding: 2px 6px;\n"
-"}\n"
-"QToolBar QToolButton {\n"
-"    background: transparent;\n"
-"    color: #e6edf3;\n"
-"    border: 1px solid transparent;\n"
-"    border-radius: 4px;\n"
-"    padding: 3px;\n"
-"    margin: 1px;\n"
-"}\n"
-"QToolBar QToolButton:hover {\n"
-"    background-color: rgba(255, 255, 255, 0.12);\n"
-"    border-color: #181a1f;\n"
-"}\n"
-"QToolBar QToolButton:pressed {\n"
-"    background-color: #0969da;\n"
-"    color: #ffffff;\n"
-"}\n"
-"QToolBar::separator {\n"
-"    width: 1px;\n"
-"    background-color: #181a1f;\n"
-"    margin: 4px 6px;\n"
-"}\n"
-        );
+            "QStatusBar {\n"
+            "    border-top: 1px solid #d0d7de;\n"
+            "    background: #f6f8fa;\n"
+            "    color: #24292f;\n"
+            "}\n"
+            "ads--CDockWidgetTab ads--CElidingLabel {\n"
+            "    color: #57606a;\n"
+            "}\n"
+            "ads--CDockWidgetTab {\n"
+            "    background: #e1e4e8;\n"
+            "    margin-top: 2px;\n"
+            "    border-left: 1px solid #d0d7de;\n"
+            "    border-top: 2px solid #d0d7de;\n"
+            "    border-right: 1px solid #d0d7de;\n"
+            "    padding: 3px 6px 1px 6px;\n"
+            "    border-top-left-radius: 4px;\n"
+            "    border-top-right-radius: 4px;\n"
+            "}\n"
+            "ads--CDockWidgetTab[activeTab=\"true\"] {\n"
+            "    background: #ffffff;\n"
+            "    border-top: 3px solid #0969da;\n"
+            "    padding-bottom: 3px;\n"
+            "    margin-top: 0px;\n"
+            "}\n"
+            "ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel {\n"
+            "    color: #24292f;\n"
+            "    font-weight: bold;\n"
+            "}\n"
+            "ads--CDockWidgetTab[focused=\"true\"] {\n"
+            "    background: #ffffff;\n"
+            "    border-top: 3px solid #218bff;\n"
+            "}\n"
+            "ads--CDockWidgetTab:hover[activeTab=\"false\"] {\n"
+            "    background: #eaeef2;\n"
+            "}\n"
+            "ads--CDockAreaTitleBar {\n"
+            "    background: #f6f8fa;\n"
+            "    border-bottom: 1px solid #d0d7de;\n"
+            "    padding-bottom: 0px;\n"
+            "}\n"
+            "#tabCloseButton {\n"
+            "    background: transparent;\n"
+            "    margin-bottom: 1px;\n"
+            "    margin-left: 4px;\n"
+            "    border: none;\n"
+            "    padding: 0px 0px;\n"
+            "    border-radius: 3px;\n"
+            "}\n"
+            "#tabCloseButton:hover {\n"
+            "    background-color: rgba(207, 34, 46, 0.2);\n"
+            "    color: #cf222e;\n"
+            "}\n"
+            "#tabCloseButton:pressed {\n"
+            "    background: #cf222e;\n"
+            "}\n"
+            "#QuickFindWidget {\n"
+            "    border-left: 1px solid #d0d7de;\n"
+            "    border-right: 1px solid #d0d7de;\n"
+            "    border-bottom: 3px solid #0969da;\n"
+            "    background: #ffffff;\n"
+            "}\n"
+            "QToolBar {\n"
+            "    background-color: #21252b;\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #181a1f;\n"
+            "    spacing: 3px;\n"
+            "    padding: 2px 6px;\n"
+            "}\n"
+            "QToolBar QToolButton {\n"
+            "    background: transparent;\n"
+            "    color: #e6edf3;\n"
+            "    border: 1px solid transparent;\n"
+            "    border-radius: 4px;\n"
+            "    padding: 3px;\n"
+            "    margin: 1px;\n"
+            "}\n"
+            "QToolBar QToolButton:hover {\n"
+            "    background-color: rgba(255, 255, 255, 0.12);\n"
+            "    border-color: #181a1f;\n"
+            "}\n"
+            "QToolBar QToolButton:pressed {\n"
+            "    background-color: #0969da;\n"
+            "    color: #ffffff;\n"
+            "}\n"
+            "QToolBar::separator {\n"
+            "    width: 1px;\n"
+            "    background-color: #181a1f;\n"
+            "    margin: 4px 6px;\n"
+            "}\n");
     }
 }

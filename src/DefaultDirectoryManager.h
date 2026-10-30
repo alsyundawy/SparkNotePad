@@ -28,8 +28,7 @@
 
 #include <QObject>
 
-class DefaultDirectoryManager : public QObject
-{
+class DefaultDirectoryManager : public QObject {
     Q_OBJECT
 public:
     explicit DefaultDirectoryManager(MainWindow *window, ApplicationSettings *settings);

@@ -20,9 +20,7 @@
 
 using namespace Scintilla;
 
-AutoCompletion::AutoCompletion(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+AutoCompletion::AutoCompletion(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName(QStringLiteral("AutoCompletion"));
 
     editor->autoCSetOrder(SC_ORDER_PERFORMSORT);
@@ -38,8 +36,7 @@ AutoCompletion::AutoCompletion(ScintillaNext *editor) :
     });
 }
 
-void AutoCompletion::notify(const NotificationData *pscn)
-{
+void AutoCompletion::notify(const NotificationData *pscn) {
     if (pscn->nmhdr.code == Notification::CharAdded && isEnabled()) {
         if (editor->autoCActive())
             return;
@@ -48,9 +45,9 @@ void AutoCompletion::notify(const NotificationData *pscn)
     }
 }
 
-void AutoCompletion::showAutoCompletion()
-{
-    if (!editor) return;
+void AutoCompletion::showAutoCompletion() {
+    if (!editor)
+        return;
 
     int curPos = editor->currentPos();
     int startPos = editor->wordStartPosition(curPos, true);
@@ -67,16 +64,20 @@ void AutoCompletion::showAutoCompletion()
     editor->setSearchFlags(SCFIND_REGEXP);
 
     // Find words in buffer before caret
-    editor->forEachMatchInRange(regex, [&](int start, int end) {
-        words.insert(editor->get_text_range(start, end));
-        return end;
-    }, { 0, startPos});
+    editor->forEachMatchInRange(regex,
+                                [&](int start, int end) {
+                                    words.insert(editor->get_text_range(start, end));
+                                    return end;
+                                },
+                                {0, startPos});
 
     // Find words in buffer after caret
-    editor->forEachMatchInRange(regex, [&](int start, int end) {
-        words.insert(editor->get_text_range(start, end));
-        return end;
-    }, { endPos, (Sci_PositionCR)editor->length()});
+    editor->forEachMatchInRange(regex,
+                                [&](int start, int end) {
+                                    words.insert(editor->get_text_range(start, end));
+                                    return end;
+                                },
+                                {endPos, (Sci_PositionCR)editor->length()});
 
     // Add matching language keywords
     const QString currentWordStr = QString::fromUtf8(current_word);
@@ -88,9 +89,8 @@ void AutoCompletion::showAutoCompletion()
 
     if (!words.isEmpty()) {
         QList<QByteArray> sortedWords = words.values();
-        std::sort(sortedWords.begin(), sortedWords.end(), [](const QByteArray &a, const QByteArray &b) {
-            return a.toLower() < b.toLower();
-        });
+        std::sort(sortedWords.begin(), sortedWords.end(),
+                  [](const QByteArray &a, const QByteArray &b) { return a.toLower() < b.toLower(); });
         editor->autoCShow(current_word.length(), sortedWords.join(' '));
     }
 }

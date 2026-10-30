@@ -26,52 +26,45 @@
 #include <QComboBox>
 #include <QApplication>
 
-
 ComboBoxDelegate::ComboBoxDelegate(const QList<ComboBoxItem> &items, QObject *parent)
-    : QStyledItemDelegate(parent), comboBoxItems(items)
-{
-}
+    : QStyledItemDelegate(parent), comboBoxItems(items) {}
 
-QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                                        const QModelIndex &index) const {
     Q_UNUSED(option)
     Q_UNUSED(index)
 
     QComboBox *comboBox = new QComboBox(parent);
 
-    for(const ComboBoxItem &item : comboBoxItems) {
+    for (const ComboBoxItem &item : comboBoxItems) {
         comboBox->addItem(item.first, item.second);
     }
 
     return comboBox;
 }
 
-void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
+void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     QVariant value = index.model()->data(index, Qt::EditRole);
-    QComboBox *comboBox = static_cast<QComboBox*>(editor);
+    QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
     comboBox->setCurrentIndex(comboBox->findData(value));
 }
 
-void ComboBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    QComboBox *comboBox = static_cast<QComboBox*>(editor);
+void ComboBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
+    QComboBox *comboBox = static_cast<QComboBox *>(editor);
     QVariant value = comboBox->currentData();
 
     model->setData(index, value, Qt::EditRole);
 }
 
-void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
+                                            const QModelIndex &index) const {
     Q_UNUSED(index)
 
     editor->setGeometry(option.rect);
 }
 
-
-QSize ComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+QSize ComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     Q_UNUSED(option)
     Q_UNUSED(index)
 
@@ -80,10 +73,10 @@ QSize ComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
     int &width = maxStringSize.rwidth();
     int &height = maxStringSize.rheight();
 
-    for(const ComboBoxItem &item : comboBoxItems) {
+    for (const ComboBoxItem &item : comboBoxItems) {
         QRect rect = fm.boundingRect(item.first);
 
-        height = rect.height(); // Heights *should* all be the same
+        height = rect.height();  // Heights *should* all be the same
         width = qMax(rect.width(), width);
     }
 

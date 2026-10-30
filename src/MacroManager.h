@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -28,9 +29,7 @@
 
 #include <QObject>
 
-
-class MacroManager : public QObject
-{
+class MacroManager : public QObject {
     Q_OBJECT
 
 public:
@@ -65,4 +64,4 @@ private:
     bool isCurrentMacroSaved = false;
 };
 
-#endif // MACROMANAGER_H
+#endif  // MACROMANAGER_H

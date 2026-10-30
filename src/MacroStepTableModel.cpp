@@ -21,18 +21,11 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "MacroStepTableModel.h"
 
+MacroStepTableModel::MacroStepTableModel(Macro *m, QObject *parent) : QAbstractTableModel(parent), macro(m) {}
 
-MacroStepTableModel::MacroStepTableModel(Macro *m, QObject *parent) :
-    QAbstractTableModel(parent),
-    macro(m)
-{
-}
-
-QVariant MacroStepTableModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
+QVariant MacroStepTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             if (section == 0)
@@ -45,18 +38,15 @@ QVariant MacroStepTableModel::headerData(int section, Qt::Orientation orientatio
     return QVariant();
 }
 
-int MacroStepTableModel::rowCount(const QModelIndex &parent) const
-{
+int MacroStepTableModel::rowCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : macro->getSteps().size();
 }
 
-int MacroStepTableModel::columnCount(const QModelIndex &parent) const
-{
+int MacroStepTableModel::columnCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : 2;
 }
 
-QVariant MacroStepTableModel::data(const QModelIndex &index, int role) const
-{
+QVariant MacroStepTableModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid())
         return QVariant();
 
@@ -65,8 +55,7 @@ QVariant MacroStepTableModel::data(const QModelIndex &index, int role) const
             case 0:
                 if (role == Qt::EditRole) {
                     return static_cast<int>(macro->getSteps()[index.row()].message);
-                }
-                else {
+                } else {
                     return macro->getSteps()[index.row()].getName();
                 }
             case 1:
@@ -79,8 +68,7 @@ QVariant MacroStepTableModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-bool MacroStepTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
+bool MacroStepTableModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if (!index.isValid())
         return false;
 
@@ -114,8 +102,7 @@ bool MacroStepTableModel::setData(const QModelIndex &index, const QVariant &valu
     return false;
 }
 
-bool MacroStepTableModel::insertRows(int row, int count, const QModelIndex &parent)
-{
+bool MacroStepTableModel::insertRows(int row, int count, const QModelIndex &parent) {
     if (count < 1 || row < 0 || row > rowCount(parent))
         return false;
 
@@ -130,8 +117,7 @@ bool MacroStepTableModel::insertRows(int row, int count, const QModelIndex &pare
     return true;
 }
 
-bool MacroStepTableModel::removeRows(int row, int count, const QModelIndex &parent)
-{
+bool MacroStepTableModel::removeRows(int row, int count, const QModelIndex &parent) {
     Q_UNUSED(parent);
 
     beginRemoveRows(QModelIndex(), row, row + count - 1);
@@ -143,18 +129,14 @@ bool MacroStepTableModel::removeRows(int row, int count, const QModelIndex &pare
     return true;
 }
 
-bool MacroStepTableModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild)
-{
+bool MacroStepTableModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count,
+                                   const QModelIndex &destinationParent, int destinationChild) {
     // Source code for this has been copied from  QStringListModel::moveRows()
 
-    if (sourceRow < 0
-            || sourceRow + count - 1 >= rowCount(sourceParent)
-            || destinationChild <= 0
-            || destinationChild > rowCount(destinationParent)
-            || sourceRow == destinationChild - 1
-            || count <= 0) {
-            return false;
-        }
+    if (sourceRow < 0 || sourceRow + count - 1 >= rowCount(sourceParent) || destinationChild <= 0 ||
+        destinationChild > rowCount(destinationParent) || sourceRow == destinationChild - 1 || count <= 0) {
+        return false;
+    }
 
     if (!beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild))
         return false;
@@ -178,20 +160,16 @@ bool MacroStepTableModel::moveRows(const QModelIndex &sourceParent, int sourceRo
     return true;
 }
 
-Qt::ItemFlags MacroStepTableModel::flags(const QModelIndex &index) const
-{
+Qt::ItemFlags MacroStepTableModel::flags(const QModelIndex &index) const {
     if (!index.isValid())
         return Qt::NoItemFlags;
 
     if (index.column() == 0) {
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
-    }
-    else if (index.column() == 1 && MacroStep::MessageHasString(macro->getSteps()[index.row()].message)) {
+    } else if (index.column() == 1 && MacroStep::MessageHasString(macro->getSteps()[index.row()].message)) {
         // The second column is only editable if the macro has a string associated with it
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
-    }
-    else {
+    } else {
         return Qt::ItemIsEnabled;
     }
 }
-

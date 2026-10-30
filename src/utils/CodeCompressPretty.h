@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,21 +20,14 @@
 class ScintillaNext;
 #endif
 
-class CodeCompressPretty
-{
+class CodeCompressPretty {
 public:
-    enum Language {
-        Auto,
-        Json,
-        Json5,
-        Css,
-        JavaScript
-    };
+    enum Language { Auto, Json, Json5, Css, JavaScript };
 
     struct Result {
-        bool success {false};
-        bool wholeDocument {false};
-        Language detectedLanguage {Auto};
+        bool success{false};
+        bool wholeDocument{false};
+        Language detectedLanguage{Auto};
         QString original;
         QString formatted;
         QString errorMessage;
@@ -69,4 +63,4 @@ public:
     static QString languageName(Language lang);
 };
 
-#endif // CODECOMPRESSPRETTY_H
+#endif  // CODECOMPRESSPRETTY_H

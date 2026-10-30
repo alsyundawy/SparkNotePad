@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef PREFERENCESDIALOG_H
 #define PREFERENCESDIALOG_H
 
@@ -37,12 +37,11 @@ class PreferencesDialog;
 
 class Settings;
 
-class PreferencesDialog : public QDialog
-{
+class PreferencesDialog : public QDialog {
     Q_OBJECT
 
 public:
-    PreferencesDialog(ApplicationSettings *settings, QWidget *parent = 0);
+    explicit PreferencesDialog(ApplicationSettings *settings, QWidget *parent = nullptr);
     ~PreferencesDialog();
 
     void showApplicationRestartRequired() const;
@@ -60,4 +59,4 @@ private:
     void populateTranslationComboBox();
 };
 
-#endif // PREFERENCESDIALOG_H
+#endif  // PREFERENCESDIALOG_H

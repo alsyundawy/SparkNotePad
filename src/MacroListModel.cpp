@@ -21,37 +21,29 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "MacroListModel.h"
 
-MacroListModel::MacroListModel(QObject *parent, MacroManager *mm) :
-    QAbstractListModel(parent),
-    macroManager(mm)
-{
-}
+MacroListModel::MacroListModel(QObject *parent, MacroManager *mm) : QAbstractListModel(parent), macroManager(mm) {}
 
-int MacroListModel::rowCount(const QModelIndex &parent) const
-{
+int MacroListModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid())
         return 0;
 
     return macroManager->availableMacros().size();
 }
 
-QVariant MacroListModel::data(const QModelIndex &index, int role) const
-{
+QVariant MacroListModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid())
         return QVariant();
 
-   if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
-       return macroManager->availableMacros()[index.row()]->getName();
-   }
+    if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
+        return macroManager->availableMacros()[index.row()]->getName();
+    }
 
-   return QVariant();
+    return QVariant();
 }
 
-bool MacroListModel::removeRows(int row, int count, const QModelIndex &parent)
-{
+bool MacroListModel::removeRows(int row, int count, const QModelIndex &parent) {
     Q_UNUSED(parent);
 
     beginRemoveRows(QModelIndex(), row, row + count - 1);
@@ -65,8 +57,7 @@ bool MacroListModel::removeRows(int row, int count, const QModelIndex &parent)
     return true;
 }
 
-bool MacroListModel::insertRows(int row, int count, const QModelIndex &parent)
-{
+bool MacroListModel::insertRows(int row, int count, const QModelIndex &parent) {
     if (count < 1 || row < 0 || row > rowCount(parent))
         return false;
 
@@ -81,8 +72,7 @@ bool MacroListModel::insertRows(int row, int count, const QModelIndex &parent)
     return true;
 }
 
-Macro *MacroListModel::macro(const QModelIndex &index)
-{
+Macro *MacroListModel::macro(const QModelIndex &index) {
     if (index.isValid())
         return macroManager->availableMacros()[index.row()];
     else

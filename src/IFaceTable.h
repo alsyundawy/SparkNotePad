@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef IFACETABLE_H
 #define IFACETABLE_H
 
@@ -38,7 +38,7 @@ enum IFaceType {
     iface_keymod,
     iface_string,
     iface_stringresult,
-    iface_cells, // This and everything else below is not "scriptable"
+    iface_cells,  // This and everything else below is not "scriptable"
     iface_textrange,
     iface_findtext,
     iface_formatrange
@@ -64,12 +64,12 @@ struct IFaceProperty {
     IFaceType paramType;
 
     IFaceFunction GetterFunction() const {
-        IFaceFunction result = {"(property getter)",getter,valueType,{paramType,iface_void}};
+        IFaceFunction result = {"(property getter)", getter, valueType, {paramType, iface_void}};
         return result;
     }
 
     IFaceFunction SetterFunction() const {
-        IFaceFunction result = {"(property setter)",setter,iface_void,{valueType, iface_void}};
+        IFaceFunction result = {"(property setter)", setter, iface_void, {valueType, iface_void}};
         if (paramType != iface_void) {
             result.paramType[0] = paramType;
             if (valueType == iface_stringresult)
@@ -103,7 +103,8 @@ inline bool IFaceFunctionIsScriptable(const IFaceFunction &f) {
 
 inline bool IFacePropertyIsScriptable(const IFaceProperty &p) {
     return (((p.valueType > iface_void) && (p.valueType <= iface_stringresult) && (p.valueType != iface_keymod)) &&
-        ((p.paramType < iface_colour) || (p.paramType == iface_string) || (p.paramType == iface_bool)) && (p.getter || p.setter));
+            ((p.paramType < iface_colour) || (p.paramType == iface_string) || (p.paramType == iface_bool)) &&
+            (p.getter || p.setter));
 }
 
 class IFaceTableInterface {
@@ -120,15 +121,9 @@ public:
 
 class IFaceTable : public IFaceTableInterface {
 public:
-    IFaceTable(const char *_prefix,
-        const std::vector<IFaceFunction> &_functions,
-        const std::vector<IFaceConstant> &_constants,
-        const std::vector<IFaceProperty> &_properties) :
-        prefix(_prefix),
-        functions(_functions),
-        constants(_constants),
-        properties(_properties)
-    {}
+    IFaceTable(const char *_prefix, const std::vector<IFaceFunction> &_functions,
+               const std::vector<IFaceConstant> &_constants, const std::vector<IFaceProperty> &_properties)
+        : prefix(_prefix), functions(_functions), constants(_constants), properties(_properties) {}
 
     const char *prefix;
 
@@ -137,14 +132,14 @@ public:
     const std::vector<IFaceProperty> &properties;
 
     // IFaceTableInterface
-    const IFaceConstant *FindConstant(const char *name) const;
-    const IFaceFunction *FindFunction(const char *name) const;
-    const IFaceFunction *FindFunctionByConstantName(const char *name) const;
-    const IFaceFunction *FindFunctionByValue(int value) const;
-    const IFaceProperty *FindProperty(const char *name) const;
-    int GetConstantName(int value, char *nameOut, unsigned nameBufferLen, const char *hint) const;
-    const IFaceFunction *GetFunctionByMessage(int message) const;
-    IFaceFunction GetPropertyFuncByMessage(int message) const;
+    const IFaceConstant *FindConstant(const char *name) const override;
+    const IFaceFunction *FindFunction(const char *name) const override;
+    const IFaceFunction *FindFunctionByConstantName(const char *name) const override;
+    const IFaceFunction *FindFunctionByValue(int value) const override;
+    const IFaceProperty *FindProperty(const char *name) const override;
+    int GetConstantName(int value, char *nameOut, unsigned nameBufferLen, const char *hint) const override;
+    const IFaceFunction *GetFunctionByMessage(int message) const override;
+    IFaceFunction GetPropertyFuncByMessage(int message) const override;
 
     std::vector<std::string> GetAllConstantNames() const;
     std::vector<std::string> GetAllFunctionNames() const;

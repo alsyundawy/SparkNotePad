@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -20,7 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -65,8 +65,7 @@ class FileBrowserDock;
 #include "ClipboardMonitor.h"
 #include "TransparentWindowManager.h"
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -143,7 +142,7 @@ public slots:
     void updateContentBasedUi(ScintillaNext *editor);
     void updateSaveStatusBasedUi(ScintillaNext *editor);
     void updateEditorPositionBasedUi();
-    void updateLanguageBasedUi(ScintillaNext *editor);
+    void updateLanguageBasedUi(const ScintillaNext *editor);
     void updateGui(ScintillaNext *editor);
 
     void detectLanguage(ScintillaNext *editor);
@@ -175,7 +174,7 @@ protected:
 private slots:
     void tabBarRightClicked(ScintillaNext *editor);
     void languageMenuTriggered();
-    void checkForUpdatesFinished(QString url);
+    static void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
 
 private:
@@ -186,17 +185,17 @@ private:
     QScopedPointer<SearchResultsCollector> searchResults;
 
     template <typename Method>
-    void connectEditorAction(QAction* action, Method method) {
+    void connectEditorAction(QAction *action, Method method) {
         connect(action, &QAction::triggered, this, [this, method]() {
-            if (auto* editor = currentEditor()) {
+            if (auto *editor = currentEditor()) {
                 (editor->*method)();
             }
         });
     }
     template <typename Method, typename Arg>
-    void connectEditorAction(QAction* action, Method method, Arg value) {
+    void connectEditorAction(QAction *action, Method method, Arg value) {
         connect(action, &QAction::triggered, this, [this, method, value]() {
-            if (auto* editor = currentEditor()) {
+            if (auto *editor = currentEditor()) {
                 (editor->*method)(value);
             }
         });
@@ -205,13 +204,13 @@ private:
     void initUpdateCheck();
     ScintillaNext *getInitialEditor();
     void openFileList(const QStringList &fileNames);
-    bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editors);
+    bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorList);
     bool checkFileForModification(ScintillaNext *editor);
     void showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileError error);
     void showEditorZoomLevelIndicator();
 
     enum class UserSaveAction { SaveAll, DiscardAll, Cancel };
-    UserSaveAction promptForSave(const QVector<ScintillaNext *> &editors);
+    UserSaveAction promptForSave(const QVector<ScintillaNext *> &editorList);
 
     void saveSettings() const;
     void restoreSettings();
@@ -244,8 +243,8 @@ private:
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);
     void onToggleTailMonitoringTriggered();
-    void onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring);
-    void updateTailMonitoringUi(ScintillaNext *editor);
+    void onTailMonitoringStateChanged(const ScintillaNext *editor, bool isMonitoring);
+    void updateTailMonitoringUi(const ScintillaNext *editor);
     void onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount);
     void onToggleTransparencyTriggered();
     void onIncreaseOpacityTriggered();
@@ -297,7 +296,7 @@ private:
     FocusedViewDialog *focusedViewDialog = nullptr;
     LanguageInspectorDock *languageInspectorDock = nullptr;
 
-    //NppImporter *npp;
+    // NppImporter *npp;
 
     MacroManager macroManager;
     DefaultDirectoryManager *defaultDirectoryManager;
@@ -310,4 +309,4 @@ private:
     QMenu *buildMenu(QStringList actionNames);
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

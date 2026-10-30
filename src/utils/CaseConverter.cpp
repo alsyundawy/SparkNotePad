@@ -23,18 +23,15 @@
 #include <vector>
 #include <algorithm>
 
-QString CaseConverter::toUpper(const QString &text)
-{
+QString CaseConverter::toUpper(const QString &text) {
     return text.toUpper();
 }
 
-QString CaseConverter::toLower(const QString &text)
-{
+QString CaseConverter::toLower(const QString &text) {
     return text.toLower();
 }
 
-QString CaseConverter::toInvertCase(const QString &text)
-{
+QString CaseConverter::toInvertCase(const QString &text) {
     QString result;
     result.reserve(text.size());
     for (const QChar &ch : text) {
@@ -49,8 +46,7 @@ QString CaseConverter::toInvertCase(const QString &text)
     return result;
 }
 
-QString CaseConverter::toTitleCase(const QString &text)
-{
+QString CaseConverter::toTitleCase(const QString &text) {
     QString result;
     result.reserve(text.size());
     bool inWord = false;
@@ -78,8 +74,7 @@ QString CaseConverter::toTitleCase(const QString &text)
     return result;
 }
 
-QString CaseConverter::toSentenceCase(const QString &text)
-{
+QString CaseConverter::toSentenceCase(const QString &text) {
     QString result;
     result.reserve(text.size());
     bool startOfSentence = true;
@@ -103,26 +98,24 @@ QString CaseConverter::toSentenceCase(const QString &text)
     return result;
 }
 
-QString CaseConverter::convertText(const QString &text, CaseType caseType)
-{
+QString CaseConverter::convertText(const QString &text, CaseType caseType) {
     switch (caseType) {
-    case CaseType::UpperCase:
-        return toUpper(text);
-    case CaseType::LowerCase:
-        return toLower(text);
-    case CaseType::InvertCase:
-        return toInvertCase(text);
-    case CaseType::TitleCase:
-        return toTitleCase(text);
-    case CaseType::SentenceCase:
-        return toSentenceCase(text);
+        case CaseType::UpperCase:
+            return toUpper(text);
+        case CaseType::LowerCase:
+            return toLower(text);
+        case CaseType::InvertCase:
+            return toInvertCase(text);
+        case CaseType::TitleCase:
+            return toTitleCase(text);
+        case CaseType::SentenceCase:
+            return toSentenceCase(text);
     }
     return text;
 }
 
 #if !defined(UNIT_TESTING)
-CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor, CaseType caseType)
-{
+CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor, CaseType caseType) {
     ConvertResult res;
     if (!editor) {
         res.errorMessage = QCoreApplication::translate("CaseConverter", "No active editor.");
@@ -175,9 +168,8 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
 
     // Process ranges sorted in descending order by start position
     // so any byte length changes don't invalidate preceding ranges
-    std::sort(ranges.begin(), ranges.end(), [](const SelectionRange &a, const SelectionRange &b) {
-        return a.start > b.start;
-    });
+    std::sort(ranges.begin(), ranges.end(),
+              [](const SelectionRange &a, const SelectionRange &b) { return a.start > b.start; });
 
     struct UpdatedSel {
         int index;
@@ -239,40 +231,46 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
     res.success = true;
     QString caseName;
     switch (caseType) {
-    case CaseType::UpperCase: caseName = QCoreApplication::translate("CaseConverter", "UPPER CASE"); break;
-    case CaseType::LowerCase: caseName = QCoreApplication::translate("CaseConverter", "lower case"); break;
-    case CaseType::InvertCase: caseName = QCoreApplication::translate("CaseConverter", "iNVERT cASE"); break;
-    case CaseType::TitleCase: caseName = QCoreApplication::translate("CaseConverter", "Title Case"); break;
-    case CaseType::SentenceCase: caseName = QCoreApplication::translate("CaseConverter", "Sentence case"); break;
+        case CaseType::UpperCase:
+            caseName = QCoreApplication::translate("CaseConverter", "UPPER CASE");
+            break;
+        case CaseType::LowerCase:
+            caseName = QCoreApplication::translate("CaseConverter", "lower case");
+            break;
+        case CaseType::InvertCase:
+            caseName = QCoreApplication::translate("CaseConverter", "iNVERT cASE");
+            break;
+        case CaseType::TitleCase:
+            caseName = QCoreApplication::translate("CaseConverter", "Title Case");
+            break;
+        case CaseType::SentenceCase:
+            caseName = QCoreApplication::translate("CaseConverter", "Sentence case");
+            break;
     }
 
     res.message = QCoreApplication::translate("CaseConverter", "Converted %1 selection(s) to %2.")
-        .arg(res.selectionsConverted).arg(caseName);
+                      .arg(res.selectionsConverted)
+                      .arg(caseName);
     return res;
 }
 
-CaseConverter::ConvertResult CaseConverter::upperCase(ScintillaNext *editor)
-{
+CaseConverter::ConvertResult CaseConverter::upperCase(ScintillaNext *editor) {
     return convertEditor(editor, CaseType::UpperCase);
 }
 
-CaseConverter::ConvertResult CaseConverter::lowerCase(ScintillaNext *editor)
-{
+CaseConverter::ConvertResult CaseConverter::lowerCase(ScintillaNext *editor) {
     return convertEditor(editor, CaseType::LowerCase);
 }
 
-CaseConverter::ConvertResult CaseConverter::invertCase(ScintillaNext *editor)
-{
+CaseConverter::ConvertResult CaseConverter::invertCase(ScintillaNext *editor) {
     return convertEditor(editor, CaseType::InvertCase);
 }
 
-CaseConverter::ConvertResult CaseConverter::titleCase(ScintillaNext *editor)
-{
+CaseConverter::ConvertResult CaseConverter::titleCase(ScintillaNext *editor) {
     return convertEditor(editor, CaseType::TitleCase);
 }
 
-CaseConverter::ConvertResult CaseConverter::sentenceCase(ScintillaNext *editor)
-{
+CaseConverter::ConvertResult CaseConverter::sentenceCase(ScintillaNext *editor) {
     return convertEditor(editor, CaseType::SentenceCase);
 }
 

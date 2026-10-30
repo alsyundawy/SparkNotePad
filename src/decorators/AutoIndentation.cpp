@@ -15,14 +15,11 @@
 
 using namespace Scintilla;
 
-AutoIndentation::AutoIndentation(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+AutoIndentation::AutoIndentation(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName(QStringLiteral("AutoIndentation"));
 }
 
-void AutoIndentation::notify(const NotificationData *pscn)
-{
+void AutoIndentation::notify(const NotificationData *pscn) {
     if (pscn->nmhdr.code == Notification::CharAdded && isEnabled()) {
         const int ch = pscn->ch;
         const int eolMode = editor->eOLMode();
@@ -33,9 +30,9 @@ void AutoIndentation::notify(const NotificationData *pscn)
     }
 }
 
-void AutoIndentation::autoIndentLine(int line) const
-{
-    if (line <= 0 || !editor) return;
+void AutoIndentation::autoIndentLine(int line) const {
+    if (line <= 0 || !editor)
+        return;
 
     const int previousLine = line - 1;
     int targetIndentation = editor->lineIndentation(previousLine);

@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef LUACONSOLEDOCK_H
 #define LUACONSOLEDOCK_H
 
@@ -34,8 +34,7 @@ namespace Ui {
 class LuaConsoleDock;
 }
 
-class LuaConsoleDock : public QDockWidget
-{
+class LuaConsoleDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -48,7 +47,7 @@ public:
 
     void historyNext();
     void historyPrevious();
-    void historyAdd(QString line);
+    void historyAdd(const QString &line);
     void historyEnd();
 
 public slots:
@@ -69,4 +68,4 @@ private:
     void setupStyle(ScintillaNext *editor);
 };
 
-#endif // LUACONSOLEDOCK_H
+#endif  // LUACONSOLEDOCK_H

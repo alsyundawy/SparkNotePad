@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,18 +22,15 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EDITORPRINTPREVIEWRENDERER_H
 #define EDITORPRINTPREVIEWRENDERER_H
 
 #include <QObject>
 
-
 class ScintillaNext;
 class QPrinter;
 
-class EditorPrintPreviewRenderer : public QObject
-{
+class EditorPrintPreviewRenderer : public QObject {
     Q_OBJECT
 
 public:
@@ -45,4 +43,4 @@ private:
     ScintillaNext *editor;
 };
 
-#endif // EDITORPRINTPREVIEWRENDERER_H
+#endif  // EDITORPRINTPREVIEWRENDERER_H

@@ -25,8 +25,7 @@
 
 #include <QObject>
 
-class ShiftWheelToHorizontalScrollFilter : public QObject
-{
+class ShiftWheelToHorizontalScrollFilter : public QObject {
     Q_OBJECT
 
 public:

@@ -19,22 +19,18 @@
 #include <QDebug>
 #include <QtMath>
 
-ScreenDisplayManager &ScreenDisplayManager::instance()
-{
+ScreenDisplayManager &ScreenDisplayManager::instance() {
     static ScreenDisplayManager inst;
     return inst;
 }
 
-ScreenDisplayManager::ScreenDisplayManager(QObject *parent)
-    : QObject(parent)
-{
+ScreenDisplayManager::ScreenDisplayManager(QObject *parent) : QObject(parent) {
     connect(qApp, &QGuiApplication::screenAdded, this, &ScreenDisplayManager::handleScreenAdded);
     connect(qApp, &QGuiApplication::screenRemoved, this, &ScreenDisplayManager::handleScreenRemoved);
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &ScreenDisplayManager::handlePrimaryScreenChanged);
 }
 
-void ScreenDisplayManager::registerMainWindow(QMainWindow *window)
-{
+void ScreenDisplayManager::registerMainWindow(QMainWindow *window) {
     m_mainWindow = window;
     if (!window)
         return;
@@ -46,15 +42,13 @@ void ScreenDisplayManager::registerMainWindow(QMainWindow *window)
     }
 }
 
-void ScreenDisplayManager::handleScreenAdded(QScreen *screen)
-{
+void ScreenDisplayManager::handleScreenAdded(QScreen *screen) {
     Q_UNUSED(screen);
     qInfo() << "[ScreenDisplayManager] New display detected:" << (screen ? screen->name() : "unknown");
     emit screenLayoutChanged();
 }
 
-void ScreenDisplayManager::handleScreenRemoved(QScreen *screen)
-{
+void ScreenDisplayManager::handleScreenRemoved(QScreen *screen) {
     Q_UNUSED(screen);
     qInfo() << "[ScreenDisplayManager] Display disconnected. Validating window bounds...";
     if (m_mainWindow) {
@@ -63,21 +57,19 @@ void ScreenDisplayManager::handleScreenRemoved(QScreen *screen)
     emit screenLayoutChanged();
 }
 
-void ScreenDisplayManager::handlePrimaryScreenChanged(QScreen *screen)
-{
+void ScreenDisplayManager::handlePrimaryScreenChanged(QScreen *screen) {
     Q_UNUSED(screen);
     qInfo() << "[ScreenDisplayManager] Primary display changed to:" << (screen ? screen->name() : "none");
     emit screenLayoutChanged();
 }
 
-void ScreenDisplayManager::onScreenChangedForWindow(QScreen *screen)
-{
+void ScreenDisplayManager::onScreenChangedForWindow(QScreen *screen) {
     if (!screen)
         return;
 
     qreal dpr = screen->devicePixelRatio();
-    qInfo() << "[ScreenDisplayManager] Window moved to screen:" << screen->name()
-            << "DPR:" << dpr << "Refresh:" << screen->refreshRate() << "Hz";
+    qInfo() << "[ScreenDisplayManager] Window moved to screen:" << screen->name() << "DPR:" << dpr
+            << "Refresh:" << screen->refreshRate() << "Hz";
 
     if (!qFuzzyCompare(dpr, m_lastDpr)) {
         qreal oldDpr = m_lastDpr;
@@ -96,8 +88,7 @@ void ScreenDisplayManager::onScreenChangedForWindow(QScreen *screen)
     }
 }
 
-void ScreenDisplayManager::ensureWindowOnScreen(QWidget *window)
-{
+void ScreenDisplayManager::ensureWindowOnScreen(QWidget *window) {
     if (!window)
         return;
 
@@ -125,8 +116,10 @@ void ScreenDisplayManager::ensureWindowOnScreen(QWidget *window)
             QRect avail = primary->availableGeometry();
             int w = qMin(winGeo.width(), avail.width() - 40);
             int h = qMin(winGeo.height(), avail.height() - 40);
-            if (w < 400) w = qMin(800, avail.width() - 40);
-            if (h < 300) h = qMin(600, avail.height() - 40);
+            if (w < 400)
+                w = qMin(800, avail.width() - 40);
+            if (h < 300)
+                h = qMin(600, avail.height() - 40);
             int x = avail.x() + (avail.width() - w) / 2;
             int y = avail.y() + (avail.height() - h) / 2;
             window->setGeometry(x, y, w, h);
@@ -134,8 +127,7 @@ void ScreenDisplayManager::ensureWindowOnScreen(QWidget *window)
     }
 }
 
-void ScreenDisplayManager::moveToNextScreen(QWidget *window)
-{
+void ScreenDisplayManager::moveToNextScreen(QWidget *window) {
     if (!window)
         return;
 
@@ -165,8 +157,7 @@ void ScreenDisplayManager::moveToNextScreen(QWidget *window)
     window->activateWindow();
 }
 
-void ScreenDisplayManager::moveToPreviousScreen(QWidget *window)
-{
+void ScreenDisplayManager::moveToPreviousScreen(QWidget *window) {
     if (!window)
         return;
 
@@ -196,8 +187,7 @@ void ScreenDisplayManager::moveToPreviousScreen(QWidget *window)
     window->activateWindow();
 }
 
-void ScreenDisplayManager::centerOnCurrentScreen(QWidget *window)
-{
+void ScreenDisplayManager::centerOnCurrentScreen(QWidget *window) {
     if (!window)
         return;
 
@@ -222,8 +212,7 @@ void ScreenDisplayManager::centerOnCurrentScreen(QWidget *window)
     window->activateWindow();
 }
 
-void ScreenDisplayManager::moveToPrimaryScreen(QWidget *window)
-{
+void ScreenDisplayManager::moveToPrimaryScreen(QWidget *window) {
     if (!window)
         return;
 
@@ -242,26 +231,24 @@ void ScreenDisplayManager::moveToPrimaryScreen(QWidget *window)
     window->activateWindow();
 }
 
-qreal ScreenDisplayManager::currentDevicePixelRatio(const QWidget *window) const
-{
+qreal ScreenDisplayManager::currentDevicePixelRatio(const QWidget *window) const {
     if (window)
         return window->devicePixelRatio();
-    QScreen *primary = QGuiApplication::primaryScreen();
+    const QScreen *primary = QGuiApplication::primaryScreen();
     return primary ? primary->devicePixelRatio() : 1.0;
 }
 
-QList<DisplayInfo> ScreenDisplayManager::getConnectedDisplaysInfo(const QWidget *window) const
-{
+QList<DisplayInfo> ScreenDisplayManager::getConnectedDisplaysInfo(const QWidget *window) const {
     QList<DisplayInfo> list;
     const auto screens = QGuiApplication::screens();
-    QScreen *activeScreen = window ? window->screen() : nullptr;
+    const QScreen *activeScreen = window ? window->screen() : nullptr;
     if (!activeScreen && window) {
         activeScreen = QGuiApplication::screenAt(window->geometry().center());
     }
-    QScreen *primary = QGuiApplication::primaryScreen();
+    const QScreen *primary = QGuiApplication::primaryScreen();
 
     for (int i = 0; i < screens.size(); ++i) {
-        QScreen *scr = screens.at(i);
+        const QScreen *scr = screens.at(i);
         DisplayInfo info;
         info.index = i + 1;
         info.name = scr->name();
@@ -282,8 +269,7 @@ QList<DisplayInfo> ScreenDisplayManager::getConnectedDisplaysInfo(const QWidget 
     return list;
 }
 
-void ScreenDisplayManager::showDisplayInfoDialog(QWidget *parent)
-{
+void ScreenDisplayManager::showDisplayInfoDialog(QWidget *parent) {
     DisplayInfoDialog dlg(parent);
     dlg.exec();
 }

@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,25 +22,21 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef BETTERMULTISELECTION_H
 #define BETTERMULTISELECTION_H
-
 
 #include <QObject>
 #include <QWidget>
 
 #include "EditorDecorator.h"
 
-
 struct Selection;
 
-class BetterMultiSelection : public EditorDecorator
-{
+class BetterMultiSelection : public EditorDecorator {
     Q_OBJECT
 
 public:
-    BetterMultiSelection(ScintillaNext *editor);
+    explicit BetterMultiSelection(ScintillaNext *editor);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
@@ -54,4 +51,4 @@ private:
     std::function<void(Selection &selection)> SimpleEdit(int message);
 };
 
-#endif // BETTERMULTISELECTION_H
+#endif  // BETTERMULTISELECTION_H

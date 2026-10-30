@@ -21,23 +21,17 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "MacroRecorder.h"
 #include "ScintillaNext.h"
 #include <QMetaEnum>
 
 using namespace Scintilla;
 
+MacroRecorder::MacroRecorder(QObject *parent) : QObject(parent) {}
 
-MacroRecorder::MacroRecorder(QObject *parent) :
-    QObject(parent)
-{
-}
-
-void MacroRecorder::startRecording(ScintillaNext *editor)
-{
-    this->editor = editor;
-    connect(editor, &ScintillaNext::macroRecord, this, &MacroRecorder::recordMacroStep);
+void MacroRecorder::startRecording(ScintillaNext *targetEditor) {
+    this->editor = targetEditor;
+    connect(targetEditor, &ScintillaNext::macroRecord, this, &MacroRecorder::recordMacroStep);
 
     // We don't "own" the macro so don't delete it if it is a valid pointer
     macro = new Macro();
@@ -45,8 +39,7 @@ void MacroRecorder::startRecording(ScintillaNext *editor)
     editor->startRecord();
 }
 
-Macro *MacroRecorder::stopRecording()
-{
+Macro *MacroRecorder::stopRecording() {
     disconnect(editor, &ScintillaNext::macroRecord, this, &MacroRecorder::recordMacroStep);
 
     editor->stopRecord();
@@ -56,8 +49,7 @@ Macro *MacroRecorder::stopRecording()
     return m;
 }
 
-void MacroRecorder::recordMacroStep(Message message, uptr_t wParam, sptr_t lParam)
-{
+void MacroRecorder::recordMacroStep(Message message, uptr_t wParam, sptr_t lParam) {
     qInfo(Q_FUNC_INFO);
 
     macro->addMacroStep(message, wParam, lParam);

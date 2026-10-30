@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,7 +22,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef LINENUMBERS_H
 #define LINENUMBERS_H
 
@@ -29,12 +29,11 @@
 
 #include "EditorDecorator.h"
 
-class LineNumbers : public EditorDecorator
-{
+class LineNumbers : public EditorDecorator {
     Q_OBJECT
 
 public:
-    LineNumbers(ScintillaNext *editor);
+    explicit LineNumbers(ScintillaNext *editor);
 
 private:
     void adjustMarginWidth();
@@ -43,4 +42,4 @@ public slots:
     void notify(const Scintilla::NotificationData *pscn) override;
 };
 
-#endif // LINENUMBERS_H
+#endif  // LINENUMBERS_H

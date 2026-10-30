@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -19,31 +20,30 @@
 
 class ScintillaNext;
 
-class ColorPreviewCallTip : public EditorDecorator
-{
+class ColorPreviewCallTip : public EditorDecorator {
     Q_OBJECT
 
 public:
     enum ColorFormat {
-        Hex3,     // #rgb
-        Hex4,     // #rgba
-        Hex6,     // #rrggbb
-        Hex8,     // #rrggbbaa
-        Hex0x,    // 0x...
-        Rgb,      // rgb(r, g, b)
-        Rgba,     // rgba(r, g, b, a)
-        Hsl,      // hsl(h, s, l)
-        Hsla,     // hsla(h, s, l, a)
-        Named     // named css color
+        Hex3,   // #rgb
+        Hex4,   // #rgba
+        Hex6,   // #rrggbb
+        Hex8,   // #rrggbbaa
+        Hex0x,  // 0x...
+        Rgb,    // rgb(r, g, b)
+        Rgba,   // rgba(r, g, b, a)
+        Hsl,    // hsl(h, s, l)
+        Hsla,   // hsla(h, s, l, a)
+        Named   // named css color
     };
 
     struct ColorMatch {
-        bool found {false};
-        int startPos {0};
-        int endPos {0};
+        bool found{false};
+        int startPos{0};
+        int endPos{0};
         QString text;
         QColor color;
-        ColorFormat format {Hex6};
+        ColorFormat format{Hex6};
     };
 
     explicit ColorPreviewCallTip(ScintillaNext *editor);
@@ -77,4 +77,4 @@ private:
     ColorMatch m_currentMatch;
 };
 
-#endif // COLORPREVIEWCALLTIP_H
+#endif  // COLORPREVIEWCALLTIP_H

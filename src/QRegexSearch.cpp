@@ -19,8 +19,7 @@
 using namespace Scintilla;
 
 #ifdef SCI_OWNREGEX
-RegexSearchBase *Scintilla::Internal::CreateRegexSearch(CharClassify *charClassTable)
-{
+RegexSearchBase *Scintilla::Internal::CreateRegexSearch(CharClassify *charClassTable) {
     Q_UNUSED(charClassTable);
 
     qInfo(Q_FUNC_INFO);
@@ -29,12 +28,11 @@ RegexSearchBase *Scintilla::Internal::CreateRegexSearch(CharClassify *charClassT
 }
 #endif
 
-QRegexSearch::QRegexSearch()
-{
-}
+QRegexSearch::QRegexSearch() {}
 
-Sci::Position QRegexSearch::FindText(Document *doc, Sci::Position minPos, Sci::Position maxPos, const char *s, bool caseSensitive, bool word, bool wordStart, Scintilla::FindOption flags, Sci::Position *length)
-{
+Sci::Position QRegexSearch::FindText(Document *doc, Sci::Position minPos, Sci::Position maxPos, const char *s,
+                                     bool caseSensitive, bool word, bool wordStart, Scintilla::FindOption flags,
+                                     Sci::Position *length) {
     Q_UNUSED(caseSensitive);
     Q_UNUSED(word);
     Q_UNUSED(wordStart);
@@ -68,7 +66,8 @@ Sci::Position QRegexSearch::FindText(Document *doc, Sci::Position minPos, Sci::P
     const QString utf8 = QString::fromUtf8(doc->RangePointer(startPos, rangeLength), rangeLength);
 
     if (forward) {
-        QRegularExpressionMatch m = re.match(utf8, 0, QRegularExpression::NormalMatch, QRegularExpression::NoMatchOption);
+        QRegularExpressionMatch m =
+            re.match(utf8, 0, QRegularExpression::NormalMatch, QRegularExpression::NoMatchOption);
         if (!m.hasMatch())
             return -1;
 
@@ -96,8 +95,7 @@ Sci::Position QRegexSearch::FindText(Document *doc, Sci::Position minPos, Sci::P
     }
 }
 
-const char *QRegexSearch::SubstituteByPosition(Document *doc, const char *text, Sci::Position *length)
-{
+const char *QRegexSearch::SubstituteByPosition(Document *doc, const char *text, Sci::Position *length) {
     Q_UNUSED(doc);
 
     if (!match.isValid() || !match.hasMatch()) {

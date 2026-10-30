@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "LuaState.h"
 #include "lua.hpp"
 
@@ -37,27 +36,25 @@ std::string dumpLuaState(lua_State *L) {
     ostr << "top=" << top << ":\n";
     for (i = 1; i <= top; ++i) {
         int t = lua_type(L, i);
-        switch(t) {
-        case LUA_TSTRING:
-            ostr << "  " << i << ": '" << lua_tostring(L, i) << "'\n";
-            break;
-        case LUA_TBOOLEAN:
-            ostr << "  " << i << ": " <<
-                    (lua_toboolean(L, i) ? "true" : "false") << "\n";
-            break;
-        case LUA_TNUMBER:
-            ostr << "  " << i << ": " << lua_tonumber(L, i) << "\n";
-            break;
-        default:
-            ostr << "  " << i << ": TYPE=" << lua_typename(L, t) << "\n";
-            break;
+        switch (t) {
+            case LUA_TSTRING:
+                ostr << "  " << i << ": '" << lua_tostring(L, i) << "'\n";
+                break;
+            case LUA_TBOOLEAN:
+                ostr << "  " << i << ": " << (lua_toboolean(L, i) ? "true" : "false") << "\n";
+                break;
+            case LUA_TNUMBER:
+                ostr << "  " << i << ": " << lua_tonumber(L, i) << "\n";
+                break;
+            default:
+                ostr << "  " << i << ": TYPE=" << lua_typename(L, t) << "\n";
+                break;
         }
     }
     return ostr.str();
 }
 
-static int require_resource(lua_State *L)
-{
+static int require_resource(lua_State *L) {
     const char *module = luaL_checkstring(L, 1);
 
     QString module_file = QString(":/languages/%1.lua").arg(module);
@@ -72,25 +69,24 @@ static int require_resource(lua_State *L)
         }
 
         // At this point either the function or an error string is on the stack
-    }
-    else {
+    } else {
         lua_pushfstring(L, "\n\tno file '%s'", module_file.toLatin1().constData());
     }
 
     return 1;
 }
 
-LuaState::LuaState()
-{
+LuaState::LuaState() {
     qInfo(Q_FUNC_INFO);
 
     L = luaL_newstate();
     luaL_openlibs(L);
 
     // Remove the searchers used for finding files on the file system
-    execute("table.remove(package.searchers, 4); table.remove(package.searchers, 3); table.remove(package.searchers, 2)");
+    execute(
+        "table.remove(package.searchers, 4); table.remove(package.searchers, 3); table.remove(package.searchers, 2)");
 
-    for(int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 3; ++i) {
         lua_getglobal(L, "table");
         lua_getfield(L, -1, "remove");
         lua_remove(L, -2);
@@ -114,33 +110,28 @@ LuaState::LuaState()
     lua_call(L, 2, 0);
 }
 
-LuaState::~LuaState()
-{
+LuaState::~LuaState() {
     if (L) {
         lua_close(L);
         L = Q_NULLPTR;
     }
 }
 
-void LuaState::setVariable(const char* name, const QString& value)
-{
+void LuaState::setVariable(const char *name, const QString &value) {
     setVariable(name, value.toUtf8().constData());
 }
 
-void LuaState::setVariable(const char *name, const char *value)
-{
+void LuaState::setVariable(const char *name, const char *value) {
     lua_pushstring(L, value);
     lua_setglobal(L, name);
 }
 
-void LuaState::setVariable(const char *name, bool value)
-{
+void LuaState::setVariable(const char *name, bool value) {
     lua_pushboolean(L, value ? 1 : 0);
     lua_setglobal(L, name);
 }
 
-void LuaState::internal_execute(const char *statement, bool clear)
-{
+void LuaState::internal_execute(const char *statement, bool clear) {
     // There may be other things on the stack so save the top of it
     const int stacktop = lua_gettop(L);
 
@@ -148,18 +139,16 @@ void LuaState::internal_execute(const char *statement, bool clear)
 
     if (status == LUA_OK) {
         status = lua_pcall(L, 0, LUA_MULTRET, 0);
-    }
-    else if (status == LUA_ERRSYNTAX) {
+    } else if (status == LUA_ERRSYNTAX) {
         qWarning("LUA_ERRSYNTAX: %s", statement);
-    }
-    else if (status == LUA_ERRMEM) {
+    } else if (status == LUA_ERRMEM) {
         qFatal("Lua memory allocation error");
     }
 
     if (status != LUA_OK) {
         // Print an error message
-        //writeErrorToOutput(lua_tostring(L, -1));
-        //writeErrorToOutput("\r\n");
+        // writeErrorToOutput(lua_tostring(L, -1));
+        // writeErrorToOutput("\r\n");
         qWarning("%s", lua_tostring(L, -1));
     }
 
@@ -167,8 +156,7 @@ void LuaState::internal_execute(const char *statement, bool clear)
         lua_settop(L, stacktop);
 }
 
-void LuaState::executeFile(const QString &fileName)
-{
+void LuaState::executeFile(const QString &fileName) {
     QFile ff(fileName);
 
     if (!ff.open(QFile::ReadOnly)) {
@@ -180,13 +168,11 @@ void LuaState::executeFile(const QString &fileName)
     ff.close();
 }
 
-void LuaState::clearStack()
-{
+void LuaState::clearStack() {
     lua_settop(L, 0);
 }
 
-void LuaState::raiseError(const char *errorMessage)
-{
+void LuaState::raiseError(const char *errorMessage) {
     luaL_where(L, 1);
     if (errorMessage) {
         lua_pushstring(L, errorMessage);

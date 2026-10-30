@@ -1,3 +1,4 @@
+#pragma once
 /*
  *
  * This file is part of SparkNotepad.
@@ -21,26 +22,23 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EDITORMANAGER_H
 #define EDITORMANAGER_H
 
 #include <QObject>
 #include <QPointer>
 
-
 class ApplicationSettings;
 class ScintillaNext;
 
-class EditorManager : public QObject
-{
+class EditorManager : public QObject {
     Q_OBJECT
 
 public:
     explicit EditorManager(ApplicationSettings *settings, QObject *parent = nullptr);
 
     ScintillaNext *createEditor(const QString &name);
-    ScintillaNext *createEditorFromFile(const QString &filePath, bool tryToCreate=false);
+    ScintillaNext *createEditorFromFile(const QString &filePath, bool tryToCreate = false);
 
     ScintillaNext *getEditorByFilePath(const QString &filePath);
 
@@ -60,4 +58,4 @@ private:
     ApplicationSettings *settings;
 };
 
-#endif // EDITORMANAGER_H
+#endif  // EDITORMANAGER_H

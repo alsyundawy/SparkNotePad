@@ -16,8 +16,7 @@
 #endif
 
 #if !defined(UNIT_TESTING)
-Base64Utils::Result Base64Utils::encode(ScintillaNext *editor)
-{
+Base64Utils::Result Base64Utils::encode(ScintillaNext *editor) {
     if (!editor) {
         return {false, false, QStringLiteral("No active editor")};
     }
@@ -48,8 +47,7 @@ Base64Utils::Result Base64Utils::encode(ScintillaNext *editor)
     return {true, false, QString()};
 }
 
-Base64Utils::Result Base64Utils::decode(ScintillaNext *editor)
-{
+Base64Utils::Result Base64Utils::decode(ScintillaNext *editor) {
     if (!editor) {
         return {false, false, QStringLiteral("No active editor")};
     }
@@ -88,34 +86,37 @@ Base64Utils::Result Base64Utils::decode(ScintillaNext *editor)
 
 #endif
 
-QString Base64Utils::encode(const QString &plainText)
-{
+QString Base64Utils::encode(const QString &plainText) {
     return QString::fromLatin1(plainText.toUtf8().toBase64());
 }
 
-QString Base64Utils::decode(const QString &base64Text, bool *ok)
-{
-    auto result = QByteArray::fromBase64Encoding(base64Text.trimmed().toLatin1(), QByteArray::AbortOnBase64DecodingErrors);
+QString Base64Utils::decode(const QString &base64Text, bool *ok) {
+    auto result =
+        QByteArray::fromBase64Encoding(base64Text.trimmed().toLatin1(), QByteArray::AbortOnBase64DecodingErrors);
     if (!result) {
-        if (ok) *ok = false;
+        if (ok)
+            *ok = false;
         return QString();
     }
-    if (ok) *ok = true;
+    if (ok)
+        *ok = true;
     return QString::fromUtf8(*result);
 }
 
-QString Base64Utils::encodeUrlSafe(const QString &plainText)
-{
-    return QString::fromLatin1(plainText.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals));
+QString Base64Utils::encodeUrlSafe(const QString &plainText) {
+    return QString::fromLatin1(
+        plainText.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals));
 }
 
-QString Base64Utils::decodeUrlSafe(const QString &base64Text, bool *ok)
-{
-    auto result = QByteArray::fromBase64Encoding(base64Text.trimmed().toLatin1(), QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
+QString Base64Utils::decodeUrlSafe(const QString &base64Text, bool *ok) {
+    auto result = QByteArray::fromBase64Encoding(base64Text.trimmed().toLatin1(),
+                                                 QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     if (!result) {
-        if (ok) *ok = false;
+        if (ok)
+            *ok = false;
         return QString();
     }
-    if (ok) *ok = true;
+    if (ok)
+        *ok = true;
     return QString::fromUtf8(*result);
 }

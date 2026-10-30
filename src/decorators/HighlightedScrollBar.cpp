@@ -21,11 +21,9 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include <QPainter>
 
 #include "HighlightedScrollBar.h"
-
 
 using namespace Scintilla;
 
@@ -35,38 +33,30 @@ const QColor CURSOR_SELECTION_COLOR = QColor(0, 0, 0, 25);
 const QColor CURSOR_CARET_COLOR = QColor(0, 0, 0, 100);
 
 HighlightedScrollBarDecorator::HighlightedScrollBarDecorator(ScintillaNext *editor)
-    : EditorDecorator(editor), scrollBar(new HighlightedScrollBar(editor, Qt::Vertical, editor))
-{
+    : EditorDecorator(editor), scrollBar(new HighlightedScrollBar(editor, Qt::Vertical, editor)) {
     connect(scrollBar, &QScrollBar::valueChanged, editor, &ScintillaEditBase::scrollVertical);
 
     editor->setVerticalScrollBar(scrollBar);
 }
 
-HighlightedScrollBarDecorator::~HighlightedScrollBarDecorator()
-{
-}
+HighlightedScrollBarDecorator::~HighlightedScrollBarDecorator() {}
 
-void HighlightedScrollBarDecorator::notify(const NotificationData *pscn)
-{
-    if (pscn->nmhdr.code == Notification::UpdateUI && (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection))) {
+void HighlightedScrollBarDecorator::notify(const NotificationData *pscn) {
+    if (pscn->nmhdr.code == Notification::UpdateUI &&
+        (FlagSet(pscn->updated, Update::Text) || FlagSet(pscn->updated, Update::Selection))) {
         scrollBar->update();
-    }
-    else if (pscn->nmhdr.code == Notification::Modified && FlagSet(pscn->modificationType, ModificationFlags::ChangeMarker)) {
+    } else if (pscn->nmhdr.code == Notification::Modified &&
+               FlagSet(pscn->modificationType, ModificationFlags::ChangeMarker)) {
         scrollBar->update();
     }
 }
-
-
-
 
 HighlightedScrollBar::HighlightedScrollBar(ScintillaNext *editor, Qt::Orientation orientation, QWidget *parent)
-    : QScrollBar(orientation, parent), editor(editor)
-{
+    : QScrollBar(orientation, parent), editor(editor) {
     smartHighlighterIndicator = editor->allocateIndicator("smart_highlighter");
 }
 
-void HighlightedScrollBar::paintEvent(QPaintEvent *event)
-{
+void HighlightedScrollBar::paintEvent(QPaintEvent *event) {
     // Paint the default scrollbar first
     QScrollBar::paintEvent(event);
     QPainter p(this);
@@ -76,8 +66,7 @@ void HighlightedScrollBar::paintEvent(QPaintEvent *event)
     drawCursors(p);
 }
 
-void HighlightedScrollBar::drawMarker(QPainter &p, int marker)
-{
+void HighlightedScrollBar::drawMarker(QPainter &p, int marker) {
     // NOTE: SCI_MARKERGETBACK doesn't exist...so can't use the marker color
     int curLine = 0;
 
@@ -88,23 +77,31 @@ void HighlightedScrollBar::drawMarker(QPainter &p, int marker)
     }
 }
 
-void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator)
-{
-    int curPos = editor->indicatorEnd(indicator, 0);
-    int color = editor->indicFore(indicator);
+void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
+    const sptr_t docLength = editor->length();
+    if (docLength <= 0) {
+        return;
+    }
 
-    if (curPos > 0) {
-        while ((curPos = editor->indicatorEnd(indicator, curPos)) < editor->length()) {
-            drawTickMark(p, posToScrollBarY(curPos), DEFAULT_TICK_HEIGHT, color);
+    sptr_t curPos = 0;
+    const int color = static_cast<int>(editor->indicFore(indicator));
+    int safetyCount = 0;
 
-            curPos = editor->indicatorEnd(indicator, curPos);
+    while (curPos < docLength && safetyCount++ < 1500) {
+        sptr_t nextPos = editor->indicatorEnd(indicator, curPos);
+        if (nextPos <= curPos) {
+            break;
         }
+        if (editor->indicatorValueAt(indicator, curPos)) {
+            drawTickMark(p, posToScrollBarY(curPos), DEFAULT_TICK_HEIGHT, color);
+        }
+        curPos = nextPos;
     }
 }
 
-void HighlightedScrollBar::drawCursors(QPainter &p)
-{
-    for (int i = 0; i < editor->selections() ; i++) {
+void HighlightedScrollBar::drawCursors(QPainter &p) {
+    const sptr_t numSelections = editor->selections();
+    for (sptr_t i = 0; i < numSelections; i++) {
         int startCaretY = posToScrollBarY(editor->selectionNCaret(i));
         int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i));
 
@@ -116,31 +113,33 @@ void HighlightedScrollBar::drawCursors(QPainter &p)
     }
 }
 
-void HighlightedScrollBar::drawTickMark(QPainter &p, int y, int height, QColor color)
-{
-    p.fillRect(rect().x() + DEFAULT_TICK_PADDING, y + scrollbarArrowHeight(), rect().width() - (DEFAULT_TICK_PADDING * 2), height, color);
+void HighlightedScrollBar::drawTickMark(QPainter &p, int y, int height, QColor color) {
+    p.fillRect(rect().x() + DEFAULT_TICK_PADDING, y + scrollbarArrowHeight(),
+               rect().width() - (DEFAULT_TICK_PADDING * 2), height, color);
 }
 
-int HighlightedScrollBar::posToScrollBarY(int pos) const
-{
-    int line = editor->visibleFromDocLine(editor->lineFromPosition(pos));
+int HighlightedScrollBar::posToScrollBarY(sptr_t pos) const {
+    sptr_t line = editor->visibleFromDocLine(editor->lineFromPosition(pos));
 
     return lineToScrollBarY(line);
 }
 
-int HighlightedScrollBar::lineToScrollBarY(int line) const
-{
-    int lineCount = editor->visibleFromDocLine(editor->lineCount());
+int HighlightedScrollBar::lineToScrollBarY(sptr_t line) const {
+    sptr_t lineCount = editor->visibleFromDocLine(editor->lineCount());
 
     if (!editor->endAtLastLine()) {
         lineCount += editor->linesOnScreen();
     }
 
-    return static_cast<double>(line) / lineCount * (rect().height() - scrollbarArrowHeight() * 2);
+    if (lineCount <= 0) {
+        return 0;
+    }
+
+    return static_cast<int>(static_cast<double>(line) / static_cast<double>(lineCount) *
+                            static_cast<double>(rect().height() - scrollbarArrowHeight() * 2));
 }
 
-int HighlightedScrollBar::scrollbarArrowHeight() const
-{
+int HighlightedScrollBar::scrollbarArrowHeight() const {
     // NOTE: There is no official way to get the height of the scrollbar arrow buttons, however for now we can
     // assume that the buttons are square, meaning the height of them will be the same as the width of
     // the scroll bar.

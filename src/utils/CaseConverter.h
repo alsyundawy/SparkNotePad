@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -20,16 +21,9 @@
 class ScintillaNext;
 #endif
 
-class CaseConverter
-{
+class CaseConverter {
 public:
-    enum class CaseType {
-        UpperCase,
-        LowerCase,
-        InvertCase,
-        TitleCase,
-        SentenceCase
-    };
+    enum class CaseType { UpperCase, LowerCase, InvertCase, TitleCase, SentenceCase };
 
     struct ConvertResult {
         bool success = false;
@@ -58,4 +52,4 @@ public:
 #endif
 };
 
-#endif // CASECONVERTER_H
+#endif  // CASECONVERTER_H

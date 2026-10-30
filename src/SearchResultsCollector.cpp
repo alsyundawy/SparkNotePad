@@ -21,32 +21,27 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "SearchResultsCollector.h"
 
-SearchResultsCollector::SearchResultsCollector(ISearchResultsHandler *child) :
-    child(child)
-{
-}
+SearchResultsCollector::SearchResultsCollector(ISearchResultsHandler *child) : child(child) {}
 
-void SearchResultsCollector::newSearch(const QString searchTerm)
-{
+void SearchResultsCollector::newSearch(const QString &searchTerm) {
     child->newSearch(searchTerm);
 }
 
-void SearchResultsCollector::newFileEntry(ScintillaNext *editor)
-{
+void SearchResultsCollector::newFileEntry(ScintillaNext *editor) {
     // There may be a result that was not passed along yet
     if (runningHitCount > 0) {
-        child->newResultsEntry(prevLine, prevLineNumber, prevStartPositionFromBeginning, prevEndPositionFromBeginning, runningHitCount);
+        child->newResultsEntry(prevLine, prevLineNumber, prevStartPositionFromBeginning, prevEndPositionFromBeginning,
+                               runningHitCount);
     }
     runningHitCount = 0;
 
     child->newFileEntry(editor);
 }
 
-void SearchResultsCollector::newResultsEntry(const QString line, int lineNumber, int startPositionFromBeginning, int endPositionFromBeginning, int hitCount)
-{
+void SearchResultsCollector::newResultsEntry(const QString &line, int lineNumber, int startPositionFromBeginning,
+                                             int endPositionFromBeginning, int hitCount) {
     if (runningHitCount == 0) {
         // Save the previous results since there have not been any yet
         prevLine = line;
@@ -55,10 +50,10 @@ void SearchResultsCollector::newResultsEntry(const QString line, int lineNumber,
         prevEndPositionFromBeginning = endPositionFromBeginning;
 
         runningHitCount = 1;
-    }
-    else if (lineNumber != prevLineNumber) {
+    } else if (lineNumber != prevLineNumber) {
         // Report the previous data
-        child->newResultsEntry(prevLine, prevLineNumber, prevStartPositionFromBeginning, prevEndPositionFromBeginning, runningHitCount);
+        child->newResultsEntry(prevLine, prevLineNumber, prevStartPositionFromBeginning, prevEndPositionFromBeginning,
+                               runningHitCount);
 
         // Save the new results
         prevLine = line;
@@ -68,17 +63,16 @@ void SearchResultsCollector::newResultsEntry(const QString line, int lineNumber,
 
         // Just one result now
         runningHitCount = 1;
-    }
-    else {
+    } else {
         runningHitCount += hitCount;
     }
 }
 
-void SearchResultsCollector::completeSearch()
-{
+void SearchResultsCollector::completeSearch() {
     // There may be a result that was not passed along yet
     if (runningHitCount > 0) {
-        child->newResultsEntry(prevLine, prevLineNumber, prevStartPositionFromBeginning, prevEndPositionFromBeginning, runningHitCount);
+        child->newResultsEntry(prevLine, prevLineNumber, prevStartPositionFromBeginning, prevEndPositionFromBeginning,
+                               runningHitCount);
     }
     runningHitCount = 0;
 

@@ -27,8 +27,7 @@
 #include <unistd.h>
 #endif
 
-PerformanceProfiler::SystemInfo PerformanceProfiler::getSystemInfo()
-{
+PerformanceProfiler::SystemInfo PerformanceProfiler::getSystemInfo() {
     SystemInfo info;
     info.osName = QSysInfo::prettyProductName();
     info.cpuArchitecture = QSysInfo::currentCpuArchitecture();
@@ -75,14 +74,14 @@ PerformanceProfiler::SystemInfo PerformanceProfiler::getSystemInfo()
     return info;
 }
 
-PerformanceProfiler::MemoryMetrics PerformanceProfiler::getMemoryMetrics()
-{
+PerformanceProfiler::MemoryMetrics PerformanceProfiler::getMemoryMetrics() {
     MemoryMetrics m;
 
 #if defined(__APPLE__)
     struct mach_task_basic_info info;
     mach_msg_type_number_t count = MACH_TASK_BASIC_INFO_COUNT;
-    if (task_info(mach_task_self(), MACH_TASK_BASIC_INFO, reinterpret_cast<task_info_t>(&info), &count) == KERN_SUCCESS) {
+    if (task_info(mach_task_self(), MACH_TASK_BASIC_INFO, reinterpret_cast<task_info_t>(&info), &count) ==
+        KERN_SUCCESS) {
         m.rssBytes = static_cast<qint64>(info.resident_size);
         m.virtualBytes = static_cast<qint64>(info.virtual_size);
     }
@@ -105,10 +104,10 @@ PerformanceProfiler::MemoryMetrics PerformanceProfiler::getMemoryMetrics()
     return m;
 }
 
-PerformanceProfiler::DocumentMetrics PerformanceProfiler::getDocumentMetrics(ScintillaNext *editor)
-{
+PerformanceProfiler::DocumentMetrics PerformanceProfiler::getDocumentMetrics(ScintillaNext *editor) {
     DocumentMetrics doc;
-    if (!editor) return doc;
+    if (!editor)
+        return doc;
 
     doc.fileName = editor->getFileName();
     doc.lineCount = static_cast<int>(editor->lineCount());
@@ -124,13 +123,13 @@ PerformanceProfiler::DocumentMetrics PerformanceProfiler::getDocumentMetrics(Sci
     return doc;
 }
 
-void PerformanceProfiler::setHighPerformanceMode(ScintillaNext *editor, bool enable)
-{
-    if (!editor) return;
+void PerformanceProfiler::setHighPerformanceMode(ScintillaNext *editor, bool enable) {
+    if (!editor)
+        return;
 
     if (enable) {
         // 1. Disable word wrapping (wrap calculation is O(N) on long documents)
-        editor->setWrapMode(0); // SC_WRAP_NONE
+        editor->setWrapMode(0);  // SC_WRAP_NONE
         // 2. Enable double buffered drawing
         editor->setBufferedDraw(true);
         // 3. Mark property
@@ -140,14 +139,13 @@ void PerformanceProfiler::setHighPerformanceMode(ScintillaNext *editor, bool ena
     }
 }
 
-bool PerformanceProfiler::isHighPerformanceMode(ScintillaNext *editor)
-{
-    if (!editor) return false;
+bool PerformanceProfiler::isHighPerformanceMode(ScintillaNext *editor) {
+    if (!editor)
+        return false;
     return editor->QObject::property("HighPerformanceMode").toBool();
 }
 
-PerformanceProfiler::BenchmarkResult PerformanceProfiler::runScintillaInsertBenchmark(int lineCount)
-{
+PerformanceProfiler::BenchmarkResult PerformanceProfiler::runScintillaInsertBenchmark(int lineCount) {
     BenchmarkResult res;
     res.testName = QStringLiteral("Scintilla Text Ingestion & Line Indexing");
     res.iterations = lineCount;
@@ -178,17 +176,16 @@ PerformanceProfiler::BenchmarkResult PerformanceProfiler::runScintillaInsertBenc
     res.elapsedMs = timer.nsecsElapsed() / 1000000.0;
     res.throughputMBps = (totalBytes / (1024.0 * 1024.0)) / (res.elapsedMs / 1000.0);
     res.details = QStringLiteral("Ingested %1 lines (%2 MB) in %3 ms (%4 lines/sec, %5 MB/sec)")
-        .arg(lineCount)
-        .arg(QString::number(totalBytes / (1024.0 * 1024.0), 'f', 2))
-        .arg(QString::number(res.elapsedMs, 'f', 2))
-        .arg(QString::number(lineCount / (res.elapsedMs / 1000.0), 'f', 0))
-        .arg(QString::number(res.throughputMBps, 'f', 2));
+                      .arg(lineCount)
+                      .arg(QString::number(totalBytes / (1024.0 * 1024.0), 'f', 2))
+                      .arg(QString::number(res.elapsedMs, 'f', 2))
+                      .arg(QString::number(lineCount / (res.elapsedMs / 1000.0), 'f', 0))
+                      .arg(QString::number(res.throughputMBps, 'f', 2));
 
     return res;
 }
 
-QString PerformanceProfiler::generateDiagnosticReport(ScintillaNext *currentEditor)
-{
+QString PerformanceProfiler::generateDiagnosticReport(ScintillaNext *currentEditor) {
     const auto sys = getSystemInfo();
     const auto mem = getMemoryMetrics();
     const auto doc = getDocumentMetrics(currentEditor);
@@ -202,8 +199,9 @@ QString PerformanceProfiler::generateDiagnosticReport(ScintillaNext *currentEdit
     r += QStringLiteral("OS:            %1\n").arg(sys.osName);
     r += QStringLiteral("CPU Model:     %1\n").arg(sys.cpuModel);
     r += QStringLiteral("Architecture:  %1%2\n")
-        .arg(sys.cpuArchitecture)
-        .arg(sys.isAppleSilicon ? QStringLiteral(" (Apple Silicon Native)") : (sys.isArm64 ? QStringLiteral(" (ARM64 Native)") : QString()));
+             .arg(sys.cpuArchitecture)
+             .arg(sys.isAppleSilicon ? QStringLiteral(" (Apple Silicon Native)")
+                                     : (sys.isArm64 ? QStringLiteral(" (ARM64 Native)") : QString()));
     r += QStringLiteral("Logical Cores: %1\n\n").arg(sys.logicalCores);
 
     r += QStringLiteral("[Memory Footprint]\n");
@@ -215,11 +213,11 @@ QString PerformanceProfiler::generateDiagnosticReport(ScintillaNext *currentEdit
         r += QStringLiteral("File:          %1\n").arg(doc.fileName);
         r += QStringLiteral("Line Count:    %1 lines\n").arg(doc.lineCount);
         r += QStringLiteral("Byte Size:     %1 bytes (%2 MB)\n")
-            .arg(doc.byteSize)
-            .arg(QString::number(doc.byteSize / (1024.0 * 1024.0), 'f', 2));
+                 .arg(doc.byteSize)
+                 .arg(QString::number(doc.byteSize / (1024.0 * 1024.0), 'f', 2));
         r += QStringLiteral("Language:      %1\n").arg(doc.language);
         r += QStringLiteral("High-Perf Mode: %1\n\n")
-            .arg(doc.isHighPerformanceMode ? QStringLiteral("ACTIVE") : QStringLiteral("Standard"));
+                 .arg(doc.isHighPerformanceMode ? QStringLiteral("ACTIVE") : QStringLiteral("Standard"));
     }
 
     r += QStringLiteral("[Engine Invariant]\n");

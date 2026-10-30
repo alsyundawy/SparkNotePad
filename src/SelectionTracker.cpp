@@ -21,44 +21,36 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "SelectionTracker.h"
 #include "ScintillaNext.h"
 
-SelectionTracker::SelectionTracker(ScintillaNext *editor) :
-    editor(editor)
-{
+SelectionTracker::SelectionTracker(ScintillaNext *editor) : editor(editor) {
     saveSelection();
 }
 
-SelectionTracker::~SelectionTracker()
-{
+SelectionTracker::~SelectionTracker() {
     restoreSelection();
 }
 
-void SelectionTracker::saveSelection()
-{
+void SelectionTracker::saveSelection() {
     caret = editor->selectionNCaret(editor->mainSelection());
     anchor = editor->selectionNAnchor(editor->mainSelection());
 }
 
-void SelectionTracker::restoreSelection()
-{
+void SelectionTracker::restoreSelection() {
     editor->setSelection(caret, anchor);
 }
 
-void SelectionTracker::trackInsertion(int pos, int length)
-{
+void SelectionTracker::trackInsertion(int pos, int length) {
     if (caret >= pos) {
         caret += length;
     }
-    if (anchor >=pos) {
+    if (anchor >= pos) {
         anchor += length;
     }
 }
 
-void SelectionTracker::trackDeletion(int pos, int length)
-{
+void SelectionTracker::trackDeletion(int pos, int length) {
     // Adjust the caret and anchor. Use the min in case they are within the range being deleted
     if (caret > pos) {
         caret -= qMin(static_cast<int>(caret - pos), length);

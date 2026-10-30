@@ -15,10 +15,7 @@
 
 #include <QPushButton>
 
-EncryptDialog::EncryptDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::EncryptDialog)
-{
+EncryptDialog::EncryptDialog(QWidget *parent) : QDialog(parent), ui(new Ui::EncryptDialog) {
     ui->setupUi(this);
 
     connect(ui->editPassword, &QLineEdit::textChanged, this, &EncryptDialog::onPasswordChanged);
@@ -32,23 +29,19 @@ EncryptDialog::EncryptDialog(QWidget *parent) :
     updateValidation();
 }
 
-EncryptDialog::~EncryptDialog()
-{
+EncryptDialog::~EncryptDialog() {
     delete ui;
 }
 
-QString EncryptDialog::passphrase() const
-{
+QString EncryptDialog::passphrase() const {
     return ui->editPassword->text();
 }
 
-void EncryptDialog::onPasswordChanged()
-{
+void EncryptDialog::onPasswordChanged() {
     updateValidation();
 }
 
-void EncryptDialog::onTogglePassVisibility()
-{
+void EncryptDialog::onTogglePassVisibility() {
     if (ui->editPassword->echoMode() == QLineEdit::Password) {
         ui->editPassword->setEchoMode(QLineEdit::Normal);
     } else {
@@ -56,8 +49,7 @@ void EncryptDialog::onTogglePassVisibility()
     }
 }
 
-void EncryptDialog::onToggleConfirmVisibility()
-{
+void EncryptDialog::onToggleConfirmVisibility() {
     if (ui->editConfirm->echoMode() == QLineEdit::Password) {
         ui->editConfirm->setEchoMode(QLineEdit::Normal);
     } else {
@@ -65,8 +57,7 @@ void EncryptDialog::onToggleConfirmVisibility()
     }
 }
 
-void EncryptDialog::updateValidation()
-{
+void EncryptDialog::updateValidation() {
     const QString pass = ui->editPassword->text();
     const QString confirm = ui->editConfirm->text();
 
@@ -75,12 +66,17 @@ void EncryptDialog::updateValidation()
     ui->labelStrengthText->setText(sr.label);
 
     QString color;
-    if (sr.score < 25) color = QStringLiteral("#d9534f");
-    else if (sr.score < 50) color = QStringLiteral("#f0ad4e");
-    else if (sr.score < 70) color = QStringLiteral("#5bc0de");
-    else color = QStringLiteral("#5cb85c");
+    if (sr.score < 25)
+        color = QStringLiteral("#d9534f");
+    else if (sr.score < 50)
+        color = QStringLiteral("#f0ad4e");
+    else if (sr.score < 70)
+        color = QStringLiteral("#5bc0de");
+    else
+        color = QStringLiteral("#5cb85c");
 
-    ui->progressBarStrength->setStyleSheet(QStringLiteral("QProgressBar::chunk { background-color: %1; border-radius: 3px; }").arg(color));
+    ui->progressBarStrength->setStyleSheet(
+        QStringLiteral("QProgressBar::chunk { background-color: %1; border-radius: 3px; }").arg(color));
 
     QPushButton *okBtn = ui->buttonBox->button(QDialogButtonBox::Ok);
 
@@ -117,8 +113,7 @@ void EncryptDialog::updateValidation()
     okBtn->setEnabled(true);
 }
 
-void EncryptDialog::onAccept()
-{
+void EncryptDialog::onAccept() {
     if (ui->editPassword->text() == ui->editConfirm->text() && !ui->editPassword->text().isEmpty()) {
         accept();
     }

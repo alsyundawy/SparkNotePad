@@ -22,34 +22,41 @@
 #include <QJsonArray>
 #include <QRegularExpression>
 
-QString CodeCompressPretty::languageName(Language lang)
-{
+QString CodeCompressPretty::languageName(Language lang) {
     switch (lang) {
-    case Json: return QStringLiteral("JSON");
-    case Json5: return QStringLiteral("JSON5");
-    case Css: return QStringLiteral("CSS");
-    case JavaScript: return QStringLiteral("JavaScript");
-    default: return QStringLiteral("Auto");
+        case Json:
+            return QStringLiteral("JSON");
+        case Json5:
+            return QStringLiteral("JSON5");
+        case Css:
+            return QStringLiteral("CSS");
+        case JavaScript:
+            return QStringLiteral("JavaScript");
+        default:
+            return QStringLiteral("Auto");
     }
 }
 
 #if !defined(UNIT_TESTING)
-CodeCompressPretty::Language CodeCompressPretty::detectLanguage(ScintillaNext *editor, const QString &sample)
-{
+CodeCompressPretty::Language CodeCompressPretty::detectLanguage(ScintillaNext *editor, const QString &sample) {
     if (editor && editor->isFile()) {
         const QString ext = QFileInfo(editor->filePath()).suffix().toLower();
-        if (ext == QLatin1String("json")) return Json;
-        if (ext == QLatin1String("json5")) return Json5;
-        if (ext == QLatin1String("css") || ext == QLatin1String("scss") || ext == QLatin1String("less")) return Css;
-        if (ext == QLatin1String("js") || ext == QLatin1String("mjs") || ext == QLatin1String("cjs") || ext == QLatin1String("ts") || ext == QLatin1String("jsx")) return JavaScript;
+        if (ext == QLatin1String("json"))
+            return Json;
+        if (ext == QLatin1String("json5"))
+            return Json5;
+        if (ext == QLatin1String("css") || ext == QLatin1String("scss") || ext == QLatin1String("less"))
+            return Css;
+        if (ext == QLatin1String("js") || ext == QLatin1String("mjs") || ext == QLatin1String("cjs") ||
+            ext == QLatin1String("ts") || ext == QLatin1String("jsx"))
+            return JavaScript;
     }
 
     return detectLanguage(sample);
 }
 #endif
 
-CodeCompressPretty::Language CodeCompressPretty::detectLanguage(const QString &sample)
-{
+CodeCompressPretty::Language CodeCompressPretty::detectLanguage(const QString &sample) {
     const QString text = sample.trimmed();
     if ((text.startsWith('{') || text.startsWith('[')) && (text.endsWith('}') || text.endsWith(']'))) {
         if (text.contains(QLatin1String("//")) || text.contains(QLatin1String("/*")) || text.contains('\'')) {
@@ -59,21 +66,22 @@ CodeCompressPretty::Language CodeCompressPretty::detectLanguage(const QString &s
     }
 
     if (text.contains('{') && text.contains('}') && text.contains(':') && text.contains(';')) {
-        if (text.contains(QStringLiteral("function")) || text.contains(QStringLiteral("const ")) || text.contains(QStringLiteral("let ")) || text.contains(QStringLiteral("var "))) {
+        if (text.contains(QStringLiteral("function")) || text.contains(QStringLiteral("const ")) ||
+            text.contains(QStringLiteral("let ")) || text.contains(QStringLiteral("var "))) {
             return JavaScript;
         }
         return Css;
     }
 
-    if (text.contains(QStringLiteral("function")) || text.contains(QStringLiteral("const ")) || text.contains(QStringLiteral("let ")) || text.contains(QStringLiteral("=>"))) {
+    if (text.contains(QStringLiteral("function")) || text.contains(QStringLiteral("const ")) ||
+        text.contains(QStringLiteral("let ")) || text.contains(QStringLiteral("=>"))) {
         return JavaScript;
     }
 
     return Json;
 }
 
-static QString cleanJson5(const QString &input)
-{
+static QString cleanJson5(const QString &input) {
     QString text = input;
 
     // 1. Remove single-line comments // ...
@@ -95,8 +103,7 @@ static QString cleanJson5(const QString &input)
     return text;
 }
 
-CodeCompressPretty::Result CodeCompressPretty::prettifyJson(const QString &text, bool isJson5)
-{
+CodeCompressPretty::Result CodeCompressPretty::prettifyJson(const QString &text, bool isJson5) {
     const QString parseTarget = isJson5 ? cleanJson5(text) : text;
     QJsonParseError err;
     const QJsonDocument doc = QJsonDocument::fromJson(parseTarget.toUtf8(), &err);
@@ -109,8 +116,7 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJson(const QString &text,
     return {true, false, isJson5 ? Json5 : Json, text, formatted, QString()};
 }
 
-CodeCompressPretty::Result CodeCompressPretty::compressJson(const QString &text, bool isJson5)
-{
+CodeCompressPretty::Result CodeCompressPretty::compressJson(const QString &text, bool isJson5) {
     const QString parseTarget = isJson5 ? cleanJson5(text) : text;
     QJsonParseError err;
     const QJsonDocument doc = QJsonDocument::fromJson(parseTarget.toUtf8(), &err);
@@ -123,8 +129,7 @@ CodeCompressPretty::Result CodeCompressPretty::compressJson(const QString &text,
     return {true, false, isJson5 ? Json5 : Json, text, formatted, QString()};
 }
 
-CodeCompressPretty::Result CodeCompressPretty::compressCss(const QString &text)
-{
+CodeCompressPretty::Result CodeCompressPretty::compressCss(const QString &text) {
     QString res = text;
 
     // 1. Remove comments /* ... */
@@ -142,8 +147,7 @@ CodeCompressPretty::Result CodeCompressPretty::compressCss(const QString &text)
     return {true, false, Css, text, res.trimmed(), QString()};
 }
 
-CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text)
-{
+CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text) {
     // First normalize to compressed base
     const auto compressed = compressCss(text);
     if (!compressed.success) {
@@ -181,8 +185,7 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text)
     return {true, false, Css, text, res.trimmed() + QStringLiteral("\n"), QString()};
 }
 
-CodeCompressPretty::Result CodeCompressPretty::compressJs(const QString &text)
-{
+CodeCompressPretty::Result CodeCompressPretty::compressJs(const QString &text) {
     QString res;
     res.reserve(text.length());
 
@@ -226,11 +229,13 @@ CodeCompressPretty::Result CodeCompressPretty::compressJs(const QString &text)
         } else if (c == '/' && i + 1 < n && text[i + 1] == '/') {
             // Skip single-line comment
             i += 2;
-            while (i < n && text[i] != '\n') i++;
+            while (i < n && text[i] != '\n')
+                i++;
         } else if (c == '/' && i + 1 < n && text[i + 1] == '*') {
             // Skip multi-line comment
             i += 2;
-            while (i + 1 < n && !(text[i] == '*' && text[i + 1] == '/')) i++;
+            while (i + 1 < n && !(text[i] == '*' && text[i + 1] == '/'))
+                i++;
             i++;
         } else {
             res += c;
@@ -246,8 +251,7 @@ CodeCompressPretty::Result CodeCompressPretty::compressJs(const QString &text)
     return {true, false, JavaScript, text, res.trimmed(), QString()};
 }
 
-CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text)
-{
+CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text) {
     // Token-aware simple formatter
     QString res;
     res.reserve(text.length() * 2);
@@ -263,16 +267,22 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text)
         const QChar c = text[i];
         if (inSingle) {
             res += c;
-            if (c == '\\' && i + 1 < n) res += text[++i];
-            else if (c == '\'') inSingle = false;
+            if (c == '\\' && i + 1 < n)
+                res += text[++i];
+            else if (c == '\'')
+                inSingle = false;
         } else if (inDouble) {
             res += c;
-            if (c == '\\' && i + 1 < n) res += text[++i];
-            else if (c == '\"') inDouble = false;
+            if (c == '\\' && i + 1 < n)
+                res += text[++i];
+            else if (c == '\"')
+                inDouble = false;
         } else if (inBacktick) {
             res += c;
-            if (c == '\\' && i + 1 < n) res += text[++i];
-            else if (c == '`') inBacktick = false;
+            if (c == '\\' && i + 1 < n)
+                res += text[++i];
+            else if (c == '`')
+                inBacktick = false;
         } else if (c == '\'') {
             inSingle = true;
             res += c;
@@ -309,49 +319,46 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text)
     return {true, false, JavaScript, text, res.trimmed() + QStringLiteral("\n"), QString()};
 }
 
-CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &text, Language lang)
-{
+CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &text, Language lang) {
     if (lang == Auto) {
         lang = detectLanguage(text);
     }
 
     switch (lang) {
-    case Json:
-        return prettifyJson(text, false);
-    case Json5:
-        return prettifyJson(text, true);
-    case Css:
-        return prettifyCss(text);
-    case JavaScript:
-        return prettifyJs(text);
-    default:
-        return prettifyJson(text, false);
+        case Json:
+            return prettifyJson(text, false);
+        case Json5:
+            return prettifyJson(text, true);
+        case Css:
+            return prettifyCss(text);
+        case JavaScript:
+            return prettifyJs(text);
+        default:
+            return prettifyJson(text, false);
     }
 }
 
-CodeCompressPretty::Result CodeCompressPretty::compressString(const QString &text, Language lang)
-{
+CodeCompressPretty::Result CodeCompressPretty::compressString(const QString &text, Language lang) {
     if (lang == Auto) {
         lang = detectLanguage(text);
     }
 
     switch (lang) {
-    case Json:
-        return compressJson(text, false);
-    case Json5:
-        return compressJson(text, true);
-    case Css:
-        return compressCss(text);
-    case JavaScript:
-        return compressJs(text);
-    default:
-        return compressJson(text, false);
+        case Json:
+            return compressJson(text, false);
+        case Json5:
+            return compressJson(text, true);
+        case Css:
+            return compressCss(text);
+        case JavaScript:
+            return compressJs(text);
+        default:
+            return compressJson(text, false);
     }
 }
 
 #if !defined(UNIT_TESTING)
-CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, Language lang)
-{
+CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, Language lang) {
     if (!editor) {
         return {false, false, lang, QString(), QString(), QStringLiteral("No active editor")};
     }
@@ -392,8 +399,7 @@ CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, L
     return result;
 }
 
-CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, Language lang)
-{
+CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, Language lang) {
     if (!editor) {
         return {false, false, lang, QString(), QString(), QStringLiteral("No active editor")};
     }

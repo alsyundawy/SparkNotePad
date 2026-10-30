@@ -21,18 +21,13 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "UndoAction.h"
 #include "ScintillaNext.h"
 
-UndoAction::UndoAction(ScintillaNext *editor) :
-    editor(editor)
-{
+UndoAction::UndoAction(ScintillaNext *editor) : editor(editor) {
     editor->beginUndoAction();
 }
 
-UndoAction::~UndoAction()
-{
+UndoAction::~UndoAction() {
     editor->endUndoAction();
 }
-

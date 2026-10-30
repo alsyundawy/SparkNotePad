@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "PreferencesDialog.h"
 #include "NotepadNextApplication.h"
 #include "TranslationManager.h"
@@ -32,12 +31,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-
-PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent) :
-    QDialog(parent, Qt::Tool),
-    ui(new Ui::PreferencesDialog),
-    settings(settings)
-{
+PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent)
+    : QDialog(parent, Qt::Tool), ui(new Ui::PreferencesDialog), settings(settings) {
     ui->setupUi(this);
 
     QIcon icon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
@@ -46,26 +41,38 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     ui->labelAppRestartIcon->hide();
     ui->labelAppRestart->hide();
 
-    MapSettingToCheckBox(ui->checkBoxMenuBar, &ApplicationSettings::showMenuBar, &ApplicationSettings::setShowMenuBar, &ApplicationSettings::showMenuBarChanged);
-    MapSettingToCheckBox(ui->checkBoxToolBar, &ApplicationSettings::showToolBar, &ApplicationSettings::setShowToolBar, &ApplicationSettings::showToolBarChanged);
-    MapSettingToCheckBox(ui->checkBoxStatusBar, &ApplicationSettings::showStatusBar, &ApplicationSettings::setShowStatusBar, &ApplicationSettings::showStatusBarChanged);
-    MapSettingToCheckBox(ui->checkBoxRecenterSearchDialog, &ApplicationSettings::centerSearchDialog, &ApplicationSettings::setCenterSearchDialog, &ApplicationSettings::centerSearchDialogChanged);
+    MapSettingToCheckBox(ui->checkBoxMenuBar, &ApplicationSettings::showMenuBar, &ApplicationSettings::setShowMenuBar,
+                         &ApplicationSettings::showMenuBarChanged);
+    MapSettingToCheckBox(ui->checkBoxToolBar, &ApplicationSettings::showToolBar, &ApplicationSettings::setShowToolBar,
+                         &ApplicationSettings::showToolBarChanged);
+    MapSettingToCheckBox(ui->checkBoxStatusBar, &ApplicationSettings::showStatusBar,
+                         &ApplicationSettings::setShowStatusBar, &ApplicationSettings::showStatusBarChanged);
+    MapSettingToCheckBox(ui->checkBoxRecenterSearchDialog, &ApplicationSettings::centerSearchDialog,
+                         &ApplicationSettings::setCenterSearchDialog, &ApplicationSettings::centerSearchDialogChanged);
 
-    MapSettingToGroupBox(ui->gbxRestorePreviousSession, &ApplicationSettings::restorePreviousSession, &ApplicationSettings::setRestorePreviousSession, &ApplicationSettings::restorePreviousSessionChanged);
+    MapSettingToGroupBox(ui->gbxRestorePreviousSession, &ApplicationSettings::restorePreviousSession,
+                         &ApplicationSettings::setRestorePreviousSession,
+                         &ApplicationSettings::restorePreviousSessionChanged);
     connect(ui->gbxRestorePreviousSession, &QGroupBox::toggled, this, [=, this](bool checked) {
         if (!checked) {
             ui->checkBoxUnsavedFiles->setChecked(false);
             ui->checkBoxRestoreTempFiles->setChecked(false);
-        }
-        else {
-            QMessageBox::warning(this, tr("Warning"), tr("This feature is experimental and it should not be considered safe for critically important work. It may lead to possible data loss. Use at your own risk."));
+        } else {
+            QMessageBox::warning(this, tr("Warning"),
+                                 tr("This feature is experimental and it should not be considered safe for critically "
+                                    "important work. It may lead to possible data loss. Use at your own risk."));
         }
     });
 
-    MapSettingToCheckBox(ui->checkBoxUnsavedFiles, &ApplicationSettings::restoreUnsavedFiles, &ApplicationSettings::setRestoreUnsavedFiles, &ApplicationSettings::restoreUnsavedFilesChanged);
-    MapSettingToCheckBox(ui->checkBoxRestoreTempFiles, &ApplicationSettings::restoreTempFiles, &ApplicationSettings::setRestoreTempFiles, &ApplicationSettings::restoreTempFilesChanged);
+    MapSettingToCheckBox(ui->checkBoxUnsavedFiles, &ApplicationSettings::restoreUnsavedFiles,
+                         &ApplicationSettings::setRestoreUnsavedFiles,
+                         &ApplicationSettings::restoreUnsavedFilesChanged);
+    MapSettingToCheckBox(ui->checkBoxRestoreTempFiles, &ApplicationSettings::restoreTempFiles,
+                         &ApplicationSettings::setRestoreTempFiles, &ApplicationSettings::restoreTempFilesChanged);
 
-    MapSettingToCheckBox(ui->checkBoxCombineSearchResults, &ApplicationSettings::combineSearchResults, &ApplicationSettings::setCombineSearchResults, &ApplicationSettings::combineSearchResultsChanged);
+    MapSettingToCheckBox(ui->checkBoxCombineSearchResults, &ApplicationSettings::combineSearchResults,
+                         &ApplicationSettings::setCombineSearchResults,
+                         &ApplicationSettings::combineSearchResultsChanged);
 
     populateTranslationComboBox();
     connect(ui->comboBoxTranslation, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=, this](int index) {
@@ -73,18 +80,19 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
         showApplicationRestartRequired();
     });
 
-    MapSettingToCheckBox(ui->checkBoxExitOnLastTabClosed, &ApplicationSettings::exitOnLastTabClosed, &ApplicationSettings::setExitOnLastTabClosed, &ApplicationSettings::exitOnLastTabClosedChanged);
+    MapSettingToCheckBox(ui->checkBoxExitOnLastTabClosed, &ApplicationSettings::exitOnLastTabClosed,
+                         &ApplicationSettings::setExitOnLastTabClosed,
+                         &ApplicationSettings::exitOnLastTabClosedChanged);
 
     ui->fcbDefaultFont->setCurrentFont(QFont(settings->fontName()));
-    connect(ui->fcbDefaultFont, &QFontComboBox::currentFontChanged, this, [=, this](const QFont &f) {
-        settings->setFontName(f.family());
-    });
-    connect(settings, &ApplicationSettings::fontNameChanged, this, [=, this](QString fontName){
-        ui->fcbDefaultFont->setCurrentFont(QFont(fontName));
-    });
+    connect(ui->fcbDefaultFont, &QFontComboBox::currentFontChanged, this,
+            [=, this](const QFont &f) { settings->setFontName(f.family()); });
+    connect(settings, &ApplicationSettings::fontNameChanged, this,
+            [=, this](QString fontName) { ui->fcbDefaultFont->setCurrentFont(QFont(fontName)); });
 
     ui->spbDefaultFontSize->setValue(settings->fontSize());
-    connect(ui->spbDefaultFontSize, QOverload<int>::of(&QSpinBox::valueChanged), settings, &ApplicationSettings::setFontSize);
+    connect(ui->spbDefaultFontSize, QOverload<int>::of(&QSpinBox::valueChanged), settings,
+            &ApplicationSettings::setFontSize);
     connect(settings, &ApplicationSettings::fontSizeChanged, ui->spbDefaultFontSize, &QSpinBox::setValue);
 
     ui->comboBoxLineEndings->addItem(tr("System Default"), QString(""));
@@ -96,26 +104,35 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     int index = ui->comboBoxLineEndings->findData(settings->defaultEOLMode());
     ui->comboBoxLineEndings->setCurrentIndex(index == -1 ? 0 : index);
 
-    connect(ui->comboBoxLineEndings, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=, this](int index) {
-        settings->setDefaultEOLMode(ui->comboBoxLineEndings->itemData(index).toString());
-    });
+    connect(ui->comboBoxLineEndings, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            [=, this](int index) { settings->setDefaultEOLMode(ui->comboBoxLineEndings->itemData(index).toString()); });
     connect(settings, &ApplicationSettings::defaultEOLModeChanged, this, [=, this](QString defaultEOLMode) {
         int index = ui->comboBoxLineEndings->findData(defaultEOLMode);
         ui->comboBoxLineEndings->setCurrentIndex(index == -1 ? 0 : index);
     });
 
-    MapSettingToCheckBox(ui->checkBoxHighlightURLs, &ApplicationSettings::urlHighlighting, &ApplicationSettings::setURLHighlighting, &ApplicationSettings::urlHighlightingChanged);
+    MapSettingToCheckBox(ui->checkBoxHighlightURLs, &ApplicationSettings::urlHighlighting,
+                         &ApplicationSettings::setURLHighlighting, &ApplicationSettings::urlHighlightingChanged);
     ui->spinBoxUrlThreshold->setValue(settings->urlThreshold());
     connect(ui->spinBoxUrlThreshold, &QSpinBox::valueChanged, settings, &ApplicationSettings::setUrlThreshold);
     connect(settings, &ApplicationSettings::urlThresholdChanged, ui->spinBoxUrlThreshold, &QSpinBox::setValue);
-    MapSettingToCheckBox(ui->checkBoxShowLineNumbers, &ApplicationSettings::showLineNumbers, &ApplicationSettings::setShowLineNumbers, &ApplicationSettings::showLineNumbersChanged);
-    MapSettingToCheckBox(ui->checkBoxShowChangeHistory, &ApplicationSettings::showChangeHistory, &ApplicationSettings::setShowChangeHistory, &ApplicationSettings::showChangeHistoryChanged);
-    MapSettingToCheckBox(ui->checkBoxAutoCompletion, &ApplicationSettings::autoCompletion, &ApplicationSettings::setAutoCompletion, &ApplicationSettings::autoCompletionChanged);
-    MapSettingToCheckBox(ui->checkBoxAutoCloseBrackets, &ApplicationSettings::autoCloseBrackets, &ApplicationSettings::setAutoCloseBrackets, &ApplicationSettings::autoCloseBracketsChanged);
-    MapSettingToCheckBox(ui->checkBoxAutoCloseQuotes, &ApplicationSettings::autoCloseQuotes, &ApplicationSettings::setAutoCloseQuotes, &ApplicationSettings::autoCloseQuotesChanged);
-    MapSettingToCheckBox(ui->checkBoxSmartAutoIndent, &ApplicationSettings::smartAutoIndent, &ApplicationSettings::setSmartAutoIndent, &ApplicationSettings::smartAutoIndentChanged);
-    MapSettingToCheckBox(ui->checkBoxColorPreviewCallTip, &ApplicationSettings::colorPreviewCallTip, &ApplicationSettings::setColorPreviewCallTip, &ApplicationSettings::colorPreviewCallTipChanged);
-    MapSettingToCheckBox(ui->checkBoxPreserveFileTime, &ApplicationSettings::preserveFileTime, &ApplicationSettings::setPreserveFileTime, &ApplicationSettings::preserveFileTimeChanged);
+    MapSettingToCheckBox(ui->checkBoxShowLineNumbers, &ApplicationSettings::showLineNumbers,
+                         &ApplicationSettings::setShowLineNumbers, &ApplicationSettings::showLineNumbersChanged);
+    MapSettingToCheckBox(ui->checkBoxShowChangeHistory, &ApplicationSettings::showChangeHistory,
+                         &ApplicationSettings::setShowChangeHistory, &ApplicationSettings::showChangeHistoryChanged);
+    MapSettingToCheckBox(ui->checkBoxAutoCompletion, &ApplicationSettings::autoCompletion,
+                         &ApplicationSettings::setAutoCompletion, &ApplicationSettings::autoCompletionChanged);
+    MapSettingToCheckBox(ui->checkBoxAutoCloseBrackets, &ApplicationSettings::autoCloseBrackets,
+                         &ApplicationSettings::setAutoCloseBrackets, &ApplicationSettings::autoCloseBracketsChanged);
+    MapSettingToCheckBox(ui->checkBoxAutoCloseQuotes, &ApplicationSettings::autoCloseQuotes,
+                         &ApplicationSettings::setAutoCloseQuotes, &ApplicationSettings::autoCloseQuotesChanged);
+    MapSettingToCheckBox(ui->checkBoxSmartAutoIndent, &ApplicationSettings::smartAutoIndent,
+                         &ApplicationSettings::setSmartAutoIndent, &ApplicationSettings::smartAutoIndentChanged);
+    MapSettingToCheckBox(ui->checkBoxColorPreviewCallTip, &ApplicationSettings::colorPreviewCallTip,
+                         &ApplicationSettings::setColorPreviewCallTip,
+                         &ApplicationSettings::colorPreviewCallTipChanged);
+    MapSettingToCheckBox(ui->checkBoxPreserveFileTime, &ApplicationSettings::preserveFileTime,
+                         &ApplicationSettings::setPreserveFileTime, &ApplicationSettings::preserveFileTimeChanged);
 
     QButtonGroup *buttonGroup = new QButtonGroup(this);
     buttonGroup->addButton(ui->radioFollowCurrentDirectory, ApplicationSettings::FollowCurrentDocument);
@@ -123,18 +140,20 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     buttonGroup->addButton(ui->radioHardCoded, ApplicationSettings::HardCoded);
 
     connect(buttonGroup, &QButtonGroup::idClicked, this, [=, this](int id) {
-        ApplicationSettings::DefaultDirectoryBehaviorEnum e = static_cast<ApplicationSettings::DefaultDirectoryBehaviorEnum>(id);
+        ApplicationSettings::DefaultDirectoryBehaviorEnum e =
+            static_cast<ApplicationSettings::DefaultDirectoryBehaviorEnum>(id);
         settings->setDefaultDirectoryBehavior(e);
     });
 
-    connect(ui->radioHardCoded, &QRadioButton::toggled, this, [=, this](bool checked){
+    connect(ui->radioHardCoded, &QRadioButton::toggled, this, [=, this](bool checked) {
         ui->btnSelectHardCodedPath->setEnabled(checked);
         ui->txtHardCodedPath->setEnabled(checked);
     });
 
     connect(ui->btnSelectHardCodedPath, &QToolButton::clicked, this, [=, this]() {
         QString dir = QFileDialog::getExistingDirectory(this, tr("Default Directory"));
-        if (dir.isEmpty()) return; // user cancelled
+        if (dir.isEmpty())
+            return;  // user cancelled
 
         settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(dir));
@@ -152,26 +171,22 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
 
     if (settings->defaultDirectoryBehavior() == ApplicationSettings::HardCoded) {
         ui->txtHardCodedPath->setText((QDir::toNativeSeparators(settings->defaultDirectory())));
-    }
-    else {
+    } else {
         ui->txtHardCodedPath->setText(QString());
     }
 }
 
-PreferencesDialog::~PreferencesDialog()
-{
+PreferencesDialog::~PreferencesDialog() {
     delete ui;
 }
 
-void PreferencesDialog::showApplicationRestartRequired() const
-{
+void PreferencesDialog::showApplicationRestartRequired() const {
     ui->labelAppRestartIcon->show();
     ui->labelAppRestart->show();
 }
 
-template<typename Func1, typename Func2, typename Func3>
-void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, Func2 setter, Func3 notifier) const
-{
+template <typename Func1, typename Func2, typename Func3>
+void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, Func2 setter, Func3 notifier) const {
     // Get the value and set the checkbox state
     checkBox->setChecked(std::bind(getter, settings)());
 
@@ -180,9 +195,8 @@ void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, 
     connect(checkBox, &QCheckBox::toggled, settings, setter);
 }
 
-template<typename Func1, typename Func2, typename Func3>
-void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, Func2 setter, Func3 notifier) const
-{
+template <typename Func1, typename Func2, typename Func3>
+void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, Func2 setter, Func3 notifier) const {
     // Get the value and set the checkbox state
     groupBox->setChecked(std::bind(getter, settings)());
 
@@ -191,16 +205,14 @@ void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, 
     connect(groupBox, &QGroupBox::toggled, settings, setter);
 }
 
-void PreferencesDialog::populateTranslationComboBox()
-{
+void PreferencesDialog::populateTranslationComboBox() {
     NotepadNextApplication *app = qobject_cast<NotepadNextApplication *>(qApp);
 
     // Add the system default at the top
     ui->comboBoxTranslation->addItem(tr("<System Default>"), QStringLiteral(""));
 
     // TODO: sort this list and keep the system default at the top
-    for (const auto &localeName : app->getTranslationManager()->availableTranslations())
-    {
+    for (const auto &localeName : app->getTranslationManager()->availableTranslations()) {
         QLocale locale(localeName);
         const QString localeDisplay = TranslationManager::FormatLocaleTerritoryAndLanguage(locale);
         ui->comboBoxTranslation->addItem(localeDisplay, localeName);

@@ -21,17 +21,12 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "ColumnEditorDialog.h"
 #include "UndoAction.h"
 #include "ui_ColumnEditorDialog.h"
 
-
-ColumnEditorDialog::ColumnEditorDialog(MainWindow *parent) :
-    QDialog(parent),
-    ui(new Ui::ColumnEditorDialog),
-    parent(parent)
-{
+ColumnEditorDialog::ColumnEditorDialog(MainWindow *parent)
+    : QDialog(parent), ui(new Ui::ColumnEditorDialog), parent(parent) {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->setupUi(this);
@@ -42,19 +37,14 @@ ColumnEditorDialog::ColumnEditorDialog(MainWindow *parent) :
     ui->sbxStep->setMaximum(std::numeric_limits<int>::max());
     ui->sbxStep->setMinimum(std::numeric_limits<int>::min());
 
-    connect(ui->gbxText, &QGroupBox::toggled, ui->gbxNumbers, [=, this](bool on) {
-        ui->gbxNumbers->setChecked(!on);
-    });
+    connect(ui->gbxText, &QGroupBox::toggled, ui->gbxNumbers, [=, this](bool on) { ui->gbxNumbers->setChecked(!on); });
 
-    connect(ui->gbxNumbers, &QGroupBox::toggled, ui->gbxText, [=, this](bool on) {
-        ui->gbxText->setChecked(!on);
-    });
+    connect(ui->gbxNumbers, &QGroupBox::toggled, ui->gbxText, [=, this](bool on) { ui->gbxText->setChecked(!on); });
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, [=, this]() {
         if (ui->gbxText->isChecked() && !ui->txtText->text().isEmpty()) {
             insertTextStartingAtCurrentColumn([=, this]() { return ui->txtText->text(); });
-        }
-        else if (ui->gbxNumbers->isChecked()) {
+        } else if (ui->gbxNumbers->isChecked()) {
             int currentValue = ui->sbxStart->value();
             insertTextStartingAtCurrentColumn([&currentValue, this]() {
                 const QString s = QString::number(currentValue);
@@ -64,16 +54,14 @@ ColumnEditorDialog::ColumnEditorDialog(MainWindow *parent) :
         }
     });
 
-     ui->txtText->setFocus();
+    ui->txtText->setFocus();
 }
 
-ColumnEditorDialog::~ColumnEditorDialog()
-{
+ColumnEditorDialog::~ColumnEditorDialog() {
     delete ui;
 }
 
-void ColumnEditorDialog::insertTextStartingAtCurrentColumn(const std::function<QString ()> &f)
-{
+void ColumnEditorDialog::insertTextStartingAtCurrentColumn(const std::function<QString()> &f) {
     ScintillaNext *editor = parent->currentEditor();
 
     if (editor->selectionMode() == SC_SEL_STREAM && editor->selections() == 1 && editor->selectionEmpty()) {
@@ -86,14 +74,13 @@ void ColumnEditorDialog::insertTextStartingAtCurrentColumn(const std::function<Q
         for (int line = editor->lineFromPosition(currentPos); line < editor->lineCount(); ++line) {
             insertTextAtColumn(editor, line, currentColumn, f());
         }
-    }
-    else/* if (editor->selectionMode() == SC_SEL_RECTANGLE || editor->selections() > 0)*/ {
+    } else /* if (editor->selectionMode() == SC_SEL_RECTANGLE || editor->selections() > 0)*/ {
         const int totalSelections = editor->selections();
 
         // TODO: sort selections from top to bottom?
 
         const UndoAction ua(editor);
-        for(int selection = 0; selection < totalSelections; ++selection) {
+        for (int selection = 0; selection < totalSelections; ++selection) {
             const int start = editor->selectionNStart(selection) + editor->selectionNStartVirtualSpace(selection);
             const int end = editor->selectionNEnd(selection) + editor->selectionNEndVirtualSpace(selection);
 
@@ -103,8 +90,7 @@ void ColumnEditorDialog::insertTextStartingAtCurrentColumn(const std::function<Q
     }
 }
 
-void ColumnEditorDialog::insertTextAtColumn(ScintillaNext *editor, int line, int column, const QString &str)
-{
+void ColumnEditorDialog::insertTextAtColumn(ScintillaNext *editor, int line, int column, const QString &str) {
     const int lineEndPosition = editor->lineEndPosition(line);
     const int lineEndColumn = editor->column(lineEndPosition);
 
@@ -114,8 +100,7 @@ void ColumnEditorDialog::insertTextAtColumn(ScintillaNext *editor, int line, int
 
         editor->setTargetStartVirtualSpace(column - lineEndColumn);
         editor->setTargetEndVirtualSpace(column - lineEndColumn);
-    }
-    else {
+    } else {
         const int pos = editor->findColumn(line, column);
 
         editor->setTargetRange(pos, pos);

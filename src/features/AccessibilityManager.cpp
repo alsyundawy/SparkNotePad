@@ -20,23 +20,16 @@
 #include <QToolBar>
 #include <QStatusBar>
 
-AccessibilityManager *AccessibilityManager::instance()
-{
+AccessibilityManager *AccessibilityManager::instance() {
     static AccessibilityManager s_instance;
     return &s_instance;
 }
 
-AccessibilityManager::AccessibilityManager(QObject *parent)
-    : QObject(parent)
-{
-}
+AccessibilityManager::AccessibilityManager(QObject *parent) : QObject(parent) {}
 
-AccessibilityManager::~AccessibilityManager()
-{
-}
+AccessibilityManager::~AccessibilityManager() {}
 
-void AccessibilityManager::setupAccessibility(MainWindow *window)
-{
+void AccessibilityManager::setupAccessibility(MainWindow *window) {
     m_window = window;
     if (!window)
         return;
@@ -59,8 +52,7 @@ void AccessibilityManager::setupAccessibility(MainWindow *window)
     }
 }
 
-void AccessibilityManager::announce(QWidget *context, const QString &message)
-{
+void AccessibilityManager::announce(QWidget *context, const QString &message) {
     if (message.isEmpty())
         return;
 
@@ -79,28 +71,21 @@ void AccessibilityManager::announce(QWidget *context, const QString &message)
 #endif
 }
 
-void AccessibilityManager::announceDocumentState(ScintillaNext *editor, int index, int total)
-{
+void AccessibilityManager::announceDocumentState(ScintillaNext *editor, int index, int total) {
     if (!editor)
         return;
 
     QString dirty = editor->isSavedToDisk() ? QString() : tr(" (unsaved)");
-    QString msg = tr("Document %1 of %2: %3%4")
-                      .arg(index + 1)
-                      .arg(total)
-                      .arg(editor->getName())
-                      .arg(dirty);
+    QString msg = tr("Document %1 of %2: %3%4").arg(index + 1).arg(total).arg(editor->getName()).arg(dirty);
 
     editor->setAccessibleName(tr("Editor: %1").arg(editor->getName()));
-    editor->setAccessibleDescription(tr("Text editing area for %1. Total lines: %2.")
-                                         .arg(editor->getName())
-                                         .arg(editor->lineCount()));
+    editor->setAccessibleDescription(
+        tr("Text editing area for %1. Total lines: %2.").arg(editor->getName()).arg(editor->lineCount()));
 
     announce(editor, msg);
 }
 
-void AccessibilityManager::openAccessibilityHelp(QWidget *parent)
-{
+void AccessibilityManager::openAccessibilityHelp(QWidget *parent) {
     AccessibilityHelpDialog dlg(parent);
     dlg.exec();
 }

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -21,8 +22,7 @@ namespace Ui {
 class RunDialog;
 }
 
-class RunDialog : public QDialog
-{
+class RunDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -45,4 +45,4 @@ private:
     ScintillaNext *m_editor;
 };
 
-#endif // RUNDIALOG_H
+#endif  // RUNDIALOG_H

@@ -21,7 +21,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "DockedEditor.h"
 #include "DockAreaTabBar.h"
 #include "DockAreaWidget.h"
@@ -34,11 +33,9 @@
 
 #include <QUuid>
 
-
-class DockedEditorComponentsFactory : public ads::CDockComponentsFactory
-{
+class DockedEditorComponentsFactory : public ads::CDockComponentsFactory {
 public:
-    ads::CDockAreaTitleBar* createDockAreaTitleBar(ads::CDockAreaWidget* DockArea) const {
+    ads::CDockAreaTitleBar *createDockAreaTitleBar(ads::CDockAreaWidget *DockArea) const {
         DockedEditorTitleBar *titleBar = new DockedEditorTitleBar(DockArea);
 
         // Disable the built in context menu for the title bar since it has options we don't want
@@ -48,9 +45,7 @@ public:
     }
 };
 
-
-DockedEditor::DockedEditor(QWidget *parent) : QObject(parent)
-{
+DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
     ads::CDockComponentsFactory::setFactory(new DockedEditorComponentsFactory());
 
     ads::CDockManager::setConfigFlag(ads::CDockManager::AllTabsHaveCloseButton, true);
@@ -61,7 +56,7 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent)
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasCloseButton, false);
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton, false);
     // When tabs title/text elide disabled and lots of tabs opened, tabs menu button will not show
-    // as it only shows when tab title elided. 
+    // as it only shows when tab title elided.
     // So disable dynamic tabs menu visibility.
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaDynamicTabsMenuButtonVisibility, false);
     ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
@@ -72,17 +67,18 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent)
     dockManager = new ads::CDockManager(parent);
     dockManager->setStyleSheet("");
 
-    connect(dockManager, &ads::CDockManager::focusedDockWidgetChanged, this, [=, this](ads::CDockWidget* old, ads::CDockWidget* now) {
-        Q_UNUSED(old)
+    connect(dockManager, &ads::CDockManager::focusedDockWidgetChanged, this,
+            [=, this](ads::CDockWidget *old, ads::CDockWidget *now) {
+                Q_UNUSED(old)
 
-        ScintillaNext *editor = qobject_cast<ScintillaNext *>(now->widget());
+                ScintillaNext *editor = qobject_cast<ScintillaNext *>(now->widget());
 
-        currentEditor = editor;
-        editor->grabFocus();
-        emit editorActivated(editor);
-    });
+                currentEditor = editor;
+                editor->grabFocus();
+                emit editorActivated(editor);
+            });
 
-    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [=, this](ads::CDockAreaWidget* DockArea) {
+    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [=, this](ads::CDockAreaWidget *DockArea) {
         DockedEditorTitleBar *titleBar = qobject_cast<DockedEditorTitleBar *>(DockArea->titleBar());
         connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);
 
@@ -96,18 +92,15 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent)
         // In theory the order changes when a new dock area is created (e.g. editor is dragged and dropped),
         // but the dockAreaCreated() signal is triggered before it is actually added to the CDockManager,
         // so interrogating the dock manager during the signal doesn't help.
-        //emit editorOrderChanged();
+        // emit editorOrderChanged();
     });
 }
 
-
-ScintillaNext *DockedEditor::getCurrentEditor() const
-{
+ScintillaNext *DockedEditor::getCurrentEditor() const {
     return currentEditor;
 }
 
-int DockedEditor::count() const
-{
+int DockedEditor::count() const {
     int total = 0;
 
     for (int i = 0; i < dockManager->dockAreaCount(); ++i)
@@ -116,47 +109,42 @@ int DockedEditor::count() const
     return total;
 }
 
-QVector<ScintillaNext *> DockedEditor::editors() const
-{
+QVector<ScintillaNext *> DockedEditor::editors() const {
     QVector<ScintillaNext *> editors;
 
     // For each area, for each widget, append it to our list
-    for (const ads::CDockAreaWidget* areaWidget : dockManager->openedDockAreas()) {
-        for (const ads::CDockWidget* dockWidget : areaWidget->dockWidgets()) {
-            editors.append(qobject_cast<ScintillaNext *>(dockWidget->widget()));
-        }
+    for (const ads::CDockAreaWidget *areaWidget : dockManager->openedDockAreas()) {
+        const auto &widgets = areaWidget->dockWidgets();
+        std::transform(
+            widgets.cbegin(), widgets.cend(), std::back_inserter(editors),
+            [](const ads::CDockWidget *dockWidget) { return qobject_cast<ScintillaNext *>(dockWidget->widget()); });
     }
 
     return editors;
 }
 
-void DockedEditor::switchToEditor(const ScintillaNext *editor)
-{
+void DockedEditor::switchToEditor(const ScintillaNext *editor) {
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
 
     if (dockWidget == Q_NULLPTR) {
         qWarning() << "Expected editor's parent to be CDockWidget";
-    }
-    else {
+    } else {
         dockWidget->raise();
     }
 }
 
-void DockedEditor::dockWidgetCloseRequested()
-{
+void DockedEditor::dockWidgetCloseRequested() {
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(sender());
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(dockWidget->widget());
 
     emit editorCloseRequested(editor);
 }
 
-ads::CDockAreaWidget *DockedEditor::currentDockArea() const
-{
+ads::CDockAreaWidget *DockedEditor::currentDockArea() const {
     return dockManager->focusedDockWidget() ? dockManager->focusedDockWidget()->dockAreaWidget() : latestDockArea;
 }
 
-void DockedEditor::addEditor(ScintillaNext *editor)
-{
+void DockedEditor::addEditor(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     Q_ASSERT(editor != Q_NULLPTR);
@@ -189,16 +177,14 @@ void DockedEditor::addEditor(ScintillaNext *editor)
     // Set the tooltip based on the buffer
     if (editor->isFile()) {
         dockWidget->tabWidget()->setToolTip(editor->getFilePath());
-    }
-    else {
+    } else {
         dockWidget->tabWidget()->setToolTip(editor->getName());
     }
 
     // Set the icon
     if (editor->readOnly()) {
         dockWidget->tabWidget()->setIcon(QIcon(":/icons/readonly.png"));
-    }
-    else {
+    } else {
         dockWidget->tabWidget()->setIcon(QIcon(editor->canSaveToDisk() ? ":/icons/unsaved.png" : ":/icons/saved.png"));
         connect(editor, &ScintillaNext::savePointChanged, dockWidget, [=, this](bool dirty) {
             Q_UNUSED(dirty)
@@ -219,8 +205,7 @@ void DockedEditor::addEditor(ScintillaNext *editor)
     emit editorAdded(editor);
 }
 
-void DockedEditor::editorRenamed(ScintillaNext *editor)
-{
+void DockedEditor::editorRenamed(ScintillaNext *editor) {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
@@ -229,14 +214,12 @@ void DockedEditor::editorRenamed(ScintillaNext *editor)
 
     if (editor->isFile()) {
         dockWidget->tabWidget()->setToolTip(editor->getFilePath());
-    }
-    else {
+    } else {
         dockWidget->tabWidget()->setToolTip(editor->getName());
     }
 }
 
-void DockedEditor::splitToRight(ScintillaNext *editor)
-{
+void DockedEditor::splitToRight(ScintillaNext *editor) {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *newDockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
@@ -248,8 +231,7 @@ void DockedEditor::splitToRight(ScintillaNext *editor)
     }
 }
 
-void DockedEditor::splitToBottom(ScintillaNext *editor)
-{
+void DockedEditor::splitToBottom(ScintillaNext *editor) {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *newDockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
