@@ -284,6 +284,8 @@ private:
     void onDisplayDiagnosticsTriggered();
     void onUserGuideTriggered();
     void onDeveloperGuideTriggered();
+    void onDocnoteTriggered();
+    void onChangelogTriggered();
     void onGenerateCertTriggered();
 
     QMenu *menuRun = nullptr;

@@ -34,7 +34,13 @@ SparkNotePad **v1.3.7** delivers a comprehensive suite of high-velocity develope
      - _URL_: Encode RFC1738, Encode RFC1738 by line, Encode Extended, Encode Extended by line, Encode Full (all non-alphanumeric chars), Encode Full by line, URL Decode.
    - **Converter Submenu**: Bidirectional ASCII <-> HEX and Decimal <-> HEX conversion.
    - **Relocated AES-256 Encryption**: Migrated from File menu into Tools for cleaner organization.
-2. **Developer Help & Web Documentation Navigation (Run Menu)**:
+2. **Developer Help & In-App Documentation Navigation**:
+   - **Help Menu `Docnote & Changelog` Submenu (`actionDocnote`, `actionChangelog`)**:
+     - Added dedicated `Docnote & Changelog` (`menuDocnoteAndChangelog`) submenu under the top-level **Help** menu (`menuHelp`).
+     - **Docnote** (`actionDocnote`): Instantly opens the comprehensive SparkNotePad release documentation note (`DOCNOTE.txt`) in an editor tab as plain text.
+     - **Changelog** (`actionChangelog`): Instantly opens the complete project changelog history (`CHANGELOG.txt`) in an editor tab as plain text.
+     - Native in-application viewing via `MainWindow::openFile()` without external dependencies.
+     - Embedded Qt application resource fallback (`:/doc/DOCNOTE.txt` and `:/doc/CHANGELOG.txt`), guaranteeing offline documentation access across standalone and portable environments.
    - Added instant documentation lookup with auto-selection or word-under-caret:
      - "Get PHP Help" (`Alt+F1` / Mac `Opt+F1`) -> `https://www.php.net/manual-lookup.php?pattern=` (or `https://www.php.net/`).
      - "Rust Documentation" (`Alt+F2` / Mac `Opt+F2`) -> `https://rust-lang.org/learn/`.

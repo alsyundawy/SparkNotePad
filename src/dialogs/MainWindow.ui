@@ -447,8 +447,17 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <widget class="QMenu" name="menuDocnoteAndChangelog">
+     <property name="title">
+      <string>Docnote &amp;&amp; Changelog</string>
+     </property>
+     <addaction name="actionDocnote" />
+     <addaction name="actionChangelog" />
+    </widget>
     <addaction name="separator" />
     <addaction name="actionCheckForUpdates" />
+    <addaction name="separator" />
+    <addaction name="menuDocnoteAndChangelog" />
     <addaction name="separator" />
     <addaction name="actionAboutQt" />
     <addaction name="actionAboutSparkNotePad" />
@@ -1123,6 +1132,22 @@
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="actionDocnote">
+   <property name="text">
+    <string>&amp;Docnote</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Docnote as plain text in editor</string>
+   </property>
+  </action>
+  <action name="actionChangelog">
+   <property name="text">
+    <string>&amp;Changelog</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Changelog as plain text in editor</string>
    </property>
   </action>
   <action name="actionShowWhitespace">

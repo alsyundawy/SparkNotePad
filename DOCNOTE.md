@@ -213,6 +213,15 @@ SparkNotePad maintains strict software architecture invariants across its entire
 
 ### 3.3 Digital Forensics & Code Transformations
 
+### 3.4 In-App Plaintext Documentation (`Docnote & Changelog`)
+
+- **Help Menu Submenu (`menuDocnoteAndChangelog`)**:
+  - Direct integration into top-level Help menu above About actions.
+  - **Docnote** (`actionDocnote`): Instantly loads `DOCNOTE.txt` in a new Scintilla editor tab.
+  - **Changelog** (`actionChangelog`): Instantly loads `CHANGELOG.txt` in a new Scintilla editor tab.
+  - Plaintext format ensures lightning-fast rendering without external markdown or HTML viewer dependencies.
+  - Embedded Qt application resource fallback (`:/doc/DOCNOTE.txt` and `:/doc/CHANGELOG.txt`) ensuring documents are always available even when running standalone binaries.
+
 - **Document Statistics & Shannon Entropy**:
   - Comprehensive character, word, line, and byte metrics.
   - Real-time Shannon Entropy score ($H = -\sum p_i \log_2 p_i$) identifying packed or encrypted data payloads.

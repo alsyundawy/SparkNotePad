@@ -88,5 +88,7 @@
         <file>icons/trash.svg</file>
         <file>icons/folder.svg</file>
         <file>icons/terminal.svg</file>
+        <file>doc/DOCNOTE.txt</file>
+        <file>doc/CHANGELOG.txt</file>
     </qresource>
 </RCC>

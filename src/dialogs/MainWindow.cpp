@@ -2220,6 +2220,11 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionDeveloperGuide);
 
+    // Docnote & Changelog submenu
+    connect(ui->actionDocnote, &QAction::triggered, this, &MainWindow::onDocnoteTriggered);
+    connect(ui->actionChangelog, &QAction::triggered, this, &MainWindow::onChangelogTriggered);
+    ui->menuHelp->insertMenu(ui->actionAboutSparkNotePad, ui->menuDocnoteAndChangelog);
+
     ui->actionAboutSparkNotePad->setShortcut(QKeySequence::HelpContents);
     connect(ui->actionAboutSparkNotePad, &QAction::triggered, this, [this]() {
         AboutDialog dlg(this);
@@ -4824,6 +4829,26 @@ void MainWindow::onUserGuideTriggered() {
 
 void MainWindow::onDeveloperGuideTriggered() {
     DocumentationManager::instance().openDeveloperGuide(this);
+}
+
+void MainWindow::onDocnoteTriggered() {
+    const QString path = DocumentationManager::instance().docnotePlaintextPath();
+    if (!path.isEmpty() && QFile::exists(path)) {
+        openFile(path);
+    } else {
+        ModernMessageBox::warning(this, tr("Documentation Error"),
+                                  tr("Unable to locate DOCNOTE.txt on disk or in application resources."));
+    }
+}
+
+void MainWindow::onChangelogTriggered() {
+    const QString path = DocumentationManager::instance().changelogPlaintextPath();
+    if (!path.isEmpty() && QFile::exists(path)) {
+        openFile(path);
+    } else {
+        ModernMessageBox::warning(this, tr("Documentation Error"),
+                                  tr("Unable to locate CHANGELOG.txt on disk or in application resources."));
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

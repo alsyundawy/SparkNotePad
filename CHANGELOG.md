@@ -15,7 +15,14 @@ SparkNotePad v1.3.7 introduces high-velocity developer ergonomics inspired by KD
 
 #### 🆕 Added
 
-- **Quality Gates & Linter Hardening (Trunk, Clang-Tidy, SonarQube, Cppcheck)**:
+- **Help Menu `Docnote & Changelog` Submenu (`actionDocnote`, `actionChangelog`)**:
+  - Added dedicated `Docnote & Changelog` (`menuDocnoteAndChangelog`) submenu under the top-level **Help** menu.
+  - **Docnote** (`actionDocnote`): Instantly opens the comprehensive SparkNotePad release documentation note (`DOCNOTE.txt`) in an editor tab as plain text.
+  - **Changelog** (`actionChangelog`): Instantly opens the complete project changelog history (`CHANGELOG.txt`) in an editor tab as plain text.
+  - Native in-application viewing via `MainWindow::openFile()` without requiring external web browsers or markdown rendering tools.
+  - Embedded Qt application resource fallback (`:/doc/DOCNOTE.txt` and `:/doc/CHANGELOG.txt`), guaranteeing offline documentation access across standalone and portable environments.
+  - Full path validation ensuring CWE-426 / SonarLint compliance.
+
   - Official repository `.clang-tidy` configuration targeting bugprone, performance, and readability invariants.
   - Wrapped `main()` entrypoint in standard ISO C++ `try-catch` handlers, catching standard exceptions and eliminating `bugprone-exception-escape`.
   - Applied `std::move` to `ApplicationSetting` value constructors avoiding heap copy overhead, and removed redundant inline specifiers on class method declarations.

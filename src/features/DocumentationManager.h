@@ -23,13 +23,16 @@ class DocumentationManager : public QObject {
 public:
     static DocumentationManager &instance();
 
-    void openUserGuide(QWidget *parent = nullptr);
-    void openDeveloperGuide(QWidget *parent = nullptr);
-    static void openOnlineRepository(QWidget *parent = nullptr);
+    void openUserGuide(QWidget *parent = nullptr) const;
+    void openDeveloperGuide(QWidget *parent = nullptr) const;
+    static void openOnlineRepository(const QWidget *parent = nullptr);
     static void openKeyboardShortcutsGuide(QWidget *parent = nullptr);
 
     QString localDocumentationPath(const QString &docFilename) const;
     QString onlineDocumentationUrl(const QString &docFilename) const;
+
+    QString docnotePlaintextPath() const;
+    QString changelogPlaintextPath() const;
 
 private:
     explicit DocumentationManager(QObject *parent = nullptr);
@@ -37,7 +40,7 @@ private:
     DocumentationManager(const DocumentationManager &) = delete;
     DocumentationManager &operator=(const DocumentationManager &) = delete;
 
-    void openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent);
+    void openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent) const;
 };
 
 #endif  // DOCUMENTATIONMANAGER_H
