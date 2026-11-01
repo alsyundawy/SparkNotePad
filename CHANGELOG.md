@@ -835,12 +835,26 @@ NoteSciPad v1.0.0 marks the premier official release of an independent, ultra-li
 
 ---
 
-### 📦 GitHub Actions Release Matrix & Build Artifacts (v1.0.0 – v1.3.5)
+### 📦 GitHub Actions Release Matrix & Build Artifacts (v1.0.0 – v1.3.7)
 
-All release packages and binaries are automatically compiled, tested, and packaged natively on GitHub Actions cloud runners across macOS Apple Silicon (arm64), macOS Intel (x86_64), and Linux Ubuntu/Debian/Fedora.
+All release packages and binaries are automatically compiled, tested, and packaged natively on GitHub Actions cloud runners across macOS Apple Silicon (arm64), macOS Intel (x86_64), and Linux Ubuntu/Debian/Fedora across Qt 6.5 through Qt 6.12.
 
 | Release Version | Branch              | Tag      | Platform / Architecture          | Package File Name                                                                                                                                      | Size     | Toolchain & Qt           |
 | --------------- | ------------------- | -------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------ |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.7-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-v1.3.7-arm64.dmg)                   | 28.51 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.7-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-v1.3.7-x64.dmg)                       | 28.37 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.7_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/sparknotepad_1.3.7_amd64.deb)                     | 4.75 MB  | GCC 12 / Qt 6.8 LTS      |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | Linux Fedora / RHEL (x86_64)     | [`sparknotepad-1.3.7-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/sparknotepad-1.3.7-1.x86_64.rpm)               | 4.74 MB  | GCC 12 / Qt 6.8 LTS      |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | macOS / Linux Association Script | [`SparkNotePad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-Default-Editor.sh)                 | 19.66 KB | POSIX Shell              |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | Linux System Default Editor      | [`SparkNotePad-Default-Editor-Linux.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-Default-Editor-Linux.sh)     | 31.06 KB | POSIX Shell              |
+| **v1.3.7**      | `main` / `1.3.7`    | `v1.3.7` | Checksum Manifest                | [`SHA256SUMS.txt`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SHA256SUMS.txt)                                                 | 2.63 KB  | SHA-256                  |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.6-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-arm64.dmg)                   | 27.11 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.6-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-v1.3.6-x64.dmg)                       | 27.33 MB | Apple Clang / Qt 6.8 LTS |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.6_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad_1.3.6_amd64.deb)                     | 4.45 MB  | GCC 12 / Qt 6.8 LTS      |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | Linux Fedora / RHEL (x86_64)     | [`sparknotepad-1.3.6-1.x86_64.rpm`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/sparknotepad-1.3.6-1.x86_64.rpm)               | 4.44 MB  | GCC 12 / Qt 6.8 LTS      |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | macOS / Linux Association Script | [`SparkNotePad-Default-Editor.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor.sh)                 | 19.19 KB | POSIX Shell              |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | Linux System Default Editor      | [`SparkNotePad-Default-Editor-Linux.sh`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SparkNotePad-Default-Editor-Linux.sh)     | 30.32 KB | POSIX Shell              |
+| **v1.3.6**      | `1.3.6`             | `v1.3.6` | Checksum Manifest                | [`SHA256SUMS.txt`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.6/SHA256SUMS.txt)                                                 | 2.14 KB  | SHA-256                  |
 | **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS Apple Silicon (arm64)      | [`SparkNotePad-v1.3.5-arm64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)                   | 27.08 MB | Apple Clang / Qt 6.8 LTS |
 | **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | macOS Intel (x86_64)             | [`SparkNotePad-v1.3.5-x64.dmg`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                       | 27.28 MB | Apple Clang / Qt 6.8 LTS |
 | **v1.3.5**      | `main` / `1.3.5`    | `v1.3.5` | Linux Debian / Ubuntu (x86_64)   | [`sparknotepad_1.3.5_amd64.deb`](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                     | 4.83 MB  | GCC 12 / Qt 6.8          |
@@ -883,7 +897,7 @@ All release packages and binaries are automatically compiled, tested, and packag
 
 ---
 
-### 👤 Maintainer & Multi-Version Attribution (v1.0.0 – v1.3.5)
+### 👤 Maintainer & Multi-Version Attribution (v1.0.0 – v1.3.7)
 
 - **Lead Maintainer & Modernization Architect**:
   - **Harry Dertin Sutisna Alsyundawy** ([`@alsyundawy`](https://github.com/alsyundawy)) — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)

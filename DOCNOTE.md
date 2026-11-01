@@ -363,7 +363,43 @@ Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 3ms
 
 ---
 
-## 7. Developer Build & Verification
+## 7. Verified Release Artifacts & Multi-Platform Matrix (v1.3.7)
+
+All release packages and binaries are automatically compiled, tested, and packaged natively on GitHub Actions cloud runners across macOS Apple Silicon (`arm64`), macOS Intel (`x86_64`), and Linux Ubuntu/Debian/Fedora across Qt 6.5 through Qt 6.12:
+
+| Artifact Name                                | Platform / Architecture                                                 | Size     | SHA-256 Checksum                                                   |
+| :------------------------------------------- | :---------------------------------------------------------------------- | :------- | :----------------------------------------------------------------- |
+| **`SparkNotePad-v1.3.7-x64.dmg`**            | macOS Intel (`x86_64`) Canonical (macOS 11.0–26.0, Qt 6.8 LTS)          | 28.37 MB | `55c98f0a919c4e4d6d7c6db8c36c70ca9149e6fb73eaa16951034b8fa2f35d8a` |
+| **`SparkNotePad-v1.3.7-arm64.dmg`**          | macOS Apple Silicon (`arm64`) Canonical (macOS 11.0–26.0, Qt 6.8 LTS)   | 28.51 MB | `76a5539d480d094dd963c79ad5df5a3c3b38ec72ff36806df6a005527f3b6773` |
+| **`SparkNotePad-v1.3.7-qt6.5-x64.dmg`**      | macOS Intel (`x86_64`) Legacy Baseline (macOS 11.0+, Qt 6.5)            | 27.55 MB | `685dee036fa8ebd8ca9c49960c60ed4886853f47cbef6b9a7c73c8a88153b76d` |
+| **`SparkNotePad-v1.3.7-qt6.5-arm64.dmg`**    | macOS Apple Silicon (`arm64`) Legacy Baseline (macOS 11.0+, Qt 6.5)     | 27.32 MB | `78d20484f48ded15dbcfba98ccef8cfcc9afb41be771398f513201eb63f25a00` |
+| **`SparkNotePad-v1.3.7-qt6.8-x64.dmg`**      | macOS Intel (`x86_64`) LTS Release (macOS 12.0+, Qt 6.8)                | 28.37 MB | `55c98f0a919c4e4d6d7c6db8c36c70ca9149e6fb73eaa16951034b8fa2f35d8a` |
+| **`SparkNotePad-v1.3.7-qt6.8-arm64.dmg`**    | macOS Apple Silicon (`arm64`) LTS Release (macOS 13.0+, Qt 6.8)         | 28.51 MB | `76a5539d480d094dd963c79ad5df5a3c3b38ec72ff36806df6a005527f3b6773` |
+| **`SparkNotePad-v1.3.7-qt6.10-x64.dmg`**     | macOS Intel (`x86_64`) Modern Release (macOS 13.0+, Qt 6.10)            | 28.96 MB | `477d35f16515b201a1eeca32a9d6092ef9136d3c11d18a6e968fe7a93335e05d` |
+| **`SparkNotePad-v1.3.7-qt6.10-arm64.dmg`**   | macOS Apple Silicon (`arm64`) Modern Release (macOS 14.0+, Qt 6.10)     | 28.74 MB | `7bc283f297dede49c57156ebb70876eb1e91c476398325d2d4c8278e3f6e18f4` |
+| **`SparkNotePad-v1.3.7-qt6.11-x64.dmg`**     | macOS Intel (`x86_64`) Modern Release (macOS 13.0+, Qt 6.11)            | 29.38 MB | `899aff494f0d4e9844db00dad04313ac31e0120f59a11b49d55835699bc161c9` |
+| **`SparkNotePad-v1.3.7-qt6.11-arm64.dmg`**   | macOS Apple Silicon (`arm64`) Modern Release (macOS 14.0+, Qt 6.11)     | 29.16 MB | `72c10b0d69b632fc0bb24bc10e5aacd1caada88770bec43fa7e20063f4a39720` |
+| **`SparkNotePad-v1.3.7-qt6.12-x64.dmg`**     | macOS Intel (`x86_64`) Cutting-Edge (macOS 13.0+, Qt 6.12)              | 29.70 MB | `72deff96805a674bf9a9b50e78625a599fda67a18b401d00884928151106a398` |
+| **`SparkNotePad-v1.3.7-qt6.12-arm64.dmg`**   | macOS Apple Silicon (`arm64`) Cutting-Edge (macOS 14.0+, Qt 6.12)       | 29.49 MB | `64dbfe5ef3f85c2fda73cdae465710fd6867ee3361ef1d64a47cae5f35463dc8` |
+| **`sparknotepad_1.3.7_amd64.deb`**           | Linux Debian / Ubuntu x86_64 Canonical (`glibc 2.35+`, Qt 6.8 LTS)      | 4.75 MB  | `bd63522c9bdea9bf38292ce81af6ffd07df5b0eddd821bdde3407fed7667935a` |
+| **`sparknotepad_1.3.7-qt6.5_amd64.deb`**     | Linux Debian / Ubuntu x86_64 (`glibc 2.35+`, Qt 6.5)                    | 4.75 MB  | `8c6bf309a8428b66071b0d9152b5d4c2bef120e2bb144dfa288cf35dec808b04` |
+| **`sparknotepad_1.3.7-qt6.8_amd64.deb`**     | Linux Debian / Ubuntu x86_64 (`glibc 2.35+`, Qt 6.8 LTS)                | 4.75 MB  | `bd63522c9bdea9bf38292ce81af6ffd07df5b0eddd821bdde3407fed7667935a` |
+| **`sparknotepad_1.3.7-qt6.10_amd64.deb`**    | Linux Debian / Ubuntu x86_64 (`glibc 2.39+`, Qt 6.10)                   | 4.80 MB  | `54a14e0965c9549fdd589636855e24450b0a86254fee1584b2a9da5d4532976c` |
+| **`sparknotepad_1.3.7-qt6.11_amd64.deb`**    | Linux Debian / Ubuntu x86_64 (`glibc 2.39+`, Qt 6.11)                   | 4.79 MB  | `54beb9ddad125a4342aba9d39234774cf57cedc011988c54e9819c09dba94d68` |
+| **`sparknotepad_1.3.7-qt6.12_amd64.deb`**    | Linux Debian / Ubuntu x86_64 (`glibc 2.39+`, Qt 6.12)                   | 4.80 MB  | `8d5b68cbfe5e8a1c7223d0d9ce3d1cd104100b07547c6bba74241a32cc906880` |
+| **`sparknotepad-1.3.7-1.x86_64.rpm`**        | Linux Fedora / RHEL / SUSE x86_64 Canonical (`glibc 2.35+`, Qt 6.8 LTS) | 4.74 MB  | `4e3322a919f79f37890709e64babde52c5e683c1acd82e8cb7f8917939f36c89` |
+| **`sparknotepad-1.3.7-qt6.5-1.x86_64.rpm`**  | Linux Fedora / RHEL / SUSE x86_64 (`glibc 2.35+`, Qt 6.5)               | 4.74 MB  | `43efabcec13bba87b6e55013f99f00c2f4812d0634f2cf01a5bdd0018fb559d1` |
+| **`sparknotepad-1.3.7-qt6.8-1.x86_64.rpm`**  | Linux Fedora / RHEL / SUSE x86_64 (`glibc 2.35+`, Qt 6.8 LTS)           | 4.74 MB  | `4e3322a919f79f37890709e64babde52c5e683c1acd82e8cb7f8917939f36c89` |
+| **`sparknotepad-1.3.7-qt6.10-1.x86_64.rpm`** | Linux Fedora / RHEL / SUSE x86_64 (`glibc 2.39+`, Qt 6.10)              | 4.78 MB  | `95a0733677ab9337f8bc53b645265f877878b336f61ff8d076f93811e33776a4` |
+| **`sparknotepad-1.3.7-qt6.11-1.x86_64.rpm`** | Linux Fedora / RHEL / SUSE x86_64 (`glibc 2.39+`, Qt 6.11)              | 4.78 MB  | `4699e9b76f2e2bc5eef4e70501a552b3771cfe821d223598cd5397204959ea44` |
+| **`sparknotepad-1.3.7-qt6.12-1.x86_64.rpm`** | Linux Fedora / RHEL / SUSE x86_64 (`glibc 2.39+`, Qt 6.12)              | 4.79 MB  | `4509ee10e8c19d942e546c1135a6ede45eaf08bbf5e340c6825cd4b9101919b7` |
+| **`SparkNotePad-Default-Editor.sh`**         | macOS Universal & Linux POSIX Association Script                        | 19.66 KB | `719b80f133c0d040a64d4788e9dad08c48ba846910d9bac555e3a629dd571522` |
+| **`SparkNotePad-Default-Editor-Linux.sh`**   | Linux Dedicated 5-Layer System Default Editor Engine                    | 31.06 KB | `c6b9efec00d26d7a5e769f2e8730010cef9497e92ef4e3f8fabd272c6be624b3` |
+| **`SHA256SUMS.txt`**                         | Cryptographic Release Checksums Manifest                                | 2.63 KB  | `9157933218b61542b358d388609296e388e9c4c0da7aa5686159588d5f2e2329` |
+
+---
+
+## 8. Developer Build & Verification
 
 ```bash
 # 1. Configure CMake with Ninja
@@ -383,7 +419,7 @@ trunk check --no-fix
 
 ---
 
-## 8. Upstream Credits & Attribution
+## 9. Upstream Credits & Attribution
 
 SparkNotePad gratefully acknowledges the foundational contributions of:
 
