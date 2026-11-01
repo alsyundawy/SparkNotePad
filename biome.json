@@ -1,12 +1,13 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "files": {
-    "ignore": [
-      "i18n/**",
-      "**/*.ts",
-      "build/**",
-      "thirdparty/**",
-      ".cpm-cache/**"
-    ]
-  }
+	"$schema": "https://biomejs.dev/schemas/2.5.11/schema.json",
+	"files": {
+		"includes": [
+			"**",
+			"!**/i18n",
+			"!**/*.ts",
+			"!**/build",
+			"!**/thirdparty",
+			"!**/.cpm-cache"
+		]
+	}
 }
