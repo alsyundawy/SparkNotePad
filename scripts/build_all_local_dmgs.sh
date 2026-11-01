@@ -2,14 +2,31 @@
 set -Eeuo pipefail
 
 # Scripts directory and repo root
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd -P)"
+if git rev-parse --show-toplevel &>/dev/null; then
+    REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+    SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+    REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd -P)"
+fi
 cd "${REPO_ROOT}"
 
 echo "=== Starting Automated Local DMG Build Pipeline (SparkNotePad 1.3.7 down to 1.0.0) ==="
 
 QT_DIR="/Users/alsyundawy/Qt/6.12.0/macos"
-BRANCHES=("1.3.7" "1.3.6" "1.3.5" "1.3.0" "1.2.0" "1.1.0" "1.0.0")
+
+if [[ $# -gt 0 ]]; then
+    BRANCHES=("$@")
+else
+    BRANCHES=(
+        "1.3.7"
+        "1.3.6"
+        "1.3.5"
+        "1.3.0"
+        "1.2.0"
+        "1.1.0"
+        "1.0.0"
+    )
+fi
 
 mkdir -p "${REPO_ROOT}/build-dmg"
 
@@ -18,8 +35,9 @@ for BRANCH in "${BRANCHES[@]}"; do
     echo "Processing Branch: ${BRANCH}"
     echo "=================================================="
 
-    # 1. Switch to branch
+    # 1. Switch to branch and keep local script present
     git switch "${BRANCH}"
+    git checkout main -- scripts/build_all_local_dmgs.sh 2>/dev/null || true
 
     # 2. Check and apply OptionSet.h fix if cstdlib is missing
     if [[ -f thirdparty/lexilla/lexlib/OptionSet.h ]] && ! grep -q "cstdlib" thirdparty/lexilla/lexlib/OptionSet.h; then
@@ -38,9 +56,11 @@ if target in content and "#include <cstdlib>" not in content:
 '
     fi
 
-    # 3. Configure & Build DMG
+    # 3. Clean previous build directory, configure & build DMG
+    echo "[*] Cleaning build directory..."
+    rm -rf build
+
     echo "[*] Configuring and building DMG target for ${BRANCH}..."
-    rm -rf build/install build/*.dmg
     cmake -S . -B build -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DAPP_DISTRIBUTION=dmg \
@@ -51,7 +71,7 @@ if target in content and "#include <cstdlib>" not in content:
         -DCMAKE_C_COMPILER=/usr/bin/clang \
         -DCMAKE_CXX_COMPILER=/usr/bin/clang++
 
-    cmake --build build --target dmg
+    cmake --build build --target dmg --parallel
 
     # Locate generated DMG file
     DMG_PATH=$(find build -maxdepth 1 -name "*.dmg" | head -n 1)
@@ -67,13 +87,11 @@ if target in content and "#include <cstdlib>" not in content:
     echo "[*] Copying verified DMG to build-dmg/${TARGET_DMG_NAME}"
     cp -f "${DMG_PATH}" "${REPO_ROOT}/build-dmg/${TARGET_DMG_NAME}"
 
-    # 4. Commit and push fixes if there are modifications
-    if [[ -n "$(git status --porcelain)" ]]; then
-        echo "[*] Staging and committing changes on branch ${BRANCH}"
+    # 4. Commit fixes locally if there are modifications (do not push to remote origin)
+    if [[ -n "$(git status --porcelain -uno)" ]]; then
+        echo "[*] Staging and committing changes locally on branch ${BRANCH}"
         git add -u
         git commit -m "fix(build): ensure compatibility for local macOS DMG packaging" || true
-        echo "[*] Pushing branch ${BRANCH} to origin"
-        git push origin "refs/heads/${BRANCH}:refs/heads/${BRANCH}"
     else
         echo "[*] No file changes needed on branch ${BRANCH}"
     fi
