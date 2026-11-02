@@ -13,10 +13,14 @@ set(TEST_HEADERS
     test_lua_security.h
     TestLuaSandbox.h
     test_mime_tools.h
+    test_toolbar_icon_manager.h
 )
 
 set(TEST_SOURCES
     test_main.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources.qrc
+    ${CMAKE_SOURCE_DIR}/src/features/ToolbarIconManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ApplicationSettings.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Base64Utils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/MimeTools.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/NumberConverter.cpp

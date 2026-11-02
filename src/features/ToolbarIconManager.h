@@ -1,0 +1,83 @@
+#pragma once
+/*
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
+ *
+ * SparkNotePad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+#ifndef TOOLBARICONMANAGER_H
+#define TOOLBARICONMANAGER_H
+
+#include <QIcon>
+#include <QList>
+#include <QObject>
+#include <QSize>
+#include <QString>
+#include <QStringList>
+
+class QToolBar;
+class QWidget;
+class QAction;
+class ApplicationSettings;
+
+struct ToolbarIconPack {
+    QString id;
+    QString displayName;
+    QString description;
+    QString basePath;
+    bool isBuiltIn{true};
+    bool isPngBased{false};
+};
+
+class ToolbarIconManager : public QObject {
+    Q_OBJECT
+
+public:
+    static ToolbarIconManager *instance();
+
+    void initialize(ApplicationSettings *settings);
+
+    [[nodiscard]] const QList<ToolbarIconPack> &availablePacks() const;
+    [[nodiscard]] const ToolbarIconPack *findPackById(const QString &packId) const;
+    [[nodiscard]] const QString &currentPackId() const { return m_currentPackId; }
+    void setPack(const QString &packId, QToolBar *toolBar = nullptr);
+
+    [[nodiscard]] QSize currentIconSize() const { return m_currentIconSize; }
+    [[nodiscard]] QSize iconSize() const { return m_currentIconSize; }
+    void setIconSize(const QSize &size, QToolBar *toolBar = nullptr);
+
+    [[nodiscard]] QIcon getActionIcon(const QString &actionName, const QString &packId = QString()) const;
+    [[nodiscard]] QIcon actionIcon(const QString &actionName, const QString &packId = QString()) const {
+        return getActionIcon(actionName, packId);
+    }
+    void applyToToolbar(QToolBar *toolBar) const;
+    void applyToWindow(QWidget *window, QToolBar *toolBar = nullptr) const;
+
+    [[nodiscard]] static QString customPacksPath();
+    void scanCustomPacks();
+
+    static QString canonicalNameForAction(const QString &actionName);
+    static QStringList aliasesForCanonical(const QString &canonical);
+
+signals:
+    void packChanged(const QString &packId);
+    void iconSizeChanged(const QSize &size);
+
+private:
+    explicit ToolbarIconManager(QObject *parent = nullptr);
+    ~ToolbarIconManager() override = default;
+
+    void registerBuiltInPacks();
+    [[nodiscard]] static QString resolveIconFilePath(const ToolbarIconPack &pack, const QString &canonical);
+
+    ApplicationSettings *m_settings{nullptr};
+    QString m_currentPackId{QStringLiteral("modernRibbon")};
+    QSize m_currentIconSize{24, 24};
+    QList<ToolbarIconPack> m_packs;
+};
+
+#endif  // TOOLBARICONMANAGER_H

@@ -1,9 +1,9 @@
-# SparkNotePad Release DocNote — v1.3.7
+# SparkNotePad Release DocNote — v1.3.8
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.3.7 (Tools Suite, Forensics, Linter Zero-Defect Hardening & Ergonomics)
-Release Date        : 2026-10-30
+Release Version     : 1.3.8 (Toolbar Icon Packs, Custom Extension Engine & Button Customizer)
+Release Date        : 2026-11-02
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -20,7 +20,59 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Release v1.3.7
+## 1. Executive Summary: Release v1.3.8
+
+SparkNotePad v1.3.8 delivers complete toolbar customization, an expansive 15-pack icon theme architecture inspired by Notepad++, and refined editor context menu ergonomics:
+
+1. 15 Built-in Toolbar Icon Packs (Zero Duplicate Engineering):
+   - modernRibbon: SparkNotePad default high-DPI monoline vector icons (20x20 crisp SVG).
+   - notepadNext: Authentic 16x16 Silk PNG icons from NotepadNext (Default fallback).
+   - notepadPlusPlus: Classic retro Notepad++ vector icon pack.
+   - androidMaterial: Google Material You / Material 3 adaptive geometry and tonal depth (android material 2026).
+   - windowsVista: Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting (Vista 2026).
+   - windowsXp: Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights (XP 2026).
+   - windows10: Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic (Win10 2026).
+   - windows11: Microsoft Fluent Design System 2 with rounded geometry and soft depth (Win11 2026, aliased with fluentUi, zero duplication).
+   - windows7: Windows 7 Aero Glass translucent gradients and polished chrome accents (Win 7 2026).
+   - macosMonterey: macOS Monterey modern SF Symbols aesthetic with clean Apple styling (Monterey 2026).
+   - notepad3: Rizonesoft Notepad3 technical teal and sharp developer-focused vectors (NOTEPAD3 ICONPACK).
+   - notepad4: Zufuliu Notepad4 modern deep indigo flat vector iconography (NOTEPAD4 ICONPACK).
+   - notepad2: Florian Balmer Notepad2 classic retro 16-color nostalgic palette (NOTEPAD2 ICONPACK).
+   - monochrome: Minimalist outline vector icons for dark and light palettes.
+   - vibrantDuotone: High-contrast cyber-neon duo-tone vector icons.
+
+2. Custom Icon Packs Extension System (toolbarIcons/):
+   - ToolbarIconManager::customPacksPath() dynamically scans user AppData toolbarIcons/ directory.
+   - Automatically surfaces custom packs in Themes -> Toolbar Icon Packs.
+   - "Open Custom Icon Packs Folder..." command opens the folder directly in Finder.
+
+3. Dynamic Toolbar Icon Sizing:
+   - Real-time toolbar icon scaling without restart: 16x16, 20x20, 24x24, 32x32.
+
+4. Visual Toolbar Customizer Dialog (CustomizeToolbarDialog):
+   - Interactive dual-list interface for adding, removing, and reordering toolbar buttons.
+   - Drag-and-drop reordering with InternalMove support.
+   - Custom separator line insertion.
+   - Instant search/filter box.
+   - "Reset to Defaults" button restoring standard 33-entry SparkNotePad toolbar.
+   - "Apply" and "OK" saving to Gui/ToolBar settings.
+
+5. Themes Menu & Toolbar Context Menu:
+   - Dedicated Themes -> Toolbar Icon Packs submenu with exclusive radio checkmarks.
+   - Toolbar right-click context menu for instant customization and icon pack switching.
+
+6. Editor Context Menu Ergonomics:
+   - Relocated Convert Case: Positioned immediately below Select All (ui->actionSelectAll) for streamlined text transformation workflows.
+   - Compact Typography & Icon Scaling: Reduced font size by 1-2px (11px) and scaled context menu icons to 14x14px with sleek 3px vertical padding.
+   - Clean Style Restoration: Global menubar styles automatically restored to original state upon context menu close via aboutToHide.
+
+7. 14-Pillar Code Quality & Verification:
+   - Comprehensive audit across Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability, and IDE Linter pillars.
+   - 100% test pass rate across all 7 unit tests in TestToolbarIconManager and 44 tests across the entire test suite.
+
+---
+
+## 2. Prior Release: Release v1.3.7
 
 SparkNotePad v1.3.7 delivers a comprehensive suite of high-velocity developer ergonomics inspired by primary-source research into KDE Kate, Pluma (MATE), Notepad-- (cxasm/ndd), and Notepad++ without breaking or regressing any existing functionality:
 

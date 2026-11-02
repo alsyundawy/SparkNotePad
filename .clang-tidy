@@ -7,6 +7,9 @@ Checks: >
   misc-*,
   -misc-include-cleaner,
   -misc-use-internal-linkage,
+  -misc-non-private-member-variables-in-classes,
+  -performance-enum-size,
+  -readability-trailing-comma,
   -bugprone-throwing-static-initialization,
   -bugprone-macro-parentheses,
   -bugprone-easily-swappable-parameters,
@@ -19,5 +22,5 @@ Checks: >
   -readability-identifier-length,
   -readability-redundant-access-specifiers
 WarningsAsErrors: ''
-HeaderFilterRegex: 'src/.*'
+HeaderFilterRegex: '^(src/|tests/|.*/SparkNotePad/(src|tests)/).*'
 FormatStyle: none

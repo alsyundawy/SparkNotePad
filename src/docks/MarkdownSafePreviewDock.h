@@ -13,31 +13,78 @@
  */
 
 #include <QDockWidget>
+#include <QPointer>
 #include <QTextBrowser>
 #include <QTimer>
 #include <QUrl>
-#include <QPointer>
+#include <cstdint>
 
 class ScintillaNext;
 class MainWindow;
+class QComboBox;
+class QLabel;
+class QPushButton;
 
 class MarkdownSafePreviewDock : public QDockWidget {
     Q_OBJECT
 
 public:
+    enum class PreviewFormat : std::uint8_t {
+        Auto = 0,
+        Markdown = 1,
+        Html = 2,
+    };
+    Q_ENUM(PreviewFormat)
+
     explicit MarkdownSafePreviewDock(MainWindow *parent = nullptr);
     ~MarkdownSafePreviewDock() override = default;
+
+    PreviewFormat format() const { return currentFormat; }
+    static PreviewFormat detectFormat(const ScintillaNext *editor);
+    bool isAutoShowEnabled() const { return autoShowEnabled; }
 
 public slots:
     void setActiveEditor(ScintillaNext *editor);
     void scheduleRender();
-    void renderMarkdown();
+    void renderPreview();
+    void setPreviewFormat(PreviewFormat newFormat);
+    void setAutoShowEnabled(bool enabled);
+    void openInBrowser();
+    void zoomIn();
+    void zoomOut();
+    void resetZoom();
+
+signals:
+    void formatChanged(PreviewFormat newFormat);
+    void autoShowChanged(bool enabled);
+
+protected:
+    void changeEvent(QEvent *event) override;
 
 private slots:
     void handleAnchorClicked(const QUrl &url);
+    void onFormatComboChanged(int index);
 
 private:
+    void setupUi();
+    void updateFormatLabel(PreviewFormat effectiveFormat);
+    void applyGitHubTheme();
+    [[nodiscard]] QString buildGitHubStyleSheet(bool isDark) const;
+    [[nodiscard]] QString generateFullHtmlDocument(const QString &bodyHtml, bool isDark) const;
+
     QTextBrowser *browser = nullptr;
     QTimer *debounceTimer = nullptr;
     QPointer<ScintillaNext> currentEditor;
+
+    QComboBox *comboFormat = nullptr;
+    QLabel *lblFormatStatus = nullptr;
+    QPushButton *btnOpenBrowser = nullptr;
+    QPushButton *btnRefresh = nullptr;
+    QPushButton *btnZoomIn = nullptr;
+    QPushButton *btnZoomOut = nullptr;
+    QPushButton *btnResetZoom = nullptr;
+
+    PreviewFormat currentFormat = PreviewFormat::Auto;
+    bool autoShowEnabled = false;
+    int baseFontSize = 13;
 };

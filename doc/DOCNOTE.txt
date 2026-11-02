@@ -1,9 +1,9 @@
-# SparkNotePad Release DocNote — v1.3.7
+# SparkNotePad Release DocNote — v1.3.8
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.3.7 (Tools Suite, Forensics, Linter Zero-Defect Hardening & Ergonomics)
-Release Date        : 2026-10-30
+Release Version     : 1.3.8 (Toolbar Icon Packs Suite, Dynamic Menu Sync & Button Customizer)
+Release Date        : 2026-11-02
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -20,7 +20,85 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Release v1.3.7
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.8
+
+SparkNotePad v1.3.8 menghadirkan perombakan besar pada arsitektur personalisasi toolbar, paket ikon resolusi tinggi, sinkronisasi ikon menyeluruh ke seluruh menu dan konteks klik kanan, serta pratinjau Markdown bergaya GitHub:
+
+1. Rekonstruksi & Penyempurnaan Paket Ikon Windows XP (windowsXp):
+   - Diintegrasikan langsung dari aset otentik 1024x1024 High-Resolution Windows XP Icon Pack dan Directory Opus 10 XP suite oleh Cris van Minnen.
+   - Dibuat ulang dalam resolusi master 64x64 PNG dengan skalabilitas tinggi, menghasilkan visual tajam dan jernih pada seluruh ukuran: 16x16, 20x20, 24x24, 32x32, 48x48, hingga 64x64.
+   - Menghadirkan nostalgia skeuomorfik 3D Luna yang otentik: buku catatan spiral Notepad dengan cincin emas, map berkilau kuning, disket biru 3.5 inci dengan penutup logam mengkilap, gunting potong presisi, dan panah melengkung khas XP.
+
+2. Rekonstruksi & Penyempurnaan Paket Ikon Windows 7/8 (windows7):
+   - Diintegrasikan dari sprite sheet Aero Glass Azure resmi (Aero Glass Azure.png) oleh UltimateDesktops.
+   - Resolusi master 64x64 PNG dengan estetika kaca sian tembus pandang (translucent azure glass), aksen bingkai krom mengkilap (polished chrome accents), dan efek kilau volumetrik halus.
+   - Skalabilitas sempurna dari 16x16 hingga 64x64 tanpa distorsi artefak.
+
+3. Sinkronisasi Ikon Menubar & Menu Klik Kanan (Context Menu) Dinamis:
+   - Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon aksi pada Menu Bar utama, submenu, dan menu klik kanan editor (Editor Context Menu).
+   - Mengimplementasikan `ToolbarIconManager::applyToWindow()` yang secara rekursif memperbarui seluruh `QAction` jendela aktif, serta memastikan visibilitas ikon di menu (`setIconVisibleInMenu(true)`).
+   - Menjaga fallback otomatis ke ikon default bawaan apabila aksi tertentu belum tersedia pada paket eksternal kustom.
+
+4. Dukungan Rentang Ukuran Ikon Luas (16x16 hingga 64x64):
+   - Mendukung pemilihan ukuran ikon secara instan dan bebas restart:
+     - 16 × 16 (Kompak / Compact)
+     - 20 × 20 (Sedang / Medium)
+     - 24 × 24 (Standar / Disarankan)
+     - 32 × 32 (Besar / DPI Tinggi)
+     - 48 × 48 (Ekstra Besar / Extra Large)
+     - 64 × 64 (Ultra High-DPI / Resolusi Tinggi)
+
+5. Pratinjau Markdown & HTML Bergaya GitHub (MarkdownSafePreviewDock):
+   - Mengimplementasikan tata gaya GitHub Markdown resmi (sesuai spesifikasi ekstensi VS Code bierner.markdown-preview-github-styles).
+   - Mendukung palet terang (#ffffff / #1f2328) dan gelap (#0d1117 / #e6edf3) secara adaptif mengikuti tema aktif aplikasi.
+   - Tipografi GitHub lengkap, garis bawah judul (h1/h2), callout blockquote, blok kode berpagar, tabel belang zebra, dan tautan biru khas GitHub.
+
+6. Dialog Kustomisasi Tombol Toolbar Visual (CustomizeToolbarDialog):
+   - Antarmuka daftar ganda (dual-list) interaktif untuk menambah, menghapus, dan mengatur urutan tombol toolbar dengan drag-and-drop (InternalMove).
+   - Penyisipan garis pemisah (separator) kustom, filter pencarian instan, dan tombol Reset to Defaults.
+
+---
+
+## 2. Executive Summary (English): Release v1.3.8
+
+SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, authentic high-definition icon packs, dynamic whole-window and context menu icon synchronization, and official GitHub-styled Markdown preview:
+
+1. Windows XP Icon Pack Rebuilt & Polished (windowsXp):
+   - Built from authentic 1024x1024 master PNGs from the Windows XP High Resolution Icon Pack and Cris van Minnen's Directory Opus 10 XP suite.
+   - Master 64x64 PNG resolution ensuring pristine anti-aliased scaling across 16x16, 20x20, 24x24, 32x32, 48x48, and 64x64.
+   - Authentic Luna 3D skeuomorphism: spiral notepad with golden rings, open yellow folders, blue floppy disk with brushed metal shutter, chrome scissors, and curved XP arrows.
+
+2. Windows 7/8 Icon Pack Rebuilt & Polished (windows7):
+   - Extracted and synthesized from the official Aero Glass Azure sprite sheet (Aero Glass Azure.png) by UltimateDesktops.
+   - Master 64x64 PNG resolution featuring translucent azure glass gradients, polished chrome framing, and smooth volumetric lighting.
+   - Crystal-clear rendering across all resolutions up to 64x64.
+
+3. Dynamic Menubar & Right-Click Context Menu Icon Synchronization:
+   - Changing toolbar icon packs now instantaneously propagates active iconography across all top-level menubars, submenus, and the editor right-click context menu.
+   - Implemented `ToolbarIconManager::applyToWindow()` recursively traversing all window `QAction` objects with graceful fallback to default icons.
+   - Enforced `setIconVisibleInMenu(true)` ensuring cross-platform icon rendering on macOS Retina and Linux desktops.
+
+4. Comprehensive Icon Size Range (16x16 through 64x64):
+   - Real-time toolbar icon scaling without application restart:
+     - 16 × 16 (Compact)
+     - 20 × 20 (Medium)
+     - 24 × 24 (Default / Recommended)
+     - 32 × 32 (Large / High-DPI)
+     - 48 × 48 (Extra Large)
+     - 64 × 64 (Ultra High-DPI)
+
+5. GitHub Markdown Styling for HTML & Markdown Preview (MarkdownSafePreviewDock):
+   - Embedded GitHub Markdown styling compliant with the bierner.markdown-preview-github-styles specification.
+   - Dynamic adaptive light (#ffffff / #1f2328) and dark (#0d1117 / #e6edf3) theme detection.
+   - Authentic typography hierarchy, heading borderlines, blockquote styling, zebra tables, and browser export.
+
+6. Visual Toolbar Customization Dialog (CustomizeToolbarDialog):
+   - Dual-list interactive interface for adding, removing, and reordering toolbar buttons with drag-and-drop InternalMove support.
+   - Separator insertion, real-time search filtering, and Reset to Defaults button.
+
+---
+
+## 2. Prior Release: Release v1.3.7
 
 SparkNotePad v1.3.7 delivers a comprehensive suite of high-velocity developer ergonomics inspired by primary-source research into KDE Kate, Pluma (MATE), Notepad-- (cxasm/ndd), and Notepad++ without breaking or regressing any existing functionality:
 

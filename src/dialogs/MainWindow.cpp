@@ -78,6 +78,8 @@
 #include <QProcess>  // Required for restartApplication() (v1.3.5)
 #include <QPainter>
 #include <QPageSize>
+#include <QDesktopServices>
+#include <QUrl>
 #include <QPageLayout>
 #include <QDirIterator>
 #include <QProcess>
@@ -146,6 +148,8 @@
 #include "MacroSaveDialog.h"
 #include "PreferencesDialog.h"
 #include "ShortcutCustomizerDialog.h"
+#include "CustomizeToolbarDialog.h"
+#include "../features/ToolbarIconManager.h"
 #include "ColumnEditorDialog.h"
 
 #include "TabsQuickActionsBar.h"
@@ -269,8 +273,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->setupUi(this);
-    ui->mainToolBar->setIconSize(QSize(20, 20));
+    ui->mainToolBar->setIconSize(QSize(24, 24));
     ui->mainToolBar->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+    ui->mainToolBar->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->mainToolBar, &QToolBar::customContextMenuRequested, this, &MainWindow::onToolbarContextMenu);
     for (QAction *act : ui->mainToolBar->actions()) {
         if (!act->isSeparator()) {
             if (QWidget *w = ui->mainToolBar->widgetForAction(act)) {
@@ -1017,6 +1023,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     auto *actionHashValidator = new QAction(tr("&Hash && Authenticity Validator..."), this);
     connect(actionHashValidator, &QAction::triggered, this, &MainWindow::onHashValidatorTriggered);
 
+    markdownSafePreviewDock = new MarkdownSafePreviewDock(this);
+    markdownSafePreviewDock->hide();
+    addDockWidget(Qt::RightDockWidgetArea, markdownSafePreviewDock);
+    connect(markdownSafePreviewDock, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+        if (visible) {
+            markdownSafePreviewDock->setActiveEditor(currentEditor());
+        }
+    });
+
     // --- Tools top-level menu (Notepad++ style) ---
     menuTools = new QMenu(tr("&Tools"), this);
 
@@ -1353,6 +1368,69 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     // Encryption (AES-256) moved into Tools
     menuTools->addMenu(menuEncryption);
+
+    menuTools->addSeparator();
+
+    // HTML & Markdown Live Preview submenu
+    auto *menuPreview = menuTools->addMenu(tr("&HTML && Markdown Preview"));
+    menuPreview->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
+
+    auto *togglePreviewAction = markdownSafePreviewDock->toggleViewAction();
+    togglePreviewAction->setText(tr("&Live Preview (Markdown / HTML)"));
+    togglePreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
+    togglePreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
+    menuPreview->addAction(togglePreviewAction);
+
+    auto *actionPreviewInBrowser = new QAction(tr("Open in Default &Web Browser..."), this);
+    actionPreviewInBrowser->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
+    actionPreviewInBrowser->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
+    connect(actionPreviewInBrowser, &QAction::triggered, markdownSafePreviewDock,
+            &MarkdownSafePreviewDock::openInBrowser);
+    menuPreview->addAction(actionPreviewInBrowser);
+
+    auto *actionAutoShowPreview = new QAction(tr("&Auto-Show Preview on Markdown / HTML Tabs"), this);
+    actionAutoShowPreview->setCheckable(true);
+    actionAutoShowPreview->setChecked(markdownSafePreviewDock->isAutoShowEnabled());
+    connect(actionAutoShowPreview, &QAction::toggled, markdownSafePreviewDock,
+            &MarkdownSafePreviewDock::setAutoShowEnabled);
+    menuPreview->addAction(actionAutoShowPreview);
+
+    menuPreview->addSeparator();
+
+    auto *actModeAuto = new QAction(tr("Format: &Auto-Detect"), this);
+    actModeAuto->setCheckable(true);
+    auto *actModeMd = new QAction(tr("Format: Force &Markdown"), this);
+    actModeMd->setCheckable(true);
+    auto *actModeHtml = new QAction(tr("Format: Force &HTML"), this);
+    actModeHtml->setCheckable(true);
+
+    auto *previewModeGroup = new QActionGroup(this);
+    previewModeGroup->addAction(actModeAuto);
+    previewModeGroup->addAction(actModeMd);
+    previewModeGroup->addAction(actModeHtml);
+
+    switch (markdownSafePreviewDock->format()) {
+        case MarkdownSafePreviewDock::PreviewFormat::Html:
+            actModeHtml->setChecked(true);
+            break;
+        case MarkdownSafePreviewDock::PreviewFormat::Markdown:
+            actModeMd->setChecked(true);
+            break;
+        default:
+            actModeAuto->setChecked(true);
+            break;
+    }
+
+    connect(actModeAuto, &QAction::triggered, this,
+            [this]() { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Auto); });
+    connect(actModeMd, &QAction::triggered, this,
+            [this]() { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Markdown); });
+    connect(actModeHtml, &QAction::triggered, this,
+            [this]() { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Html); });
+
+    menuPreview->addAction(actModeAuto);
+    menuPreview->addAction(actModeMd);
+    menuPreview->addAction(actModeHtml);
 
     // Insert Tools menu before Macro in menubar
     menuBar()->insertMenu(ui->menuMacro->menuAction(), menuTools);
@@ -2317,18 +2395,11 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     toggleFunctionListAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
     ui->menuView->addAction(toggleFunctionListAction);
 
-    markdownSafePreviewDock = new MarkdownSafePreviewDock(this);
-    markdownSafePreviewDock->hide();
-    addDockWidget(Qt::RightDockWidgetArea, markdownSafePreviewDock);
     auto *toggleMarkdownPreviewAction = markdownSafePreviewDock->toggleViewAction();
-    toggleMarkdownPreviewAction->setText(tr("Markdown Safe Preview"));
+    toggleMarkdownPreviewAction->setText(tr("HTML && Markdown Live Preview"));
+    toggleMarkdownPreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
     toggleMarkdownPreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
     ui->menuView->addAction(toggleMarkdownPreviewAction);
-    connect(markdownSafePreviewDock, &QDockWidget::visibilityChanged, this, [this](bool visible) {
-        if (visible) {
-            markdownSafePreviewDock->setActiveEditor(currentEditor());
-        }
-    });
 
     connect(app->getSettings(), &ApplicationSettings::showMenuBarChanged, this, [this](bool showMenuBar) {
         // Don't 'hide' it, else the actions won't be enabled
@@ -3377,9 +3448,31 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     updateContentBasedUi(editor);
     updateLanguageBasedUi(editor);
 
-    if (markdownSafePreviewDock && markdownSafePreviewDock->isVisible()) {
-        markdownSafePreviewDock->setActiveEditor(editor);
+    if (markdownSafePreviewDock) {
+        if (markdownSafePreviewDock->isAutoShowEnabled() && isMarkdownOrHtml(editor)) {
+            if (!markdownSafePreviewDock->isVisible()) {
+                markdownSafePreviewDock->show();
+            }
+        }
+        if (markdownSafePreviewDock->isVisible()) {
+            markdownSafePreviewDock->setActiveEditor(editor);
+        }
     }
+}
+
+bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) const {
+    if (!editor) {
+        return false;
+    }
+    const QString lang = editor->languageName.toLower();
+    if (lang.contains(QStringLiteral("markdown")) || lang.contains(QStringLiteral("html")) ||
+        lang.contains(QStringLiteral("xml"))) {
+        return true;
+    }
+    const QString ext = editor->getFileInfo().suffix().toLower();
+    return (ext == QStringLiteral("md") || ext == QStringLiteral("markdown") || ext == QStringLiteral("mdown") ||
+            ext == QStringLiteral("mkd") || ext == QStringLiteral("mkdn") || ext == QStringLiteral("html") ||
+            ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml") || ext == QStringLiteral("shtml"));
 }
 
 void MainWindow::updateDocumentBasedUi(Scintilla::Update updated) {
@@ -3825,6 +3918,9 @@ void MainWindow::restoreSettings() {
 
         ActionUtils::populateActionContainer(ui->mainToolBar, this, actionNames);
     }
+
+    ToolbarIconManager::instance()->initialize(app->getSettings());
+    ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
 }
 
 ISearchResultsHandler *MainWindow::determineSearchResultsHandler() {
@@ -3956,21 +4052,86 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     }
 
     auto menu = buildMenu(actionNames);
+
+    // Relocate Convert Case directly below Select All
+    const auto actions = menu->actions();
+    auto selectAllIt = std::find(actions.begin(), actions.end(), ui->actionSelectAll);
+    if (selectAllIt != actions.end()) {
+        auto nextIt = std::next(selectAllIt);
+        if (nextIt != actions.end()) {
+            menu->insertMenu(*nextIt, ui->menuConvertCase);
+        } else {
+            menu->addMenu(ui->menuConvertCase);
+        }
+    } else {
+        menu->addMenu(ui->menuConvertCase);
+    }
+
     menu->addSeparator();
-    menu->addMenu(ui->menuConvertCase);
     menu->addMenu(ui->menuMarkAllOccurrences);
     menu->addMenu(ui->menuClearMarks);
     if (menuRun) {
         menu->addMenu(menuRun);
     }
 
-    // Ensure all context menu actions and submenus display their icons
+    // Ensure all context menu actions and submenus display their icons matching the active icon pack
     for (QAction *action : menu->findChildren<QAction *>()) {
         action->setIconVisibleInMenu(true);
+        const QIcon icon = ToolbarIconManager::instance()->getActionIcon(action->objectName());
+        if (!icon.isNull()) {
+            action->setIcon(icon);
+        }
     }
     for (QAction *action : menu->actions()) {
         action->setIconVisibleInMenu(true);
+        const QIcon icon = ToolbarIconManager::instance()->getActionIcon(action->objectName());
+        if (!icon.isNull()) {
+            action->setIcon(icon);
+        }
     }
+
+    // Refined compact typography and icon pack scaling for right-click context menu (1-2px smaller)
+    const QString contextMenuStyle = QStringLiteral(
+        "QMenu { font-size: 11px; }"
+        "QMenu::item { padding: 3px 18px 3px 20px; font-size: 11px; }"
+        "QMenu::icon { width: 14px; height: 14px; }");
+
+    QFont contextFont = menu->font();
+    if (contextFont.pointSize() > 10) {
+        contextFont.setPointSize(contextFont.pointSize() - 1);
+    } else if (contextFont.pixelSize() > 11) {
+        contextFont.setPixelSize(contextFont.pixelSize() - 2);
+    } else {
+        contextFont.setPointSize(10);
+    }
+
+    menu->setFont(contextFont);
+    menu->setStyleSheet(contextMenuStyle);
+
+    const QFont originalMenuFont = ui->menuConvertCase->font();
+    ui->menuConvertCase->setFont(contextFont);
+    ui->menuConvertCase->setStyleSheet(contextMenuStyle);
+    ui->menuMarkAllOccurrences->setFont(contextFont);
+    ui->menuMarkAllOccurrences->setStyleSheet(contextMenuStyle);
+    ui->menuClearMarks->setFont(contextFont);
+    ui->menuClearMarks->setStyleSheet(contextMenuStyle);
+    if (menuRun) {
+        menuRun->setFont(contextFont);
+        menuRun->setStyleSheet(contextMenuStyle);
+    }
+
+    connect(menu, &QMenu::aboutToHide, this, [this, originalMenuFont]() {
+        ui->menuConvertCase->setStyleSheet(QString());
+        ui->menuConvertCase->setFont(originalMenuFont);
+        ui->menuMarkAllOccurrences->setStyleSheet(QString());
+        ui->menuMarkAllOccurrences->setFont(originalMenuFont);
+        ui->menuClearMarks->setStyleSheet(QString());
+        ui->menuClearMarks->setFont(originalMenuFont);
+        if (menuRun) {
+            menuRun->setStyleSheet(QString());
+            menuRun->setFont(originalMenuFont);
+        }
+    });
 
     menu->popup(QCursor::pos());
 }
@@ -4174,7 +4335,25 @@ void MainWindow::tabBarRightClicked(const ScintillaNext *editor) {
         actionNames = settings->value("Gui/TabBarContextMenu").toStringList();
     }
 
-    buildMenu(actionNames)->popup(QCursor::pos());
+    auto *menu = buildMenu(actionNames);
+
+    const QString contextMenuStyle = QStringLiteral(
+        "QMenu { font-size: 11px; }"
+        "QMenu::item { padding: 3px 18px 3px 20px; font-size: 11px; }"
+        "QMenu::icon { width: 14px; height: 14px; }");
+
+    QFont contextFont = menu->font();
+    if (contextFont.pointSize() > 10) {
+        contextFont.setPointSize(contextFont.pointSize() - 1);
+    } else if (contextFont.pixelSize() > 11) {
+        contextFont.setPixelSize(contextFont.pixelSize() - 2);
+    } else {
+        contextFont.setPointSize(10);
+    }
+
+    menu->setFont(contextFont);
+    menu->setStyleSheet(contextMenuStyle);
+    menu->popup(QCursor::pos());
 }
 
 void MainWindow::languageMenuTriggered() const {
@@ -4804,7 +4983,82 @@ void MainWindow::setupThemeMenu() {
         ui->statusBar->showMessage(dark ? tr("Switched to Dark Mode") : tr("Switched to Light Mode"), 3000);
     });
     menuTheme->addAction(actionToggleTheme);
+
+    menuTheme->addSeparator();
+
+    // 6. Toolbar Icon Packs & Customization
+    menuToolbarIconPacks = menuTheme->addMenu(tr("&Toolbar Icon Packs"));
+    toolbarPacksGroup = new QActionGroup(this);
+    toolbarPacksGroup->setExclusive(true);
+
+    const auto &packs = ToolbarIconManager::instance()->availablePacks();
+    const QString currentPack = ToolbarIconManager::instance()->currentPackId();
+
+    for (const auto &pack : packs) {
+        auto *act = menuToolbarIconPacks->addAction(pack.displayName);
+        act->setCheckable(true);
+        act->setChecked(pack.id == currentPack);
+        act->setData(pack.id);
+        toolbarPacksGroup->addAction(act);
+
+        connect(act, &QAction::triggered, this, [this, pack]() {
+            ToolbarIconManager::instance()->setPack(pack.id, ui->mainToolBar);
+            ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
+            ui->statusBar->showMessage(tr("Toolbar icon pack changed to: %1").arg(pack.displayName), 3000);
+        });
+    }
+
+    menuToolbarIconPacks->addSeparator();
+
+    // Submenu: Toolbar Icon Size
+    menuToolbarIconSizes = menuToolbarIconPacks->addMenu(tr("Toolbar Icon Size"));
+    toolbarSizesGroup = new QActionGroup(this);
+    toolbarSizesGroup->setExclusive(true);
+
+    const struct IconSizeEntry {
+        QString label;
+        QSize size;
+    } sizes[] = {
+        {tr("16 x 16 (Compact)"), QSize(16, 16)},
+        {tr("20 x 20 (Medium)"), QSize(20, 20)},
+        {tr("24 x 24 (Default / Recommended)"), QSize(24, 24)},
+        {tr("32 x 32 (Large / High-DPI)"), QSize(32, 32)},
+        {tr("48 x 48 (Extra Large)"), QSize(48, 48)},
+        {tr("64 x 64 (Ultra High-DPI)"), QSize(64, 64)},
+    };
+
+    const QSize currentSize = ToolbarIconManager::instance()->iconSize();
+    for (const auto &s : sizes) {
+        auto *act = menuToolbarIconSizes->addAction(s.label);
+        act->setCheckable(true);
+        act->setChecked(s.size == currentSize);
+        toolbarSizesGroup->addAction(act);
+
+        connect(act, &QAction::triggered, this, [this, s]() {
+            ToolbarIconManager::instance()->setIconSize(s.size, ui->mainToolBar);
+            ui->statusBar->showMessage(tr("Toolbar icon size changed to: %1").arg(s.label), 3000);
+        });
+    }
+
+    menuToolbarIconPacks->addSeparator();
+
+    actionCustomizeToolbar = menuToolbarIconPacks->addAction(tr("Customize Toolbar Buttons..."));
+    actionCustomizeToolbar->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
+    connect(actionCustomizeToolbar, &QAction::triggered, this, [this]() {
+        CustomizeToolbarDialog dlg(this, this);
+        dlg.exec();
+    });
+
+    auto *actionOpenCustomPacks = menuToolbarIconPacks->addAction(tr("Open Custom Icon Packs Folder..."));
+    actionOpenCustomPacks->setIcon(QIcon(QStringLiteral(":/icons/openfile.svg")));
+    connect(actionOpenCustomPacks, &QAction::triggered, this, []() {
+        const QString path = ToolbarIconManager::customPacksPath();
+        QDir().mkpath(path);
+        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    });
+
     ensureMenuIconsVisible(menuTheme);
+    ensureMenuIconsVisible(menuToolbarIconPacks);
 }
 
 void MainWindow::onMoveToNextScreenTriggered() {
@@ -5008,4 +5262,124 @@ void MainWindow::showFileDiffDialog(const QString &filePathA, const QString &fil
         dialog->setInitialFiles(ed->getFilePath());
     }
     dialog->show();
+}
+
+QStringList MainWindow::currentToolbarActionNames() const {
+    const ApplicationSettings *settings = app->getSettings();
+    if (settings->contains("Gui/ToolBar")) {
+        return settings->value("Gui/ToolBar").toStringList();
+    }
+    QStringList result;
+    const auto acts = ui->mainToolBar->actions();
+    for (const QAction *act : acts) {
+        if (!act) {
+            continue;
+        }
+        if (act->isSeparator()) {
+            result.append(QString());
+        } else {
+            QString name = act->objectName();
+            if (name.startsWith(QLatin1String("action"))) {
+                name = name.mid(6);
+            }
+            result.append(name);
+        }
+    }
+    return result;
+}
+
+void MainWindow::updateToolbarActions(const QStringList &actionNames) {
+    app->getSettings()->setValue("Gui/ToolBar", actionNames);
+    ui->mainToolBar->clear();
+    ActionUtils::populateActionContainer(ui->mainToolBar, this, actionNames);
+    ToolbarIconManager::instance()->applyToToolbar(ui->mainToolBar);
+    for (QAction *act : ui->mainToolBar->actions()) {
+        if (!act->isSeparator()) {
+            if (QWidget *w = ui->mainToolBar->widgetForAction(act)) {
+                w->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+                w->setToolTip(act->toolTip());
+            }
+        }
+    }
+}
+
+void MainWindow::resetToolbarToDefaults() {
+    app->getSettings()->remove("Gui/ToolBar");
+    ui->mainToolBar->clear();
+    ActionUtils::populateActionContainer(ui->mainToolBar, this, CustomizeToolbarDialog::defaultToolbarActions());
+    ToolbarIconManager::instance()->applyToToolbar(ui->mainToolBar);
+    for (QAction *act : ui->mainToolBar->actions()) {
+        if (!act->isSeparator()) {
+            if (QWidget *w = ui->mainToolBar->widgetForAction(act)) {
+                w->setAttribute(Qt::WA_AlwaysShowToolTips, true);
+                w->setToolTip(act->toolTip());
+            }
+        }
+    }
+}
+
+void MainWindow::onToolbarContextMenu(const QPoint &pos) {
+    QMenu menu(this);
+
+    auto *actCustomize = menu.addAction(tr("Customize Toolbar Buttons..."));
+    actCustomize->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
+    connect(actCustomize, &QAction::triggered, this, [this]() {
+        CustomizeToolbarDialog dlg(this, this);
+        dlg.exec();
+    });
+
+    menu.addSeparator();
+
+    // Toolbar Icon Packs submenu
+    QMenu *menuPacks = menu.addMenu(tr("Toolbar Icon Packs"));
+    auto *packsGroup = new QActionGroup(&menu);
+    packsGroup->setExclusive(true);
+    const auto &packs = ToolbarIconManager::instance()->availablePacks();
+    const QString currentPack = ToolbarIconManager::instance()->currentPackId();
+    for (const auto &pack : packs) {
+        auto *act = menuPacks->addAction(pack.displayName);
+        act->setCheckable(true);
+        act->setChecked(pack.id == currentPack);
+        packsGroup->addAction(act);
+        connect(act, &QAction::triggered, this, [this, pack]() {
+            ToolbarIconManager::instance()->setPack(pack.id, ui->mainToolBar);
+            ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
+            ui->statusBar->showMessage(tr("Toolbar icon pack changed to: %1").arg(pack.displayName), 3000);
+        });
+    }
+
+    // Toolbar Icon Size submenu
+    QMenu *menuSizes = menu.addMenu(tr("Toolbar Icon Size"));
+    auto *sizesGroup = new QActionGroup(&menu);
+    sizesGroup->setExclusive(true);
+    const struct IconSizeEntry {
+        QString label;
+        QSize size;
+    } sizes[] = {
+        {tr("16 x 16 (Compact)"), QSize(16, 16)},
+        {tr("20 x 20 (Medium)"), QSize(20, 20)},
+        {tr("24 x 24 (Default / Recommended)"), QSize(24, 24)},
+        {tr("32 x 32 (Large / High-DPI)"), QSize(32, 32)},
+        {tr("48 x 48 (Extra Large)"), QSize(48, 48)},
+        {tr("64 x 64 (Ultra High-DPI)"), QSize(64, 64)},
+    };
+    const QSize currentSize = ToolbarIconManager::instance()->iconSize();
+    for (const auto &s : sizes) {
+        auto *act = menuSizes->addAction(s.label);
+        act->setCheckable(true);
+        act->setChecked(s.size == currentSize);
+        sizesGroup->addAction(act);
+        connect(act, &QAction::triggered, this, [this, s]() {
+            ToolbarIconManager::instance()->setIconSize(s.size, ui->mainToolBar);
+            ui->statusBar->showMessage(tr("Toolbar icon size changed to: %1").arg(s.label), 3000);
+        });
+    }
+
+    menu.addSeparator();
+
+    auto *actReset = menu.addAction(tr("Reset Toolbar to Defaults"));
+    connect(actReset, &QAction::triggered, this, &MainWindow::resetToolbarToDefaults);
+
+    ensureMenuIconsVisible(&menu);
+    menu.exec(ui->mainToolBar->mapToGlobal(pos));
 }

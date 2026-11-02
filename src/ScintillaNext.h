@@ -55,17 +55,19 @@ public:
     QString getFileName() const { return getName(); }
     void goToPos(sptr_t pos) { gotoPos(pos); }
     void getRange(int start, int end, char *text) const {
-        if (!text)
+        if (!text) {
             return;
-        QByteArray b = get_text_range(start, end);
+        }
+        const QByteArray b = get_text_range(start, end);
         const auto sz = static_cast<size_t>(b.size());
         std::copy_n(b.constData(), sz, text);
         text[sz] = '\0';
     }
     void getLine(sptr_t line, char *text) {
-        if (!text)
+        if (!text) {
             return;
-        QByteArray b = ScintillaEdit::getLine(line);
+        }
+        const QByteArray b = ScintillaEdit::getLine(line);
         const auto sz = static_cast<size_t>(b.size());
         std::copy_n(b.constData(), sz, text);
         text[sz] = '\0';
@@ -95,7 +97,7 @@ public:
     }
 
     template <typename Func>
-    void forEachMatchInRange(const QByteArray &byteArray, Func callback, Sci_CharacterRange range) const;
+    void forEachMatchInRange(const QByteArray &text, Func callback, Sci_CharacterRange range) const;
 
     template <typename Func>
     void forEachLineInSelection(int selection, Func callback);

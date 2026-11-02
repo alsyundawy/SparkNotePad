@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(SparkNotePad
-    VERSION 1.3.7
+    VERSION 1.3.8
     DESCRIPTION "Lightweight Scintilla-based text and source code editor for macOS and Linux"
     LANGUAGES C CXX
 )
@@ -10,7 +10,7 @@ if(APPLE)
     enable_language(OBJCXX)
 endif()
 
-set(APP_VERSION "1.3.7")
+set(APP_VERSION "1.3.8")
 set(APP_DISTRIBUTION "" CACHE STRING "Distribution type")
 string(TIMESTAMP CURRENT_YEAR "%Y")
 set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey & SparkNotePad Contributors")
@@ -33,6 +33,10 @@ endif()
 if(UNIX AND NOT APPLE)
     add_compile_options(-fstack-protector-strong -D_FORTIFY_SOURCE=2)
     add_link_options(-Wl,-z,relro -Wl,-z,now)
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-deprecated-pragma)
 endif()
 
 set(QT_NO_PRIVATE_MODULE_WARNING ON)

@@ -166,6 +166,10 @@ public slots:
 
     void switchToEditor(const ScintillaNext *editor) const;
 
+    [[nodiscard]] QStringList currentToolbarActionNames() const;
+    void updateToolbarActions(const QStringList &actionNames);
+    void resetToolbarToDefaults();
+
 signals:
     void editorActivated(ScintillaNext *editor);
     void aboutToClose();
@@ -200,16 +204,16 @@ private:
 
     template <typename Method>
     void connectEditorAction(QAction *action, Method method) {
-        connect(action, &QAction::triggered, this, [this, method]() {
-            if (auto *editor = currentEditor()) {  // NOSONAR(cpp:S5417)
+        connect(action, &QAction::triggered, this, [this, method] {
+            if (auto *editor = currentEditor()) {  // NOLINT(misc-const-correctness) // NOSONAR(cpp:S5417)
                 (editor->*method)();
             }
         });
     }
     template <typename Method, typename Arg>
     void connectEditorAction(QAction *action, Method method, Arg value) {
-        connect(action, &QAction::triggered, this, [this, method, value]() {
-            if (auto *editor = currentEditor()) {  // NOSONAR(cpp:S5417)
+        connect(action, &QAction::triggered, this, [this, method, value] {
+            if (auto *editor = currentEditor()) {  // NOLINT(misc-const-correctness) // NOSONAR(cpp:S5417)
                 (editor->*method)(value);
             }
         });
@@ -240,6 +244,7 @@ private:
     FileBrowserDock *fileBrowserDock = nullptr;
     FunctionListDock *functionListDock = nullptr;
     MarkdownSafePreviewDock *markdownSafePreviewDock = nullptr;
+    bool isMarkdownOrHtml(const ScintillaNext *editor) const;
 
     void setupRunMenu();
     void updateCustomToolsMenu();
@@ -331,6 +336,14 @@ private:
     int zoomLevel = 0;
     int contextMenuPos = 0;
     QMenu *buildMenu(const QStringList &actionNames);
+
+    void onToolbarContextMenu(const QPoint &pos);
+
+    QMenu *menuToolbarIconPacks = nullptr;
+    QMenu *menuToolbarIconSizes = nullptr;
+    QAction *actionCustomizeToolbar = nullptr;
+    QActionGroup *toolbarPacksGroup = nullptr;
+    QActionGroup *toolbarSizesGroup = nullptr;
 };
 
 #endif  // MAINWINDOW_H

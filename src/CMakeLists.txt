@@ -117,6 +117,8 @@ qt_add_executable(SparkNotePad
 	features/ScreenDisplayManager.cpp
 	features/DocumentationManager.h
 	features/DocumentationManager.cpp
+	features/ToolbarIconManager.h
+	features/ToolbarIconManager.cpp
 	features/ReleaseManager.h
 	features/ReleaseManager.cpp
 	features/AccessibilityManager.h
@@ -236,6 +238,8 @@ qt_add_executable(SparkNotePad
 	dialogs/ShortcutCustomizerDialog.h
 	dialogs/StatusBarCustomizerDialog.cpp
 	dialogs/StatusBarCustomizerDialog.h
+	dialogs/CustomizeToolbarDialog.cpp
+	dialogs/CustomizeToolbarDialog.h
 	dialogs/EncodingSelectionDialog.cpp
 	dialogs/EncodingSelectionDialog.h
 	dialogs/EncodingSelectionDialog.ui

@@ -44,13 +44,11 @@ public:
 
     void loadSettings();
     void saveSettings() const;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 signals:
     void transparencyChanged(bool enabled, int opacity, TransparencyMode mode);
     void alwaysOnTopChanged(bool onTop);
-
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
     void applyOpacity();
