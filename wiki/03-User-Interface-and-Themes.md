@@ -51,31 +51,30 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ---
 
-## 4. Toolbar Icon Packs Suite (15 Built-In Packs) & Button Customizer
+## 4. Toolbar Icon Packs Suite (10 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
 SparkNotePad v1.3.8 introduces an extensive toolbar theming and customization architecture inspired by Notepad++:
 
 ### Built-in Toolbar Icon Packs
 
-- **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours.
-- **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from upstream NotepadNext release, safely relocated to `icons/packs/notepadNext/`.
+- **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
+- **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
+- **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
+- **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
+- **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
+- **Fugue Classic (Silk Suite)** (`fugue`): Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography with multi-DPI retina scaling.
 - **Notepad++ Retro** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
-- **android material 2026** (`androidMaterial`): Google Material You / M3 adaptive geometry and tonal depth.
-- **Vista 2026** (`windowsVista`): Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting.
-- **XP 2026** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official 1024×1024 High-Resolution master icons and Directory Opus 10 XP suite (master 64×64 PNG supporting 16×16 to 64×64).
-- **Win10 2026** (`windows10`): Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic.
-- **Win11 2026** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry and soft depth from Directory Opus 32px iconography.
-- **Win 7 2026** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops Aero Glass Azure sprite sheet with translucent cyan glass gradients, polished chrome borders, and volumetric glass reflections (master 64×64 PNG).
-- **Monterey 2026** (`macosMonterey`): macOS Monterey modern SF Symbols aesthetic with clean Apple styling.
-- **NOTEPAD3 ICONPACK** (`notepad3`): Rizonesoft Notepad3 technical teal and sharp developer-focused vectors.
-- **NOTEPAD4 ICONPACK** (`notepad4`): Zufuliu Notepad4 modern deep indigo flat vector iconography.
-- **NOTEPAD2 ICONPACK** (`notepad2`): Florian Balmer Notepad2 classic retro 16-color nostalgic palette.
+- **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
 - **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-- **Vibrant DuoTone (Neon/Cyber)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+- **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+
+### Plus (+) Button on Tab Bar
+
+Every dock area title bar includes an interactive **Plus (+)** button positioned directly next to the open editor tabs. Clicking this button immediately creates a new editor tab ("New 1", "New 2", etc.).
 
 ### Dynamic Menubar & Right-Click Context Menu Synchronization
 
-Changing toolbar icon packs instantaneously propagates active iconography across all top-level menubars, submenus, and the editor right-click context menu via `ToolbarIconManager::applyToWindow()`, with automatic fallback ensuring visual elegance.
+Changing toolbar icon packs instantaneously propagates active iconography across all top-level menubars, submenus, tab context menus, and the editor right-click context menu via `ToolbarIconManager::applyToWindow()` and `applyToMenu()`. Default toolbar icons render at 24×24 and menu icons at 16×16 (with 32×32 retina assets).
 
 ### Dynamic Toolbar Icon Sizing
 

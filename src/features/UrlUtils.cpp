@@ -22,7 +22,7 @@ const char *UrlUtils::urlRegexPattern() {
     return R"(\b(?:https?|ftps?|file)://[-a-zA-Z0-9@:%._\+~#=]{1,256}(?:\.[a-zA-Z0-9()]{1,6})?\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)|mailto:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})";
 }
 
-bool UrlUtils::exceedsUrlThreshold(ScintillaNext *editor, int thresholdMB) {
+bool UrlUtils::exceedsUrlThreshold(const ScintillaNext *editor, int thresholdMB) {
     if (!editor)
         return true;
     if (thresholdMB <= 0)
@@ -33,38 +33,40 @@ bool UrlUtils::exceedsUrlThreshold(ScintillaNext *editor, int thresholdMB) {
 }
 
 QString UrlUtils::getUrlAtPosition(ScintillaNext *editor, int position) {
-    if (!editor)
+    if (editor == nullptr) {
         return QString();
-    URLFinder *uf = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
-    if (!uf || !uf->isEnabled() || !uf->isURL(position)) {
+    }
+    if (const auto *uf = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
+        uf == nullptr || !uf->isEnabled() || !uf->isURL(position)) {
         return QString();
     }
 
     const int indicator = editor->allocateIndicator("url_finder");
-    const int start = editor->indicatorStart(indicator, position);
-    const int end = editor->indicatorEnd(indicator, position);
-    if (start >= 0 && end > start) {
+    const auto start = static_cast<int>(editor->indicatorStart(indicator, position));
+    if (const auto end = static_cast<int>(editor->indicatorEnd(indicator, position)); start >= 0 && end > start) {
         return QString::fromUtf8(editor->get_text_range(start, end));
     }
     return QString();
 }
 
-bool UrlUtils::openUrlAtPosition(ScintillaNext *editor, int position) {
-    if (!editor)
+bool UrlUtils::openUrlAtPosition(const ScintillaNext *editor, int position) {
+    if (editor == nullptr) {
         return false;
-    URLFinder *uf = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
-    if (uf && uf->isEnabled() && uf->isURL(position)) {
+    }
+    if (const auto *uf = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
+        uf != nullptr && uf->isEnabled() && uf->isURL(position)) {
         uf->openURLAt(position);
         return true;
     }
     return false;
 }
 
-bool UrlUtils::copyUrlAtPosition(ScintillaNext *editor, int position) {
-    if (!editor)
+bool UrlUtils::copyUrlAtPosition(const ScintillaNext *editor, int position) {
+    if (editor == nullptr) {
         return false;
-    URLFinder *uf = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
-    if (uf && uf->isEnabled() && uf->isURL(position)) {
+    }
+    if (const auto *uf = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
+        uf != nullptr && uf->isEnabled() && uf->isURL(position)) {
         uf->copyURLToClipboard(position);
         return true;
     }

@@ -27,7 +27,7 @@ public:
 
     void setupAccessibility(MainWindow *window);
     void announce(QWidget *context, const QString &message) const;
-    void openAccessibilityHelp(QWidget *parent) const;
+    static void openAccessibilityHelp(QWidget *parent);
     void announceDocumentState(ScintillaNext *editor, int index, int total) const;
 
 private:

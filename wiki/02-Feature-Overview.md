@@ -18,7 +18,7 @@ At the heart of SparkNotePad is **Scintilla 5.6.7** paired with **Lexilla 5.5.4*
 
 ## 2. Omnibar Command Palette & Quick Open
 
-SparkNotePad v1.3.7 introduces a floating spotlight modal:
+SparkNotePad v1.3.8 provides a floating spotlight modal:
 
 ### Quick Open Mode (`Cmd+P` / `Ctrl+P` or Kate `Ctrl+Alt+O`)
 
@@ -75,13 +75,35 @@ Manage codebase files with an integrated file system dock:
 
 ## 6. Notepad++ Style Tools Menu Suite
 
-SparkNotePad v1.3.7 organizes power developer utilities under a top-level **Tools** menu:
+SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tools** menu:
 
 - **Cryptographic Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-512 with Generate (entire file), Generate From File, Generate From Selection, and Verify actions.
 - **Cryptographic Hash & Authenticity Validator**: Direct launcher for streaming 64 KB chunk hash validation.
 - **MIME Tools Submenu**: Base64 Encode/Decode, URL Percent Encode/Decode, and Quoted-Printable Encode.
 - **Converter Submenu**: Bidirectional ASCII <-> HEX and Decimal <-> HEX conversion.
 - **Relocated AES-256 Encryption**: High-assurance document encryption with PBKDF2 (100,000 rounds) organized cleanly under Tools.
+
+---
+
+## 7. Tab Bar Plus (+) Button & In-Tab Previews (v1.3.8)
+
+- **Tab Bar Plus Button**: An integrated `+` button positioned at the end of the tab strip allows spawning new editor documents with one click.
+- **In-Tab Markdown & HTML Preview**: Right-clicking `.md` or `.html` tabs provides an in-tab preview pane rendered with GitHub styling, keeping workflows clean without opening external windows. For HTML files, a "Preview in Default Browser" action is also provided.
+- **File Commander Explorer**: Upgraded explorer dock featuring two-pane ergonomics, quick bookmark paths, breadcrumb navigation, and metrics bars.
+- **Hex/Binary View Toggle**: Switch instantly between normal text and hex memory dumps via `View > Toggle Hex / Binary View`.
+
+---
+
+## 8. Universal High-DPI, Retina & Multi-Monitor Scaling (v1.3.8)
+
+- **LCD-Optimized Font Rendering**: Enabled `SC_EFF_QUALITY_LCD_OPTIMIZED` and double-buffered drawing (`setBufferedDraw(true)`) for razor-sharp text on Apple Silicon Retina MacBooks, Intel Retina, 4K/5K/6K external monitors, and standard 1366×768 / 1080p displays.
+- **Scale Factor Adaptation**: Dynamically recalculates font metric geometry and canvas repaint upon display scale changes (`DevicePixelRatioChange` and `ScreenChangeInternal`).
+
+---
+
+## 9. Complete Lexilla 5.5.4 Lexer Suite (125 Highlighters)
+
+SparkNotePad includes the full complement of 125 Lexilla lexers, covering modern and legacy languages including AsciiDoc, BibTeX, Bicep, Clojure, Elixir, GDScript, GLSL, HLSL, Mojo, OCaml, Raku, Solidity, SystemVerilog, WebAssembly, and Zig.
 
 ---
 

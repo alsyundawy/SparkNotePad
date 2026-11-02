@@ -19,25 +19,20 @@ SparkNotePad v1.3.8 delivers a comprehensive toolbar iconography and button pers
 
 ## Key Features & Enhancements
 
-### 1. 15 Built-in Toolbar Icon Packs Suite
+### 1. 10 Built-in Toolbar Icon Packs Suite
 
-SparkNotePad v1.3.8 features 15 distinct, curated vector and bitmap icon packs accessible directly from `Themes > Toolbar Icon Packs`:
+SparkNotePad v1.3.8 features 10 distinct, curated vector and bitmap icon packs accessible directly from `Themes > Toolbar Icon Packs`:
 
-- **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20×20 monoline vector SVG suite with refined contours.
-- **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16×16 Silk bitmap icons from upstream NotepadNext release, relocated cleanly to `icons/packs/notepadNext/`.
-- **Notepad++ Retro** (`notepadPlusPlus`): High-DPI vector recreation of classic Notepad++ toolbar iconography.
-- **android material 2026** (`androidMaterial`): Google Material You / M3 adaptive geometry and tonal depth.
-- **Vista 2026** (`windowsVista`): Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting.
-- **XP 2026** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official 1024×1024 High-Resolution master icons and Cris van Minnen's Directory Opus 10 XP suite (master 64×64 PNG supporting 16×16 to 64×64).
-- **Win10 2026** (`windows10`): Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic.
-- **Win11 2026** (`windows11`): Microsoft Fluent Design System 2 rebuilt with authentic Directory Opus Windows 11 32px iconography and matching high-definition vector/bitmap assets.
-- **Win 7 2026** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops Aero Glass Azure sprite sheet with translucent cyan glass gradients, polished chrome borders, and volumetric glass reflections (master 64×64 PNG).
-- **Monterey 2026** (`macosMonterey`): macOS Monterey modern SF Symbols aesthetic with clean Apple styling.
-- **NOTEPAD3 ICONPACK** (`notepad3`): Rizonesoft Notepad3 technical teal and sharp developer-focused vectors.
-- **NOTEPAD4 ICONPACK** (`notepad4`): Zufuliu Notepad4 modern deep indigo flat vector iconography.
-- **NOTEPAD2 ICONPACK** (`notepad2`): Florian Balmer Notepad2 classic retro 16-color nostalgic palette.
-- **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-- **Vibrant DuoTone (Neon/Cyber)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+- **Notepad++ Classic** (`notepadPlusPlus`): Crisp vector and bitmap recreation of iconic Notepad++ toolbar iconography.
+- **Fluent UI** (`fluentUi`): Modern Microsoft Fluent design with rounded geometry, clean styling, and high-definition multi-DPI assets.
+- **Fugue** (`fugue`): Renowned pixel-perfect 16×16 and 32×32 iconography designed by Yusuke Kamiyamane.
+- **Windows 11** (`windows11`): Microsoft Windows 11 Fluent icons with depth and subtle drop shadows.
+- **VS Code Modern** (`vscodeModern`): Clean, minimalist developer iconography inspired by Visual Studio Code.
+- **Flat Color** (`flatColor`): High-contrast, vibrant flat color iconography tailored for modern high-resolution displays.
+- **Material Design** (`material`): Google Material Design symbol guidelines with balanced weights and curves.
+- **Solarized** (`solarized`): Specially tuned color harmonies optimized for Solarized Dark and Light editor themes.
+- **High Contrast** (`highContrast`): Ultra-sharp, accessible monochrome outline icons for high-visibility workflows.
+- **Windows Vista** (`windowsVista`): Classic Windows Vista Aero Glass vector styling with polished gradients and chrome accents.
 
 ### 2. Dynamic Menubar & Right-Click Context Menu Icon Synchronization
 
@@ -47,14 +42,34 @@ Changing toolbar icon packs now instantaneously propagates active iconography ac
 
 Switch toolbar icon sizes on the fly via `Themes > Toolbar Icon Packs > Toolbar Icon Size` or toolbar right-click:
 
-- **16 × 16** (Compact)
+- **16 × 16** (Compact / Menus)
 - **20 × 20** (Medium)
-- **24 × 24** (Default / Recommended)
+- **24 × 24** (Default Toolbar / Recommended)
 - **32 × 32** (Large / High-DPI)
 - **48 × 48** (Extra Large)
 - **64 × 64** (Ultra High-DPI)
 
-### 4. GitHub Markdown Styling for HTML & Markdown Preview (`MarkdownSafePreviewDock`)
+### 4. Tab Bar Plus (+) Button for Instant Document Creation
+
+Editor tab bars now feature an elegant, integrated Plus (`+`) button placed right beside the active tabs (`tabBarPlusButton`), allowing users to spawn a new document buffer with a single click, perfectly supplementing the `Ctrl+N` / `Cmd+N` shortcut.
+
+### 5. Localized Help Menu: DOCNOTE & CHANGELOG
+
+The Help menu now dynamically synchronizes release notes and change logs with the editor's active interface language:
+
+- **Bahasa Indonesia:** Automatically serves `DOCNOTE_id.txt` and `CHANGELOG_id.txt` when Indonesian is selected.
+- **English:** Serves `DOCNOTE_en.txt` and `CHANGELOG_en.txt` for English and universal locales.
+
+### 6. Universal High-DPI, Retina & Multi-Monitor Scaling
+
+Scintilla and Qt rendering engines are fully optimized to handle diverse monitor hardware without blurring or scaling artifacts:
+
+- **Generic Displays:** 1366×768, 1280×800, 720p, and standard 1080p monitors.
+- **Retina MacBooks:** Intel & Apple Silicon Retina (2x scale factor with ProMotion support).
+- **High-Resolution & External Screens:** 2K, 4K, 5K, 6K displays, and Linux fractional scaling (125%, 150%, 175%).
+- **LCD-Optimized Font Rendering:** Enabled `SC_EFF_QUALITY_LCD_OPTIMIZED` and double-buffered drawing (`setBufferedDraw(true)`) with instant repaint on `DevicePixelRatioChange` and `ScreenChangeInternal`.
+
+### 7. GitHub Markdown Styling for HTML & Markdown Preview (`MarkdownSafePreviewDock`)
 
 - Full GitHub Markdown styling matching the `bierner.markdown-preview-github-styles` specification.
 - Adaptive light (`#ffffff` / `#1f2328`) and dark (`#0d1117` / `#e6edf3`) palette rendering based on application theme changes.

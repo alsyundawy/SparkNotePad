@@ -19,25 +19,20 @@ SparkNotePad v1.3.8 menghadirkan perombakan besar arsitektur visual dan personal
 
 ## Fitur Utama & Penyempurnaan
 
-### 1. Rangkaian 15 Paket Ikon Toolbar Bawaan
+### 1. Rangkaian 10 Paket Ikon Toolbar Bawaan
 
-SparkNotePad v1.3.8 menyediakan 15 paket ikon vektor dan bitmap pilihan yang dapat diakses langsung melalui menu `Tema > Paket Ikon Toolbar`:
+SparkNotePad v1.3.8 menyediakan 10 paket ikon vektor dan bitmap pilihan yang dapat diakses langsung melalui menu `Tema > Paket Ikon Toolbar`:
 
-- **Modern Ribbon (Standar)** (`modernRibbon`): Suite vektor SVG monoline 20×20 High-DPI dengan kontur halus.
-- **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16×16 otentik dari NotepadNext, direlokasi rapi ke folder `icons/packs/notepadNext/`.
-- **Notepad++ Retro** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-- **android material 2026** (`androidMaterial`): Geometri adaptif Google Material You / M3 dan kedalaman tonal.
-- **Vista 2026** (`windowsVista`): Estetika kaca Windows Vista Aero dengan kilau kaya dan pencahayaan volumetrik.
-- **XP 2026** (`windowsXp`): Rekonstruksi nostalgia skeuomorfik 3D Windows XP Luna otentik dari master PNG resolusi tinggi 1024×1024 dan Directory Opus 10 XP suite (master 64×64 PNG).
-- **Win10 2026** (`windows10`): Estetika monoline wireframe tajam Windows 10 Metro / MDL2.
-- **Win11 2026** (`windows11`): Microsoft Fluent Design System 2 dengan geometri membulat dan kedalaman halus dari Directory Opus 32px.
-- **Win 7 2026** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dari lembar sprite UltimateDesktops dengan gradien kaca sian tembus pandang, aksen bingkai krom, dan kilau volumetrik (master 64×64 PNG).
-- **Monterey 2026** (`macosMonterey`): Estetika modern SF Symbols macOS Monterey dengan gaya bersih khas Apple.
-- **NOTEPAD3 ICONPACK** (`notepad3`): Teal teknis Rizonesoft Notepad3 dan vektor tajam berorientasi pengembang.
-- **NOTEPAD4 ICONPACK** (`notepad4`): Ikonografi vektor datar nila gelap modern Zufuliu Notepad4.
-- **NOTEPAD2 ICONPACK** (`notepad2`): Palet nostalgia 16-warna retro klasik Florian Balmer Notepad2.
-- **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-- **Vibrant DuoTone (Neon/Cyber)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+- **Notepad++ Classic** (`notepadPlusPlus`): Rekreasi vektor dan bitmap ikonografi klasik Notepad++.
+- **Fluent UI** (`fluentUi`): Desain modern Microsoft Fluent dengan geometri membulat dan aset High-DPI jernih.
+- **Fugue** (`fugue`): Ikonografi legendaris 16×16 & 32×32 pixel-perfect rancangan Yusuke Kamiyamane.
+- **Windows 11** (`windows11`): Ikon Fluent Microsoft Windows 11 dengan kedalaman halus dan bayangan elegan.
+- **VS Code Modern** (`vscodeModern`): Ikonografi pengembang yang bersih dan minimalis terinspirasi Visual Studio Code.
+- **Flat Color** (`flatColor`): Ikon warna datar kontras tinggi yang dirancang untuk layar beresolusi modern.
+- **Material Design** (`material`): Pedoman simbol Google Material Design dengan bobot seimbang.
+- **Solarized** (`solarized`): Harmoni warna yang disetel khusus untuk tema editor Solarized Gelap dan Terang.
+- **High Contrast** (`highContrast`): Ikon wireframe monokrom ultra-tajam untuk alur kerja visibilitas tinggi.
+- **Windows Vista** (`windowsVista`): Gaya Aero Glass Windows Vista klasik dengan gradien berkilau dan aksen krom.
 
 ### 2. Sinkronisasi Ikon Menubar & Menu Konteks Klik Kanan Dinamis
 
@@ -47,14 +42,34 @@ Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon a
 
 Ubah ukuran ikon secara instan dan bebas restart melalui `Tema > Paket Ikon Toolbar > Ukuran Ikon Toolbar` atau klik kanan pada bilah alat:
 
-- **16 × 16** (Kompak / Compact)
+- **16 × 16** (Kompak / Menu)
 - **20 × 20** (Sedang / Medium)
-- **24 × 24** (Standar / Disarankan)
+- **24 × 24** (Standar Toolbar / Disarankan)
 - **32 × 32** (Besar / DPI Tinggi)
 - **48 × 48** (Ekstra Besar / Extra Large)
 - **64 × 64** (Ultra High-DPI / Resolusi Tinggi)
 
-### 4. Pratinjau Markdown & HTML Bergaya GitHub (`MarkdownSafePreviewDock`)
+### 4. Tombol Plus (+) pada Tab Bar untuk Pembuatan Dokumen Instan
+
+Bilah tab editor kini dilengkapi tombol Plus (`+`) elegan (`tabBarPlusButton`) tepat di samping tab aktif untuk membuka tab dokumen baru secara instan dengan satu klik, melengkapi pintasan `Ctrl+N` / `Cmd+N`.
+
+### 5. Lokalisasi Menu Bantuan: DOCNOTE & CHANGELOG
+
+Menu Bantuan (Help) kini secara dinamis menyinkronkan catatan rilis dan log perubahan sesuai bahasa editor yang aktif:
+
+- **Bahasa Indonesia:** Menampilkan `DOCNOTE_id.txt` dan `CHANGELOG_id.txt` saat bahasa Indonesia aktif.
+- **English:** Menampilkan `DOCNOTE_en.txt` dan `CHANGELOG_en.txt` untuk bahasa Inggris dan bahasa umum lainnya.
+
+### 6. Skalabilitas Universal High-DPI, Retina & Multi-Monitor
+
+Mesin render Scintilla dan Qt dioptimalkan sepenuhnya untuk berbagai perangkat keras monitor tanpa buram atau artefak penskalaan:
+
+- **Monitor Generik:** Resolusi 1366×768, 1280×800, 720p, dan 1080p standar.
+- **MacBook Retina:** Apple Silicon dan Intel Retina (skala 2x dengan dukungan ProMotion refresh tinggi).
+- **Layar Eksternal Resolusi Tinggi:** Monitor 2K, 4K, 5K, 6K, dan penskalaan fraksional Linux (125%, 150%, 175%).
+- **Rendering Font Teroptimasi LCD:** Mengaktifkan `SC_EFF_QUALITY_LCD_OPTIMIZED` dan double-buffering (`setBufferedDraw(true)`) dengan repaint instan saat `DevicePixelRatioChange` dan `ScreenChangeInternal`.
+
+### 7. Pratinjau Markdown & HTML Bergaya GitHub (`MarkdownSafePreviewDock`)
 
 - Mengimplementasikan tata gaya GitHub Markdown resmi (sesuai spesifikasi ekstensi VS Code `bierner.markdown-preview-github-styles`).
 - Mendukung palet terang (`#ffffff` / `#1f2328`) dan gelap (`#0d1117` / `#e6edf3`) secara adaptif mengikuti tema aktif aplikasi.

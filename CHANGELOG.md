@@ -15,20 +15,13 @@ SparkNotePad v1.3.8 introduces an extensive toolbar personalization architecture
 
 #### 🆕 Added
 
-- **15 Built-in Toolbar Icon Packs (Zero Duplicate Engineering)**:
+- **8 Built-in Toolbar Icon Packs (Zero Duplicate Engineering)**:
   - **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
   - **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from upstream NotepadNext release (Default fallback).
   - **Notepad++ Retro (Classic Nostalgia)** (`notepadPlusPlus`): High-DPI vector recreation of classic Notepad++ toolbar iconography.
-  - **android material 2026** (`androidMaterial`): Google Material You / Material 3 adaptive geometry and tonal depth.
-  - **Vista 2026** (`windowsVista`): Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting.
   - **XP 2026** (`windowsXp`): Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights.
-  - **Win10 2026** (`windows10`): Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic.
   - **Win11 2026** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry and subtle depth (unified with `fluentUi`, zero duplication).
   - **Win 7 2026** (`windows7`): Windows 7 Aero Glass translucent gradients and polished chrome accents.
-  - **Monterey 2026** (`macosMonterey`): macOS Monterey modern SF Symbols aesthetic with clean Apple styling.
-  - **NOTEPAD3 ICONPACK** (`notepad3`): Rizonesoft Notepad3 technical teal and sharp developer-focused vectors.
-  - **NOTEPAD4 ICONPACK** (`notepad4`): Zufuliu Notepad4 modern deep indigo flat vector iconography.
-  - **NOTEPAD2 ICONPACK** (`notepad2`): Florian Balmer Notepad2 classic retro 16-color nostalgic palette.
   - **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
   - **Vibrant DuoTone (Neon/Cyber)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
 - **Custom Icon Pack Extension System (`toolbarIcons/`)**:
@@ -63,7 +56,7 @@ SparkNotePad v1.3.8 introduces an extensive toolbar personalization architecture
 - **Comprehensive Icon Pack Audit & 100% Asset Completion**:
   - Completed all missing action icons across all 15 built-in icon packs with zero fallback errors:
     - `notepadNext`: Added authentic Silk-styled `exit.png` and `select_all.png`, created alias mappings and file copies for `restart.png` and `settings.png`.
-    - 14 vector packs (`androidMaterial`, `windowsVista`, `windowsXp`, `windows10`, `windows11`, `fluentUi`, `windows7`, `macosMonterey`, `notepad3`, `notepad4`, `notepad2`, `monochrome`, `vibrantDuotone`, `notepadPlusPlus`): Added custom-styled `text_indent.svg` and `text_indent_remove.svg` matching each pack's distinct visual language.
+    - Vector packs (`windowsXp`, `windows11`, `windows7`, `monochrome`, `vibrantDuotone`, `notepadPlusPlus`): Added custom-styled `text_indent.svg` and `text_indent_remove.svg` matching each pack's distinct visual language.
     - Registered all 32 newly created assets in `src/resources.qrc`.
     - Extended `ToolbarIconManager::aliasesForCanonical` and `canonicalNameForAction` for zero fallback failures.
 - **Editor Context Menu Ergonomics**:

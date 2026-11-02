@@ -1,0 +1,82 @@
+# SparkNotePad Release DocNote — v1.3.8 (English)
+
+--------------------------------------------------------------------------------
+================================================================================
+Release Version      : 1.3.8 (Toolbar Icon Packs Suite, In-Tab Preview & File Commander)
+Release Date         : 2026-11-02
+Lead Maintainer      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization         : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository           : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine  : Scintilla 5.6.7 & Lexilla 5.5.4 (Complete 125 Lexers)
+Embedded Lua Core    : Sandboxed Lua 5.5.1 / 5.4.7 & Python 3.13+ Bridge
+GUI Framework        : Qt 6.5 / 6.8 LTS / 6.12 (C++20 ISO Standard)
+Target Platforms     : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD
+License              : GNU General Public License v3.0 (GPL-3.0-or-later)
+================================================================================
+--------------------------------------------------------------------------------
+
+---
+
+## 1. Executive Summary (English): Release v1.3.8
+
+SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 10 authentic high-definition icon packs, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, File Commander modern explorer, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
+
+1. Reconstructed & Polished 10 Built-In Toolbar Icon Packs Suite:
+   - 10 integrated high-definition icon suites: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11 Modern Vector), Windows 11 (Fluent 2 DOpus), Windows 7 (Aero Glass Azure), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Retro (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), and Vibrant DuoTone (Cyberpunk).
+   - Removed archLinux and filledFluentUi packs per visual design standardization.
+   - Crisp multi-DPI assets across 16x16, 20x20, 24x24, 32x32, 48x48, 64x64, and Retina @2x scaling.
+
+2. Plus (+) Button at the End of Every Tab Bar:
+   - Added an interactive Plus (+) button on the title bar directly next to the tab row.
+   - Allows instant creation of new documents ("New 1", "New 2", etc.) with a single click.
+
+3. Dynamic Menubar & Right-Click Context Menu Icon Synchronization:
+   - Changing toolbar icon packs now instantaneously propagates active iconography across the main toolbar, all top-level menubars, submenus, tab context menus, and the editor right-click context menu.
+   - Implemented `ToolbarIconManager::applyToWindow()` and `applyToMenu()` recursively traversing all window `QAction` objects with graceful fallback to default icons.
+   - Default toolbar icon size is 24x24 and menu icon size is 16x16 (with 32x32 retina pixmaps).
+   - Real-time toolbar icon size scaling instantly adjusts toolbar geometry and layout.
+
+4. In-Tab HTML & Markdown Preview (`PreviewTabWidget`):
+   - Right-clicking `.html` or `.md` editor tabs now provides an option to open the preview in a NEW TAB within the editor dock area (`ads::CenterDockWidgetArea`), rather than a separate floating window.
+   - For `.html` files, a dedicated "Preview in Default Browser" action is provided to test documents in the system's default web browser.
+   - Modern, professional GitHub/DevDocs styling with adaptive Dark and Light mode parity, zoom controls (zoom in/out/reset), refresh button, and sandboxing against CVE-2026-20841.
+
+5. File Commander Modern Folder & File Browser:
+   - Re-engineered file browser dock with quick bookmarks (Home, Documents, Downloads, Desktop, Workspace) for immediate navigation.
+   - Crisp SVG navigation icons (Up, Folder, Refresh).
+   - Bottom status bar metrics displaying file/folder counts, free storage space (`QStorageInfo`), and selection summary.
+   - Adaptive styling harmonized across dark and light themes.
+
+6. Reversible Hex / Binary View (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`):
+   - In-place toggling displaying 8-digit hex offset, 16 hex bytes with 8+8 grouping, and ASCII representation column.
+   - Reversible toggle seamlessly restoring original buffer, language highlighter, and read-only flags.
+
+7. Relocated Toolbar Icon Packs Submenu:
+   - Placed at the very top of the `Themes` menu with an elegant visual separator before editor themes.
+   - Clean, standardized, non-redundant icon pack names.
+
+8. 100% Complete Lexilla Lexers Adoption (125 Languages):
+   - Full adoption of all 125 Lexilla lexer modules in `src/languages/`, registered in `src/scripts.qrc` and synchronized in `src/scripts/init.lua`.
+   - Comprehensive syntax highlighting for modern programming languages, configuration formats, and technical DSLs.
+
+9. Keyboard Shortcut Collision Audit & Resolution:
+   - Audited and resolved keybinding conflicts:
+     - `Ctrl+Alt+Shift+E`: AES-256 Document Encryption
+     - `Ctrl+Shift+R`: Run Python Script
+     - `Ctrl+Alt+Shift+T`: Toggle Window Transparency
+     - `Ctrl+Alt+Shift+O`: Toggle File Browser Dock
+     - `Ctrl+Alt+Shift+F`: Focus Main Editor
+     - `Ctrl+Alt+H`: Toggle Hex / Binary View
+
+10. Plaintext (.txt) Format Enforcement & Localized Help Documentation:
+   - Docnote and Changelog in AboutDialog and the Help menu are automatically loaded in the active editor language (Indonesian when editor is in Indonesian, English when in English).
+   - Strictly presented in clean plaintext `.txt` monospaced viewer without markdown distraction.
+
+---
+
+## 2. Prior Release: Release v1.3.7
+
+1. Notepad++ Style Tools Menu & 16-Action MIME Tools Suite.
+2. Standalone Hash & Authenticity Validator.
+3. Interactive Shortcut Mapper in Preferences > Shortcuts.
+4. GitHub Rate Limit Elimination via ETag Caching.

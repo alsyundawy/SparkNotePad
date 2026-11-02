@@ -1,6 +1,6 @@
 # 01. Getting Started & Installation
 
-Welcome to the installation guide for **SparkNotePad v1.3.7**. SparkNotePad provides native standalone binaries across macOS, Linux, and FreeBSD without web runtime overhead.
+Welcome to the installation guide for **SparkNotePad v1.3.8**. SparkNotePad provides native standalone binaries across macOS, Linux, and FreeBSD without web runtime overhead.
 
 ---
 
@@ -20,8 +20,8 @@ Welcome to the installation guide for **SparkNotePad v1.3.7**. SparkNotePad prov
 ### Method A: Standalone DMG Disk Image
 
 1. Download the appropriate `.dmg` package from [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
-   - **Apple Silicon (M1/M2/M3/M4):** `SparkNotePad-v1.3.7-arm64.dmg`
-   - **Intel x86_64:** `SparkNotePad-v1.3.7-x64.dmg`
+   - **Apple Silicon (M1/M2/M3/M4):** `SparkNotePad-v1.3.8-arm64.dmg`
+   - **Intel x86_64:** `SparkNotePad-v1.3.8-x64.dmg`
 2. Double-click the downloaded `.dmg` file to mount it.
 3. Drag **SparkNotePad.app** into your `/Applications` directory.
 4. Eject the DMG disk image.
@@ -35,12 +35,12 @@ Welcome to the installation guide for **SparkNotePad v1.3.7**. SparkNotePad prov
 
 ### Ubuntu 22.04 LTS+ & Debian 12+ (`.deb`)
 
-Download `sparknotepad_1.3.7_amd64.deb` and install it using `apt` with a leading `./` so all system Qt 6 dependencies are automatically resolved:
+Download `sparknotepad_1.3.8_amd64.deb` and install it using `apt` with a leading `./` so all system Qt 6 dependencies are automatically resolved:
 
 ```bash
 # Recommended high-level installation (auto-resolves dependencies):
 sudo apt update
-sudo apt install ./sparknotepad_1.3.7_amd64.deb
+sudo apt install ./sparknotepad_1.3.8_amd64.deb
 ```
 
 To remove the package:
@@ -51,10 +51,10 @@ sudo apt remove sparknotepad
 
 ### Fedora, RHEL 9+, Rocky Linux & openSUSE (`.rpm`)
 
-Download `sparknotepad-1.3.7-1.x86_64.rpm` and install it using `dnf`:
+Download `sparknotepad-1.3.8-1.x86_64.rpm` and install it using `dnf`:
 
 ```bash
-sudo dnf install ./sparknotepad-1.3.7-1.x86_64.rpm
+sudo dnf install ./sparknotepad-1.3.8-1.x86_64.rpm
 ```
 
 ---
@@ -65,12 +65,12 @@ On FreeBSD 14.x and 15.x, SparkNotePad runs as a native ELF binary without compa
 
 ```bash
 # 1. Install prerequisites via pkg
-sudo pkg install -y git cmake ninja pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+sudo pkg install -y git cmake pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
 
 # 2. Clone repository & compile
 git clone https://github.com/alsyundawy/SparkNotePad.git
 cd SparkNotePad
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_INSTALL_PREFIX=/usr/local
 cmake --build build -j$(sysctl -n hw.ncpu)
 
 # 3. Install globally

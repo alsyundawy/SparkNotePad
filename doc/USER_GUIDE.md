@@ -196,8 +196,13 @@ Transform SparkNotePad into an interactive scratchpad:
 
 ## 10. Developer & Text Utilities
 
-Located under the `Tools` and `Edit` menus:
+Located under the `Tools`, `View`, and `Edit` menus:
 
+- **In-Tab HTML & Markdown Live Preview:** Right-click any `.html` or `.md` tab to open a preview in a new tab within the central dock area (`ads::CenterDockWidgetArea`), complete with dark/light mode parity, zoom controls, and "Preview in Default Browser" for HTML.
+- **Reversible Hex / Binary View (`Ctrl+Alt+H` / `Cmd+Alt+H`):** Toggle in-place hexadecimal inspection featuring 8-digit offsets, 16 hex bytes, and ASCII representation without altering underlying document content.
+- **Toolbar Icon Packs & Multi-DPI Sizing:** Switch between 10 built-in icon packs (Modern Ribbon, Fluent UI, Windows 11, Windows 7, Windows XP Luna, Fugue Classic, Notepad++ Retro, NotepadNext Silk, Monochrome, Vibrant DuoTone) from `Themes > Toolbar Icon Packs`, with sizing options from 16x16 to 64x64.
+- **Plus (+) Tab Button:** Instant document creation button on the title bar next to editor tabs.
+- **File Commander Explorer:** Modern file browser dock with quick bookmarks (Home, Documents, Downloads, Desktop, Workspace) and storage space metrics.
 - **Base64 Encoding & Decoding:** Encode or decode selected text (`Ctrl+Alt+B`).
 - **Number Radix Conversion:** Convert integers seamlessly between Binary (`0b`), Octal (`0o`), Decimal, and Hexadecimal (`0x`).
 - **UUID / GUID Generation:** Generate RFC-4122 v4 GUIDs directly into your document (`Ctrl+Alt+G`).

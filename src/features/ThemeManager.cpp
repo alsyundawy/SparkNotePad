@@ -52,6 +52,9 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
             m_currentPaletteId =
                 (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("notepadNext");
         }
+
+        emit themeChanged(isDarkActive());
+        emit paletteChanged(m_currentPaletteId);
     }
 }
 
@@ -838,6 +841,44 @@ ads--CDockAreaTitleBar {
     border-bottom: 3px solid %6;
     background: %1;
     color: %2;
+}
+
+/* Standard QDockWidget Styling (File Browser, Folder as Workspace, Live Preview, etc.) */
+QDockWidget {
+    background-color: %1;
+    color: %2;
+    border: 1px solid %3;
+}
+QDockWidget::title {
+    text-align: left;
+    background-color: %1;
+    color: %2;
+    padding: 6px 10px;
+    border: 1px solid %3;
+    border-bottom: 2px solid %6;
+    font-weight: 600;
+    font-size: 11px;
+}
+QDockWidget::close-button, QDockWidget::float-button {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    padding: 2px;
+    subcontrol-position: top right;
+    top: 4px;
+}
+QDockWidget::close-button {
+    right: 4px;
+}
+QDockWidget::float-button {
+    right: 22px;
+}
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+    background-color: %3;
+    border-color: %3;
+}
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+    background-color: %6;
 }
 
 /* Tabs & Tab Widget */

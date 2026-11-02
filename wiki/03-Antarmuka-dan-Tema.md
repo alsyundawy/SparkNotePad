@@ -53,31 +53,30 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (15 Paket Vektor & Bitmap) dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (10 Paket Vektor & Bitmap), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
 SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++:
 
 ### Paket Ikon Toolbar Bawaan
 
-- **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus.
-- **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext, direlokasi rapi ke folder `icons/packs/notepadNext/`.
+- **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
+- **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
+- **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
+- **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
+- **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
+- **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
 - **Notepad++ Retro** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-- **android material 2026** (`androidMaterial`): Geometri adaptif Google Material You / M3 dan kedalaman tonal.
-- **Vista 2026** (`windowsVista`): Estetika kaca Windows Vista Aero dengan kilau kaya dan pencahayaan volumetrik.
-- **XP 2026** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik yang direkonstruksi dari master PNG resolusi tinggi 1024×1024 dan Directory Opus 10 XP suite (master 64×64 PNG mendukung resolusi 16×16 hingga 64×64).
-- **Win10 2026** (`windows10`): Estetika monoline wireframe tajam Windows 10 Metro / MDL2.
-- **Win11 2026** (`windows11`): Microsoft Fluent Design System 2 dengan geometri membulat dan kedalaman halus dari Directory Opus 32px.
-- **Win 7 2026** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dari lembar sprite UltimateDesktops dengan gradien kaca sian tembus pandang, aksen krom mengkilap, dan pantulan volumetrik (master 64×64 PNG).
-- **Monterey 2026** (`macosMonterey`): Estetika modern SF Symbols macOS Monterey dengan gaya bersih khas Apple.
-- **NOTEPAD3 ICONPACK** (`notepad3`): Teal teknis Rizonesoft Notepad3 dan vektor tajam berorientasi pengembang.
-- **NOTEPAD4 ICONPACK** (`notepad4`): Ikonografi vektor datar nila gelap modern Zufuliu Notepad4.
-- **NOTEPAD2 ICONPACK** (`notepad2`): Palet nostalgia 16-warna retro klasik Florian Balmer Notepad2.
+- **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
 - **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-- **Vibrant DuoTone (Neon/Cyber)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+- **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+
+### Tombol Plus (+) pada Samping Deretan Tab
+
+Setiap title bar area dock kini dilengkapi tombol interaktif **Plus (+)** tepat di samping kanan deretan tab editor. Mengklik tombol ini seketika membuka tab dokumen baru ("New 1", "New 2", dst.).
 
 ### Sinkronisasi Ikon Menubar & Menu Klik Kanan Dinamis
 
-Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon aksi pada Menu Bar utama, submenu, dan menu klik kanan editor (Editor Context Menu) secara instan melalui `ToolbarIconManager::applyToWindow()`, dengan penanganan fallback otomatis untuk menjaga kerapian visual.
+Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon aksi pada Toolbar Utama, Menu Bar utama, submenu, menu konteks klik kanan tab, dan menu klik kanan editor secara instan melalui `ToolbarIconManager::applyToWindow()` dan `applyToMenu()`. Ukuran default ikon toolbar adalah 24×24 dan ikon menu adalah 16×16 (dengan aset retina 32×32).
 
 ### Skala Ukuran Ikon Toolbar Dinamis
 

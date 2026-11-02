@@ -28,6 +28,7 @@
 class QLineEdit;
 class QListWidget;
 class QListWidgetItem;
+class QKeyEvent;
 class MainWindow;
 class ScintillaNext;
 class QAction;
@@ -47,7 +48,11 @@ protected:
 
 private slots:
     void onSearchTextChanged(const QString &text);
-    void onItemActivated(QListWidgetItem *item);
+    void onItemActivated(const QListWidgetItem *item);
+
+private:
+    bool handleSearchKeyPress(const QKeyEvent *keyEvent);
+    bool filterGoToLine(const QString &query);
 
 private:
     struct PaletteItem {

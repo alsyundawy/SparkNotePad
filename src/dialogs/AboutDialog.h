@@ -30,8 +30,10 @@ public:
 protected:
     void changeEvent(QEvent *event) override;
 
+public:
+    static void copySystemInfoToClipboard();
+
 private slots:
-    void copySystemInfoToClipboard() const;
     void updateThemeColors();
 
 private:
@@ -43,6 +45,7 @@ private:
     QWidget *createEnvironmentTab();
     QWidget *createShortcutsTab();
     QWidget *createLicenseTab();
+    void showPlaintextViewer(const QString &title, const QString &filePath);
 
     QTabWidget *m_tabWidget = nullptr;
     QPushButton *m_closeBtn = nullptr;

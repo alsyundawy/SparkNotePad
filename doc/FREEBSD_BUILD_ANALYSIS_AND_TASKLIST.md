@@ -10,7 +10,7 @@ Dokumen ini menyajikan analisis forensik lengkap terhadap kegagalan instalasi Sp
 alsyundawy@alsyundawy-freebsd:~ $ git clone https://github.com/alsyundawy/SparkNotePad.git
 alsyundawy@alsyundawy-freebsd:~ $ cd SparkNotePad
 alsyundawy@alsyundawy-freebsd:~/SparkNotePad $ export CMAKE_PREFIX_PATH=/usr/local
-alsyundawy@alsyundawy-freebsd:~/SparkNotePad $ cmake -B build -G Ninja \
+alsyundawy@alsyundawy-freebsd:~/SparkNotePad $ cmake -B build \
 > -DCMAKE_BUILD_TYPE=Release \
 > -DCMAKE_PREFIX_PATH=/usr/local \
 > -DCMAKE_INSTALL_PREFIX=/usr/local
@@ -35,11 +35,11 @@ CMake Error at build/_deps/ads-build/src/cmake_install.cmake:78 (file):
 
 - **Temuan**:
   Pada dokumen tutorial resmi `SparkNotePad_FreeBSD_Tutorial.pdf` (Halaman 4, Bagian 5 & 6):
-  - Bagian 4: `cmake -B build -G Ninja ...` (Konfigurasi CMake)
+  - Bagian 4: `cmake -B build ...` (Konfigurasi CMake)
   - Bagian 5: `cmake --build build -j$(sysctl -n hw.ncpu)` (Proses Kompilasi Source Code)
   - Bagian 6: `sudo cmake --install build` (Proses Instalasi Binary & Asset)
 - **Analisis Mekanisme CMake**:
-  Perintah `cmake --install <dir>` (sejak CMake 3.15+) **tidak otomatis memicu build tool (Ninja/Make)**. Perintah tersebut hanya menjalankan script `cmake_install.cmake` yang mengasumsikan seluruh target binary (`SparkNotePad`, file `.a`, `.so`) sudah selesai dikompilasi.
+  Perintah `cmake --install <dir>` (sejak CMake 3.15+) **tidak otomatis memicu build tool (Make)**. Perintah tersebut hanya menjalankan script `cmake_install.cmake` yang mengasumsikan seluruh target binary (`SparkNotePad`, file `.a`, `.so`) sudah selesai dikompilasi.
   Karena pengguna melompat langsung dari Bagian 4 (`cmake -B build ...`) ke Bagian 6 (`sudo cmake --install build`), **proses kompilasi C++ tidak pernah terjadi**.
   Direktori `build/x64/lib/` masih kosong, sehingga ketika script instalasi mencoba menyalin file `libqtadvanceddocking-qt6_static.a`, CMake melempar error `file INSTALL cannot find: No such file or directory`.
 
@@ -148,7 +148,7 @@ Gunakan checklist berikut saat mengeksekusi kompilasi di mesin FreeBSD Anda:
 - [ ] **2.1 Instal Toolchain C++20, Qt6, dan Utility X11/Desktop**
 
   ```bash
-  sudo pkg install -y git cmake ninja pkgconf \
+  sudo pkg install -y git cmake pkgconf \
       qt6 qt6-base qt6-5compat qt6-tools \
       uchardet python3 libxkbcommon libxcb desktop-file-utils
   ```
@@ -182,7 +182,7 @@ Gunakan checklist berikut saat mengeksekusi kompilasi di mesin FreeBSD Anda:
 
   ```bash
   export CMAKE_PREFIX_PATH=/usr/local
-  cmake -B build -G Ninja \
+  cmake -B build \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH=/usr/local \
       -DCMAKE_INSTALL_PREFIX=/usr/local
@@ -198,7 +198,7 @@ Gunakan checklist berikut saat mengeksekusi kompilasi di mesin FreeBSD Anda:
   cmake --build build -j$(sysctl -n hw.ncpu)
   ```
 
-  _Kriteria Sukses:_ Ninja selesai mengompilasi seluruh target library statis (Scintilla, Lexilla, Lua, uchardet, ADS) dan target binary executable `build/src/SparkNotePad`.
+  _Kriteria Sukses:_ CMake selesai mengompilasi seluruh target library statis (Scintilla, Lexilla, Lua, uchardet, ADS) dan target binary executable `build/src/SparkNotePad`.
 
 - [ ] **5.2 Uji Coba Eksekusi Binary Lokal**
 

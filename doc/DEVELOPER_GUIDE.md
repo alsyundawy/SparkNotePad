@@ -105,7 +105,7 @@ SparkNotePad/
 
 - macOS 12+ (Apple Silicon or Intel).
 - Xcode Command Line Tools: `xcode-select --install`.
-- Qt 6 (via Homebrew): `brew install qt@6 cmake ninja`.
+- Qt 6 (via Homebrew): `brew install qt@6 cmake`.
 - Set environment path:
 
   ```bash
@@ -117,13 +117,17 @@ SparkNotePad/
 
 ```bash
 sudo apt update
-sudo apt install build-essential cmake ninja-build     qt6-base-dev qt6-base-private-dev qt6-tools-dev     libuchardet-dev libgl1-mesa-dev
+sudo apt install build-essential cmake \
+    qt6-base-dev qt6-base-private-dev qt6-tools-dev \
+    libuchardet-dev libgl1-mesa-dev
 ```
 
 ### 3.3 Linux (Fedora / RHEL)
 
 ```bash
-sudo dnf install gcc-c++ cmake ninja-build     qt6-qtbase-devel qt6-qttools-devel     uchardet-devel mesa-libGL-devel
+sudo dnf install gcc-c++ cmake \
+    qt6-qtbase-devel qt6-qttools-devel \
+    uchardet-devel mesa-libGL-devel
 ```
 
 ---
@@ -134,10 +138,12 @@ From the repository root:
 
 ```bash
 # 1. Configure the build directory
-cmake -B build -G Ninja     -DCMAKE_BUILD_TYPE=Release     -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6 2>/dev/null || echo /usr/lib/qt6)"
+cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6 2>/dev/null || echo /usr/lib/qt6)"
 
 # 2. Compile SparkNotePad
-cmake --build build --parallel
+cmake --build build
 
 # 3. Launch SparkNotePad locally
 # macOS:

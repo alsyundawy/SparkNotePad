@@ -87,4 +87,5 @@ private:
     PreviewFormat currentFormat = PreviewFormat::Auto;
     bool autoShowEnabled = false;
     int baseFontSize = 13;
+    bool m_isUpdatingTheme{false};
 };

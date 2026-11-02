@@ -16,9 +16,13 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QHash>
 #include <QStandardPaths>
 #include <QToolBar>
+#include <QMenu>
 #include <QWidget>
+#include <array>
+#include <memory>
 #include <ranges>
 
 ToolbarIconManager *ToolbarIconManager::instance() {
@@ -33,17 +37,77 @@ ToolbarIconManager::ToolbarIconManager(QObject *parent) : QObject(parent) {
 void ToolbarIconManager::registerBuiltInPacks() {
     m_packs.clear();
 
-    // 1. Modern Ribbon (SparkNotePad Default SVG)
+    // 1. Modern Ribbon (Default Vector SVG)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("modernRibbon"),
-        .displayName = tr("Modern Ribbon (Default)"),
+        .displayName = tr("Modern Ribbon (Default Vector)"),
         .description = tr("High-DPI 20x20 monoline vector SVG suite with refined contours"),
         .basePath = QStringLiteral(":/icons"),
         .isBuiltIn = true,
         .isPngBased = false,
     });
 
-    // 2. NotepadNext Classic (Original Silk PNG)
+    // 2. Microsoft Fluent UI (Win 11 Modern Vector)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("fluentUi"),
+        .displayName = tr("Microsoft Fluent UI (Win 11)"),
+        .description = tr("Microsoft Fluent Design vector iconography suite"),
+        .basePath = QStringLiteral(":/icons/packs/fluentUi"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 3. Windows 11 (Fluent 2 DOpus)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("windows11"),
+        .displayName = tr("Windows 11 (Fluent 2)"),
+        .description = tr("Microsoft Fluent Design System 2 with Directory Opus iconography"),
+        .basePath = QStringLiteral(":/icons/packs/windows11"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 4. Windows 7 (Aero Glass Azure)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("windows7"),
+        .displayName = tr("Windows 7 (Aero Glass)"),
+        .description = tr("Windows 7 Aero Glass translucent iconography"),
+        .basePath = QStringLiteral(":/icons/packs/windows7"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 5. Windows XP (Luna Classic)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("windowsXp"),
+        .displayName = tr("Windows XP (Luna Classic)"),
+        .description = tr("Windows XP Luna skeuomorphic authentic iconography"),
+        .basePath = QStringLiteral(":/icons/packs/windowsXp"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 6. Fugue Classic (Silk Suite)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("fugue"),
+        .displayName = tr("Fugue Classic (Silk Suite)"),
+        .description = tr("Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography"),
+        .basePath = QStringLiteral(":/icons/packs/fugue"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 7. Notepad++ Retro (Nostalgia)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("notepadPlusPlus"),
+        .displayName = tr("Notepad++ Retro (Nostalgia)"),
+        .description = tr("High-DPI vector recreations of classic Notepad++ iconography"),
+        .basePath = QStringLiteral(":/icons/packs/notepadPlusPlus"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 8. NotepadNext Classic (Silk)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("notepadNext"),
         .displayName = tr("NotepadNext Classic (Silk)"),
@@ -53,117 +117,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 3. Notepad++ Retro (Classic Nostalgia SVG)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepadPlusPlus"),
-        .displayName = tr("Notepad++ Retro (Classic Nostalgia)"),
-        .description = tr("High-DPI vector recreations of classic Notepad++ iconography"),
-        .basePath = QStringLiteral(":/icons/packs/notepadPlusPlus"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 4. Android Material 2026 (Material 3 / Material You)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("androidMaterial"),
-        .displayName = tr("android material 2026"),
-        .description = tr("Google Material You / M3 adaptive geometry and tonal depth"),
-        .basePath = QStringLiteral(":/icons/packs/androidMaterial"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 5. Windows Vista 2026 (Aero Gloss Glass)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windowsVista"),
-        .displayName = tr("Vista 2026"),
-        .description = tr("Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting"),
-        .basePath = QStringLiteral(":/icons/packs/windowsVista"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 6. Windows XP 2026 (Luna Skeuomorphic)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windowsXp"),
-        .displayName = tr("XP 2026"),
-        .description = tr("Windows XP Luna skeuomorphic authentic 1024px and DOpus iconography"),
-        .basePath = QStringLiteral(":/icons/packs/windowsXp"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 7. Windows 10 2026 (Metro MDL2 Monoline)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windows10"),
-        .displayName = tr("Win10 2026"),
-        .description = tr("Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic"),
-        .basePath = QStringLiteral(":/icons/packs/windows10"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 8. Windows 11 2026 (Fluent 2 Modern)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windows11"),
-        .displayName = tr("Win11 2026"),
-        .description = tr("Microsoft Fluent Design System 2 with authentic Directory Opus 32px iconography"),
-        .basePath = QStringLiteral(":/icons/packs/windows11"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 9. Windows 7 2026 (Aero Glass Translucent)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windows7"),
-        .displayName = tr("Win 7 2026"),
-        .description = tr("Windows 7/8 Aero Glass Azure translucent glass and chrome iconography"),
-        .basePath = QStringLiteral(":/icons/packs/windows7"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 10. macOS Monterey 2026 (SF Symbols Aesthetic)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("macosMonterey"),
-        .displayName = tr("Monterey 2026"),
-        .description = tr("macOS Monterey modern SF Symbols aesthetic with clean Apple styling"),
-        .basePath = QStringLiteral(":/icons/packs/macosMonterey"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 11. NOTEPAD3 ICONPACK (Rizonesoft Technical Teal)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepad3"),
-        .displayName = tr("NOTEPAD3 ICONPACK"),
-        .description = tr("Rizonesoft Notepad3 technical teal and sharp developer-focused vectors"),
-        .basePath = QStringLiteral(":/icons/packs/notepad3"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 12. NOTEPAD4 ICONPACK (Zufuliu Modern Indigo)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepad4"),
-        .displayName = tr("NOTEPAD4 ICONPACK"),
-        .description = tr("Zufuliu Notepad4 modern deep indigo flat vector iconography"),
-        .basePath = QStringLiteral(":/icons/packs/notepad4"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 13. NOTEPAD2 ICONPACK (Florian Balmer Retro Nostalgia)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepad2"),
-        .displayName = tr("NOTEPAD2 ICONPACK"),
-        .description = tr("Florian Balmer Notepad2 classic retro 16-color nostalgic palette"),
-        .basePath = QStringLiteral(":/icons/packs/notepad2"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 14. Monochrome Outline (Minimalist Dark/Light SVG)
+    // 9. Monochrome Outline (Minimalist)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("monochrome"),
         .displayName = tr("Monochrome Outline (Minimalist)"),
@@ -173,10 +127,10 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = false,
     });
 
-    // 15. Vibrant DuoTone (Neon/Cyber Contrast SVG)
+    // 10. Vibrant DuoTone (Cyberpunk)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("vibrantDuotone"),
-        .displayName = tr("Vibrant DuoTone (Neon/Cyber)"),
+        .displayName = tr("Vibrant DuoTone (Cyberpunk)"),
         .description = tr("High-luminance electric cyan & radiant magenta dual-tone contrast"),
         .basePath = QStringLiteral(":/icons/packs/vibrantDuotone"),
         .isBuiltIn = true,
@@ -192,9 +146,9 @@ void ToolbarIconManager::initialize(ApplicationSettings *settings) {
     if (m_settings) {
         const QString savedPack =
             m_settings->value(QStringLiteral("Gui/ToolbarIconSet"), QStringLiteral("modernRibbon")).toString();
-        const QString resolvedSavedPack =
-            (savedPack == QLatin1String("fluentUi")) ? QStringLiteral("windows11") : savedPack;
-        if (findPackById(resolvedSavedPack)) {
+        if (const QString resolvedSavedPack =
+                (savedPack == QLatin1String("fluentUi")) ? QStringLiteral("windows11") : savedPack;
+            findPackById(resolvedSavedPack)) {
             m_currentPackId = resolvedSavedPack;
         } else {
             m_currentPackId = QStringLiteral("modernRibbon");
@@ -216,10 +170,10 @@ const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) c
         targetId = QStringLiteral("windows11");
     }
 
-    const auto it = std::ranges::find_if(m_packs, [&targetId](const ToolbarIconPack &p) { return p.id == targetId; });
-
-    if (it != m_packs.end()) {
-        return &(*it);
+    if (const auto it =
+            std::ranges::find_if(m_packs, [&targetId](const ToolbarIconPack &p) { return p.id == targetId; });
+        it != m_packs.end()) {
+        return std::to_address(it);
     }
     return nullptr;
 }
@@ -253,6 +207,9 @@ void ToolbarIconManager::setIconSize(const QSize &size, QToolBar *toolBar) {
 
     if (toolBar) {
         toolBar->setIconSize(size);
+        applyToToolbar(toolBar);
+        toolBar->updateGeometry();
+        toolBar->update();
     }
 
     emit iconSizeChanged(size);
@@ -297,109 +254,62 @@ QString ToolbarIconManager::canonicalNameForAction(const QString &actionName) {
         name.remove(0, 6);
     }
 
-    if (name.compare(QStringLiteral("New"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("newfile");
-    }
-    if (name.compare(QStringLiteral("Open"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("openFile");
-    }
-    if (name.compare(QStringLiteral("Save"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("saved");
-    }
-    if (name.compare(QStringLiteral("SaveAll"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("saveAll");
-    }
-    if (name.compare(QStringLiteral("Close"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("closeFile");
-    }
-    if (name.compare(QStringLiteral("CloseAll"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("closeAll");
-    }
-    if (name.compare(QStringLiteral("Print"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("printer");
-    }
-    if (name.compare(QStringLiteral("Cut"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("cut");
-    }
-    if (name.compare(QStringLiteral("Copy"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("copy");
-    }
-    if (name.compare(QStringLiteral("Paste"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("paste");
-    }
-    if (name.compare(QStringLiteral("Undo"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("undo");
-    }
-    if (name.compare(QStringLiteral("Redo"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("redo");
-    }
-    if (name.compare(QStringLiteral("Find"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("find");
-    }
-    if (name.compare(QStringLiteral("Replace"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("findReplace");
-    }
-    if (name.compare(QStringLiteral("ZoomIn"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("zoomIn");
-    }
-    if (name.compare(QStringLiteral("ZoomOut"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("zoomOut");
-    }
-    if (name.compare(QStringLiteral("WordWrap"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("wrap");
-    }
-    if (name.compare(QStringLiteral("ShowAllCharacters"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("invisibleChar");
-    }
-    if (name.compare(QStringLiteral("ShowIndentGuide"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("indentGuide");
-    }
-    if (name.compare(QStringLiteral("MacroRecording"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("startRecord");
-    }
-    if (name.compare(QStringLiteral("Playback"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("playRecord");
-    }
-    if (name.compare(QStringLiteral("RunMacroMultipleTimes"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("playRecord_m");
-    }
-    if (name.compare(QStringLiteral("SaveCurrentRecordedMacro"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("saveRecord");
-    }
-    if (name.compare(QStringLiteral("Restart"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("restart");
-    }
-    if (name.compare(QStringLiteral("Preferences"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("settings");
-    }
-    if (name.compare(QStringLiteral("Exit"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("exit");
-    }
-    if (name.compare(QStringLiteral("ReadOnly"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("readonly");
-    }
-    if (name.compare(QStringLiteral("SelectAll"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("select_all");
-    }
-    if (name.compare(QStringLiteral("Indent"), Qt::CaseInsensitive) == 0 ||
-        name.compare(QStringLiteral("IncreaseIndent"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("text_indent");
-    }
-    if (name.compare(QStringLiteral("RemoveIndent"), Qt::CaseInsensitive) == 0 ||
-        name.compare(QStringLiteral("DecreaseIndent"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("text_indent_remove");
-    }
-    if (name.compare(QStringLiteral("Delete"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("closeFile");
-    }
-    if (name.compare(QStringLiteral("CopyURL"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("copy");
-    }
-    if (name.compare(QStringLiteral("OpenURL"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("openFile");
-    }
-    if (name.compare(QStringLiteral("ShowCharacterInfo"), Qt::CaseInsensitive) == 0) {
-        return QStringLiteral("invisibleChar");
+    static const QHash<QString, QString> s_actionMap = {
+        {QStringLiteral("new"), QStringLiteral("newfile")},
+        {QStringLiteral("open"), QStringLiteral("openFile")},
+        {QStringLiteral("openurl"), QStringLiteral("openFile")},
+        {QStringLiteral("save"), QStringLiteral("saved")},
+        {QStringLiteral("saveall"), QStringLiteral("saveAll")},
+        {QStringLiteral("close"), QStringLiteral("closeFile")},
+        {QStringLiteral("closeall"), QStringLiteral("closeAll")},
+        {QStringLiteral("delete"), QStringLiteral("closeFile")},
+        {QStringLiteral("print"), QStringLiteral("printer")},
+        {QStringLiteral("cut"), QStringLiteral("cut")},
+        {QStringLiteral("copy"), QStringLiteral("copy")},
+        {QStringLiteral("copyurl"), QStringLiteral("copy")},
+        {QStringLiteral("paste"), QStringLiteral("paste")},
+        {QStringLiteral("undo"), QStringLiteral("undo")},
+        {QStringLiteral("redo"), QStringLiteral("redo")},
+        {QStringLiteral("find"), QStringLiteral("find")},
+        {QStringLiteral("replace"), QStringLiteral("findReplace")},
+        {QStringLiteral("zoomin"), QStringLiteral("zoomIn")},
+        {QStringLiteral("zoomout"), QStringLiteral("zoomOut")},
+        {QStringLiteral("wordwrap"), QStringLiteral("wrap")},
+        {QStringLiteral("showallcharacters"), QStringLiteral("invisibleChar")},
+        {QStringLiteral("showcharacterinfo"), QStringLiteral("invisibleChar")},
+        {QStringLiteral("showindentguide"), QStringLiteral("indentGuide")},
+        {QStringLiteral("macrorecording"), QStringLiteral("startRecord")},
+        {QStringLiteral("playback"), QStringLiteral("playRecord")},
+        {QStringLiteral("runmacromultipletimes"), QStringLiteral("playRecord_m")},
+        {QStringLiteral("savecurrentrecordedmacro"), QStringLiteral("saveRecord")},
+        {QStringLiteral("restart"), QStringLiteral("restart")},
+        {QStringLiteral("preferences"), QStringLiteral("settings")},
+        {QStringLiteral("exit"), QStringLiteral("exit")},
+        {QStringLiteral("readonly"), QStringLiteral("readonly")},
+        {QStringLiteral("selectall"), QStringLiteral("select_all")},
+        {QStringLiteral("indent"), QStringLiteral("text_indent")},
+        {QStringLiteral("increaseindent"), QStringLiteral("text_indent")},
+        {QStringLiteral("removeindent"), QStringLiteral("text_indent_remove")},
+        {QStringLiteral("decreaseindent"), QStringLiteral("text_indent_remove")},
+        {QStringLiteral("closeallexceptactive"), QStringLiteral("closeAll")},
+        {QStringLiteral("closealltoleft"), QStringLiteral("closeAll")},
+        {QStringLiteral("closealltoright"), QStringLiteral("closeAll")},
+        {QStringLiteral("saveas"), QStringLiteral("saved")},
+        {QStringLiteral("rename"), QStringLiteral("table_edit")},
+        {QStringLiteral("reload"), QStringLiteral("arrow_refresh")},
+        {QStringLiteral("showinexplorer"), QStringLiteral("folder")},
+        {QStringLiteral("openterminalhere"), QStringLiteral("terminal")},
+        {QStringLiteral("copyfullpath"), QStringLiteral("copy")},
+        {QStringLiteral("copyfilename"), QStringLiteral("copy")},
+        {QStringLiteral("copyfiledirectory"), QStringLiteral("copy")},
+        {QStringLiteral("previewmarkdown"), QStringLiteral("find")},
+        {QStringLiteral("previewhtml"), QStringLiteral("find")},
+        {QStringLiteral("previewhtmlinbrowser"), QStringLiteral("openFile")},
+        {QStringLiteral("togglehexbinaryview"), QStringLiteral("invisibleChar")},
+    };
+
+    if (const auto it = s_actionMap.find(name.toLower()); it != s_actionMap.end()) {
+        return it.value();
     }
 
     // Default to camelCase or direct name
@@ -447,6 +357,14 @@ QStringList ToolbarIconManager::aliasesForCanonical(const QString &canonical) {
         aliases << QStringLiteral("unindent") << QStringLiteral("outdent") << QStringLiteral("format_indent_less");
     } else if (canonical == QStringLiteral("wrap")) {
         aliases << QStringLiteral("wordWrap");
+    } else if (canonical == QStringLiteral("arrow_refresh")) {
+        aliases << QStringLiteral("restart") << QStringLiteral("reload");
+    } else if (canonical == QStringLiteral("folder")) {
+        aliases << QStringLiteral("folder_go") << QStringLiteral("openFile");
+    } else if (canonical == QStringLiteral("terminal")) {
+        aliases << QStringLiteral("application_osx_terminal");
+    } else if (canonical == QStringLiteral("table_edit")) {
+        aliases << QStringLiteral("newfile");
     }
 
     return aliases;
@@ -480,19 +398,82 @@ QString ToolbarIconManager::resolveIconFilePath(const ToolbarIconPack &pack, con
     }
 
     // Graceful fallback to default Modern Ribbon SVG
-    QString defaultSvg = QStringLiteral(":/icons/") + canonical + QStringLiteral(".svg");
-    if (QFileInfo::exists(defaultSvg)) {
+    if (const QString defaultSvg = QStringLiteral(":/icons/") + canonical + QStringLiteral(".svg");
+        QFileInfo::exists(defaultSvg)) {
         return defaultSvg;
     }
 
     // Fallback to PNG
-    QString defaultPng = QStringLiteral(":/icons/") + canonical + QStringLiteral(".png");
-    if (QFileInfo::exists(defaultPng)) {
+    if (const QString defaultPng = QStringLiteral(":/icons/") + canonical + QStringLiteral(".png");
+        QFileInfo::exists(defaultPng)) {
         return defaultPng;
     }
 
     return QString();
 }
+
+namespace {
+void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased) {
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    const QIcon baseIcon(filePath);
+    for (const int sz : s_dpiSizes) {
+        if (const QPixmap px = baseIcon.pixmap(QSize(sz, sz)); !px.isNull()) {
+            icon.addPixmap(px);
+        }
+    }
+
+    if (!isPngBased) {
+        return;
+    }
+
+    const qsizetype dotIdx = filePath.lastIndexOf(QLatin1Char('.'));
+    if (dotIdx == -1) {
+        return;
+    }
+
+    const QString at2x = filePath.left(dotIdx) + QStringLiteral("@2x.png");
+    if (QFileInfo::exists(at2x)) {
+        if (QPixmap px2(at2x); !px2.isNull()) {
+            px2.setDevicePixelRatio(2.0);
+            icon.addPixmap(px2);
+        }
+    }
+}
+
+QIcon createMenuResolutionIcon(const QIcon &icon) {
+    QIcon menuIcon;
+    if (const QPixmap p16 = icon.pixmap(QSize(16, 16)); !p16.isNull()) {
+        menuIcon.addPixmap(p16);
+    }
+    if (const QPixmap p32 = icon.pixmap(QSize(32, 32)); !p32.isNull()) {
+        menuIcon.addPixmap(p32);
+    }
+    return menuIcon.isNull() ? icon : menuIcon;
+}
+
+void syncActionIcon(QAction *action, const ToolbarIconManager &mgr, bool isMenuContext) {
+    if (!action || action->isSeparator()) {
+        return;
+    }
+
+    if (!action->property("sparkDefaultIcon").isValid()) {
+        action->setProperty("sparkDefaultIcon", action->icon());
+    }
+
+    const QString objectName = action->objectName();
+    if (objectName.isEmpty()) {
+        action->setIconVisibleInMenu(true);
+        return;
+    }
+
+    if (const QIcon icon = mgr.getActionIcon(objectName); !icon.isNull()) {
+        action->setIcon(isMenuContext ? createMenuResolutionIcon(icon) : icon);
+    } else if (const QIcon defaultIcon = action->property("sparkDefaultIcon").value<QIcon>(); !defaultIcon.isNull()) {
+        action->setIcon(defaultIcon);
+    }
+    action->setIconVisibleInMenu(true);
+}
+}  // namespace
 
 QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString &packId) const {
     const QString targetPackId = packId.isEmpty() ? m_currentPackId : packId;
@@ -506,8 +487,7 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
     }
 
     const QString canonical = canonicalNameForAction(actionName);
-    const QString filePath = resolveIconFilePath(*pack, canonical);
-    if (!filePath.isEmpty()) {
+    if (const QString filePath = resolveIconFilePath(*pack, canonical); !filePath.isEmpty()) {
         if (canonical == QStringLiteral("startRecord")) {
             const QString onPath = resolveIconFilePath(*pack, QStringLiteral("stopRecord"));
             if (!onPath.isEmpty()) {
@@ -517,7 +497,11 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
                 return dualIcon;
             }
         }
-        return QIcon(filePath);
+
+        QIcon icon;
+        icon.addFile(filePath);
+        addHiDpiPixmaps(icon, filePath, pack->isPngBased);
+        return icon;
     }
 
     return QIcon();
@@ -545,8 +529,7 @@ void ToolbarIconManager::applyToToolbar(QToolBar *toolBar) const {
             continue;
         }
 
-        const QIcon icon = getActionIcon(objectName);
-        if (!icon.isNull()) {
+        if (const QIcon icon = getActionIcon(objectName); !icon.isNull()) {
             action->setIcon(icon);
         } else {
             // Restore default icon if pack does not supply one
@@ -558,7 +541,20 @@ void ToolbarIconManager::applyToToolbar(QToolBar *toolBar) const {
     }
 }
 
-void ToolbarIconManager::applyToWindow(QWidget *window, QToolBar *toolBar) const {
+void ToolbarIconManager::applyToMenu(const QMenu *menu) const {
+    if (!menu) {
+        return;
+    }
+
+    for (QAction *action : menu->actions()) {
+        syncActionIcon(action, *this, true);
+        if (action && action->menu()) {
+            applyToMenu(action->menu());
+        }
+    }
+}
+
+void ToolbarIconManager::applyToWindow(const QWidget *window, QToolBar *toolBar) const {
     if (toolBar) {
         applyToToolbar(toolBar);
     }
@@ -569,28 +565,14 @@ void ToolbarIconManager::applyToWindow(QWidget *window, QToolBar *toolBar) const
 
     const auto actions = window->findChildren<QAction *>();
     for (QAction *action : actions) {
-        if (!action || action->isSeparator()) {
-            continue;
+        syncActionIcon(action, *this, false);
+        if (action && action->menu()) {
+            applyToMenu(action->menu());
         }
+    }
 
-        if (!action->property("sparkDefaultIcon").isValid()) {
-            action->setProperty("sparkDefaultIcon", action->icon());
-        }
-
-        const QString objectName = action->objectName();
-        if (objectName.isEmpty()) {
-            continue;
-        }
-
-        const QIcon icon = getActionIcon(objectName);
-        if (!icon.isNull()) {
-            action->setIcon(icon);
-        } else {
-            const QIcon defaultIcon = action->property("sparkDefaultIcon").value<QIcon>();
-            if (!defaultIcon.isNull()) {
-                action->setIcon(defaultIcon);
-            }
-        }
-        action->setIconVisibleInMenu(true);
+    const auto menus = window->findChildren<QMenu *>();
+    for (const QMenu *menu : menus) {
+        applyToMenu(menu);
     }
 }

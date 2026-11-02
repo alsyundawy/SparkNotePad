@@ -90,8 +90,11 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
             });
 
     connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](const ads::CDockAreaWidget *DockArea) {
-        const auto *titleBar = qobject_cast<const DockedEditorTitleBar *>(DockArea->titleBar());
-        connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);
+        if (const auto *titleBar = qobject_cast<const DockedEditorTitleBar *>(DockArea->titleBar());
+            titleBar != nullptr) {
+            connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);
+            connect(titleBar, &DockedEditorTitleBar::plusButtonClicked, this, &DockedEditor::newFileRequested);
+        }
 
         connect(DockArea->titleBar()->tabBar(), &ads::CDockAreaTabBar::tabMoved, this, [this](int from, int to) {
             Q_UNUSED(from)
@@ -112,23 +115,20 @@ ScintillaNext *DockedEditor::getCurrentEditor() const {
 }
 
 int DockedEditor::count() const {
-    int total = 0;
-
-    for (int i = 0; i < dockManager->dockAreaCount(); ++i)
-        total += dockManager->dockArea(i)->dockWidgetsCount();
-
-    return total;
+    return static_cast<int>(editors().size());
 }
 
 QVector<ScintillaNext *> DockedEditor::editors() const {
     QVector<ScintillaNext *> editors;
 
-    // For each area, for each widget, append it to our list
+    // For each area, for each widget, append it to our list if it is a ScintillaNext editor
     for (const ads::CDockAreaWidget *areaWidget : dockManager->openedDockAreas()) {
         const auto &widgets = areaWidget->dockWidgets();
-        std::ranges::transform(widgets, std::back_inserter(editors), [](const ads::CDockWidget *dockWidget) {
-            return qobject_cast<ScintillaNext *>(dockWidget->widget());
-        });
+        for (const ads::CDockWidget *dockWidget : widgets) {
+            if (auto *scintilla = qobject_cast<ScintillaNext *>(dockWidget->widget())) {
+                editors.append(scintilla);
+            }
+        }
     }
 
     return editors;
@@ -149,14 +149,47 @@ void DockedEditor::switchToEditor(const ScintillaNext *editor) const {
 }
 
 void DockedEditor::dockWidgetCloseRequested() {
-    const auto *dockWidget = qobject_cast<const ads::CDockWidget *>(sender());
+    auto *dockWidget = qobject_cast<ads::CDockWidget *>(sender());
     if (!dockWidget || !dockWidget->widget()) {
         return;
     }
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(dockWidget->widget());
     if (editor) {
         emit editorCloseRequested(editor);
+    } else {
+        dockWidget->closeDockWidget();
     }
+}
+
+ads::CDockWidget *DockedEditor::addTabWidget(QWidget *widget, const QString &title, const QIcon &icon,
+                                             const QString &toolTip) {
+    if (!widget) {
+        return nullptr;
+    }
+
+    ads::CDockWidget *dockWidget = dockManager->createDockWidget(title);
+    dockWidget->tabWidget()->setElideMode(Qt::ElideNone);
+    dockWidget->setObjectName(QUuid::createUuid().toString());
+    dockWidget->setWidget(widget);
+    dockWidget->setFeature(ads::CDockWidget::DockWidgetFeature::DockWidgetDeleteOnClose, true);
+    dockWidget->setFeature(ads::CDockWidget::DockWidgetFeature::CustomCloseHandling, true);
+    dockWidget->setFeature(ads::CDockWidget::DockWidgetFeature::DockWidgetFloatable, false);
+
+    if (!icon.isNull()) {
+        dockWidget->tabWidget()->setIcon(icon);
+    }
+
+    if (!toolTip.isEmpty()) {
+        dockWidget->tabWidget()->setToolTip(toolTip);
+    } else {
+        dockWidget->tabWidget()->setToolTip(title);
+    }
+
+    connect(dockWidget, &ads::CDockWidget::closeRequested, this, &DockedEditor::dockWidgetCloseRequested);
+
+    latestDockArea = dockManager->addDockWidget(ads::CenterDockWidgetArea, dockWidget, currentDockArea());
+    dockWidget->raise();
+    return dockWidget;
 }
 
 ads::CDockAreaWidget *DockedEditor::currentDockArea() const {

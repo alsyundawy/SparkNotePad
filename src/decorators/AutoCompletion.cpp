@@ -29,8 +29,8 @@ AutoCompletion::AutoCompletion(ScintillaNext *editor) : EditorDecorator(editor) 
     editor->autoCSetFillUps(" (");
 
     connect(editor, &ScintillaNext::lexerChanged, this, [this]() {
-        SparkNotePadApplication *app = qobject_cast<SparkNotePadApplication *>(qApp);
-        if (app) {
+        const auto *app = qobject_cast<const SparkNotePadApplication *>(qApp);
+        if (app != nullptr) {
             keywords = app->getLanguageKeywords(this->editor->languageName);
         }
     });
@@ -46,23 +46,29 @@ void AutoCompletion::notify(const NotificationData *pscn) {
 }
 
 void AutoCompletion::showAutoCompletion() {
-    if (!editor)
+    if (editor == nullptr) {
         return;
+    }
 
-    int curPos = editor->currentPos();
-    int startPos = editor->wordStartPosition(curPos, true);
-    int endPos = editor->wordEndPosition(curPos, true);
+    const auto curPos = static_cast<int>(editor->currentPos());
+    const auto startPos = static_cast<int>(editor->wordStartPosition(curPos, true));
+    const auto endPos = static_cast<int>(editor->wordEndPosition(curPos, true));
 
     // Trigger with 2 or more characters for rapid response
-    if ((curPos - startPos) < 2)
+    if ((curPos - startPos) < 2) {
         return;
+    }
 
     const QByteArray current_word = editor->get_text_range(startPos, curPos);
-    const bool isValidIdentifier = std::all_of(current_word.cbegin(), current_word.cend(), [](char c) {
-        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
-    });
-    if (!isValidIdentifier)
+    if (const bool isValidIdentifier = std::ranges::all_of(current_word,
+                                                           [](char c) {
+                                                               return (c >= 'a' && c <= 'z') ||
+                                                                      (c >= 'A' && c <= 'Z') ||
+                                                                      (c >= '0' && c <= '9') || c == '_';
+                                                           });
+        !isValidIdentifier) {
         return;
+    }
 
     const QByteArray regex = "\\b" + current_word + "[\\w]*";
     QSet<QByteArray> words;
@@ -71,7 +77,7 @@ void AutoCompletion::showAutoCompletion() {
 
     // For large files (> 1MB or > 5,000 lines), constrain search to viewport +/- 200 lines
     Sci_PositionCR searchStart = 0;
-    Sci_PositionCR searchEnd = static_cast<Sci_PositionCR>(editor->length());
+    auto searchEnd = static_cast<Sci_PositionCR>(editor->length());
     if (editor->length() > 1024 * 1024 || editor->lineCount() > 5000) {
         const int firstLine = qMax(0, static_cast<int>(editor->firstVisibleLine()) - 200);
         const int lastLine = qMin(static_cast<int>(editor->lineCount()),
@@ -84,10 +90,11 @@ void AutoCompletion::showAutoCompletion() {
     // Find words in buffer before caret
     if (searchStart < startPos) {
         editor->forEachMatchInRange(regex,
-                                    [&](int start, int end) {
+                                    [&words, &wordCount, startPos, this](int start, int end) {
                                         words.insert(editor->get_text_range(start, end));
-                                        if (++wordCount >= 100)
+                                        if (++wordCount >= 100) {
                                             return startPos;
+                                        }
                                         return end;
                                     },
                                     {searchStart, startPos});
@@ -96,10 +103,11 @@ void AutoCompletion::showAutoCompletion() {
     // Find words in buffer after caret
     if (wordCount < 100 && endPos < searchEnd) {
         editor->forEachMatchInRange(regex,
-                                    [&](int start, int end) {
+                                    [&words, &wordCount, searchEnd, this](int start, int end) {
                                         words.insert(editor->get_text_range(start, end));
-                                        if (++wordCount >= 100)
+                                        if (++wordCount >= 100) {
                                             return static_cast<int>(searchEnd);
+                                        }
                                         return end;
                                     },
                                     {endPos, searchEnd});
@@ -115,8 +123,8 @@ void AutoCompletion::showAutoCompletion() {
 
     if (!words.isEmpty()) {
         QList<QByteArray> sortedWords = words.values();
-        std::sort(sortedWords.begin(), sortedWords.end(),
-                  [](const QByteArray &a, const QByteArray &b) { return a.toLower() < b.toLower(); });
+        std::ranges::sort(sortedWords,
+                          [](const QByteArray &a, const QByteArray &b) { return a.toLower() < b.toLower(); });
         editor->autoCShow(current_word.length(), sortedWords.join(' '));
     }
 }

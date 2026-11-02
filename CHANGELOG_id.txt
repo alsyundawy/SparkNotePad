@@ -1,0 +1,62 @@
+# Catatan Perubahan (Changelog) — SparkNotePad
+
+Semua perubahan penting pada **SparkNotePad** didokumentasikan dalam berkas ini.
+
+Format berkas ini mengacu pada [Keep a Changelog](https://keepachangelog.com/id/1.1.0/),
+dan proyek ini mengikuti [Semantic Versioning](https://semver.org/lang/id/).
+
+---
+
+## [1.3.8] - 2026-11-02
+
+### 🎨 Paket Ikon Toolbar (10 Paket Bawaan), Pratinjau HTML/Markdown di Tab Baru, File Commander Modern, Tampilan Hex/Biner Reversibel & 125 Lexilla Lexer
+
+SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap, koleksi ikon resolusi tinggi, sinkronisasi menyeluruh ke menu dan konteks klik kanan, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
+
+#### 🆕 Ditambahkan
+
+- **10 Paket Ikon Bawaan (Bebas Duplikasi)**:
+  - **Modern Ribbon (Default)** (`modernRibbon`): Ikon vektor monoline SVG 20x20 resolusi tinggi dengan kontur halus (Default).
+  - **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor Microsoft Fluent modern.
+  - **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
+  - **Windows 7 (Aero Glass)** (`windows7`): Estetika kaca Aero Glass Azure dengan gradien cyan dan bingkai krom.
+  - **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Luna XP autentik (resolusi master 64x64).
+  - **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
+  - **Notepad++ Retro (Nostalgia)** (`notepadPlusPlus`): Vektor rekreasi ikon klasik Notepad++.
+  - **NotepadNext Classic (Silk)** (`notepadNext`): Bitmap Silk 16x16 otentik dari NotepadNext.
+  - **Monochrome Outline (Minimalist)** (`monochrome`): Wireframe monoline bersih untuk tema gelap dan terang.
+  - **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras neon sian dan magenta tinggi.
+  - Menghapus paket `archLinux` dan `filledFluentUi` demi konsistensi visual.
+- **Tombol Plus (+) pada Setiap Samping Akhir Tab**:
+  - Tombol interaktif Plus (+) diletakkan pada title bar di samping kanan tab editor untuk membuat berkas baru dengan cepat.
+- **Sinkronisasi Ikon Menubar & Menu Konteks Dinamis (`applyToWindow`)**:
+  - Perubahan paket ikon toolbar secara otomatis menyinkronkan seluruh ikon pada toolbar, menubar utama, menu konteks klik kanan tab, dan menu klik kanan Scintilla editor.
+  - Ukuran default ikon toolbar adalah 24x24 dan ikon menu adalah 16x16 (dengan aset retina 32x32).
+  - Pemilihan ukuran ikon toolbar secara dinamis menyesuaikan geometri dan tata letak toolbar.
+- **Pratinjau HTML & Markdown di Tab Editor Baru (`PreviewTabWidget`)**:
+  - Pratinjau langsung di tab editor tengah (`ads::CenterDockWidgetArea`), bukan di jendela baru terpisah.
+  - Menu konteks tab menyediakan aksi "Preview HTML in New Tab" dan "Preview Markdown in New Tab".
+  - Aksi "Preview in Default Browser" khusus berkas `.html` untuk membuka berkas di peramban sistem.
+  - Desain modern GitHub/DevDocs dengan kesetaraan tema Dark/Light, tombol perbesaran (+/-), tombol segarkan, dan proteksi sandbox CVE-2026-20841.
+- **Folder & File Browser Bergaya File Commander Modern (`FileBrowserDock`)**:
+  - Bilah pintasan cepat (Home, Documents, Downloads, Desktop, Workspace).
+  - Ikon navigasi SVG tajam (Up, Folder, Refresh).
+  - Bilah status metrik menampilkan jumlah berkas, folder, ruang disk kosong (`QStorageInfo`), dan detail seleksi.
+  - Keselarasan tema gelap dan terang.
+- **Tampilan Hex / Binary Reversibel (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
+  - Menampilkan offset 8-digit, 16 bita hex (8+8 grouping), dan kolom karakter ASCII.
+  - Dapat dibatalkan seketika mengembalikan dokumen asli secara utuh.
+- **Relokasi Menu Toolbar Icon Packs ke Posisi Teratas Themes**:
+  - Submenu ditempatkan di posisi paling atas menu `Themes`, dipisahkan oleh separator pembatas.
+- **100% Pengadopsian Lexilla Lexer (125 Bahasa)**:
+  - Seluruh 125 lexer Lexilla didukung lengkap dengan deskriptor Lua di `src/languages/`, didaftarkan di `src/scripts.qrc` dan `src/scripts/init.lua`.
+- **Audit Pintasan Keyboard & Resolusi Konflik**:
+  - `Ctrl+Alt+Shift+E`: Enkripsi Dokumen
+  - `Ctrl+Shift+R`: Jalankan Skrip Python
+  - `Ctrl+Alt+Shift+T`: Alihkan Transparansi Jendela
+  - `Ctrl+Alt+Shift+O`: Buka/Tutup File Browser
+  - `Ctrl+Alt+Shift+F`: Fokus ke Editor
+  - `Ctrl+Alt+H`: Tampilan Hex / Binary
+- **Penegakan Format Plaintext (.txt) & Dokumentasi Bilingual**:
+  - Menu Help Docnote dan Changelog disajikan otomatis dalam bahasa aktif editor (Indonesia / English).
+  - Disajikan secara murni dalam format plaintext monospaced `.txt`.

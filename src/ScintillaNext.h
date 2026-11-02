@@ -172,7 +172,8 @@ public:
     QString languageName;
     QByteArray languageSingleLineComment;
 
-#include "ScintillaEnums.h"  // NOSONAR(cpp:S954) NOLINT(llvm-include-order)
+    // NOLINTNEXTLINE(llvm-include-order)
+#include "ScintillaEnums.h"  // NOSONAR
 
 public slots:
     void close();  // NOLINT // NOSONAR(cpp:S5495)
@@ -206,6 +207,7 @@ signals:
     void reloaded();
 
 protected:
+    void changeEvent(QEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 

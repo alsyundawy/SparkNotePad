@@ -134,7 +134,7 @@ void SessionManager::saveSession(const MainWindow *window) const {
     settings.beginWriteArray("OpenedFiles");
 
     int index = 0;
-    for (const auto &editor : window->editors()) {
+    for (const ScintillaNext *editor : window->editors()) {
         SessionFileType editorType = determineType(editor);
 
         if (fileTypes.testFlag(editorType)) {
@@ -220,7 +220,7 @@ bool SessionManager::willFileGetStoredInSession(const ScintillaNext *editor) con
     return fileTypes.testFlag(editorType);
 }
 
-void SessionManager::storeFileDetails(const ScintillaNext *editor, QSettings &settings) const {
+void SessionManager::storeFileDetails(const ScintillaNext *editor, QSettings &settings) {
     settings.setValue("Type", "File");
     settings.setValue("FilePath", editor->getFilePath());
 
@@ -253,13 +253,13 @@ ScintillaNext *SessionManager::loadFileDetails(const QSettings &settings) {
         loadEditorViewDetails(editor, settings);
 
         return editor;
-    } else {
-        qDebug("  no longer exists on disk, ignoring");
-        return Q_NULLPTR;
     }
+
+    qDebug("  no longer exists on disk, ignoring");
+    return Q_NULLPTR;
 }
 
-void SessionManager::storeUnsavedFileDetails(const ScintillaNext *editor, QSettings &settings) const {
+void SessionManager::storeUnsavedFileDetails(const ScintillaNext *editor, QSettings &settings) {
     const QString sessionFileName = RandomSessionFileName();
 
     settings.setValue("Type", "UnsavedFile");
@@ -304,14 +304,14 @@ ScintillaNext *SessionManager::loadUnsavedFileDetails(const QSettings &settings)
         loadEditorViewDetails(loadedEditor, settings);
 
         return loadedEditor;
-    } else {
-        // What if just filePath exists?
-        qDebug("  no longer exists on disk, ignoring this file for session loading");
-        return Q_NULLPTR;
     }
+
+    // What if just filePath exists?
+    qDebug("  no longer exists on disk, ignoring this file for session loading");
+    return Q_NULLPTR;
 }
 
-void SessionManager::storeTempFile(const ScintillaNext *editor, QSettings &settings) const {
+void SessionManager::storeTempFile(const ScintillaNext *editor, QSettings &settings) {
     const QString sessionFileName = RandomSessionFileName();
 
     settings.setValue("Type", "Temp");
@@ -360,13 +360,13 @@ ScintillaNext *SessionManager::loadTempFile(const QSettings &settings) {
         }
 
         return editor;
-    } else {
-        qDebug("  no longer exists on disk, ignoring");
-        return Q_NULLPTR;
     }
+
+    qDebug("  no longer exists on disk, ignoring");
+    return Q_NULLPTR;
 }
 
-void SessionManager::storeEditorViewDetails(const ScintillaNext *editor, QSettings &settings) const {
+void SessionManager::storeEditorViewDetails(const ScintillaNext *editor, QSettings &settings) {
     settings.setValue("FirstVisibleLine",
                       static_cast<int>(editor->firstVisibleLine() +
                                        1));  // Keep it 1-based in the settings just for human-readability
@@ -379,11 +379,12 @@ void SessionManager::storeEditorViewDetails(const ScintillaNext *editor, QSettin
     }
 
     const QList<int> bookMarkedLines = decorator->bookMarkedLines();
-    if (!bookMarkedLines.isEmpty())
+    if (!bookMarkedLines.isEmpty()) {
         settings.setValue("BookMarks", QListToQVariantList(bookMarkedLines));
+    }
 }
 
-void SessionManager::loadEditorViewDetails(ScintillaNext *editor, const QSettings &settings) const {
+void SessionManager::loadEditorViewDetails(ScintillaNext *editor, const QSettings &settings) {
     const int firstVisibleLine = settings.value("FirstVisibleLine").toInt() - 1;
     const int currentPosition = settings.value("CurrentPosition").toInt();
 

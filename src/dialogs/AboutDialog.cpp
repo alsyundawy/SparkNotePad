@@ -17,7 +17,10 @@
 #include <QTabWidget>
 #include <QLabel>
 #include <QTextBrowser>
+#include <QPlainTextEdit>
+#include <QFile>
 #include <QPushButton>
+#include "../features/DocumentationManager.h"
 #include <QDialogButtonBox>
 #include <QGuiApplication>
 #include <QClipboard>
@@ -102,7 +105,7 @@ void AboutDialog::retranslateUi() {
 
 void AboutDialog::updateThemeColors() {
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
-    bool dark = ThemeManager::instance()->isDarkActive();
+    const bool dark = ThemeManager::instance()->isDarkActive();
 
     QString winBg;
     QString cardBg;
@@ -134,9 +137,10 @@ void AboutDialog::updateThemeColors() {
         txtSec = QStringLiteral("#475569");
     }
 
-    QString badgeBg = dark ? QStringLiteral("rgba(255,255,255,0.08)") : QStringLiteral("rgba(0,0,0,0.05)");
-    QString panelBg = dark ? QStringLiteral("rgba(15, 23, 42, 0.65)") : QStringLiteral("rgba(241, 245, 249, 0.85)");
-    QString cardStyle =
+    const QString badgeBg = dark ? QStringLiteral("rgba(255,255,255,0.08)") : QStringLiteral("rgba(0,0,0,0.05)");
+    const QString panelBg =
+        dark ? QStringLiteral("rgba(15, 23, 42, 0.65)") : QStringLiteral("rgba(241, 245, 249, 0.85)");
+    const QString cardStyle =
         QString(
             "QLabel {"
             "  padding: 10px 12px;"
@@ -150,7 +154,7 @@ void AboutDialog::updateThemeColors() {
             "}")
             .arg(panelBg, borderCol, accentCol, txtPri);
 
-    QString dialogStyle =
+    const QString dialogStyle =
         QString(
             "QDialog {"
             "  background-color: %1;"
@@ -282,7 +286,7 @@ void AboutDialog::updateThemeColors() {
                     "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
                     "8px; padding: 2px 7px; font-weight: 500;'>⚡ Scintilla 5.6.x</span>"
                     "</p>")
-                .arg(badgeBg, txtPri, borderCol, tr("75 Themes"), tr("Math Eval"), tr("100+ Lexers"),
+                .arg(badgeBg, txtPri, borderCol, tr("75 Themes"), tr("Math Eval"), tr("125 Lexilla Lexers"),
                      tr("Export PDF")));
     }
 
@@ -306,9 +310,9 @@ void AboutDialog::updateThemeColors() {
                     "https://github.com/alsyundawy/SparkNotePad</a></div>"
                     "<div style='margin-bottom: 5px;'><b style='color: %1;'>%4:</b> "
                     "<a style='text-decoration: none;' "
-                    "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.7'>"
+                    "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.8'>"
                     "<span style='background-color: #238636; color: #ffffff; padding: 2px 8px; border-radius: 10px; "
-                    "font-weight: bold; font-size: 10px;'>🏷️ v1.3.7 %5</span></a></div>"
+                    "font-weight: bold; font-size: 10px;'>🏷️ v1.3.8 %5</span></a></div>"
                     "<div style='margin-bottom: 5px;'><b style='color: %1;'>%6:</b> "
                     "<b>Harry Dertin Sutisna Alsyundawy</b> (<a style='color: %3; text-decoration: none;' "
                     "href='https://github.com/alsyundawy'>@alsyundawy</a>) — <b>ALSYUNDAWY IT SOLUTION</b></div>"
@@ -322,9 +326,9 @@ void AboutDialog::updateThemeColors() {
     if (m_diagnosticsCard) {
         m_diagnosticsCard->setStyleSheet(cardStyle);
         const QScreen *primary = QGuiApplication::primaryScreen();
-        qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
+        const qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
 
-        QString infoText =
+        const QString infoText =
             QString(
                 "<div style='color: %1; line-height: 1.6; font-size: 11px;'>"
                 "<b>%2:</b> %3 (%4)<br/>"
@@ -383,7 +387,7 @@ void AboutDialog::updateThemeColors() {
                            "<p>%4</p>")
                            .arg(txtPri, accentCol, tr("Credits, Resources & Upstream Attribution"),
                                 tr("SparkNotePad stands on the shoulders of giants. We express our deepest gratitude "
-                                   "to the following projects, communities, and tools (v1.0.0 – v1.3.7):"));
+                                   "to the following projects, communities, and tools (v1.0.0 – v1.3.8):"));
 
         creditsHtml += QString(
                            "<h4 style='color: %1; margin: 12px 0 4px 0; font-size: 12px;'>🤖 %2</h4>"
@@ -395,27 +399,32 @@ void AboutDialog::updateThemeColors() {
                            .arg(accentCol, tr("AI Engineering, Code Review & Auditing"),
                                 tr("Lead AI Pair Programming IDE & Agentic Workflow Environment driving architecture, "
                                    "refactoring, and quality assurance."),
-                                tr("Continuous AI Code Review, 13-Pillar Security Auditing, Static Analysis, and "
+                                tr("Continuous AI Code Review, 14-Pillar Security Auditing, Static Analysis, and "
                                    "Linter Compliance Engine."));
 
         creditsHtml +=
             QString(
                 "<h4 style='color: %1; margin: 12px 0 4px 0; font-size: 12px;'>🌿 %2</h4>"
                 "<ul>"
-                "<li><b>NotepadNext:</b> %3 (<a style='color: %1;' "
+                "<li><b>NotepadNext-MacOS:</b> %3 (<a style='color: %1;' "
+                "href='https://github.com/alsyundawy/NotepadNext-MacOS'>github.com/alsyundawy/NotepadNext-MacOS</a>)</"
+                "li>"
+                "<li><b>NotepadNext:</b> %4 (<a style='color: %1;' "
                 "href='https://github.com/dail8859/NotepadNext'>github.com/dail8859/NotepadNext</a>)</li>"
-                "<li><b>Notepad4:</b> %4 (<a style='color: %1;' "
+                "<li><b>Notepad4:</b> %5 (<a style='color: %1;' "
                 "href='https://github.com/zufuliu/notepad4'>github.com/zufuliu/notepad4</a>)</li>"
-                "<li><b>Notepad3:</b> %5 (<a style='color: %1;' "
+                "<li><b>Notepad3:</b> %6 (<a style='color: %1;' "
                 "href='https://www.rizonesoft.com'>rizonesoft.com</a>)</li>"
-                "<li><b>Notepad--:</b> %6 (<a style='color: %1;' "
+                "<li><b>Notepad--:</b> %7 (<a style='color: %1;' "
                 "href='https://github.com/cxasm/notepad--'>github.com/cxasm/notepad--</a>)</li>"
-                "<li><b>Notepad++:</b> %7 (<a style='color: %1;' "
+                "<li><b>Notepad++:</b> %8 (<a style='color: %1;' "
                 "href='https://notepad-plus-plus.org'>notepad-plus-plus.org</a>)</li>"
-                "<li><b>SubnetCalc for macOS:</b> %8 (<a style='color: %1;' "
+                "<li><b>SubnetCalc for macOS:</b> %9 (<a style='color: %1;' "
                 "href='https://github.com/alsyundawy/SubnetCalc-MacOS'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
                 "</ul>")
                 .arg(accentCol, tr("Upstream Projects & Peer Editors"),
+                     tr("Created and maintained by Harry D.S. Alsyundawy (@alsyundawy). Upstream macOS port repository "
+                        "and historical origin of SparkNotePad."),
                      tr("Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding and docking "
                         "framework foundation."),
                      tr("Created by Zufu Liu (zufuliu). Architectural ideas, lexer updates, and utility concepts."),
@@ -501,16 +510,22 @@ void AboutDialog::updateThemeColors() {
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + E</td><td>%10</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + T</td><td>%11</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + F</td><td>%12</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + H</td><td>Toggle Hex / Binary "
+                "View</td></tr>"
                 "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%13</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F1</td><td>%14</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F2</td><td>%15</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F3</td><td>%16</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Alt+Shift+F1 / Ctrl+Alt+W</td><td>%17</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>F5</td><td>%18</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>F5 / Ctrl+Alt+R</td><td>%18</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + F5</td><td>%19</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + T</td><td>%20</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + R</td><td>%21</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + R</td><td>%21</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + C</td><td>%22</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl+Alt+Shift+E</td><td>Encrypt Current "
+                "Document</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl+Alt+Shift+O</td><td>Toggle File Browser "
+                "Dock</td></tr>"
                 "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%23</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + D</td><td>%24</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + /</td><td>%25</td></tr>"
@@ -530,7 +545,7 @@ void AboutDialog::updateThemeColors() {
                      tr("Developer &amp; Documentation Tools"), tr("Get PHP Help (php.net)"),
                      tr("Rust Documentation (rust-lang.org/learn)"), tr("Python Documentation (w3schools.com/python)"),
                      tr("Wikipedia Search"), tr("Run External Tool"), tr("Run Current File with Interpreter"),
-                     tr("Open Terminal Here"), tr("Run Python Script / Selection (3.13+)"),
+                     tr("Toggle Dark / Light Mode"), tr("Run Python Script / Selection (3.13+)"),
                      tr("Generate Development SSL Certificate (mkcert/OpenSSL)"), tr("Editing &amp; Selection"),
                      tr("Duplicate Current Line or Selection"), tr("Toggle Single-Line Comment"),
                      tr("Toggle Block / Stream Comment"), tr("Convert Selection to UPPERCASE"),
@@ -616,6 +631,25 @@ QWidget *AboutDialog::createAboutTab() {
     m_metaLabel->setWordWrap(true);
     m_metaLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     layout->addWidget(m_metaLabel);
+
+    auto *docBtnLayout = new QHBoxLayout(contentWidget);
+    docBtnLayout->setSpacing(8);
+
+    auto *btnDocnote = new QPushButton(tr("📄 View Docnote (Plaintext TXT)"), contentWidget);
+    btnDocnote->setCursor(Qt::PointingHandCursor);
+    connect(btnDocnote, &QPushButton::clicked, this, [this] {
+        showPlaintextViewer(tr("DOCNOTE.txt (Plaintext)"), DocumentationManager::instance().docnotePlaintextPath());
+    });
+    docBtnLayout->addWidget(btnDocnote);
+
+    auto *btnChangelog = new QPushButton(tr("📋 View Changelog (Plaintext TXT)"), contentWidget);
+    btnChangelog->setCursor(Qt::PointingHandCursor);
+    connect(btnChangelog, &QPushButton::clicked, this, [this] {
+        showPlaintextViewer(tr("CHANGELOG.txt (Plaintext)"), DocumentationManager::instance().changelogPlaintextPath());
+    });
+    docBtnLayout->addWidget(btnChangelog);
+
+    layout->addLayout(docBtnLayout);
 
     layout->addStretch();
     scroll->setWidget(contentWidget);
@@ -708,32 +742,66 @@ QWidget *AboutDialog::createLicenseTab() {
     return tab;
 }
 
-void AboutDialog::copySystemInfoToClipboard() const {
+void AboutDialog::copySystemInfoToClipboard() {
     const QScreen *primary = QGuiApplication::primaryScreen();
-    qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
+    const qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
 
-    QString plainInfo = QString(
-                            "SparkNotePad Version: v%1\n"
-                            "OS: %2 (%3)\n"
-                            "Kernel: %4\n"
-                            "CPU: %5 (Build Target: %6)\n"
-                            "Qt: %7 (Built with %8)\n"
-                            "Display Scale: %9x\n"
-                            "Core Engines: Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1\n"
-                            "AI Code Review & Auditor: Google Gemini 3.8 Flash via Antigravity IDE\n"
-                            "License: GNU General Public License v3.0\n")
-                            .arg(APP_VERSION)
-                            .arg(QSysInfo::prettyProductName())
-                            .arg(QSysInfo::kernelType())
-                            .arg(QSysInfo::kernelVersion())
-                            .arg(QSysInfo::currentCpuArchitecture())
-                            .arg(QSysInfo::buildCpuArchitecture())
-                            .arg(qVersion())
-                            .arg(QT_VERSION_STR)
-                            .arg(QString::number(dpr, 'f', 1));
+    const QString plainInfo = QString(
+                                  "SparkNotePad Version: v%1\n"
+                                  "OS: %2 (%3)\n"
+                                  "Kernel: %4\n"
+                                  "CPU: %5 (Build Target: %6)\n"
+                                  "Qt: %7 (Built with %8)\n"
+                                  "Display Scale: %9x\n"
+                                  "Core Engines: Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1\n"
+                                  "AI Code Review & Auditor: Google Gemini 3.8 Flash via Antigravity IDE\n"
+                                  "License: GNU General Public License v3.0\n")
+                                  .arg(APP_VERSION)
+                                  .arg(QSysInfo::prettyProductName())
+                                  .arg(QSysInfo::kernelType())
+                                  .arg(QSysInfo::kernelVersion())
+                                  .arg(QSysInfo::currentCpuArchitecture())
+                                  .arg(QSysInfo::buildCpuArchitecture())
+                                  .arg(qVersion())
+                                  .arg(QT_VERSION_STR)
+                                  .arg(QString::number(dpr, 'f', 1));
 
     QClipboard *clipboard = QGuiApplication::clipboard();
     if (clipboard) {
         clipboard->setText(plainInfo);
     }
+}
+
+void AboutDialog::showPlaintextViewer(const QString &title, const QString &filePath) {
+    QString text;
+    if (QFile file(filePath); file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        text = QString::fromUtf8(file.readAll());
+        file.close();
+    } else {
+        text = tr("Unable to open %1 on disk.").arg(filePath);
+    }
+
+    auto *dlg = new QDialog(this);
+    dlg->setWindowTitle(title);
+    dlg->resize(760, 560);
+
+    auto *layout = new QVBoxLayout(dlg);
+    layout->setContentsMargins(12, 12, 12, 12);
+    layout->setSpacing(8);
+
+    auto *plainText = new QPlainTextEdit(dlg);
+    plainText->setReadOnly(true);
+    plainText->setPlainText(text);
+    QFont monoFont(QStringLiteral("Menlo"), 11);
+    monoFont.setStyleHint(QFont::Monospace);
+    plainText->setFont(monoFont);
+    layout->addWidget(plainText);
+
+    auto *btnBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
+    const QPushButton *btnCopy = btnBox->addButton(tr("Copy All"), QDialogButtonBox::ActionRole);
+    connect(btnCopy, &QPushButton::clicked, [text] { QGuiApplication::clipboard()->setText(text); });
+    connect(btnBox, &QDialogButtonBox::rejected, dlg, &QDialog::accept);
+    layout->addWidget(btnBox);
+
+    dlg->exec();
 }

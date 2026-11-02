@@ -194,15 +194,15 @@ inline const ThemePalette *findThemePaletteById(const QString &id) {
     if (id.isEmpty()) {
         return nullptr;
     }
+    QString targetId = id;
     if (id.compare(QLatin1String("defaultLight"), Qt::CaseInsensitive) == 0) {
-        return findThemePaletteById(QStringLiteral("notepadNext"));
-    }
-    if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
-        return findThemePaletteById(QStringLiteral("dracula"));
+        targetId = QStringLiteral("notepadNext");
+    } else if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
+        targetId = QStringLiteral("dracula");
     }
     for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        if (id.compare(QLatin1String(kAllThemePalettes[i].id), Qt::CaseInsensitive) == 0 ||
-            id.compare(QLatin1String(kAllThemePalettes[i].displayName), Qt::CaseInsensitive) == 0) {
+        if (targetId.compare(QLatin1String(kAllThemePalettes[i].id), Qt::CaseInsensitive) == 0 ||
+            targetId.compare(QLatin1String(kAllThemePalettes[i].displayName), Qt::CaseInsensitive) == 0) {
             return &kAllThemePalettes[i];
         }
     }
@@ -212,7 +212,7 @@ inline const ThemePalette *findThemePaletteById(const QString &id) {
 inline QStringList getThemeFamiliesList() {
     QStringList families;
     for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        QString f = QLatin1String(kAllThemePalettes[i].family);
+        const QString f = QLatin1String(kAllThemePalettes[i].family);
         if (!families.contains(f)) {
             families << f;
         }

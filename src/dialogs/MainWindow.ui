@@ -414,6 +414,7 @@
     <addaction name="menuZoom" />
     <addaction name="actionWordWrap" />
     <addaction name="actionToggleURLHighlighting" />
+    <addaction name="actionToggleHexBinaryView" />
     <addaction name="menuFocusedView" />
     <addaction name="actionCustomizeStatusBarFields" />
     <addaction name="actionShowCharacterInfo" />
@@ -1148,6 +1149,25 @@
    </property>
    <property name="toolTip">
     <string>Open Changelog as plain text in editor</string>
+   </property>
+  </action>
+  <action name="actionToggleHexBinaryView">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/invisibleChar.svg</normaloff>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Toggle &amp;Hex / Binary View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+H</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle between standard text and raw hexadecimal/binary inspection</string>
    </property>
   </action>
   <action name="actionShowWhitespace">

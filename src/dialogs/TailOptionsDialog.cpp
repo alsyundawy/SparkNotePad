@@ -13,9 +13,10 @@
 #include "ui_TailOptionsDialog.h"
 #include "TailMonitoringManager.h"
 #include "ScintillaNext.h"
+#include <QWidget>
 
 TailOptionsDialog::TailOptionsDialog(QWidget *parent, ScintillaNext *currentEditor)
-    : QDialog(parent), ui(new Ui::TailOptionsDialog), m_editor(currentEditor) {
+    : QDialog(parent), ui(std::make_unique<Ui::TailOptionsDialog>()), m_editor(currentEditor) {
     ui->setupUi(this);
 
     loadSettings();
@@ -24,12 +25,10 @@ TailOptionsDialog::TailOptionsDialog(QWidget *parent, ScintillaNext *currentEdit
     connect(ui->btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-TailOptionsDialog::~TailOptionsDialog() {
-    delete ui;
-}
+TailOptionsDialog::~TailOptionsDialog() = default;
 
 void TailOptionsDialog::loadSettings() {
-    auto *mon = TailMonitoringManager::instance();
+    const auto *mon = TailMonitoringManager::instance();
 
     // Poll interval
     const int currentInterval = mon->pollIntervalMs();
@@ -93,6 +92,9 @@ void TailOptionsDialog::onApplyClicked() {
         case 5:
             intervalMs = 5000;
             break;
+        default:
+            intervalMs = 750;
+            break;
     }
     mon->setPollIntervalMs(intervalMs);
 
@@ -115,6 +117,9 @@ void TailOptionsDialog::onApplyClicked() {
             break;
         case 3:
             maxChunk = 25 * 1024 * 1024;
+            break;
+        default:
+            maxChunk = 10 * 1024 * 1024;
             break;
     }
     mon->setMaxChunkBytes(maxChunk);

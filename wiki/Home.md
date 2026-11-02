@@ -5,13 +5,12 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.7-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.7"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.8-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.8"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt 6"></a>
   <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla"></a>
 </p>
-
 
 ---
 
@@ -34,8 +33,6 @@
   <i>Engineered with Qt 6 and native Scintilla 5.6.7 / Lexilla 5.5.4 core for maximum execution performance and minimal memory footprint</i>
 </p>
 
-
-
 ---
 
 ![image](https://github.com/user-attachments/assets/6de50c4f-44d9-4ba9-937b-c0188e271ef4)
@@ -56,7 +53,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.3.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.3.8)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -85,7 +82,7 @@
 5. **[[05. Code Transformation & Forensics|05-Code-Transformation-Forensics]]**: XML/HTML and SQL formatters, JSON/CSS/JS minifiers, JWT token inspection, and Shannon Entropy document statistics.
 6. **[[06. Keyboard Shortcuts Quick Reference|06-Keyboard-Shortcuts]]**: Comprehensive cross-platform hotkeys for macOS, Linux, and Windows.
 7. **[[07. Platform Support Matrix|07-Platform-Support-Matrix]]**: Operating system compatibility matrix spanning macOS 11–26 (Apple Silicon & Intel), Ubuntu, Debian, Fedora, openSUSE, and FreeBSD.
-8. **[[08. Building from Source|08-Building-from-Source]]**: Compiling SparkNotePad natively using CMake, Ninja, and Qt 6.
+8. **[[08. Building from Source|08-Building-from-Source]]**: Compiling SparkNotePad natively using CMake and Qt 6.
 
 ---
 
@@ -102,7 +99,7 @@
 5. **[[05. Transformasi Kode & Forensik Dokumen|05-Transformasi-Kode-Forensik]]**: Formatter XML/HTML/SQL, pemadat kode, inspeksi token JWT, dan analisis Shannon Entropy.
 6. **[[06. Daftar Lengkap Pintasan Keyboard|06-Daftar-Pintasan-Keyboard]]**: Panduan tombol pintas lintas sistem untuk macOS, Linux, dan Windows.
 7. **[[07. Matriks Dukungan Platform Sistem Operasi|07-Matriks-Dukungan-Platform]]**: Kompatibilitas platform mencakup macOS 11–26 (Apple Silicon & Intel), Ubuntu, Debian, Fedora, openSUSE, dan FreeBSD.
-8. **[[08. Panduan Kompilasi dari Kode Sumber|08-Kompilasi-dari-Sumber]]**: Langkah-langkah build native menggunakan CMake, Ninja, dan Qt 6.
+8. **[[08. Panduan Kompilasi dari Kode Sumber|08-Kompilasi-dari-Sumber]]**: Langkah-langkah build native menggunakan CMake dan Qt 6.
 
 ---
 

@@ -17,34 +17,34 @@
 #include <cstdint>
 #include <QString>
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 class ScintillaNext;
 #endif
 
 class CodeCompressPretty {
 public:
-    enum Language : std::uint8_t { Auto, Json, Json5, Css, JavaScript, Xml, Sql };
+    enum class Language : std::uint8_t { Auto, Json, Json5, Css, JavaScript, Xml, Sql };
 
     struct Result {
         bool success{false};
         bool wholeDocument{false};
-        Language detectedLanguage{Auto};
+        Language detectedLanguage{Language::Auto};
         QString original;
         QString formatted;
         QString errorMessage;
     };
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
     // Formats (Prettifies) selection or whole document in editor
-    static Result prettify(ScintillaNext *editor, Language lang = Auto);
+    static Result prettify(ScintillaNext *editor, Language lang = Language::Auto);
 
     // Minifies (Compresses) selection or whole document in editor
-    static Result compress(ScintillaNext *editor, Language lang = Auto);
+    static Result compress(ScintillaNext *editor, Language lang = Language::Auto);
 #endif
 
     // Direct string formatters
-    static Result prettifyString(const QString &text, Language lang = Auto);
-    static Result compressString(const QString &text, Language lang = Auto);
+    static Result prettifyString(const QString &text, Language lang = Language::Auto);
+    static Result compressString(const QString &text, Language lang = Language::Auto);
 
     // Language-specific helpers
     static Result prettifyJson(const QString &text, bool isJson5 = false);
@@ -63,8 +63,8 @@ public:
 
     // Detect language from text sample or editor context
     static Language detectLanguage(const QString &sample = QString());
-#if !defined(UNIT_TESTING)
-    static Language detectLanguage(ScintillaNext *editor, const QString &sample = QString());
+#ifndef UNIT_TESTING
+    static Language detectLanguage(const ScintillaNext *editor, const QString &sample = QString());
 #endif
     static QString languageName(Language lang);
 };

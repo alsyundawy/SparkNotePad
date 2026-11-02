@@ -103,12 +103,12 @@ sudo sysrc lightdm_enable=YES
 
 ## 3. Instalasi Dependensi Build
 
-FreeBSD menyediakan Clang dalam sistem dasar (`/usr/bin/cc` dan `/usr/bin/c++`). Pasang CMake, Ninja, pustaka Qt 6, dan utility desktop yang diperlukan melalui `pkg`:
+FreeBSD menyediakan Clang dalam sistem dasar (`/usr/bin/cc` dan `/usr/bin/c++`). Pasang CMake, pustaka Qt 6, dan utility desktop yang diperlukan melalui `pkg`:
 
 ```bash
 sudo pkg update
 sudo pkg install -y \
-    git cmake ninja pkgconf \
+    git cmake pkgconf \
     qt6 qt6-base qt6-5compat qt6-tools \
     python3 uchardet \
     libxkbcommon libxcb \
@@ -123,7 +123,7 @@ sudo pkg install -y \
 | `qt6-base`                | Pustaka inti: `QtCore`, `QtGui`, `QtWidgets`, `QtNetwork`, `QtPrintSupport`, `QtTest`   |
 | `qt6-5compat`             | Modul `Core5Compat` untuk API utilitas teks dan encoding                                |
 | `qt6-tools`               | Utility developer Qt6 (`lupdate`, `lrelease`, `qmake`)                                  |
-| `cmake` + `ninja`         | Sistem build modern dengan generator paralel berkecepatan tinggi                        |
+| `cmake`                   | Sistem build standar cross-platform                                                     |
 | `pkgconf`                 | Pencarian flag link dan dependensi pustaka C/C++                                        |
 | `uchardet`                | Library deteksi charset/encoding dokumen                                                |
 | `libxkbcommon` + `libxcb` | Integrasi keyboard layout dan X11 event handler                                         |
@@ -146,8 +146,8 @@ Konfigurasikan CMake dengan path prefix standar FreeBSD (`/usr/local`):
 # 1. Pastikan CMake mencari package di /usr/local
 export CMAKE_PREFIX_PATH=/usr/local
 
-# 2. Jalankan konfigurasi dengan generator Ninja
-cmake -B build -G Ninja \
+# 2. Jalankan konfigurasi CMake standar
+cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PREFIX_PATH=/usr/local \
     -DCMAKE_INSTALL_PREFIX=/usr/local
@@ -278,7 +278,7 @@ Salin dan jalankan urutan perintah berikut pada terminal FreeBSD Anda:
 ```bash
 # 1. Update & pasang dependensi build
 sudo pkg update
-sudo pkg install -y git cmake ninja pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+sudo pkg install -y git cmake pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
 
 # 2. Clone repositori
 git clone https://github.com/alsyundawy/SparkNotePad.git
@@ -286,7 +286,7 @@ cd SparkNotePad
 
 # 3. Konfigurasi CMake
 export CMAKE_PREFIX_PATH=/usr/local
-cmake -B build -G Ninja \
+cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PREFIX_PATH=/usr/local \
     -DCMAKE_INSTALL_PREFIX=/usr/local

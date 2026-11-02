@@ -7,12 +7,11 @@ class Sparknotepad < Formula
   head "https://github.com/alsyundawy/SparkNotePad.git", branch: "main"
 
   depends_on "cmake" => :build
-  depends_on "ninja" => :build
   depends_on "qt@6"
   depends_on "uchardet"
 
   def install
-    system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

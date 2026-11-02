@@ -2,10 +2,10 @@
 
 <!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 -->
 
-**Document Version:** 1.3.7  
-**Publication Date:** October 2026  
-**Lead Maintainer:** Harry Dertin Sutisna Alsyundawy ([@alsyundawy](https://github.com/alsyundawy))  
-**Organization:** ALSYUNDAWY IT SOLUTION ([https://alsyundawy.com](https://alsyundawy.com))  
+**Document Version:** 1.3.8<br/>
+**Publication Date:** November 2026<br/>
+**Lead Maintainer:** Harry Dertin Sutisna Alsyundawy ([@alsyundawy](https://github.com/alsyundawy))<br/>
+**Organization:** ALSYUNDAWY IT SOLUTION ([https://alsyundawy.com](https://alsyundawy.com))<br/>
 **Repository:** [https://github.com/alsyundawy/SparkNotePad](https://github.com/alsyundawy/SparkNotePad)
 
 ---
@@ -14,9 +14,9 @@
 
 ### 1. The Genesis & Technical Baseline
 
-The historical and architectural foundation of this repository traces back to the initial source code baseline imported at commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9).
+The historical and architectural foundation of this repository traces back to the initial source code baseline imported at commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9), directly derived from Harry D.S. Alsyundawy's upstream repository [`NotepadNext-MacOS`](https://github.com/alsyundawy/NotepadNext-MacOS) (version 0.15-03).
 
-That foundational baseline imported the cross-platform Qt scaffolding and Scintilla integration concepts originally pioneered by **Justin Dailey ([@dail8859](https://github.com/dail8859))** and the open-source contributors of **NotepadNext**. In its initial experimental development phases, the codebase was maintained and developed under the preliminary project moniker _NoteSciPad_.
+That foundational baseline built upon the cross-platform Qt scaffolding and Scintilla integration concepts originally pioneered by **Justin Dailey ([@dail8859](https://github.com/dail8859))** and the open-source contributors of **NotepadNext**. In its initial experimental development phases, the codebase was maintained and developed under the preliminary project moniker _NoteSciPad_.
 
 ### 2. The Evolution into SparkNotePad (v1.3.0+)
 
@@ -28,6 +28,7 @@ This milestone represented far more than a cosmetic name change; it marked the t
 
 We express our deepest, most sincere gratitude and highest respect to:
 
+- **Harry D.S. Alsyundawy ([@alsyundawy](https://github.com/alsyundawy))**, creator and maintainer of [`NotepadNext-MacOS`](https://github.com/alsyundawy/NotepadNext-MacOS), providing the foundational macOS port repository and historical origin of SparkNotePad.
 - **Justin Dailey ([@dail8859](https://github.com/dail8859))** and the open-source contributors of **NotepadNext**, whose elegant Qt GUI scaffolding, Scintilla integration paradigms, and cross-platform multi-tabbed editor architecture provided the indispensable bedrock upon which this journey commenced.
 - **Neil Hodgson & the Scintilla/Lexilla Community**, whose world-class editing engine continues to deliver unbeatable sub-millisecond line-rendering performance.
 
@@ -80,9 +81,9 @@ A deliberate, strategic decision was made to establish SparkNotePad as an indepe
 
 ### 1. Awal Mula & Basis Kode Fondasional
 
-Fondasi teknis dan historis repositori ini berakar dari impor _source code_ awal yang tercatat pada commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9).
+Fondasi teknis dan historis repositori ini berakar dari impor _source code_ awal yang tercatat pada commit [`4eabd12beec7e0f05017a49e85198dd58362c3f9`](https://github.com/alsyundawy/SparkNotePad/commit/4eabd12beec7e0f05017a49e85198dd58362c3f9), yang diturunkan langsung dari repositori hulu [`NotepadNext-MacOS`](https://github.com/alsyundawy/NotepadNext-MacOS) (versi 0.15-03) karya Harry D.S. Alsyundawy.
 
-Impor fondasional tersebut menjadi landasan rancangan awal yang diturunkan dari arsitektur Scintilla dan Qt lintas platform yang dirintis oleh **Justin Dailey ([@dail8859](https://github.com/dail8859))** bersama para kontributor _open-source_ **NotepadNext**. Pada fase eksperimental awal, basis kode ini dirawat dan dikembangkan di bawah nama kerja sementara _NoteSciPad_.
+Impor fondasional tersebut menjadi landasan rancangan awal yang dibangun di atas arsitektur Scintilla dan Qt lintas platform yang dirintis oleh **Justin Dailey ([@dail8859](https://github.com/dail8859))** bersama para kontributor _open-source_ **NotepadNext**. Pada fase eksperimental awal, basis kode ini dirawat dan dikembangkan di bawah nama kerja sementara _NoteSciPad_.
 
 ### 2. Transformasi Menjadi SparkNotePad (v1.3.0+)
 
@@ -94,6 +95,7 @@ Transformasi ini bukan sekadar pergantian nama, melainkan lompatan paradigma men
 
 Kami menyampaikan apresiasi dan rasa terima kasih yang sebesar-besarnya dengan penuh rasa hormat kepada:
 
+- **Harry D.S. Alsyundawy ([@alsyundawy](https://github.com/alsyundawy))**, pembuat dan pengelola [`NotepadNext-MacOS`](https://github.com/alsyundawy/NotepadNext-MacOS), repositori port fondasional macOS yang menjadi asal mula percabangan dan evolusi SparkNotePad.
 - **Justin Dailey ([@dail8859](https://github.com/dail8859))** dan seluruh kontributor **NotepadNext**, yang telah membangun kerangka GUI Qt yang elegan, integrasi engine Scintilla, serta konsep editor multi-tab lintas platform yang menjadi pijakan awal proyek ini.
 - **Neil Hodgson & Komunitas Scintilla/Lexilla**, yang terus menyediakan engine penyuntingan teks kelas dunia dengan kecepatan perenderan sub-milidetik yang tak tertandingi.
 

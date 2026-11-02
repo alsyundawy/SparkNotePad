@@ -340,6 +340,8 @@ qt_add_executable(SparkNotePad
 	ScintillaSorter.h ScintillaSorter.cpp
 	widgets/TabsQuickActionsBar.cpp
 	widgets/TabsQuickActionsBar.h
+	widgets/PreviewTabWidget.cpp
+	widgets/PreviewTabWidget.h
 	ShiftMiddleClickBlocker.h ShiftMiddleClickBlocker.cpp
 	ShiftWheelToHorizontalScrollFilter.h ShiftWheelToHorizontalScrollFilter.cpp
 

@@ -24,7 +24,7 @@ Install the required system compilers, CMake, Qt6 development libraries, and X11
 ```bash
 sudo apt update
 sudo apt install -y \
-    build-essential cmake ninja-build pkgconf \
+    build-essential cmake pkgconf \
     qt6-base-dev qt6-base-private-dev qt6-base-dev-tools \
     qt6-5compat-dev qt6-tools-dev qt6-tools-dev-tools linguist-qt6 \
     libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
@@ -39,7 +39,7 @@ On Ubuntu 22.04 and Debian 12, install the standard Qt6 developer packages:
 ```bash
 sudo apt update
 sudo apt install -y \
-    build-essential g++-12 cmake ninja-build pkg-config \
+    build-essential g++-12 cmake pkg-config \
     qt6-base-dev qt6-base-dev-tools \
     qt6-5compat-dev qt6-tools-dev qt6-tools-dev-tools linguist-qt6 \
     libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
@@ -94,7 +94,7 @@ git clone https://github.com/alsyundawy/SparkNotePad.git
 cd SparkNotePad
 
 # 2. Configure CMake Release build
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
 # 3. Build executable in parallel
 cmake --build build --parallel "$(nproc)"

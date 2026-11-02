@@ -20,11 +20,21 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QStandardPaths>
+#include <QSettings>
+#include <QLocale>
 
 namespace {
+bool isIndonesianActive() {
+    const QSettings settings;
+    QString trSetting = settings.value(QStringLiteral("General/Translation"), QString()).toString();
+    if (trSetting.isEmpty()) {
+        trSetting = QLocale::system().name();
+    }
+    return trSetting.startsWith(QStringLiteral("id"), Qt::CaseInsensitive);
+}
 QString extractDocResourceIfMissing(const QString &resourcePath, const QString &filename) {
     const QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/doc";
-    if (QDir d; !d.exists(cacheDir) && !d.mkpath(cacheDir)) {
+    if (const QDir d; !d.exists(cacheDir) && !d.mkpath(cacheDir)) {
         qWarning("Failed to create documentation cache directory: %s", qUtf8Printable(cacheDir));
     }
     const QString targetPath = cacheDir + "/" + filename;
@@ -40,7 +50,8 @@ QString extractDocResourceIfMissing(const QString &resourcePath, const QString &
             QFile::remove(targetPath);
         }
         if (res.copy(targetPath)) {
-            QFile::setPermissions(targetPath, QFile::ReadOwner | QFile::WriteOwner | QFile::ReadUser | QFile::ReadGroup);
+            QFile::setPermissions(targetPath,
+                                  QFile::ReadOwner | QFile::WriteOwner | QFile::ReadUser | QFile::ReadGroup);
         }
     }
 
@@ -55,7 +66,7 @@ DocumentationManager &DocumentationManager::instance() {
 
 DocumentationManager::DocumentationManager(QObject *parent) : QObject(parent) {}
 
-QString DocumentationManager::localDocumentationPath(const QString &docFilename) const {
+QString DocumentationManager::localDocumentationPath(const QString &docFilename) {
     const QString appDir = QCoreApplication::applicationDirPath();
 
     // Check possible local doc paths:
@@ -85,24 +96,49 @@ QString DocumentationManager::localDocumentationPath(const QString &docFilename)
 }
 
 QString DocumentationManager::docnotePlaintextPath() const {
-    if (const QString local = localDocumentationPath("DOCNOTE.txt"); !local.isEmpty()) {
+    const QString localizedFile =
+        isIndonesianActive() ? QStringLiteral("DOCNOTE_id.txt") : QStringLiteral("DOCNOTE_en.txt");
+    if (const QString local = localDocumentationPath(localizedFile); !local.isEmpty()) {
         return local;
     }
-    return extractDocResourceIfMissing(":/doc/DOCNOTE.txt", "DOCNOTE.txt");
+    const QString resPath =
+        isIndonesianActive() ? QStringLiteral(":/doc/DOCNOTE_id.txt") : QStringLiteral(":/doc/DOCNOTE_en.txt");
+    if (const QString extracted = extractDocResourceIfMissing(resPath, localizedFile);
+        !extracted.isEmpty() && QFile::exists(extracted)) {
+        return extracted;
+    }
+
+    if (const QString localFallback = localDocumentationPath(QStringLiteral("DOCNOTE.txt")); !localFallback.isEmpty()) {
+        return localFallback;
+    }
+    return extractDocResourceIfMissing(QStringLiteral(":/doc/DOCNOTE.txt"), QStringLiteral("DOCNOTE.txt"));
 }
 
 QString DocumentationManager::changelogPlaintextPath() const {
-    if (const QString local = localDocumentationPath("CHANGELOG.txt"); !local.isEmpty()) {
+    const QString localizedFile =
+        isIndonesianActive() ? QStringLiteral("CHANGELOG_id.txt") : QStringLiteral("CHANGELOG_en.txt");
+    if (const QString local = localDocumentationPath(localizedFile); !local.isEmpty()) {
         return local;
     }
-    return extractDocResourceIfMissing(":/doc/CHANGELOG.txt", "CHANGELOG.txt");
+    const QString resPath =
+        isIndonesianActive() ? QStringLiteral(":/doc/CHANGELOG_id.txt") : QStringLiteral(":/doc/CHANGELOG_en.txt");
+    if (const QString extracted = extractDocResourceIfMissing(resPath, localizedFile);
+        !extracted.isEmpty() && QFile::exists(extracted)) {
+        return extracted;
+    }
+
+    if (const QString localFallback = localDocumentationPath(QStringLiteral("CHANGELOG.txt"));
+        !localFallback.isEmpty()) {
+        return localFallback;
+    }
+    return extractDocResourceIfMissing(QStringLiteral(":/doc/CHANGELOG.txt"), QStringLiteral("CHANGELOG.txt"));
 }
 
-QString DocumentationManager::onlineDocumentationUrl(const QString &docFilename) const {
+QString DocumentationManager::onlineDocumentationUrl(const QString &docFilename) {
     return QString("https://github.com/alsyundawy/SparkNotePad/blob/main/doc/%1").arg(docFilename);
 }
 
-void DocumentationManager::openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent) const {
+void DocumentationManager::openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent) {
     bool opened = false;
     if (!filePath.isEmpty() && QFile::exists(filePath)) {
         opened = QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
@@ -136,5 +172,5 @@ void DocumentationManager::openOnlineRepository(const QWidget * /*parent*/) {
 }
 
 void DocumentationManager::openKeyboardShortcutsGuide(QWidget *parent) {
-    AccessibilityManager::instance()->openAccessibilityHelp(parent);
+    AccessibilityManager::openAccessibilityHelp(parent);
 }

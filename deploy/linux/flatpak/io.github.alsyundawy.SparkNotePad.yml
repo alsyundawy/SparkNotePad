@@ -15,7 +15,7 @@ finish-args:
 
 modules:
   - name: uchardet
-    buildsystem: cmake-ninja
+    buildsystem: cmake
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_STATIC=OFF
@@ -25,7 +25,7 @@ modules:
         sha256: e97a606422ac969f3fe4854f19574fb145297bd164ba6e68278db76fb837a7b8
 
   - name: sparknotepad
-    buildsystem: cmake-ninja
+    buildsystem: cmake
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DADS_STATIC=ON

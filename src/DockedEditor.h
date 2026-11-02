@@ -55,6 +55,10 @@ public:
     void splitToRight(const ScintillaNext *editor);
     void splitToBottom(const ScintillaNext *editor);
 
+    ads::CDockWidget *addTabWidget(QWidget *widget, const QString &title, const QIcon &icon = QIcon(),
+                                   const QString &toolTip = QString());
+    [[nodiscard]] ads::CDockManager *getDockManager() const { return dockManager; }
+
 public slots:
     void addEditor(ScintillaNext *editor);
 
@@ -71,6 +75,7 @@ signals:
 
     void contextMenuRequestedForEditor(ScintillaNext *editor);
     void titleBarDoubleClicked();
+    void newFileRequested();
 };
 
 #endif  // DOCKEDEDITOR_H

@@ -28,8 +28,8 @@ public:
     static void openOnlineRepository(const QWidget *parent = nullptr);
     static void openKeyboardShortcutsGuide(QWidget *parent = nullptr);
 
-    QString localDocumentationPath(const QString &docFilename) const;
-    QString onlineDocumentationUrl(const QString &docFilename) const;
+    static QString localDocumentationPath(const QString &docFilename);
+    static QString onlineDocumentationUrl(const QString &docFilename);
 
     QString docnotePlaintextPath() const;
     QString changelogPlaintextPath() const;
@@ -40,7 +40,7 @@ private:
     DocumentationManager(const DocumentationManager &) = delete;
     DocumentationManager &operator=(const DocumentationManager &) = delete;
 
-    void openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent) const;
+    static void openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent);
 };
 
 #endif  // DOCUMENTATIONMANAGER_H

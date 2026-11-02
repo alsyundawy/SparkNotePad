@@ -4,7 +4,7 @@ set(PACKAGE_DIR "${CMAKE_BINARY_DIR}/package")
 # Determine configuration for multi- or single-config generators
 if(CMAKE_CONFIGURATION_TYPES) # multi-config generator (VS, Xcode)
 	set(PACKAGE_CONFIG "$<CONFIG>")
-else() # single-config generator (Ninja, Makefiles)
+else() # single-config generator (Makefiles)
 	if(NOT CMAKE_BUILD_TYPE)
 		set(PACKAGE_CONFIG "Debug")
 	else()

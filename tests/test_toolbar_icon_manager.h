@@ -19,19 +19,19 @@ class TestToolbarIconManager : public QObject {
     Q_OBJECT
 
 private slots:
+    // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
     void testBuiltInPacksExist() const {
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 15 built-in packs required
-        QVERIFY(packs.size() >= 15);
+        // 10 built-in packs required (archLinux and filledFluentUi removed per requirement)
+        QCOMPARE(packs.size(), 10);
 
         const QStringList expectedPackIds = {
-            QStringLiteral("modernRibbon"),    QStringLiteral("notepadNext"),  QStringLiteral("notepadPlusPlus"),
-            QStringLiteral("androidMaterial"), QStringLiteral("windowsVista"), QStringLiteral("windowsXp"),
-            QStringLiteral("windows10"),       QStringLiteral("windows11"),    QStringLiteral("windows7"),
-            QStringLiteral("macosMonterey"),   QStringLiteral("notepad3"),     QStringLiteral("notepad4"),
-            QStringLiteral("notepad2"),        QStringLiteral("monochrome"),   QStringLiteral("vibrantDuotone"),
+            QStringLiteral("modernRibbon"),    QStringLiteral("fluentUi"),    QStringLiteral("windows11"),
+            QStringLiteral("windows7"),        QStringLiteral("windowsXp"),   QStringLiteral("fugue"),
+            QStringLiteral("notepadPlusPlus"), QStringLiteral("notepadNext"), QStringLiteral("monochrome"),
+            QStringLiteral("vibrantDuotone"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -42,12 +42,11 @@ private slots:
             QVERIFY(pack->isBuiltIn);
         }
 
-        // Test backward compatibility alias
-        const ToolbarIconPack *aliasedPack = manager->findPackById(QStringLiteral("fluentUi"));
-        QVERIFY(aliasedPack != nullptr);
-        QCOMPARE(aliasedPack->id, QStringLiteral("windows11"));
+        QVERIFY(manager->findPackById(QStringLiteral("archLinux")) == nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("filledFluentUi")) == nullptr);
     }
 
+    // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
     void testCanonicalActionNameMapping() const {
         QCOMPARE(ToolbarIconManager::canonicalNameForAction("actionNew"), QString("newfile"));
         QCOMPARE(ToolbarIconManager::canonicalNameForAction("actionOpen"), QString("openFile"));
@@ -61,6 +60,7 @@ private slots:
         QCOMPARE(ToolbarIconManager::canonicalNameForAction("actionPreferences"), QString("settings"));
     }
 
+    // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
     void testIconSizeSwitching() const {
         auto *manager = ToolbarIconManager::instance();
 
@@ -84,6 +84,7 @@ private slots:
         QCOMPARE(manager->currentIconSize(), QSize(24, 24));
     }
 
+    // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
     void testIconResolutionAcrossPacks() const {
         const auto *manager = ToolbarIconManager::instance();
 
@@ -105,11 +106,10 @@ private slots:
         };
 
         const QStringList packs = {
-            QStringLiteral("modernRibbon"),    QStringLiteral("notepadNext"),  QStringLiteral("notepadPlusPlus"),
-            QStringLiteral("androidMaterial"), QStringLiteral("windowsVista"), QStringLiteral("windowsXp"),
-            QStringLiteral("windows10"),       QStringLiteral("windows11"),    QStringLiteral("windows7"),
-            QStringLiteral("macosMonterey"),   QStringLiteral("notepad3"),     QStringLiteral("notepad4"),
-            QStringLiteral("notepad2"),        QStringLiteral("monochrome"),   QStringLiteral("vibrantDuotone"),
+            QStringLiteral("modernRibbon"), QStringLiteral("fluentUi"),        QStringLiteral("filledFluentUi"),
+            QStringLiteral("windows11"),    QStringLiteral("windows7"),        QStringLiteral("windowsXp"),
+            QStringLiteral("fugue"),        QStringLiteral("notepadPlusPlus"), QStringLiteral("notepadNext"),
+            QStringLiteral("archLinux"),    QStringLiteral("monochrome"),      QStringLiteral("vibrantDuotone"),
         };
 
         for (const QString &packId : packs) {
@@ -120,6 +120,7 @@ private slots:
         }
     }
 
+    // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
     void testApplyToToolbar() const {
         auto *manager = ToolbarIconManager::instance();
         QToolBar toolBar;
@@ -147,6 +148,7 @@ private slots:
         QVERIFY(!actSave->icon().isNull());
     }
 
+    // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
     void testApplyToWindow() const {
         auto *manager = ToolbarIconManager::instance();
         QWidget window;

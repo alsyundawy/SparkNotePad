@@ -48,7 +48,7 @@ lint:
         - src/languages/**
     - linters: [checkov]
       paths:
-        - .github/workflows/create_release.yml
+        - .github/workflows/**
   enabled:
     - cppcheck-qt
     - pragma-once

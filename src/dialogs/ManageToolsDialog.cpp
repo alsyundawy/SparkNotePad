@@ -24,6 +24,8 @@
 namespace {
 
 class ToolEditDialog : public QDialog {
+    Q_DECLARE_TR_FUNCTIONS(ToolEditDialog)
+
 public:
     explicit ToolEditDialog(QWidget *parent, const ExternalTool &tool = {}) : QDialog(parent) {
         setWindowTitle(tool.name.isEmpty() ? tr("Add External Tool") : tr("Edit External Tool"));
@@ -54,7 +56,7 @@ public:
         QDialogButtonBox *btnBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
         layout->addRow(btnBox);
 
-        connect(btnBox, &QDialogButtonBox::accepted, this, [this]() {
+        connect(btnBox, &QDialogButtonBox::accepted, this, [this] {
             if (editName->text().trimmed().isEmpty()) {
                 QMessageBox::warning(this, tr("Invalid Input"), tr("Please provide a name for the tool."));
                 return;
@@ -127,7 +129,7 @@ void ManageToolsDialog::populateList() {
 void ManageToolsDialog::onAddClicked() {
     ToolEditDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted) {
-        ExternalTool newTool = dlg.getTool();
+        const ExternalTool newTool = dlg.getTool();
         ExternalToolManager::addCustomTool(newTool);
         populateList();
     }
@@ -135,10 +137,11 @@ void ManageToolsDialog::onAddClicked() {
 
 void ManageToolsDialog::onEditClicked() {
     QTreeWidgetItem *cur = ui->treeTools->currentItem();
-    if (!cur)
+    if (!cur) {
         return;
+    }
 
-    int idx = ui->treeTools->indexOfTopLevelItem(cur);
+    const int idx = ui->treeTools->indexOfTopLevelItem(cur);
     if (idx >= 0 && idx < m_tools.size()) {
         editTool(idx);
     }
@@ -149,7 +152,7 @@ void ManageToolsDialog::editTool(int index) {
     ToolEditDialog dlg(this, orig);
     if (dlg.exec() == QDialog::Accepted) {
         ExternalTool updated = dlg.getTool(orig.id);
-        m_tools[index] = updated;
+        m_tools[index] = std::move(updated);
         ExternalToolManager::saveCustomTools(m_tools);
         populateList();
     }
@@ -157,15 +160,17 @@ void ManageToolsDialog::editTool(int index) {
 
 void ManageToolsDialog::onDeleteClicked() {
     QTreeWidgetItem *cur = ui->treeTools->currentItem();
-    if (!cur)
+    if (!cur) {
         return;
+    }
 
-    int idx = ui->treeTools->indexOfTopLevelItem(cur);
-    if (idx < 0 || idx >= m_tools.size())
+    const int idx = ui->treeTools->indexOfTopLevelItem(cur);
+    if (idx < 0 || idx >= m_tools.size()) {
         return;
+    }
 
     const auto &tool = m_tools.at(idx);
-    auto res =
+    const auto res =
         QMessageBox::question(this, tr("Delete Tool"), tr("Are you sure you want to delete tool '%1'?").arg(tool.name),
                               QMessageBox::Yes | QMessageBox::No);
     if (res == QMessageBox::Yes) {

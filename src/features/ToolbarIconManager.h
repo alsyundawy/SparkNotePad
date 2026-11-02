@@ -22,6 +22,7 @@
 class QToolBar;
 class QWidget;
 class QAction;
+class QMenu;
 class ApplicationSettings;
 
 struct ToolbarIconPack {
@@ -55,7 +56,8 @@ public:
         return getActionIcon(actionName, packId);
     }
     void applyToToolbar(QToolBar *toolBar) const;
-    void applyToWindow(QWidget *window, QToolBar *toolBar = nullptr) const;
+    void applyToWindow(const QWidget *window, QToolBar *toolBar = nullptr) const;
+    void applyToMenu(const QMenu *menu) const;
 
     [[nodiscard]] static QString customPacksPath();
     void scanCustomPacks();

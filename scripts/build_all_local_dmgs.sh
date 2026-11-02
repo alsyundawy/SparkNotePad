@@ -62,7 +62,7 @@ if target in content and "#include <cstdlib>" not in content:
 	rm -rf build
 
 	echo "[*] Configuring and building DMG target for ${BRANCH}..."
-	cmake -S . -B build -G Ninja \
+	cmake -S . -B build \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DAPP_DISTRIBUTION=dmg \
 		-DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 \
@@ -72,7 +72,7 @@ if target in content and "#include <cstdlib>" not in content:
 		-DCMAKE_C_COMPILER=/usr/bin/clang \
 		-DCMAKE_CXX_COMPILER=/usr/bin/clang++
 
-	cmake --build build --target dmg --parallel
+	cmake --build build --target dmg
 
 	# Locate generated DMG file
 	DMG_PATH=$(find build -maxdepth 1 -name "*.dmg" | head -n 1)

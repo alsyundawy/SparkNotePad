@@ -24,11 +24,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.7-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.7"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.8-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.8"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
-  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla + Lexilla"></a>
+  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (125 Lexer)"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
 </p>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.7-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.8-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -340,12 +340,12 @@ Pada FreeBSD 14.x dan 15.x, SparkNotePad dikompilasi sebagai binary ELF native t
 
 ```bash
 # 1. Pasang paket prasyarat (termasuk metapackage Qt 6 lengkap)
-sudo pkg install -y git cmake ninja pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
+sudo pkg install -y git cmake pkgconf qt6 qt6-base qt6-5compat qt6-tools python3 uchardet libxkbcommon libxcb desktop-file-utils
 
 # 2. Build & pasang ke sistem
 git clone https://github.com/alsyundawy/SparkNotePad.git && cd SparkNotePad
 export CMAKE_PREFIX_PATH=/usr/local
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_INSTALL_PREFIX=/usr/local
 cmake --build build -j$(sysctl -n hw.ncpu)
 sudo cmake --install build
 sudo update-desktop-database /usr/local/share/applications
@@ -360,7 +360,7 @@ SparkNotePad dapat dikompilasi secara native di macOS menggunakan Apple Clang da
 
 ```bash
 # 1. Konfigurasi dan kompilasi executable
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Qt/6.12.0/macos
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Qt/6.12.0/macos
 cmake --build build -j 4
 
 # 2. Pembuatan paket mandiri DMG macOS beserta framework embedded dan ad-hoc codesign
@@ -392,9 +392,9 @@ bash scripts/SparkNotePad-Default-Editor.sh -f
 
 ### Prasyarat Pengembangan
 
-- **macOS**: Xcode 15+, Homebrew, Qt 6.5+ (`brew install qt6 cmake ninja`)
-- **Linux**: GCC 11+ atau Clang 14+, CMake 3.21+, Qt 6.5+ (`qt6-base-dev qt6-5compat-dev libuchardet-dev ninja-build`)
-- **FreeBSD**: Clang 18+, CMake 3.21+, Qt 6.5+ (`pkg install qt6 qt6-base qt6-5compat qt6-tools ninja uchardet`)
+- **macOS**: Xcode 15+, Homebrew, Qt 6.5+ (`brew install qt6 cmake`)
+- **Linux**: GCC 11+ atau Clang 14+, CMake 3.21+, Qt 6.5+ (`qt6-base-dev qt6-5compat-dev libuchardet-dev`)
+- **FreeBSD**: Clang 18+, CMake 3.21+, Qt 6.5+ (`pkg install qt6 qt6-base qt6-5compat qt6-tools uchardet`)
 
 ### Membangun dari Sumber (Build from Source)
 
@@ -404,8 +404,7 @@ git clone https://github.com/alsyundawy/SparkNotePad.git
 cd SparkNotePad
 
 # 2. Konfigurasi CMake (C++20)
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-sed -i '' 's/-Werror//g' build/build.ninja 2>/dev/null || true
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 
 # 3. Kompilasi biner
 cmake --build build -j$(nproc 2>/dev/null || sysctl -n hw.ncpu)
@@ -464,6 +463,7 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 
 SparkNotePad menghormati dan mengapresiasi kontribusi proyek-proyek open-source pendahulunya:
 
+- **Harry D.S. Alsyundawy (@alsyundawy)**: Pembuat [NotepadNext-MacOS](https://github.com/alsyundawy/NotepadNext-MacOS), repositori port fondasional macOS yang menjadi asal mula percabangan dan evolusi SparkNotePad.
 - **Neil Hodgson & Kontributor Scintilla/Lexilla**: Engine pengeditan teks berperforma tinggi dan pustaka lexer untuk 100+ bahasa pemrograman.
 - **Justin Dailey (dail8859)**: Pembuat NotepadNext yang menyediakan fondasi awal kerangka kerja Qt.
 - **Zufu Liu (zufuliu)**: Pembuat Notepad4 yang memberikan inspirasi arsitektur dan pola penanganan teks canggih.

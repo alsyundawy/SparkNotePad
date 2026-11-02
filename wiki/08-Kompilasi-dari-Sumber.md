@@ -1,6 +1,6 @@
 # Kompilasi dari Kode Sumber (Building from Source)
 
-SparkNotePad menggunakan sistem pembangunan **CMake** (versi 3.20 atau yang lebih baru) serta kompilator standar **C++20** modern yang dipadukan dengan **Ninja** untuk proses kompilasi paralel yang cepat dan deterministik.
+SparkNotePad menggunakan sistem pembangunan **CMake** (versi 3.20 atau yang lebih baru) serta kompilator standar **C++20** modern untuk proses kompilasi yang cepat dan handal.
 
 Panduan ini menyediakan instruksi langkah demi langkah untuk membangun SparkNotePad pada **macOS**, **Ubuntu / Debian**, **Fedora / RHEL**, dan **FreeBSD**.
 
@@ -12,7 +12,6 @@ SparkNotePad memerlukan komponen berikut:
 
 - **Kompilator Standar C++20:** Apple Clang 14+, GCC 12+, atau LLVM Clang 15+.
 - **CMake:** Versi 3.20 ke atas.
-- **Generator Ninja:** Sangat disarankan untuk kompilasi multi-thread yang optimal.
 - **Kerangka Kerja Qt 6:** Versi Qt 6.5.0 atau yang lebih baru (`qtbase`, `qt5compat`, `qttools`).
 
 Mesin inti penyuntingan (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, uchardet) telah tersemat langsung di dalam folder `thirdparty/` dan tidak membutuhkan instalasi manual terpisah. Pustaka utilitas pendukung (seperti Qt-Advanced-Docking-System, SingleApplication, dan EditorConfig Core) akan diunduh secara otomatis via CPM (_CMake Package Manager_) pada proses konfigurasi awal.
@@ -25,7 +24,7 @@ Mesin inti penyuntingan (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, uchardet) te
 
 ```bash
 brew update
-brew install cmake ninja pkg-config qt@6
+brew install cmake pkg-config qt@6
 ```
 
 ### Langkah 2: Klon Repositori
@@ -40,7 +39,7 @@ cd SparkNotePad
 Arahkan CMake ke direktori instalasi Qt 6 Homebrew:
 
 ```bash
-cmake -S . -B build -G Ninja \
+cmake -S . -B build \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6)"
 ```
@@ -48,7 +47,7 @@ cmake -S . -B build -G Ninja \
 ### Langkah 4: Bangun Berkas Aplikasi
 
 ```bash
-cmake --build build --parallel "$(sysctl -n hw.ncpu)"
+cmake --build build
 ```
 
 Setelah kompilasi selesai, bundel aplikasi macOS siap dijalankan:
@@ -68,7 +67,7 @@ open ./build/src/SparkNotePad.app
 ```bash
 sudo apt update
 sudo apt install -y \
-    build-essential cmake ninja-build pkgconf \
+    build-essential cmake pkgconf \
     qt6-base-dev qt6-base-private-dev qt6-base-dev-tools \
     qt6-5compat-dev qt6-tools-dev qt6-tools-dev-tools linguist-qt6 \
     libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
@@ -81,7 +80,7 @@ sudo apt install -y \
 ```bash
 sudo apt update
 sudo apt install -y \
-    build-essential g++-12 cmake ninja-build pkg-config \
+    build-essential g++-12 cmake pkg-config \
     qt6-base-dev qt6-base-dev-tools \
     qt6-5compat-dev qt6-tools-dev qt6-tools-dev-tools linguist-qt6 \
     libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
@@ -92,8 +91,8 @@ sudo apt install -y \
 ### Langkah 2: Konfigurasi & Kompilasi
 
 ```bash
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build --parallel "$(nproc)"
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
 
 ### Langkah 3: Jalankan Program
@@ -110,7 +109,7 @@ cmake --build build --parallel "$(nproc)"
 
 ```bash
 sudo dnf install -y \
-    gcc-c++ cmake ninja-build \
+    gcc-c++ cmake \
     qt6-qtbase-devel qt6-qt5compat-devel qt6-qttools-devel \
     mesa-libGL-devel libxkbcommon-devel fontconfig-devel freetype-devel \
     rpm-build dpkg-dev
@@ -119,8 +118,8 @@ sudo dnf install -y \
 ### Langkah 2: Konfigurasi & Kompilasi
 
 ```bash
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build --parallel "$(nproc)"
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
 
 ---
@@ -132,7 +131,7 @@ cmake --build build --parallel "$(nproc)"
 ```bash
 sudo pkg update
 sudo pkg install -y \
-    cmake ninja pkgconf \
+    cmake pkgconf \
     qt6-base qt6-5compat qt6-tools \
     libxkbcommon fontconfig freetype2
 ```
@@ -140,7 +139,7 @@ sudo pkg install -y \
 ### Langkah 2: Konfigurasi & Kompilasi
 
 ```bash
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j "$(sysctl -n hw.ncpu)"
 ```
 
@@ -160,15 +159,15 @@ cmake --build build --target rpm
 
 Berkas paket hasil kompilasi akan diletakkan di dalam folder `build/`:
 
-- `build/sparknotepad_1.3.7_amd64.deb`
-- `build/sparknotepad-1.3.7-1.x86_64.rpm`
+- `build/sparknotepad_1.3.8_amd64.deb`
+- `build/sparknotepad-1.3.8-1.x86_64.rpm`
 
 Pasang dengan resolusi dependensi otomatis:
 
 ```bash
 # Ubuntu / Debian
-sudo apt install ./build/sparknotepad_1.3.7_amd64.deb
+sudo apt install ./build/sparknotepad_1.3.8_amd64.deb
 
 # Fedora / RHEL
-sudo dnf install ./build/sparknotepad-1.3.7-1.x86_64.rpm
+sudo dnf install ./build/sparknotepad-1.3.8-1.x86_64.rpm
 ```

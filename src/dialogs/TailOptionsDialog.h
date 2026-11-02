@@ -15,6 +15,8 @@
 
 #include <QDialog>
 
+#include <memory>
+
 namespace Ui {
 class TailOptionsDialog;
 }
@@ -28,13 +30,13 @@ public:
     explicit TailOptionsDialog(QWidget *parent = nullptr, ScintillaNext *currentEditor = nullptr);
     ~TailOptionsDialog() override;
 
-private slots:
+private Q_SLOTS:
     void onApplyClicked();
 
 private:
     void loadSettings();
 
-    Ui::TailOptionsDialog *ui;
+    std::unique_ptr<Ui::TailOptionsDialog> ui;
     ScintillaNext *m_editor{nullptr};
 };
 

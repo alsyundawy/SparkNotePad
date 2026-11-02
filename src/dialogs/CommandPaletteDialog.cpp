@@ -81,14 +81,16 @@ void CommandPaletteDialog::applyTheme() {
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     const bool dark = ThemeManager::instance()->isDarkActive();
 
-    const QString bg =
-        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#252526") : QStringLiteral("#ffffff"));
-    const QString winBg =
-        pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f3f3f3"));
-    const QString border =
-        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#3f3f46") : QStringLiteral("#d0d7de"));
-    const QString textPri =
-        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString bg = dark ? QStringLiteral("#252526") : QStringLiteral("#ffffff");
+    QString winBg = dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f3f3f3");
+    QString border = dark ? QStringLiteral("#3f3f46") : QStringLiteral("#d0d7de");
+    QString textPri = dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f");
+    if (pal) {
+        bg = QString::fromLatin1(pal->card);
+        winBg = QString::fromLatin1(pal->win);
+        border = QString::fromLatin1(pal->border);
+        textPri = QString::fromLatin1(pal->txtPri);
+    }
     const QString accent = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#0969da");
 
     setStyleSheet(QStringLiteral("QDialog {"
@@ -136,36 +138,44 @@ void CommandPaletteDialog::showEvent(QShowEvent *event) {
     m_searchEdit->setFocus();
 }
 
-bool CommandPaletteDialog::eventFilter(QObject *watched, QEvent *event) {
-    if (event->type() == QEvent::KeyPress) {
-        auto *keyEvent = static_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_Escape) {
-            close();
-            return true;
+bool CommandPaletteDialog::handleSearchKeyPress(const QKeyEvent *keyEvent) {
+    const int key = keyEvent->key();
+    if (key == Qt::Key_Down) {
+        if (const int nextRow = m_listWidget->currentRow() + 1; nextRow < m_listWidget->count()) {
+            m_listWidget->setCurrentRow(nextRow);
         }
-        if (watched == m_searchEdit) {
-            if (keyEvent->key() == Qt::Key_Down) {
-                int nextRow = m_listWidget->currentRow() + 1;
-                if (nextRow < m_listWidget->count()) {
-                    m_listWidget->setCurrentRow(nextRow);
-                }
-                return true;
-            }
-            if (keyEvent->key() == Qt::Key_Up) {
-                int prevRow = m_listWidget->currentRow() - 1;
-                if (prevRow >= 0) {
-                    m_listWidget->setCurrentRow(prevRow);
-                }
-                return true;
-            }
-            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                if (auto *item = m_listWidget->currentItem()) {
-                    onItemActivated(item);
-                }
-                return true;
-            }
-        }
+        return true;
     }
+    if (key == Qt::Key_Up) {
+        if (const int prevRow = m_listWidget->currentRow() - 1; prevRow >= 0) {
+            m_listWidget->setCurrentRow(prevRow);
+        }
+        return true;
+    }
+    if (key == Qt::Key_Return || key == Qt::Key_Enter) {
+        if (const auto *item = m_listWidget->currentItem()) {
+            onItemActivated(item);
+        }
+        return true;
+    }
+    return false;
+}
+
+bool CommandPaletteDialog::eventFilter(QObject *watched, QEvent *event) {
+    if (event->type() != QEvent::KeyPress) {
+        return QDialog::eventFilter(watched, event);
+    }
+
+    const auto *keyEvent = static_cast<const QKeyEvent *>(event);
+    if (keyEvent->key() == Qt::Key_Escape) {
+        close();
+        return true;
+    }
+
+    if (watched == m_searchEdit && handleSearchKeyPress(keyEvent)) {
+        return true;
+    }
+
     return QDialog::eventFilter(watched, event);
 }
 
@@ -177,7 +187,7 @@ void CommandPaletteDialog::populateItems() {
     }
 
     // 1. Populate Open Tabs
-    if (auto *docked = m_mainWindow->getDockedEditor()) {
+    if (const auto *docked = m_mainWindow->getDockedEditor()) {
         const auto editors = docked->editors();
         const auto *current = m_mainWindow->currentEditor();
         for (auto *ed : editors) {
@@ -196,8 +206,8 @@ void CommandPaletteDialog::populateItems() {
     }
 
     // 2. Populate Recent Files
-    auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
-    if (app && app->getRecentFilesListManager()) {
+    if (const auto *app = qobject_cast<const SparkNotePadApplication *>(qApp);
+        app && app->getRecentFilesListManager()) {
         const auto recentList = app->getRecentFilesListManager()->fileList();
         for (const auto &filePath : recentList) {
             QFileInfo fi(filePath);
@@ -225,8 +235,7 @@ void CommandPaletteDialog::populateItems() {
         item.title = cleanText;
         item.action = act;
 
-        QString shortcut = act->shortcut().toString(QKeySequence::NativeText);
-        if (!shortcut.isEmpty()) {
+        if (const QString shortcut = act->shortcut().toString(QKeySequence::NativeText); !shortcut.isEmpty()) {
             item.shortcut = shortcut;
             item.subtitle = tr("[Action] Shortcut: %1").arg(shortcut);
         } else {
@@ -240,22 +249,27 @@ void CommandPaletteDialog::onSearchTextChanged(const QString &text) {
     filterItems(text);
 }
 
+bool CommandPaletteDialog::filterGoToLine(const QString &query) {
+    if (!query.startsWith(QLatin1Char(':'))) {
+        return false;
+    }
+    bool ok = false;
+    const int lineNum = query.mid(1).trimmed().toInt(&ok);
+    if (const auto *editor = m_mainWindow ? m_mainWindow->currentEditor() : nullptr; editor && ok && lineNum > 0) {
+        auto *listItem = new QListWidgetItem(m_listWidget);
+        listItem->setText(tr("Jump to line %1 (Max: %2)").arg(lineNum).arg(editor->lineCount()));
+        listItem->setData(Qt::UserRole, static_cast<int>(PaletteItem::Type::GoToLine));
+        listItem->setData(Qt::UserRole + 1, lineNum);
+        m_listWidget->setCurrentRow(0);
+    }
+    return true;
+}
+
 void CommandPaletteDialog::filterItems(const QString &rawQuery) {
     m_listWidget->clear();
     const QString query = rawQuery.trimmed();
 
-    // Mode 1: Go to line (starts with ':')
-    if (query.startsWith(QLatin1Char(':'))) {
-        bool ok = false;
-        int lineNum = query.mid(1).trimmed().toInt(&ok);
-        auto *editor = m_mainWindow ? m_mainWindow->currentEditor() : nullptr;
-        if (editor && ok && lineNum > 0) {
-            auto *listItem = new QListWidgetItem(m_listWidget);
-            listItem->setText(tr("Jump to line %1 (Max: %2)").arg(lineNum).arg(editor->lineCount()));
-            listItem->setData(Qt::UserRole, static_cast<int>(PaletteItem::Type::GoToLine));
-            listItem->setData(Qt::UserRole + 1, lineNum);
-            m_listWidget->setCurrentRow(0);
-        }
+    if (filterGoToLine(query)) {
         return;
     }
 
@@ -301,7 +315,7 @@ void CommandPaletteDialog::filterItems(const QString &rawQuery) {
     }
 }
 
-void CommandPaletteDialog::onItemActivated(QListWidgetItem *listItem) {
+void CommandPaletteDialog::onItemActivated(const QListWidgetItem *listItem) {
     if (!listItem) {
         return;
     }
@@ -309,8 +323,8 @@ void CommandPaletteDialog::onItemActivated(QListWidgetItem *listItem) {
     const auto type = static_cast<PaletteItem::Type>(listItem->data(Qt::UserRole).toInt());
 
     if (type == PaletteItem::Type::GoToLine) {
-        int line = listItem->data(Qt::UserRole + 1).toInt();
-        if (m_mainWindow && m_mainWindow->currentEditor() && line > 0) {
+        if (const int line = listItem->data(Qt::UserRole + 1).toInt();
+            m_mainWindow && m_mainWindow->currentEditor() && line > 0) {
             m_mainWindow->currentEditor()->gotoLine(line - 1);
         }
         close();
@@ -318,8 +332,9 @@ void CommandPaletteDialog::onItemActivated(QListWidgetItem *listItem) {
     }
 
     if (type == PaletteItem::Type::OpenTab) {
-        auto *editor = static_cast<ScintillaNext *>(listItem->data(Qt::UserRole + 2).value<void *>());
-        if (m_mainWindow && m_mainWindow->getDockedEditor() && editor) {
+        if (const auto *editor =
+                static_cast<const ScintillaNext *>(listItem->data(Qt::UserRole + 2).value<const void *>());
+            m_mainWindow && m_mainWindow->getDockedEditor() && editor) {
             m_mainWindow->getDockedEditor()->switchToEditor(editor);
         }
         close();
@@ -327,8 +342,7 @@ void CommandPaletteDialog::onItemActivated(QListWidgetItem *listItem) {
     }
 
     if (type == PaletteItem::Type::RecentFile) {
-        QString path = listItem->data(Qt::UserRole + 1).toString();
-        if (m_mainWindow && !path.isEmpty()) {
+        if (const QString path = listItem->data(Qt::UserRole + 1).toString(); m_mainWindow && !path.isEmpty()) {
             m_mainWindow->openFile(path);
         }
         close();

@@ -76,7 +76,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential \
-            ninja-build \
             dpkg-dev \
             rpm \
             libgl1-mesa-dev \
@@ -115,7 +114,7 @@ jobs:
         shell: bash
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
-          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}"
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}"
 
       - name: Build
         shell: bash
@@ -219,7 +218,7 @@ jobs:
         shell: bash
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
-          CMAKE_OPTS=(-S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}")
+          CMAKE_OPTS=(-S . -B build -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}")
           CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}")
           echo "CMake options: ${CMAKE_OPTS[*]}"
           cmake "${CMAKE_OPTS[@]}"
@@ -321,7 +320,7 @@ jobs:
         shell: bash
         run: |
           echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
-          CMAKE_OPTS=(-S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}")
+          CMAKE_OPTS=(-S . -B build -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}")
           CMAKE_OPTS+=(-DCMAKE_OSX_ARCHITECTURES="${{ matrix.cmake_arch }}" -DCMAKE_OSX_DEPLOYMENT_TARGET="${{ matrix.deployment_target }}" -DMAC_ARCH_SUFFIX="${{ matrix.arch }}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}")
           echo "CMake options: ${CMAKE_OPTS[*]}"
           cmake "${CMAKE_OPTS[@]}"

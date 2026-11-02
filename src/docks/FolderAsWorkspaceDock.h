@@ -49,9 +49,14 @@ private slots:
     void onRefreshClicked();
     void onCollapseAllClicked();
     void onCustomContextMenu(const QPoint &pos);
+    void updateTheme();
+
+protected:
+    void changeEvent(QEvent *event) override;
 
 private:
     Ui::FolderAsWorkspaceDock *ui;
 
     QFileSystemModel *model;
+    bool m_isUpdatingTheme{false};
 };

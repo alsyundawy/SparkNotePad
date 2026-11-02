@@ -525,7 +525,7 @@ SparkNotePad is deployed across macOS and Linux desktop environments where Dark 
 - **Context:**
   Continuous quality assurance across the entire application lifecycle requires systematic auditing across 13 engineering pillars (Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability). Furthermore, GitHub Actions CI workflows required remediation for unpinned actions, missing checkout files, and runner matrix compatibility.
 - **Decision:**
-  1. Unignored and tracked `src/languages/makefile.lua` in git, resolving the Ninja missing file error in CI checkout.
+  1. Unignored and tracked `src/languages/makefile.lua` in git, resolving the build missing file error in CI checkout.
   2. Created `.mega-linter.yml` with exclusions for `thirdparty/`, `build/`, and `installer/` directories, preventing false syntax failures on vendored upstream test fixtures.
   3. Corrected Ubuntu Qt 6.8+ architecture target to `linux_gcc_64` in `build.yml` and `release.yml`.
   4. Corrected non-existent runner typos (`macos-26` -> `macos-15`) and standardized release repository references to `alsyundawy/SparkNotePad`.

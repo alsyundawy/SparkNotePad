@@ -52,7 +52,7 @@ public:
     void moveToPrimaryScreen(QWidget *window);
 
     QList<DisplayInfo> getConnectedDisplaysInfo(const QWidget *window = nullptr) const;
-    void showDisplayInfoDialog(QWidget *parent);
+    static void showDisplayInfoDialog(QWidget *parent);
     qreal currentDevicePixelRatio(const QWidget *window) const;
 
 signals:

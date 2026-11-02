@@ -185,7 +185,7 @@ protected:
     void ensureMenuIconsVisible(QWidget *root = nullptr);
 
 private slots:
-    void tabBarRightClicked(const ScintillaNext *editor);
+    void tabBarRightClicked(ScintillaNext *editor);
     void languageMenuTriggered() const;
     static void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
@@ -292,6 +292,9 @@ private:
     void onDocnoteTriggered();
     void onChangelogTriggered();
     void onGenerateCertTriggered();
+    void openPreviewInNewTab(ScintillaNext *editor, bool isHtml);
+    void openInDefaultBrowser(const QString &filePath) const;
+    void onToggleHexBinaryView(bool checked);
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;

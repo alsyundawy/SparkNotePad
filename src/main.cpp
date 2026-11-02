@@ -35,7 +35,7 @@
 #include "SparkNotePadApplication.h"
 
 #ifndef APP_VERSION
-#define APP_VERSION "1.3.7"
+#define APP_VERSION "1.3.8"
 #endif
 
 int main(int argc, char *argv[]) {
@@ -89,8 +89,7 @@ int main(int argc, char *argv[]) {
         // Establish universal modern GUI font fallback for cross-platform visual consistency
         QFont defaultGuiFont;
 #ifdef Q_OS_MACOS
-        defaultGuiFont.setFamilies(
-            {"-apple-system", "BlinkMacSystemFont", "SF Pro Text", "Helvetica Neue", "Arial", "sans-serif"});
+        defaultGuiFont.setFamilies({"SF Pro Text", ".AppleSystemUIFont", "Helvetica Neue", "Arial", "sans-serif"});
         defaultGuiFont.setPointSize(12);
 #elif defined(Q_OS_LINUX)
         defaultGuiFont.setFamilies(

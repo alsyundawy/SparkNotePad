@@ -22,22 +22,15 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ## 1. Executive Summary: Release v1.3.8
 
-SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 15-pack icon theme architecture inspired by **Notepad++**, and refined editor context menu ergonomics:
+SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 8-pack icon theme architecture inspired by **Notepad++**, and refined editor context menu ergonomics:
 
-1. **15 Built-in Toolbar Icon Packs (Zero Duplicate Engineering)**:
+1. **8 Built-in Toolbar Icon Packs (Zero Duplicate Engineering)**:
    - `modernRibbon`: SparkNotePad default high-DPI monoline vector icons (20x20 crisp SVG).
    - `notepadNext`: Authentic 16x16 Silk PNG icons from NotepadNext (Default fallback).
    - `notepadPlusPlus`: Classic retro Notepad++ vector icon pack.
-   - `androidMaterial`: Google Material You / Material 3 adaptive geometry and tonal depth (`android material 2026`).
-   - `windowsVista`: Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting (`Vista 2026`).
    - `windowsXp`: Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights (`XP 2026`).
-   - `windows10`: Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic (`Win10 2026`).
    - `windows11`: Microsoft Fluent Design System 2 with rounded geometry and soft depth (`Win11 2026`, aliased with `fluentUi`, zero duplication).
    - `windows7`: Windows 7 Aero Glass translucent gradients and polished chrome accents (`Win 7 2026`).
-   - `macosMonterey`: macOS Monterey modern SF Symbols aesthetic with clean Apple styling (`Monterey 2026`).
-   - `notepad3`: Rizonesoft Notepad3 technical teal and sharp developer-focused vectors (`NOTEPAD3 ICONPACK`).
-   - `notepad4`: Zufuliu Notepad4 modern deep indigo flat vector iconography (`NOTEPAD4 ICONPACK`).
-   - `notepad2`: Florian Balmer Notepad2 classic retro 16-color nostalgic palette (`NOTEPAD2 ICONPACK`).
    - `monochrome`: Minimalist outline vector icons for dark and light palettes.
    - `vibrantDuotone`: High-contrast cyber-neon duo-tone vector icons.
 
@@ -463,8 +456,8 @@ All release packages and binaries are automatically compiled, tested, and packag
 ## 8. Developer Build & Verification
 
 ```bash
-# 1. Configure CMake with Ninja
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+# 1. Configure CMake
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 # 2. Compile binaries
 cmake --build build -j4

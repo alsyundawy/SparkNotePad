@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QEvent>
 #include <QFile>
+#include "../features/ThemeManager.h"
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -55,6 +56,10 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     debounceTimer->setSingleShot(true);
     debounceTimer->setInterval(250);
     connect(debounceTimer, &QTimer::timeout, this, &MarkdownSafePreviewDock::renderPreview);
+
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
+    applyGitHubTheme();
 }
 
 void MarkdownSafePreviewDock::setupUi() {
@@ -190,19 +195,44 @@ MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(con
 }
 
 void MarkdownSafePreviewDock::changeEvent(QEvent *event) {
-    QDockWidget::changeEvent(event);
-    if (event->type() == QEvent::PaletteChange || event->type() == QEvent::ApplicationPaletteChange) {
+    if (event->type() == QEvent::PaletteChange) {
         applyGitHubTheme();
         renderPreview();
     }
+    QDockWidget::changeEvent(event);
 }
 
 void MarkdownSafePreviewDock::applyGitHubTheme() {
-    const bool isDark = palette().color(QPalette::Window).lightness() < 128;
+    if (m_isUpdatingTheme) {
+        return;
+    }
+    m_isUpdatingTheme = true;
+
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    const ThemePalette *pal = ThemeManager::instance()->currentPalette();
+    const QString accent = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#0969da");
+    const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
+    const QString textPri = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
     const QString bgColor = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
     const QString fgColor = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
     const QString selColor =
         isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
+
+    const QString dockStyle = QStringLiteral(
+                                  "QDockWidget {"
+                                  "  background-color: %1;"
+                                  "  color: %2;"
+                                  "}"
+                                  "QDockWidget::title {"
+                                  "  background-color: %1;"
+                                  "  color: %2;"
+                                  "  padding: 6px 10px;"
+                                  "  border-bottom: 2px solid %3;"
+                                  "  font-weight: 600;"
+                                  "  font-size: 11px;"
+                                  "}")
+                                  .arg(dockBg, textPri, accent);
+    setStyleSheet(dockStyle);
 
     browser->setStyleSheet(
         QStringLiteral(
@@ -210,6 +240,7 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
             .arg(bgColor, fgColor, selColor));
 
     browser->document()->setDefaultStyleSheet(buildGitHubStyleSheet(isDark));
+    m_isUpdatingTheme = false;
 }
 
 QString MarkdownSafePreviewDock::buildGitHubStyleSheet(bool isDark) const {

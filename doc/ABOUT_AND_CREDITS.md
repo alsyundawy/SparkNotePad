@@ -6,7 +6,7 @@
 
 ---
 
-## 2. Upstream Credits & Attribution (v1.0.0 – v1.3.7)
+## 2. Upstream Credits & Attribution (v1.0.0 – v1.3.8)
 
 SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, maintainers, communities, and tools:
 
@@ -19,16 +19,17 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 
 ### B. Upstream Projects & Ancestral Editors
 
-| Project                  | Author / Maintainer         | Role & Contribution                                                                            |
-| :----------------------- | :-------------------------- | :--------------------------------------------------------------------------------------------- |
-| **KDE Kate**             | KDE Community (`kate`)      | Omnibar Command Palette (`Cmd+P`), Quick Open, and side-by-side DiffWidget ergonomics.         |
-| **Pluma (MATE)**         | MATE Desktop (`pluma`)      | Document Statistics dialog, reading time estimates, and document forensics metrics.            |
-| **NotepadNext**          | Justin Dailey (`@dail8859`) | Cross-platform Qt application framework, docking architecture, and Scintilla integration base. |
-| **Notepad4**             | Zufu Liu (`@zufuliu`)       | Architectural enhancements, Scintilla integration ideas, syntax lexers, and utility patterns.  |
-| **Notepad3**             | Rizonesoft & Florian Balmer | Text transformation algorithms, Scintilla power-user patterns, and UI polish.                  |
-| **Notepad--**            | cxasm (`@cxasm`)            | Cross-platform text comparison, encoding detection, and editor concepts.                       |
-| **Notepad++**            | Don Ho (`@donho`)           | The legendary Windows text editor that inspired the modern notepad generation.                 |
-| **SubnetCalc for macOS** | Harry D.S. Alsyundawy       | UI design inspiration, modern theme architecture, and release documentation standards.         |
+| Project                                                                  | Author / Maintainer                   | Role & Contribution                                                                                              |
+| :----------------------------------------------------------------------- | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------- |
+| **[NotepadNext-MacOS](https://github.com/alsyundawy/NotepadNext-MacOS)** | Harry D.S. Alsyundawy (`@alsyundawy`) | Upstream macOS port repository and historical origin from which SparkNotePad was initially branched and evolved. |
+| **KDE Kate**                                                             | KDE Community (`kate`)                | Omnibar Command Palette (`Cmd+P`), Quick Open, and side-by-side DiffWidget ergonomics.                           |
+| **Pluma (MATE)**                                                         | MATE Desktop (`pluma`)                | Document Statistics dialog, reading time estimates, and document forensics metrics.                              |
+| **NotepadNext**                                                          | Justin Dailey (`@dail8859`)           | Cross-platform Qt application framework, docking architecture, and Scintilla integration base.                   |
+| **Notepad4**                                                             | Zufu Liu (`@zufuliu`)                 | Architectural enhancements, Scintilla integration ideas, syntax lexers, and utility patterns.                    |
+| **Notepad3**                                                             | Rizonesoft & Florian Balmer           | Text transformation algorithms, Scintilla power-user patterns, and UI polish.                                    |
+| **Notepad--**                                                            | cxasm (`@cxasm`)                      | Cross-platform text comparison, encoding detection, and editor concepts.                                         |
+| **Notepad++**                                                            | Don Ho (`@donho`)                     | The legendary Windows text editor that inspired the modern notepad generation.                                   |
+| **SubnetCalc for macOS**                                                 | Harry D.S. Alsyundawy                 | UI design inspiration, modern theme architecture, and release documentation standards.                           |
 
 ### C. Core Editing Engines & Lexers
 
@@ -52,10 +53,13 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 
 ### E. Visual Artwork & Typography
 
-| Asset / Designer                        | Author                | Role & Contribution                                                                          |
-| :-------------------------------------- | :-------------------- | :------------------------------------------------------------------------------------------- |
-| **Lon McGregor (NotepadPlusPlusIcons)** | Lon McGregor          | Open-source chameleon and editor artwork series, adapted for SparkNotePad official branding. |
-| **SparkNotePad Monoline Vector Suite**  | Harry D.S. Alsyundawy | Retina UI vector icons customized for 75 themes, menus, and toolbars.                        |
+| Asset / Designer                        | Author                     | Role & Contribution                                                                          |
+| :-------------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------- |
+| **Lon McGregor (NotepadPlusPlusIcons)** | Lon McGregor               | Open-source chameleon and editor artwork series, adapted for SparkNotePad official branding. |
+| **SparkNotePad Monoline Vector Suite**  | Harry D.S. Alsyundawy      | Retina UI vector icons customized for 75 themes, menus, and toolbars.                        |
+| **Fugue Icons Suite**                   | Yusuke Kamiyamane          | Renowned pixel-perfect Fugue Silk 2 iconography (Creative Commons Attribution 3.0).          |
+| **Microsoft Fluent Design Icons**       | Microsoft / Directory Opus | Fluent vector and bitmap toolbar icon set.                                                   |
+| **Classic Silk Icons**                  | Mark James (FAMFAMFAM)     | Classic 16x16 Silk icons from upstream NotepadNext / Silk suite.                             |
 
 ---
 

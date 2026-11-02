@@ -122,7 +122,7 @@ sudo apt install ./sparknotepad_1.3.7_amd64.deb
 ```bash
 sudo apt update
 sudo apt install -y --no-install-recommends \
-    build-essential cmake ninja-build pkg-config \
+    build-essential cmake pkg-config \
     qt6-base-dev qt6-base-dev-tools qt6-5compat-dev \
     qt6-tools-dev qt6-tools-dev-tools linguist-qt6 \
     libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
@@ -135,7 +135,7 @@ sudo apt install -y --no-install-recommends \
 ```bash
 sudo apt update
 sudo apt install -y --no-install-recommends \
-    build-essential cmake ninja-build pkg-config \
+    build-essential cmake pkg-config \
     qt6-base-dev qt6-base-private-dev qt6-base-dev-tools \
     qt6-5compat-dev qt6-tools-dev qt6-tools-dev-tools linguist-qt6 \
     libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
@@ -147,7 +147,7 @@ sudo apt install -y --no-install-recommends \
 
 ```bash
 sudo dnf install -y \
-    gcc-c++ cmake ninja-build rpm-build pkgconf-pkg-config \
+    gcc-c++ cmake rpm-build pkgconf-pkg-config \
     qt6-qtbase-devel qt6-qt5compat-devel qt6-qttools-devel \
     mesa-libGL-devel libxkbcommon-devel libxkbcommon-x11-devel \
     fontconfig-devel freetype-devel xcb-util-cursor-devel
@@ -157,7 +157,7 @@ sudo dnf install -y \
 
 ```bash
 # 1. Configure Release build
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
 # 2. Compile application
 cmake --build build --parallel

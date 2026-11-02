@@ -17,6 +17,7 @@
 #include <QRegularExpression>
 #include <QVector>
 #include <QByteArray>
+#include <algorithm>
 
 #ifndef SC_ELEMENT_HIDDEN_LINE
 #define SC_ELEMENT_HIDDEN_LINE 81
@@ -58,8 +59,8 @@ FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, 
     }
 
     // Check if there is selection or word at cursor
-    int selectionStart = editor->selectionStart();
-    int selectionEnd = editor->selectionEnd();
+    int selectionStart = static_cast<int>(editor->selectionStart());
+    int selectionEnd = static_cast<int>(editor->selectionEnd());
     QString query;
 
     if (selectionStart != selectionEnd) {
@@ -67,9 +68,9 @@ FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, 
             query = QString::fromUtf8(editor->get_text_range(selectionStart, selectionEnd)).trimmed();
         }
     } else {
-        const int curPos = editor->currentPos();
-        const int wStart = editor->wordStartPosition(curPos, true);
-        const int wEnd = editor->wordEndPosition(curPos, true);
+        const int curPos = static_cast<int>(editor->currentPos());
+        const int wStart = static_cast<int>(editor->wordStartPosition(curPos, true));
+        const int wEnd = static_cast<int>(editor->wordEndPosition(curPos, true));
         if (wStart != wEnd) {
             query = QString::fromUtf8(editor->get_text_range(wStart, wEnd)).trimmed();
         }
@@ -96,93 +97,120 @@ FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, 
     return applyFilter(editor, opts);
 }
 
+namespace {
+bool computeLineMatches(ScintillaNext *editor, const FocusedView::FilterOptions &options, int lineCount,
+                        QVector<bool> &lineHasMatch, QString &errorMsg) {
+    if (options.bookmarksOnly) {
+        const auto *bm = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (bm == nullptr) {
+            errorMsg = QObject::tr("Bookmark decorator unavailable");
+            return false;
+        }
+        for (int line = 0; line < lineCount; ++line) {
+            lineHasMatch[line] = bm->isBookmarkSet(line);
+        }
+        return true;
+    }
+
+    if (options.query.isEmpty()) {
+        errorMsg = QObject::tr("No filter criteria provided");
+        return false;
+    }
+
+    if (options.useRegex) {
+        QRegularExpression::PatternOptions regexOptions = QRegularExpression::NoPatternOption;
+        if (!options.matchCase) {
+            regexOptions |= QRegularExpression::CaseInsensitiveOption;
+        }
+        const QString pattern = options.wholeWord ? QStringLiteral("\\b%1\\b").arg(options.query) : options.query;
+        const QRegularExpression re(pattern, regexOptions);
+        if (!re.isValid()) {
+            errorMsg = QObject::tr("Invalid regular expression: %1").arg(re.errorString());
+            return false;
+        }
+        for (int line = 0; line < lineCount; ++line) {
+            const QString lineStr = QString::fromUtf8(editor->getLine(line));
+            lineHasMatch[line] = lineStr.contains(re);
+        }
+        return true;
+    }
+
+    if (options.wholeWord) {
+        const QString escaped = QRegularExpression::escape(options.query);
+        const QRegularExpression re(
+            QStringLiteral("\\b%1\\b").arg(escaped),
+            options.matchCase ? QRegularExpression::NoPatternOption : QRegularExpression::CaseInsensitiveOption);
+        for (int line = 0; line < lineCount; ++line) {
+            const QString lineStr = QString::fromUtf8(editor->getLine(line));
+            lineHasMatch[line] = lineStr.contains(re);
+        }
+        return true;
+    }
+
+    const Qt::CaseSensitivity cs = options.matchCase ? Qt::CaseSensitive : Qt::CaseInsensitive;
+    for (int line = 0; line < lineCount; ++line) {
+        const QString lineStr = QString::fromUtf8(editor->getLine(line));
+        lineHasMatch[line] = lineStr.contains(options.query, cs);
+    }
+    return true;
+}
+
+void applyContextLines(int lineCount, int contextLines, const QVector<bool> &lineHasMatch, QVector<bool> &visible) {
+    if (contextLines <= 0) {
+        return;
+    }
+    for (int line = 0; line < lineCount; ++line) {
+        if (!lineHasMatch[line]) {
+            continue;
+        }
+        const int start = std::max(0, line - contextLines);
+        const int end = std::min(lineCount - 1, line + contextLines);
+        for (int c = start; c <= end; ++c) {
+            visible[c] = true;
+        }
+    }
+}
+
+void hideNonVisibleLines(ScintillaNext *editor, int lineCount, const QVector<bool> &visible) {
+    editor->showLines(0, lineCount - 1);
+    int rangeStart = -1;
+    for (int line = 0; line < lineCount; ++line) {
+        if (!visible[line]) {
+            if (rangeStart == -1) {
+                rangeStart = line;
+            }
+        } else if (rangeStart != -1) {
+            editor->hideLines(rangeStart, line - 1);
+            rangeStart = -1;
+        }
+    }
+    if (rangeStart != -1) {
+        editor->hideLines(rangeStart, lineCount - 1);
+    }
+}
+}  // namespace
+
 FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const FilterOptions &options) {
     if (!editor) {
         return {false, 0, 0, 0, QString(), tr("No active editor")};
     }
 
-    const int lineCount = static_cast<int>(editor->lineCount());
+    const auto lineCount = static_cast<int>(editor->lineCount());
     if (lineCount <= 0) {
         return {false, 0, 0, 0, QString(), tr("Document is empty")};
     }
 
     m_lastOptions = options;
     QVector<bool> lineHasMatch(lineCount, false);
+    QString errorMsg;
 
-    if (options.bookmarksOnly) {
-        BookMarkDecorator *bm = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
-        if (!bm) {
-            return {false, lineCount, 0, lineCount, tr("[Bookmarks]"), tr("Bookmark decorator unavailable")};
-        }
-        for (int line = 0; line < lineCount; ++line) {
-            if (bm->isBookmarkSet(line)) {
-                lineHasMatch[line] = true;
-            }
-        }
-    } else if (!options.query.isEmpty()) {
-        if (options.useRegex) {
-            QRegularExpression::PatternOptions regexOptions = QRegularExpression::NoPatternOption;
-            if (!options.matchCase) {
-                regexOptions |= QRegularExpression::CaseInsensitiveOption;
-            }
-            QString pattern = options.query;
-            if (options.wholeWord) {
-                pattern = QStringLiteral("\\b%1\\b").arg(pattern);
-            }
-            QRegularExpression re(pattern, regexOptions);
-            if (!re.isValid()) {
-                return {false,     lineCount,     0,
-                        lineCount, options.query, tr("Invalid regular expression: %1").arg(re.errorString())};
-            }
-            for (int line = 0; line < lineCount; ++line) {
-                const QString lineStr = QString::fromUtf8(editor->getLine(line));
-                if (lineStr.contains(re)) {
-                    lineHasMatch[line] = true;
-                }
-            }
-        } else {
-            const Qt::CaseSensitivity cs = options.matchCase ? Qt::CaseSensitive : Qt::CaseInsensitive;
-            if (options.wholeWord) {
-                const QString escaped = QRegularExpression::escape(options.query);
-                const QRegularExpression re(QStringLiteral("\\b%1\\b").arg(escaped),
-                                            options.matchCase ? QRegularExpression::NoPatternOption
-                                                              : QRegularExpression::CaseInsensitiveOption);
-                for (int line = 0; line < lineCount; ++line) {
-                    const QString lineStr = QString::fromUtf8(editor->getLine(line));
-                    if (lineStr.contains(re)) {
-                        lineHasMatch[line] = true;
-                    }
-                }
-            } else {
-                for (int line = 0; line < lineCount; ++line) {
-                    const QString lineStr = QString::fromUtf8(editor->getLine(line));
-                    if (lineStr.contains(options.query, cs)) {
-                        lineHasMatch[line] = true;
-                    }
-                }
-            }
-        }
-    } else {
-        return {false, lineCount, 0, lineCount, QString(), tr("No filter criteria provided")};
+    if (!computeLineMatches(editor, options, lineCount, lineHasMatch, errorMsg)) {
+        return {false, lineCount, 0, lineCount, options.query, errorMsg};
     }
 
     QVector<bool> visible = lineHasMatch;
+    applyContextLines(lineCount, options.contextLines, lineHasMatch, visible);
 
-    // Apply context lines (surrounding lines before and after match)
-    if (options.contextLines > 0) {
-        for (int line = 0; line < lineCount; ++line) {
-            if (lineHasMatch[line]) {
-                for (int c = 1; c <= options.contextLines; ++c) {
-                    if (line - c >= 0)
-                        visible[line - c] = true;
-                    if (line + c < lineCount)
-                        visible[line + c] = true;
-                }
-            }
-        }
-    }
-
-    // Apply invert if requested (hide matching lines)
     if (options.invert) {
         for (int line = 0; line < lineCount; ++line) {
             visible[line] = !visible[line];
@@ -192,48 +220,29 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
     int matchedCount = 0;
     int visibleCount = 0;
     for (int line = 0; line < lineCount; ++line) {
-        if (lineHasMatch[line])
+        if (lineHasMatch[line]) {
             matchedCount++;
-        if (visible[line])
+        }
+        if (visible[line]) {
             visibleCount++;
+        }
     }
 
     if (visibleCount == 0) {
-        QString msg = options.bookmarksOnly
-                          ? tr("No bookmarked lines found. Filter not applied.")
-                          : tr("No matching lines found for '%1'. Filter not applied.").arg(options.query);
+        const QString msg = options.bookmarksOnly
+                                ? tr("No bookmarked lines found. Filter not applied.")
+                                : tr("No matching lines found for '%1'. Filter not applied.").arg(options.query);
         return {false, lineCount, 0, lineCount, options.query, msg};
     }
 
     ensureHiddenLineStyle(editor);
-
-    // Reset lines first
-    editor->showLines(0, lineCount - 1);
-
-    // Hide contiguous ranges of non-visible lines
-    int rangeStart = -1;
-    for (int line = 0; line < lineCount; ++line) {
-        if (!visible[line]) {
-            if (rangeStart == -1) {
-                rangeStart = line;
-            }
-        } else {
-            if (rangeStart != -1) {
-                editor->hideLines(rangeStart, line - 1);
-                rangeStart = -1;
-            }
-        }
-    }
-    if (rangeStart != -1) {
-        editor->hideLines(rangeStart, lineCount - 1);
-    }
+    hideNonVisibleLines(editor, lineCount, visible);
 
     // Ensure caret is on a visible line
-    const int curLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
-    if (!editor->lineVisible(curLine)) {
-        const auto it = std::find(visible.cbegin(), visible.cend(), true);
-        if (it != visible.cend()) {
-            editor->gotoLine(static_cast<sptr_t>(std::distance(visible.cbegin(), it)));
+    if (const auto curLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
+        !editor->lineVisible(curLine)) {
+        if (const auto it = std::ranges::find(visible, true); it != visible.end()) {
+            editor->gotoLine(static_cast<sptr_t>(std::distance(visible.begin(), it)));
         }
     }
 
@@ -259,7 +268,7 @@ FocusedView::FilterResult FocusedView::clearFilter(ScintillaNext *editor) {
         return {false, 0, 0, 0, QString(), tr("No active editor")};
     }
 
-    const int lineCount = static_cast<int>(editor->lineCount());
+    const auto lineCount = static_cast<int>(editor->lineCount());
     if (lineCount > 0) {
         editor->showLines(0, lineCount - 1);
     }
@@ -282,8 +291,8 @@ FocusedView::FilterResult FocusedView::filterBySelectionOrWord(ScintillaNext *ed
     if (!editor)
         return {false, 0, 0, 0, QString(), tr("No active editor")};
 
-    int selectionStart = editor->selectionStart();
-    int selectionEnd = editor->selectionEnd();
+    int selectionStart = static_cast<int>(editor->selectionStart());
+    int selectionEnd = static_cast<int>(editor->selectionEnd());
     QString query;
 
     if (selectionStart != selectionEnd) {
@@ -291,9 +300,9 @@ FocusedView::FilterResult FocusedView::filterBySelectionOrWord(ScintillaNext *ed
             query = QString::fromUtf8(editor->get_text_range(selectionStart, selectionEnd)).trimmed();
         }
     } else {
-        const int curPos = editor->currentPos();
-        const int wStart = editor->wordStartPosition(curPos, true);
-        const int wEnd = editor->wordEndPosition(curPos, true);
+        const int curPos = static_cast<int>(editor->currentPos());
+        const int wStart = static_cast<int>(editor->wordStartPosition(curPos, true));
+        const int wEnd = static_cast<int>(editor->wordEndPosition(curPos, true));
         if (wStart != wEnd) {
             query = QString::fromUtf8(editor->get_text_range(wStart, wEnd)).trimmed();
         }

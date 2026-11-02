@@ -35,9 +35,9 @@ public:
     static constexpr quint32 scColor(int red, int green, int blue) {
         return static_cast<quint32>((red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16));
     }
-    static inline quint32 scFromRgb(QRgb rgb) { return scColor(qRed(rgb), qGreen(rgb), qBlue(rgb)); }
-    static inline quint32 scFromHex(const char *hex) {
-        QColor c(hex);
+    static quint32 scFromRgb(QRgb rgb) { return scColor(qRed(rgb), qGreen(rgb), qBlue(rgb)); }
+    static quint32 scFromHex(const char *hex) {
+        const QColor c(hex);
         return scFromRgb(c.rgb());
     }
 

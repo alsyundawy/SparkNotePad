@@ -88,7 +88,7 @@ void AccessibilityManager::announceDocumentState(ScintillaNext *editor, int inde
     announce(editor, msg);
 }
 
-void AccessibilityManager::openAccessibilityHelp(QWidget *parent) const {
+void AccessibilityManager::openAccessibilityHelp(QWidget *parent) {
     AccessibilityHelpDialog dlg(parent);
     dlg.exec();
 }

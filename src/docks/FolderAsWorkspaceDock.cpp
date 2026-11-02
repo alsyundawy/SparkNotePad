@@ -23,6 +23,7 @@
 
 #include "FolderAsWorkspaceDock.h"
 #include "ApplicationSettings.h"
+#include "../features/ThemeManager.h"
 #include "ui_FolderAsWorkspaceDock.h"
 
 #include <QApplication>
@@ -124,6 +125,10 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
 
     ApplicationSettings settings;
     setRootPath(settings.get(rootPathSetting));
+
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &FolderAsWorkspaceDock::updateTheme);
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &FolderAsWorkspaceDock::updateTheme);
+    updateTheme();
 }
 
 FolderAsWorkspaceDock::~FolderAsWorkspaceDock() {
@@ -219,4 +224,93 @@ void FolderAsWorkspaceDock::onCustomContextMenu(const QPoint &pos) {
     }
 
     menu->popup(ui->treeView->viewport()->mapToGlobal(pos));
+}
+
+void FolderAsWorkspaceDock::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::PaletteChange) {
+        updateTheme();
+    }
+    QDockWidget::changeEvent(event);
+}
+
+void FolderAsWorkspaceDock::updateTheme() {
+    if (m_isUpdatingTheme) {
+        return;
+    }
+    m_isUpdatingTheme = true;
+
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    const ThemePalette *pal = ThemeManager::instance()->currentPalette();
+
+    const QString border = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
+    const QString textPri = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
+    const QString textSec = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
+    const QString accent = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#0969da");
+    const QString cardBg = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
+    const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#f6f8fa");
+    const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
+
+    const QString style = QStringLiteral(
+                              "QDockWidget {"
+                              "  background-color: %7;"
+                              "  color: %2;"
+                              "}"
+                              "QDockWidget::title {"
+                              "  background-color: %7;"
+                              "  color: %2;"
+                              "  padding: 6px 10px;"
+                              "  border-bottom: 2px solid %4;"
+                              "  font-weight: 600;"
+                              "  font-size: 11px;"
+                              "}"
+                              "QLineEdit {"
+                              "  background-color: %1;"
+                              "  color: %2;"
+                              "  border: 1px solid %3;"
+                              "  border-radius: 4px;"
+                              "  padding: 3px 6px;"
+                              "  font-size: 11px;"
+                              "}"
+                              "QLineEdit:focus {"
+                              "  border-color: %4;"
+                              "}"
+                              "QToolButton {"
+                              "  background-color: %5;"
+                              "  color: %2;"
+                              "  border: 1px solid %3;"
+                              "  border-radius: 4px;"
+                              "  padding: 3px 5px;"
+                              "  font-size: 11px;"
+                              "}"
+                              "QToolButton:hover {"
+                              "  border-color: %4;"
+                              "}"
+                              "QTreeView {"
+                              "  background-color: %1;"
+                              "  color: %2;"
+                              "  border: 1px solid %3;"
+                              "  border-radius: 4px;"
+                              "  font-size: 11px;"
+                              "}"
+                              "QTreeView::item:hover {"
+                              "  background-color: %3;"
+                              "}"
+                              "QTreeView::item:selected {"
+                              "  background-color: %4;"
+                              "  color: #ffffff;"
+                              "}"
+                              "QHeaderView::section {"
+                              "  background-color: %5;"
+                              "  color: %6;"
+                              "  border: none;"
+                              "  border-right: 1px solid %3;"
+                              "  border-bottom: 1px solid %3;"
+                              "  padding: 2px 6px;"
+                              "  font-size: 10px;"
+                              "  font-weight: 600;"
+                              "}")
+                              .arg(cardBg, textPri, border, accent, btnBg, textSec, dockBg);
+
+    setStyleSheet(style);
+    m_isUpdatingTheme = false;
 }

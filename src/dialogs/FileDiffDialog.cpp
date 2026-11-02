@@ -42,7 +42,7 @@ void FileDiffDialog::setupUi() {
     mainLayout->setSpacing(8);
 
     // Top control bar
-    auto *topLayout = new QHBoxLayout();
+    auto *topLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     topLayout->setSpacing(6);
 
     auto *lblA = new QLabel(tr("Original (A):"), this);
@@ -81,7 +81,7 @@ void FileDiffDialog::setupUi() {
     mainLayout->addLayout(topLayout);
 
     // Navigation and Summary Bar
-    auto *navLayout = new QHBoxLayout();
+    auto *navLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     m_lblSummary = new QLabel(tr("Select two files or open tabs to compare."), this);
     navLayout->addWidget(m_lblSummary);
 
@@ -115,15 +115,15 @@ void FileDiffDialog::setupUi() {
     mainLayout->addWidget(m_splitter, 1);
 
     // Sync vertical scrolling
-    if (auto *scrollA = m_editorA->verticalScrollBar()) {
+    if (const auto *scrollA = m_editorA->verticalScrollBar()) {
         connect(scrollA, &QScrollBar::valueChanged, this, &FileDiffDialog::onEditorAScrolled);
     }
-    if (auto *scrollB = m_editorB->verticalScrollBar()) {
+    if (const auto *scrollB = m_editorB->verticalScrollBar()) {
         connect(scrollB, &QScrollBar::valueChanged, this, &FileDiffDialog::onEditorBScrolled);
     }
 
     // Bottom close button
-    auto *bottomLayout = new QHBoxLayout();
+    auto *bottomLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     bottomLayout->addStretch();
     auto *btnClose = new QPushButton(tr("Close"), this);
     connect(btnClose, &QPushButton::clicked, this, &QDialog::accept);
@@ -167,14 +167,13 @@ void FileDiffDialog::populateCombos() {
     }
 
     const auto editors = m_mainWindow->getDockedEditor()->editors();
-    int idx = 0;
-    for (auto *ed : editors) {
-        if (!ed)
+    for (const auto *ed : editors) {
+        if (!ed) {
             continue;
+        }
         const QString title = tr("Tab: %1 (%2)").arg(ed->getName()).arg(ed->getFilePath());
         m_comboA->addItem(title, ed->getFilePath());
         m_comboB->addItem(title, ed->getFilePath());
-        idx++;
     }
 
     if (m_comboA->count() > 0) {
@@ -278,6 +277,8 @@ void FileDiffDialog::onCompareClicked() {
     QString alignedB;
     m_diffLineIndices.clear();
 
+    using enum MyersDiffEngine::DiffOp;
+
     for (int idx = 0; idx < diffResult.lines.size(); ++idx) {
         const auto &dl = diffResult.lines[idx];
         if (idx > 0) {
@@ -285,18 +286,18 @@ void FileDiffDialog::onCompareClicked() {
             alignedB += QLatin1Char('\n');
         }
 
-        if (dl.op == MyersDiffEngine::DiffOp::Equal) {
+        if (dl.op == Equal) {
             alignedA += dl.textA;
             alignedB += dl.textB;
-        } else if (dl.op == MyersDiffEngine::DiffOp::Insert) {
+        } else if (dl.op == Insert) {
             alignedA += QString();  // Blank line to keep alignment
             alignedB += dl.textB;
             m_diffLineIndices.append(idx);
-        } else if (dl.op == MyersDiffEngine::DiffOp::Delete) {
+        } else if (dl.op == Delete) {
             alignedA += dl.textA;
             alignedB += QString();  // Blank line to keep alignment
             m_diffLineIndices.append(idx);
-        } else if (dl.op == MyersDiffEngine::DiffOp::Modify) {
+        } else if (dl.op == Modify) {
             alignedA += dl.textA;
             alignedB += dl.textB;
             m_diffLineIndices.append(idx);
@@ -311,11 +312,11 @@ void FileDiffDialog::onCompareClicked() {
     // Highlight diff markers
     for (int idx = 0; idx < diffResult.lines.size(); ++idx) {
         const auto &dl = diffResult.lines[idx];
-        if (dl.op == MyersDiffEngine::DiffOp::Insert) {
+        if (dl.op == Insert) {
             m_editorB->markerAdd(idx, MARKER_ADDED);
-        } else if (dl.op == MyersDiffEngine::DiffOp::Delete) {
+        } else if (dl.op == Delete) {
             m_editorA->markerAdd(idx, MARKER_DELETED);
-        } else if (dl.op == MyersDiffEngine::DiffOp::Modify) {
+        } else if (dl.op == Modify) {
             m_editorA->markerAdd(idx, MARKER_MODIFIED);
             m_editorB->markerAdd(idx, MARKER_MODIFIED);
         }
@@ -344,7 +345,8 @@ void FileDiffDialog::onCompareClicked() {
 void FileDiffDialog::onNextDiffClicked() {
     if (m_diffLineIndices.isEmpty())
         return;
-    m_currentDiffIndex = (m_currentDiffIndex + 1) % m_diffLineIndices.size();
+    const auto diffCount = static_cast<int>(m_diffLineIndices.size());
+    m_currentDiffIndex = (m_currentDiffIndex + 1) % diffCount;
     const int targetLine = m_diffLineIndices[m_currentDiffIndex];
     m_editorA->gotoLine(targetLine);
     m_editorB->gotoLine(targetLine);
@@ -355,7 +357,8 @@ void FileDiffDialog::onNextDiffClicked() {
 void FileDiffDialog::onPrevDiffClicked() {
     if (m_diffLineIndices.isEmpty())
         return;
-    m_currentDiffIndex = (m_currentDiffIndex - 1 + m_diffLineIndices.size()) % m_diffLineIndices.size();
+    const auto diffCount = static_cast<int>(m_diffLineIndices.size());
+    m_currentDiffIndex = (m_currentDiffIndex - 1 + diffCount) % diffCount;
     const int targetLine = m_diffLineIndices[m_currentDiffIndex];
     m_editorA->gotoLine(targetLine);
     m_editorB->gotoLine(targetLine);

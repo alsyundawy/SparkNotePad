@@ -25,7 +25,7 @@
 #include "MainWindow.h"
 
 #ifndef APP_VERSION
-#define APP_VERSION "1.3.7"
+#define APP_VERSION "1.3.8"
 #endif
 #include "CommandPaletteDialog.h"
 #include "DocumentStatisticsDialog.h"
@@ -82,11 +82,9 @@
 #include <QUrl>
 #include <QPageLayout>
 #include <QDirIterator>
-#include <QProcess>
 #include <QScreen>
 #include <QFontDatabase>
 #include <QCryptographicHash>
-#include <QUrl>
 
 #ifdef Q_OS_WIN
 #include <QSimpleUpdater.h>
@@ -95,7 +93,6 @@
 
 #include "DockAreaWidget.h"
 
-#include "SparkNotePadApplication.h"
 #include "ApplicationSettings.h"
 
 #include "ScintillaNext.h"
@@ -150,6 +147,7 @@
 #include "ShortcutCustomizerDialog.h"
 #include "CustomizeToolbarDialog.h"
 #include "../features/ToolbarIconManager.h"
+#include "../widgets/PreviewTabWidget.h"
 #include "ColumnEditorDialog.h"
 
 #include "TabsQuickActionsBar.h"
@@ -290,16 +288,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     qInfo("setupUi Completed");
 
-    defaultDirectoryManager = new DefaultDirectoryManager(this, app->getSettings());
-
-    connect(this, &MainWindow::aboutToClose, this, &MainWindow::saveSettings);
-
-    // Create and set up the connections to the docked editor
+    // Create and set up the connections to the docked editor first
     dockedEditor = new DockedEditor(this);
     connect(dockedEditor, &DockedEditor::editorCloseRequested, this, &MainWindow::closeFile);
     connect(dockedEditor, &DockedEditor::editorActivated, this, &MainWindow::activateEditor);
     connect(dockedEditor, &DockedEditor::contextMenuRequestedForEditor, this, &MainWindow::tabBarRightClicked);
     connect(dockedEditor, &DockedEditor::titleBarDoubleClicked, this, &MainWindow::newFile);
+    connect(dockedEditor, &DockedEditor::newFileRequested, this, &MainWindow::newFile);
+
+    ThemeManager::instance()->initialize(app->getSettings());
+
+    defaultDirectoryManager = new DefaultDirectoryManager(this, app->getSettings());
+
+    connect(this, &MainWindow::aboutToClose, this, &MainWindow::saveSettings);
 
     // Set up the menus
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newFile);
@@ -510,43 +511,43 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     };
 
     connect(ui->actionFormatAuto, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Auto, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Auto, false); });
     connect(ui->actionMinifyAuto, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Auto, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Auto, true); });
     connect(ui->actionFormatJson, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Json, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Json, false); });
     connect(ui->actionMinifyJson, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Json, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Json, true); });
     connect(ui->actionFormatJson5, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Json5, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Json5, false); });
     connect(ui->actionMinifyJson5, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Json5, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Json5, true); });
     connect(ui->actionFormatCss, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Css, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Css, false); });
     connect(ui->actionMinifyCss, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Css, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Css, true); });
     connect(ui->actionFormatJs, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::JavaScript, false); });
     connect(ui->actionMinifyJs, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::JavaScript, true); });
 
     ui->menuCodeFormatter->addSeparator();
 
     auto *actionFormatXml = new QAction(tr("Prettify XML / HTML"), this);
     connect(actionFormatXml, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Xml, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Xml, false); });
     ui->menuCodeFormatter->addAction(actionFormatXml);
 
     auto *actionMinifyXml = new QAction(tr("Minify XML / HTML"), this);
     connect(actionMinifyXml, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Xml, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Xml, true); });
     ui->menuCodeFormatter->addAction(actionMinifyXml);
 
     ui->menuCodeFormatter->addSeparator();
 
     auto *actionFormatSql = new QAction(tr("Prettify SQL Query"), this);
     connect(actionFormatSql, &QAction::triggered, this,
-            [handleFormat]() { handleFormat(CodeCompressPretty::Sql, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Language::Sql, false); });
     ui->menuCodeFormatter->addAction(actionFormatSql);
 
     // Document Statistics & Forensics (Pluma style + Shannon Entropy)
@@ -949,16 +950,16 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
         editor->multipleSelectAddNext();
     });
     connect(ui->actionCopyFullPath, &QAction::triggered, this, [this]() {
-        auto editor = currentEditor();
-        if (editor->isFile()) {
+        const auto *editor = currentEditor();
+        if (editor && editor->isFile()) {
             QApplication::clipboard()->setText(editor->getFilePath());
         }
     });
     connect(ui->actionCopyFileName, &QAction::triggered, this,
             [this]() { QApplication::clipboard()->setText(currentEditor()->getName()); });
     connect(ui->actionCopyFileDirectory, &QAction::triggered, this, [this]() {
-        auto editor = currentEditor();
-        if (editor->isFile()) {
+        const auto *editor = currentEditor();
+        if (editor && editor->isFile()) {
             QApplication::clipboard()->setText(editor->getPath());
         }
     });
@@ -1011,7 +1012,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     // --- Encryption (AES-256) sub-menu (will be added to Tools menu below) ---
     menuEncryption = new QMenu(tr("&Encryption (AES-256)"), this);
     actionEncryptDoc = new QAction(tr("&Encrypt Current Document..."), this);
-    actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
+    actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_E));
     connect(actionEncryptDoc, &QAction::triggered, this, &MainWindow::onEncryptDocumentTriggered);
     menuEncryption->addAction(actionEncryptDoc);
 
@@ -1453,7 +1454,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     // Setup Python Scripting (3.13+) Menu
     auto *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
     auto *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
-    actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R));
+    actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R));
     connect(actionRunPython, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
         if (!editor) {
@@ -1534,7 +1535,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     actionToggleTransparency = new QAction(tr("&Toggle Transparent Mode"), this);
     actionToggleTransparency->setCheckable(true);
     actionToggleTransparency->setChecked(transparentWindowManager->isEnabled());
-    actionToggleTransparency->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
+    actionToggleTransparency->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_T));
     connect(actionToggleTransparency, &QAction::triggered, this, &MainWindow::onToggleTransparencyTriggered);
     menuTransparency->addAction(actionToggleTransparency);
 
@@ -2271,6 +2272,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
 
     ui->actionAboutQt->setIcon(QPixmap(QLatin1String(":/qt-project.org/qmessagebox/images/qtlogo-64.png")));
     connect(ui->actionAboutQt, &QAction::triggered, &QApplication::aboutQt);
+    connect(ui->actionToggleHexBinaryView, &QAction::toggled, this, &MainWindow::onToggleHexBinaryView);
 
     // Keyboard Shortcuts & Accessibility Guide
     actionAccessibilityHelp = new QAction(tr("&Keyboard Shortcuts && Accessibility..."), this);
@@ -2280,7 +2282,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     actionAccessibilityHelp->setShortcut(QKeySequence(Qt::Key_F1));
 #endif
     connect(actionAccessibilityHelp, &QAction::triggered, this,
-            [this]() { AccessibilityManager::instance()->openAccessibilityHelp(this); });
+            [this]() { AccessibilityManager::openAccessibilityHelp(this); });
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionAccessibilityHelp);
 
     // User & Developer Documentation
@@ -2372,7 +2374,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     addDockWidget(Qt::LeftDockWidgetArea, fileBrowserDock);
     auto *toggleFileBrowserAction = fileBrowserDock->toggleViewAction();
     toggleFileBrowserAction->setText(tr("File Browser"));
-    toggleFileBrowserAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O));
+    toggleFileBrowserAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_O));
     ui->menuView->addAction(toggleFileBrowserAction);
     connect(fileBrowserDock, &FileBrowserDock::fileOpenRequested, this, &MainWindow::openFile);
 
@@ -2428,12 +2430,11 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     setupLanguageMenu();
     setupRunMenu();
     setupWindowMenu();
-    ThemeManager::instance()->initialize(app->getSettings());
     setupThemeMenu();
     ScreenDisplayManager::instance().registerMainWindow(this);
     AccessibilityManager::instance()->setupAccessibility(this);
 
-    applyStyleSheet();
+    ThemeManager::instance()->applyTheme(this);
 
     restoreSettings();
 
@@ -2511,18 +2512,23 @@ void MainWindow::setupLanguageMenu() {
 }
 
 ScintillaNext *MainWindow::currentEditor() const {
+    if (!dockedEditor) {
+        return nullptr;
+    }
     return dockedEditor->getCurrentEditor();
 }
 
 int MainWindow::editorCount() const {
+    if (!dockedEditor) {
+        return 0;
+    }
     return dockedEditor->count();
 }
 
 QVector<ScintillaNext *> MainWindow::editors() const {
-    // NOTE: this will need re-evaluated in the future.
-    // So far it has been assumed 1 ScintillaNext instance is 1 DockedEditor widget instance.
-    // If in the future a ScintillaNext can be cloned then the DockedEditor could return
-    // the same ScintillaNext instance multiple times since 1 ScintillaNext could mean >= 1 DockedEditor widget instance
+    if (!dockedEditor) {
+        return {};
+    }
     return dockedEditor->editors();
 }
 
@@ -3133,16 +3139,19 @@ bool MainWindow::saveCopyAsDialog() {
 }
 
 bool MainWindow::saveCopyAs(const QString &fileName) {
-    auto editor = currentEditor();
+    const auto *editor = currentEditor();
+    if (!editor) {
+        return false;
+    }
 
-    QFileDevice::FileError error = editor->saveCopyAs(fileName);
+    const QFileDevice::FileError error = editor->saveCopyAs(fileName);
 
     if (error == QFileDevice::NoError) {
         return true;
-    } else {
-        showSaveErrorMessage(editor, error);
-        return false;
     }
+
+    showSaveErrorMessage(editor, error);
+    return false;
 }
 
 bool MainWindow::saveAll() {
@@ -3449,10 +3458,9 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     updateLanguageBasedUi(editor);
 
     if (markdownSafePreviewDock) {
-        if (markdownSafePreviewDock->isAutoShowEnabled() && isMarkdownOrHtml(editor)) {
-            if (!markdownSafePreviewDock->isVisible()) {
-                markdownSafePreviewDock->show();
-            }
+        if (markdownSafePreviewDock->isAutoShowEnabled() && isMarkdownOrHtml(editor) &&
+            !markdownSafePreviewDock->isVisible()) {
+            markdownSafePreviewDock->show();
         }
         if (markdownSafePreviewDock->isVisible()) {
             markdownSafePreviewDock->setActiveEditor(editor);
@@ -3464,9 +3472,9 @@ bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) const {
     if (!editor) {
         return false;
     }
-    const QString lang = editor->languageName.toLower();
-    if (lang.contains(QStringLiteral("markdown")) || lang.contains(QStringLiteral("html")) ||
-        lang.contains(QStringLiteral("xml"))) {
+    if (const QString lang = editor->languageName.toLower(); lang.contains(QStringLiteral("markdown")) ||
+                                                             lang.contains(QStringLiteral("html")) ||
+                                                             lang.contains(QStringLiteral("xml"))) {
         return true;
     }
     const QString ext = editor->getFileInfo().suffix().toLower();
@@ -3823,8 +3831,8 @@ void MainWindow::exportPdf() {
 
     QFont docFont(QStringLiteral("JetBrains Mono"), 10);
 #if defined(Q_OS_MACOS)
-    docFont.setFamilies({QStringLiteral("-apple-system"), QStringLiteral("SF Mono"), QStringLiteral("Menlo"),
-                         QStringLiteral("JetBrains Mono"), QStringLiteral("Courier New")});
+    docFont.setFamilies({QStringLiteral("SF Mono"), QStringLiteral("Menlo"), QStringLiteral("JetBrains Mono"),
+                         QStringLiteral("Courier New")});
 #elif defined(Q_OS_LINUX)
     docFont.setFamilies({QStringLiteral("Inter"), QStringLiteral("DejaVu Sans Mono"), QStringLiteral("Liberation Mono"),
                          QStringLiteral("JetBrains Mono"), QStringLiteral("Monospace")});
@@ -4055,8 +4063,7 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
 
     // Relocate Convert Case directly below Select All
     const auto actions = menu->actions();
-    auto selectAllIt = std::find(actions.begin(), actions.end(), ui->actionSelectAll);
-    if (selectAllIt != actions.end()) {
+    if (auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll); selectAllIt != actions.end()) {
         auto nextIt = std::next(selectAllIt);
         if (nextIt != actions.end()) {
             menu->insertMenu(*nextIt, ui->menuConvertCase);
@@ -4091,7 +4098,7 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     }
 
     // Refined compact typography and icon pack scaling for right-click context menu (1-2px smaller)
-    const QString contextMenuStyle = QStringLiteral(
+    const auto contextMenuStyle = QStringLiteral(
         "QMenu { font-size: 11px; }"
         "QMenu::item { padding: 3px 18px 3px 20px; font-size: 11px; }"
         "QMenu::icon { width: 14px; height: 14px; }");
@@ -4300,12 +4307,13 @@ QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     ActionUtils::populateActionContainer(menu, this, actionNames);
+    ToolbarIconManager::instance()->applyToMenu(menu);
     ensureMenuIconsVisible(menu);
 
     return menu;
 }
 
-void MainWindow::tabBarRightClicked(const ScintillaNext *editor) {
+void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     // Focus on the correct tab
@@ -4337,7 +4345,40 @@ void MainWindow::tabBarRightClicked(const ScintillaNext *editor) {
 
     auto *menu = buildMenu(actionNames);
 
-    const QString contextMenuStyle = QStringLiteral(
+    const QString ext = (editor && editor->isFile()) ? editor->getFileInfo().suffix().toLower() : QString();
+    const bool isMd = (ext == QStringLiteral("md") || ext == QStringLiteral("markdown"));
+
+    if (const bool isHtml =
+            (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml"));
+        editor && (isMd || isHtml)) {
+        menu->addSeparator();
+        if (isMd) {
+            auto *actPreviewMd =
+                menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
+            actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
+            connect(actPreviewMd, &QAction::triggered, this, [this, editor]() { openPreviewInNewTab(editor, false); });
+        } else if (isHtml) {
+            auto *actPreviewHtml =
+                menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview HTML in New Tab"));
+            actPreviewHtml->setObjectName(QStringLiteral("previewHtml"));
+            connect(actPreviewHtml, &QAction::triggered, this, [this, editor]() { openPreviewInNewTab(editor, true); });
+
+            auto *actPreviewBrowser =
+                menu->addAction(QIcon(QStringLiteral(":/icons/openFile.svg")), tr("Preview in Default Browser"));
+            actPreviewBrowser->setObjectName(QStringLiteral("previewHtmlInBrowser"));
+            connect(actPreviewBrowser, &QAction::triggered, this, [this, editor]() {
+                if (editor->isFile() && editor->getFileInfo().exists()) {
+                    openInDefaultBrowser(editor->getFileInfo().absoluteFilePath());
+                } else {
+                    openPreviewInNewTab(editor, true);
+                }
+            });
+        }
+        ToolbarIconManager::instance()->applyToMenu(menu);
+        ensureMenuIconsVisible(menu);
+    }
+
+    const auto contextMenuStyle = QStringLiteral(
         "QMenu { font-size: 11px; }"
         "QMenu::item { padding: 3px 18px 3px 20px; font-size: 11px; }"
         "QMenu::icon { width: 14px; height: 14px; }");
@@ -4779,7 +4820,7 @@ void MainWindow::setupWindowMenu() {
     menuWindow->addAction(ui->actionPreviousTab);
     // 5. Focus Editor
     actionFocusEditor = new QAction(tr("Focus &Editor"), this);
-    actionFocusEditor->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
+    actionFocusEditor->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_F));
     connect(actionFocusEditor, &QAction::triggered, this, [this]() {
         ScintillaNext *ed = currentEditor();
         if (ed) {
@@ -4902,91 +4943,7 @@ void MainWindow::setupThemeMenu() {
         ui->menuBar->addMenu(menuTheme);
     }
 
-    // 1. Open Theme Switcher... (Ctrl+Shift+T)
-    actionThemeSwitcher = new QAction(tr("Open Theme Switcher..."), this);
-    actionThemeSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
-    connect(actionThemeSwitcher, &QAction::triggered, this, [this]() {
-        ThemeSwitcherDialog dlg(this);
-        dlg.exec();
-    });
-    menuTheme->addAction(actionThemeSwitcher);
-
-    menuTheme->addSeparator();
-
-    // 2. Light Themes Only (Submenu)
-    QMenu *menuLightOnly = menuTheme->addMenu(tr("Light Themes Only"));
-    QList<const ThemePalette *> lightPalettes = getThemesByDarkMode(false);
-    for (const ThemePalette *pal : lightPalettes) {
-        const auto *act = menuLightOnly->addAction(QString::fromUtf8(pal->displayName));
-        connect(act, &QAction::triggered, this, [this, pal]() {
-            ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
-            ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
-        });
-    }
-
-    // 3. Dark Themes Only (Submenu)
-    QMenu *menuDarkOnly = menuTheme->addMenu(tr("Dark Themes Only"));
-    QList<const ThemePalette *> darkPalettes = getThemesByDarkMode(true);
-    for (const ThemePalette *pal : darkPalettes) {
-        const auto *act = menuDarkOnly->addAction(QString::fromUtf8(pal->displayName));
-        connect(act, &QAction::triggered, this, [this, pal]() {
-            ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
-            ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
-        });
-    }
-
-    menuTheme->addSeparator();
-
-    // 4. All 25 Families grouped neatly in a dedicated Submenu
-    QMenu *menuFamilies = menuTheme->addMenu(tr("Themes by Family"));
-    QStringList families = getThemeFamiliesList();
-    for (const QString &family : families) {
-        QMenu *famMenu = menuFamilies->addMenu(family);
-        QList<const ThemePalette *> palettes = getThemePalettesByFamily(family);
-        for (const ThemePalette *pal : palettes) {
-            QString itemLabel = QString::fromUtf8(pal->displayName);
-            if (pal->isDark) {
-                itemLabel += QStringLiteral(" (Dark)");
-            } else {
-                itemLabel += QStringLiteral(" (Light)");
-            }
-            const auto *act = famMenu->addAction(itemLabel);
-            connect(act, &QAction::triggered, this, [this, pal]() {
-                ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
-                ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
-            });
-        }
-    }
-
-    menuTheme->addSeparator();
-
-    // 5. Reset and Mode Toggles
-    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - NotepadNext)"), this);
-    connect(actionThemeLight, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setPalette(QStringLiteral("notepadNext"), this);
-        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (NotepadNext)"), 3000);
-    });
-    menuTheme->addAction(actionThemeLight);
-
-    actionThemeDark = new QAction(tr("Default Dark Mode"), this);
-    connect(actionThemeDark, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setPalette(QStringLiteral("dracula"), this);
-        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Dracula)"), 3000);
-    });
-    menuTheme->addAction(actionThemeDark);
-
-    actionToggleTheme = new QAction(tr("Toggle Dark / Light Mode"), this);
-    actionToggleTheme->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
-    connect(actionToggleTheme, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->toggleTheme(this);
-        bool dark = ThemeManager::instance()->isDarkActive();
-        ui->statusBar->showMessage(dark ? tr("Switched to Dark Mode") : tr("Switched to Light Mode"), 3000);
-    });
-    menuTheme->addAction(actionToggleTheme);
-
-    menuTheme->addSeparator();
-
-    // 6. Toolbar Icon Packs & Customization
+    // 1. Toolbar Icon Packs & Customization (Relocated to top of Themes menu)
     menuToolbarIconPacks = menuTheme->addMenu(tr("&Toolbar Icon Packs"));
     toolbarPacksGroup = new QActionGroup(this);
     toolbarPacksGroup->setExclusive(true);
@@ -5015,17 +4972,18 @@ void MainWindow::setupThemeMenu() {
     toolbarSizesGroup = new QActionGroup(this);
     toolbarSizesGroup->setExclusive(true);
 
-    const struct IconSizeEntry {
+    struct IconSizeEntry {
         QString label;
         QSize size;
-    } sizes[] = {
+    };
+    const std::array<IconSizeEntry, 6> sizes = {{
         {tr("16 x 16 (Compact)"), QSize(16, 16)},
         {tr("20 x 20 (Medium)"), QSize(20, 20)},
         {tr("24 x 24 (Default / Recommended)"), QSize(24, 24)},
         {tr("32 x 32 (Large / High-DPI)"), QSize(32, 32)},
         {tr("48 x 48 (Extra Large)"), QSize(48, 48)},
         {tr("64 x 64 (Ultra High-DPI)"), QSize(64, 64)},
-    };
+    }};
 
     const QSize currentSize = ToolbarIconManager::instance()->iconSize();
     for (const auto &s : sizes) {
@@ -5057,6 +5015,90 @@ void MainWindow::setupThemeMenu() {
         QDesktopServices::openUrl(QUrl::fromLocalFile(path));
     });
 
+    menuTheme->addSeparator();
+
+    // 2. Open Theme Switcher... (Ctrl+Shift+T)
+    actionThemeSwitcher = new QAction(tr("Open Theme Switcher..."), this);
+    actionThemeSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
+    connect(actionThemeSwitcher, &QAction::triggered, this, [this]() {
+        ThemeSwitcherDialog dlg(this);
+        dlg.exec();
+    });
+    menuTheme->addAction(actionThemeSwitcher);
+
+    menuTheme->addSeparator();
+
+    // 3. Light Themes Only (Submenu)
+    QMenu *menuLightOnly = menuTheme->addMenu(tr("Light Themes Only"));
+    QList<const ThemePalette *> lightPalettes = getThemesByDarkMode(false);
+    for (const ThemePalette *pal : lightPalettes) {
+        const auto *act = menuLightOnly->addAction(QString::fromUtf8(pal->displayName));
+        connect(act, &QAction::triggered, this, [this, pal]() {
+            ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
+            ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
+        });
+    }
+
+    // 4. Dark Themes Only (Submenu)
+    QMenu *menuDarkOnly = menuTheme->addMenu(tr("Dark Themes Only"));
+    QList<const ThemePalette *> darkPalettes = getThemesByDarkMode(true);
+    for (const ThemePalette *pal : darkPalettes) {
+        const auto *act = menuDarkOnly->addAction(QString::fromUtf8(pal->displayName));
+        connect(act, &QAction::triggered, this, [this, pal]() {
+            ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
+            ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
+        });
+    }
+
+    menuTheme->addSeparator();
+
+    // 5. All 25 Families grouped neatly in a dedicated Submenu
+    QMenu *menuFamilies = menuTheme->addMenu(tr("Themes by Family"));
+    QStringList families = getThemeFamiliesList();
+    for (const QString &family : families) {
+        QMenu *famMenu = menuFamilies->addMenu(family);
+        QList<const ThemePalette *> palettes = getThemePalettesByFamily(family);
+        for (const ThemePalette *pal : palettes) {
+            QString itemLabel = QString::fromUtf8(pal->displayName);
+            if (pal->isDark) {
+                itemLabel += QStringLiteral(" (Dark)");
+            } else {
+                itemLabel += QStringLiteral(" (Light)");
+            }
+            const auto *act = famMenu->addAction(itemLabel);
+            connect(act, &QAction::triggered, this, [this, pal]() {
+                ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
+                ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
+            });
+        }
+    }
+
+    menuTheme->addSeparator();
+
+    // 6. Reset and Mode Toggles
+    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - NotepadNext)"), this);
+    connect(actionThemeLight, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setPalette(QStringLiteral("notepadNext"), this);
+        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (NotepadNext)"), 3000);
+    });
+    menuTheme->addAction(actionThemeLight);
+
+    actionThemeDark = new QAction(tr("Default Dark Mode"), this);
+    connect(actionThemeDark, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setPalette(QStringLiteral("dracula"), this);
+        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Dracula)"), 3000);
+    });
+    menuTheme->addAction(actionThemeDark);
+
+    actionToggleTheme = new QAction(tr("Toggle Dark / Light Mode"), this);
+    actionToggleTheme->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
+    connect(actionToggleTheme, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->toggleTheme(this);
+        bool dark = ThemeManager::instance()->isDarkActive();
+        ui->statusBar->showMessage(dark ? tr("Switched to Dark Mode") : tr("Switched to Light Mode"), 3000);
+    });
+    menuTheme->addAction(actionToggleTheme);
+
     ensureMenuIconsVisible(menuTheme);
     ensureMenuIconsVisible(menuToolbarIconPacks);
 }
@@ -5074,7 +5116,7 @@ void MainWindow::onCenterOnScreenTriggered() {
 }
 
 void MainWindow::onDisplayDiagnosticsTriggered() {
-    ScreenDisplayManager::instance().showDisplayInfoDialog(this);
+    ScreenDisplayManager::showDisplayInfoDialog(this);
 }
 
 void MainWindow::onUserGuideTriggered() {
@@ -5102,6 +5144,108 @@ void MainWindow::onChangelogTriggered() {
     } else {
         ModernMessageBox::warning(this, tr("Documentation Error"),
                                   tr("Unable to locate CHANGELOG.txt on disk or in application resources."));
+    }
+}
+
+void MainWindow::openPreviewInNewTab(ScintillaNext *editor, bool isHtml) {
+    if (!editor) {
+        return;
+    }
+
+    auto *previewWidget = new PreviewTabWidget(editor, isHtml, this);
+    const QString title = previewWidget->documentTitle();
+    const auto icon = QIcon(isHtml ? QStringLiteral(":/icons/openFile.svg") : QStringLiteral(":/icons/find.svg"));
+    const QString toolTip = editor->isFile() ? editor->getFilePath() : editor->getName();
+
+    ads::CDockWidget *dockWidget = dockedEditor->addTabWidget(previewWidget, title, icon, toolTip);
+    if (dockWidget) {
+        connect(previewWidget, &PreviewTabWidget::titleChanged, dockWidget,
+                [dockWidget](const QString &newTitle) { dockWidget->setWindowTitle(newTitle); });
+        connect(previewWidget, &PreviewTabWidget::closeRequested, dockWidget, &ads::CDockWidget::closeDockWidget);
+    }
+}
+
+void MainWindow::openInDefaultBrowser(const QString &filePath) const {
+    if (filePath.isEmpty()) {
+        return;
+    }
+    QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+}
+
+static QString formatHexDump(const QByteArray &originalBytes) {
+    QString hexDump;
+    const auto totalBytes = static_cast<int>(originalBytes.size());
+    hexDump.reserve(totalBytes * 5);
+
+    for (int i = 0; i < totalBytes; i += 16) {
+        hexDump.append(QString("%1  ").arg(i, 8, 16, QLatin1Char('0')).toUpper());
+
+        for (int j = 0; j < 16; ++j) {
+            if (i + j < totalBytes) {
+                const auto byteVal = static_cast<unsigned char>(originalBytes.at(i + j));
+                hexDump.append(QString("%1 ").arg(byteVal, 2, 16, QLatin1Char('0')).toUpper());
+            } else {
+                hexDump.append(QLatin1String("   "));
+            }
+            if (j == 7) {
+                hexDump.append(QLatin1Char(' '));
+            }
+        }
+
+        hexDump.append(QLatin1String(" |"));
+
+        for (int j = 0; j < 16 && (i + j) < totalBytes; ++j) {
+            const auto ch = static_cast<unsigned char>(originalBytes.at(i + j));
+            hexDump.append((ch >= 32 && ch <= 126) ? QChar(ch) : QLatin1Char('.'));
+        }
+        hexDump.append(QLatin1String("|\n"));
+    }
+    return hexDump;
+}
+
+void MainWindow::onToggleHexBinaryView(bool checked) {
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        return;
+    }
+
+    if (checked) {
+        const QByteArray originalBytes = editor->getText();
+        const QString originalLang = editor->languageName;
+        const bool originalReadOnly = editor->readOnly();
+
+        editor->QObject::setProperty("sparkOriginalBytes", originalBytes);
+        editor->QObject::setProperty("sparkOriginalLanguage", originalLang);
+        editor->QObject::setProperty("sparkOriginalReadOnly", originalReadOnly);
+
+        const QString hexDump = formatHexDump(originalBytes);
+        const auto totalBytes = static_cast<int>(originalBytes.size());
+
+        editor->setReadOnly(false);
+        editor->setText(hexDump.toUtf8().constData());
+        editor->setReadOnly(true);
+        setLanguage(editor, QStringLiteral("Text"));
+        ui->statusBar->showMessage(tr("Hex / Binary View: Enabled (%1 bytes)").arg(totalBytes), 3000);
+    } else {
+        if (editor->QObject::property("sparkOriginalBytes").isValid()) {
+            const QByteArray originalBytes = editor->QObject::property("sparkOriginalBytes").toByteArray();
+            const QString originalLang = editor->QObject::property("sparkOriginalLanguage").toString();
+            const bool originalReadOnly = editor->QObject::property("sparkOriginalReadOnly").toBool();
+
+            editor->setReadOnly(false);
+            editor->setText(originalBytes.constData());
+            editor->setReadOnly(originalReadOnly);
+
+            if (!originalLang.isEmpty()) {
+                setLanguage(editor, originalLang);
+            }
+
+            editor->QObject::setProperty("sparkOriginalBytes", QVariant());
+            editor->QObject::setProperty("sparkOriginalLanguage", QVariant());
+            editor->QObject::setProperty("sparkOriginalReadOnly", QVariant());
+
+            ui->statusBar->showMessage(tr("Hex / Binary View: Disabled (Restored original document)"), 3000);
+        }
     }
 }
 
@@ -5265,8 +5409,7 @@ void MainWindow::showFileDiffDialog(const QString &filePathA, const QString &fil
 }
 
 QStringList MainWindow::currentToolbarActionNames() const {
-    const ApplicationSettings *settings = app->getSettings();
-    if (settings->contains("Gui/ToolBar")) {
+    if (const ApplicationSettings *settings = app->getSettings(); settings->contains("Gui/ToolBar")) {
         return settings->value("Gui/ToolBar").toStringList();
     }
     QStringList result;
@@ -5352,17 +5495,18 @@ void MainWindow::onToolbarContextMenu(const QPoint &pos) {
     QMenu *menuSizes = menu.addMenu(tr("Toolbar Icon Size"));
     auto *sizesGroup = new QActionGroup(&menu);
     sizesGroup->setExclusive(true);
-    const struct IconSizeEntry {
+    struct ToolbarScaleEntry {
         QString label;
         QSize size;
-    } sizes[] = {
+    };
+    const std::array<ToolbarScaleEntry, 6> sizes = {{
         {tr("16 x 16 (Compact)"), QSize(16, 16)},
         {tr("20 x 20 (Medium)"), QSize(20, 20)},
         {tr("24 x 24 (Default / Recommended)"), QSize(24, 24)},
         {tr("32 x 32 (Large / High-DPI)"), QSize(32, 32)},
         {tr("48 x 48 (Extra Large)"), QSize(48, 48)},
         {tr("64 x 64 (Ultra High-DPI)"), QSize(64, 64)},
-    };
+    }};
     const QSize currentSize = ToolbarIconManager::instance()->iconSize();
     for (const auto &s : sizes) {
         auto *act = menuSizes->addAction(s.label);
@@ -5377,7 +5521,7 @@ void MainWindow::onToolbarContextMenu(const QPoint &pos) {
 
     menu.addSeparator();
 
-    auto *actReset = menu.addAction(tr("Reset Toolbar to Defaults"));
+    const auto *actReset = menu.addAction(tr("Reset Toolbar to Defaults"));
     connect(actReset, &QAction::triggered, this, &MainWindow::resetToolbarToDefaults);
 
     ensureMenuIconsVisible(&menu);

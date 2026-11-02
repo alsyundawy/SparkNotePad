@@ -15,7 +15,10 @@
 #define FILEBROWSERDOCK_H
 
 #include <QDockWidget>
+#include <QFileInfo>
 #include <QString>
+
+#include <memory>
 
 namespace Ui {
 class FileBrowserDock;
@@ -38,6 +41,9 @@ public:
 signals:
     void fileOpenRequested(const QString &filePath);
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private slots:
     void onItemDoubleClicked(const QModelIndex &index);
     void onCustomContextMenu(const QPoint &pos);
@@ -46,16 +52,26 @@ private slots:
     void onRefreshClicked();
     void onPathReturnPressed();
     void onFilterChanged(const QString &filterText);
+    void onSelectionChanged();
+    void updateCommanderTheme();
 
 private:
     void setupModel();
     void setupConnections();
-    void saveSettings();
+    void setupCommanderBar();
+    void updateStatus();
+    void saveSettings() const;
     void restoreSettings();
+    void handleNewFile(const QFileInfo &fileInfo);
+    void handleNewFolder(const QFileInfo &fileInfo);
+    void handleMoveToTrash(const QString &filePath);
 
-    Ui::FileBrowserDock *ui;
+    std::unique_ptr<Ui::FileBrowserDock> ui;
     QFileSystemModel *m_model{nullptr};
     QString m_currentPath;
+    class QLabel *m_statusLabel{nullptr};
+    class QWidget *m_bookmarkBar{nullptr};
+    bool m_isUpdatingTheme{false};
 };
 
 #endif  // FILEBROWSERDOCK_H
