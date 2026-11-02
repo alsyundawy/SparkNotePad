@@ -191,7 +191,8 @@ std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &alg
     if (algStr == QLatin1String("SHA512") || algStr == QLatin1String("SHA-512")) {
         return QCryptographicHash::Sha512;
     }
-    if (algStr == QLatin1String("SHA3-1") || algStr == QLatin1String("SHA3_224") || algStr == QLatin1String("SHA3-224")) {
+    if (algStr == QLatin1String("SHA3-1") || algStr == QLatin1String("SHA3_224") ||
+        algStr == QLatin1String("SHA3-224")) {
         return QCryptographicHash::Sha3_224;
     }
     if (algStr == QLatin1String("SHA3-256") || algStr == QLatin1String("SHA3_256")) {
@@ -509,7 +510,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
         }
-        const auto result = minify ? CodeCompressPretty::compress(editor, lang) : CodeCompressPretty::prettify(editor, lang);
+        const auto result =
+            minify ? CodeCompressPretty::compress(editor, lang) : CodeCompressPretty::prettify(editor, lang);
         if (result.success) {
             const QString actionName = minify ? tr("Minified") : tr("Prettified");
             const QString target = result.wholeDocument ? tr("entire document") : tr("selection");

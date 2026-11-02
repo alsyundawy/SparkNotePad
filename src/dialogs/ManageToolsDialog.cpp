@@ -91,8 +91,7 @@ private:
 
 }  // namespace
 
-ManageToolsDialog::ManageToolsDialog(QWidget *parent)
-    : QDialog(parent), ui(std::make_unique<Ui::ManageToolsDialog>()) {
+ManageToolsDialog::ManageToolsDialog(QWidget *parent) : QDialog(parent), ui(std::make_unique<Ui::ManageToolsDialog>()) {
     ui->setupUi(this);
 
     ui->treeTools->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
