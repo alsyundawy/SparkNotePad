@@ -61,9 +61,9 @@
 
 - [x] Task 6.1: Update `README.md`, `README-id.md`, `wiki/*.md`, and all `.md` files in `doc/` to reflect v1.3.8 features.
 - [x] Task 6.2: Rebuild localized plaintext docnotes and changelogs (`DOCNOTE_en.txt`, `DOCNOTE_id.txt`, `CHANGELOG_en.txt`, `CHANGELOG_id.txt`).
-- [ ] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+- [x] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
 
 ## Final Release Gate
 
-- [ ] Release branch `1.3.8` and tag `v1.3.8` pushed to origin.
-- [ ] GitHub Actions runner release workflow triggered and monitored.
+- [x] Release branch `1.3.8` and tag `v1.3.8` pushed to origin.
+- [x] GitHub Actions runner release workflow triggered and monitored.
