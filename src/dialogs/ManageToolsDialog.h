@@ -13,6 +13,7 @@
 #ifndef MANAGETOOLSDIALOG_H
 #define MANAGETOOLSDIALOG_H
 
+#include <memory>
 #include <QDialog>
 #include "ExternalToolManager.h"
 
@@ -36,7 +37,7 @@ private:
     void populateList();
     void editTool(int index);
 
-    Ui::ManageToolsDialog *ui;
+    std::unique_ptr<Ui::ManageToolsDialog> ui;
     QList<ExternalTool> m_tools;
 };
 

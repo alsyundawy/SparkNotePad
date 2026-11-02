@@ -176,24 +176,33 @@
 
 namespace {
 std::optional<QCryptographicHash::Algorithm> getHashAlgorithm(const QString &algStr) {
-    if (algStr == QLatin1String("MD5"))
+    if (algStr == QLatin1String("MD5")) {
         return QCryptographicHash::Md5;
-    if (algStr == QLatin1String("SHA1") || algStr == QLatin1String("SHA-1"))
+    }
+    if (algStr == QLatin1String("SHA1") || algStr == QLatin1String("SHA-1")) {
         return QCryptographicHash::Sha1;
-    if (algStr == QLatin1String("SHA256") || algStr == QLatin1String("SHA-256"))
+    }
+    if (algStr == QLatin1String("SHA256") || algStr == QLatin1String("SHA-256")) {
         return QCryptographicHash::Sha256;
-    if (algStr == QLatin1String("SHA384") || algStr == QLatin1String("SHA-384"))
+    }
+    if (algStr == QLatin1String("SHA384") || algStr == QLatin1String("SHA-384")) {
         return QCryptographicHash::Sha384;
-    if (algStr == QLatin1String("SHA512") || algStr == QLatin1String("SHA-512"))
+    }
+    if (algStr == QLatin1String("SHA512") || algStr == QLatin1String("SHA-512")) {
         return QCryptographicHash::Sha512;
-    if (algStr == QLatin1String("SHA3-1") || algStr == QLatin1String("SHA3_224") || algStr == QLatin1String("SHA3-224"))
+    }
+    if (algStr == QLatin1String("SHA3-1") || algStr == QLatin1String("SHA3_224") || algStr == QLatin1String("SHA3-224")) {
         return QCryptographicHash::Sha3_224;
-    if (algStr == QLatin1String("SHA3-256") || algStr == QLatin1String("SHA3_256"))
+    }
+    if (algStr == QLatin1String("SHA3-256") || algStr == QLatin1String("SHA3_256")) {
         return QCryptographicHash::Sha3_256;
-    if (algStr == QLatin1String("SHA3-384") || algStr == QLatin1String("SHA3_384"))
+    }
+    if (algStr == QLatin1String("SHA3-384") || algStr == QLatin1String("SHA3_384")) {
         return QCryptographicHash::Sha3_384;
-    if (algStr == QLatin1String("SHA3-512") || algStr == QLatin1String("SHA3_512"))
+    }
+    if (algStr == QLatin1String("SHA3-512") || algStr == QLatin1String("SHA3_512")) {
         return QCryptographicHash::Sha3_512;
+    }
     return std::nullopt;
 }
 
@@ -207,8 +216,9 @@ QString computeHashString(const QString &algStr, const QByteArray &data, const Q
 QString computeFileHash(const QString &algStr, const QString &filePath, QString *errorOut) {
     QFile f(filePath);
     if (!f.open(QFile::ReadOnly)) {
-        if (errorOut)
+        if (errorOut) {
             *errorOut = f.errorString();
+        }
         return {};
     }
     if (const auto alg = getHashAlgorithm(algStr)) {
@@ -309,18 +319,18 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connect(ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closeCurrentFile);
     connect(ui->actionCloseAll, &QAction::triggered, this, &MainWindow::closeAllFiles);
-    connect(ui->actionRestart, &QAction::triggered, this, [this]() { restartApplication(false); });
+    connect(ui->actionRestart, &QAction::triggered, this, [this] { restartApplication(false); });
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitApplication);
 
     // Split editor actions
-    connect(ui->actionSplitHorizontal, &QAction::triggered, this, [this]() {
+    connect(ui->actionSplitHorizontal, &QAction::triggered, this, [this] {
         newFile();
         const ScintillaNext *newEditor = currentEditor();
         if (newEditor) {
             dockedEditor->splitToRight(newEditor);
         }
     });
-    connect(ui->actionSplitVertical, &QAction::triggered, this, [this]() {
+    connect(ui->actionSplitVertical, &QAction::triggered, this, [this] {
         newFile();
         const ScintillaNext *newEditor = currentEditor();
         if (newEditor) {
@@ -356,12 +366,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
             &QAction::setChecked);
     connect(ui->actionRename, &QAction::triggered, this, &MainWindow::renameFile);
 
-    connect(ui->actionExportHtml, &QAction::triggered, this, [this]() {
+    connect(ui->actionExportHtml, &QAction::triggered, this, [this] {
         HtmlConverter html(currentEditor());
         exportAsFormat(&html, QStringLiteral("HTML files (*.html)"));
     });
 
-    connect(ui->actionExportRtf, &QAction::triggered, this, [this]() {
+    connect(ui->actionExportRtf, &QAction::triggered, this, [this] {
         RtfConverter rtf(currentEditor());
         exportAsFormat(&rtf, QStringLiteral("RTF Files (*.rtf)"));
     });
@@ -374,9 +384,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     connectEditorAction(ui->actionSingleLineComment, &ScintillaNext::commentLineSelection);
     connectEditorAction(ui->actionSingleLineUncomment, &ScintillaNext::uncommentLineSelection);
 
-    connect(ui->actionConvertToHex, &QAction::triggered, this, [this]() {
+    connect(ui->actionConvertToHex, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = NumberConverter::convert(editor, NumberConverter::ToHex);
+        const auto result = NumberConverter::convert(editor, NumberConverter::ToHex);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
@@ -384,108 +394,108 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
         }
     });
 
-    connect(ui->actionInsertDateTimeShort, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertDateTimeShort, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeShort);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeShort);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertDateTimeLong, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertDateTimeLong, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeLong);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeLong);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertTimestampIso, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertTimestampIso, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::Iso8601Local);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::Iso8601Local);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted ISO timestamp: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertTimestampUnix, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertTimestampUnix, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::UnixTimestampSecs);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::UnixTimestampSecs);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted Unix timestamp: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertDateOnly, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertDateOnly, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateOnly);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateOnly);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted date: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertTimeOnly, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertTimeOnly, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimeOnly);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimeOnly);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted time: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertGuidHyphens, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertGuidHyphens, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidHyphenatedLower);
+        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidHyphenatedLower);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertGuidBraces, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertGuidBraces, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidWithBracesUpper);
+        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidWithBracesUpper);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionInsertGuidCompact, &QAction::triggered, this, [this]() {
+    connect(ui->actionInsertGuidCompact, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidCompactUpper);
+        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidCompactUpper);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionConvertToDec, &QAction::triggered, this, [this]() {
+    connect(ui->actionConvertToDec, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = NumberConverter::convert(editor, NumberConverter::ToDec);
+        const auto result = NumberConverter::convert(editor, NumberConverter::ToDec);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionConvertToBin, &QAction::triggered, this, [this]() {
+    connect(ui->actionConvertToBin, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = NumberConverter::convert(editor, NumberConverter::ToBin);
+        const auto result = NumberConverter::convert(editor, NumberConverter::ToBin);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
-    connect(ui->actionConvertToOct, &QAction::triggered, this, [this]() {
+    connect(ui->actionConvertToOct, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        auto result = NumberConverter::convert(editor, NumberConverter::ToOct);
+        const auto result = NumberConverter::convert(editor, NumberConverter::ToOct);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
@@ -493,13 +503,13 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
         }
     });
 
-    auto handleFormat = [this](CodeCompressPretty::Language lang, bool minify) {
+    const auto handleFormat = [this](CodeCompressPretty::Language lang, bool minify) {
         ScintillaNext *editor = currentEditor();
         if (!editor) {
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
         }
-        auto result = minify ? CodeCompressPretty::compress(editor, lang) : CodeCompressPretty::prettify(editor, lang);
+        const auto result = minify ? CodeCompressPretty::compress(editor, lang) : CodeCompressPretty::prettify(editor, lang);
         if (result.success) {
             const QString actionName = minify ? tr("Minified") : tr("Prettified");
             const QString target = result.wholeDocument ? tr("entire document") : tr("selection");

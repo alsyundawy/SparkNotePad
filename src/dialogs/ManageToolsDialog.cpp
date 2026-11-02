@@ -31,7 +31,7 @@ public:
         setWindowTitle(tool.name.isEmpty() ? tr("Add External Tool") : tr("Edit External Tool"));
         resize(480, 220);
 
-        QFormLayout *layout = new QFormLayout(this);
+        auto *layout = new QFormLayout(this);
         layout->setSpacing(10);
         layout->setContentsMargins(16, 16, 16, 16);
 
@@ -53,7 +53,7 @@ public:
         layout->addRow(QString(), chkTerminal);
         layout->addRow(QString(), chkSave);
 
-        QDialogButtonBox *btnBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+        auto *btnBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
         layout->addRow(btnBox);
 
         connect(btnBox, &QDialogButtonBox::accepted, this, [this] {
@@ -91,7 +91,8 @@ private:
 
 }  // namespace
 
-ManageToolsDialog::ManageToolsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ManageToolsDialog) {
+ManageToolsDialog::ManageToolsDialog(QWidget *parent)
+    : QDialog(parent), ui(std::make_unique<Ui::ManageToolsDialog>()) {
     ui->setupUi(this);
 
     ui->treeTools->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
@@ -109,16 +110,14 @@ ManageToolsDialog::ManageToolsDialog(QWidget *parent) : QDialog(parent), ui(new 
     populateList();
 }
 
-ManageToolsDialog::~ManageToolsDialog() {
-    delete ui;
-}
+ManageToolsDialog::~ManageToolsDialog() = default;
 
 void ManageToolsDialog::populateList() {
     ui->treeTools->clear();
     m_tools = ExternalToolManager::loadCustomTools();
 
     for (const auto &tool : m_tools) {
-        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeTools);
+        auto *item = new QTreeWidgetItem(ui->treeTools);
         item->setText(0, tool.name);
         item->setText(1, tool.command);
         item->setText(2, tool.runInTerminal ? tr("Yes") : tr("No"));
