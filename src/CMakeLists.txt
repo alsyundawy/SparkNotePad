@@ -51,6 +51,7 @@ qt_add_executable(SparkNotePad
 	UndoAction.h
 	ZoomEventWatcher.h
 	resources.qrc
+	toolbar_icons.qrc
 	scripts.qrc
 	ApplicationSettings.cpp
 	ColorPickerDelegate.cpp

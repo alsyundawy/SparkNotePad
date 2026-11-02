@@ -149,8 +149,8 @@ void ManageToolsDialog::editTool(int index) {
     const ExternalTool orig = m_tools.at(index);
     ToolEditDialog dlg(this, orig);
     if (dlg.exec() == QDialog::Accepted) {
-        ExternalTool updated = dlg.getTool(orig.id);
-        m_tools[index] = std::move(updated);
+        const ExternalTool updated = dlg.getTool(orig.id);
+        m_tools[index] = updated;
         ExternalToolManager::saveCustomTools(m_tools);
         populateList();
     }

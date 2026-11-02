@@ -67,3 +67,18 @@
 
 - [x] Release branch `1.3.8` and tag `v1.3.8` pushed to origin.
 - [x] GitHub Actions runner release workflow triggered and monitored.
+
+## Phase 7: Distinct Toolbar Icon Packs Integration & Diagnostics Remediation
+
+- [x] Task 7.1: Synchronize all 13 distinct toolbar icon packs (`16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`) into `src/icons/packs/`.
+- [x] Task 7.2: Generate `src/toolbar_icons.qrc` and register it in `src/CMakeLists.txt` and `tests/CMakeLists.txt`.
+- [x] Task 7.3: Upgrade `ToolbarIconManager` with multi-resolution folder resolution, registration of all 13 packs, and backward-compatible aliasing.
+- [x] Task 7.4: Remediate all IDE warnings in `@[current_problems]` (`ThemePaletteData.h`, `ManageToolsDialog.cpp`, `MainWindow.cpp`).
+- [x] Task 7.5: Update and pass all unit tests in `tests/test_toolbar_icon_manager.h`.
+- [x] Task 7.6: Compile local build and verify DMG package with `hdiutil`.
+
+## Checkpoint 7: Icon Packs & Diagnostics Verification Gate
+
+- [x] All 13 packs load crisp icons at all sizes (16, 20, 24, 32, 48, 64).
+- [x] Zero compiler errors, zero linter issues, 100% tests passing.
+- [x] DMG build verified and ready for testing.

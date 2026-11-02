@@ -63,7 +63,16 @@ Comprehensive quality audit, static analysis, translation completion, documentat
 
 - [x] Task 6.1: Update `README.md`, `README-id.md`, `wiki/*.md`, and all `.md` files in `doc/` to reflect v1.3.8 features.
 - [x] Task 6.2: Rebuild localized plaintext docnotes and changelogs (`DOCNOTE_en.txt`, `DOCNOTE_id.txt`, `CHANGELOG_en.txt`, `CHANGELOG_id.txt`).
-- [ ] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+- [x] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+
+### Phase 7: Distinct Toolbar Icon Packs Integration & Diagnostics Remediation
+
+- [x] Task 7.1: Synchronize all 13 distinct toolbar icon packs (with resolutions `16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`) from `/Users/alsyundawy/Downloads/SparkNotePad_Toolbar_IconPacks` into `src/icons/packs/`.
+- [x] Task 7.2: Generate `src/toolbar_icons.qrc` containing all 2,496 multi-DPI icons and link it in `src/CMakeLists.txt` and `tests/CMakeLists.txt`.
+- [x] Task 7.3: Enhance `ToolbarIconManager` to seamlessly support multi-resolution folder lookups, register all 13 new packs with descriptive names, and maintain fallback aliases.
+- [x] Task 7.4: Remediate all IDE warnings and diagnostics in `@[current_problems]` (`ThemePaletteData.h`, `ManageToolsDialog.cpp`, `MainWindow.cpp`).
+- [x] Task 7.5: Update and expand unit tests in `tests/test_toolbar_icon_manager.h` and verify all tests pass via `ctest`.
+- [x] Task 7.6: Compile local test build and package DMG (`cmake --build build -j2`), verify with `hdiutil`, and commit & push.
 
 ## Risks and Mitigations
 
@@ -73,3 +82,4 @@ Comprehensive quality audit, static analysis, translation completion, documentat
 | Unfinished translation tags breaking release | Med    | Automated verification via `grep -c 'type="unfinished"' i18n/*.ts` asserting 0.      |
 | Clangd false positives on Qt MOC headers     | Med    | Pass `--compile-commands-dir=build` and check real diagnostic severity.              |
 | Branch confusion between main and 1.3.8      | High   | Keep commit history linear; update 1.3.8 branch cleanly and verify git ref pointers. |
+| Multi-DPI toolbar icon blurriness on Retina  | Med    | Include native 16x16 through 64x64 pixmaps in `QIcon` for pixel-perfect scaling.     |
