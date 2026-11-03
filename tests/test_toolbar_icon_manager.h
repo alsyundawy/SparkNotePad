@@ -24,14 +24,19 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 10 built-in packs required (archLinux and filledFluentUi removed per requirement)
-        QCOMPARE(packs.size(), 10);
+        // 18 built-in packs (13 distinct multi-DPI packs + modernRibbon + 4 legacy/creative packs)
+        QCOMPARE(packs.size(), 18);
 
         const QStringList expectedPackIds = {
-            QStringLiteral("modernRibbon"),    QStringLiteral("fluentUi"),    QStringLiteral("windows11"),
-            QStringLiteral("windows7"),        QStringLiteral("windowsXp"),   QStringLiteral("fugue"),
-            QStringLiteral("notepadPlusPlus"), QStringLiteral("notepadNext"), QStringLiteral("monochrome"),
-            QStringLiteral("vibrantDuotone"),
+            QStringLiteral("modernRibbon"),     QStringLiteral("fugue"),
+            QStringLiteral("aero_vista"),       QStringLiteral("aero_win7"),
+            QStringLiteral("fluent_regular"),   QStringLiteral("fluent_filled"),
+            QStringLiteral("windows10_flat"),   QStringLiteral("arch_blue"),
+            QStringLiteral("notepad3_warm"),    QStringLiteral("notepadpp_green"),
+            QStringLiteral("monoline_minimal"), QStringLiteral("glossy_orange"),
+            QStringLiteral("pixel_fugue_like"), QStringLiteral("material_sharp"),
+            QStringLiteral("windowsXp"),        QStringLiteral("notepadNext"),
+            QStringLiteral("vibrantDuotone"),   QStringLiteral("monochrome"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -42,8 +47,13 @@ private slots:
             QVERIFY(pack->isBuiltIn);
         }
 
-        QVERIFY(manager->findPackById(QStringLiteral("archLinux")) == nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("filledFluentUi")) == nullptr);
+        // Verify legacy aliases resolve smoothly
+        QVERIFY(manager->findPackById(QStringLiteral("fluentUi")) != nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("windows11")) != nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("windows7")) != nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("archLinux")) != nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("notepadPlusPlus")) != nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("filledFluentUi")) != nullptr);
     }
 
     // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
@@ -66,6 +76,9 @@ private slots:
 
         manager->setIconSize(QSize(16, 16));
         QCOMPARE(manager->currentIconSize(), QSize(16, 16));
+
+        manager->setIconSize(QSize(20, 20));
+        QCOMPARE(manager->currentIconSize(), QSize(20, 20));
 
         manager->setIconSize(QSize(24, 24));
         QCOMPARE(manager->currentIconSize(), QSize(24, 24));
@@ -106,10 +119,17 @@ private slots:
         };
 
         const QStringList packs = {
-            QStringLiteral("modernRibbon"), QStringLiteral("fluentUi"),        QStringLiteral("filledFluentUi"),
-            QStringLiteral("windows11"),    QStringLiteral("windows7"),        QStringLiteral("windowsXp"),
-            QStringLiteral("fugue"),        QStringLiteral("notepadPlusPlus"), QStringLiteral("notepadNext"),
-            QStringLiteral("archLinux"),    QStringLiteral("monochrome"),      QStringLiteral("vibrantDuotone"),
+            QStringLiteral("modernRibbon"),     QStringLiteral("fugue"),
+            QStringLiteral("aero_vista"),       QStringLiteral("aero_win7"),
+            QStringLiteral("fluent_regular"),   QStringLiteral("fluent_filled"),
+            QStringLiteral("windows10_flat"),   QStringLiteral("arch_blue"),
+            QStringLiteral("notepad3_warm"),    QStringLiteral("notepadpp_green"),
+            QStringLiteral("monoline_minimal"), QStringLiteral("glossy_orange"),
+            QStringLiteral("pixel_fugue_like"), QStringLiteral("material_sharp"),
+            QStringLiteral("windowsXp"),        QStringLiteral("notepadNext"),
+            QStringLiteral("vibrantDuotone"),   QStringLiteral("monochrome"),
+            QStringLiteral("fluentUi"),         QStringLiteral("windows11"),
+            QStringLiteral("windows7"),         QStringLiteral("archLinux"),
         };
 
         for (const QString &packId : packs) {

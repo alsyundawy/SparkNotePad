@@ -14,6 +14,7 @@
 #include <QStringList>
 #include <QList>
 #include <QColor>
+#include <array>
 
 struct ThemePalette {
     const char *id;
@@ -33,7 +34,7 @@ struct ThemePalette {
     const char *sep;     // Operators / Delimiters
 };
 
-inline const ThemePalette kAllThemePalettes[] = {
+inline const auto kAllThemePalettes = std::to_array<ThemePalette>({
     {"notepadNext", "NotepadNext Default", "NotepadNext", false, "#f0f2f5", "#fafbfc", "#e1e4e8", "#24292f", "#57606a",
      "#0969da", "#0550ae", "#cf222e", "#0550ae", "#1a7f37", "#24292f"},
     {"catppuccinMocha", "Catppuccin Mocha", "Catppuccin", true, "#11111b", "#1e1e2e", "#313244", "#cdd6f4", "#a6adc8",
@@ -186,9 +187,9 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#969896", "#70c0b1", "#7aa6da", "#70c0b1", "#c397d8", "#b9ca4a", "#555555"},
     {"tomorrowDay", "Tomorrow Day", "Tomorrow", false, "#f5f5f5", "#ffffff", "#d6d6d6", "#4d4d4c", "#8e908c", "#3e999f",
      "#4271ae", "#3e999f", "#8959a8", "#718c00", "#a0a2a0"},
-};
+});
 
-inline constexpr size_t kTotalThemePaletteCount = sizeof(kAllThemePalettes) / sizeof(kAllThemePalettes[0]);
+inline constexpr size_t kTotalThemePaletteCount = std::size(kAllThemePalettes);
 
 inline const ThemePalette *findThemePaletteById(const QString &id) {
     if (id.isEmpty()) {
@@ -200,19 +201,17 @@ inline const ThemePalette *findThemePaletteById(const QString &id) {
     } else if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
         targetId = QStringLiteral("dracula");
     }
-    for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        if (targetId.compare(QLatin1String(kAllThemePalettes[i].id), Qt::CaseInsensitive) == 0 ||
-            targetId.compare(QLatin1String(kAllThemePalettes[i].displayName), Qt::CaseInsensitive) == 0) {
-            return &kAllThemePalettes[i];
-        }
-    }
-    return nullptr;
+    const auto *const it = std::ranges::find_if(kAllThemePalettes, [&](const ThemePalette &palette) {
+        return targetId.compare(QLatin1String(palette.id), Qt::CaseInsensitive) == 0 ||
+               targetId.compare(QLatin1String(palette.displayName), Qt::CaseInsensitive) == 0;
+    });
+    return it != kAllThemePalettes.end() ? it : nullptr;
 }
 
 inline QStringList getThemeFamiliesList() {
     QStringList families;
-    for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        const QString f = QLatin1String(kAllThemePalettes[i].family);
+    for (const auto &palette : kAllThemePalettes) {
+        const QString f = QLatin1String(palette.family);
         if (!families.contains(f)) {
             families << f;
         }
@@ -222,9 +221,9 @@ inline QStringList getThemeFamiliesList() {
 
 inline QList<const ThemePalette *> getThemePalettesByFamily(const QString &family) {
     QList<const ThemePalette *> list;
-    for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        if (family.compare(QLatin1String(kAllThemePalettes[i].family), Qt::CaseInsensitive) == 0) {
-            list.append(&kAllThemePalettes[i]);
+    for (const auto &palette : kAllThemePalettes) {
+        if (family.compare(QLatin1String(palette.family), Qt::CaseInsensitive) == 0) {
+            list.append(&palette);
         }
     }
     return list;
@@ -232,9 +231,9 @@ inline QList<const ThemePalette *> getThemePalettesByFamily(const QString &famil
 
 inline QList<const ThemePalette *> getThemesByDarkMode(bool isDark) {
     QList<const ThemePalette *> list;
-    for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
-        if (kAllThemePalettes[i].isDark == isDark) {
-            list.append(&kAllThemePalettes[i]);
+    for (const auto &palette : kAllThemePalettes) {
+        if (palette.isDark == isDark) {
+            list.append(&palette);
         }
     }
     return list;

@@ -32,13 +32,11 @@ class ZoomEventWatcher : public QObject {
 
 public:
     explicit ZoomEventWatcher(QObject *parent = nullptr);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 signals:
     void zoomIn();
     void zoomOut();
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif  // ZOOMEVENTWATCHER_H

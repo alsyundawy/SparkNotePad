@@ -30,7 +30,5 @@ class ShiftMiddleClickBlocker : public QObject {
 
 public:
     explicit ShiftMiddleClickBlocker(QObject *parent = nullptr);
-
-protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 };

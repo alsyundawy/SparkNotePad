@@ -63,7 +63,26 @@ Comprehensive quality audit, static analysis, translation completion, documentat
 
 - [x] Task 6.1: Update `README.md`, `README-id.md`, `wiki/*.md`, and all `.md` files in `doc/` to reflect v1.3.8 features.
 - [x] Task 6.2: Rebuild localized plaintext docnotes and changelogs (`DOCNOTE_en.txt`, `DOCNOTE_id.txt`, `CHANGELOG_en.txt`, `CHANGELOG_id.txt`).
-- [ ] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+- [x] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+
+### Phase 7: Distinct Toolbar Icon Packs Integration & Diagnostics Remediation
+
+- [x] Task 7.1: Synchronize all 13 distinct toolbar icon packs (with resolutions `16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`) from `/Users/alsyundawy/Downloads/SparkNotePad_Toolbar_IconPacks` into `src/icons/packs/`.
+- [x] Task 7.2: Generate `src/toolbar_icons.qrc` containing all 2,496 multi-DPI icons and link it in `src/CMakeLists.txt` and `tests/CMakeLists.txt`.
+- [x] Task 7.3: Enhance `ToolbarIconManager` to seamlessly support multi-resolution folder lookups, register all 13 new packs with descriptive names, and maintain fallback aliases.
+- [x] Task 7.4: Remediate all IDE warnings and diagnostics in `@[current_problems]` (`ThemePaletteData.h`, `ManageToolsDialog.cpp`, `MainWindow.cpp`).
+- [x] Task 7.5: Update and expand unit tests in `tests/test_toolbar_icon_manager.h` and verify all tests pass via `ctest`.
+- [x] Task 7.6: Compile local test build and package DMG (`cmake --build build -j2`), verify with `hdiutil`, and commit & push.
+
+### Phase 8: Markdown/HTML Preview Refinement, Menu Reorganization, Workspace Highlight Fix & Complete Diagnostics Clean
+
+- [x] Task 8.1: Refine HTML & Markdown Live Preview in `MarkdownSafePreviewDock` & `PreviewTabWidget` with modern UI/UX, pill badges (format, word count, reading time), and enhanced GitHub/DevDocs CSS with callouts (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, `[!IMPORTANT]`, `[!CAUTION]`), rounded code blocks, and export actions.
+- [x] Task 8.2: Reorganize and optimize all menus in `MainWindow.ui` and `MainWindow.cpp` to match professional standard notepad layouts (File, Edit, Search, View, Encoding, Language, Tools, Macro, Help) with dedicated `Preview` and `Panels` sub-menus.
+- [x] Task 8.3: Overhaul File Browser and Folder-as-Workspace docks (`FolderAsWorkspaceDock.cpp`, `FileBrowserDock.cpp`) to fix selection box cropping/clipping (`show-decoration-selected: 1`, `branch:selected`, full row focus, matching theme selection style) and modernize toolbar controls.
+- [x] Task 8.4: Complete full static analysis and IDE diagnostic remediation across `src/` (`formatHexDump`, static member methods, brace omissions, const qualifiers, SonarLint rules) and restart SonarLint LS.
+- [x] Task 8.5: Conduct 14-pillar code review audit and verify zero regression across unit tests (`./build/tests/SparkNotePadTests`).
+- [x] Task 8.6: Rebuild local macOS DMG package (`cmake --build build --target dmg -j2` strictly with Unix Makefiles, no Ninja) and verify with `hdiutil verify`.
+- [x] Task 8.7: Update documentation (`README.md`, `README-id.md`, `wiki/*.md`, `doc/`), commit, and push to branch `1.3.8`.
 
 ## Risks and Mitigations
 
@@ -73,3 +92,5 @@ Comprehensive quality audit, static analysis, translation completion, documentat
 | Unfinished translation tags breaking release | Med    | Automated verification via `grep -c 'type="unfinished"' i18n/*.ts` asserting 0.      |
 | Clangd false positives on Qt MOC headers     | Med    | Pass `--compile-commands-dir=build` and check real diagnostic severity.              |
 | Branch confusion between main and 1.3.8      | High   | Keep commit history linear; update 1.3.8 branch cleanly and verify git ref pointers. |
+| Multi-DPI toolbar icon blurriness on Retina  | Med    | Include native 16x16 through 64x64 pixmaps in `QIcon` for pixel-perfect scaling.     |
+| TreeView selection highlight box cropped     | Med    | Set `show-decoration-selected: 1`, style `branch:selected`, and enable full focus.   |

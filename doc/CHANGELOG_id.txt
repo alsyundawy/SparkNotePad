@@ -33,16 +33,23 @@ SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap, kol
   - Perubahan paket ikon toolbar secara otomatis menyinkronkan seluruh ikon pada toolbar, menubar utama, menu konteks klik kanan tab, dan menu klik kanan Scintilla editor.
   - Ukuran default ikon toolbar adalah 24x24 dan ikon menu adalah 16x16 (dengan aset retina 32x32).
   - Pemilihan ukuran ikon toolbar secara dinamis menyesuaikan geometri dan tata letak toolbar.
-- **Pratinjau HTML & Markdown di Tab Editor Baru (`PreviewTabWidget`)**:
-  - Pratinjau langsung di tab editor tengah (`ads::CenterDockWidgetArea`), bukan di jendela baru terpisah.
+- **Pratinjau HTML & Markdown di Tab Editor & Panel Dok (`PreviewTabWidget` & `MarkdownSafePreviewDock`)**:
+  - Pratinjau langsung di tab editor tengah (`ads::CenterDockWidgetArea`) tanpa jendela melayang terpisah.
   - Menu konteks tab menyediakan aksi "Preview HTML in New Tab" dan "Preview Markdown in New Tab".
-  - Aksi "Preview in Default Browser" khusus berkas `.html` untuk membuka berkas di peramban sistem.
-  - Desain modern GitHub/DevDocs dengan kesetaraan tema Dark/Light, tombol perbesaran (+/-), tombol segarkan, dan proteksi sandbox CVE-2026-20841.
-- **Folder & File Browser Bergaya File Commander Modern (`FileBrowserDock`)**:
-  - Bilah pintasan cepat (Home, Documents, Downloads, Desktop, Workspace).
-  - Ikon navigasi SVG tajam (Up, Folder, Refresh).
+  - Aksi "Preview in Default Browser" khusus berkas `.html` dan `.md` (`Ctrl+Alt+B`) untuk membuka di peramban bawaan sistem.
+  - Desain modern GitHub/DevDocs dengan kesetaraan tema Dark/Light, kontrol zoom (+/-), tombol segarkan, dan proteksi sandbox CVE-2026-20841.
+  - Lencana statistik dokumen langsung menampilkan jumlah kata dan estimasi waktu baca (`%1 kata • %2 menit baca`).
+  - Pemformatan GitHub Alert Callout untuk `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, dan `[!CAUTION]` dengan aksen tema, latar belakang lembut, dan ikon penanda.
+  - Tombol aksi cepat untuk "Salin HTML" ke papan klip dan "Ekspor HTML" menjadi dokumen web mandiri yang lengkap.
+  - Pemeliharaan rasio posisi gulir selama pengeditan bertahap guna mencegah lompatan kursor.
+- **Reorganisasi Menu Standar Notepad (`MainWindow`)**:
+  - Penataan menu `View` dengan sub-menu khusus `Side Panels` yang mengelompokkan 9 panel kerja dan dok.
+  - Penambahan sub-menu terdedikasi `HTML & Markdown Preview` di menu `View` dan `Tools`.
+- **Folder & File Browser File Commander & Perbaikan Highlight Workspace TreeView**:
+  - Memperbaiki kotak sorotan seleksi yang terpotong di `FolderAsWorkspaceDock` dan `FileBrowserDock` (`show-decoration-selected: 1`, `branch:selected`, fokus baris penuh).
+  - Sorotan seleksi otomatis menyatu mulus dengan warna tema aktif, sudut membulat, dan tinggi baris seragam.
+  - Bilah pintasan cepat (Home, Documents, Downloads, Desktop, Workspace) dengan ikon navigasi SVG tajam.
   - Bilah status metrik menampilkan jumlah berkas, folder, ruang disk kosong (`QStorageInfo`), dan detail seleksi.
-  - Keselarasan tema gelap dan terang.
 - **Tampilan Hex / Binary Reversibel (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Menampilkan offset 8-digit, 16 bita hex (8+8 grouping), dan kolom karakter ASCII.
   - Dapat dibatalkan seketika mengembalikan dokumen asli secara utuh.

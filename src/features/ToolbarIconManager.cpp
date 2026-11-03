@@ -47,37 +47,137 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = false,
     });
 
-    // 2. Microsoft Fluent UI (Win 11 Modern Vector)
+    // 2. Fugue Classic (Silk Mini-Icons)
     m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("fluentUi"),
-        .displayName = tr("Microsoft Fluent UI (Win 11)"),
-        .description = tr("Microsoft Fluent Design vector iconography suite"),
-        .basePath = QStringLiteral(":/icons/packs/fluentUi"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 3. Windows 11 (Fluent 2 DOpus)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windows11"),
-        .displayName = tr("Windows 11 (Fluent 2)"),
-        .description = tr("Microsoft Fluent Design System 2 with Directory Opus iconography"),
-        .basePath = QStringLiteral(":/icons/packs/windows11"),
+        .id = QStringLiteral("fugue"),
+        .displayName = tr("Fugue Classic (Silk Mini-Icons)"),
+        .description = tr("Detailed mini-icons with soft shadows by Yusuke Kamiyamane"),
+        .basePath = QStringLiteral(":/icons/packs/fugue"),
         .isBuiltIn = true,
         .isPngBased = true,
     });
 
-    // 4. Windows 7 (Aero Glass Azure)
+    // 3. Windows Vista Aero (Glossy)
     m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("windows7"),
-        .displayName = tr("Windows 7 (Aero Glass)"),
-        .description = tr("Windows 7 Aero Glass translucent iconography"),
-        .basePath = QStringLiteral(":/icons/packs/windows7"),
+        .id = QStringLiteral("aero_vista"),
+        .displayName = tr("Windows Vista Aero (Glossy)"),
+        .description = tr("Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth"),
+        .basePath = QStringLiteral(":/icons/packs/aero_vista"),
         .isBuiltIn = true,
         .isPngBased = true,
     });
 
-    // 5. Windows XP (Luna Classic)
+    // 4. Windows 7 Aero (Refined Glossy)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aero_win7"),
+        .displayName = tr("Windows 7 Aero (Refined Glossy)"),
+        .description = tr("Refined Windows 7 Aero translucent glass iconography"),
+        .basePath = QStringLiteral(":/icons/packs/aero_win7"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 5. Microsoft Fluent UI (Regular Outline)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("fluent_regular"),
+        .displayName = tr("Microsoft Fluent UI (Regular Outline)"),
+        .description = tr("Microsoft Fluent Design outlined iconography for Windows 11"),
+        .basePath = QStringLiteral(":/icons/packs/fluent_regular"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 6. Microsoft Fluent UI (Filled Solid)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("fluent_filled"),
+        .displayName = tr("Microsoft Fluent UI (Filled Solid)"),
+        .description = tr("Microsoft Fluent Design filled solid iconography"),
+        .basePath = QStringLiteral(":/icons/packs/fluent_filled"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 7. Windows 10 Modern (Flat)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("windows10_flat"),
+        .displayName = tr("Windows 10 Modern (Flat)"),
+        .description = tr("Crisp geometric flat modern iconography from Windows 10"),
+        .basePath = QStringLiteral(":/icons/packs/windows10_flat"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 8. Arch Linux (High-Contrast Blue)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("arch_blue"),
+        .displayName = tr("Arch Linux (High-Contrast Blue)"),
+        .description = tr("High-contrast Arch Linux cobalt and cyan iconography"),
+        .basePath = QStringLiteral(":/icons/packs/arch_blue"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 9. Notepad3 Warm (Classic Amber)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("notepad3_warm"),
+        .displayName = tr("Notepad3 Warm (Classic Amber)"),
+        .description = tr("Notepad3 warm brown and amber classic text editor iconography"),
+        .basePath = QStringLiteral(":/icons/packs/notepad3_warm"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 10. Notepad++ (Green Accents)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("notepadpp_green"),
+        .displayName = tr("Notepad++ (Green Accents)"),
+        .description = tr("Classic Notepad++ toolbar iconography with green accents"),
+        .basePath = QStringLiteral(":/icons/packs/notepadpp_green"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 11. Monoline Minimal (Ultra-Thin)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("monoline_minimal"),
+        .displayName = tr("Monoline Minimal (Ultra-Thin)"),
+        .description = tr("Ultra-thin 1.5px monoline wireframe vector styling"),
+        .basePath = QStringLiteral(":/icons/packs/monoline_minimal"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 12. Glossy Orange (WinRAR Amber)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("glossy_orange"),
+        .displayName = tr("Glossy Orange (WinRAR Amber)"),
+        .description = tr("Warm glossy orange and amber skeuomorphic iconography"),
+        .basePath = QStringLiteral(":/icons/packs/glossy_orange"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 13. Pixel Dense (Retro 16-Bit)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("pixel_fugue_like"),
+        .displayName = tr("Pixel Dense (Retro 16-Bit)"),
+        .description = tr("Pixel-precise dense retro iconography with crisp edges"),
+        .basePath = QStringLiteral(":/icons/packs/pixel_fugue_like"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 14. Material Design (Sharp)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("material_sharp"),
+        .displayName = tr("Material Design (Sharp)"),
+        .description = tr("Google Material Design sharp geometric iconography"),
+        .basePath = QStringLiteral(":/icons/packs/material_sharp"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 15. Windows XP (Luna Classic)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("windowsXp"),
         .displayName = tr("Windows XP (Luna Classic)"),
@@ -87,27 +187,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 6. Fugue Classic (Silk Suite)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("fugue"),
-        .displayName = tr("Fugue Classic (Silk Suite)"),
-        .description = tr("Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography"),
-        .basePath = QStringLiteral(":/icons/packs/fugue"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 7. Notepad++ Retro (Nostalgia)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepadPlusPlus"),
-        .displayName = tr("Notepad++ Retro (Nostalgia)"),
-        .description = tr("High-DPI vector recreations of classic Notepad++ iconography"),
-        .basePath = QStringLiteral(":/icons/packs/notepadPlusPlus"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 8. NotepadNext Classic (Silk)
+    // 16. NotepadNext Classic (Silk)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("notepadNext"),
         .displayName = tr("NotepadNext Classic (Silk)"),
@@ -117,22 +197,22 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 9. Monochrome Outline (Minimalist)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("monochrome"),
-        .displayName = tr("Monochrome Outline (Minimalist)"),
-        .description = tr("Clean 1.8px monoline wireframes engineered for dark and light themes"),
-        .basePath = QStringLiteral(":/icons/packs/monochrome"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 10. Vibrant DuoTone (Cyberpunk)
+    // 17. Vibrant DuoTone (Cyberpunk)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("vibrantDuotone"),
         .displayName = tr("Vibrant DuoTone (Cyberpunk)"),
         .description = tr("High-luminance electric cyan & radiant magenta dual-tone contrast"),
         .basePath = QStringLiteral(":/icons/packs/vibrantDuotone"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 18. Monochrome Outline (Minimalist)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("monochrome"),
+        .displayName = tr("Monochrome Outline (Minimalist)"),
+        .description = tr("Clean 1.8px monoline wireframes engineered for dark and light themes"),
+        .basePath = QStringLiteral(":/icons/packs/monochrome"),
         .isBuiltIn = true,
         .isPngBased = false,
     });
@@ -146,10 +226,8 @@ void ToolbarIconManager::initialize(ApplicationSettings *settings) {
     if (m_settings) {
         const QString savedPack =
             m_settings->value(QStringLiteral("Gui/ToolbarIconSet"), QStringLiteral("modernRibbon")).toString();
-        if (const QString resolvedSavedPack =
-                (savedPack == QLatin1String("fluentUi")) ? QStringLiteral("windows11") : savedPack;
-            findPackById(resolvedSavedPack)) {
-            m_currentPackId = resolvedSavedPack;
+        if (const ToolbarIconPack *pack = findPackById(savedPack)) {
+            m_currentPackId = pack->id;
         } else {
             m_currentPackId = QStringLiteral("modernRibbon");
         }
@@ -166,8 +244,16 @@ const QList<ToolbarIconPack> &ToolbarIconManager::availablePacks() const {
 
 const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) const {
     QString targetId = packId;
-    if (targetId == QLatin1String("fluentUi")) {
-        targetId = QStringLiteral("windows11");
+    if (targetId == QLatin1String("fluentUi") || targetId == QLatin1String("windows11")) {
+        targetId = QStringLiteral("fluent_regular");
+    } else if (targetId == QLatin1String("filledFluentUi")) {
+        targetId = QStringLiteral("fluent_filled");
+    } else if (targetId == QLatin1String("windows7")) {
+        targetId = QStringLiteral("aero_win7");
+    } else if (targetId == QLatin1String("archLinux")) {
+        targetId = QStringLiteral("arch_blue");
+    } else if (targetId == QLatin1String("notepadPlusPlus")) {
+        targetId = QStringLiteral("notepadpp_green");
     }
 
     if (const auto it =
@@ -179,13 +265,13 @@ const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) c
 }
 
 void ToolbarIconManager::setPack(const QString &packId, QToolBar *toolBar) {
-    const QString resolvedId = (packId == QLatin1String("fluentUi")) ? QStringLiteral("windows11") : packId;
-    if (!findPackById(resolvedId)) {
+    const ToolbarIconPack *pack = findPackById(packId);
+    if (!pack) {
         qWarning() << "ToolbarIconManager: Cannot locate icon pack with ID" << packId;
         return;
     }
 
-    m_currentPackId = resolvedId;
+    m_currentPackId = pack->id;
 
     if (m_settings) {
         m_settings->setValue(QStringLiteral("Gui/ToolbarIconSet"), m_currentPackId);
@@ -487,6 +573,54 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
     }
 
     const QString canonical = canonicalNameForAction(actionName);
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    const QStringList aliases = aliasesForCanonical(canonical);
+    QStringList candidates;
+    candidates << canonical;
+    candidates << aliases;
+
+    // Check if the pack contains multi-resolution folders (e.g. 16x16, 20x20, 24x24, etc.)
+    const bool hasMultiResolution = std::ranges::any_of(candidates, [&](const QString &c) {
+        return QFileInfo::exists(pack->basePath + QStringLiteral("/24x24/") + c + QStringLiteral(".png"));
+    });
+
+    if (hasMultiResolution) {
+        if (canonical == QStringLiteral("startRecord")) {
+            QIcon dualIcon;
+            for (const int sz : s_dpiSizes) {
+                const QString szDir =
+                    pack->basePath + QStringLiteral("/") + QString::number(sz) + QLatin1Char('x') + QString::number(sz);
+                const QString offPath = szDir + QStringLiteral("/startRecord.png");
+                const QString onPath = szDir + QStringLiteral("/stopRecord.png");
+                if (QFileInfo::exists(offPath)) {
+                    dualIcon.addFile(offPath, QSize(sz, sz), QIcon::Normal, QIcon::Off);
+                }
+                if (QFileInfo::exists(onPath)) {
+                    dualIcon.addFile(onPath, QSize(sz, sz), QIcon::Normal, QIcon::On);
+                }
+            }
+            if (!dualIcon.isNull()) {
+                return dualIcon;
+            }
+        }
+
+        QIcon icon;
+        for (const int sz : s_dpiSizes) {
+            const QString szDir =
+                pack->basePath + QStringLiteral("/") + QString::number(sz) + QLatin1Char('x') + QString::number(sz);
+            for (const QString &c : candidates) {
+                const QString filePath = szDir + QStringLiteral("/") + c + QStringLiteral(".png");
+                if (QFileInfo::exists(filePath)) {
+                    icon.addFile(filePath, QSize(sz, sz));
+                    break;
+                }
+            }
+        }
+        if (!icon.isNull()) {
+            return icon;
+        }
+    }
+
     if (const QString filePath = resolveIconFilePath(*pack, canonical); !filePath.isEmpty()) {
         if (canonical == QStringLiteral("startRecord")) {
             const QString onPath = resolveIconFilePath(*pack, QStringLiteral("stopRecord"));

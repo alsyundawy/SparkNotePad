@@ -37,6 +37,8 @@ public slots:
     void renderPreview();
     void scheduleRender();
     void openInBrowser();
+    void copyHtml();
+    void exportHtml();
     void zoomIn();
     void zoomOut();
     void resetZoom();
@@ -59,6 +61,7 @@ private:
     void applyTheme();
     [[nodiscard]] QString buildDevDocsStyleSheet(bool isDark) const;
     [[nodiscard]] QString wrapHtmlDocument(const QString &rawBody, bool isDark) const;
+    [[nodiscard]] static QString enhanceCallouts(const QString &html, bool isDark);
 
     QPointer<ScintillaNext> m_editor;
     bool m_isHtml{false};
@@ -69,10 +72,13 @@ private:
 
     QLabel *m_badgeLabel{nullptr};
     QLabel *m_titleLabel{nullptr};
+    QLabel *m_statsLabel{nullptr};
     QPushButton *m_btnRefresh{nullptr};
     QPushButton *m_btnZoomOut{nullptr};
     QPushButton *m_btnResetZoom{nullptr};
     QPushButton *m_btnZoomIn{nullptr};
+    QPushButton *m_btnCopyHtml{nullptr};
+    QPushButton *m_btnExportHtml{nullptr};
     QPushButton *m_btnOpenBrowser{nullptr};
     bool m_isUpdatingTheme{false};
 };

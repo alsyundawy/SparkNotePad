@@ -60,6 +60,8 @@ void FileBrowserDock::setupModel() {
 
     ui->treeView->setModel(m_model);
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->treeView->setAllColumnsShowFocus(true);
+    ui->treeView->setUniformRowHeights(true);
     ui->treeView->setColumnWidth(0, 190);
     ui->treeView->setColumnWidth(1, 75);
     ui->treeView->setColumnWidth(2, 75);
@@ -88,14 +90,13 @@ void FileBrowserDock::setupCommanderBar() {
     }};
 
     for (const auto &bm : bookmarks) {
-        if (bm.path.isEmpty() || !QDir(bm.path).exists()) {
-            continue;
+        if (!bm.path.isEmpty() && QDir(bm.path).exists()) {
+            auto *btn = new QPushButton(bm.label, m_bookmarkBar);
+            btn->setToolTip(QStringLiteral("%1: %2").arg(bm.toolTip, bm.path));
+            btn->setCursor(Qt::PointingHandCursor);
+            connect(btn, &QPushButton::clicked, this, [this, path = bm.path] { setCurrentDirectory(path); });
+            barLayout->addWidget(btn);
         }
-        auto *btn = new QPushButton(bm.label, m_bookmarkBar);
-        btn->setToolTip(QStringLiteral("%1: %2").arg(bm.toolTip, bm.path));
-        btn->setCursor(Qt::PointingHandCursor);
-        connect(btn, &QPushButton::clicked, this, [this, path = bm.path]() { setCurrentDirectory(path); });
-        barLayout->addWidget(btn);
     }
 
     if (const int filterIdx = ui->verticalLayout->indexOf(ui->filterLineEdit); filterIdx >= 0) {
@@ -163,8 +164,9 @@ const QString &FileBrowserDock::currentDirectory() const {
 }
 
 void FileBrowserDock::onItemDoubleClicked(const QModelIndex &index) {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return;
+    }
 
     const QString path = m_model->filePath(index);
     const QFileInfo fileInfo(path);
@@ -270,20 +272,20 @@ void FileBrowserDock::onCustomContextMenu(const QPoint &pos) {
 
     if (fileInfo.isFile()) {
         const QAction *openAct = menu.addAction(tr("Open in SparkNotePad"));
-        connect(openAct, &QAction::triggered, this, [this, filePath]() { emit fileOpenRequested(filePath); });
+        connect(openAct, &QAction::triggered, this, [this, filePath] { emit fileOpenRequested(filePath); });
     } else if (fileInfo.isDir()) {
         const QAction *enterAct = menu.addAction(tr("Enter Directory"));
-        connect(enterAct, &QAction::triggered, this, [this, filePath]() { setCurrentDirectory(filePath); });
+        connect(enterAct, &QAction::triggered, this, [this, filePath] { setCurrentDirectory(filePath); });
     }
 
     menu.addSeparator();
 
-#if defined(Q_OS_MACOS)
+#ifdef Q_OS_MACOS
     const QAction *revealAct = menu.addAction(tr("Reveal in Finder"));
 #else
     const QAction *revealAct = menu.addAction(tr("Reveal in File Manager"));
 #endif
-    connect(revealAct, &QAction::triggered, this, [fileInfo]() {
+    connect(revealAct, &QAction::triggered, this, [fileInfo] {
         const QString dirToOpen = fileInfo.isDir() ? fileInfo.absoluteFilePath() : fileInfo.absolutePath();
         QDesktopServices::openUrl(QUrl::fromLocalFile(dirToOpen));
     });
@@ -291,28 +293,28 @@ void FileBrowserDock::onCustomContextMenu(const QPoint &pos) {
     menu.addSeparator();
 
     const QAction *copyPathAct = menu.addAction(tr("Copy Full Path"));
-    connect(copyPathAct, &QAction::triggered, this, [filePath]() { QGuiApplication::clipboard()->setText(filePath); });
+    connect(copyPathAct, &QAction::triggered, this, [filePath] { QGuiApplication::clipboard()->setText(filePath); });
 
     const QAction *copyNameAct = menu.addAction(tr("Copy Name"));
     connect(copyNameAct, &QAction::triggered, this,
-            [fileInfo]() { QGuiApplication::clipboard()->setText(fileInfo.fileName()); });
+            [fileInfo] { QGuiApplication::clipboard()->setText(fileInfo.fileName()); });
 
     menu.addSeparator();
 
     // New File
     const QAction *newFileAct = menu.addAction(tr("New File..."));
-    connect(newFileAct, &QAction::triggered, this, [this, fileInfo]() { handleNewFile(fileInfo); });
+    connect(newFileAct, &QAction::triggered, this, [this, fileInfo] { handleNewFile(fileInfo); });
 
     // New Folder
     const QAction *newFolderAct = menu.addAction(tr("New Folder..."));
-    connect(newFolderAct, &QAction::triggered, this, [this, fileInfo]() { handleNewFolder(fileInfo); });
+    connect(newFolderAct, &QAction::triggered, this, [this, fileInfo] { handleNewFolder(fileInfo); });
 
     menu.addSeparator();
 
     // Delete / Trash
     if (index.isValid()) {
         const QAction *trashAct = menu.addAction(tr("Move to Trash"));
-        connect(trashAct, &QAction::triggered, this, [this, filePath]() { handleMoveToTrash(filePath); });
+        connect(trashAct, &QAction::triggered, this, [this, filePath] { handleMoveToTrash(filePath); });
     }
 
     menu.exec(ui->treeView->viewport()->mapToGlobal(pos));
@@ -324,7 +326,7 @@ void FileBrowserDock::saveSettings() const {
 }
 
 void FileBrowserDock::restoreSettings() {
-    QSettings settings;
+    const QSettings settings;
     const QString savedPath = settings.value(QStringLiteral("FileBrowser/CurrentPath"), QDir::currentPath()).toString();
     setCurrentDirectory(savedPath);
 }
@@ -348,7 +350,7 @@ void FileBrowserDock::onSelectionChanged() {
             QStringLiteral("%1  (%2)  •  %3")
                 .arg(fi.fileName(), sizeStr, fi.lastModified().toString(QStringLiteral("yyyy-MM-dd hh:mm"))));
     } else if (fi.isDir()) {
-        QDir d(path);
+        const QDir d(path);
         const auto entryCount = d.entryList(QDir::AllEntries | QDir::NoDotAndDotDot).size();
         m_statusLabel->setText(QStringLiteral("📁 %1  (%2 items)").arg(fi.fileName(), QString::number(entryCount)));
     }
@@ -393,6 +395,8 @@ void FileBrowserDock::updateCommanderTheme() {
     const QString cardBg = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
     const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#f6f8fa");
     const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
+    const QString inactiveSel =
+        isDark ? QStringLiteral("rgba(56, 139, 253, 0.25)") : QStringLiteral("rgba(9, 105, 218, 0.15)");
 
     const QString style = QStringLiteral(
                               "QDockWidget {"
@@ -448,6 +452,15 @@ void FileBrowserDock::updateCommanderTheme() {
                               "  border: 1px solid %3;"
                               "  border-radius: 4px;"
                               "  font-size: 11px;"
+                              "  show-decoration-selected: 1;"
+                              "  selection-background-color: %4;"
+                              "  selection-color: #ffffff;"
+                              "  outline: none;"
+                              "}"
+                              "QTreeView::item {"
+                              "  min-height: 22px;"
+                              "  padding: 2px 4px;"
+                              "  border-radius: 4px;"
                               "}"
                               "QTreeView::item:hover {"
                               "  background-color: %3;"
@@ -455,6 +468,16 @@ void FileBrowserDock::updateCommanderTheme() {
                               "QTreeView::item:selected {"
                               "  background-color: %4;"
                               "  color: #ffffff;"
+                              "}"
+                              "QTreeView::item:selected:!active {"
+                              "  background-color: %8;"
+                              "  color: %2;"
+                              "}"
+                              "QTreeView::branch:selected {"
+                              "  background-color: %4;"
+                              "}"
+                              "QTreeView::branch:selected:!active {"
+                              "  background-color: %8;"
                               "}"
                               "QHeaderView::section {"
                               "  background-color: %5;"
@@ -475,7 +498,7 @@ void FileBrowserDock::updateCommanderTheme() {
                               "  font-size: 10px;"
                               "  font-weight: 500;"
                               "}")
-                              .arg(cardBg, textPri, border, accent, btnBg, textSec, dockBg);
+                              .arg(cardBg, textPri, border, accent, btnBg, textSec, dockBg, inactiveSel);
 
     setStyleSheet(style);
     m_isUpdatingTheme = false;

@@ -30,7 +30,5 @@ class ShiftWheelToHorizontalScrollFilter : public QObject {
 
 public:
     explicit ShiftWheelToHorizontalScrollFilter(QObject *parent = nullptr);
-
-protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 };

@@ -83,7 +83,7 @@ private:
 
     int m_pollIntervalMs{750};
     bool m_readOnlyLock{true};
-    qint64 m_maxChunkBytes{10 * 1024 * 1024};
+    qint64 m_maxChunkBytes{10LL * 1024 * 1024};
 };
 
 #endif  // TAILMONITORINGMANAGER_H

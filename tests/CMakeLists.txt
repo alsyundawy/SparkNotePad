@@ -19,6 +19,7 @@ set(TEST_HEADERS
 set(TEST_SOURCES
     test_main.cpp
     ${CMAKE_SOURCE_DIR}/src/resources.qrc
+    ${CMAKE_SOURCE_DIR}/src/toolbar_icons.qrc
     ${CMAKE_SOURCE_DIR}/src/features/ToolbarIconManager.cpp
     ${CMAKE_SOURCE_DIR}/src/ApplicationSettings.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Base64Utils.cpp

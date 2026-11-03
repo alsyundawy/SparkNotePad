@@ -84,7 +84,7 @@ public:
 
 public slots:
     void newFile() const;
-    void newWindow() const;
+    static void newWindow();
     void exportPdf();
 
     void openFileDialog();
@@ -244,7 +244,7 @@ private:
     FileBrowserDock *fileBrowserDock = nullptr;
     FunctionListDock *functionListDock = nullptr;
     MarkdownSafePreviewDock *markdownSafePreviewDock = nullptr;
-    bool isMarkdownOrHtml(const ScintillaNext *editor) const;
+    static bool isMarkdownOrHtml(const ScintillaNext *editor);
 
     void setupRunMenu();
     void updateCustomToolsMenu();
@@ -293,7 +293,7 @@ private:
     void onChangelogTriggered();
     void onGenerateCertTriggered();
     void openPreviewInNewTab(ScintillaNext *editor, bool isHtml);
-    void openInDefaultBrowser(const QString &filePath) const;
+    static void openInDefaultBrowser(const QString &filePath);
     void onToggleHexBinaryView(bool checked);
 
     QMenu *menuRun = nullptr;
