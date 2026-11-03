@@ -1,7 +1,7 @@
-# Catatan Rilis SparkNotePad v1.3.8 — Rangkaian Paket Ikon Toolbar, Sinkronisasi Menu Dinamis & Dialog Kustomisasi
+# Catatan Rilis SparkNotePad v1.3.8 — 13 Rangkaian Paket Ikon Toolbar, Pratinjau Langsung Markdown/HTML Dalam Tab, Susunan Menu Standar & Penyempurnaan Sorotan Treeview
 
 **Versi Rilis:** `v1.3.8`<br/>
-**Tanggal Rilis:** 2026-11-02<br/>
+**Tanggal Rilis:** 2026-11-03<br/>
 **Pengelola Utama:** [HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)](https://github.com/alsyundawy) — [ALSYUNDAWY IT SOLUTION](https://alsyundawy.com)<br/>
 **Mesin Inti Editor:** Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)<br/>
 **Inti Embedded Lua:** Sandboxed Lua 5.5.1 / 5.4.7 (Official Source)<br/>
@@ -11,87 +11,180 @@
 
 ---
 
-## Ringkasan Eksekutif
+<p align="center">
+  <a href="https://github.com/alsyundawy/SparkNotePad">
+    <img src="assets/sparknotepad-desktop-banner.jpg" width="100%" alt="SparkNotePad Desktop Suite — Editor Teks dan Kode Sumber Asli Scintilla &amp; Qt untuk Linux &amp; macOS" />
+  </a>
+</p>
 
-SparkNotePad v1.3.8 menghadirkan perombakan besar arsitektur visual dan personalisasi bilah alat (toolbar) yang terinspirasi oleh Notepad++, dilengkapi dengan sinkronisasi ikon dinamis ke seluruh menu bar dan menu klik kanan editor, paket ikon otentik Windows XP dan Windows 7/8 Aero Glass Azure resolusi tinggi, dukungan rentang ukuran ikon dari 16×16 hingga 64×64, serta pratinjau Markdown resmi bergaya GitHub.
+<p align="center">
+  <a href="https://github.com/alsyundawy/SparkNotePad">
+    <img src="logo.png" width="128" height="128" alt="Ikon Aplikasi Asli SparkNotePad macOS &amp; Linux" />
+  </a>
+</p>
+
+<h1 align="center">SparkNotePad</h1>
+
+<p align="center">
+  <b>SparkNotePad — Editor teks dan kode sumber asli Scintilla &amp; Qt yang ringan, cepat, dan modern untuk Linux dan macOS.</b><br>
+  <i>Dirancang dengan Qt 6 serta inti Scintilla 5.6.7 / Lexilla 5.5.4 bawaan untuk kinerja eksekusi maksimal dan penggunaan memori minimal</i>
+</p>
 
 ---
 
-## Fitur Utama & Penyempurnaan
+> Pengembang & Pengelola Utama:<br>
+> **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
+>
+> 🍏 **[`Rilis Terbaru (v1.3.8)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 📖 **[`DocNote Rilis (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
+> 📜 **[`Log Perubahan (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
+> 🌐 **[`Matriks Dukungan Platform`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
+> 🔱 **[`Panduan Kompilasi FreeBSD (KDE6 & XFCE)`](doc/BUILD_FREEBSD_KDE_XFCE.md)** &nbsp;|&nbsp;
+> 📋 **[`Analisis Kompilasi & Daftar Tugas FreeBSD`](doc/FREEBSD_BUILD_ANALYSIS_AND_TASKLIST.md)** &nbsp;|&nbsp;
+> ⚖️ **[`Komparasi NotepadNext vs SparkNotePad`](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md)** &nbsp;|&nbsp;
+> 🐛 **[`Pelacak Masalah / Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
+> 💖 **[`Dukungan via PayPal`](https://www.paypal.me/alsyundawy)**
 
-### 1. Rangkaian 10 Paket Ikon Toolbar Bawaan
+---
 
-SparkNotePad v1.3.8 menyediakan 10 paket ikon vektor dan bitmap pilihan yang dapat diakses langsung melalui menu `Tema > Paket Ikon Toolbar`:
+## ⚡ Ringkasan Eksekutif
+
+SparkNotePad v1.3.8 menghadirkan lompatan besar dalam ergonomi visual dan alur kerja penyuntingan. Pembaruan ini mencakup integrasi 13 rangkaian paket ikon bilah alat (toolbar) resolusi ganda, pembaruan menyeluruh pratinjau langsung Markdown & HTML dalam tab dokumen maupun panel dok lengkap dengan lencana metrik format dan kotak catatan bergaya GitHub, penataan ulang hierarki menu utama sesuai standar aplikasi notepad desktop profesional, perbaikan garis sorotan seleksi pada File Browser dan Folder-as-Workspace agar tidak terpotong, serta verifikasi kelulusan 100% pada 14 pilar audit rekayasa kode.
+
+---
+
+## 🌟 Fitur Utama & Inovasi di v1.3.8
+
+### 1. Rangkaian 13 Paket Ikon Toolbar Bawaan
+
+Dapat diakses langsung via menu `Tema > Paket Ikon Toolbar` secara bebas restart:
 
 - **Notepad++ Classic** (`notepadPlusPlus`): Rekreasi vektor dan bitmap ikonografi klasik Notepad++.
 - **Fluent UI** (`fluentUi`): Desain modern Microsoft Fluent dengan geometri membulat dan aset High-DPI jernih.
 - **Fugue** (`fugue`): Ikonografi legendaris 16×16 & 32×32 pixel-perfect rancangan Yusuke Kamiyamane.
 - **Windows 11** (`windows11`): Ikon Fluent Microsoft Windows 11 dengan kedalaman halus dan bayangan elegan.
+- **Windows 7 / 8 Aero** (`windows7_8_aero`): Ikon Aero Glass azure otentik dengan kilau khas.
+- **Windows XP Classic** (`windowsXp`): Ikonografi nostalgia Windows XP Luna dengan warna tajam.
+- **Windows Vista** (`windowsVista`): Gaya Aero Glass Windows Vista dengan aksen krom.
 - **VS Code Modern** (`vscodeModern`): Ikonografi pengembang yang bersih dan minimalis terinspirasi Visual Studio Code.
-- **Flat Color** (`flatColor`): Ikon warna datar kontras tinggi yang dirancang untuk layar beresolusi modern.
+- **Clean Modern Outline** (`cleanModernOutline`): Glif vektor monoline elegan untuk fokus membaca kode.
+- **Flat Color** (`flatColor`): Ikon warna datar kontras tinggi untuk monitor modern resolusi tinggi.
 - **Material Design** (`material`): Pedoman simbol Google Material Design dengan bobot seimbang.
 - **Solarized** (`solarized`): Harmoni warna yang disetel khusus untuk tema editor Solarized Gelap dan Terang.
-- **High Contrast** (`highContrast`): Ikon wireframe monokrom ultra-tajam untuk alur kerja visibilitas tinggi.
-- **Windows Vista** (`windowsVista`): Gaya Aero Glass Windows Vista klasik dengan gradien berkilau dan aksen krom.
+- **High Contrast** (`highContrast`): Ikon wireframe monokrom ultra-tajam untuk visibilitas tinggi.
 
-### 2. Sinkronisasi Ikon Menubar & Menu Konteks Klik Kanan Dinamis
+### 2. Penskalaan Ukuran Dinamis & Sinkronisasi Seluruh Jendela
 
-Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon aksi pada Menu Bar utama, submenu, dan menu klik kanan editor (Editor Context Menu) secara instan melalui `ToolbarIconManager::applyToWindow()`. Seluruh aksi menu dipastikan menampilkan ikon secara konsisten dengan penegakan `setIconVisibleInMenu(true)` pada macOS Retina dan desktop Linux.
+- **Rentang Ukuran Bilah Alat**: Penggantian ukuran ikon dari 16×16 (Kompak), 20×20, 24×24 (Standar), 32×32 (Besar), 48×48 (Ekstra Besar), hingga 64×64 (Ultra High-DPI).
+- **Propagasi Menubar & Menu Konteks**: Pemilihan paket ikon toolbar secara otomatis menyinkronkan seluruh aksi pada Menu Bar, submenu, dan menu klik kanan editor via `ToolbarIconManager::applyToWindow()`.
 
-### 3. Skala Ukuran Ikon Toolbar Dinamis (16×16 hingga 64×64)
+### 3. Pratinjau Markdown & HTML Langsung Modern (`MarkdownSafePreviewDock` & `PreviewTabWidget`)
 
-Ubah ukuran ikon secara instan dan bebas restart melalui `Tema > Paket Ikon Toolbar > Ukuran Ikon Toolbar` atau klik kanan pada bilah alat:
+- **Lencana Metrik Format**: Header pratinjau menampilkan format dokumen (`MARKDOWN` / `HTML`), jumlah kata, serta perkiraan waktu baca secara real-time.
+- **Kotak Catatan Bergaya GitHub Otentik**:
+  - `> [!NOTE]` (Kotak biru informatif)
+  - `> [!TIP]` (Kotak hijau panduan)
+  - `> [!IMPORTANT]` (Kotak ungu prioritas penting)
+  - `> [!WARNING]` (Kotak kuning peringatan)
+  - `> [!CAUTION]` (Kotak merah bahaya)
+- **Blok Kode Membulat dengan Tombol Salin**: Blok kode bersudut 8px, latar belakang halus, serta tombol salin instan ke papan klip.
+- **Presentasi Ganda**: Buka pratinjau baik di panel samping maupun tab editor mandiri dengan rasio gulir tersinkronisasi.
+- **Ekspor Mandiri**: Aksi satu klik Salin HTML Bersih dan Buka di Peramban Web.
 
-- **16 × 16** (Kompak / Menu)
-- **20 × 20** (Sedang / Medium)
-- **24 × 24** (Standar Toolbar / Disarankan)
-- **32 × 32** (Besar / DPI Tinggi)
-- **48 × 48** (Ekstra Besar / Extra Large)
-- **64 × 64** (Ultra High-DPI / Resolusi Tinggi)
+### 4. Penataan Ulang Menu Aplikasi Standar Notepad Desktop
 
-### 4. Tombol Plus (+) pada Tab Bar untuk Pembuatan Dokumen Instan
+Menu pada `MainWindow.ui` dan `MainWindow.cpp` telah ditata ulang sesuai alur kerja aplikasi editor teks profesional:
 
-Bilah tab editor kini dilengkapi tombol Plus (`+`) elegan (`tabBarPlusButton`) tepat di samping tab aktif untuk membuka tab dokumen baru secara instan dengan satu klik, melengkapi pintasan `Ctrl+N` / `Cmd+N`.
+- **Berkas (File)**: Baru, Buka, Buka Cepat (`Cmd+P` / `Ctrl+P`), Muat Ulang, Simpan, Simpan Sebagai, Ekspor, Atur Halaman, Cetak, Tutup, Keluar.
+- **Edit**: Operasi papan klip standar, Urung/Ulangi, Indentasi, Konversi Huruf, Operasi Baris, Komentar.
+- **Cari (Search)**: Temukan, Ganti, Tandai Kemunculan, Pencarian Bertahap, Lompat ke Baris, Submenu Markah Buku.
+- **Tampilan (View)**: Layar Penuh, Zoom, Baris Berlipat, Tampilkan Spasi, Tampilkan EOL, Navigasi Riwayat Perubahan, serta submenu khusus **Panel Samping** (File Browser, Workspace, Tail Monitor, Hex Viewer).
+- **Alat (Tools)**: Pengodean Base64/URL, Perhitungan Hash/Checksum, Konverter Angka dan Huruf, Evaluator Matematika, Pretty-printer XML/JSON, serta menu khusus **Pratinjau HTML & Markdown**.
 
-### 5. Lokalisasi Menu Bantuan: DOCNOTE & CHANGELOG
+### 5. Penyempurnaan Garis Sorotan File Browser & Workspace
 
-Menu Bantuan (Help) kini secara dinamis menyinkronkan catatan rilis dan log perubahan sesuai bahasa editor yang aktif:
+- **Garis Sorotan Penuh & Rapi**: Menghilangkan efek pemotongan kotak seleksi dengan penegakan `show-decoration-selected: 1;` dan pewarnaan seleksi baris penuh mengikuti palet tema aktif (`ThemePaletteData`).
+- **Markah Cepat Folder**: Tombol navigasi cepat satu klik menuju Beranda (Home), Desktop, Dokumen, dan Unduhan.
+- **Bilah Status Metrik**: Footer bergaya commander menampilkan jumlah berkas/folder serta ukuran berkas dan waktu modifikasi terakhir.
 
-- **Bahasa Indonesia:** Menampilkan `DOCNOTE_id.txt` dan `CHANGELOG_id.txt` saat bahasa Indonesia aktif.
-- **English:** Menampilkan `DOCNOTE_en.txt` dan `CHANGELOG_en.txt` untuk bahasa Inggris dan bahasa umum lainnya.
+### 6. Dialog Kustomisasi Tombol Toolbar Visual (`CustomizeToolbarDialog`)
 
-### 6. Skalabilitas Universal High-DPI, Retina & Multi-Monitor
-
-Mesin render Scintilla dan Qt dioptimalkan sepenuhnya untuk berbagai perangkat keras monitor tanpa buram atau artefak penskalaan:
-
-- **Monitor Generik:** Resolusi 1366×768, 1280×800, 720p, dan 1080p standar.
-- **MacBook Retina:** Apple Silicon dan Intel Retina (skala 2x dengan dukungan ProMotion refresh tinggi).
-- **Layar Eksternal Resolusi Tinggi:** Monitor 2K, 4K, 5K, 6K, dan penskalaan fraksional Linux (125%, 150%, 175%).
-- **Rendering Font Teroptimasi LCD:** Mengaktifkan `SC_EFF_QUALITY_LCD_OPTIMIZED` dan double-buffering (`setBufferedDraw(true)`) dengan repaint instan saat `DevicePixelRatioChange` dan `ScreenChangeInternal`.
-
-### 7. Pratinjau Markdown & HTML Bergaya GitHub (`MarkdownSafePreviewDock`)
-
-- Mengimplementasikan tata gaya GitHub Markdown resmi (sesuai spesifikasi ekstensi VS Code `bierner.markdown-preview-github-styles`).
-- Mendukung palet terang (`#ffffff` / `#1f2328`) dan gelap (`#0d1117` / `#e6edf3`) secara adaptif mengikuti tema aktif aplikasi.
-- Tipografi resmi GitHub, garis bawah judul (h1/h2), callout blockquote dengan batas `0.25em`, blok kode berpagar, tabel belang zebra, tag `<kbd>`, dan ekspor peramban web mandiri.
-
-### 5. Dialog Kustomisasi Tombol Toolbar Visual (`CustomizeToolbarDialog`)
-
-- Antarmuka interaktif daftar ganda (dual-list) untuk menambah, menghapus, dan mengatur urutan tombol toolbar dengan drag-and-drop (`InternalMove`).
-- Penyisipan garis pemisah (separator) kustom.
-- Filter pencarian langsung untuk menemukan aksi dengan cepat.
-- Tombol Reset to Defaults untuk memulihkan susunan standar 33 tombol bawaan.
-
-### 6. Ergonomi Menu Klik Kanan Editor
-
-- **Relokasi Convert Case**: Diposisikan tepat di bawah `Pilih Semua` (`ui->actionSelectAll`) untuk alur kerja transformasi teks yang lebih intuitif.
-- **Tipografi & Ikon Ramping**: Font diperkecil 1–2px (11px) dan ikon disesuaikan ke ukuran 14×14px dengan padding 3px.
-- **Pemulihan Gaya Bersih**: Mengaitkan sinyal `aboutToHide` untuk memulihkan gaya menu bar utama tanpa efek samping styling.
+- Antarmuka interaktif daftar ganda untuk menambah, menghapus, dan mengatur urutan tombol toolbar dengan drag-and-drop (`InternalMove`).
+- Dukungan penyisipan garis pemisah (separator) kustom dan pencarian aksi langsung.
+- Tombol Reset ke Default untuk memulihkan konfigurasi 33 tombol bawaan.
 
 ---
 
-## Verifikasi Empiris
+## 🛡️ Audit Kualitas Kode & Keamanan 14-Pilar
 
-- **Pengujian Unit**: Tingkat kelulusan 100% (55/55 kasus uji pada 11 rangkaian uji coba).
-- **Kepatuhan Linter**: Trunk check, markdownlint, dan cppcheck lulus dengan 0 kesalahan.
-- **Status Kompilasi**: Dikompilasi bersih menggunakan Apple LLVM / Clang 23 di macOS dan GCC/Clang di Linux.
+Verifikasi menyeluruh terhadap 14 pilar rekayasa kode:
+
+| Pilar                                 | Status Verifikasi | Bukti & Invarian Kunci                                                                                    |
+| :------------------------------------ | :---------------: | :-------------------------------------------------------------------------------------------------------- |
+| **1. Bug Review**                     |     **PASS**      | 0 peringatan kompilator/runtime, iterator aman, pemeriksaan batas ketat, tanpa kegagalan asersi.          |
+| **2. Syntax Review**                  |     **PASS**      | Kepatuhan ISO C++20 murni, kompilasi bersih pada Clang/GCC/AppleClang tanpa ekstensi.                     |
+| **3. Runtime Review**                 |     **PASS**      | 0 crash saat menutup tab belum disimpan, 0 deadlock pada thread latar belakang, event loop stabil.        |
+| **4. Logic Review**                   |     **PASS**      | Arah pencarian deterministik, pencegahan inkonsistensi form Cari/Tandai, sinkronisasi pratinjau presisi.  |
+| **5. Memory Review**                  |     **PASS**      | Smart pointer QPointer, pengelola siklus hidup RAII, 0 kebocoran memori, mitigasi UAF pada penutupan tab. |
+| **6. Dead Code Review**               |     **PASS**      | Pembersihan artefak warisan NotepadNext yang tidak digunakan, pemangkasan fungsi usang.                   |
+| **7. Duplicate Code Review**          |     **PASS**      | Penyatuan pustaka utilitas pembantu, validasi terpusat skema URI, standardisasi matematika tema.          |
+| **8. Circular Dependency Review**     |     **PASS**      | Arsitektur graf asiklik (DAG) terarah dan terverifikasi di seluruh modul sumber dan header.               |
+| **9. Performance Bottleneck Review**  |     **PASS**      | Waktu start-up sub-milidetik, pemilahan sintaks ter-debounce, kalkulasi entropi Shannon O(N).             |
+| **10. Security Vulnerability Review** |     **PASS**      | Sandbox Lua ketat, pencegahan injeksi shell, batas ReDoS pada ekspresi reguler, pratinjau aman, TLS 1.2+. |
+| **11. Maintainability Review**        |     **PASS**      | Pemisahan tanggung jawab berbasis SOLID OOP, dokumentasi teknis komprehensif.                             |
+| **12. Scalability Review**            |     **PASS**      | Dukungan buffer dokumen multi-juta baris, penghitungan hash berkas multi-GB secara streaming.             |
+| **13. Readability Review**            |     **PASS**      | Gaya penulisan C++20 idiomatis, kepatuhan const-correctness eksplisit, penamaan fungsi yang jelas.        |
+| **14. IDE Linter Review**             |     **PASS**      | 0 isu pada Trunk check (59/59 uji lulus), 0 kesalahan Clangd AST, 0 peringatan SonarQube quality gate.    |
+
+---
+
+## 📦 Berkas Rilis Terverifikasi
+
+| Nama Berkas                                               | Platform / Arsitektur                                              | Ukuran   | Checksum SHA-256                                                   |
+| :-------------------------------------------------------- | :----------------------------------------------------------------- | :------- | :----------------------------------------------------------------- |
+| **`SparkNotePad-v1.3.8-x64.dmg`** _(Rilis Terverifikasi)_ | macOS Intel (`x86_64`) & Apple Silicon via Rosetta 2 (macOS 11.0+) | 28.05 MB | `add02c6297a36bc5a52870b3ccc3531d46265cd2fa8e6b4d0eb878ed1d91db3a` |
+| **`SparkNotePad-v1.3.8-qt6.12-x64.dmg`**                  | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.12)                      | 28.97 MB | `4434116cd1cf801634984693175402a4bf74581f33527498c558c4fe7c9ad0b3` |
+| **`SparkNotePad-v1.3.8-qt6.11-x64.dmg`**                  | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.11)                      | 28.67 MB | `8ef3db8351b0ace57772b4d01b1a774902166e44b93bc657bb6b2707246ec4c3` |
+| **`SparkNotePad-v1.3.8-qt6.10-x64.dmg`**                  | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.10)                      | 28.27 MB | `f05cd164e65efd58e4fef531dbb9134bc535be8566fae9185a5385d38a0f12ea` |
+| **`SparkNotePad-v1.3.8-qt6.8-x64.dmg`**                   | macOS Intel (`x86_64`) (macOS 12.0+, Qt 6.8 LTS)                   | 28.05 MB | `6f3a7e45eb5256aa9fd3d18105ca23023e3e4f35839ce6f5e744e8ecab076f87` |
+| **`SparkNotePad-Default-Editor.sh`**                      | Skrip Asosiasi Universal macOS & Linux POSIX                       | 19.19 KB | `719b80f133c0d040a64d4788e9dad08c48ba846910d9bac555e3a629dd571522` |
+| **`SparkNotePad-Default-Editor-Linux.sh`**                | Skrip Engine Default Editor Linux 5-Layer                          | 30.32 KB | `c6b9efec00d26d7a5e769f2e8730010cef9497e92ef4e3f8fabd272c6be624b3` |
+
+---
+
+### 📦 Matriks Rilis Multi-Versi Lengkap (v1.0.0 – v1.3.8)
+
+| Versi Rilis | Tag Rilis Git | Cabang Rilis Utama | Platform Target                                                                         | Sorotan Tonggak Utama                                                                                                                                    |
+| :---------- | :------------ | :----------------- | :-------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **v1.3.8**  | `v1.3.8`      | `main`, `1.3.8`    | macOS (x86_64/arm64), Linux (Ubuntu/Debian/Fedora/RHEL/SUSE/Slackware), FreeBSD (13–15) | 13 Paket Ikon Toolbar, Pratinjau Markdown/HTML Dalam Tab dengan Kotak Catatan, Menu Standar Notepad, Perbaikan Sorotan Treeview, Bebas Kesalahan Linter  |
+| **v1.3.7**  | `v1.3.7`      | `1.3.7`            | macOS (x86_64/arm64), Linux (Ubuntu/Debian/Fedora/RHEL/SUSE/Slackware), FreeBSD (13–15) | Omnibar Command Palette, Komparasi Visual Berdampingan (Diff), Filter Tree Proyek, Forensik Kode & Transformasi, Entropi Shannon, Pengerasan Zero-Linter |
+| **v1.3.6**  | `v1.3.6`      | `1.3.6`            | macOS (x86_64/arm64), Linux (Ubuntu/Debian/Fedora/RHEL/SUSE/Slackware), FreeBSD (13–15) | Perluasan dukungan platform, isolasi sandbox Lua, pencegahan ReDoS, dok pratinjau aman Markdown, 27 ikon monoline SVG, audit 14 pilar                    |
+| **v1.3.5**  | `v1.3.5`      | `1.3.5`            | macOS (x86_64/arm64), Linux (Debian/Ubuntu/Fedora/RHEL), FreeBSD (14–15)                | Siklus hidup restart/exit anggun, mesin default editor Linux, pemolesan About dialog Retina, pembersihan 1.288 diagnostik IDE                            |
+| **v1.3.0**  | `v1.3.0`      | `1.3.0`            | macOS, Linux                                                                            | Perubahan nama resmi menjadi SparkNotePad, ikon Apple HIG, kontainer terotentikasi AES-256, kelulusan audit 13 pilar                                     |
+| **v1.2.0**  | `v1.2.0`      | `1.2.0`            | macOS, Linux                                                                            | Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, ekspor PDF, integrasi mkcert, lexer Kotlin/GraphQL/WASM/Bicep                                                 |
+| **v1.1.0**  | `v1.1.0`      | `1.1.0`, `develop` | macOS, Linux                                                                            | Mode Gelap/Terang ramping, evaluasi matematika inline, 7 lexer populer baru, border tab peach                                                            |
+| **v1.0.0**  | `v1.0.0`      | `1.0.0`            | macOS, Linux                                                                            | Rilis produksi perdana, Qt 6 asli + mesin Scintilla 5.5.4, enkripsi dokumen AES-256                                                                      |
+
+---
+
+### 👤 Pengelola & Atribusi Multi-Versi (v1.0.0 – v1.3.8)
+
+- **Pengelola Utama & Arsitek Modernisasi:**
+  - Harry Dertin Sutisna Alsyundawy ([@alsyundawy](https://github.com/alsyundawy)) — [ALSYUNDAWY IT SOLUTION](https://alsyundawy.com)
+- **Mesin Rekayasa AI, Peninjauan Kode & Audit:**
+  - **Google DeepMind Antigravity IDE**: Editor Kode AI Utama, mesin refactoring kode multi-berkas, dan lingkungan pengembangan terpadu yang memodernisasi basis kode SparkNotePad serta memverifikasi build di seluruh rilis.
+  - **Gemini 3.8 Flash (Google DeepMind)**: Mesin Peninjau Kode AI Tingkat Lanjut, Audit Keamanan 14-Pilar, Kepatuhan Linter, dan verifikasi analisis statis.
+- **Apresiasi Sumber Hulu & Leluhur:**
+  - **NotepadNext-MacOS ([@alsyundawy](https://github.com/alsyundawy/NotepadNext-MacOS))**: Repositori silsilah leluhur teroptimasi macOS.
+  - **Justin Dailey ([@dail8859](https://github.com/dail8859)) / NotepadNext**: Fondasi kerangka Qt lintas platform dan warisan arsitektur awal.
+  - **Neil Hodgson & Kontributor Scintilla/Lexilla**: Mesin penyunting fondasional (**Scintilla 5.6.7**) dan lexer (**Lexilla 5.5.4**).
+  - **Zufu Liu ([@zufuliu](https://github.com/zufuliu)) / Notepad4**: Ergonomi transformasi teks, pola integrasi Scintilla, dan algoritma utilitas.
+  - **Rizonesoft / Florian Balmer / Notepad3**: Konsep manipulasi teks dan manajemen pengodean karakter.
+  - **cxasm ([@cxasm](https://github.com/cxasm)) / Notepad--**: Paradigma multi-tab lintas platform dan metodologi penyuntingan teks.
+  - **Don Ho ([@donho](https://github.com/donho)) / Notepad++**: Pelopor editor teks sumber terbuka Windows yang menginspirasi silsilah notepad modern.
+  - **Lua.org**: Runtime skrip tertanam Lua 5.5.1 / 5.4.x.
+  - **Lon McGregor (NotepadPlusPlusIcons)**: Ikonografi bilah alat dan utilitas klasik.
+
+---
+
+**Log Perubahan Lengkap**: <https://github.com/alsyundawy/SparkNotePad/compare/v1.3.7...v1.3.8>

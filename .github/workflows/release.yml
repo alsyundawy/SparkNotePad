@@ -17,7 +17,7 @@ jobs:
   build-linux:
     name: build (linux, ${{ matrix.qt_version }})
     runs-on: ${{ matrix.runs_on }}
-    timeout-minutes: 60
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -101,7 +101,7 @@ jobs:
 
       - name: Build
         shell: bash
-        run: cmake --build build --parallel
+        run: cmake --build build -j2
 
       - name: Build Linux Targets (deb, rpm)
         shell: bash
@@ -154,7 +154,7 @@ jobs:
   build-macos-x64:
     name: build (macos-x64, ${{ matrix.qt_version }})
     runs-on: ${{ matrix.runs_on }}
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       APPLE_CERTIFICATE_BASE64: ${{ secrets['APPLE_CERTIFICATE_BASE64'] }}
     strategy:
@@ -232,12 +232,12 @@ jobs:
 
       - name: Build
         shell: bash
-        run: cmake --build build --parallel
+        run: cmake --build build -j2
 
       - name: Build MacOS Targets (dmg)
         shell: bash
         run: |
-          cmake --build build --target dmg --parallel
+          cmake --build build --target dmg -j2
           if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
             for f in build/*-qt${{ matrix.qt_version }}-*.dmg; do
               [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
@@ -294,7 +294,7 @@ jobs:
   build-macos-arm64:
     name: build (macos-arm64, ${{ matrix.qt_version }})
     runs-on: ${{ matrix.runs_on }}
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       APPLE_CERTIFICATE_BASE64: ${{ secrets['APPLE_CERTIFICATE_BASE64'] }}
     strategy:
@@ -372,12 +372,12 @@ jobs:
 
       - name: Build
         shell: bash
-        run: cmake --build build --parallel
+        run: cmake --build build -j2
 
       - name: Build MacOS Targets (dmg)
         shell: bash
         run: |
-          cmake --build build --target dmg --parallel
+          cmake --build build --target dmg -j2
           if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
             for f in build/*-qt${{ matrix.qt_version }}-*.dmg; do
               [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
@@ -467,10 +467,23 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || \
-          gh release create "$RELEASE_TAG" \
-            --title "$RELEASE_TAG" \
-            --generate-notes
+          RELEASE_NOTES_PATH="doc/RELEASE_NOTES_${RELEASE_TAG}.md"
+          if [ ! -f "$RELEASE_NOTES_PATH" ]; then
+            RELEASE_NOTES_PATH="doc/RELEASE_NOTES_v1.3.8.md"
+          fi
+          if [ -f "$RELEASE_NOTES_PATH" ]; then
+            echo "Publishing release with rich notes: $RELEASE_NOTES_PATH"
+            if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+              gh release edit "$RELEASE_TAG" --title "SparkNotePad $RELEASE_TAG Official Release" --notes-file "$RELEASE_NOTES_PATH"
+            else
+              gh release create "$RELEASE_TAG" --title "SparkNotePad $RELEASE_TAG Official Release" --notes-file "$RELEASE_NOTES_PATH"
+            fi
+          else
+            gh release view "$RELEASE_TAG" >/dev/null 2>&1 || \
+              gh release create "$RELEASE_TAG" \
+                --title "$RELEASE_TAG" \
+                --generate-notes
+          fi
 
       - name: Download all artifacts
         continue-on-error: true
