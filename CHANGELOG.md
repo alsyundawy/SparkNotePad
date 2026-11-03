@@ -9,21 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.8] - 2026-11-02
 
-### 🎨 Toolbar Icon Packs Suite (15 Built-In Vector & Bitmap Packs), Context Menu Ergonomics & Visual Customizer
+### 🎨 Toolbar Icon Packs Suite (21 Built-In Vector & Bitmap Packs), High-DPI Retina Scaling & Dark Mode Luminance Adaptation
 
-SparkNotePad v1.3.8 introduces an extensive toolbar personalization architecture inspired by Notepad++'s icon theming and button management systems, paired with refined editor context menu ergonomics:
+SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 21 curated icon packs, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, and intelligent dark-mode luminance tone mapping:
 
 #### 🆕 Added
 
-- **8 Built-in Toolbar Icon Packs (Zero Duplicate Engineering)**:
+- **21 Built-in Toolbar Icon Packs**:
   - **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
-  - **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from upstream NotepadNext release (Default fallback).
-  - **Notepad++ Retro (Classic Nostalgia)** (`notepadPlusPlus`): High-DPI vector recreation of classic Notepad++ toolbar iconography.
-  - **XP 2026** (`windowsXp`): Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights.
-  - **Win11 2026** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry and subtle depth (unified with `fluentUi`, zero duplication).
-  - **Win 7 2026** (`windows7`): Windows 7 Aero Glass translucent gradients and polished chrome accents.
+  - **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
+  - **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
+  - **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
+  - **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
+  - **Fugue Classic (Silk Suite)** (`fugue`): Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography with multi-DPI retina scaling.
+  - **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
+  - **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
   - **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-  - **Vibrant DuoTone (Neon/Cyber)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+  - **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+  - **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
+  - **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
+  - **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
+  - **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
+  - **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
+  - **Humanity GNOME** (`humanity_gnome`): Classic Linux desktop iconography from the Humanity icon project.
+  - **Elementary OS Flat** (`elementary_flat`): Modern, minimalist flat design from Elementary OS.
+  - **Breeze KDE Plasma** (`breeze_kde`): KDE Plasma Breeze iconography with crisp geometric balance.
+  - **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
+  - **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
+  - **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
+- **High-DPI Retina & Dark Mode Luminance Adaptation**:
+  - Native scalable vector SVG preservation preventing raster interpolation blur on Retina displays.
+  - Multi-resolution raster pixmaps (16x16 to 64x64) with dedicated `@2x` Retina DPR (`setDevicePixelRatio(2.0)`).
+  - Intelligent HSL tone mapping (`adaptImageForTheme`): inverts dark wireframes to bright silver-white and boosts chromatic lightness while preserving hue and saturation under dark themes.
+  - Decoupled `ToolbarIconManager` architecture allowing isolated unit testing with 100% test suite clearance.
 - **Custom Icon Pack Extension System (`toolbarIcons/`)**:
   - `ToolbarIconManager::customPacksPath()` dynamically scans the user's `toolbarIcons/` directory in AppData for external user-created icon packs.
   - Custom packs appear automatically in the `Themes -> Toolbar Icon Packs` menu with real-time hot-reloading.

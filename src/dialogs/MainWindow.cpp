@@ -2386,7 +2386,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
         editorsMenu->clear();
 
-        for (auto *const editor : editorsList) {
+        for (const auto *editor : editorsList) {
             const auto *const iconPath = editor->isSavedToDisk() ? ":/icons/saved.svg" : ":/icons/unsaved.svg";
             auto *const action = editorsMenu->addAction(QIcon(iconPath), editor->getName());
 

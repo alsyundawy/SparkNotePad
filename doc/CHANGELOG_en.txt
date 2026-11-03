@@ -9,24 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.8] - 2026-11-02
 
-### 🎨 Toolbar Icon Packs Suite (10 Built-In Packs), Plus (+) Tab Button, In-Tab HTML/Markdown Preview, Modern File Commander, Reversible Hex/Binary View & 125 Lexilla Lexers
+### 🎨 Toolbar Icon Packs Suite (21 Built-In Packs), High-DPI Retina Scaling, Dark Mode Luminance Adaptation, In-Tab HTML/Markdown Preview & 125 Lexilla Lexers
 
-SparkNotePad v1.3.8 introduces an extensive toolbar personalization architecture, rich multi-DPI icon suites, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, a modernized File Commander browser, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
+SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 21 curated icon packs, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, intelligent dark-mode luminance tone mapping, Plus (+) tab button, in-tab HTML and Markdown preview, modernized File Commander browser, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
 
 #### 🆕 Added
 
-- **10 Built-in Toolbar Icon Packs Suite (Zero Duplicate Engineering)**:
-  - **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
-  - **Microsoft Fluent UI (Win 11)** (`fluentUi`): Modern Microsoft Fluent vector and bitmap icons.
-  - **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with Directory Opus iconography.
-  - **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite with translucent cyan glass gradients.
-  - **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia (master 64x64 PNG).
-  - **Fugue Classic (Silk Suite)** (`fugue`): Renowned Yusuke Kamiyamane Fugue iconography with multi-DPI retina scaling.
-  - **Notepad++ Retro (Nostalgia)** (`notepadPlusPlus`): High-DPI vector recreation of classic Notepad++ toolbar iconography.
-  - **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from upstream NotepadNext release.
-  - **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-  - **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
-  - Removed `archLinux` and `filledFluentUi` packs per visual design standardization.
+- **21 Built-in Toolbar Icon Packs Suite**:
+  - Modern Ribbon (Default Vector SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Classic (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Humanity GNOME, Elementary OS Flat, Breeze KDE Plasma, Papirus Rounded, macOS Cupertino Clean, and VS Code Codicons.
+  - Native vector SVG preservation avoiding raster blur on Retina displays.
+  - High-DPI multi-resolution PNG pixmaps with dedicated `@2x` Retina DPR (`setDevicePixelRatio(2.0)`).
+  - Intelligent Dark Mode HSL luminance tone mapping for bright, vivid icons across all themes.
 - **Plus (+) Button at the End of Every Tab Bar**:
   - Interactive Plus (+) button located on the title bar next to editor tabs to open a new document instantly.
 - **Dynamic Menubar & Context Menu Icon Synchronization (`applyToWindow`)**:

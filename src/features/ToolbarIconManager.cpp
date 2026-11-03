@@ -528,6 +528,31 @@ QString ToolbarIconManager::resolveIconFilePath(const ToolbarIconPack &pack, con
 }
 
 namespace {
+QRgb transformDarkPixel(QRgb px) {
+    const int a = qAlpha(px);
+    if (a < 15) {
+        return px;
+    }
+    const QColor c(px);
+    const int lit = c.lightness();
+    const int sat = c.hslSaturation();
+    const int hue = c.hslHue();
+
+    if (sat < 30) {
+        if (lit < 160) {
+            const int newLit = std::clamp(240 - lit, 180, 255);
+            return QColor::fromHsl(hue, 0, newLit, a).rgba();
+        }
+        return px;
+    }
+
+    if (lit < 155) {
+        const int newLit = std::clamp(155 + (lit * 75 / 155), 155, 235);
+        return QColor::fromHsl(hue, sat, newLit, a).rgba();
+    }
+    return px;
+}
+
 QImage adaptImageForTheme(const QImage &src, bool isDark) {
     if (src.isNull() || !isDark) {
         return src;
@@ -538,37 +563,11 @@ QImage adaptImageForTheme(const QImage &src, bool isDark) {
     const int h = direct.height();
 
     for (int y = 0; y < h; ++y) {
-        auto *scanline = reinterpret_cast<QRgb *>(direct.scanLine(y));
         for (int x = 0; x < w; ++x) {
-            const QRgb px = scanline[x];
-            const int a = qAlpha(px);
-            if (a < 15) {
-                continue;
-            }
-
-            const int r = qRed(px);
-            const int g = qGreen(px);
-            const int b = qBlue(px);
-
-            int hue = 0;
-            int sat = 0;
-            int lit = 0;
-            QColor(r, g, b).getHsl(&hue, &sat, &lit);
-
-            if (sat < 30) {
-                // Monochrome wireframe / neutral outlines (e.g. monoline_minimal)
-                if (lit < 160) {
-                    // Remap dark wireframe pixels to bright silver-white in dark mode
-                    const int newLit = std::clamp(240 - lit, 180, 255);
-                    scanline[x] = QColor::fromHsl(hue, 0, newLit, a).rgba();
-                }
-            } else {
-                // Chromatic colors (e.g. notepadpp_green, notepad3_warm, pixel_fugue_like, material_sharp)
-                if (lit < 155) {
-                    // Boost lightness while strictly preserving hue and vividness
-                    const int newLit = std::clamp(155 + (lit * 75 / 155), 155, 235);
-                    scanline[x] = QColor::fromHsl(hue, sat, newLit, a).rgba();
-                }
+            const QRgb px = direct.pixel(x, y);
+            const QRgb transformed = transformDarkPixel(px);
+            if (transformed != px) {
+                direct.setPixel(x, y, transformed);
             }
         }
     }
@@ -634,6 +633,46 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool
     }
 }
 
+void addDpiPixmapsToIcon(QIcon &icon, const QPixmap &px, int sz, QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off) {
+    icon.addPixmap(px, mode, state);
+    if (sz == 32 || sz == 48 || sz == 64) {
+        QPixmap px2 = px;
+        px2.setDevicePixelRatio(2.0);
+        icon.addPixmap(px2, mode, state);
+    }
+}
+
+QIcon buildDualRecordMultiResIcon(const QString &basePath, bool isDark) {
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    QIcon dualIcon;
+    for (const int sz : s_dpiSizes) {
+        const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);
+        if (const QImage offImg(szDir + QStringLiteral("/startRecord.png")); !offImg.isNull()) {
+            addDpiPixmapsToIcon(dualIcon, QPixmap::fromImage(adaptImageForTheme(offImg, isDark)), sz, QIcon::Normal, QIcon::Off);
+        }
+        if (const QImage onImg(szDir + QStringLiteral("/stopRecord.png")); !onImg.isNull()) {
+            addDpiPixmapsToIcon(dualIcon, QPixmap::fromImage(adaptImageForTheme(onImg, isDark)), sz, QIcon::Normal, QIcon::On);
+        }
+    }
+    return dualIcon;
+}
+
+QIcon buildMultiResIcon(const QString &basePath, const QStringList &candidates, bool isDark) {
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    QIcon icon;
+    for (const int sz : s_dpiSizes) {
+        const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);
+        for (const QString &c : candidates) {
+            const QString filePath = szDir + QLatin1Char('/') + c + QStringLiteral(".png");
+            if (const QImage img(filePath); !img.isNull()) {
+                addDpiPixmapsToIcon(icon, QPixmap::fromImage(adaptImageForTheme(img, isDark)), sz);
+                break;
+            }
+        }
+    }
+    return icon;
+}
+
 QIcon createMenuResolutionIcon(const QIcon &icon) {
     // Preserve full icon resolution and vector scalability for context menus and menubar
     return icon;
@@ -675,69 +714,23 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
     }
 
     const QString canonical = canonicalNameForAction(actionName);
-    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
     const QStringList aliases = aliasesForCanonical(canonical);
     QStringList candidates;
     candidates << canonical;
     candidates << aliases;
 
     // Check if the pack contains multi-resolution folders (e.g. 16x16, 20x20, 24x24, etc.)
-    const bool hasMultiResolution = std::ranges::any_of(candidates, [&](const QString &c) {
-        return QFileInfo::exists(pack->basePath + QStringLiteral("/24x24/") + c + QStringLiteral(".png"));
-    });
-
-    if (hasMultiResolution) {
+    if (const bool hasMultiResolution = std::ranges::any_of(candidates, [&](const QString &c) {
+            return QFileInfo::exists(pack->basePath + QStringLiteral("/24x24/") + c + QStringLiteral(".png"));
+        }); hasMultiResolution) {
         const bool isDark = m_isDarkMode;
         if (canonical == QStringLiteral("startRecord")) {
-            QIcon dualIcon;
-            for (const int sz : s_dpiSizes) {
-                const QString szDir =
-                    pack->basePath + QStringLiteral("/") + QString::number(sz) + QLatin1Char('x') + QString::number(sz);
-                const QString offPath = szDir + QStringLiteral("/startRecord.png");
-                const QString onPath = szDir + QStringLiteral("/stopRecord.png");
-                if (const QImage offImg(offPath); !offImg.isNull()) {
-                    const QPixmap offPx = QPixmap::fromImage(adaptImageForTheme(offImg, isDark));
-                    dualIcon.addPixmap(offPx, QIcon::Normal, QIcon::Off);
-                    if (sz == 32 || sz == 48 || sz == 64) {
-                        QPixmap px2 = offPx;
-                        px2.setDevicePixelRatio(2.0);
-                        dualIcon.addPixmap(px2, QIcon::Normal, QIcon::Off);
-                    }
-                }
-                if (const QImage onImg(onPath); !onImg.isNull()) {
-                    const QPixmap onPx = QPixmap::fromImage(adaptImageForTheme(onImg, isDark));
-                    dualIcon.addPixmap(onPx, QIcon::Normal, QIcon::On);
-                    if (sz == 32 || sz == 48 || sz == 64) {
-                        QPixmap px2 = onPx;
-                        px2.setDevicePixelRatio(2.0);
-                        dualIcon.addPixmap(px2, QIcon::Normal, QIcon::On);
-                    }
-                }
-            }
-            if (!dualIcon.isNull()) {
+            if (const QIcon dualIcon = buildDualRecordMultiResIcon(pack->basePath, isDark); !dualIcon.isNull()) {
                 return dualIcon;
             }
         }
 
-        QIcon icon;
-        for (const int sz : s_dpiSizes) {
-            const QString szDir =
-                pack->basePath + QStringLiteral("/") + QString::number(sz) + QLatin1Char('x') + QString::number(sz);
-            for (const QString &c : candidates) {
-                const QString filePath = szDir + QStringLiteral("/") + c + QStringLiteral(".png");
-                if (const QImage img(filePath); !img.isNull()) {
-                    const QPixmap px = QPixmap::fromImage(adaptImageForTheme(img, isDark));
-                    icon.addPixmap(px);
-                    if (sz == 32 || sz == 48 || sz == 64) {
-                        QPixmap px2 = px;
-                        px2.setDevicePixelRatio(2.0);
-                        icon.addPixmap(px2);
-                    }
-                    break;
-                }
-            }
-        }
-        if (!icon.isNull()) {
+        if (const QIcon icon = buildMultiResIcon(pack->basePath, candidates, isDark); !icon.isNull()) {
             return icon;
         }
     }

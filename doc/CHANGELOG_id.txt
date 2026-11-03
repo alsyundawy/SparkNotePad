@@ -9,24 +9,17 @@ dan proyek ini mengikuti [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [1.3.8] - 2026-11-02
 
-### 🎨 Paket Ikon Toolbar (10 Paket Bawaan), Pratinjau HTML/Markdown di Tab Baru, File Commander Modern, Tampilan Hex/Biner Reversibel & 125 Lexilla Lexer
+### 🎨 Paket Ikon Toolbar (21 Paket Bawaan), Skalabilitas High-DPI Retina, Adaptasi Luminans Tema Gelap, Pratinjau HTML/Markdown di Tab Baru & 125 Lexilla Lexer
 
-SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap, koleksi ikon resolusi tinggi, sinkronisasi menyeluruh ke menu dan konteks klik kanan, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
+SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap dengan 21 paket ikon terkurasi, preservasi vektor SVG asli, varian pixmap `@2x` Retina, adaptasi luminans HSL cerdas pada tema gelap, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
 
 #### 🆕 Ditambahkan
 
-- **10 Paket Ikon Bawaan (Bebas Duplikasi)**:
-  - **Modern Ribbon (Default)** (`modernRibbon`): Ikon vektor monoline SVG 20x20 resolusi tinggi dengan kontur halus (Default).
-  - **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor Microsoft Fluent modern.
-  - **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
-  - **Windows 7 (Aero Glass)** (`windows7`): Estetika kaca Aero Glass Azure dengan gradien cyan dan bingkai krom.
-  - **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Luna XP autentik (resolusi master 64x64).
-  - **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
-  - **Notepad++ Retro (Nostalgia)** (`notepadPlusPlus`): Vektor rekreasi ikon klasik Notepad++.
-  - **NotepadNext Classic (Silk)** (`notepadNext`): Bitmap Silk 16x16 otentik dari NotepadNext.
-  - **Monochrome Outline (Minimalist)** (`monochrome`): Wireframe monoline bersih untuk tema gelap dan terang.
-  - **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras neon sian dan magenta tinggi.
-  - Menghapus paket `archLinux` dan `filledFluentUi` demi konsistensi visual.
+- **21 Paket Ikon Bawaan (Bebas Duplikasi)**:
+  - Modern Ribbon (Default Vektor SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Klasik (Nostalgia), NotepadNext Klasik (Silk), Monochrome Outline (Minimalis), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Humanity GNOME, Elementary OS Flat, Breeze KDE Plasma, Papirus Rounded, macOS Cupertino Clean, dan VS Code Codicons.
+  - Preservasi vektor SVG menghindari keburaman raster pada layar Retina.
+  - Multi-resolusi PNG dengan aset terdedikasi `@2x` Retina DPR (`setDevicePixelRatio(2.0)`).
+  - Tone mapping luminans cerdas HSL agar seluruh ikon tampak terang dan tajam pada tema gelap maupun terang.
 - **Tombol Plus (+) pada Setiap Samping Akhir Tab**:
   - Tombol interaktif Plus (+) diletakkan pada title bar di samping kanan tab editor untuk membuat berkas baru dengan cepat.
 - **Sinkronisasi Ikon Menubar & Menu Konteks Dinamis (`applyToWindow`)**:

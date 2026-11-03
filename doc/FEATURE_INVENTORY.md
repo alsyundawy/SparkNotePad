@@ -77,8 +77,8 @@
 
 ### 1.8 Toolbar Personalization, Icon Suites, In-Tab Preview & Lexilla Parity (v1.3.8)
 
-- **10 Built-In Toolbar Icon Packs**: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Retro (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), and Vibrant DuoTone (Cyberpunk).
-- **Multi-DPI Retina Scaling (16–64px)**: Built-in support for 16x16, 20x20, 24x24 (Default/Recommended), 32x32, 48x48, and 64x64 icon sizes with retina `@2x` pixmaps.
+- **21 Built-In Toolbar Icon Packs**: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Classic (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Humanity GNOME, Elementary OS Flat, Breeze KDE Plasma, Papirus Rounded, macOS Cupertino Clean, and VS Code Codicons.
+- **Multi-DPI Retina Scaling (16–64px) & Dynamic Dark Mode Tone Mapping**: Native scalable SVG vectors without raster blur, multi-resolution PNGs with `@2x` Retina DPR (`setDevicePixelRatio(2.0)`), and intelligent HSL tone mapping for bright, vivid icons under both dark and light modes.
 - **Dynamic Menubar & Context Menu Synchronization**: Real-time whole-window icon propagation (`ToolbarIconManager::applyToWindow()` and `applyToMenu()`).
 - **Interactive Tab Bar Plus (+) Button**: Direct document creation via title bar button next to editor tabs.
 - **In-Tab Modern HTML & Markdown Preview (`PreviewTabWidget`)**: Embedded in-tab preview in central dock area (`ads::CenterDockWidgetArea`) with zoom controls, refresh, and system default browser preview.
@@ -93,7 +93,7 @@
 
 | Capability                                  | Status in v1.3.8 | Engine / Implementation                                             |
 | :------------------------------------------ | :--------------: | :------------------------------------------------------------------ |
-| **Toolbar Icon Packs Suite (10 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, XP, Win7, Fugue, etc.) |
+| **Toolbar Icon Packs Suite (21 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, Win7, Win11, etc.)     |
 | **Dynamic Menu & Context Menu Icon Sync**   |   ✅ Complete    | `ToolbarIconManager::applyToWindow()` & `applyToMenu()`             |
 | **Tab Bar Plus (+) Button**                 |   ✅ Complete    | `DockedEditorTitleBar` (`m_plusButton`)                             |
 | **In-Tab HTML & Markdown Preview**          |   ✅ Complete    | `PreviewTabWidget` + `ads::CenterDockWidgetArea`                    |

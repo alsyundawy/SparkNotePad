@@ -53,22 +53,41 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (10 Paket Vektor & Bitmap), Tombol Plus (+) Tab dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (21 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++:
+SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 21 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
-### Paket Ikon Toolbar Bawaan
+### Paket Ikon Toolbar Bawaan (21 Paket)
 
-- **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
-- **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
-- **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
-- **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
-- **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-- **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
-- **Notepad++ Retro** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-- **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
-- **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-- **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
+2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
+3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
+4. **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
+5. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
+6. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
+7. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
+8. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
+9. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
+10. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+11. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
+12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
+13. **Monoline Minimal** (`monoline_minimal`): Ikon garis minimalis ultra-bersih dengan inversi luminans otomatis pada tema gelap.
+14. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
+15. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
+16. **Humanity GNOME** (`humanity_gnome`): Ikonografi desktop Linux klasik dari proyek Humanity.
+17. **Elementary OS Flat** (`elementary_flat`): Desain datar modern minimalis dari Elementary OS.
+18. **Breeze KDE Plasma** (`breeze_kde`): Ikonografi KDE Plasma Breeze dengan keseimbangan geometris tajam.
+19. **Papirus Rounded** (`papirus_round`): Rangkaian ikon Linux modern dengan sudut membulat cerah.
+20. **macOS Cupertino Clean** (`mac_cupertino`): Simbol monokrom dan penuh warna mematuhi Apple HIG.
+21. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
+
+### Kejelasan High-DPI & Layar Retina
+
+Semua paket ikon dilengkapi pixmap multi-resolusi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64) serta rendering otomatis `@2x` Retina DPR (`setDevicePixelRatio(2.0)`). Paket vektor SVG dirender secara native pada koordinat fisik layar tanpa buram atau artefak interpolasi.
+
+### Adaptasi Luminans Tema Gelap (Dark Mode Tone Mapping)
+
+Pada tema gelap, paket ikon outline (seperti `monoline_minimal`) secara otomatis menginversi piksel gelap menjadi silver-white luminous, sedangkan paket berwarna (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) ditingkatkan kecerahannya dengan pemetaan HSL tone mapping tanpa merusak corak warna dan saturasi aslinya.
 
 ### Tombol Plus (+) pada Samping Deretan Tab
 

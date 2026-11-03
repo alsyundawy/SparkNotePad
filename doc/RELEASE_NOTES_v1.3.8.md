@@ -55,23 +55,34 @@ SparkNotePad v1.3.8 delivers a landmark milestone in editor ergonomics and visua
 
 ## 🌟 Highlights & Key Innovations in v1.3.8
 
-### 1. 13 Built-in Distinct Toolbar Icon Packs Suite
+### 1. 21 Built-in Distinct Toolbar Icon Packs Suite
 
 Accessible instantly via `Themes > Toolbar Icon Packs` without requiring an application restart:
 
-- **Notepad++ Classic** (`notepadPlusPlus`): Iconic vector and bitmap recreation of classic Notepad++ toolbar iconography.
-- **Fluent UI** (`fluentUi`): Modern Microsoft Fluent design with rounded geometry and crisp multi-DPI assets.
-- **Fugue** (`fugue`): Renowned pixel-perfect 16×16 and 32×32 iconography designed by Yusuke Kamiyamane.
-- **Windows 11** (`windows11`): Microsoft Windows 11 Fluent icons with depth and subtle drop shadows.
-- **Windows 7 / 8 Aero** (`windows7_8_aero`): Authentic Aero Glass azure icons with glossy gradients.
-- **Windows XP Classic** (`windowsXp`): Nostalgic Windows XP Luna iconography with vibrant saturated colors.
-- **Windows Vista** (`windowsVista`): Windows Vista Aero Glass styling with chrome accents.
-- **VS Code Modern** (`vscodeModern`): Clean, minimalist developer iconography inspired by Visual Studio Code.
-- **Clean Modern Outline** (`cleanModernOutline`): Sleek monoline vector glyphs for minimal distraction.
-- **Flat Color** (`flatColor`): High-contrast flat color iconography tailored for modern high-resolution displays.
-- **Material Design** (`material`): Google Material Design symbol guidelines with balanced weights.
-- **Solarized** (`solarized`): Specially tuned color harmonies optimized for Solarized Dark and Light editor themes.
-- **High Contrast** (`highContrast`): Ultra-sharp, accessible monochrome outline icons for high-visibility workflows.
+1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
+2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
+3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
+4. **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
+5. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
+6. **Fugue Classic (Silk Suite)** (`fugue`): Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography with multi-DPI retina scaling.
+7. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
+8. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
+9. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
+10. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+11. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
+12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
+13. **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
+14. **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
+15. **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
+16. **Humanity GNOME** (`humanity_gnome`): Classic Linux desktop iconography from the Humanity icon project.
+17. **Elementary OS Flat** (`elementary_flat`): Modern, minimalist flat design from Elementary OS.
+18. **Breeze KDE Plasma** (`breeze_kde`): KDE Plasma Breeze iconography with crisp geometric balance.
+19. **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
+20. **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
+21. **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
+
+- **High-DPI Retina Clarity**: Eliminates all icon blur by supplying native vector SVGs directly to Qt's vector engine and generating dedicated `@2x` Retina DPR pixmaps (`setDevicePixelRatio(2.0)`) for raster packs.
+- **Intelligent Dark Mode Tone Mapping**: Under dark themes, outline wireframes (`monoline_minimal`) are remapped to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL lightness boosting without shifting hue or saturation.
 
 ### 2. Multi-Resolution Sizing & Dynamic Window-Wide Synchronization
 
