@@ -29,7 +29,7 @@
 
 class Converter {
 public:
-    Converter(ScintillaNext *editor);
+    explicit Converter(ScintillaNext *editor);
 
     void convert(QTextStream &stream);
     virtual void convertRange(QTextStream &stream, int start, int end) = 0;

@@ -69,7 +69,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
     };
 
     auto bindActionToSetting = [](QAction *action, const QString &key) {
-        ApplicationSettings settings;
+        const ApplicationSettings settings;
 
         action->setChecked(settings.value(key, false).toBool());
         connect(action, &QAction::toggled, [key](bool checked) {
@@ -78,7 +78,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
         });
     };
 
-    auto bindColumn = [&](QAction *action, FileSystemColumn column, const QString &key) {
+    const auto bindColumn = [&](QAction *action, FileSystemColumn column, const QString &key) {
         bindColumnVisibility(action, static_cast<int>(column));
         bindActionToSetting(action, key);
     };
@@ -90,8 +90,9 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
 
     connect(ui->actionShowHidden, &QAction::toggled, this, [this](bool showHidden) {
         auto filters = QDir::AllEntries | QDir::AllDirs | QDir::NoDotAndDotDot;
-        if (showHidden)
+        if (showHidden) {
             filters |= QDir::Hidden;
+        }
         model->setFilter(filters);
     });
     bindActionToSetting(ui->actionShowHidden, "FolderAsWorkspace/ShowHidden");
@@ -123,7 +124,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
     header->setSectionResizeMode(static_cast<int>(TypeColumn), QHeaderView::ResizeToContents);
     header->setSectionResizeMode(static_cast<int>(DateColumn), QHeaderView::ResizeToContents);
 
-    ApplicationSettings settings;
+    const ApplicationSettings settings;
     setRootPath(settings.get(rootPathSetting));
 
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &FolderAsWorkspaceDock::updateTheme);
@@ -147,9 +148,9 @@ void FolderAsWorkspaceDock::setRootPath(const QString &dir) {
         if (QFile::exists(projFilePath)) {
             QFile projFile(projFilePath);
             if (projFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QJsonDocument doc = QJsonDocument::fromJson(projFile.readAll());
+                const QJsonDocument doc = QJsonDocument::fromJson(projFile.readAll());
                 if (doc.isObject()) {
-                    QString projName = doc.object().value(QStringLiteral("name")).toString();
+                    const QString projName = doc.object().value(QStringLiteral("name")).toString();
                     if (!projName.isEmpty()) {
                         setWindowTitle(tr("Project: %1").arg(projName));
                         return;
@@ -157,7 +158,7 @@ void FolderAsWorkspaceDock::setRootPath(const QString &dir) {
                 }
             }
         }
-        QFileInfo fi(dir);
+        const QFileInfo fi(dir);
         setWindowTitle(tr("Workspace: %1").arg(fi.fileName()));
     } else {
         setWindowTitle(tr("Folder as Workspace"));
@@ -205,22 +206,22 @@ void FolderAsWorkspaceDock::onCustomContextMenu(const QPoint &pos) {
 
     auto *menu = new QMenu(this);
     if (info.isFile()) {
-        menu->addAction(tr("Open in SparkNotePad"), this, [this, filePath]() { emit fileDoubleClicked(filePath); });
+        menu->addAction(tr("Open in SparkNotePad"), this, [this, filePath] { emit fileDoubleClicked(filePath); });
         menu->addAction(tr("Open with System Application"), this,
-                        [filePath]() { QDesktopServices::openUrl(QUrl::fromLocalFile(filePath)); });
+                        [filePath] { QDesktopServices::openUrl(QUrl::fromLocalFile(filePath)); });
     }
 
-    menu->addAction(tr("Show in File Manager / Finder"), this, [info]() {
+    menu->addAction(tr("Show in File Manager / Finder"), this, [info] {
         QDesktopServices::openUrl(QUrl::fromLocalFile(info.isDir() ? info.absoluteFilePath() : info.absolutePath()));
     });
 
     menu->addSeparator();
 
-    menu->addAction(tr("Copy Full Path"), this, [filePath]() { QApplication::clipboard()->setText(filePath); });
+    menu->addAction(tr("Copy Full Path"), this, [filePath] { QApplication::clipboard()->setText(filePath); });
 
     if (!root.isEmpty() && filePath.startsWith(root)) {
-        QString relative = QDir(root).relativeFilePath(filePath);
-        menu->addAction(tr("Copy Relative Path"), this, [relative]() { QApplication::clipboard()->setText(relative); });
+        const QString relative = QDir(root).relativeFilePath(filePath);
+        menu->addAction(tr("Copy Relative Path"), this, [relative] { QApplication::clipboard()->setText(relative); });
     }
 
     menu->popup(ui->treeView->viewport()->mapToGlobal(pos));

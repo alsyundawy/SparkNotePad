@@ -1010,7 +1010,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             {
                 dockedEditor->switchToEditor(editor);
 
-                auto linePos = static_cast<int>(editor->positionFromLine(lineNumber));
+                const auto linePos = static_cast<int>(editor->positionFromLine(lineNumber));
                 editor->goToRange({linePos + startPositionFromBeginning, linePos + endPositionFromBeginning});
                 editor->verticalCentreCaret();
 
@@ -1145,7 +1145,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     // MIME Tools submenu (Full Notepad++ MIME Tools Suite)
     auto *menuMimeTools = new QMenu(tr("&MIME Tools"), this);
 
-    auto applyMime = [this](auto func, const QString &statusMsg) {
+    const auto applyMime = [this](auto func, const QString &statusMsg) {
         ScintillaNext *editor = currentEditor();
         if (!editor) {
             return;
@@ -1477,7 +1477,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     auto *actionExportPreviewHtml = new QAction(tr("&Export as HTML Document..."), this);
     actionExportPreviewHtml->setIcon(QIcon(QStringLiteral(":/icons/save.svg")));
-    connect(actionExportPreviewHtml, &QAction::triggered, markdownSafePreviewDock, &MarkdownSafePreviewDock::exportHtml);
+    connect(actionExportPreviewHtml, &QAction::triggered, markdownSafePreviewDock,
+            &MarkdownSafePreviewDock::exportHtml);
     menuPreview->addAction(actionExportPreviewHtml);
 
     // Also place HTML & Markdown Preview prominently in the View menu
@@ -1513,20 +1514,20 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             return;
         }
         QString msg;
-        bool ok = PythonScriptEngine::executeInEditor(editor, false, &msg);
+        const bool ok = PythonScriptEngine::executeInEditor(editor, false, &msg);
         ui->statusBar->showMessage(msg, ok ? 4000 : 6000);
     });
 
     auto *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
     connect(actionRunPythonFile, &QAction::triggered, this, [this] {
-        QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(),
-                                                        tr("Python Scripts (*.py);;All Files (*)"));
+        const QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(),
+                                                              tr("Python Scripts (*.py);;All Files (*)"));
         if (filePath.isEmpty()) {
             return;
         }
-        auto res = PythonScriptEngine::executeFile(filePath);
+        const auto res = PythonScriptEngine::executeFile(filePath);
         if (auto *editor = currentEditor(); editor && !res.combinedOutput.isEmpty()) {
-            QByteArray outBytes = ("\n" + res.combinedOutput).toUtf8();
+            const QByteArray outBytes = ("\n" + res.combinedOutput).toUtf8();
             editor->insertText(editor->length(), outBytes.constData());
         }
         ui->statusBar->showMessage(res.success ? tr("Script executed successfully.")
@@ -1602,7 +1603,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     auto *menuPresets = new QMenu(tr("Opacity &Presets"), this);
     const QVector presets = {100, 90, 80, 75, 60, 50, 40, 25};
-    for (int p : presets) {
+    for (const int p : presets) {
         auto *act = new QAction(QStringLiteral("%1%").arg(p), this);
         connect(act, &QAction::triggered, this, [this, p] {
             transparentWindowManager->setOpacity(p);
@@ -1644,21 +1645,21 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         }
     });
 
-    auto selectAndFind = [this](bool forward) {
-        auto editor = currentEditor();
-        auto range = editor->getContextText();
+    const auto selectAndFind = [this](bool forward) {
+        auto *editor = currentEditor();
+        const auto range = editor->getContextText();
 
         if (range.cpMin == range.cpMax) {
             return;
         }
 
-        auto text = editor->get_text_range(static_cast<int>(range.cpMin), static_cast<int>(range.cpMax));
+        const auto text = editor->get_text_range(static_cast<int>(range.cpMin), static_cast<int>(range.cpMax));
 
         Finder f(editor);
         f.options().text = QString::fromUtf8(text);
         f.options().wrapAround = true;
 
-        FindResult result = forward ? f.findNext() : f.findPrev();
+        const FindResult result = forward ? f.findNext() : f.findPrev();
 
         if (result) {
             editor->goToRange(result.range);
@@ -1693,10 +1694,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         const auto maxLine = static_cast<int>(editor->lineCount());
         bool ok;
 
-        auto d = QInputDialog(this);
-        Qt::WindowFlags flags = d.windowFlags() & ~Qt::WindowContextHelpButtonHint;
-        int lineToGoTo = QInputDialog::getInt(this, tr("Go to line"), tr("Line Number (1 - %1)").arg(maxLine),
-                                              currentLine, 1, maxLine, 1, &ok, flags);
+        const auto d = QInputDialog(this);
+        const Qt::WindowFlags flags = d.windowFlags() & ~Qt::WindowContextHelpButtonHint;
+        const int lineToGoTo = QInputDialog::getInt(this, tr("Go to line"), tr("Line Number (1 - %1)").arg(maxLine),
+                                                    currentLine, 1, maxLine, 1, &ok, flags);
 
         if (ok) {
             editor->ensureVisible(lineToGoTo - 1);
@@ -1709,12 +1710,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     const auto *markerAppDecorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
     for (QAction *action : findChildren<QAction *>()) {
         if (action->property("MarkerNumber").isValid()) {
-            int markerNumber = action->property("MarkerNumber").toInt();
+            const int markerNumber = action->property("MarkerNumber").toInt();
             action->setIcon(ActionUtils::createSolidIcon(markerAppDecorator->markerColor(markerNumber)));
         }
     }
 
-    auto mark_callback = [this, app] {
+    const auto mark_callback = [this, app] {
         if (const auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             decorator && decorator->isEnabled() && sender()->property("MarkerNumber").isValid()) {
             ScintillaNext *editor = currentEditor();
@@ -1722,7 +1723,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         }
     };
 
-    auto clear_mark_callback = [this, app] {
+    const auto clear_mark_callback = [this, app] {
         if (const auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             decorator && decorator->isEnabled() && sender()->property("MarkerNumber").isValid()) {
             ScintillaNext *editor = currentEditor();
@@ -1732,7 +1733,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     focusedView = new FocusedView(this);
 
-    auto showFocusedViewDialog = [this](ScintillaNext *editor) {
+    const auto showFocusedViewDialog = [this](ScintillaNext *editor) {
         if (!focusedViewDialog) {
             focusedViewDialog = new FocusedViewDialog(focusedView, this, this);
         }
@@ -1773,7 +1774,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
         }
-        auto result = focusedView->filterByBookmarks(editor);
+        const auto result = focusedView->filterByBookmarks(editor);
         ui->statusBar->showMessage(result.message, 4000);
         updateContentBasedUi(editor);
     });
@@ -1784,7 +1785,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
         }
-        auto result = focusedView->clearFilter(editor);
+        const auto result = focusedView->clearFilter(editor);
         ui->statusBar->showMessage(result.message, 4000);
         updateContentBasedUi(editor);
     });
@@ -1831,8 +1832,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         if (!editor) {
             return;
         }
-        int count = markOccurrences->markAll(editor);
-        QString query = markOccurrences->lastQuery();
+        const int count = markOccurrences->markAll(editor);
+        const QString query = markOccurrences->lastQuery();
         if (count > 0) {
             ui->statusBar->showMessage(tr("Marked %1 occurrence(s) of \"%2\"").arg(count).arg(query), 5000);
         } else if (!query.isEmpty()) {
@@ -1887,8 +1888,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            auto currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
-            int nextBookmarkedLine = bookMarkDecorator->nextBookmarkAfter(currentLine + 1);
+            const auto currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
+            const int nextBookmarkedLine = bookMarkDecorator->nextBookmarkAfter(currentLine + 1);
 
             if (nextBookmarkedLine != -1) {
                 editor->ensureVisibleEnforcePolicy(nextBookmarkedLine);
@@ -1931,8 +1932,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            auto currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
-            int prevBookmarkedLine = bookMarkDecorator->previousBookMarkBefore(currentLine - 1);
+            const auto currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
+            const int prevBookmarkedLine = bookMarkDecorator->previousBookMarkBefore(currentLine - 1);
 
             if (prevBookmarkedLine != -1) {
                 editor->ensureVisibleEnforcePolicy(prevBookmarkedLine);
@@ -1949,7 +1950,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            QString s = bookMarkDecorator->cutBookMarkedLines();
+            const QString s = bookMarkDecorator->cutBookMarkedLines();
 
             if (!s.isEmpty()) {
                 QApplication::clipboard()->setText(s);
@@ -1965,7 +1966,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            QString s = bookMarkDecorator->copyBookMarkedLines();
+            const QString s = bookMarkDecorator->copyBookMarkedLines();
 
             if (!s.isEmpty()) {
                 QApplication::clipboard()->setText(s);
@@ -1990,7 +1991,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     ui->actionNextTab->setShortcuts(ui->actionNextTab->shortcuts() << QKeySequence(Qt::CTRL | Qt::Key_PageDown));
     connect(ui->actionNextTab, &QAction::triggered, this, [this] {
         int index = dockedEditor->currentDockArea()->currentIndex();
-        int total = dockedEditor->currentDockArea()->dockWidgetsCount();
+        const int total = dockedEditor->currentDockArea()->dockWidgetsCount();
 
         index++;
         dockedEditor->currentDockArea()->setCurrentIndex(index < total ? index : 0);
@@ -2001,7 +2002,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     ui->actionPreviousTab->setShortcuts(ui->actionPreviousTab->shortcuts() << QKeySequence(Qt::CTRL | Qt::Key_PageUp));
     connect(ui->actionPreviousTab, &QAction::triggered, this, [this] {
         int index = dockedEditor->currentDockArea()->currentIndex();
-        int total = dockedEditor->currentDockArea()->dockWidgetsCount();
+        const int total = dockedEditor->currentDockArea()->dockWidgetsCount();
 
         index--;
         dockedEditor->currentDockArea()->setCurrentIndex(index >= 0 ? index : total - 1);
@@ -2009,7 +2010,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     ui->pushExitFullScreen->setParent(this);  // This is important
     ui->pushExitFullScreen->setVisible(false);
-#if defined(Q_OS_MACOS)
+#ifdef Q_OS_MACOS
     ui->actionFullScreen->setShortcuts({QKeySequence(Qt::META | Qt::CTRL | Qt::Key_F), QKeySequence(Qt::Key_F11)});
 #else
     ui->actionFullScreen->setShortcut(QKeySequence::FullScreen);
@@ -2101,7 +2102,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connect(actionNextChange, &QAction::triggered, this, [this] {
         if (auto *ed = currentEditor()) {
             if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
-                auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
+                const auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
                 int targetLine = dec->nextChangeAfter(curLine);
                 if (targetLine != -1) {
                     ed->gotoLine(targetLine);
@@ -2118,7 +2119,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connect(actionPrevChange, &QAction::triggered, this, [this] {
         if (auto *ed = currentEditor()) {
             if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
-                auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
+                const auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
                 int targetLine = dec->previousChangeBefore(curLine);
                 if (targetLine != -1) {
                     ed->gotoLine(targetLine);
