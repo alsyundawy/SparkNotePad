@@ -12,15 +12,18 @@
 #include "../ApplicationSettings.h"
 
 #include <QAction>
+#include <QColor>
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QHash>
+#include <QImage>
 #include <QStandardPaths>
 #include <QToolBar>
 #include <QMenu>
 #include <QWidget>
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <ranges>
@@ -77,7 +80,17 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 5. Microsoft Fluent UI (Regular Outline)
+    // 5. Windows 7 (Authentic)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("windows7"),
+        .displayName = tr("Windows 7"),
+        .description = tr("Authentic Windows 7 toolbar iconography"),
+        .basePath = QStringLiteral(":/icons/packs/windows7"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 6. Microsoft Fluent UI (Regular Outline)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("fluent_regular"),
         .displayName = tr("Microsoft Fluent UI (Regular Outline)"),
@@ -87,7 +100,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 6. Microsoft Fluent UI (Filled Solid)
+    // 7. Microsoft Fluent UI (Filled Solid)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("fluent_filled"),
         .displayName = tr("Microsoft Fluent UI (Filled Solid)"),
@@ -97,7 +110,17 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 7. Windows 10 Modern (Flat)
+    // 8. Windows 11 (Authentic Fluent)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("windows11"),
+        .displayName = tr("Windows 11"),
+        .description = tr("Authentic Windows 11 Fluent toolbar iconography"),
+        .basePath = QStringLiteral(":/icons/packs/windows11"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 9. Windows 10 Modern (Flat)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("windows10_flat"),
         .displayName = tr("Windows 10 Modern (Flat)"),
@@ -107,7 +130,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 8. Arch Linux (High-Contrast Blue)
+    // 10. Arch Linux (High-Contrast Blue)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("arch_blue"),
         .displayName = tr("Arch Linux (High-Contrast Blue)"),
@@ -117,7 +140,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 9. Notepad3 Warm (Classic Amber)
+    // 11. Notepad3 Warm (Classic Amber)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("notepad3_warm"),
         .displayName = tr("Notepad3 Warm (Classic Amber)"),
@@ -127,7 +150,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 10. Notepad++ (Green Accents)
+    // 12. Notepad++ (Green Accents)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("notepadpp_green"),
         .displayName = tr("Notepad++ (Green Accents)"),
@@ -137,7 +160,17 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 11. Monoline Minimal (Ultra-Thin)
+    // 13. Notepad++ (Classic)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("notepadPlusPlus"),
+        .displayName = tr("Notepad++ (Classic)"),
+        .description = tr("Authentic Notepad++ dual-resolution SVG and PNG suite"),
+        .basePath = QStringLiteral(":/icons/packs/notepadPlusPlus"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 14. Monoline Minimal (Ultra-Thin)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("monoline_minimal"),
         .displayName = tr("Monoline Minimal (Ultra-Thin)"),
@@ -244,16 +277,12 @@ const QList<ToolbarIconPack> &ToolbarIconManager::availablePacks() const {
 
 const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) const {
     QString targetId = packId;
-    if (targetId == QLatin1String("fluentUi") || targetId == QLatin1String("windows11")) {
+    if (targetId == QLatin1String("fluentUi")) {
         targetId = QStringLiteral("fluent_regular");
     } else if (targetId == QLatin1String("filledFluentUi")) {
         targetId = QStringLiteral("fluent_filled");
-    } else if (targetId == QLatin1String("windows7")) {
-        targetId = QStringLiteral("aero_win7");
     } else if (targetId == QLatin1String("archLinux")) {
         targetId = QStringLiteral("arch_blue");
-    } else if (targetId == QLatin1String("notepadPlusPlus")) {
-        targetId = QStringLiteral("notepadpp_green");
     }
 
     if (const auto it =
@@ -499,13 +528,91 @@ QString ToolbarIconManager::resolveIconFilePath(const ToolbarIconPack &pack, con
 }
 
 namespace {
-void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased) {
+QImage adaptImageForTheme(const QImage &src, bool isDark) {
+    if (src.isNull() || !isDark) {
+        return src;
+    }
+
+    QImage direct = src.convertToFormat(QImage::Format_ARGB32);
+    const int w = direct.width();
+    const int h = direct.height();
+
+    for (int y = 0; y < h; ++y) {
+        auto *scanline = reinterpret_cast<QRgb *>(direct.scanLine(y));
+        for (int x = 0; x < w; ++x) {
+            const QRgb px = scanline[x];
+            const int a = qAlpha(px);
+            if (a < 15) {
+                continue;
+            }
+
+            const int r = qRed(px);
+            const int g = qGreen(px);
+            const int b = qBlue(px);
+
+            int hue = 0;
+            int sat = 0;
+            int lit = 0;
+            QColor(r, g, b).getHsl(&hue, &sat, &lit);
+
+            if (sat < 30) {
+                // Monochrome wireframe / neutral outlines (e.g. monoline_minimal)
+                if (lit < 160) {
+                    // Remap dark wireframe pixels to bright silver-white in dark mode
+                    const int newLit = std::clamp(240 - lit, 180, 255);
+                    scanline[x] = QColor::fromHsl(hue, 0, newLit, a).rgba();
+                }
+            } else {
+                // Chromatic colors (e.g. notepadpp_green, notepad3_warm, pixel_fugue_like, material_sharp)
+                if (lit < 155) {
+                    // Boost lightness while strictly preserving hue and vividness
+                    const int newLit = std::clamp(155 + (lit * 75 / 155), 155, 235);
+                    scanline[x] = QColor::fromHsl(hue, sat, newLit, a).rgba();
+                }
+            }
+        }
+    }
+    return direct;
+}
+
+void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool isDark) {
+    if (filePath.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)) {
+        return;
+    }
+
+    const QImage baseImg(filePath);
+    if (baseImg.isNull()) {
+        return;
+    }
+
+    const QImage adapted = adaptImageForTheme(baseImg, isDark);
     static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
-    const QIcon baseIcon(filePath);
     for (const int sz : s_dpiSizes) {
-        if (const QPixmap px = baseIcon.pixmap(QSize(sz, sz)); !px.isNull()) {
+        if (const QPixmap px = QPixmap::fromImage(
+                adapted.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            !px.isNull()) {
             icon.addPixmap(px);
         }
+    }
+
+    // High-DPI (2x DPR) pixmaps for crisp rendering on Retina / 200% displays
+    if (QPixmap px32 = QPixmap::fromImage(
+            adapted.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        !px32.isNull()) {
+        px32.setDevicePixelRatio(2.0);
+        icon.addPixmap(px32);
+    }
+    if (QPixmap px48 = QPixmap::fromImage(
+            adapted.scaled(48, 48, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        !px48.isNull()) {
+        px48.setDevicePixelRatio(2.0);
+        icon.addPixmap(px48);
+    }
+    if (QPixmap px64 = QPixmap::fromImage(
+            adapted.scaled(64, 64, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        !px64.isNull()) {
+        px64.setDevicePixelRatio(2.0);
+        icon.addPixmap(px64);
     }
 
     if (!isPngBased) {
@@ -519,7 +626,8 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased) {
 
     const QString at2x = filePath.left(dotIdx) + QStringLiteral("@2x.png");
     if (QFileInfo::exists(at2x)) {
-        if (QPixmap px2(at2x); !px2.isNull()) {
+        if (const QImage at2xImg(at2x); !at2xImg.isNull()) {
+            QPixmap px2 = QPixmap::fromImage(adaptImageForTheme(at2xImg, isDark));
             px2.setDevicePixelRatio(2.0);
             icon.addPixmap(px2);
         }
@@ -527,14 +635,8 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased) {
 }
 
 QIcon createMenuResolutionIcon(const QIcon &icon) {
-    QIcon menuIcon;
-    if (const QPixmap p16 = icon.pixmap(QSize(16, 16)); !p16.isNull()) {
-        menuIcon.addPixmap(p16);
-    }
-    if (const QPixmap p32 = icon.pixmap(QSize(32, 32)); !p32.isNull()) {
-        menuIcon.addPixmap(p32);
-    }
-    return menuIcon.isNull() ? icon : menuIcon;
+    // Preserve full icon resolution and vector scalability for context menus and menubar
+    return icon;
 }
 
 void syncActionIcon(QAction *action, const ToolbarIconManager &mgr, bool isMenuContext) {
@@ -585,6 +687,7 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
     });
 
     if (hasMultiResolution) {
+        const bool isDark = m_isDarkMode;
         if (canonical == QStringLiteral("startRecord")) {
             QIcon dualIcon;
             for (const int sz : s_dpiSizes) {
@@ -592,11 +695,23 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
                     pack->basePath + QStringLiteral("/") + QString::number(sz) + QLatin1Char('x') + QString::number(sz);
                 const QString offPath = szDir + QStringLiteral("/startRecord.png");
                 const QString onPath = szDir + QStringLiteral("/stopRecord.png");
-                if (QFileInfo::exists(offPath)) {
-                    dualIcon.addFile(offPath, QSize(sz, sz), QIcon::Normal, QIcon::Off);
+                if (const QImage offImg(offPath); !offImg.isNull()) {
+                    const QPixmap offPx = QPixmap::fromImage(adaptImageForTheme(offImg, isDark));
+                    dualIcon.addPixmap(offPx, QIcon::Normal, QIcon::Off);
+                    if (sz == 32 || sz == 48 || sz == 64) {
+                        QPixmap px2 = offPx;
+                        px2.setDevicePixelRatio(2.0);
+                        dualIcon.addPixmap(px2, QIcon::Normal, QIcon::Off);
+                    }
                 }
-                if (QFileInfo::exists(onPath)) {
-                    dualIcon.addFile(onPath, QSize(sz, sz), QIcon::Normal, QIcon::On);
+                if (const QImage onImg(onPath); !onImg.isNull()) {
+                    const QPixmap onPx = QPixmap::fromImage(adaptImageForTheme(onImg, isDark));
+                    dualIcon.addPixmap(onPx, QIcon::Normal, QIcon::On);
+                    if (sz == 32 || sz == 48 || sz == 64) {
+                        QPixmap px2 = onPx;
+                        px2.setDevicePixelRatio(2.0);
+                        dualIcon.addPixmap(px2, QIcon::Normal, QIcon::On);
+                    }
                 }
             }
             if (!dualIcon.isNull()) {
@@ -610,8 +725,14 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
                 pack->basePath + QStringLiteral("/") + QString::number(sz) + QLatin1Char('x') + QString::number(sz);
             for (const QString &c : candidates) {
                 const QString filePath = szDir + QStringLiteral("/") + c + QStringLiteral(".png");
-                if (QFileInfo::exists(filePath)) {
-                    icon.addFile(filePath, QSize(sz, sz));
+                if (const QImage img(filePath); !img.isNull()) {
+                    const QPixmap px = QPixmap::fromImage(adaptImageForTheme(img, isDark));
+                    icon.addPixmap(px);
+                    if (sz == 32 || sz == 48 || sz == 64) {
+                        QPixmap px2 = px;
+                        px2.setDevicePixelRatio(2.0);
+                        icon.addPixmap(px2);
+                    }
                     break;
                 }
             }
@@ -622,19 +743,21 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
     }
 
     if (const QString filePath = resolveIconFilePath(*pack, canonical); !filePath.isEmpty()) {
+        const bool isDark = m_isDarkMode;
         if (canonical == QStringLiteral("startRecord")) {
             const QString onPath = resolveIconFilePath(*pack, QStringLiteral("stopRecord"));
             if (!onPath.isEmpty()) {
                 QIcon dualIcon;
                 dualIcon.addFile(filePath, QSize(), QIcon::Normal, QIcon::Off);
                 dualIcon.addFile(onPath, QSize(), QIcon::Normal, QIcon::On);
+                addHiDpiPixmaps(dualIcon, filePath, pack->isPngBased, isDark);
                 return dualIcon;
             }
         }
 
         QIcon icon;
         icon.addFile(filePath);
-        addHiDpiPixmaps(icon, filePath, pack->isPngBased);
+        addHiDpiPixmaps(icon, filePath, pack->isPngBased, isDark);
         return icon;
     }
 
@@ -680,10 +803,16 @@ void ToolbarIconManager::applyToMenu(const QMenu *menu) const {
         return;
     }
 
-    for (QAction *action : menu->actions()) {
-        syncActionIcon(action, *this, true);
-        if (action && action->menu()) {
-            applyToMenu(action->menu());
+    QList<const QMenu *> menuQueue;
+    menuQueue.append(menu);
+
+    while (!menuQueue.isEmpty()) {
+        const QMenu *currentMenu = menuQueue.takeFirst();
+        for (QAction *action : currentMenu->actions()) {
+            syncActionIcon(action, *this, true);
+            if (action && action->menu()) {
+                menuQueue.append(action->menu());
+            }
         }
     }
 }

@@ -24,19 +24,21 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 18 built-in packs (13 distinct multi-DPI packs + modernRibbon + 4 legacy/creative packs)
-        QCOMPARE(packs.size(), 18);
+        // 21 built-in packs (including windows7, windows11, and notepadPlusPlus)
+        QCOMPARE(packs.size(), 21);
 
         const QStringList expectedPackIds = {
             QStringLiteral("modernRibbon"),     QStringLiteral("fugue"),
             QStringLiteral("aero_vista"),       QStringLiteral("aero_win7"),
-            QStringLiteral("fluent_regular"),   QStringLiteral("fluent_filled"),
+            QStringLiteral("windows7"),         QStringLiteral("fluent_regular"),
+            QStringLiteral("fluent_filled"),    QStringLiteral("windows11"),
             QStringLiteral("windows10_flat"),   QStringLiteral("arch_blue"),
             QStringLiteral("notepad3_warm"),    QStringLiteral("notepadpp_green"),
-            QStringLiteral("monoline_minimal"), QStringLiteral("glossy_orange"),
-            QStringLiteral("pixel_fugue_like"), QStringLiteral("material_sharp"),
-            QStringLiteral("windowsXp"),        QStringLiteral("notepadNext"),
-            QStringLiteral("vibrantDuotone"),   QStringLiteral("monochrome"),
+            QStringLiteral("notepadPlusPlus"),  QStringLiteral("monoline_minimal"),
+            QStringLiteral("glossy_orange"),    QStringLiteral("pixel_fugue_like"),
+            QStringLiteral("material_sharp"),   QStringLiteral("windowsXp"),
+            QStringLiteral("notepadNext"),      QStringLiteral("vibrantDuotone"),
+            QStringLiteral("monochrome"),
         };
 
         for (const QString &id : expectedPackIds) {

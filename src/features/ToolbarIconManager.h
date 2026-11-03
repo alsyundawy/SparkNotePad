@@ -55,6 +55,9 @@ public:
     [[nodiscard]] QIcon actionIcon(const QString &actionName, const QString &packId = QString()) const {
         return getActionIcon(actionName, packId);
     }
+    [[nodiscard]] bool isDarkMode() const { return m_isDarkMode; }
+    void setDarkMode(bool dark) { m_isDarkMode = dark; }
+
     void applyToToolbar(QToolBar *toolBar) const;
     void applyToWindow(const QWidget *window, QToolBar *toolBar = nullptr) const;
     void applyToMenu(const QMenu *menu) const;
@@ -79,6 +82,7 @@ private:
     ApplicationSettings *m_settings{nullptr};
     QString m_currentPackId{QStringLiteral("modernRibbon")};
     QSize m_currentIconSize{24, 24};
+    bool m_isDarkMode{false};
     QList<ToolbarIconPack> m_packs;
 };
 

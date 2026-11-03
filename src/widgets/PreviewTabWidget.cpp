@@ -516,60 +516,77 @@ void PreviewTabWidget::openInBrowser() {
     }
 }
 
+namespace {
+struct CalloutDef {
+    const char *tag;
+    const char *icon;
+    const char *title;
+    const char *colorLight;
+    const char *colorDark;
+    const char *bgLight;
+    const char *bgDark;
+};
+
+constexpr std::array<CalloutDef, 5> s_callouts = {{
+    {"[!NOTE]", "ℹ️", "Note", "#0969da", "#2f81f7", "rgba(9, 105, 218, 0.08)", "rgba(47, 129, 247, 0.12)"},
+    {"[!TIP]", "💡", "Tip", "#1a7f37", "#3fb950", "rgba(26, 127, 55, 0.08)", "rgba(63, 185, 80, 0.12)"},
+    {"[!IMPORTANT]", "🟣", "Important", "#8250df", "#a371f7", "rgba(130, 80, 223, 0.08)", "rgba(163, 113, 247, 0.12)"},
+    {"[!WARNING]", "⚠️", "Warning", "#9a6700", "#d29922", "rgba(154, 103, 0, 0.08)", "rgba(210, 153, 34, 0.12)"},
+    {"[!CAUTION]", "🛑", "Caution", "#cf222e", "#f85149", "rgba(207, 34, 46, 0.08)", "rgba(248, 81, 73, 0.12)"},
+}};
+
+QString cleanCalloutInner(const QString &raw) {
+    QString inner = raw.trimmed();
+    if (inner.startsWith(QStringLiteral("<br />"))) {
+        return inner.mid(6).trimmed();
+    }
+    if (inner.startsWith(QStringLiteral("<br>"))) {
+        return inner.mid(4).trimmed();
+    }
+    if (inner.startsWith(QStringLiteral("<br/>"))) {
+        return inner.mid(5).trimmed();
+    }
+    return inner;
+}
+
+void replaceSingleCallout(QString &result, const CalloutDef &c, qsizetype &idx, bool isDark) {
+    const QString marker = QString::fromUtf8(c.tag);
+    const qsizetype bqStart = result.lastIndexOf(QStringLiteral("<blockquote"), idx);
+    if (bqStart == -1 || bqStart < idx - 100) {
+        idx += marker.length();
+        return;
+    }
+
+    const qsizetype bqEnd = result.indexOf(QStringLiteral("</blockquote>"), idx);
+    if (bqEnd == -1) {
+        idx += marker.length();
+        return;
+    }
+
+    const qsizetype contentStart = idx + marker.length();
+    const QString inner = cleanCalloutInner(result.mid(contentStart, bqEnd - contentStart));
+    const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
+    const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
+    const QString replacement =
+        QStringLiteral(
+            "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
+            "background-color: %2; border-radius: 4px;\">"
+            "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
+            "<div>%5</div></div>")
+            .arg(color, bg, QString::fromUtf8(c.icon), QCoreApplication::translate("PreviewTabWidget", c.title), inner);
+
+    result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
+    idx = bqStart + replacement.length();
+}
+}  // namespace
+
 QString PreviewTabWidget::enhanceCallouts(const QString &html, bool isDark) {
     QString result = html;
-    const struct CalloutDef {
-        const char *tag;
-        const char *icon;
-        const char *title;
-        const char *colorLight;
-        const char *colorDark;
-        const char *bgLight;
-        const char *bgDark;
-    } callouts[] = {
-        {"[!NOTE]", "ℹ️", "Note", "#0969da", "#2f81f7", "rgba(9, 105, 218, 0.08)", "rgba(47, 129, 247, 0.12)"},
-        {"[!TIP]", "💡", "Tip", "#1a7f37", "#3fb950", "rgba(26, 127, 55, 0.08)", "rgba(63, 185, 80, 0.12)"},
-        {"[!IMPORTANT]", "🟣", "Important", "#8250df", "#a371f7", "rgba(130, 80, 223, 0.08)",
-         "rgba(163, 113, 247, 0.12)"},
-        {"[!WARNING]", "⚠️", "Warning", "#9a6700", "#d29922", "rgba(154, 103, 0, 0.08)", "rgba(210, 153, 34, 0.12)"},
-        {"[!CAUTION]", "🛑", "Caution", "#cf222e", "#f85149", "rgba(207, 34, 46, 0.08)", "rgba(248, 81, 73, 0.12)"},
-    };
-
-    for (const auto &c : callouts) {
+    for (const auto &c : s_callouts) {
         const QString marker = QString::fromUtf8(c.tag);
         qsizetype idx = 0;
         while ((idx = result.indexOf(marker, idx, Qt::CaseInsensitive)) != -1) {
-            const qsizetype bqStart = result.lastIndexOf(QStringLiteral("<blockquote"), idx);
-            if (bqStart != -1 && bqStart >= idx - 100) {
-                const qsizetype bqEnd = result.indexOf(QStringLiteral("</blockquote>"), idx);
-                if (bqEnd != -1) {
-                    const qsizetype contentStart = idx + marker.length();
-                    QString inner = result.mid(contentStart, bqEnd - contentStart).trimmed();
-                    if (inner.startsWith(QStringLiteral("<br />"))) {
-                        inner = inner.mid(6).trimmed();
-                    } else if (inner.startsWith(QStringLiteral("<br>"))) {
-                        inner = inner.mid(4).trimmed();
-                    } else if (inner.startsWith(QStringLiteral("<br/>"))) {
-                        inner = inner.mid(5).trimmed();
-                    }
-                    const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
-                    const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
-                    const QString replacement =
-                        QStringLiteral(
-                            "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
-                            "background-color: %2; border-radius: 4px;\">"
-                            "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
-                            "<div>%5</div></div>")
-                            .arg(color, bg, QString::fromUtf8(c.icon), tr(c.title), inner);
-
-                    result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
-                    idx = bqStart + replacement.length();
-                } else {
-                    idx += marker.length();
-                }
-            } else {
-                idx += marker.length();
-            }
+            replaceSingleCallout(result, c, idx, isDark);
         }
     }
     return result;

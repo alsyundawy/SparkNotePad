@@ -25,4 +25,4 @@ jobs:
           check_filenames: true
           path: ./src
           skip: "*.lua,*.ui,*.svg"
-          ignore_words_list: doubleclick,msdos,prevEnd,curren,notin,nd,vai,thirdparty,onTop,ontop,currentY,uptodate,sistem
+          ignore_words_list: doubleclick,msdos,prevEnd,curren,notin,nd,vai,thirdparty,onTop,ontop,currentY,uptodate,sistem,paket,vektor,samping,profesional,modul
