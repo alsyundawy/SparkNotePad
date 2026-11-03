@@ -14,29 +14,38 @@
 #include "MarkdownSafePreviewDock.h"
 #include "ScintillaNext.h"
 #include "MainWindow.h"
+#include <QApplication>
+#include <QClipboard>
 #include <QComboBox>
 #include <QDesktopServices>
 #include <QDir>
 #include <QEvent>
 #include <QFile>
+#include <QFileDialog>
 #include "../features/ThemeManager.h"
+#include "../features/ThemePaletteData.h"
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QRegularExpression>
+#include <QScrollBar>
 #include <QSettings>
 #include <QTemporaryFile>
 #include <QTextDocument>
 #include <QVBoxLayout>
 
 MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
-    : QDockWidget(tr("HTML & Markdown Preview"), parent),
+    : QDockWidget(tr("HTML & Markdown Live Preview"), parent),
       browser(new QTextBrowser(this)),
       debounceTimer(new QTimer(this)),
       comboFormat(new QComboBox(this)),
       lblFormatStatus(new QLabel(this)),
+      lblStats(new QLabel(this)),
       btnOpenBrowser(new QPushButton(this)),
+      btnCopyHtml(new QPushButton(this)),
+      btnExportHtml(new QPushButton(this)),
       btnRefresh(new QPushButton(this)),
       btnZoomIn(new QPushButton(QStringLiteral("+"), this)),
       btnZoomOut(new QPushButton(QStringLiteral("−"), this)),
@@ -54,7 +63,7 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     setupUi();
 
     debounceTimer->setSingleShot(true);
-    debounceTimer->setInterval(250);
+    debounceTimer->setInterval(200);
     connect(debounceTimer, &QTimer::timeout, this, &MarkdownSafePreviewDock::renderPreview);
 
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
@@ -64,15 +73,17 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
 
 void MarkdownSafePreviewDock::setupUi() {
     auto *container = new QWidget(this);
+    container->setObjectName(QStringLiteral("previewContainer"));
     auto *mainLayout = new QVBoxLayout(container);
     mainLayout->setContentsMargins(4, 4, 4, 4);
     mainLayout->setSpacing(4);
 
     // Header Toolbar
     auto *topBar = new QWidget(container);
+    topBar->setObjectName(QStringLiteral("previewTopBar"));
     auto *topLayout = new QHBoxLayout(topBar);
-    topLayout->setContentsMargins(2, 2, 2, 2);
-    topLayout->setSpacing(4);
+    topLayout->setContentsMargins(6, 4, 6, 4);
+    topLayout->setSpacing(5);
 
     comboFormat->addItem(tr("Auto"), static_cast<int>(PreviewFormat::Auto));
     comboFormat->addItem(tr("Markdown"), static_cast<int>(PreviewFormat::Markdown));
@@ -82,37 +93,59 @@ void MarkdownSafePreviewDock::setupUi() {
     connect(comboFormat, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onFormatComboChanged);
     topLayout->addWidget(comboFormat);
 
-    lblFormatStatus->setStyleSheet(QStringLiteral(
-        "QLabel { font-size: 11px; padding: 2px 6px; border-radius: 3px; background-color: rgba(127,127,127,0.2); }"));
+    lblFormatStatus->setObjectName(QStringLiteral("lblFormatStatus"));
     lblFormatStatus->setText(tr("Auto"));
     topLayout->addWidget(lblFormatStatus);
+
+    lblStats->setObjectName(QStringLiteral("lblPreviewStats"));
+    lblStats->setText(tr("0 words • 0 min read"));
+    topLayout->addWidget(lblStats);
 
     topLayout->addStretch(1);
 
     btnZoomOut->setToolTip(tr("Zoom Out"));
     btnZoomOut->setFixedWidth(24);
+    btnZoomOut->setCursor(Qt::PointingHandCursor);
     connect(btnZoomOut, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomOut);
     topLayout->addWidget(btnZoomOut);
 
     btnResetZoom->setToolTip(tr("Reset Zoom (100%)"));
     btnResetZoom->setFixedWidth(40);
+    btnResetZoom->setCursor(Qt::PointingHandCursor);
     connect(btnResetZoom, &QPushButton::clicked, this, &MarkdownSafePreviewDock::resetZoom);
     topLayout->addWidget(btnResetZoom);
 
     btnZoomIn->setToolTip(tr("Zoom In"));
     btnZoomIn->setFixedWidth(24);
+    btnZoomIn->setCursor(Qt::PointingHandCursor);
     connect(btnZoomIn, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomIn);
     topLayout->addWidget(btnZoomIn);
 
     btnRefresh->setToolTip(tr("Refresh Preview"));
     btnRefresh->setText(QStringLiteral("↻"));
     btnRefresh->setFixedWidth(26);
+    btnRefresh->setCursor(Qt::PointingHandCursor);
     connect(btnRefresh, &QPushButton::clicked, this, &MarkdownSafePreviewDock::renderPreview);
     topLayout->addWidget(btnRefresh);
+
+    btnCopyHtml->setToolTip(tr("Copy Formatted HTML to Clipboard"));
+    btnCopyHtml->setText(QStringLiteral("📋"));
+    btnCopyHtml->setFixedWidth(26);
+    btnCopyHtml->setCursor(Qt::PointingHandCursor);
+    connect(btnCopyHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::copyHtml);
+    topLayout->addWidget(btnCopyHtml);
+
+    btnExportHtml->setToolTip(tr("Export as Standalone HTML File..."));
+    btnExportHtml->setText(QStringLiteral("⤓"));
+    btnExportHtml->setFixedWidth(26);
+    btnExportHtml->setCursor(Qt::PointingHandCursor);
+    connect(btnExportHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportHtml);
+    topLayout->addWidget(btnExportHtml);
 
     btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
     btnOpenBrowser->setText(QStringLiteral("🌐"));
     btnOpenBrowser->setFixedWidth(26);
+    btnOpenBrowser->setCursor(Qt::PointingHandCursor);
     connect(btnOpenBrowser, &QPushButton::clicked, this, &MarkdownSafePreviewDock::openInBrowser);
     topLayout->addWidget(btnOpenBrowser);
 
@@ -213,8 +246,12 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
     const QString accent = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#0969da");
     const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
     const QString textPri = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
+    const QString textSec = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
     const QString bgColor = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
-    const QString fgColor = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
+    const QString border = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
+    const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#f6f8fa");
+    const QString badgeBg =
+        isDark ? QStringLiteral("rgba(56, 139, 253, 0.15)") : QStringLiteral("rgba(9, 105, 218, 0.1)");
     const QString selColor =
         isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
 
@@ -230,14 +267,55 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
                                   "  border-bottom: 2px solid %3;"
                                   "  font-weight: 600;"
                                   "  font-size: 11px;"
+                                  "}"
+                                  "QWidget#previewTopBar {"
+                                  "  background-color: %1;"
+                                  "  border: 1px solid %4;"
+                                  "  border-radius: 6px;"
+                                  "}"
+                                  "QWidget#previewTopBar QComboBox {"
+                                  "  background-color: %5;"
+                                  "  color: %2;"
+                                  "  border: 1px solid %4;"
+                                  "  border-radius: 4px;"
+                                  "  padding: 2px 6px;"
+                                  "  font-size: 11px;"
+                                  "}"
+                                  "QWidget#previewTopBar QComboBox:hover {"
+                                  "  border-color: %3;"
+                                  "}"
+                                  "QLabel#lblFormatStatus {"
+                                  "  font-size: 10px;"
+                                  "  font-weight: 600;"
+                                  "  padding: 2px 8px;"
+                                  "  border-radius: 10px;"
+                                  "  background-color: %6;"
+                                  "  color: %3;"
+                                  "  border: 1px solid %3;"
+                                  "}"
+                                  "QLabel#lblPreviewStats {"
+                                  "  font-size: 10px;"
+                                  "  color: %7;"
+                                  "  padding: 2px 6px;"
+                                  "}"
+                                  "QWidget#previewTopBar QPushButton {"
+                                  "  background-color: %8;"
+                                  "  color: %2;"
+                                  "  border: 1px solid %4;"
+                                  "  border-radius: 4px;"
+                                  "  font-size: 11px;"
+                                  "}"
+                                  "QWidget#previewTopBar QPushButton:hover {"
+                                  "  border-color: %3;"
+                                  "  color: %3;"
                                   "}")
-                                  .arg(dockBg, textPri, accent);
+                                  .arg(dockBg, textPri, accent, border, bgColor, badgeBg, textSec, btnBg);
     setStyleSheet(dockStyle);
 
     browser->setStyleSheet(
         QStringLiteral(
             "QTextBrowser { background-color: %1; color: %2; border: none; selection-background-color: %3; }")
-            .arg(bgColor, fgColor, selColor));
+            .arg(bgColor, textPri, selColor));
 
     browser->document()->setDefaultStyleSheet(buildGitHubStyleSheet(isDark));
     m_isUpdatingTheme = false;
@@ -257,7 +335,7 @@ QString MarkdownSafePreviewDock::buildGitHubStyleSheet(bool isDark) const {
                "body { "
                "  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, "
                "sans-serif; "
-               "  font-size: %1px; line-height: 1.5; color: %2; background-color: %3; margin: 0; padding: 16px 20px; "
+               "  font-size: %1px; line-height: 1.6; color: %2; background-color: %3; margin: 0; padding: 18px 24px; "
                "} "
                "h1, h2, h3, h4, h5, h6 { "
                "  font-weight: 600; line-height: 1.25; margin-top: 24px; margin-bottom: 16px; color: %2; "
@@ -268,33 +346,35 @@ QString MarkdownSafePreviewDock::buildGitHubStyleSheet(bool isDark) const {
                "h4 { font-size: 1em; } "
                "h5 { font-size: 0.875em; } "
                "h6 { font-size: 0.85em; color: %5; } "
-               "p { margin-top: 0; margin-bottom: 16px; line-height: 1.5; } "
+               "p { margin-top: 0; margin-bottom: 16px; line-height: 1.6; } "
                "blockquote { "
-               "  margin: 0 0 16px 0; padding: 0 1em; color: %5; border-left: 0.25em solid %4; "
+               "  margin: 0 0 16px 0; padding: 6px 16px; color: %5; border-left: 4px solid %4; background-color: %7; "
+               "border-radius: 0 4px 4px 0; "
                "} "
                "ul, ol { margin-top: 0; margin-bottom: 16px; padding-left: 2em; } "
-               "li { margin-top: 0.25em; } "
+               "li { margin-top: 0.3em; } "
                "code { "
-               "  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; "
+               "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; "
                "  font-size: 85%; padding: 0.2em 0.4em; background-color: %6; border-radius: 6px; "
                "} "
                "pre { "
                "  margin-top: 0; margin-bottom: 16px; padding: 16px; line-height: 1.45; "
-               "  background-color: %7; border-radius: 6px; "
-               "  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 85%; "
+               "  background-color: %7; border: 1px solid %4; border-radius: 8px; "
+               "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; "
+               "font-size: 85%; "
                "} "
                "table { border-collapse: collapse; border-spacing: 0; margin-top: 0; margin-bottom: 16px; width: 100%; "
                "} "
-               "th, td { padding: 6px 13px; border: 1px solid %4; } "
+               "th, td { padding: 8px 14px; border: 1px solid %4; } "
                "th { font-weight: 600; background-color: %7; } "
                "tr:nth-child(2n) { background-color: %7; } "
-               "hr { height: 0.25em; padding: 0; margin: 24px 0; background-color: %4; border: 0; } "
-               "a { color: %8; text-decoration: none; } "
+               "hr { height: 2px; padding: 0; margin: 24px 0; background-color: %4; border: 0; } "
+               "a { color: %8; text-decoration: none; font-weight: 500; } "
                "kbd { "
-               "  display: inline-block; padding: 3px 5px; font-size: 11px; line-height: 10px; color: %2; "
-               "  background-color: %7; border: 1px solid %4; border-radius: 6px; "
+               "  display: inline-block; padding: 3px 6px; font-size: 11px; line-height: 10px; color: %2; "
+               "  background-color: %7; border: 1px solid %4; border-radius: 6px; box-shadow: inset 0 -1px 0 %4; "
                "} "
-               "img { max-width: 100%; height: auto; }")
+               "img { max-width: 100%; height: auto; border-radius: 6px; }")
         .arg(QString::number(baseFontSize), textColor, bgColor, borderColor, mutedColor, codeBg, blockBg, linkColor);
 }
 
@@ -320,11 +400,73 @@ QString MarkdownSafePreviewDock::generateFullHtmlDocument(const QString &bodyHtm
         .arg(title.toHtmlEscaped(), css, bodyHtml);
 }
 
+QString MarkdownSafePreviewDock::enhanceCallouts(const QString &html, bool isDark) {
+    QString result = html;
+    const struct CalloutDef {
+        const char *tag;
+        const char *icon;
+        const char *title;
+        const char *colorLight;
+        const char *colorDark;
+        const char *bgLight;
+        const char *bgDark;
+    } callouts[] = {
+        {"[!NOTE]", "ℹ️", "Note", "#0969da", "#2f81f7", "rgba(9, 105, 218, 0.08)", "rgba(47, 129, 247, 0.12)"},
+        {"[!TIP]", "💡", "Tip", "#1a7f37", "#3fb950", "rgba(26, 127, 55, 0.08)", "rgba(63, 185, 80, 0.12)"},
+        {"[!IMPORTANT]", "🟣", "Important", "#8250df", "#a371f7", "rgba(130, 80, 223, 0.08)",
+         "rgba(163, 113, 247, 0.12)"},
+        {"[!WARNING]", "⚠️", "Warning", "#9a6700", "#d29922", "rgba(154, 103, 0, 0.08)", "rgba(210, 153, 34, 0.12)"},
+        {"[!CAUTION]", "🛑", "Caution", "#cf222e", "#f85149", "rgba(207, 34, 46, 0.08)", "rgba(248, 81, 73, 0.12)"},
+    };
+
+    for (const auto &c : callouts) {
+        const QString marker = QString::fromUtf8(c.tag);
+        qsizetype idx = 0;
+        while ((idx = result.indexOf(marker, idx, Qt::CaseInsensitive)) != -1) {
+            const qsizetype bqStart = result.lastIndexOf(QStringLiteral("<blockquote"), idx);
+            if (bqStart != -1 && bqStart >= idx - 100) {
+                const qsizetype bqEnd = result.indexOf(QStringLiteral("</blockquote>"), idx);
+                if (bqEnd != -1) {
+                    const qsizetype contentStart = idx + marker.length();
+                    QString inner = result.mid(contentStart, bqEnd - contentStart).trimmed();
+                    if (inner.startsWith(QStringLiteral("<br />"))) {
+                        inner = inner.mid(6).trimmed();
+                    } else if (inner.startsWith(QStringLiteral("<br>"))) {
+                        inner = inner.mid(4).trimmed();
+                    } else if (inner.startsWith(QStringLiteral("<br/>"))) {
+                        inner = inner.mid(5).trimmed();
+                    }
+                    const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
+                    const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
+                    const QString replacement =
+                        QStringLiteral(
+                            "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
+                            "background-color: %2; border-radius: 4px;\">"
+                            "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
+                            "<div>%5</div></div>")
+                            .arg(color, bg, QString::fromUtf8(c.icon), tr(c.title), inner);
+
+                    result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
+                    idx = bqStart + replacement.length();
+                } else {
+                    idx += marker.length();
+                }
+            } else {
+                idx += marker.length();
+            }
+        }
+    }
+    return result;
+}
+
 void MarkdownSafePreviewDock::renderPreview() {
     if (!currentEditor) {
         browser->clear();
         if (lblFormatStatus) {
             lblFormatStatus->setText(tr("No Document"));
+        }
+        if (lblStats) {
+            lblStats->setText(tr("0 words • 0 min read"));
         }
         return;
     }
@@ -336,11 +478,26 @@ void MarkdownSafePreviewDock::renderPreview() {
         (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
 
     updateFormatLabel(effectiveFormat);
+    updateStatsLabel(content);
 
+    // Preserve scroll position ratio across incremental edits
+    auto *const scrollBar = browser->verticalScrollBar();
+    const double scrollRatio = (scrollBar && scrollBar->maximum() > 0)
+                                   ? static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum())
+                                   : 0.0;
+
+    const bool isDark = ThemeManager::instance()->isDarkActive();
     if (effectiveFormat == PreviewFormat::Html) {
         browser->setHtml(content);
     } else {
-        browser->setMarkdown(content);
+        QTextDocument doc;
+        doc.setMarkdown(content);
+        const QString enhanced = enhanceCallouts(doc.toHtml(), isDark);
+        browser->setHtml(enhanced);
+    }
+
+    if (scrollBar && scrollBar->maximum() > 0 && scrollRatio > 0.0) {
+        scrollBar->setValue(static_cast<int>(scrollRatio * scrollBar->maximum()));
     }
 }
 
@@ -360,6 +517,20 @@ void MarkdownSafePreviewDock::updateFormatLabel(PreviewFormat effectiveFormat) {
     } else {
         lblFormatStatus->setText(tr("Markdown"));
     }
+}
+
+void MarkdownSafePreviewDock::updateStatsLabel(const QString &text) {
+    if (!lblStats) {
+        return;
+    }
+    if (text.isEmpty()) {
+        lblStats->setText(tr("0 words • 0 min read"));
+        return;
+    }
+    const QStringList words = text.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts);
+    const qsizetype wordCount = words.size();
+    const qsizetype minutes = std::max(static_cast<qsizetype>(1), (wordCount + 199) / 200);
+    lblStats->setText(tr("%1 words • %2 min read").arg(wordCount).arg(minutes));
 }
 
 void MarkdownSafePreviewDock::setPreviewFormat(PreviewFormat newFormat) {
@@ -390,6 +561,74 @@ void MarkdownSafePreviewDock::setAutoShowEnabled(bool enabled) {
     QSettings settings;
     settings.setValue(QStringLiteral("Gui/AutoShowMarkdownHtmlPreview"), enabled);
     emit autoShowChanged(enabled);
+}
+
+void MarkdownSafePreviewDock::copyHtml() {
+    if (!currentEditor) {
+        return;
+    }
+    const QString rawContent = QString::fromUtf8(currentEditor->getText());
+    const PreviewFormat effectiveFormat =
+        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+    QString bodyHtml;
+    if (effectiveFormat == PreviewFormat::Html) {
+        bodyHtml = rawContent;
+    } else {
+        QTextDocument doc;
+        doc.setMarkdown(rawContent);
+        bodyHtml = doc.toHtml();
+    }
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    const QString fullHtml = generateFullHtmlDocument(bodyHtml, isDark);
+    QApplication::clipboard()->setText(fullHtml);
+    if (lblFormatStatus) {
+        const QString orig = lblFormatStatus->text();
+        lblFormatStatus->setText(tr("HTML Copied!"));
+        QTimer::singleShot(2000, this, [this, orig] {
+            if (lblFormatStatus) {
+                lblFormatStatus->setText(orig);
+            }
+        });
+    }
+}
+
+void MarkdownSafePreviewDock::exportHtml() {
+    if (!currentEditor) {
+        return;
+    }
+    QString defaultName = currentEditor->getName();
+    if (defaultName.isEmpty()) {
+        defaultName = tr("Untitled");
+    }
+    if (!defaultName.endsWith(QStringLiteral(".html"), Qt::CaseInsensitive)) {
+        if (const auto dot = defaultName.lastIndexOf('.'); dot > 0) {
+            defaultName = defaultName.left(dot);
+        }
+        defaultName += QStringLiteral(".html");
+    }
+    const QString savePath = QFileDialog::getSaveFileName(this, tr("Export HTML Document"), defaultName,
+                                                          tr("HTML Documents (*.html *.htm);;All Files (*)"));
+    if (savePath.isEmpty()) {
+        return;
+    }
+    const QString rawContent = QString::fromUtf8(currentEditor->getText());
+    const PreviewFormat effectiveFormat =
+        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+    QString bodyHtml;
+    if (effectiveFormat == PreviewFormat::Html) {
+        bodyHtml = rawContent;
+    } else {
+        QTextDocument doc;
+        doc.setMarkdown(rawContent);
+        bodyHtml = doc.toHtml();
+    }
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    const QString fullHtml = generateFullHtmlDocument(bodyHtml, isDark);
+    QFile file(savePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        file.write(fullHtml.toUtf8());
+        file.close();
+    }
 }
 
 void MarkdownSafePreviewDock::openInBrowser() {

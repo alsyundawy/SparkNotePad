@@ -33,16 +33,23 @@ SparkNotePad v1.3.8 introduces an extensive toolbar personalization architecture
   - Changing icon packs now propagates dynamically to all top-level menus in `menuBar()`, tab right-click context menus, and the Scintilla editor right-click context menu.
   - Default toolbar icon size is 24x24 and default menu icon size is 16x16 (with 32x32 retina pixmaps).
   - Icon size selection immediately resizes and updates toolbar geometry dynamically.
-- **In-Tab HTML & Markdown Preview (`PreviewTabWidget`)**:
+- **In-Tab & Dock HTML/Markdown Live Preview (`PreviewTabWidget` & `MarkdownSafePreviewDock`)**:
   - Center dock area (`ads::CenterDockWidgetArea`) in-tab preview for `.html` and `.md` files without opening detached external windows.
   - Tab right-click context menu provides instant "Preview HTML in New Tab" and "Preview Markdown in New Tab".
-  - Dedicated "Preview in Default Browser" action for `.html` documents.
+  - Dedicated "Preview in Default Browser" action for `.html` and `.md` documents (`Ctrl+Alt+B`).
   - Modern, elegant GitHub/DevDocs styling with adaptive Dark and Light mode parity, zoom controls (+ / - / reset), refresh button, and CVE-2026-20841 sandboxing.
-- **Modern File Commander Folder & File Browser (`FileBrowserDock`)**:
-  - Re-engineered file browser dock with quick bookmarks (Home, Documents, Downloads, Desktop, Workspace).
-  - Crisp SVG navigation iconography (Up, Folder, Refresh).
+  - Live document stats pill badge displaying word count and estimated reading time (`%1 words • %2 min read`).
+  - GitHub Alert Callout formatting for `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, and `[!CAUTION]` with distinct theme accents, subtle background tints, and SVG icons.
+  - Quick action buttons to "Copy HTML" to clipboard and "Export HTML" as a standalone, fully-styled web document.
+  - Scroll position ratio preservation across incremental editing to prevent cursor jumping.
+- **Notepad-Standard Menu Reorganization (`MainWindow`)**:
+  - Streamlined `View` menu with a dedicated `Side Panels` sub-menu grouping all 9 workspace/dock panels (File Browser, Workspace, Function List, File List, Document Map, etc.).
+  - Added dedicated `HTML & Markdown Preview` sub-menu under `View` and `Tools` with direct keyboard shortcuts.
+- **Modern File Commander & Workspace TreeView Selection Highlight Fix**:
+  - Resolved selection box clipping/cropping in `FolderAsWorkspaceDock` and `FileBrowserDock` via full-row selection (`show-decoration-selected: 1`, `branch:selected`, full focus).
+  - Highlighting seamlessly tracks active theme selection colors with rounded corners and uniform row heights.
+  - Quick bookmarks (Home, Documents, Downloads, Desktop, Workspace) with crisp SVG icons.
   - Bottom status bar displaying file count, folder count, available disk space (`QStorageInfo`), and selection summary.
-  - Adaptive styling harmonized across dark and light themes.
 - **Reversible Hex / Binary View (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Real-time in-place hex inspection displaying 8-digit offset, 16 hex bytes with 8+8 grouping, and ASCII character column.
   - Reversible toggle restoring original text, language lexer, and read-only flags seamlessly.

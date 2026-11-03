@@ -60,6 +60,8 @@ void FileBrowserDock::setupModel() {
 
     ui->treeView->setModel(m_model);
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->treeView->setAllColumnsShowFocus(true);
+    ui->treeView->setUniformRowHeights(true);
     ui->treeView->setColumnWidth(0, 190);
     ui->treeView->setColumnWidth(1, 75);
     ui->treeView->setColumnWidth(2, 75);
@@ -88,14 +90,13 @@ void FileBrowserDock::setupCommanderBar() {
     }};
 
     for (const auto &bm : bookmarks) {
-        if (bm.path.isEmpty() || !QDir(bm.path).exists()) {
-            continue;
+        if (!bm.path.isEmpty() && QDir(bm.path).exists()) {
+            auto *btn = new QPushButton(bm.label, m_bookmarkBar);
+            btn->setToolTip(QStringLiteral("%1: %2").arg(bm.toolTip, bm.path));
+            btn->setCursor(Qt::PointingHandCursor);
+            connect(btn, &QPushButton::clicked, this, [this, path = bm.path]() { setCurrentDirectory(path); });
+            barLayout->addWidget(btn);
         }
-        auto *btn = new QPushButton(bm.label, m_bookmarkBar);
-        btn->setToolTip(QStringLiteral("%1: %2").arg(bm.toolTip, bm.path));
-        btn->setCursor(Qt::PointingHandCursor);
-        connect(btn, &QPushButton::clicked, this, [this, path = bm.path]() { setCurrentDirectory(path); });
-        barLayout->addWidget(btn);
     }
 
     if (const int filterIdx = ui->verticalLayout->indexOf(ui->filterLineEdit); filterIdx >= 0) {
@@ -393,6 +394,8 @@ void FileBrowserDock::updateCommanderTheme() {
     const QString cardBg = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
     const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#f6f8fa");
     const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
+    const QString inactiveSel =
+        isDark ? QStringLiteral("rgba(56, 139, 253, 0.25)") : QStringLiteral("rgba(9, 105, 218, 0.15)");
 
     const QString style = QStringLiteral(
                               "QDockWidget {"
@@ -448,6 +451,15 @@ void FileBrowserDock::updateCommanderTheme() {
                               "  border: 1px solid %3;"
                               "  border-radius: 4px;"
                               "  font-size: 11px;"
+                              "  show-decoration-selected: 1;"
+                              "  selection-background-color: %4;"
+                              "  selection-color: #ffffff;"
+                              "  outline: none;"
+                              "}"
+                              "QTreeView::item {"
+                              "  min-height: 22px;"
+                              "  padding: 2px 4px;"
+                              "  border-radius: 4px;"
                               "}"
                               "QTreeView::item:hover {"
                               "  background-color: %3;"
@@ -455,6 +467,16 @@ void FileBrowserDock::updateCommanderTheme() {
                               "QTreeView::item:selected {"
                               "  background-color: %4;"
                               "  color: #ffffff;"
+                              "}"
+                              "QTreeView::item:selected:!active {"
+                              "  background-color: %8;"
+                              "  color: %2;"
+                              "}"
+                              "QTreeView::branch:selected {"
+                              "  background-color: %4;"
+                              "}"
+                              "QTreeView::branch:selected:!active {"
+                              "  background-color: %8;"
                               "}"
                               "QHeaderView::section {"
                               "  background-color: %5;"
@@ -475,7 +497,7 @@ void FileBrowserDock::updateCommanderTheme() {
                               "  font-size: 10px;"
                               "  font-weight: 500;"
                               "}")
-                              .arg(cardBg, textPri, border, accent, btnBg, textSec, dockBg);
+                              .arg(cardBg, textPri, border, accent, btnBg, textSec, dockBg, inactiveSel);
 
     setStyleSheet(style);
     m_isUpdatingTheme = false;

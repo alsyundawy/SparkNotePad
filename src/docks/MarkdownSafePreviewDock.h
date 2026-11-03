@@ -50,6 +50,8 @@ public slots:
     void setPreviewFormat(PreviewFormat newFormat);
     void setAutoShowEnabled(bool enabled);
     void openInBrowser();
+    void copyHtml();
+    void exportHtml();
     void zoomIn();
     void zoomOut();
     void resetZoom();
@@ -68,9 +70,11 @@ private slots:
 private:
     void setupUi();
     void updateFormatLabel(PreviewFormat effectiveFormat);
+    void updateStatsLabel(const QString &text);
     void applyGitHubTheme();
     [[nodiscard]] QString buildGitHubStyleSheet(bool isDark) const;
     [[nodiscard]] QString generateFullHtmlDocument(const QString &bodyHtml, bool isDark) const;
+    [[nodiscard]] static QString enhanceCallouts(const QString &html, bool isDark);
 
     QTextBrowser *browser = nullptr;
     QTimer *debounceTimer = nullptr;
@@ -78,7 +82,10 @@ private:
 
     QComboBox *comboFormat = nullptr;
     QLabel *lblFormatStatus = nullptr;
+    QLabel *lblStats = nullptr;
     QPushButton *btnOpenBrowser = nullptr;
+    QPushButton *btnCopyHtml = nullptr;
+    QPushButton *btnExportHtml = nullptr;
     QPushButton *btnRefresh = nullptr;
     QPushButton *btnZoomIn = nullptr;
     QPushButton *btnZoomOut = nullptr;

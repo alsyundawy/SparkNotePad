@@ -271,7 +271,7 @@ QList<QKeySequence> parseShortcutSequences(const QVariant &value) {
 }
 }  // namespace
 
-MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
+MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:S138)
     : ui(new Ui::MainWindow),                         // NOSONAR(cpp:S5025)
       app(app),
       zoomEventWatcher(new ZoomEventWatcher(this)),
@@ -1407,6 +1407,16 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     togglePreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
     menuPreview->addAction(togglePreviewAction);
 
+    auto *actionOpenPreviewTab = new QAction(tr("Open Preview in &New Tab"), this);
+    actionOpenPreviewTab->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
+    actionOpenPreviewTab->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
+    connect(actionOpenPreviewTab, &QAction::triggered, this, [this] {
+        if (auto *ed = currentEditor()) {
+            openPreviewInNewTab(ed, isMarkdownOrHtml(ed));
+        }
+    });
+    menuPreview->addAction(actionOpenPreviewTab);
+
     auto *actionPreviewInBrowser = new QAction(tr("Open in Default &Web Browser..."), this);
     actionPreviewInBrowser->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
     actionPreviewInBrowser->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
@@ -1457,6 +1467,22 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     menuPreview->addAction(actModeAuto);
     menuPreview->addAction(actModeMd);
     menuPreview->addAction(actModeHtml);
+
+    menuPreview->addSeparator();
+
+    auto *actionCopyPreviewHtml = new QAction(tr("&Copy Formatted HTML"), this);
+    actionCopyPreviewHtml->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+    connect(actionCopyPreviewHtml, &QAction::triggered, markdownSafePreviewDock, &MarkdownSafePreviewDock::copyHtml);
+    menuPreview->addAction(actionCopyPreviewHtml);
+
+    auto *actionExportPreviewHtml = new QAction(tr("&Export as HTML Document..."), this);
+    actionExportPreviewHtml->setIcon(QIcon(QStringLiteral(":/icons/save.svg")));
+    connect(actionExportPreviewHtml, &QAction::triggered, markdownSafePreviewDock, &MarkdownSafePreviewDock::exportHtml);
+    menuPreview->addAction(actionExportPreviewHtml);
+
+    // Also place HTML & Markdown Preview prominently in the View menu
+    ui->menuView->addSeparator();
+    ui->menuView->addMenu(menuPreview);
 
     // Insert Tools menu before Macro in menubar
     menuBar()->insertMenu(ui->menuMacro->menuAction(), menuTools);
@@ -2393,7 +2419,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     auto *toggleLanguageInspectorAction = languageInspectorDock->toggleViewAction();
     toggleLanguageInspectorAction->setText(tr("Language Inspector"));
     toggleLanguageInspectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_I));
-    ui->menuView->addAction(toggleLanguageInspectorAction);
 
     auto *luaConsoleDock = new LuaConsoleDock(app->getLuaState(), this);
     luaConsoleDock->hide();
@@ -2413,19 +2438,16 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     auto *toggleFileBrowserAction = fileBrowserDock->toggleViewAction();
     toggleFileBrowserAction->setText(tr("File Browser"));
     toggleFileBrowserAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_O));
-    ui->menuView->addAction(toggleFileBrowserAction);
     connect(fileBrowserDock, &FileBrowserDock::fileOpenRequested, this, &MainWindow::openFile);
 
     auto *fawDock = new FolderAsWorkspaceDock(this);
     fawDock->hide();
     addDockWidget(Qt::LeftDockWidgetArea, fawDock);
-    ui->menuView->addAction(fawDock->toggleViewAction());
     connect(fawDock, &FolderAsWorkspaceDock::fileDoubleClicked, this, &MainWindow::openFile);
 
     auto *fileListDock = new FileListDock(this);
     fileListDock->hide();
     addDockWidget(Qt::LeftDockWidgetArea, fileListDock);
-    ui->menuView->addAction(fileListDock->toggleViewAction());
 
     functionListDock = new FunctionListDock(this);
     functionListDock->hide();
@@ -2433,13 +2455,21 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776)
     auto *toggleFunctionListAction = functionListDock->toggleViewAction();
     toggleFunctionListAction->setText(tr("Function List"));
     toggleFunctionListAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
-    ui->menuView->addAction(toggleFunctionListAction);
 
-    auto *toggleMarkdownPreviewAction = markdownSafePreviewDock->toggleViewAction();
-    toggleMarkdownPreviewAction->setText(tr("HTML && Markdown Live Preview"));
-    toggleMarkdownPreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
-    toggleMarkdownPreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
-    ui->menuView->addAction(toggleMarkdownPreviewAction);
+    // Group side panels cleanly into View -> Side Panels submenu
+    auto *menuPanels = new QMenu(tr("&Side Panels"), this);
+    menuPanels->setIcon(QIcon(QStringLiteral(":/icons/layout.svg")));
+    menuPanels->addAction(toggleFileBrowserAction);
+    menuPanels->addAction(fawDock->toggleViewAction());
+    menuPanels->addAction(fileListDock->toggleViewAction());
+    menuPanels->addAction(toggleFunctionListAction);
+    menuPanels->addAction(srDock->toggleViewAction());
+    menuPanels->addSeparator();
+    menuPanels->addAction(toggleLanguageInspectorAction);
+    menuPanels->addAction(editorInspectorDock->toggleViewAction());
+    menuPanels->addAction(debugLogDock->toggleViewAction());
+    menuPanels->addAction(luaConsoleDock->toggleViewAction());
+    ui->menuView->addMenu(menuPanels);
 
     connect(app->getSettings(), &ApplicationSettings::showMenuBarChanged, this, [this](bool showMenuBar) {
         // Don't 'hide' it, else the actions won't be enabled
@@ -3512,7 +3542,7 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     }
 }
 
-bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) const {
+bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) {
     if (!editor) {
         return false;
     }
@@ -3826,7 +3856,7 @@ MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext
     return Cancel;
 }
 
-void MainWindow::newWindow() const {
+void MainWindow::newWindow() {
 #if defined(Q_OS_MACOS)
     if (QDir dir(QCoreApplication::applicationFilePath()); dir.cdUp() && dir.cdUp() && dir.cdUp()) {
         const QString bundlePath = dir.absolutePath();
@@ -5225,22 +5255,23 @@ void MainWindow::openPreviewInNewTab(ScintillaNext *editor, bool isHtml) {
     }
 }
 
-void MainWindow::openInDefaultBrowser(const QString &filePath) const {
+void MainWindow::openInDefaultBrowser(const QString &filePath) {
     if (filePath.isEmpty()) {
         return;
     }
     QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
 }
 
-static QString formatHexDump(const QByteArray &originalBytes) {
+namespace {
+QString formatHexDump(const QByteArray &originalBytes) {
     QString hexDump;
-    const auto totalBytes = static_cast<int>(originalBytes.size());
+    const auto totalBytes = static_cast<qsizetype>(originalBytes.size());
     hexDump.reserve(totalBytes * 5);
 
-    for (int i = 0; i < totalBytes; i += 16) {
+    for (qsizetype i = 0; i < totalBytes; i += 16) {
         hexDump.append(QString("%1  ").arg(i, 8, 16, QLatin1Char('0')).toUpper());
 
-        for (int j = 0; j < 16; ++j) {
+        for (qsizetype j = 0; j < 16; ++j) {
             if (i + j < totalBytes) {
                 const auto byteVal = static_cast<unsigned char>(originalBytes.at(i + j));
                 hexDump.append(QString("%1 ").arg(byteVal, 2, 16, QLatin1Char('0')).toUpper());
@@ -5254,7 +5285,7 @@ static QString formatHexDump(const QByteArray &originalBytes) {
 
         hexDump.append(QLatin1String(" |"));
 
-        for (int j = 0; j < 16 && (i + j) < totalBytes; ++j) {
+        for (qsizetype j = 0; j < 16 && (i + j) < totalBytes; ++j) {
             const auto ch = static_cast<unsigned char>(originalBytes.at(i + j));
             hexDump.append((ch >= 32 && ch <= 126) ? QChar(ch) : QLatin1Char('.'));
         }
@@ -5262,6 +5293,7 @@ static QString formatHexDump(const QByteArray &originalBytes) {
     }
     return hexDump;
 }
+}  // namespace
 
 void MainWindow::onToggleHexBinaryView(bool checked) {
     ScintillaNext *editor = currentEditor();

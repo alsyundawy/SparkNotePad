@@ -13,18 +13,25 @@
 #include "../features/ThemeManager.h"
 #include "../features/ThemePaletteData.h"
 
-#include <QVBoxLayout>
+#include <QApplication>
+#include <QClipboard>
+#include <QDesktopServices>
+#include <QDir>
+#include <QEvent>
+#include <QFile>
+#include <QFileDialog>
+#include <QFileInfo>
 #include <QHBoxLayout>
-#include <QTextBrowser>
 #include <QLabel>
 #include <QPushButton>
-#include <QTimer>
-#include <QDesktopServices>
-#include <QFileInfo>
+#include <QRegularExpression>
+#include <QScrollBar>
 #include <QTemporaryFile>
-#include <QEvent>
+#include <QTextBrowser>
+#include <QTextDocument>
+#include <QTimer>
 #include <QUrl>
-#include <QDir>
+#include <QVBoxLayout>
 
 PreviewTabWidget::PreviewTabWidget(ScintillaNext *editor, bool isHtml, QWidget *parent)
     : QWidget(parent), m_editor(editor), m_isHtml(isHtml) {
@@ -81,6 +88,12 @@ void PreviewTabWidget::setupUi() {
     m_titleLabel->setText(fileName);
     headerLayout->addWidget(m_titleLabel);
 
+    // Stats pill badge
+    m_statsLabel = new QLabel(headerWidget);
+    m_statsLabel->setObjectName(QStringLiteral("previewStats"));
+    m_statsLabel->setText(tr("0 words • 0 min read"));
+    headerLayout->addWidget(m_statsLabel);
+
     headerLayout->addStretch(1);
 
     // Refresh button
@@ -114,6 +127,22 @@ void PreviewTabWidget::setupUi() {
     m_btnZoomIn->setCursor(Qt::PointingHandCursor);
     connect(m_btnZoomIn, &QPushButton::clicked, this, &PreviewTabWidget::zoomIn);
     headerLayout->addWidget(m_btnZoomIn);
+
+    // Copy HTML button
+    m_btnCopyHtml = new QPushButton(QStringLiteral("📋"), headerWidget);
+    m_btnCopyHtml->setToolTip(tr("Copy Rendered HTML"));
+    m_btnCopyHtml->setFixedSize(26, 24);
+    m_btnCopyHtml->setCursor(Qt::PointingHandCursor);
+    connect(m_btnCopyHtml, &QPushButton::clicked, this, &PreviewTabWidget::copyHtml);
+    headerLayout->addWidget(m_btnCopyHtml);
+
+    // Export HTML button
+    m_btnExportHtml = new QPushButton(QStringLiteral("⤓"), headerWidget);
+    m_btnExportHtml->setToolTip(tr("Export as Standalone HTML File..."));
+    m_btnExportHtml->setFixedSize(26, 24);
+    m_btnExportHtml->setCursor(Qt::PointingHandCursor);
+    connect(m_btnExportHtml, &QPushButton::clicked, this, &PreviewTabWidget::exportHtml);
+    headerLayout->addWidget(m_btnExportHtml);
 
     // Open in browser button
     m_btnOpenBrowser = new QPushButton(headerWidget);
@@ -179,43 +208,51 @@ void PreviewTabWidget::applyTheme() {
         badgeFg = isDark ? QStringLiteral("#d2a8ff") : QStringLiteral("#8250df");
     }
 
+    const QString textSec = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
+
     // Header bar styles
-    const QString headerStyle = QStringLiteral(
-                                    "QWidget#previewHeaderBar {"
-                                    "  background-color: %1;"
-                                    "  border-bottom: 1px solid %2;"
-                                    "}"
-                                    "QLabel#previewBadge {"
-                                    "  background-color: %3;"
-                                    "  color: %4;"
-                                    "  font-size: 10px;"
-                                    "  font-weight: 700;"
-                                    "  padding: 2px 7px;"
-                                    "  border-radius: 4px;"
-                                    "  letter-spacing: 0.5px;"
-                                    "}"
-                                    "QLabel#previewTitle {"
-                                    "  color: %5;"
-                                    "  font-size: 11px;"
-                                    "  font-weight: 600;"
-                                    "}"
-                                    "QPushButton {"
-                                    "  background-color: %6;"
-                                    "  color: %5;"
-                                    "  border: 1px solid %7;"
-                                    "  border-radius: 4px;"
-                                    "  font-size: 11px;"
-                                    "  padding: 2px 7px;"
-                                    "}"
-                                    "QPushButton:hover {"
-                                    "  border-color: %8;"
-                                    "  color: %8;"
-                                    "}"
-                                    "QPushButton:pressed {"
-                                    "  background-color: %8;"
-                                    "  color: #ffffff;"
-                                    "}")
-                                    .arg(barBg, barBorder, badgeBg, badgeFg, textPri, btnBg, btnBorder, accentCol);
+    const QString headerStyle =
+        QStringLiteral(
+            "QWidget#previewHeaderBar {"
+            "  background-color: %1;"
+            "  border-bottom: 1px solid %2;"
+            "}"
+            "QLabel#previewBadge {"
+            "  background-color: %3;"
+            "  color: %4;"
+            "  font-size: 10px;"
+            "  font-weight: 700;"
+            "  padding: 2px 7px;"
+            "  border-radius: 4px;"
+            "  letter-spacing: 0.5px;"
+            "}"
+            "QLabel#previewTitle {"
+            "  color: %5;"
+            "  font-size: 11px;"
+            "  font-weight: 600;"
+            "}"
+            "QLabel#previewStats {"
+            "  color: %9;"
+            "  font-size: 10px;"
+            "  padding: 2px 6px;"
+            "}"
+            "QPushButton {"
+            "  background-color: %6;"
+            "  color: %5;"
+            "  border: 1px solid %7;"
+            "  border-radius: 4px;"
+            "  font-size: 11px;"
+            "  padding: 2px 7px;"
+            "}"
+            "QPushButton:hover {"
+            "  border-color: %8;"
+            "  color: %8;"
+            "}"
+            "QPushButton:pressed {"
+            "  background-color: %8;"
+            "  color: #ffffff;"
+            "}")
+            .arg(barBg, barBorder, badgeBg, badgeFg, textPri, btnBg, btnBorder, accentCol, textSec);
 
     if (auto *header = findChild<QWidget *>(QStringLiteral("previewHeaderBar"))) {
         header->setStyleSheet(headerStyle);
@@ -296,6 +333,9 @@ void PreviewTabWidget::renderPreview() {
     if (!m_editor) {
         m_browser->clear();
         m_titleLabel->setText(tr("(Editor Closed)"));
+        if (m_statsLabel) {
+            m_statsLabel->setText(tr("0 words • 0 min read"));
+        }
         return;
     }
 
@@ -311,10 +351,36 @@ void PreviewTabWidget::renderPreview() {
 
     const QString rawContent = QString::fromUtf8(m_editor->getText());
 
+    // Update stats
+    if (m_statsLabel) {
+        if (rawContent.isEmpty()) {
+            m_statsLabel->setText(tr("0 words • 0 min read"));
+        } else {
+            const QStringList words = rawContent.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts);
+            const qsizetype wordCount = words.size();
+            const qsizetype minutes = std::max(static_cast<qsizetype>(1), (wordCount + 199) / 200);
+            m_statsLabel->setText(tr("%1 words • %2 min read").arg(wordCount).arg(minutes));
+        }
+    }
+
+    // Preserve scroll position ratio across incremental edits
+    auto *const scrollBar = m_browser->verticalScrollBar();
+    const double scrollRatio = (scrollBar && scrollBar->maximum() > 0)
+                                   ? static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum())
+                                   : 0.0;
+
+    const bool isDark = ThemeManager::instance()->isDarkActive();
     if (m_isHtml) {
         m_browser->setHtml(rawContent);
     } else {
-        m_browser->setMarkdown(rawContent);
+        QTextDocument doc;
+        doc.setMarkdown(rawContent);
+        const QString enhanced = enhanceCallouts(doc.toHtml(), isDark);
+        m_browser->setHtml(enhanced);
+    }
+
+    if (scrollBar && scrollBar->maximum() > 0 && scrollRatio > 0.0) {
+        scrollBar->setValue(static_cast<int>(scrollRatio * scrollBar->maximum()));
     }
 }
 
@@ -342,6 +408,68 @@ void PreviewTabWidget::resetZoom() {
     renderPreview();
 }
 
+void PreviewTabWidget::copyHtml() {
+    if (!m_editor) {
+        return;
+    }
+    const QString rawContent = QString::fromUtf8(m_editor->getText());
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    QString fullHtml;
+    if (m_isHtml) {
+        fullHtml = wrapHtmlDocument(rawContent, isDark);
+    } else {
+        QTextDocument doc;
+        doc.setMarkdown(rawContent);
+        fullHtml = wrapHtmlDocument(enhanceCallouts(doc.toHtml(), isDark), isDark);
+    }
+    QApplication::clipboard()->setText(fullHtml);
+    if (m_badgeLabel) {
+        const QString orig = m_badgeLabel->text();
+        m_badgeLabel->setText(tr("COPIED!"));
+        QTimer::singleShot(2000, this, [this, orig] {
+            if (m_badgeLabel) {
+                m_badgeLabel->setText(orig);
+            }
+        });
+    }
+}
+
+void PreviewTabWidget::exportHtml() {
+    if (!m_editor) {
+        return;
+    }
+    QString defaultName = m_editor->getName();
+    if (defaultName.isEmpty()) {
+        defaultName = tr("Untitled");
+    }
+    if (!defaultName.endsWith(QStringLiteral(".html"), Qt::CaseInsensitive)) {
+        if (const auto dot = defaultName.lastIndexOf('.'); dot > 0) {
+            defaultName = defaultName.left(dot);
+        }
+        defaultName += QStringLiteral(".html");
+    }
+    const QString savePath = QFileDialog::getSaveFileName(this, tr("Export HTML Document"), defaultName,
+                                                          tr("HTML Documents (*.html *.htm);;All Files (*)"));
+    if (savePath.isEmpty()) {
+        return;
+    }
+    const QString rawContent = QString::fromUtf8(m_editor->getText());
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    QString fullHtml;
+    if (m_isHtml) {
+        fullHtml = wrapHtmlDocument(rawContent, isDark);
+    } else {
+        QTextDocument doc;
+        doc.setMarkdown(rawContent);
+        fullHtml = wrapHtmlDocument(enhanceCallouts(doc.toHtml(), isDark), isDark);
+    }
+    QFile file(savePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        file.write(fullHtml.toUtf8());
+        file.close();
+    }
+}
+
 void PreviewTabWidget::openInBrowser() {
     if (!m_editor) {
         return;
@@ -361,9 +489,11 @@ void PreviewTabWidget::openInBrowser() {
     if (tempFile->open()) {
         QString fullHtml;
         if (m_isHtml) {
-            fullHtml = content;
-        } else {
             fullHtml = wrapHtmlDocument(content, isDark);
+        } else {
+            QTextDocument doc;
+            doc.setMarkdown(content);
+            fullHtml = wrapHtmlDocument(enhanceCallouts(doc.toHtml(), isDark), isDark);
         }
         tempFile->write(fullHtml.toUtf8());
         tempFile->flush();
@@ -371,6 +501,65 @@ void PreviewTabWidget::openInBrowser() {
         tempFile->close();
         QDesktopServices::openUrl(QUrl::fromLocalFile(tempPath));
     }
+}
+
+QString PreviewTabWidget::enhanceCallouts(const QString &html, bool isDark) {
+    QString result = html;
+    const struct CalloutDef {
+        const char *tag;
+        const char *icon;
+        const char *title;
+        const char *colorLight;
+        const char *colorDark;
+        const char *bgLight;
+        const char *bgDark;
+    } callouts[] = {
+        {"[!NOTE]", "ℹ️", "Note", "#0969da", "#2f81f7", "rgba(9, 105, 218, 0.08)", "rgba(47, 129, 247, 0.12)"},
+        {"[!TIP]", "💡", "Tip", "#1a7f37", "#3fb950", "rgba(26, 127, 55, 0.08)", "rgba(63, 185, 80, 0.12)"},
+        {"[!IMPORTANT]", "🟣", "Important", "#8250df", "#a371f7", "rgba(130, 80, 223, 0.08)",
+         "rgba(163, 113, 247, 0.12)"},
+        {"[!WARNING]", "⚠️", "Warning", "#9a6700", "#d29922", "rgba(154, 103, 0, 0.08)", "rgba(210, 153, 34, 0.12)"},
+        {"[!CAUTION]", "🛑", "Caution", "#cf222e", "#f85149", "rgba(207, 34, 46, 0.08)", "rgba(248, 81, 73, 0.12)"},
+    };
+
+    for (const auto &c : callouts) {
+        const QString marker = QString::fromUtf8(c.tag);
+        qsizetype idx = 0;
+        while ((idx = result.indexOf(marker, idx, Qt::CaseInsensitive)) != -1) {
+            const qsizetype bqStart = result.lastIndexOf(QStringLiteral("<blockquote"), idx);
+            if (bqStart != -1 && bqStart >= idx - 100) {
+                const qsizetype bqEnd = result.indexOf(QStringLiteral("</blockquote>"), idx);
+                if (bqEnd != -1) {
+                    const qsizetype contentStart = idx + marker.length();
+                    QString inner = result.mid(contentStart, bqEnd - contentStart).trimmed();
+                    if (inner.startsWith(QStringLiteral("<br />"))) {
+                        inner = inner.mid(6).trimmed();
+                    } else if (inner.startsWith(QStringLiteral("<br>"))) {
+                        inner = inner.mid(4).trimmed();
+                    } else if (inner.startsWith(QStringLiteral("<br/>"))) {
+                        inner = inner.mid(5).trimmed();
+                    }
+                    const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
+                    const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
+                    const QString replacement =
+                        QStringLiteral(
+                            "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
+                            "background-color: %2; border-radius: 4px;\">"
+                            "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
+                            "<div>%5</div></div>")
+                            .arg(color, bg, QString::fromUtf8(c.icon), tr(c.title), inner);
+
+                    result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
+                    idx = bqStart + replacement.length();
+                } else {
+                    idx += marker.length();
+                }
+            } else {
+                idx += marker.length();
+            }
+        }
+    }
+    return result;
 }
 
 QString PreviewTabWidget::wrapHtmlDocument(const QString &rawBody, bool isDark) const {
