@@ -47,8 +47,8 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
       btnCopyHtml(new QPushButton(this)),
       btnExportHtml(new QPushButton(this)),
       btnRefresh(new QPushButton(this)),
-      btnZoomIn(new QPushButton(QStringLiteral("+"), this)),
-      btnZoomOut(new QPushButton(QStringLiteral("−"), this)),
+      btnZoomIn(new QPushButton(this)),
+      btnZoomOut(new QPushButton(this)),
       btnResetZoom(new QPushButton(QStringLiteral("100%"), this)) {
     setObjectName(QStringLiteral("MarkdownSafePreviewDock"));
 
@@ -103,48 +103,59 @@ void MarkdownSafePreviewDock::setupUi() {
 
     topLayout->addStretch(1);
 
+    btnZoomOut->setIcon(QIcon(QStringLiteral(":/icons/zoomOut.svg")));
+    btnZoomOut->setIconSize(QSize(14, 14));
     btnZoomOut->setToolTip(tr("Zoom Out"));
-    btnZoomOut->setFixedWidth(24);
+    btnZoomOut->setFixedSize(28, 24);
     btnZoomOut->setCursor(Qt::PointingHandCursor);
     connect(btnZoomOut, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomOut);
     topLayout->addWidget(btnZoomOut);
 
+    btnResetZoom->setText(QStringLiteral("100%"));
     btnResetZoom->setToolTip(tr("Reset Zoom (100%)"));
-    btnResetZoom->setFixedWidth(40);
+    btnResetZoom->setFixedHeight(24);
+    btnResetZoom->setMinimumWidth(48);
     btnResetZoom->setCursor(Qt::PointingHandCursor);
     connect(btnResetZoom, &QPushButton::clicked, this, &MarkdownSafePreviewDock::resetZoom);
     topLayout->addWidget(btnResetZoom);
 
+    btnZoomIn->setIcon(QIcon(QStringLiteral(":/icons/zoomIn.svg")));
+    btnZoomIn->setIconSize(QSize(14, 14));
     btnZoomIn->setToolTip(tr("Zoom In"));
-    btnZoomIn->setFixedWidth(24);
+    btnZoomIn->setFixedSize(28, 24);
     btnZoomIn->setCursor(Qt::PointingHandCursor);
     connect(btnZoomIn, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomIn);
     topLayout->addWidget(btnZoomIn);
 
+    btnRefresh->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    btnRefresh->setIconSize(QSize(14, 14));
     btnRefresh->setToolTip(tr("Refresh Preview"));
-    btnRefresh->setText(QStringLiteral("↻"));
-    btnRefresh->setFixedWidth(26);
+    btnRefresh->setFixedSize(28, 24);
     btnRefresh->setCursor(Qt::PointingHandCursor);
     connect(btnRefresh, &QPushButton::clicked, this, &MarkdownSafePreviewDock::renderPreview);
     topLayout->addWidget(btnRefresh);
 
+    btnCopyHtml->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+    btnCopyHtml->setIconSize(QSize(14, 14));
     btnCopyHtml->setToolTip(tr("Copy Formatted HTML to Clipboard"));
-    btnCopyHtml->setText(QStringLiteral("📋"));
-    btnCopyHtml->setFixedWidth(26);
+    btnCopyHtml->setFixedSize(28, 24);
     btnCopyHtml->setCursor(Qt::PointingHandCursor);
     connect(btnCopyHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::copyHtml);
     topLayout->addWidget(btnCopyHtml);
 
+    btnExportHtml->setIcon(QIcon(QStringLiteral(":/icons/export.svg")));
+    btnExportHtml->setIconSize(QSize(14, 14));
     btnExportHtml->setToolTip(tr("Export as Standalone HTML File..."));
-    btnExportHtml->setText(QStringLiteral("⤓"));
-    btnExportHtml->setFixedWidth(26);
+    btnExportHtml->setFixedSize(28, 24);
     btnExportHtml->setCursor(Qt::PointingHandCursor);
     connect(btnExportHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportHtml);
     topLayout->addWidget(btnExportHtml);
 
+    btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
+    btnOpenBrowser->setIconSize(QSize(14, 14));
+    btnOpenBrowser->setText(QStringLiteral("Browser"));
     btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
-    btnOpenBrowser->setText(QStringLiteral("🌐"));
-    btnOpenBrowser->setFixedWidth(26);
+    btnOpenBrowser->setFixedHeight(24);
     btnOpenBrowser->setCursor(Qt::PointingHandCursor);
     connect(btnOpenBrowser, &QPushButton::clicked, this, &MarkdownSafePreviewDock::openInBrowser);
     topLayout->addWidget(btnOpenBrowser);
@@ -304,10 +315,16 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
                                   "  border: 1px solid %4;"
                                   "  border-radius: 4px;"
                                   "  font-size: 11px;"
+                                  "  padding: 2px 5px;"
+                                  "  min-height: 20px;"
                                   "}"
                                   "QWidget#previewTopBar QPushButton:hover {"
                                   "  border-color: %3;"
                                   "  color: %3;"
+                                  "}"
+                                  "QWidget#previewTopBar QPushButton:pressed {"
+                                  "  background-color: %3;"
+                                  "  color: #ffffff;"
                                   "}")
                                   .arg(dockBg, textPri, accent, border, bgColor, badgeBg, textSec, btnBg);
     setStyleSheet(dockStyle);

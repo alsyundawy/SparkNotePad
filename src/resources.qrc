@@ -89,6 +89,8 @@
         <file>icons/folder.svg</file>
         <file>icons/terminal.svg</file>
         <file>icons/view.svg</file>
+        <file>icons/globe.svg</file>
+        <file>icons/export.svg</file>
         <file>icons/packs/fluentUi/closeAll.svg</file>
         <file>icons/packs/fluentUi/closeFile.svg</file>
         <file>icons/packs/fluentUi/copy.svg</file>

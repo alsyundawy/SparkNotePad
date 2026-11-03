@@ -97,17 +97,21 @@ void PreviewTabWidget::setupUi() {
     headerLayout->addStretch(1);
 
     // Refresh button
-    m_btnRefresh = new QPushButton(QStringLiteral("↻"), headerWidget);
+    m_btnRefresh = new QPushButton(headerWidget);
+    m_btnRefresh->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    m_btnRefresh->setIconSize(QSize(14, 14));
     m_btnRefresh->setToolTip(tr("Refresh Preview"));
-    m_btnRefresh->setFixedSize(26, 24);
+    m_btnRefresh->setFixedSize(28, 24);
     m_btnRefresh->setCursor(Qt::PointingHandCursor);
     connect(m_btnRefresh, &QPushButton::clicked, this, &PreviewTabWidget::renderPreview);
     headerLayout->addWidget(m_btnRefresh);
 
     // Zoom out
-    m_btnZoomOut = new QPushButton(QStringLiteral("−"), headerWidget);
+    m_btnZoomOut = new QPushButton(headerWidget);
+    m_btnZoomOut->setIcon(QIcon(QStringLiteral(":/icons/zoomOut.svg")));
+    m_btnZoomOut->setIconSize(QSize(14, 14));
     m_btnZoomOut->setToolTip(tr("Zoom Out"));
-    m_btnZoomOut->setFixedSize(26, 24);
+    m_btnZoomOut->setFixedSize(28, 24);
     m_btnZoomOut->setCursor(Qt::PointingHandCursor);
     connect(m_btnZoomOut, &QPushButton::clicked, this, &PreviewTabWidget::zoomOut);
     headerLayout->addWidget(m_btnZoomOut);
@@ -116,38 +120,47 @@ void PreviewTabWidget::setupUi() {
     m_btnResetZoom = new QPushButton(QStringLiteral("100%"), headerWidget);
     m_btnResetZoom->setToolTip(tr("Reset Zoom (100%)"));
     m_btnResetZoom->setFixedHeight(24);
+    m_btnResetZoom->setMinimumWidth(48);
     m_btnResetZoom->setCursor(Qt::PointingHandCursor);
     connect(m_btnResetZoom, &QPushButton::clicked, this, &PreviewTabWidget::resetZoom);
     headerLayout->addWidget(m_btnResetZoom);
 
     // Zoom in
-    m_btnZoomIn = new QPushButton(QStringLiteral("+"), headerWidget);
+    m_btnZoomIn = new QPushButton(headerWidget);
+    m_btnZoomIn->setIcon(QIcon(QStringLiteral(":/icons/zoomIn.svg")));
+    m_btnZoomIn->setIconSize(QSize(14, 14));
     m_btnZoomIn->setToolTip(tr("Zoom In"));
-    m_btnZoomIn->setFixedSize(26, 24);
+    m_btnZoomIn->setFixedSize(28, 24);
     m_btnZoomIn->setCursor(Qt::PointingHandCursor);
     connect(m_btnZoomIn, &QPushButton::clicked, this, &PreviewTabWidget::zoomIn);
     headerLayout->addWidget(m_btnZoomIn);
 
     // Copy HTML button
-    m_btnCopyHtml = new QPushButton(QStringLiteral("📋"), headerWidget);
+    m_btnCopyHtml = new QPushButton(headerWidget);
+    m_btnCopyHtml->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+    m_btnCopyHtml->setIconSize(QSize(14, 14));
     m_btnCopyHtml->setToolTip(tr("Copy Rendered HTML"));
-    m_btnCopyHtml->setFixedSize(26, 24);
+    m_btnCopyHtml->setFixedSize(28, 24);
     m_btnCopyHtml->setCursor(Qt::PointingHandCursor);
     connect(m_btnCopyHtml, &QPushButton::clicked, this, &PreviewTabWidget::copyHtml);
     headerLayout->addWidget(m_btnCopyHtml);
 
     // Export HTML button
-    m_btnExportHtml = new QPushButton(QStringLiteral("⤓"), headerWidget);
+    m_btnExportHtml = new QPushButton(headerWidget);
+    m_btnExportHtml->setIcon(QIcon(QStringLiteral(":/icons/export.svg")));
+    m_btnExportHtml->setIconSize(QSize(14, 14));
     m_btnExportHtml->setToolTip(tr("Export as Standalone HTML File..."));
-    m_btnExportHtml->setFixedSize(26, 24);
+    m_btnExportHtml->setFixedSize(28, 24);
     m_btnExportHtml->setCursor(Qt::PointingHandCursor);
     connect(m_btnExportHtml, &QPushButton::clicked, this, &PreviewTabWidget::exportHtml);
     headerLayout->addWidget(m_btnExportHtml);
 
     // Open in browser button
     m_btnOpenBrowser = new QPushButton(headerWidget);
+    m_btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
+    m_btnOpenBrowser->setIconSize(QSize(14, 14));
     m_btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
-    m_btnOpenBrowser->setText(QStringLiteral("🌐 Browser"));
+    m_btnOpenBrowser->setText(QStringLiteral("Browser"));
     m_btnOpenBrowser->setFixedHeight(24);
     m_btnOpenBrowser->setCursor(Qt::PointingHandCursor);
     connect(m_btnOpenBrowser, &QPushButton::clicked, this, &PreviewTabWidget::openInBrowser);

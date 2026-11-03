@@ -44,10 +44,23 @@ ApplicationSetting<QString> rootPathSetting{"FolderAsWorkspace/RootPath"};  // N
 namespace {
 // QFileSystemModel's standard column order.
 enum class FileSystemColumn : int { NameColumn = 0, SizeColumn, TypeColumn, DateColumn };
+
+QString readProjectName(const QString &dir) {
+    if (const QString projFilePath = QDir(dir).filePath(QStringLiteral(".sparkproject")); QFile::exists(projFilePath)) {
+        QFile projFile(projFilePath);
+        if (projFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            const QJsonDocument doc = QJsonDocument::fromJson(projFile.readAll());
+            if (doc.isObject()) {
+                return doc.object().value(QStringLiteral("name")).toString();
+            }
+        }
+    }
+    return {};
+}
 }  // namespace
 
 FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
-    : QDockWidget(parent), ui(new Ui::FolderAsWorkspaceDock), model(new QFileSystemModel(this)) {
+    : QDockWidget(parent), ui(std::make_unique<Ui::FolderAsWorkspaceDock>()), model(new QFileSystemModel(this)) {
     ui->setupUi(this);
 
     ui->treeView->setModel(model);
@@ -132,9 +145,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
     updateTheme();
 }
 
-FolderAsWorkspaceDock::~FolderAsWorkspaceDock() {
-    delete ui;
-}
+FolderAsWorkspaceDock::~FolderAsWorkspaceDock() = default;
 
 void FolderAsWorkspaceDock::setRootPath(const QString &dir) {
     ApplicationSettings settings;
@@ -143,26 +154,18 @@ void FolderAsWorkspaceDock::setRootPath(const QString &dir) {
     const QModelIndex sourceIndex = model->setRootPath(dir);
     ui->treeView->setRootIndex(sourceIndex);
 
-    if (!dir.isEmpty()) {
-        const QString projFilePath = QDir(dir).filePath(QStringLiteral(".sparkproject"));
-        if (QFile::exists(projFilePath)) {
-            QFile projFile(projFilePath);
-            if (projFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                const QJsonDocument doc = QJsonDocument::fromJson(projFile.readAll());
-                if (doc.isObject()) {
-                    const QString projName = doc.object().value(QStringLiteral("name")).toString();
-                    if (!projName.isEmpty()) {
-                        setWindowTitle(tr("Project: %1").arg(projName));
-                        return;
-                    }
-                }
-            }
-        }
-        const QFileInfo fi(dir);
-        setWindowTitle(tr("Workspace: %1").arg(fi.fileName()));
-    } else {
+    if (dir.isEmpty()) {
         setWindowTitle(tr("Folder as Workspace"));
+        return;
     }
+
+    if (const QString projName = readProjectName(dir); !projName.isEmpty()) {
+        setWindowTitle(tr("Project: %1").arg(projName));
+        return;
+    }
+
+    const QFileInfo fi(dir);
+    setWindowTitle(tr("Workspace: %1").arg(fi.fileName()));
 }
 
 QString FolderAsWorkspaceDock::rootPath() const {

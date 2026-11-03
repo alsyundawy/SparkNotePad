@@ -1330,15 +1330,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             return;
         }
         const QString sel = QString::fromUtf8(editor->getSelText()).trimmed().remove(QLatin1Char(' '));
-        bool ok = false;
-        QByteArray bytes;
-        for (int i = 0; i + 1 < sel.size(); i += 2) {
-            bytes.append(static_cast<char>(sel.mid(i, 2).toUShort(&ok, 16)));
-            if (!ok) {
-                break;
-            }
-        }
-        if (!ok && sel.size() % 2 != 0) {
+        const auto bytes = QByteArray::fromHex(sel.toLatin1());
+        if (bytes.isEmpty() && !sel.isEmpty()) {
             ui->statusBar->showMessage(tr("Invalid HEX input."), 3000);
             return;
         }
@@ -2457,7 +2450,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     toggleFunctionListAction->setText(tr("Function List"));
     toggleFunctionListAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
 
-    // Group side panels cleanly into View -> Side Panels submenu
+    // Expose primary dock panels directly in View menu (matching standard Notepad layouts)
+    ui->menuView->addSeparator();
+    ui->menuView->addAction(toggleFileBrowserAction);
+    ui->menuView->addAction(fawDock->toggleViewAction());
+    ui->menuView->addAction(fileListDock->toggleViewAction());
+    ui->menuView->addAction(toggleFunctionListAction);
+    auto *toggleMarkdownPreviewAction = markdownSafePreviewDock->toggleViewAction();
+    toggleMarkdownPreviewAction->setText(tr("HTML && Markdown Live Preview"));
+    toggleMarkdownPreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
+    toggleMarkdownPreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
+    ui->menuView->addAction(toggleMarkdownPreviewAction);
+
+    // Group side panels into View -> Side Panels submenu for advanced inspectors
     auto *menuPanels = new QMenu(tr("&Side Panels"), this);
     menuPanels->setIcon(QIcon(QStringLiteral(":/icons/layout.svg")));
     menuPanels->addAction(toggleFileBrowserAction);
@@ -5266,7 +5271,7 @@ void MainWindow::openInDefaultBrowser(const QString &filePath) {
 namespace {
 QString formatHexDump(const QByteArray &originalBytes) {
     QString hexDump;
-    const auto totalBytes = static_cast<qsizetype>(originalBytes.size());
+    const auto totalBytes = originalBytes.size();
     hexDump.reserve(totalBytes * 5);
 
     for (qsizetype i = 0; i < totalBytes; i += 16) {

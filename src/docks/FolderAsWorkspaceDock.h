@@ -24,6 +24,7 @@
 #pragma once
 
 #include <QDockWidget>
+#include <memory>
 
 namespace Ui {
 class FolderAsWorkspaceDock;
@@ -36,7 +37,7 @@ class FolderAsWorkspaceDock : public QDockWidget {
 
 public:
     explicit FolderAsWorkspaceDock(QWidget *parent = nullptr);
-    ~FolderAsWorkspaceDock();
+    ~FolderAsWorkspaceDock() override;
 
     void setRootPath(const QString &dir);
     QString rootPath() const;
@@ -55,7 +56,7 @@ protected:
     void changeEvent(QEvent *event) override;
 
 private:
-    Ui::FolderAsWorkspaceDock *ui;
+    std::unique_ptr<Ui::FolderAsWorkspaceDock> ui;
 
     QFileSystemModel *model;
     bool m_isUpdatingTheme{false};
