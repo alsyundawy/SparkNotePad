@@ -10010,6 +10010,16 @@ Kunci: %2</translation>
         <translation>Ikonografi klasik otentik 48x48 Elegant Themes karya Nicholas Roach</translation>
     </message>
     <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="265"/>
+        <source>Seven Classic (Glossy Desktop)</source>
+        <translation>Seven Classic (Glossy Desktop)</translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="266"/>
+        <source>Classic Windows 7 / Seven glossy desktop iconography suite</source>
+        <translation>Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven</translation>
+    </message>
+    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="372"/>
         <source>Custom external icon pack from %1</source>
         <translation>Paket ikon eksternal kustom dari %1</translation>

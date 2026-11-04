@@ -22,32 +22,71 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ## 1. Executive Summary: Release v1.3.8
 
-SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 22-pack icon theme architecture, dedicated Preferences tabs, desktop menu reorganization, and 100% finished bilingual localization parity:
+SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 23-pack icon theme architecture, dedicated Preferences tabs, desktop menu reorganization, responsive UI layout refinements, and 100% finished bilingual localization parity:
 
-1. **22 Built-in Toolbar Icon Packs (Multi-DPI & Retina @2x)**:
-   - Complete icon pack ecosystem: Modern Ribbon, Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite - Authentic 3.5.6 by Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Notepad++ Classic, NotepadNext Classic, Monochrome Outline, Vibrant DuoTone, Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary OS Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, and VS Code Codicons.
-   - Dynamic icon scaling across 16x16, 20x20, 24x24, 32x32, 48x48, and 64x64.
-   - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
+1. **23 Built-in Toolbar Icon Packs (Multi-DPI & Retina @2x)**:
+   - **Comprehensive Icon Suite**: 23 curated built-in vector and bitmap icon packs:
+     1. Modern Ribbon (Default Vector SVG, 20x20 monoline)
+     2. Microsoft Fluent UI (Win 11 Modern Vector)
+     3. Windows 11 (Fluent 2 DOpus 32px)
+     4. Windows 7 (Aero Glass Azure)
+     5. Windows XP (Luna Classic 3D Nostalgia)
+     6. Fugue Classic (Silk Suite — 100% Authentic Fugue 3.5.6 by Yusuke Kamiyamane)
+     7. Elegant Themes (Nicholas Roach 48x48 Classic Iconography)
+     8. Seven Classic (Classic Windows 7 / Seven Glossy Desktop Suite)
+     9. Notepad++ Classic (Nostalgia Vector)
+     10. NotepadNext Classic (Silk 16x16)
+     11. Monochrome Outline (Minimalist 1.8px Wireframe)
+     12. Vibrant DuoTone (Cyberpunk Electric Cyan & Magenta)
+     13. Material Design (Sharp Vector)
+     14. Pixel Design (Fugue-like Desktop Classic)
+     15. Monoline Minimal (Ultra-clean Outline with Dark Inversion)
+     16. Notepad++ (Modern Green)
+     17. Notepad3 (Warm Amber)
+     18. Humanity GNOME (Classic Linux Desktop)
+     19. Elementary OS Flat (Minimalist Clean)
+     20. Breeze KDE Plasma (Geometric Balanced)
+     21. Papirus Rounded (Vibrant Linux Suite)
+     22. macOS Cupertino Clean (Apple HIG Compliant)
+     23. VS Code Codicons (Developer IDE Wireframes)
+   - **Authentic Fugue 3.5.6 Master Suite**: Fully replaced previously approximated icons with genuine pixel-perfect Fugue 3.5.6 PNG icons across all 6 resolutions (`16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`), accompanied by dedicated `@2x` Retina pixmaps (`setDevicePixelRatio(2.0)`).
+   - **Elegant Themes Integration**: Added classic 48x48 iconography by Nicholas Roach across all resolution scales with MIT/GPL dual licensing.
+   - **Seven Classic Icon Pack**: High-fidelity Windows 7 / Seven glossy desktop iconography suite across 6 resolutions (`16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`) with smooth transparent anti-aliasing and Retina `@2x` assets.
+   - **Dynamic Multi-DPI Icon Sizing**: Immediate toolbar scaling across 16x16, 20x20, 24x24 (Default), 32x32, 48x48, and 64x64 without application restart.
+   - **Intelligent Dark Mode HSL Luminance Tone Mapping**: Automatically maps outline wireframes to luminous silver-white and boosts chromatic lightness under dark themes while preserving hue and saturation.
+   - **Theme Switching Performance Optimization**: Fast pixmap caching and decoupled asynchronous icon reloading, completely eliminating UI stutter and latency during theme and icon pack transitions.
+   - **Whole-Window Icon Synchronization**: Changing icon packs instantaneously updates the main toolbar, top-level menubars, submenus, tab context menus, and the editor right-click context menu (`ToolbarIconManager::applyToWindow()` & `applyToMenu()`).
+   - **Custom Icon Pack Extension System**: Automatic discovery and hot-reloading of user-provided icon packs from the `toolbarIcons/` AppData folder.
 
 2. **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
-   - **Tab 3 ("Themes & Toolbar")**: Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (22 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
-   - **Tab 4 ("Custom Toolbar Config")**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
+   - **Tab 3 ("Themes & Toolbar")**: Relocated visual themes configuration (Active Theme, Window Opacity, Tail Reload Interval, Display Safety Guard) alongside the Toolbar Icon Packs manager (23 packs, responsive card description layout with dynamic font metric spacing and zero clipping, icon size selector, live preview strip, custom pack folder launcher, and rescan).
+   - **Tab 4 ("Custom Toolbar Config")**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search filtering, available vs active action lists, action adding/removing/reordering, separator insertion, reset to default, and instant hot-reload.
 
 3. **Standard Desktop Editor Menu Hierarchy**:
-   - Reversible Hex/Binary View relocated directly below Compare in the top-level Tools/View menu (`Ctrl+Alt+H` / `Cmd+Alt+H`).
-   - Restart Application relocated to macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`).
-   - Duplicate manual Character Palette removed in favor of native macOS system palette.
-   - View menu streamlined without duplicate Side Panels submenu.
+   - **Reversible Hex / Binary View**: Relocated directly beneath Compare in the top-level Tools/View menu (`Ctrl+Alt+H` / `Cmd+Alt+H`) with zero-loss reversible buffer restoration.
+   - **Restart Application**: Positioned in the macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`), or under File menu on Linux/Windows.
+   - **Sanitized Duplicate Actions**: Removed redundant manual Character Palette (`actionEmoji`) in favor of native macOS system emoji palette (`Ctrl+Cmd+Space`), and streamlined View menu by eliminating redundant Side Panels sub-menu and standalone preview actions.
 
-4. **100% Bilingual Localization Parity across English & Indonesian**:
-   - Complete synchronization of 1,924 UI strings with 0 unfinished entries across `SparkNotePad_en.ts` and `SparkNotePad_id.ts`.
+4. **In-Tab Modern HTML & Markdown Live Preview (`PreviewTabWidget`)**:
+   - Right-clicking `.html` or `.md` editor tabs opens the preview in a NEW TAB within the central dock area (`ads::CenterDockWidgetArea`), keeping documents and previews neatly organized in one workspace.
+   - Includes zoom controls (zoom in/out/reset), refresh button, dark/light theme parity, GitHub callout styling (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, etc.), reading time metrics badges, and "Preview in Default Browser" for HTML documents.
+   - Full security sandboxing against CVE-2026-20841 by restricting external script execution and whitelisting safe URI schemes.
 
-5. **In-Tab Markdown & HTML Live Preview**:
-   - Central dock area (`ads::CenterDockWidgetArea`) live preview tabs with GitHub callout styling (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, etc.), zoom controls, reading time metrics badges, and "Preview in Default Browser" for HTML.
+5. **Plus (+) Tab Bar Document Creation Button**:
+   - Added an interactive Plus (+) button on the title bar directly next to editor tabs, allowing instant document creation ("New 1", "New 2", etc.) with a single click.
 
-6. **14-Pillar Code Quality & Zero-Defect Linter Hardening**:
-   - Comprehensive audit across Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability, and IDE Linter pillars.
-   - 100% test pass rate across all 51 unit tests in `SparkNotePadTests`.
+6. **Modern File Commander Browser**:
+   - Re-engineered file browser dock with quick bookmarks (Home, Documents, Downloads, Desktop, Workspace), crisp vector SVG navigation icons, and bottom storage space and item metrics bar (`QStorageInfo`).
+
+7. **100% Bilingual Localization Parity across English & Indonesian**:
+   - Complete synchronization of 1,849 UI strings with 0 unfinished entries across `i18n/SparkNotePad_en.ts` and `i18n/SparkNotePad_id.ts`.
+   - Localized Help docnotes and changelogs automatically displayed according to active application locale.
+
+8. **14-Pillar Code Quality & Zero-Defect Linter Hardening**:
+   - Zero linter and static analysis errors (`cppcheck`, `clang-tidy`, `SonarLint`, `markdownlint-cli2`).
+   - 11 unit test suites (51+ unit tests) passing with 100% success rate in `SparkNotePadTests`.
+   - Verified local DMG packaging (`hdiutil verify: VALID`) with SHA-256 checksum generation.
+   - MegaLinter workflow runner upgraded to v10.2.0.
 
 ---
 

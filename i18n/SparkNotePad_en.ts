@@ -10014,6 +10014,16 @@ Key: %2</translation>
         <translation>Authentic classic 48x48 Elegant Themes iconography by Nicholas Roach</translation>
     </message>
     <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="265"/>
+        <source>Seven Classic (Glossy Desktop)</source>
+        <translation>Seven Classic (Glossy Desktop)</translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="266"/>
+        <source>Classic Windows 7 / Seven glossy desktop iconography suite</source>
+        <translation>Classic Windows 7 / Seven glossy desktop iconography suite</translation>
+    </message>
+    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="372"/>
         <source>Custom external icon pack from %1</source>
         <translation>Custom external icon pack from %1</translation>

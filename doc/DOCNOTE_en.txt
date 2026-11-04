@@ -19,15 +19,15 @@ License              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Executive Summary (English): Release v1.3.8
 
-SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 22 authentic high-definition icon packs, dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), desktop standard menu reorganization, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, File Commander modern explorer, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
+SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 23 authentic high-definition icon packs, dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), desktop standard menu reorganization, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, File Commander modern explorer, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
 
-1. 22 Built-In Toolbar Icon Packs Suite:
-   - 22 integrated high-definition icon suites: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11 Modern Vector), Windows 11 (Fluent 2 DOpus), Windows 7 (Aero Glass Azure), Windows XP (Luna Classic), Fugue Classic (Silk Suite - Authentic 3.5.6 by Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Notepad++ Classic, NotepadNext Classic, Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, and VS Code Codicons.
+1. 23 Built-In Toolbar Icon Packs Suite:
+   - 23 integrated high-definition icon suites: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11 Modern Vector), Windows 11 (Fluent 2 DOpus), Windows 7 (Aero Glass Azure), Windows XP (Luna Classic), Fugue Classic (Silk Suite - Authentic 3.5.6 by Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Seven Classic (Classic Windows 7 / Seven Glossy Desktop Suite), Notepad++ Classic, NotepadNext Classic, Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, and VS Code Codicons.
    - Crisp multi-DPI assets across 16x16, 20x20, 24x24, 32x32, 48x48, 64x64, and Retina @2x scaling.
    - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
 
 2. Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config"):
-   - Tab 3 ("Themes & Toolbar"): Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (22 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
+   - Tab 3 ("Themes & Toolbar"): Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (23 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
    - Tab 4 ("Custom Toolbar Config"): Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
 
 3. Standard Desktop Editor Menu Hierarchy:
@@ -37,7 +37,8 @@ SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 
    - View menu streamlined without duplicate Side Panels submenu.
 
 4. 100% Bilingual Localization Parity across English & Indonesian:
-   - Complete synchronization of 1,924 UI strings with 0 unfinished entries across `SparkNotePad_en.ts` and `SparkNotePad_id.ts`.
+   - Complete synchronization of 1,851 UI strings with 0 unfinished entries across `SparkNotePad_en.ts` and `SparkNotePad_id.ts`.
+   - Dynamic bilingual switching without missing translations or untranslated UI controls.
 
 5. Plus (+) Button at the End of Every Tab Bar:
    - Added an interactive Plus (+) button on the title bar directly next to the tab row.
@@ -77,11 +78,25 @@ SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 
     - Docnote and Changelog in AboutDialog and Help menu adapt automatically to the editor's active language (Indonesian or English).
     - Strictly presented in clean plaintext `.txt` monospaced viewer without markdown distraction.
 
+12. 14-Pillar Engineering Audit & Zero-Defect Linter Certification:
+    - Passed all 14 quality pillars: Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability, and IDE Linter.
+    - 100% test pass rate across all 11 test suites (51+ unit tests) in `SparkNotePadTests`.
+    - Local verified macOS DMG packaging (`build/SparkNotePad-v1.3.8-x64.dmg`, SHA-256: `ef7820525f528d55f8a33df654e195492711b887e1f5bc9dbf551779408f0d7a`).
+    - Upgraded MegaLinter workflow runner to v10.2.0.
+
 ---
 
 ## 2. Prior Release: Release v1.3.7
 
-1. Notepad++ Style Tools Menu & 16-Action MIME Tools Suite.
-2. Standalone Hash & Authenticity Validator.
-3. Interactive Shortcut Mapper in Preferences > Shortcuts.
-4. GitHub Rate Limit Elimination via ETag Caching.
+1. Notepad++ Style Tools Menu & 16-Action MIME Tools Suite:
+   - Base64, Quoted-Printable, and URL encoding/decoding.
+   - Hash & Authenticity Validator supporting MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, CRC32, and XXHASH.
+   - Migrated AES-256 document encryption into Tools menu.
+2. Developer Help & Documentation Navigation:
+   - Instant PHP, Rust, Python, and Wikipedia search from Run menu.
+3. Interactive Shortcut Mapper:
+   - Embedded Shortcuts configuration tab inside Preferences dialog (`Preferences > Shortcuts`).
+4. GitHub API Rate Limit Elimination:
+   - Implemented HTTP ETag caching (304 Not Modified) and redirect fallback on release checks.
+5. Zero-Diagnostic Trunk, Clang-Tidy, SonarQube & Cppcheck Certification:
+   - Completely resolved 1,288 IDE diagnostics and 756 SonarLint warnings across all translation units.

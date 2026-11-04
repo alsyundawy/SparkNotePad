@@ -250,12 +250,22 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = false,
     });
 
-    // 19. Elegant Themes (Nicholas Roach)
+    // 22. Elegant Themes (Nicholas Roach)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("eleganticons"),
         .displayName = tr("Elegant Themes (Nicholas Roach)"),
         .description = tr("Authentic classic 48x48 Elegant Themes iconography by Nicholas Roach"),
         .basePath = QStringLiteral(":/icons/packs/eleganticons"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 23. Seven Classic (Glossy Desktop)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("seven"),
+        .displayName = tr("Seven Classic (Glossy Desktop)"),
+        .description = tr("Classic Windows 7 / Seven glossy desktop iconography suite"),
+        .basePath = QStringLiteral(":/icons/packs/seven"),
         .isBuiltIn = true,
         .isPngBased = true,
     });
@@ -293,6 +303,8 @@ const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) c
         targetId = QStringLiteral("fluent_filled");
     } else if (targetId == QLatin1String("archLinux")) {
         targetId = QStringLiteral("arch_blue");
+    } else if (targetId == QLatin1String("seven_icons") || targetId == QLatin1String("sevenIcons")) {
+        targetId = QStringLiteral("seven");
     }
 
     if (const auto it =

@@ -52,33 +52,35 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ---
 
-## 4. Toolbar Icon Packs Suite (21 Built-In Packs), Plus (+) Tab Button & Visual Customizer
+## 4. Toolbar Icon Packs Suite (23 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
-SparkNotePad v1.3.8 features a comprehensive toolbar theming and customization architecture with 21 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
+SparkNotePad v1.3.8 features a comprehensive toolbar theming and customization architecture with 23 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
 
-### Built-in Toolbar Icon Packs (21 Packs)
+### Built-in Toolbar Icon Packs (23 Packs)
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
 2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
 3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
 4. **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
 5. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography with multi-DPI retina scaling.
-7. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
-8. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
-9. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-10. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
-11. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
-12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
-13. **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
-14. **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
-15. **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
-16. **Humanity GNOME** (`humanity_gnome`): Classic Linux desktop iconography from the Humanity icon project.
-17. **Elementary OS Flat** (`elementary_flat`): Modern, minimalist flat design from Elementary OS.
-18. **Breeze KDE Plasma** (`breeze_kde`): KDE Plasma Breeze iconography with crisp geometric balance.
-19. **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
-20. **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
-21. **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
+6. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane across all 6 resolutions.
+7. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
+8. **Seven Classic** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite across 6 resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+9. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
+10. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
+11. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
+12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+13. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
+14. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
+15. **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
+16. **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
+17. **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
+18. **Humanity GNOME** (`humanity_gnome`): Classic Linux desktop iconography from the Humanity icon project.
+19. **Elementary OS Flat** (`elementary_flat`): Modern, minimalist flat design from Elementary OS.
+20. **Breeze KDE Plasma** (`breeze_kde`): KDE Plasma Breeze iconography with crisp geometric balance.
+21. **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
+22. **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
+23. **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
 
 ### High-DPI & Retina Clarity
 
@@ -111,7 +113,7 @@ Switch icon size seamlessly from `Themes > Toolbar Icon Packs > Toolbar Icon Siz
 
 - **Themes & Toolbar Tab (Tab 3)**:
   - Consolidates active theme selection, window opacity slider, tail -f reload interval, and multi-display safety guards.
-  - Comprehensive Toolbar Icon Packs manager featuring 21 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector (16x16 to 64x64), live icon sample preview strip, custom icon packs folder launcher, and live rescan.
+  - Comprehensive Toolbar Icon Packs manager featuring 23 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector (16x16 to 64x64), live icon sample preview strip, custom icon packs folder launcher, and live rescan.
 - **Custom Toolbar Config Tab (Tab 4)**:
   - Embedded visual toolbar customizer (`CustomizeToolbarWidget`) directly inside Preferences.
   - Add, remove, and reorder toolbar buttons using intuitive dual list views with search filtering.

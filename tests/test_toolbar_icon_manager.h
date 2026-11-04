@@ -24,8 +24,8 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 22 built-in packs (including windows7, windows11, notepadPlusPlus, and eleganticons)
-        QCOMPARE(packs.size(), 22);
+        // 23 built-in packs (including windows7, windows11, notepadPlusPlus, eleganticons, and seven)
+        QCOMPARE(packs.size(), 23);
 
         const QStringList expectedPackIds = {
             QStringLiteral("modernRibbon"),     QStringLiteral("fugue"),
@@ -39,6 +39,7 @@ private slots:
             QStringLiteral("material_sharp"),   QStringLiteral("windowsXp"),
             QStringLiteral("notepadNext"),      QStringLiteral("vibrantDuotone"),
             QStringLiteral("monochrome"),       QStringLiteral("eleganticons"),
+            QStringLiteral("seven"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -53,6 +54,7 @@ private slots:
         QVERIFY(manager->findPackById(QStringLiteral("fluentUi")) != nullptr);
         QVERIFY(manager->findPackById(QStringLiteral("windows11")) != nullptr);
         QVERIFY(manager->findPackById(QStringLiteral("windows7")) != nullptr);
+        QVERIFY(manager->findPackById(QStringLiteral("seven_icons")) != nullptr);
         QVERIFY(manager->findPackById(QStringLiteral("archLinux")) != nullptr);
         QVERIFY(manager->findPackById(QStringLiteral("notepadPlusPlus")) != nullptr);
         QVERIFY(manager->findPackById(QStringLiteral("filledFluentUi")) != nullptr);
@@ -132,7 +134,7 @@ private slots:
             QStringLiteral("vibrantDuotone"),   QStringLiteral("monochrome"),
             QStringLiteral("fluentUi"),         QStringLiteral("windows11"),
             QStringLiteral("windows7"),         QStringLiteral("archLinux"),
-            QStringLiteral("eleganticons"),
+            QStringLiteral("eleganticons"),     QStringLiteral("seven"),
         };
 
         for (const QString &packId : packs) {

@@ -109,7 +109,7 @@ SparkNotePad includes the full complement of 125 Lexilla lexers, covering modern
 
 ## 10. Dedicated Preferences Tabs & Desktop Menu Ergonomics (v1.3.8)
 
-- **Themes & Toolbar Tab (Tab 3)**: Relocates visual theme configuration, window opacity slider, tail -f reload interval, and multi-DPI display placement guard alongside the Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector 16x16 to 64x64, live icon preview, custom folder loader, and rescan).
+- **Themes & Toolbar Tab (Tab 3)**: Relocates visual theme configuration, window opacity slider, tail -f reload interval, and multi-DPI display placement guard alongside the Toolbar Icon Packs manager (23 packs, responsive description card layout, size selector 16x16 to 64x64, live icon preview, custom folder loader, and rescan).
 - **Custom Toolbar Config Tab (Tab 4)**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with search filtering, action adding/removing/reordering, separator insertion, and live hot-reload.
 - **Desktop Standard Menu Hierarchy**: Toggle Hex/Binary view below Compare, Restart Application in macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`), redundant Character Palette deduplicated, and clean View menu without duplicate Side Panels submenu.
 

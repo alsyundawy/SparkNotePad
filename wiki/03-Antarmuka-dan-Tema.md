@@ -53,33 +53,35 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (21 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (23 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 21 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
+SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 23 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
-### Paket Ikon Toolbar Bawaan (21 Paket)
+### Paket Ikon Toolbar Bawaan (23 Paket)
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
 2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
 3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
 4. **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
 5. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
-7. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-8. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
-9. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-10. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
-11. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
-12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
-13. **Monoline Minimal** (`monoline_minimal`): Ikon garis minimalis ultra-bersih dengan inversi luminans otomatis pada tema gelap.
-14. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
-15. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
-16. **Humanity GNOME** (`humanity_gnome`): Ikonografi desktop Linux klasik dari proyek Humanity.
-17. **Elementary OS Flat** (`elementary_flat`): Desain datar modern minimalis dari Elementary OS.
-18. **Breeze KDE Plasma** (`breeze_kde`): Ikonografi KDE Plasma Breeze dengan keseimbangan geometris tajam.
-19. **Papirus Rounded** (`papirus_round`): Rangkaian ikon Linux modern dengan sudut membulat cerah.
-20. **macOS Cupertino Clean** (`mac_cupertino`): Simbol monokrom dan penuh warna mematuhi Apple HIG.
-21. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
+6. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue 3.5.6 otentik dengan skalabilitas multi-resolusi dan retina @2x.
+7. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
+8. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+9. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
+10. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
+11. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
+12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+13. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
+14. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
+15. **Monoline Minimal** (`monoline_minimal`): Ikon garis minimalis ultra-bersih dengan inversi luminans otomatis pada tema gelap.
+16. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
+17. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
+18. **Humanity GNOME** (`humanity_gnome`): Ikonografi desktop Linux klasik dari proyek Humanity.
+19. **Elementary OS Flat** (`elementary_flat`): Desain datar modern minimalis dari Elementary OS.
+20. **Breeze KDE Plasma** (`breeze_kde`): Ikonografi KDE Plasma Breeze dengan keseimbangan geometris tajam.
+21. **Papirus Rounded** (`papirus_round`): Rangkaian ikon Linux modern dengan sudut membulat cerah.
+22. **macOS Cupertino Clean** (`mac_cupertino`): Simbol monokrom dan penuh warna mematuhi Apple HIG.
+23. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
 
 ### Kejelasan High-DPI & Layar Retina
 
@@ -112,7 +114,7 @@ Ubah ukuran ikon secara instan dari `Tema > Paket Ikon Toolbar > Ukuran Ikon Too
 
 - **Tab Themes & Toolbar (Tab 3)**:
   - Menggabungkan pengaturan tema aktif, penggeser opasitas jendela, interval muat ulang `tail -f`, dan proteksi penempatan multi-display.
-  - Manajer Paket Ikon Toolbar lengkap yang mencakup 21 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
+  - Manajer Paket Ikon Toolbar lengkap yang mencakup 23 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
 - **Tab Custom Toolbar Config (Tab 4)**:
   - Mengintegrasikan editor penyesuai bilah alat visual (`CustomizeToolbarWidget`) langsung ke dalam kotak dialog Preferensi.
   - Tambah, hapus, dan atur ulang urutan tombol bilah alat dengan daftar ganda interaktif lengkap dengan filter pencarian instan.
