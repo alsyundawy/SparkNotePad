@@ -339,7 +339,7 @@ void PreferencesDialog::populateTranslationComboBox() {
 }
 
 void PreferencesDialog::setupThemesGroup(QWidget *container) {
-    auto *gbxThemes = new QGroupBox(tr("Themes & Visual Styling"), container);
+    auto *gbxThemes = new QGroupBox(tr("Themes & Visual Styling").replace(QLatin1Char('&'), QStringLiteral("&&")), container);
     auto *themeLayout = new QFormLayout(gbxThemes);
     themeLayout->setSpacing(10);
     themeLayout->setContentsMargins(14, 16, 14, 14);
@@ -451,30 +451,30 @@ void PreferencesDialog::setupThemesGroup(QWidget *container) {
 }
 
 void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
-    auto *gbxToolbarPacks = new QGroupBox(tr("Toolbar Icon Packs & Icon Size"), container);
+    auto *gbxToolbarPacks = new QGroupBox(tr("Toolbar Icon Packs & Icon Size").replace(QLatin1Char('&'), QStringLiteral("&&")), container);
     auto *toolbarLayout = new QFormLayout(gbxToolbarPacks);
     toolbarLayout->setVerticalSpacing(12);
     toolbarLayout->setHorizontalSpacing(14);
     toolbarLayout->setContentsMargins(14, 16, 14, 14);
 
-    // Active Icon Pack Selector & Description Card
-    auto *packColumnLayout = new QVBoxLayout();  // NOSONAR(cpp:S5025)
-    packColumnLayout->setSpacing(6);
-    packColumnLayout->setContentsMargins(0, 0, 0, 0);
-
+    // Active Icon Pack Selector
     comboBoxIconPack = new QComboBox(gbxToolbarPacks);
     populateIconPacksComboBox();
-    packColumnLayout->addWidget(comboBoxIconPack);
+    toolbarLayout->addRow(tr("Active Icon Pack:"), comboBoxIconPack);
+
+    // Description Card
+    auto *lblDescTitle = new QLabel(tr("Description:"), gbxToolbarPacks);
+    lblDescTitle->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     lblIconPackDescription = new QLabel(gbxToolbarPacks);
     lblIconPackDescription->setObjectName(QStringLiteral("lblIconPackDescription"));
     lblIconPackDescription->setWordWrap(true);
     lblIconPackDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    lblIconPackDescription->setMinimumHeight(32);
+    lblIconPackDescription->setMinimumHeight(44);
     if (const auto *curPack = ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId()); curPack) {
         lblIconPackDescription->setText(curPack->description);
     }
-    packColumnLayout->addWidget(lblIconPackDescription);
+    toolbarLayout->addRow(lblDescTitle, lblIconPackDescription);
 
     connect(comboBoxIconPack, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int idx) {
         if (idx < 0) {
@@ -498,7 +498,6 @@ void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
         }
         updateIconPreview();
     });
-    toolbarLayout->addRow(tr("Active Icon Pack:"), packColumnLayout);
 
     // Icon Size
     comboBoxIconSize = new QComboBox(gbxToolbarPacks);

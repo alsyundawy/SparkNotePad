@@ -508,7 +508,7 @@ ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange() {
         return NoChange;
     }
 
-    qInfo("type() = %d", bufferType);
+    qInfo("type() = %d", static_cast<int>(bufferType));
     Q_ASSERT(false);
 
     return NoChange;
@@ -588,7 +588,12 @@ void ScintillaNext::trimTrailingWhitespace() {
 
 void ScintillaNext::changeEvent(QEvent *event) {
     ScintillaEdit::changeEvent(event);
-    if (event && (event->type() == QEvent::DevicePixelRatioChange || event->type() == QEvent::ScreenChangeInternal)) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    const bool isDpiChange = event && (event->type() == QEvent::DevicePixelRatioChange || event->type() == QEvent::ScreenChangeInternal);
+#else
+    const bool isDpiChange = event && (event->type() == QEvent::ScreenChangeInternal);
+#endif
+    if (isDpiChange) {
         // High-DPI display scale factor change: re-assert LCD optimization and buffered draw, then refresh
         setFontQuality(SC_EFF_QUALITY_LCD_OPTIMIZED);
         setBufferedDraw(true);

@@ -24,5 +24,5 @@ jobs:
         with:
           check_filenames: true
           path: ./src
-          skip: "*.lua,*.ui,*.svg,*_id.txt"
-          ignore_words_list: doubleclick,msdos,prevEnd,curren,notin,nd,vai,thirdparty,onTop,ontop,currentY,uptodate,sistem,paket,vektor,samping,profesional,modul
+          skip: "*.lua,*.ui,*.svg,*_id.txt,ui_*.h,DOCNOTE.txt,CHANGELOG.txt"
+          ignore_words_list: doubleclick,msdos,prevEnd,curren,notin,nd,vai,thirdparty,onTop,ontop,currentY,uptodate,sistem,paket,vektor,samping,profesional,modul,standar,simbol,berstandar,sav,clos
