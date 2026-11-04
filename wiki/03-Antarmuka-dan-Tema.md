@@ -20,7 +20,7 @@ SparkNotePad menyediakan **75 tema bawaan** yang dikelompokkan ke dalam **25 rum
 | **Tokyo Night**      | Night, Storm, Day, Light                 | Estetika visual cyberpunk modern khas kota Tokyo malam hari          |
 | **GitHub**           | Dark Dimmed, Dark Default, Light         | Tampilan resmi selaras dengan antarmuka web GitHub                   |
 
-Penggantian tema dapat dilakukan kapan saja melalui menu **Pengaturan (Preferences)** -> **Tema (Themes)** atau menekan pintasan cepat `Cmd+Alt+T` / `Ctrl+Alt+T`.
+Penggantian tema dan konfigurasi bilah alat dapat dilakukan kapan saja melalui menu **Pengaturan (Preferences)** pada tab **Themes & Toolbar** (atau pintasan cepat `Cmd+Alt+T` / `Ctrl+Alt+T`), serta penyesuaian tombol bilah alat melalui tab **Custom Toolbar Config** (atau menu `Settings > Customize Toolbar...`).
 
 ---
 
@@ -107,6 +107,16 @@ Ubah ukuran ikon secara instan dari `Tema > Paket Ikon Toolbar > Ukuran Ikon Too
 - **32 × 32** (Besar / DPI Tinggi)
 - **48 × 48** (Ekstra Besar / Extra Large)
 - **64 × 64** (Ultra High-DPI / Resolusi Tinggi)
+
+### Tab Preferensi Khusus untuk Tema dan Bilah Alat
+
+- **Tab Themes & Toolbar (Tab 3)**:
+  - Menggabungkan pengaturan tema aktif, penggeser opasitas jendela, interval muat ulang `tail -f`, dan proteksi penempatan multi-display.
+  - Manajer Paket Ikon Toolbar lengkap yang mencakup 21 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
+- **Tab Custom Toolbar Config (Tab 4)**:
+  - Mengintegrasikan editor penyesuai bilah alat visual (`CustomizeToolbarWidget`) langsung ke dalam kotak dialog Preferensi.
+  - Tambah, hapus, dan atur ulang urutan tombol bilah alat dengan daftar ganda interaktif lengkap dengan filter pencarian instan.
+  - Sisipkan garis pemisah kustom dan pulihkan konfigurasi bawaan 33 tombol dengan pembaruan langsung (hot-reload).
 
 ### Dialog Kustomisasi Tombol Toolbar (`CustomizeToolbarDialog`)
 

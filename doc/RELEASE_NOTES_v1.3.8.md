@@ -57,7 +57,7 @@ SparkNotePad v1.3.8 delivers a landmark milestone in editor ergonomics and visua
 
 ### 1. 21 Built-in Distinct Toolbar Icon Packs Suite
 
-Accessible instantly via `Themes > Toolbar Icon Packs` without requiring an application restart:
+Accessible instantly via `Preferences > Themes & Toolbar` or the dedicated toolbar settings without requiring an application restart:
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
 2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
@@ -107,22 +107,26 @@ Accessible instantly via `Themes > Toolbar Icon Packs` without requiring an appl
 Menus in `MainWindow.ui` and `MainWindow.cpp` have been organized into the logical workflow typical of professional notepad applications:
 
 - **File**: New, Open, Quick Open (`Cmd+P` / `Ctrl+P`), Reload, Save, Save As, Export, Page Setup, Print, Close, Exit.
-- **Edit**: Standard clipboard operations, Undo/Redo, Indentation, Case Conversions, Line Operations, Commenting.
+- **Edit**: Standard clipboard operations, Undo/Redo, Indentation, Case Conversions, Line Operations, Commenting. (Duplicate Character Palette removed in favor of native macOS Character Palette).
 - **Search**: Find, Replace, Mark Occurrences, Incremental Search, Go to Line, Bookmarks sub-menu.
-- **View**: Fullscreen, Zoom, Line Wrap, Show Whitespace, Show EOL, Change History navigation, and a dedicated **Side Panels** sub-menu (File Browser, Workspace, Tail Monitor, Hex Viewer).
-- **Tools**: Base64/URL Encoding, Hash/Checksum calculations, Case and Number Converters, Math Evaluator, XML/JSON Pretty-printer, and dedicated **HTML & Markdown Preview** options.
+- **View**: Fullscreen, Zoom, Line Wrap, Show Whitespace, Show EOL, Change History navigation, and streamlined direct panel controls.
+- **Tools**: Base64/URL Encoding, Hash/Checksum calculations, Case and Number Converters, Math Evaluator, XML/JSON Pretty-printer, and Toggle Hex / Binary View relocated directly below Compare for intuitive inspection.
+- **macOS Application Menu**: Restart Application positioned directly above Quit (`QAction::ApplicationSpecificRole`).
 
-### 5. File Browser & Folder-as-Workspace Selection Highlight Polish
+### 5. Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")
+
+- **Tab 3 ("Themes & Toolbar")**: Relocated Themes visual styling (active theme selector, window opacity slider, tail -f reload interval, and multi-DPI display placement guard) and comprehensive Toolbar Icon Packs manager (21 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector 16x16 to 64x64, live icon sample preview strip, custom icon packs folder launcher, and live rescan).
+- **Tab 4 ("Custom Toolbar Config")**: Embedded visual toolbar customizer (`CustomizeToolbarWidget`) directly inside Preferences, allowing interactive search filtering, button additions/removals, reordering, separator insertions, and reset to defaults with hot-reload.
+
+### 6. File Browser & Folder-as-Workspace Selection Highlight Polish
 
 - **Uncropped Selection Highlights**: Fixed selection box clipping by enforcing `show-decoration-selected: 1;` and full-row branch selection matching the active theme palette (`ThemePaletteData`).
 - **Quick Path Bookmarks**: Added one-click navigation buttons for Home, Desktop, Documents, and Downloads.
 - **Status Bar Metrics**: Commander-style footer bar displaying total item count and selected file size and modification timestamps.
 
-### 6. Visual Toolbar Customizer (`CustomizeToolbarDialog`)
+### 7. 100% Bilingual Localization Parity across English and Indonesian
 
-- Dual-list interactive dialog for adding, removing, and reordering toolbar buttons with drag-and-drop (`InternalMove`).
-- Custom separator insertion support and live search filtering.
-- Reset to Defaults button restoring the standard 33-button layout.
+- Synchronized 1,924 translation strings with 0 unfinished entries across both `SparkNotePad_en.ts` and `SparkNotePad_id.ts`.
 
 ---
 

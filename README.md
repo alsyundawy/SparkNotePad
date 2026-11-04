@@ -235,7 +235,10 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | **Strict TLS & Air-Gap Mode**    | Enforces global TLS 1.2+ baseline, disables CWD cert lookup (CVE-2025-14575), and provides 1-click air-gap                           |     Preferences >> General     |
 | **27 Monoline Vector Icons**     | Complete suite of 24x24 high-DPI monoline vector SVGs matching modern macOS Retina and Linux desktop styling                         |        Toolbar & Menus         |
 | **Unified QComboBox Ergonomics** | Polished dropdown styling across all dialogs with 4px rounded borders, vector arrows, and hover highlights                           |          All Dialogs           |
-| **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,461 UI strings and dialogs                                    |    Preferences >> Language     |
+| **Themes & Toolbar Tab**         | 21-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                        |Preferences >> Themes & Toolbar |
+| **Custom Toolbar Config Tab**    | Embedded GUI toolbar customizer with search filter, action reordering, separator insertion, and live hot-reload                      | Preferences >> Custom Toolbar  |
+| **Desktop Editor Menus Format**  | Standard menu hierarchy: Hex/Binary below Compare, macOS app menu Restart above Quit, clean View menu                                |          Global Menus          |
+| **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,924 UI strings and dialogs (0 unfinished)                     |    Preferences >> Language     |
 | **Graceful App Restart**         | Flushes sessions, saves settings, and relaunches cleanly without single-instance conflicts                                           |          `Ctrl+Alt+R`          |
 | **Prominent Exit Action**        | Accessible toolbar and File menu termination with unsaved-document prompts and safe cleanup                                          |  Toolbar / `Cmd+Q` / `Alt+F4`  |
 | **About Dialog HiDPI Polish**    | Responsive `QScrollArea` wrapping, label word-wrap, and elision-free layout across Retina/4K                                         |        `Help >> About`         |
@@ -423,6 +426,26 @@ trunk check -n -j 2
 ## Changelog
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.3.8] — 21 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
+
+- **21 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
+  - Seamlessly switch among 21 built-in vector and pixel icon collections (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, etc.) with dynamic icon scaling (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+  - External custom icon pack support with automatic filesystem discovery and live rescan.
+  - Full propagation of icon themes to all menus, submenus, tab context menus, and editor context menus.
+- **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - **Themes & Toolbar Tab (Tab 3)**: Relocated visual themes, window opacity, tail reload intervals, display safety guard, and full toolbar icon pack configuration with responsive description card layout and real-time icon previews.
+  - **Custom Toolbar Config Tab (Tab 4)**: Embedded visual toolbar editor enabling live addition, removal, reordering, separator insertion, filtering, default reset, and hot-reload.
+- **Standard Desktop Editor Menu Hierarchy**:
+  - Relocated Toggle Hex / Binary View directly beneath Compare in the top-level Tools/View menu for intuitive workflow.
+  - Positioned Restart Application in the macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`).
+  - Removed duplicate Character Palette (`actionEmoji`) in favor of native macOS system emoji palette.
+  - Streamlined View menu by removing redundant Side Panels sub-menu and standalone markdown preview actions.
+- **100% Bilingual Localization Parity**:
+  - Full synchronization of English (`SparkNotePad_en.ts`) and Indonesian (`SparkNotePad_id.ts`) translation catalogs across 1,924 UI strings with 0 unfinished entries.
+- **Zero-Defect Linter & Static Analysis Compliance**:
+  - Eradicated all cascading LSP diagnostics via generated UI header symlinks.
+  - Clean verification across Clang AST checks (`clangd --check`), SonarLint/SonarQube, `cppcheck`, and `shellcheck`.
 
 ### [v1.3.7] — Tools Suite (Notepad++ Style), Forensics Suite, Linter Zero-Defect Hardening & Ergonomics (2026-10-30)
 

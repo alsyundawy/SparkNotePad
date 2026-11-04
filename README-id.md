@@ -235,7 +235,10 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Baseline TLS & Mode Air-Gap**  | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik                 |  Preferensi >> Pengaturan Umum  |
 | **27 Ikon Bilah Alat Monoline**  | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                                  |        Bilah Alat & Menu        |
 | **Ergonomi QComboBox Terpadu**   | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema                         |         Seluruh Dialog          |
-| **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.461 teks antarmuka dan dialog                      |   Preferensi >> Bahasa (Lang)   |
+| **Tab Themes & Toolbar**         | 21 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             |  Preferensi >> Themes & Toolbar |
+| **Tab Custom Toolbar Config**    | Penyesuai visual bilah alat lengkap dengan pencarian, pengurutan aksi, pemisah, dan hot-reload instan                             |   Preferensi >> Custom Toolbar  |
+| **Menu Editor Standar Desktop**  | Menu standar: Tampilan Hex/Biner di bawah Bandingkan, Restart di menu macOS di atas Quit, menu bersih                             |           Menu Global           |
+| **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.924 teks (0 belum selesai)                         |   Preferensi >> Bahasa (Lang)   |
 | **Mulai Ulang Aplikasi Aman**    | Mengosongkan sesi, menyimpan pengaturan, dan meluncurkan ulang aplikasi tanpa konflik lock                                        |          `Ctrl+Alt+R`           |
 | **Tombol Keluar Terkemuka**      | Penghentian aplikasi yang mudah diakses di bilah alat dan menu dengan konfirmasi simpan                                           | Bilah Alat / `Cmd+Q` / `Alt+F4` |
 | **Penyempurnaan Dialog Tentang** | Tata letak responsif dengan `QScrollArea`, pelipatan teks, dan bebas pemotongan di Retina/4K                                      |      Menu `Help >> About`       |
@@ -423,6 +426,26 @@ trunk check -n -j 2
 ## Changelog
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.3.8] — 21 Paket Ikon Toolbar, Tab Preferensi Themes & Toolbar, Ergonomi Menu Desktop & Paritas Penuh i18n (2026-11-04)
+
+- **Rangkaian 21 Paket Ikon Toolbar Multi-Resolusi**:
+  - Pilihan cepat 21 koleksi paket ikon vektor dan pixel (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, dll.) dengan skala ikon dinamis (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+  - Dukungan paket ikon eksternal kustom dengan deteksi otomatis sistem berkas dan pemindaian ulang instan.
+  - Penyelarasan ikon otomatis ke seluruh bilah menu, submenu, menu konteks tab, dan menu konteks klik kanan editor.
+- **Tab Preferensi Khusus ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - **Tab Themes & Toolbar (Tab 3)**: Relokasi pengaturan gaya visual tema, opasitas jendela, interval pemantauan tail, proteksi penempatan multi-display, serta konfigurasi paket ikon toolbar dengan kartu deskripsi responsif dan pratinjau ikon langsung.
+  - **Tab Custom Toolbar Config (Tab 4)**: Editor visual bilah alat terintegrasi langsung dalam Preferensi yang mendukung pencarian aksi, penambahan/penghapusan tombol, pengurutan, penyisipan pemisah, dan reset default dengan pembaruan instan (hot-reload).
+- **Hierarki Menu Standar Editor Desktop**:
+  - Relokasi Tampilan Hex / Biner tepat di bawah menu Bandingkan (Compare) pada menu Tools/View.
+  - Menempatkan Mulai Ulang Aplikasi (Restart Application) pada menu Aplikasi macOS tepat di atas Keluar (`QAction::ApplicationSpecificRole`).
+  - Menghapus aksi manual redundan Emoji & Simbol (`actionEmoji`) demi mendukung palet emoji bawaan macOS.
+  - Merampingkan menu Tampilan (View) dengan menghapus submenu Panel Samping dan aksi pratinjau markdown mandiri yang redundan.
+- **Paritas Penuh 100% Katalog Dwibahasa (i18n)**:
+  - Sinkronisasi menyeluruh katalog terjemahan Bahasa Inggris (`SparkNotePad_en.ts`) dan Bahasa Indonesia (`SparkNotePad_id.ts`) pada 1.924 entri antarmuka pengguna dengan 0 entri belum selesai (unfinished).
+- **Kepatuhan Total Linter & Analisis Statis Zero-Defect**:
+  - Membasmi tuntas seluruh diagnostik LSP error incomplete type via symlink header UI yang digenerasi otomatis.
+  - Verifikasi bersih 0 error pada Clang AST (`clangd --check`), SonarLint/SonarQube, `cppcheck`, dan `shellcheck`.
 
 ### [v1.3.7] — Rangkaian Alat Tools (Gaya Notepad++), Rangkaian Forensik Digital, Pembasmian Total Linter & Ergonomi UI (2026-10-30)
 

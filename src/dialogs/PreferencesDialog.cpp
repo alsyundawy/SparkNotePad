@@ -174,7 +174,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     ui->comboBoxLineEndings->addItem(tr("Macintosh (CR)"), ScintillaNext::eolModeToString(SC_EOL_CR));
 
     // Select the current one
-    int index = ui->comboBoxLineEndings->findData(settings->defaultEOLMode());
+    const int index = ui->comboBoxLineEndings->findData(settings->defaultEOLMode());
     ui->comboBoxLineEndings->setCurrentIndex(index == -1 ? 0 : index);
 
     connect(ui->comboBoxLineEndings, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
@@ -599,9 +599,10 @@ void PreferencesDialog::setupCustomToolbarTab(QMainWindow *mainWindow) {
 }
 
 void PreferencesDialog::populateIconPacksComboBox() {
-    if (!comboBoxIconPack)
+    if (!comboBoxIconPack) {
         return;
-    QSignalBlocker blocker(comboBoxIconPack);
+    }
+    const QSignalBlocker blocker(comboBoxIconPack);
     comboBoxIconPack->clear();
     const auto &packs = ToolbarIconManager::instance()->availablePacks();
     const QString currentPack = ToolbarIconManager::instance()->currentPackId();

@@ -46,8 +46,16 @@ SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap deng
 - **Tampilan Hex / Binary Reversibel (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Menampilkan offset 8-digit, 16 bita hex (8+8 grouping), dan kolom karakter ASCII.
   - Dapat dibatalkan seketika mengembalikan dokumen asli secara utuh.
-- **Relokasi Menu Toolbar Icon Packs ke Posisi Teratas Themes**:
-  - Submenu ditempatkan di posisi paling atas menu `Themes`, dipisahkan oleh separator pembatas.
+- **Tab Khusus Preferensi ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - Relokasi pengaturan gaya visual Tema (Tema Aktif, Opasitas Jendela, Interval Tail, Proteksi Layar) ke Tab 3 "Themes & Toolbar" bersama pengatur Paket Ikon Toolbar lengkap (21 paket, kartu deskripsi dinamis, pengatur ukuran ikon, pratinjau langsung, dan pemuat paket kustom).
+  - Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung di Tab 4 "Custom Toolbar Config".
+- **Penataan Ulang Menu Aplikasi Standar Desktop**:
+  - Relokasi Tampilan Hex / Biner tepat di bawah Bandingkan (Compare) pada menu tingkat atas.
+  - Menempatkan Mulai Ulang Aplikasi (Restart Application) di menu Aplikasi macOS tepat di atas Keluar (Quit).
+  - Menghapus aksi manual Emoji & Simbol demi mendukung palet emoji bawaan macOS.
+  - Merampingkan menu Tampilan (View) dengan menghapus submenu Panel Samping.
+- **Paritas Penuh 100% Katalog Dwibahasa (i18n)**:
+  - Sinkronisasi menyeluruh katalog Bahasa Inggris dan Bahasa Indonesia pada 1.924 entri dengan 0 entri belum selesai (unfinished).
 - **100% Pengadopsian Lexilla Lexer (125 Bahasa)**:
   - Seluruh 125 lexer Lexilla didukung lengkap dengan deskriptor Lua di `src/languages/`, didaftarkan di `src/scripts.qrc` dan `src/scripts/init.lua`.
 - **Audit Pintasan Keyboard & Resolusi Konflik**:

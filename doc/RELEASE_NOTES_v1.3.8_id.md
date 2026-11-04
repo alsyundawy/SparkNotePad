@@ -57,7 +57,7 @@ SparkNotePad v1.3.8 menghadirkan lompatan besar dalam ergonomi visual dan alur k
 
 ### 1. Rangkaian 21 Paket Ikon Toolbar Bawaan
 
-Dapat diakses langsung via menu `Tema > Paket Ikon Toolbar` secara bebas restart:
+Dapat diakses langsung via `Preferensi > Themes & Toolbar` atau pengaturan toolbar secara bebas restart:
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
 2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
@@ -107,22 +107,26 @@ Dapat diakses langsung via menu `Tema > Paket Ikon Toolbar` secara bebas restart
 Menu pada `MainWindow.ui` dan `MainWindow.cpp` telah ditata ulang sesuai alur kerja aplikasi editor teks profesional:
 
 - **Berkas (File)**: Baru, Buka, Buka Cepat (`Cmd+P` / `Ctrl+P`), Muat Ulang, Simpan, Simpan Sebagai, Ekspor, Atur Halaman, Cetak, Tutup, Keluar.
-- **Edit**: Operasi papan klip standar, Urung/Ulangi, Indentasi, Konversi Huruf, Operasi Baris, Komentar.
+- **Edit**: Operasi papan klip standar, Urung/Ulangi, Indentasi, Konversi Huruf, Operasi Baris, Komentar. (Aksi manual Emoji & Simbol dihapus demi mendukung palet emoji bawaan sistem macOS).
 - **Cari (Search)**: Temukan, Ganti, Tandai Kemunculan, Pencarian Bertahap, Lompat ke Baris, Submenu Markah Buku.
-- **Tampilan (View)**: Layar Penuh, Zoom, Baris Berlipat, Tampilkan Spasi, Tampilkan EOL, Navigasi Riwayat Perubahan, serta submenu khusus **Panel Samping** (File Browser, Workspace, Tail Monitor, Hex Viewer).
-- **Alat (Tools)**: Pengodean Base64/URL, Perhitungan Hash/Checksum, Konverter Angka dan Huruf, Evaluator Matematika, Pretty-printer XML/JSON, serta menu khusus **Pratinjau HTML & Markdown**.
+- **Tampilan (View)**: Layar Penuh, Zoom, Baris Berlipat, Tampilkan Spasi, Tampilkan EOL, Navigasi Riwayat Perubahan, serta akses kontrol panel langsung yang lebih ringkas.
+- **Alat (Tools)**: Pengodean Base64/URL, Perhitungan Hash/Checksum, Konverter Angka dan Huruf, Evaluator Matematika, Pretty-printer XML/JSON, serta Tampilan Hex / Biner yang diposisikan tepat di bawah Bandingkan (Compare).
+- **Menu Aplikasi macOS**: Mulai Ulang Aplikasi (Restart Application) diposisikan tepat di atas Keluar (Quit) (`QAction::ApplicationSpecificRole`).
 
-### 5. Penyempurnaan Garis Sorotan File Browser & Workspace
+### 5. Tab Preferensi Khusus ("Themes & Toolbar" & "Custom Toolbar Config")
+
+- **Tab 3 ("Themes & Toolbar")**: Pengaturan gaya visual tema, opasitas jendela, interval muat ulang `tail -f`, proteksi multi-layar, serta manajer paket ikon toolbar lengkap (21 paket ikon, pemilih paket dengan kartu deskripsi dinamis, pengatur ukuran ikon 16x16 hingga 64x64, pratinjau strip ikon langsung, pembuka folder kustom, dan pemindaian ulang instan).
+- **Tab 4 ("Custom Toolbar Config")**: Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung dalam Preferensi dengan pencarian cepat, penambahan/penghapusan tombol, pengurutan, garis pemisah, dan reset default dengan pembaruan instan (hot-reload).
+
+### 6. Penyempurnaan Garis Sorotan File Browser & Workspace
 
 - **Garis Sorotan Penuh & Rapi**: Menghilangkan efek pemotongan kotak seleksi dengan penegakan `show-decoration-selected: 1;` dan pewarnaan seleksi baris penuh mengikuti palet tema aktif (`ThemePaletteData`).
 - **Markah Cepat Folder**: Tombol navigasi cepat satu klik menuju Beranda (Home), Desktop, Dokumen, dan Unduhan.
 - **Bilah Status Metrik**: Footer bergaya commander menampilkan jumlah berkas/folder serta ukuran berkas dan waktu modifikasi terakhir.
 
-### 6. Dialog Kustomisasi Tombol Toolbar Visual (`CustomizeToolbarDialog`)
+### 7. Paritas Penuh 100% Katalog Dwibahasa (i18n)
 
-- Antarmuka interaktif daftar ganda untuk menambah, menghapus, dan mengatur urutan tombol toolbar dengan drag-and-drop (`InternalMove`).
-- Dukungan penyisipan garis pemisah (separator) kustom dan pencarian aksi langsung.
-- Tombol Reset ke Default untuk memulihkan konfigurasi 33 tombol bawaan.
+- Sinkronisasi menyeluruh katalog Bahasa Inggris (`SparkNotePad_en.ts`) dan Bahasa Indonesia (`SparkNotePad_id.ts`) pada 1.924 entri antarmuka pengguna dengan 0 entri belum selesai (unfinished).
 
 ---
 

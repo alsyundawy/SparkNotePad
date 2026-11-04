@@ -23,10 +23,11 @@ SparkNotePad features a curated library of **75 high-contrast syntax color theme
 | **SynthWave '84**    | SynthWave 84 Neon, Cyberpunk   | SynthWave Daylight        |
 | **Palenight**        | Material Palenight, Deep Ocean | Material Light            |
 
-### Switching Themes
+### Switching Themes & Toolbar Configurations
 
 - Press `Cmd+Alt+T` (macOS) or `Ctrl+Alt+T` (Linux) to toggle between Dark and Light mode variants instantly.
-- Select specific themes via `Settings > Style Configurator...`.
+- Select themes and configure toolbar icon packs via `Preferences > Themes & Toolbar` tab.
+- Customize toolbar buttons and action order via `Preferences > Custom Toolbar Config` tab or `Settings > Customize Toolbar...`.
 
 ---
 
@@ -105,6 +106,16 @@ Switch icon size seamlessly from `Themes > Toolbar Icon Packs > Toolbar Icon Siz
 - **32 × 32** (Large / High-DPI)
 - **48 × 48** (Extra Large)
 - **64 × 64** (Ultra High-DPI)
+
+### Dedicated Preferences Tabs for Themes and Toolbar
+
+- **Themes & Toolbar Tab (Tab 3)**:
+  - Consolidates active theme selection, window opacity slider, tail -f reload interval, and multi-display safety guards.
+  - Comprehensive Toolbar Icon Packs manager featuring 21 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector (16x16 to 64x64), live icon sample preview strip, custom icon packs folder launcher, and live rescan.
+- **Custom Toolbar Config Tab (Tab 4)**:
+  - Embedded visual toolbar customizer (`CustomizeToolbarWidget`) directly inside Preferences.
+  - Add, remove, and reorder toolbar buttons using intuitive dual list views with search filtering.
+  - Insert separators and reset toolbar to default configuration with instant hot-reload.
 
 ### Visual Toolbar Customizer (`CustomizeToolbarDialog`)
 

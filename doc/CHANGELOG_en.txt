@@ -46,9 +46,16 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
 - **Reversible Hex / Binary View (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Real-time in-place hex inspection displaying 8-digit offset, 16 hex bytes with 8+8 grouping, and ASCII character column.
   - Reversible toggle restoring original text, language lexer, and read-only flags seamlessly.
-- **Relocated Toolbar Icon Packs Submenu**:
-  - Positioned at the very top of `Themes` menu with an elegant visual separator before editor themes.
-  - Clean, standardized, non-redundant icon pack naming.
+- **Preferences Dedicated Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into dedicated Tab 3 "Themes & Toolbar", together with Toolbar Icon Packs manager (21 packs, description card layout, size selector, icon previews, and custom packs loader).
+  - Embedded visual toolbar customizer (`CustomizeToolbarWidget`) into dedicated Tab 4 "Custom Toolbar Config".
+- **Standard Desktop Editor Menu Reorganization**:
+  - Relocated Toggle Hex / Binary View directly beneath Compare in the top-level Tools/View menu.
+  - Positioned Restart Application in macOS Application menu directly above Quit.
+  - Removed duplicate manual Emoji & Symbol action in favor of native macOS Character Palette.
+  - Streamlined View menu by removing redundant Side Panels sub-menu.
+- **100% Bilingual Localization Parity**:
+  - Complete synchronization across English and Indonesian catalogs with 1,924 finished translations and 0 unfinished entries.
 - **100% Lexilla Lexers Adoption (125 Languages)**:
   - Complete adoption of all 125 Lexilla lexer modules in `src/languages/`, registered in `src/scripts.qrc` and synchronized in `src/scripts/init.lua`.
   - Comprehensive syntax highlighting for modern programming languages, configuration formats, and technical DSLs.

@@ -125,4 +125,7 @@
 | **Log Tail Monitoring (`tail -f`)**         |   ✅ Complete    | Non-modal real-time log monitoring engine                           |
 | **JavaScript Expression Evaluator**         |   ✅ Complete    | Sandboxed JS expression and math evaluation                         |
 | **Application Restart & Explicit Exit**     |   ✅ Complete    | `MainWindow::restartApplication()` and clean exit                   |
-| **Complete Indonesian Localization**        |   ✅ Complete    | 1,790 translations finished (100% complete, 0 unfinished)           |
+| **Preferences Themes & Toolbar Tab**        |   ✅ Complete    | `PreferencesDialog` (Themes & Toolbar Icon Packs with card layout)  |
+| **Preferences Custom Toolbar Config Tab**   |   ✅ Complete    | `PreferencesDialog` (Embedded visual toolbar customizer widget)     |
+| **Standard Desktop Editor Menu Hierarchy**  |   ✅ Complete    | `MainWindow` (Hex/Binary below Compare, macOS app menu Restart)     |
+| **Complete Indonesian Localization**        |   ✅ Complete    | 1,924 translations finished (100% complete, 0 unfinished)           |
