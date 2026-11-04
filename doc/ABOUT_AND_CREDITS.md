@@ -57,7 +57,8 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 | :-------------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------- |
 | **Lon McGregor (NotepadPlusPlusIcons)** | Lon McGregor               | Open-source chameleon and editor artwork series, adapted for SparkNotePad official branding. |
 | **SparkNotePad Monoline Vector Suite**  | Harry D.S. Alsyundawy      | Retina UI vector icons customized for 75 themes, menus, and toolbars.                        |
-| **Fugue Icons Suite**                   | Yusuke Kamiyamane          | Renowned pixel-perfect Fugue Silk 2 iconography (Creative Commons Attribution 3.0).          |
+| **Fugue Icons Suite**                   | Yusuke Kamiyamane          | Renowned pixel-perfect Fugue 3.5.6 iconography (Creative Commons Attribution 3.0).           |
+| **Elegant Themes Icons**                | Nicholas Roach             | Authentic classic 48x48 Elegant Themes iconography (Dual-licensed MIT / GPL).               |
 | **Microsoft Fluent Design Icons**       | Microsoft / Directory Opus | Fluent vector and bitmap toolbar icon set.                                                   |
 | **Classic Silk Icons**                  | Mark James (FAMFAMFAM)     | Classic 16x16 Silk icons from upstream NotepadNext / Silk suite.                             |
 

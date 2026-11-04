@@ -9,19 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.8] - 2026-11-02
 
-### 🎨 Toolbar Icon Packs Suite (21 Built-In Vector & Bitmap Packs), High-DPI Retina Scaling & Dark Mode Luminance Adaptation
+### 🎨 Toolbar Icon Packs Suite (22 Built-In Vector & Bitmap Packs), High-DPI Retina Scaling & Dark Mode Luminance Adaptation
 
-SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 21 curated icon packs, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, and intelligent dark-mode luminance tone mapping:
+SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 22 curated icon packs, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, and intelligent dark-mode luminance tone mapping:
 
 #### 🆕 Added
 
-- **21 Built-in Toolbar Icon Packs**:
+- **22 Built-in Toolbar Icon Packs**:
   - **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
   - **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
   - **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
   - **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
   - **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-  - **Fugue Classic (Silk Suite)** (`fugue`): Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography with multi-DPI retina scaling.
+  - **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane with multi-resolution scaling.
   - **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
   - **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
   - **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
@@ -37,6 +37,7 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
   - **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
   - **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
   - **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
+  - **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
 - **High-DPI Retina & Dark Mode Luminance Adaptation**:
   - Native scalable vector SVG preservation preventing raster interpolation blur on Retina displays.
   - Multi-resolution raster pixmaps (16x16 to 64x64) with dedicated `@2x` Retina DPR (`setDevicePixelRatio(2.0)`).

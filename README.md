@@ -235,7 +235,7 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | **Strict TLS & Air-Gap Mode**    | Enforces global TLS 1.2+ baseline, disables CWD cert lookup (CVE-2025-14575), and provides 1-click air-gap                           |     Preferences >> General     |
 | **27 Monoline Vector Icons**     | Complete suite of 24x24 high-DPI monoline vector SVGs matching modern macOS Retina and Linux desktop styling                         |        Toolbar & Menus         |
 | **Unified QComboBox Ergonomics** | Polished dropdown styling across all dialogs with 4px rounded borders, vector arrows, and hover highlights                           |          All Dialogs           |
-| **Themes & Toolbar Tab**         | 21-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                        |Preferences >> Themes & Toolbar |
+| **Themes & Toolbar Tab**         | 22-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                        |Preferences >> Themes & Toolbar |
 | **Custom Toolbar Config Tab**    | Embedded GUI toolbar customizer with search filter, action reordering, separator insertion, and live hot-reload                      | Preferences >> Custom Toolbar  |
 | **Desktop Editor Menus Format**  | Standard menu hierarchy: Hex/Binary below Compare, macOS app menu Restart above Quit, clean View menu                                |          Global Menus          |
 | **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,924 UI strings and dialogs (0 unfinished)                     |    Preferences >> Language     |
@@ -427,10 +427,10 @@ trunk check -n -j 2
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.8] — 21 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
+### [v1.3.8] — 22 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
 
-- **21 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
-  - Seamlessly switch among 21 built-in vector and pixel icon collections (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, etc.) with dynamic icon scaling (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+- **22 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
+  - Seamlessly switch among 22 built-in vector and pixel icon collections (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Authentic Fugue 3.5.6 by Yusuke Kamiyamane, Elegant Themes by Nicholas Roach, etc.) with dynamic icon scaling (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
   - External custom icon pack support with automatic filesystem discovery and live rescan.
   - Full propagation of icon themes to all menus, submenus, tab context menus, and editor context menus.
 - **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:

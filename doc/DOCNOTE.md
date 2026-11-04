@@ -22,15 +22,15 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ## 1. Executive Summary: Release v1.3.8
 
-SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 21-pack icon theme architecture, dedicated Preferences tabs, desktop menu reorganization, and 100% finished bilingual localization parity:
+SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 22-pack icon theme architecture, dedicated Preferences tabs, desktop menu reorganization, and 100% finished bilingual localization parity:
 
-1. **21 Built-in Toolbar Icon Packs (Multi-DPI & Retina @2x)**:
-   - Complete icon pack ecosystem: Modern Ribbon, Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Classic, NotepadNext Classic, Monochrome Outline, Vibrant DuoTone, Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary OS Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, and VS Code Codicons.
+1. **22 Built-in Toolbar Icon Packs (Multi-DPI & Retina @2x)**:
+   - Complete icon pack ecosystem: Modern Ribbon, Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite - Authentic 3.5.6 by Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Notepad++ Classic, NotepadNext Classic, Monochrome Outline, Vibrant DuoTone, Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary OS Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, and VS Code Codicons.
    - Dynamic icon scaling across 16x16, 20x20, 24x24, 32x32, 48x48, and 64x64.
    - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
 
 2. **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
-   - **Tab 3 ("Themes & Toolbar")**: Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
+   - **Tab 3 ("Themes & Toolbar")**: Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (22 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
    - **Tab 4 ("Custom Toolbar Config")**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
 
 3. **Standard Desktop Editor Menu Hierarchy**:

@@ -54,7 +54,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("fugue"),
         .displayName = tr("Fugue Classic (Silk Mini-Icons)"),
-        .description = tr("Detailed mini-icons with soft shadows by Yusuke Kamiyamane"),
+        .description = tr("Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane"),
         .basePath = QStringLiteral(":/icons/packs/fugue"),
         .isBuiltIn = true,
         .isPngBased = true,
@@ -248,6 +248,16 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .basePath = QStringLiteral(":/icons/packs/monochrome"),
         .isBuiltIn = true,
         .isPngBased = false,
+    });
+
+    // 19. Elegant Themes (Nicholas Roach)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("eleganticons"),
+        .displayName = tr("Elegant Themes (Nicholas Roach)"),
+        .description = tr("Authentic classic 48x48 Elegant Themes iconography by Nicholas Roach"),
+        .basePath = QStringLiteral(":/icons/packs/eleganticons"),
+        .isBuiltIn = true,
+        .isPngBased = true,
     });
 }
 

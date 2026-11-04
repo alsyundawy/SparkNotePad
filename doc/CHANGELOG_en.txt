@@ -15,13 +15,13 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
 
 #### 🆕 Added
 
-- **21 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
-  - Seamlessly switch among 21 built-in vector and pixel icon collections: Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Material Sharp, Pixel Fugue, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus, Cupertino, VS Code Codicons.
+- **22 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
+  - Seamlessly switch among 22 built-in vector and pixel icon collections: Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Material Sharp, Pixel Fugue, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus, Cupertino, VS Code Codicons, Authentic Fugue 3.5.6, Elegant Themes.
   - Dynamic multi-DPI icon scaling: 16x16, 20x20, 24x24 (Default), 32x32, 48x48, 64x64.
   - Crisp Retina @2x pixmaps without blur or distortion.
   - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
 - **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
-  - Tab 3 ("Themes & Toolbar"): Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
+  - Tab 3 ("Themes & Toolbar"): Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (22 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
   - Tab 4 ("Custom Toolbar Config"): Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
 - **Standard Desktop Editor Menu Hierarchy**:
   - Reversible Hex/Binary View relocated directly below Compare in the top-level Tools/View menu (`Ctrl+Alt+H` / `Cmd+Alt+H`).

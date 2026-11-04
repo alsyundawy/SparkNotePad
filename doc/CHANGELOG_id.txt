@@ -15,13 +15,13 @@ SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap deng
 
 #### 🆕 Ditambahkan
 
-- **Rangkaian 21 Paket Ikon Toolbar Multi-Resolusi**:
-  - Modern Ribbon (Default Vector SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Klasik, NotepadNext Klasik, Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, dan VS Code Codicons.
+- **Rangkaian 22 Paket Ikon Toolbar Multi-Resolusi**:
+  - Modern Ribbon (Default Vector SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite Otentik 3.5.6 karya Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Notepad++ Klasik, NotepadNext Klasik, Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, dan VS Code Codicons.
   - Skala ikon dinamis multi-DPI: 16x16, 20x20, 24x24 (Default), 32x32, 48x48, 64x64.
   - Varian pixmap Retina @2x tajam dan jernih tanpa distorsi.
   - Tone mapping luminans cerdas HSL pada tema gelap mencegah ikon memudar pada latar belakang gelap.
 - **Tab Khusus Preferensi ("Themes & Toolbar" & "Custom Toolbar Config")**:
-  - Tab 3 ("Themes & Toolbar"): Relokasi pengaturan gaya visual Tema (Tema Aktif, Opasitas Jendela, Interval Tail, Proteksi Layar) ke Tab 3 bersama pengatur Paket Ikon Toolbar lengkap (21 paket, kartu deskripsi dinamis, pengatur ukuran ikon, pratinjau langsung, dan pemuat paket kustom).
+  - Tab 3 ("Themes & Toolbar"): Relokasi pengaturan gaya visual Tema (Tema Aktif, Opasitas Jendela, Interval Tail, Proteksi Layar) ke Tab 3 bersama pengatur Paket Ikon Toolbar lengkap (22 paket, kartu deskripsi dinamis, pengatur ukuran ikon, pratinjau langsung, dan pemuat paket kustom).
   - Tab 4 ("Custom Toolbar Config"): Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung di Tab 4 dengan pencarian cepat, daftar aksi tersedia vs aktif, tambah/hapus aksi, pengurutan tombol, garis pemisah, dan hot-reload instan.
 - **Penataan Ulang Menu Aplikasi Standar Desktop**:
   - Relokasi Tampilan Hex / Biner tepat di bawah Bandingkan (Compare) pada menu tingkat atas (`Ctrl+Alt+H` / `Cmd+Alt+H`).

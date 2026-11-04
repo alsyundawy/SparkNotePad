@@ -64,7 +64,7 @@ Dapat diakses langsung via `Preferensi > Themes & Toolbar` atau pengaturan toolb
 3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
 4. **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
 5. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue Silk 2 dengan skalabilitas retina @2x.
+6. **Fugue Classic (Silk Suite)** (`fugue`): Ikonografi otentik pixel-perfect Fugue 3.5.6 karya Yusuke Kamiyamane dengan skalabilitas multi-resolusi.
 7. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
 8. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
 9. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
@@ -80,6 +80,7 @@ Dapat diakses langsung via `Preferensi > Themes & Toolbar` atau pengaturan toolb
 19. **Papirus Rounded** (`papirus_round`): Rangkaian ikon Linux modern dengan sudut membulat cerah.
 20. **macOS Cupertino Clean** (`mac_cupertino`): Simbol monokrom dan penuh warna mematuhi Apple HIG.
 21. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
+22. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
 
 - **Kejelasan High-DPI & Layar Retina**: Menghilangkan tampilan buram dengan memuat vektor SVG langsung ke engine vektor Qt serta menghasilkan varian pixmap `@2x` Retina DPR (`setDevicePixelRatio(2.0)`) untuk paket berbasis raster.
 - **Tone Mapping Luminans Cerdas Tema Gelap**: Pada tema gelap, wireframe (`monoline_minimal`) diinversi menjadi perak-putih bercahaya, sedangkan paket berwarna (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) ditingkatkan kecerahannya melalui pemetaan HSL tanpa menggeser corak warna dan saturasi.

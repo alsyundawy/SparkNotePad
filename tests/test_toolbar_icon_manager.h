@@ -24,8 +24,8 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 21 built-in packs (including windows7, windows11, and notepadPlusPlus)
-        QCOMPARE(packs.size(), 21);
+        // 22 built-in packs (including windows7, windows11, notepadPlusPlus, and eleganticons)
+        QCOMPARE(packs.size(), 22);
 
         const QStringList expectedPackIds = {
             QStringLiteral("modernRibbon"),     QStringLiteral("fugue"),
@@ -38,7 +38,7 @@ private slots:
             QStringLiteral("glossy_orange"),    QStringLiteral("pixel_fugue_like"),
             QStringLiteral("material_sharp"),   QStringLiteral("windowsXp"),
             QStringLiteral("notepadNext"),      QStringLiteral("vibrantDuotone"),
-            QStringLiteral("monochrome"),
+            QStringLiteral("monochrome"),       QStringLiteral("eleganticons"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -132,6 +132,7 @@ private slots:
             QStringLiteral("vibrantDuotone"),   QStringLiteral("monochrome"),
             QStringLiteral("fluentUi"),         QStringLiteral("windows11"),
             QStringLiteral("windows7"),         QStringLiteral("archLinux"),
+            QStringLiteral("eleganticons"),
         };
 
         for (const QString &packId : packs) {

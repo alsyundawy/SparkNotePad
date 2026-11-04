@@ -64,7 +64,7 @@ Accessible instantly via `Preferences > Themes & Toolbar` or the dedicated toolb
 3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
 4. **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
 5. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography with multi-DPI retina scaling.
+6. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane with multi-resolution scaling.
 7. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
 8. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
 9. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
@@ -80,6 +80,7 @@ Accessible instantly via `Preferences > Themes & Toolbar` or the dedicated toolb
 19. **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
 20. **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
 21. **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
+22. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
 
 - **High-DPI Retina Clarity**: Eliminates all icon blur by supplying native vector SVGs directly to Qt's vector engine and generating dedicated `@2x` Retina DPR pixmaps (`setDevicePixelRatio(2.0)`) for raster packs.
 - **Intelligent Dark Mode Tone Mapping**: Under dark themes, outline wireframes (`monoline_minimal`) are remapped to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL lightness boosting without shifting hue or saturation.
