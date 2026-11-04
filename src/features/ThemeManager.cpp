@@ -59,10 +59,12 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
 }
 
 bool ThemeManager::isDarkActive() const {
-    if (m_themeMode == ThemeMode::Dark)
+    if (m_themeMode == ThemeMode::Dark) {
         return true;
-    if (m_themeMode == ThemeMode::Light)
+    }
+    if (m_themeMode == ThemeMode::Light) {
         return false;
+    }
 
     // Auto: Follow system color scheme
     if (QGuiApplication::styleHints()) {
@@ -89,6 +91,7 @@ const ThemePalette *ThemeManager::currentPalette() const {
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
+    const bool oldDark = isDarkActive();
     m_themeMode = mode;
     if (window) {
         m_activeWindow = window;
@@ -105,10 +108,11 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
 
     if (m_settings) {
         auto modeStr = QStringLiteral("Auto");
-        if (mode == ThemeMode::Dark)
+        if (mode == ThemeMode::Dark) {
             modeStr = QStringLiteral("Dark");
-        else if (mode == ThemeMode::Light)
+        } else if (mode == ThemeMode::Light) {
             modeStr = QStringLiteral("Light");
+        }
         m_settings->setValue(QStringLiteral("App/ThemeMode"), modeStr);
         m_settings->setValue(QStringLiteral("App/ThemePalette"), m_currentPaletteId);
     }
@@ -117,21 +121,26 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
         applyTheme(m_activeWindow);
     }
 
-    emit themeChanged(isDarkActive());
+    const bool newDark = isDarkActive();
+    if (oldDark != newDark) {
+        emit themeChanged(newDark);
+    }
     emit paletteChanged(m_currentPaletteId);
 }
 
 void ThemeManager::setPalette(const QString &paletteId, MainWindow *window) {
     const ThemePalette *p = findThemePaletteById(paletteId);
-    if (!p)
+    if (!p) {
         return;
-
-    m_currentPaletteId = paletteId;
-    if (p->isDark) {
-        m_themeMode = ThemeMode::Dark;
-    } else {
-        m_themeMode = ThemeMode::Light;
     }
+
+    if (m_currentPaletteId == paletteId && (!window || window == m_activeWindow)) {
+        return;
+    }
+
+    const bool oldDark = isDarkActive();
+    m_currentPaletteId = paletteId;
+    m_themeMode = p->isDark ? ThemeMode::Dark : ThemeMode::Light;
 
     if (window) {
         m_activeWindow = window;
@@ -147,12 +156,15 @@ void ThemeManager::setPalette(const QString &paletteId, MainWindow *window) {
         applyTheme(m_activeWindow);
     }
 
-    emit themeChanged(isDarkActive());
+    const bool newDark = isDarkActive();
+    if (oldDark != newDark) {
+        emit themeChanged(newDark);
+    }
     emit paletteChanged(m_currentPaletteId);
 }
 
 void ThemeManager::toggleTheme(MainWindow *window) {
-    bool currentlyDark = isDarkActive();
+    const bool currentlyDark = isDarkActive();
     setThemeMode(currentlyDark ? ThemeMode::Light : ThemeMode::Dark, window);
 }
 
@@ -167,7 +179,7 @@ void ThemeManager::applyTheme(MainWindow *window) {
     m_activeWindow = window;
 
     const ThemePalette *pal = currentPalette();
-    bool dark = isDarkActive();
+    const bool dark = isDarkActive();
     if (!pal) {
         pal = dark ? findThemePaletteById(QStringLiteral("dracula"))
                    : findThemePaletteById(QStringLiteral("notepadNext"));
@@ -224,8 +236,9 @@ void ThemeManager::applyTheme(MainWindow *window) {
         qApp->setStyleSheet(sheet);
     }
 
-    if (!window)
+    if (!window) {
         return;
+    }
 
     window->applyStyleSheet();
 
@@ -235,27 +248,29 @@ void ThemeManager::applyTheme(MainWindow *window) {
 }
 
 void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
-    if (!editor)
+    if (!editor) {
         return;
+    }
 
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
                              : findThemePaletteById(QStringLiteral("notepadNext"));
     }
-    if (!pal)
+    if (!pal) {
         return;
+    }
 
-    QColor card(pal->card);
-    QColor border(pal->border);
-    QColor txtPri(pal->txtPri);
-    QColor txtSec(pal->txtSec);
-    QColor cyan(pal->cyan);
-    QColor blue(pal->blue);
-    QColor net(pal->net);
-    QColor sub(pal->sub);
-    QColor host(pal->host);
-    QColor sep(pal->sep);
+    const QColor card(pal->card);
+    const QColor border(pal->border);
+    const QColor txtPri(pal->txtPri);
+    const QColor txtSec(pal->txtSec);
+    const QColor cyan(pal->cyan);
+    const QColor blue(pal->blue);
+    const QColor net(pal->net);
+    const QColor sub(pal->sub);
+    const QColor host(pal->host);
+    const QColor sep(pal->sep);
 
     // 1. Base canvas background and primary text
     editor->styleSetFore(STYLE_DEFAULT, scFromRgb(txtPri.rgb()));
@@ -276,7 +291,7 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
     editor->setCaretWidth(2);
 
     // 5. Caret line highlight (slight blend)
-    quint32 caretLineColor =
+    const quint32 caretLineColor =
         0xFF000000 |
         (pal->isDark ? scColor(qMin(card.red() + 18, 255), qMin(card.green() + 18, 255), qMin(card.blue() + 22, 255))
                      : scColor(qMax(card.red() - 12, 0), qMax(card.green() - 12, 0), qMax(card.blue() - 6, 0)));
@@ -393,13 +408,19 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
 }
 
 QString ThemeManager::getThemeStyleSheet() const {
+    const QString palId = m_currentPaletteId;
+    const bool darkActive = isDarkActive();
+    const QString cacheKey = palId + (darkActive ? QStringLiteral("-dark") : QStringLiteral("-light"));
+    if (const auto it = m_styleSheetCache.constFind(cacheKey); it != m_styleSheetCache.constEnd()) {
+        return it.value();
+    }
+
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
                              : findThemePaletteById(QStringLiteral("notepadNext"));
     }
 
-    bool darkActive = isDarkActive();
     QString win;
     QString card;
     QString border;
@@ -432,10 +453,10 @@ QString ThemeManager::getThemeStyleSheet() const {
 
     // User requirement: In light mode, toolbar background must be dark (charcoal/dracula),
     // and light mode default is NotepadNext. In dark mode, toolbar background matches dark theme.
-    QString tbBg = darkActive ? win : QStringLiteral("#21252b");
-    QString tbBorder = darkActive ? border : QStringLiteral("#181a1f");
-    QString tbText = darkActive ? txtPri : QStringLiteral("#e6edf3");
-    QString tbHover = darkActive ? border : QStringLiteral("rgba(255, 255, 255, 0.12)");
+    const QString tbBg = darkActive ? win : QStringLiteral("#21252b");
+    const QString tbBorder = darkActive ? border : QStringLiteral("#181a1f");
+    const QString tbText = darkActive ? txtPri : QStringLiteral("#e6edf3");
+    const QString tbHover = darkActive ? border : QStringLiteral("rgba(255, 255, 255, 0.12)");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -980,5 +1001,7 @@ QToolBar::separator {
 }
 )");
 
-    return templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
+    const QString result = templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
+    m_styleSheetCache.insert(cacheKey, result);
+    return result;
 }

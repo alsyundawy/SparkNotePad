@@ -13,11 +13,12 @@
 #define THEMEMANAGER_H
 
 #include <cstdint>
+#include <QColor>
+#include <QHash>
+#include <QList>
 #include <QObject>
 #include <QPointer>
 #include <QString>
-#include <QColor>
-#include <QList>
 #include "ThemePaletteData.h"
 
 class MainWindow;
@@ -74,6 +75,7 @@ private:
     QString m_currentPaletteId = QStringLiteral("notepadNext");
     ApplicationSettings *m_settings = nullptr;
     QPointer<MainWindow> m_activeWindow;
+    mutable QHash<QString, QString> m_styleSheetCache;
 };
 
 #endif  // THEMEMANAGER_H

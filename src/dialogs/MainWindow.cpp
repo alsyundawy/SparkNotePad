@@ -2482,8 +2482,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     ThemeManager::instance()->applyTheme(this);
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, [this](bool isDark) {
-        ToolbarIconManager::instance()->setDarkMode(isDark);
-        ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
+        if (ToolbarIconManager::instance()->isDarkMode() != isDark) {
+            ToolbarIconManager::instance()->setDarkMode(isDark);
+            ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
+        }
     });
 
     restoreSettings();
@@ -5030,7 +5032,6 @@ void MainWindow::setupThemeMenu() {
 
         connect(act, &QAction::triggered, this, [this, pack] {
             ToolbarIconManager::instance()->setPack(pack.id, ui->mainToolBar);
-            ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
             ui->statusBar->showMessage(tr("Toolbar icon pack changed to: %1").arg(pack.displayName), 3000);
         });
     }
@@ -5558,7 +5559,6 @@ void MainWindow::onToolbarContextMenu(const QPoint &pos) {
         packsGroup->addAction(act);
         connect(act, &QAction::triggered, this, [this, pack] {
             ToolbarIconManager::instance()->setPack(pack.id, ui->mainToolBar);
-            ToolbarIconManager::instance()->applyToWindow(this, ui->mainToolBar);
             ui->statusBar->showMessage(tr("Toolbar icon pack changed to: %1").arg(pack.displayName), 3000);
         });
     }

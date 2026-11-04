@@ -300,9 +300,10 @@ void ToolbarIconManager::setPack(const QString &packId, QToolBar *toolBar) {
         return;
     }
 
+    const bool isDifferentPack = (m_currentPackId != pack->id);
     m_currentPackId = pack->id;
 
-    if (m_settings) {
+    if (m_settings && isDifferentPack) {
         m_settings->setValue(QStringLiteral("Gui/ToolbarIconSet"), m_currentPackId);
     }
 
@@ -310,7 +311,9 @@ void ToolbarIconManager::setPack(const QString &packId, QToolBar *toolBar) {
         applyToWindow(toolBar->window(), toolBar);
     }
 
-    emit packChanged(m_currentPackId);
+    if (isDifferentPack) {
+        emit packChanged(m_currentPackId);
+    }
 }
 
 void ToolbarIconManager::setIconSize(const QSize &size, QToolBar *toolBar) {
@@ -336,6 +339,7 @@ QString ToolbarIconManager::customPacksPath() {
 }
 
 void ToolbarIconManager::scanCustomPacks() {
+    clearCache();
     // Preserve built-in packs and re-scan external packs
     registerBuiltInPacks();
 
@@ -591,27 +595,12 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool
                 adapted.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             !px.isNull()) {
             icon.addPixmap(px);
+            if (sz == 32 || sz == 48 || sz == 64) {
+                QPixmap pxRetina = px;
+                pxRetina.setDevicePixelRatio(2.0);
+                icon.addPixmap(pxRetina);
+            }
         }
-    }
-
-    // High-DPI (2x DPR) pixmaps for crisp rendering on Retina / 200% displays
-    if (QPixmap px32 = QPixmap::fromImage(
-            adapted.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        !px32.isNull()) {
-        px32.setDevicePixelRatio(2.0);
-        icon.addPixmap(px32);
-    }
-    if (QPixmap px48 = QPixmap::fromImage(
-            adapted.scaled(48, 48, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        !px48.isNull()) {
-        px48.setDevicePixelRatio(2.0);
-        icon.addPixmap(px48);
-    }
-    if (QPixmap px64 = QPixmap::fromImage(
-            adapted.scaled(64, 64, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        !px64.isNull()) {
-        px64.setDevicePixelRatio(2.0);
-        icon.addPixmap(px64);
     }
 
     if (!isPngBased) {
@@ -704,16 +693,23 @@ void syncActionIcon(QAction *action, const ToolbarIconManager &mgr, bool isMenuC
 
 QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString &packId) const {
     const QString targetPackId = packId.isEmpty() ? m_currentPackId : packId;
+    const QString canonical = canonicalNameForAction(actionName);
+    const QString cacheKey = QStringLiteral("%1:%2:%3").arg(targetPackId, canonical, m_isDarkMode ? QStringLiteral("1") : QStringLiteral("0"));
+
+    if (const auto it = m_iconCache.constFind(cacheKey); it != m_iconCache.constEnd()) {
+        return it.value();
+    }
+
     const ToolbarIconPack *pack = findPackById(targetPackId);
     if (!pack) {
         pack = findPackById(QStringLiteral("modernRibbon"));
     }
 
     if (!pack) {
+        m_iconCache.insert(cacheKey, QIcon());
         return QIcon();
     }
 
-    const QString canonical = canonicalNameForAction(actionName);
     const QStringList aliases = aliasesForCanonical(canonical);
     QStringList candidates;
     candidates << canonical;
@@ -726,11 +722,13 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
         const bool isDark = m_isDarkMode;
         if (canonical == QStringLiteral("startRecord")) {
             if (const QIcon dualIcon = buildDualRecordMultiResIcon(pack->basePath, isDark); !dualIcon.isNull()) {
+                m_iconCache.insert(cacheKey, dualIcon);
                 return dualIcon;
             }
         }
 
         if (const QIcon icon = buildMultiResIcon(pack->basePath, candidates, isDark); !icon.isNull()) {
+            m_iconCache.insert(cacheKey, icon);
             return icon;
         }
     }
@@ -744,6 +742,7 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
                 dualIcon.addFile(filePath, QSize(), QIcon::Normal, QIcon::Off);
                 dualIcon.addFile(onPath, QSize(), QIcon::Normal, QIcon::On);
                 addHiDpiPixmaps(dualIcon, filePath, pack->isPngBased, isDark);
+                m_iconCache.insert(cacheKey, dualIcon);
                 return dualIcon;
             }
         }
@@ -751,9 +750,11 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
         QIcon icon;
         icon.addFile(filePath);
         addHiDpiPixmaps(icon, filePath, pack->isPngBased, isDark);
+        m_iconCache.insert(cacheKey, icon);
         return icon;
     }
 
+    m_iconCache.insert(cacheKey, QIcon());
     return QIcon();
 }
 
@@ -819,16 +820,13 @@ void ToolbarIconManager::applyToWindow(const QWidget *window, QToolBar *toolBar)
         return;
     }
 
+    QSet<QAction *> visited;
     const auto actions = window->findChildren<QAction *>();
+    visited.reserve(actions.size());
     for (QAction *action : actions) {
-        syncActionIcon(action, *this, false);
-        if (action && action->menu()) {
-            applyToMenu(action->menu());
+        if (action && !visited.contains(action)) {
+            visited.insert(action);
+            syncActionIcon(action, *this, false);
         }
-    }
-
-    const auto menus = window->findChildren<QMenu *>();
-    for (const QMenu *menu : menus) {
-        applyToMenu(menu);
     }
 }

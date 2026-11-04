@@ -101,7 +101,6 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     resize(860, 680);
     setMinimumSize(740, 560);
 
-    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &PreferencesDialog::updateThemeColors);
     connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &PreferencesDialog::updateThemeColors);
     updateThemeColors();
 
@@ -469,8 +468,8 @@ void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
     lblIconPackDescription = new QLabel(gbxToolbarPacks);
     lblIconPackDescription->setObjectName(QStringLiteral("lblIconPackDescription"));
     lblIconPackDescription->setWordWrap(true);
-    lblIconPackDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    lblIconPackDescription->setMinimumHeight(44);
+    lblIconPackDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+    lblIconPackDescription->setMinimumHeight(48);
     if (const auto *curPack = ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId()); curPack) {
         lblIconPackDescription->setText(curPack->description);
     }
@@ -487,9 +486,6 @@ void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
         const auto *mw = qobject_cast<const MainWindow *>(parentWidget());
         QToolBar *tb = mw ? mw->findChild<QToolBar *>() : nullptr;
         ToolbarIconManager::instance()->setPack(packId, tb);
-        if (mw) {
-            ToolbarIconManager::instance()->applyToWindow(mw, tb);
-        }
         if (const auto *pack = ToolbarIconManager::instance()->findPackById(packId); pack && lblIconPackDescription) {
             const QString desc = pack->description.trimmed().isEmpty()
                                      ? tr("No description provided for this icon pack.")
@@ -624,28 +620,29 @@ void PreferencesDialog::updateIconPreview() {
     if (!layoutIconPreview || !widgetIconPreview) {
         return;
     }
-    QLayoutItem *child;
-    while ((child = layoutIconPreview->takeAt(0)) != nullptr) {
-        delete child->widget();  // NOSONAR(cpp:S5025)
-        delete child;            // NOSONAR(cpp:S5025)
-    }
 
     const QStringList sampleActions = {QStringLiteral("New"),  QStringLiteral("Open"),  QStringLiteral("Save"),
                                        QStringLiteral("Cut"),  QStringLiteral("Copy"),  QStringLiteral("Paste"),
                                        QStringLiteral("Find"), QStringLiteral("Undo"),  QStringLiteral("Redo")};
 
-    for (const QString &actName : sampleActions) {
-        const QIcon icon = ToolbarIconManager::instance()->actionIcon(actName);
-        auto *lbl = new QLabel(widgetIconPreview);
-        lbl->setFixedSize(32, 32);
-        lbl->setAlignment(Qt::AlignCenter);
-        lbl->setStyleSheet(
-            QStringLiteral("background-color: rgba(128,128,128,0.12); border-radius: 4px; padding: 2px;"));
-        lbl->setPixmap(icon.pixmap(22, 22));
-        lbl->setToolTip(actName);
-        layoutIconPreview->addWidget(lbl);
+    if (m_previewLabels.isEmpty()) {
+        for (const QString &actName : sampleActions) {
+            auto *lbl = new QLabel(widgetIconPreview);
+            lbl->setFixedSize(32, 32);
+            lbl->setAlignment(Qt::AlignCenter);
+            lbl->setStyleSheet(
+                QStringLiteral("background-color: rgba(128,128,128,0.12); border-radius: 4px; padding: 2px;"));
+            lbl->setToolTip(actName);
+            layoutIconPreview->addWidget(lbl);
+            m_previewLabels.append(lbl);
+        }
+        layoutIconPreview->addStretch();
     }
-    layoutIconPreview->addStretch();
+
+    for (int i = 0; i < sampleActions.size() && i < m_previewLabels.size(); ++i) {
+        const QIcon icon = ToolbarIconManager::instance()->actionIcon(sampleActions[i]);
+        m_previewLabels[i]->setPixmap(icon.pixmap(22, 22));
+    }
 }
 
 void PreferencesDialog::updateThemeColors() {
@@ -714,8 +711,7 @@ void PreferencesDialog::updateThemeColors() {
             "QLabel#lblIconPackDescription {"
             "  color: %5;"
             "  font-size: 12px;"
-            "  line-height: 1.4;"
-            "  padding: 6px 10px;"
+            "  padding: 4px 8px;"
             "  background-color: rgba(148, 163, 184, 0.10);"
             "  border: 1px solid %3;"
             "  border-left: 3px solid %6;"

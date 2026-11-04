@@ -105,6 +105,7 @@ private:
     QComboBox *comboBoxIconSize = nullptr;
     QHBoxLayout *layoutIconPreview = nullptr;
     QWidget *widgetIconPreview = nullptr;
+    QList<QLabel *> m_previewLabels;
 };
 
 #endif  // PREFERENCESDIALOG_H

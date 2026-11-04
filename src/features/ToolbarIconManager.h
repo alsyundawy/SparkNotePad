@@ -12,9 +12,11 @@
 #ifndef TOOLBARICONMANAGER_H
 #define TOOLBARICONMANAGER_H
 
+#include <QHash>
 #include <QIcon>
 #include <QList>
 #include <QObject>
+#include <QSet>
 #include <QSize>
 #include <QString>
 #include <QStringList>
@@ -56,7 +58,13 @@ public:
         return getActionIcon(actionName, packId);
     }
     [[nodiscard]] bool isDarkMode() const { return m_isDarkMode; }
-    void setDarkMode(bool dark) { m_isDarkMode = dark; }
+    void setDarkMode(bool dark) {
+        if (m_isDarkMode != dark) {
+            m_isDarkMode = dark;
+            clearCache();
+        }
+    }
+    void clearCache() const { m_iconCache.clear(); }
 
     void applyToToolbar(QToolBar *toolBar) const;
     void applyToWindow(const QWidget *window, QToolBar *toolBar = nullptr) const;
@@ -84,6 +92,7 @@ private:
     QSize m_currentIconSize{24, 24};
     bool m_isDarkMode{false};
     QList<ToolbarIconPack> m_packs;
+    mutable QHash<QString, QIcon> m_iconCache;
 };
 
 #endif  // TOOLBARICONMANAGER_H
