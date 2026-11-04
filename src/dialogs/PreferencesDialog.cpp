@@ -453,12 +453,29 @@ void PreferencesDialog::setupThemesGroup(QWidget *container) {
 void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
     auto *gbxToolbarPacks = new QGroupBox(tr("Toolbar Icon Packs & Icon Size"), container);
     auto *toolbarLayout = new QFormLayout(gbxToolbarPacks);
-    toolbarLayout->setSpacing(10);
+    toolbarLayout->setVerticalSpacing(12);
+    toolbarLayout->setHorizontalSpacing(14);
     toolbarLayout->setContentsMargins(14, 16, 14, 14);
 
-    // ComboBox Icon Pack
+    // Active Icon Pack Selector & Description Card
+    auto *packColumnLayout = new QVBoxLayout();  // NOSONAR(cpp:S5025)
+    packColumnLayout->setSpacing(6);
+    packColumnLayout->setContentsMargins(0, 0, 0, 0);
+
     comboBoxIconPack = new QComboBox(gbxToolbarPacks);
     populateIconPacksComboBox();
+    packColumnLayout->addWidget(comboBoxIconPack);
+
+    lblIconPackDescription = new QLabel(gbxToolbarPacks);
+    lblIconPackDescription->setObjectName(QStringLiteral("lblIconPackDescription"));
+    lblIconPackDescription->setWordWrap(true);
+    lblIconPackDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    lblIconPackDescription->setMinimumHeight(32);
+    if (const auto *curPack = ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId()); curPack) {
+        lblIconPackDescription->setText(curPack->description);
+    }
+    packColumnLayout->addWidget(lblIconPackDescription);
+
     connect(comboBoxIconPack, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int idx) {
         if (idx < 0) {
             return;
@@ -474,20 +491,14 @@ void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
             ToolbarIconManager::instance()->applyToWindow(mw, tb);
         }
         if (const auto *pack = ToolbarIconManager::instance()->findPackById(packId); pack && lblIconPackDescription) {
-            lblIconPackDescription->setText(pack->description);
+            const QString desc = pack->description.trimmed().isEmpty()
+                                     ? tr("No description provided for this icon pack.")
+                                     : pack->description;
+            lblIconPackDescription->setText(desc);
         }
         updateIconPreview();
     });
-    toolbarLayout->addRow(tr("Active Icon Pack:"), comboBoxIconPack);
-
-    // Description
-    lblIconPackDescription = new QLabel(gbxToolbarPacks);
-    lblIconPackDescription->setWordWrap(true);
-    lblIconPackDescription->setStyleSheet(QStringLiteral("font-style: italic; color: #64748b;"));
-    if (const auto *curPack = ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId()); curPack) {
-        lblIconPackDescription->setText(curPack->description);
-    }
-    toolbarLayout->addRow(tr("Description:"), lblIconPackDescription);
+    toolbarLayout->addRow(tr("Active Icon Pack:"), packColumnLayout);
 
     // Icon Size
     comboBoxIconSize = new QComboBox(gbxToolbarPacks);
@@ -699,6 +710,16 @@ void PreferencesDialog::updateThemeColors() {
             "QLabel {"
             "  color: %4;"
             "  font-size: 13px;"
+            "}"
+            "QLabel#lblIconPackDescription {"
+            "  color: %5;"
+            "  font-size: 12px;"
+            "  line-height: 1.4;"
+            "  padding: 6px 10px;"
+            "  background-color: rgba(148, 163, 184, 0.10);"
+            "  border: 1px solid %3;"
+            "  border-left: 3px solid %6;"
+            "  border-radius: 6px;"
             "}"
             "QCheckBox, QRadioButton {"
             "  color: %4;"
