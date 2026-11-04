@@ -828,7 +828,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     connect(ui->actionMoveToTrash, &QAction::triggered, this, &MainWindow::moveCurrentFileToTrash);
 
-    auto *recentFileListMenuBuilder = new RecentFilesListMenuBuilder(app->getRecentFilesListManager());
+    const auto *recentFileListMenuBuilder = new RecentFilesListMenuBuilder(app->getRecentFilesListManager());
     connect(ui->menuRecentFiles, &QMenu::aboutToShow, this, [this, recentFileListMenuBuilder] {
         // NOTE: its unfortunate that this has to be hard coded, but there's no way
         // to easily determine what should or shouldn't be there
