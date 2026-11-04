@@ -23,7 +23,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-const QStringList &CustomizeToolbarDialog::defaultToolbarActions() {
+const QStringList &CustomizeToolbarWidget::defaultToolbarActions() {
     static const QStringList list = {
         QStringLiteral("New"),
         QStringLiteral("Open"),
@@ -62,27 +62,24 @@ const QStringList &CustomizeToolbarDialog::defaultToolbarActions() {
     return list;
 }
 
-QString CustomizeToolbarDialog::cleanActionText(const QString &text) {
+QString CustomizeToolbarWidget::cleanActionText(const QString &text) {
     QString res = text;
     res.remove(QLatin1Char('&'));
     res.remove(QStringLiteral("..."));
     return res.trimmed();
 }
 
-CustomizeToolbarDialog::CustomizeToolbarDialog(MainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent), m_mainWindow(mainWindow) {
-    setWindowTitle(tr("Customize Toolbar Buttons"));
-    setMinimumSize(740, 500);
-
+CustomizeToolbarWidget::CustomizeToolbarWidget(MainWindow *mainWindow, QWidget *parent)
+    : QWidget(parent), m_mainWindow(mainWindow) {
     setupUi();
     populateAvailableActions();
     populateCurrentActions();
 }
 
-void CustomizeToolbarDialog::setupUi() {
+void CustomizeToolbarWidget::setupUi() {
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(10);
-    mainLayout->setContentsMargins(14, 14, 14, 14);
+    mainLayout->setContentsMargins(12, 12, 12, 12);
 
     auto *headerLabel = new QLabel(tr("Select actions to display on the main toolbar. You can add, remove, and reorder "
                                       "items or insert separators."),
@@ -90,11 +87,11 @@ void CustomizeToolbarDialog::setupUi() {
     headerLabel->setWordWrap(true);
     mainLayout->addWidget(headerLabel);
 
-    auto *centerLayout = new QHBoxLayout();
+    auto *centerLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     centerLayout->setSpacing(12);
 
     // Left column: Available Actions
-    auto *leftCol = new QVBoxLayout();
+    auto *leftCol = new QVBoxLayout();  // NOSONAR(cpp:S5025)
     auto *lblAvailable = new QLabel(tr("Available Actions:"), this);
     lblAvailable->setStyleSheet(QStringLiteral("font-weight: bold;"));
     leftCol->addWidget(lblAvailable);
@@ -102,13 +99,13 @@ void CustomizeToolbarDialog::setupUi() {
     m_filterEdit = new QLineEdit(this);
     m_filterEdit->setPlaceholderText(tr("Search actions..."));
     m_filterEdit->setClearButtonEnabled(true);
-    connect(m_filterEdit, &QLineEdit::textChanged, this, &CustomizeToolbarDialog::onFilterTextChanged);
+    connect(m_filterEdit, &QLineEdit::textChanged, this, &CustomizeToolbarWidget::onFilterTextChanged);
     leftCol->addWidget(m_filterEdit);
 
     m_availableList = new QListWidget(this);
     m_availableList->setIconSize(QSize(24, 24));
     m_availableList->setAlternatingRowColors(true);
-    connect(m_availableList, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem *item) {
+    connect(m_availableList, &QListWidget::itemDoubleClicked, this, [this](const QListWidgetItem *item) {
         if (item) {
             onAddClicked();
         }
@@ -117,43 +114,43 @@ void CustomizeToolbarDialog::setupUi() {
     centerLayout->addLayout(leftCol, 1);
 
     // Middle column: Action Buttons
-    auto *midCol = new QVBoxLayout();
+    auto *midCol = new QVBoxLayout();  // NOSONAR(cpp:S5025)
     midCol->addStretch();
 
     m_btnAdd = new QPushButton(tr("Add ▶"), this);
     m_btnAdd->setToolTip(tr("Add selected action to toolbar"));
-    connect(m_btnAdd, &QPushButton::clicked, this, &CustomizeToolbarDialog::onAddClicked);
+    connect(m_btnAdd, &QPushButton::clicked, this, &CustomizeToolbarWidget::onAddClicked);
     midCol->addWidget(m_btnAdd);
 
     m_btnRemove = new QPushButton(tr("◀ Remove"), this);
     m_btnRemove->setToolTip(tr("Remove selected item from toolbar"));
-    connect(m_btnRemove, &QPushButton::clicked, this, &CustomizeToolbarDialog::onRemoveClicked);
+    connect(m_btnRemove, &QPushButton::clicked, this, &CustomizeToolbarWidget::onRemoveClicked);
     midCol->addWidget(m_btnRemove);
 
     midCol->addSpacing(16);
 
     m_btnAddSeparator = new QPushButton(tr("+ Separator"), this);
     m_btnAddSeparator->setToolTip(tr("Insert a separator line at selected position"));
-    connect(m_btnAddSeparator, &QPushButton::clicked, this, &CustomizeToolbarDialog::onAddSeparatorClicked);
+    connect(m_btnAddSeparator, &QPushButton::clicked, this, &CustomizeToolbarWidget::onAddSeparatorClicked);
     midCol->addWidget(m_btnAddSeparator);
 
     midCol->addSpacing(16);
 
     m_btnMoveUp = new QPushButton(tr("▲ Move Up"), this);
     m_btnMoveUp->setToolTip(tr("Move selected item up"));
-    connect(m_btnMoveUp, &QPushButton::clicked, this, &CustomizeToolbarDialog::onMoveUpClicked);
+    connect(m_btnMoveUp, &QPushButton::clicked, this, &CustomizeToolbarWidget::onMoveUpClicked);
     midCol->addWidget(m_btnMoveUp);
 
     m_btnMoveDown = new QPushButton(tr("▼ Move Down"), this);
     m_btnMoveDown->setToolTip(tr("Move selected item down"));
-    connect(m_btnMoveDown, &QPushButton::clicked, this, &CustomizeToolbarDialog::onMoveDownClicked);
+    connect(m_btnMoveDown, &QPushButton::clicked, this, &CustomizeToolbarWidget::onMoveDownClicked);
     midCol->addWidget(m_btnMoveDown);
 
     midCol->addStretch();
     centerLayout->addLayout(midCol);
 
     // Right column: Current Toolbar Buttons
-    auto *rightCol = new QVBoxLayout();
+    auto *rightCol = new QVBoxLayout();  // NOSONAR(cpp:S5025)
     auto *lblCurrent = new QLabel(tr("Current Toolbar Buttons:"), this);
     lblCurrent->setStyleSheet(QStringLiteral("font-weight: bold;"));
     rightCol->addWidget(lblCurrent);
@@ -164,8 +161,8 @@ void CustomizeToolbarDialog::setupUi() {
     m_currentList->setDragDropMode(QAbstractItemView::InternalMove);
     m_currentList->setDefaultDropAction(Qt::MoveAction);
     connect(m_currentList, &QListWidget::itemSelectionChanged, this,
-            &CustomizeToolbarDialog::onCurrentItemSelectionChanged);
-    connect(m_currentList, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem *item) {
+            &CustomizeToolbarWidget::onCurrentItemSelectionChanged);
+    connect(m_currentList, &QListWidget::itemDoubleClicked, this, [this](const QListWidgetItem *item) {
         if (item) {
             onRemoveClicked();
         }
@@ -176,29 +173,24 @@ void CustomizeToolbarDialog::setupUi() {
     mainLayout->addLayout(centerLayout, 1);
 
     // Bottom controls
-    auto *bottomLayout = new QHBoxLayout();
+    auto *bottomLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     m_btnReset = new QPushButton(tr("Reset to Defaults"), this);
     m_btnReset->setToolTip(tr("Restore standard SparkNotePad toolbar buttons"));
-    connect(m_btnReset, &QPushButton::clicked, this, &CustomizeToolbarDialog::onResetDefaultsClicked);
+    connect(m_btnReset, &QPushButton::clicked, this, &CustomizeToolbarWidget::onResetDefaultsClicked);
     bottomLayout->addWidget(m_btnReset);
 
     bottomLayout->addStretch();
 
-    m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply, this);
-    connect(m_buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, [this] {
-        onApplyClicked();
-        accept();
-    });
-    connect(m_buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
-    connect(m_buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this,
-            &CustomizeToolbarDialog::onApplyClicked);
-    bottomLayout->addWidget(m_buttonBox);
+    m_btnApply = new QPushButton(tr("Apply"), this);
+    m_btnApply->setToolTip(tr("Apply toolbar changes immediately"));
+    connect(m_btnApply, &QPushButton::clicked, this, &CustomizeToolbarWidget::onApplyClicked);
+    bottomLayout->addWidget(m_btnApply);
 
     mainLayout->addLayout(bottomLayout);
     onCurrentItemSelectionChanged();
 }
 
-void CustomizeToolbarDialog::populateAvailableActions() {
+void CustomizeToolbarWidget::populateAvailableActions() {
     m_availableList->clear();
     m_availableActions.clear();
 
@@ -217,8 +209,7 @@ void CustomizeToolbarDialog::populateAvailableActions() {
             continue;
         }
 
-        const QString cleanText = cleanActionText(action->text());
-        if (cleanText.isEmpty()) {
+        if (const QString cleanText = cleanActionText(action->text()); cleanText.isEmpty()) {
             continue;
         }
 
@@ -250,7 +241,7 @@ void CustomizeToolbarDialog::populateAvailableActions() {
     }
 }
 
-void CustomizeToolbarDialog::populateCurrentActions() {
+void CustomizeToolbarWidget::populateCurrentActions() {
     m_currentList->clear();
 
     if (!m_mainWindow) {
@@ -263,9 +254,9 @@ void CustomizeToolbarDialog::populateCurrentActions() {
     }
 }
 
-void CustomizeToolbarDialog::insertCurrentActionItem(int row, const QString &actionName) {
+void CustomizeToolbarWidget::insertCurrentActionItem(int row, const QString &actionName) {
     if (actionName.isEmpty()) {
-        auto *sepItem = new QListWidgetItem();
+        auto *sepItem = new QListWidgetItem();  // NOSONAR(cpp:S5025)
         sepItem->setText(tr("─────────── [ Separator ] ───────────"));
         sepItem->setData(Qt::UserRole, QString());
         sepItem->setTextAlignment(Qt::AlignCenter);
@@ -296,7 +287,7 @@ void CustomizeToolbarDialog::insertCurrentActionItem(int row, const QString &act
         toolTip = action->toolTip();
     }
 
-    auto *item = new QListWidgetItem();
+    auto *item = new QListWidgetItem();  // NOSONAR(cpp:S5025)
     item->setText(labelText);
     item->setIcon(icon);
     item->setData(Qt::UserRole, actionName);
@@ -307,7 +298,7 @@ void CustomizeToolbarDialog::insertCurrentActionItem(int row, const QString &act
     m_currentList->insertItem(row, item);
 }
 
-QStringList CustomizeToolbarDialog::currentActionNames() const {
+QStringList CustomizeToolbarWidget::currentActionNames() const {
     QStringList result;
     const int count = m_currentList->count();
     result.reserve(count);
@@ -318,7 +309,7 @@ QStringList CustomizeToolbarDialog::currentActionNames() const {
     return result;
 }
 
-void CustomizeToolbarDialog::onAddClicked() {
+void CustomizeToolbarWidget::onAddClicked() {
     const QListWidgetItem *availItem = m_availableList->currentItem();
     if (!availItem) {
         return;
@@ -336,13 +327,13 @@ void CustomizeToolbarDialog::onAddClicked() {
     m_currentList->setCurrentRow(insertIndex);
 }
 
-void CustomizeToolbarDialog::onRemoveClicked() {
+void CustomizeToolbarWidget::onRemoveClicked() {
     const int row = m_currentList->currentRow();
     if (row < 0) {
         return;
     }
 
-    delete m_currentList->takeItem(row);
+    delete m_currentList->takeItem(row);  // NOSONAR(cpp:S5025)
 
     if (row < m_currentList->count()) {
         m_currentList->setCurrentRow(row);
@@ -351,7 +342,7 @@ void CustomizeToolbarDialog::onRemoveClicked() {
     }
 }
 
-void CustomizeToolbarDialog::onAddSeparatorClicked() {
+void CustomizeToolbarWidget::onAddSeparatorClicked() {
     int insertIndex = m_currentList->currentRow();
     if (insertIndex < 0) {
         insertIndex = m_currentList->count();
@@ -363,7 +354,7 @@ void CustomizeToolbarDialog::onAddSeparatorClicked() {
     m_currentList->setCurrentRow(insertIndex);
 }
 
-void CustomizeToolbarDialog::onMoveUpClicked() {
+void CustomizeToolbarWidget::onMoveUpClicked() {
     const int row = m_currentList->currentRow();
     if (row <= 0) {
         return;
@@ -374,7 +365,7 @@ void CustomizeToolbarDialog::onMoveUpClicked() {
     m_currentList->setCurrentRow(row - 1);
 }
 
-void CustomizeToolbarDialog::onMoveDownClicked() {
+void CustomizeToolbarWidget::onMoveDownClicked() {
     const int row = m_currentList->currentRow();
     if (row < 0 || row >= m_currentList->count() - 1) {
         return;
@@ -385,7 +376,7 @@ void CustomizeToolbarDialog::onMoveDownClicked() {
     m_currentList->setCurrentRow(row + 1);
 }
 
-void CustomizeToolbarDialog::onResetDefaultsClicked() {
+void CustomizeToolbarWidget::onResetDefaultsClicked() {
     m_currentList->clear();
     const QStringList &defaults = defaultToolbarActions();
     for (const QString &actionName : defaults) {
@@ -393,7 +384,7 @@ void CustomizeToolbarDialog::onResetDefaultsClicked() {
     }
 }
 
-void CustomizeToolbarDialog::onFilterTextChanged(const QString &text) {
+void CustomizeToolbarWidget::onFilterTextChanged(const QString &text) const {
     const QString trimmed = text.trimmed();
     const int count = m_availableList->count();
     for (int i = 0; i < count; ++i) {
@@ -408,7 +399,7 @@ void CustomizeToolbarDialog::onFilterTextChanged(const QString &text) {
     }
 }
 
-void CustomizeToolbarDialog::onCurrentItemSelectionChanged() {
+void CustomizeToolbarWidget::onCurrentItemSelectionChanged() {
     const int row = m_currentList->currentRow();
     const int count = m_currentList->count();
     const bool hasSelection = (row >= 0);
@@ -418,8 +409,45 @@ void CustomizeToolbarDialog::onCurrentItemSelectionChanged() {
     m_btnMoveDown->setEnabled(hasSelection && row < count - 1);
 }
 
-void CustomizeToolbarDialog::onApplyClicked() {
+void CustomizeToolbarWidget::onApplyClicked() {
     if (m_mainWindow) {
         m_mainWindow->updateToolbarActions(currentActionNames());
+        emit toolbarChanged();
     }
+}
+
+void CustomizeToolbarWidget::saveToolbar() {
+    onApplyClicked();
+}
+
+void CustomizeToolbarWidget::refreshActions() {
+    populateAvailableActions();
+    populateCurrentActions();
+}
+
+// -----------------------------------------------------------------------------
+// CustomizeToolbarDialog
+// -----------------------------------------------------------------------------
+
+CustomizeToolbarDialog::CustomizeToolbarDialog(MainWindow *mainWindow, QWidget *parent)
+    : QDialog(parent) {
+    setWindowTitle(tr("Customize Toolbar Buttons"));
+    setMinimumSize(740, 520);
+
+    auto *mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->setSpacing(8);
+
+    m_customizerWidget = new CustomizeToolbarWidget(mainWindow, this);
+    mainLayout->addWidget(m_customizerWidget, 1);
+
+    m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    connect(m_buttonBox, &QDialogButtonBox::accepted, this, [this] {
+        if (m_customizerWidget) {
+            m_customizerWidget->saveToolbar();
+        }
+        accept();
+    });
+    connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    mainLayout->addWidget(m_buttonBox);
 }

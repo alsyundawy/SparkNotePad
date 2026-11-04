@@ -414,7 +414,6 @@
     <addaction name="menuZoom" />
     <addaction name="actionWordWrap" />
     <addaction name="actionToggleURLHighlighting" />
-    <addaction name="actionToggleHexBinaryView" />
     <addaction name="menuFocusedView" />
     <addaction name="actionCustomizeStatusBarFields" />
     <addaction name="actionShowCharacterInfo" />
@@ -647,6 +646,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Alt+R</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
    </property>
   </action>
   <action name="actionExit">

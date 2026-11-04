@@ -44,6 +44,10 @@ class PreferencesDialog;
 class Settings;
 class QTabWidget;
 class ShortcutCustomizerWidget;
+class CustomizeToolbarWidget;
+class QLabel;
+class QHBoxLayout;
+class QMainWindow;
 
 class PreferencesDialog : public QDialog {
     Q_OBJECT
@@ -54,11 +58,14 @@ public:
 
     void showApplicationRestartRequired() const;
     void openShortcutsTab();
+    void openThemesTab();
+    void openToolbarCustomizerTab();
     void setCurrentTab(int index);
     void accept() override;
 
 signals:
     void shortcutsChanged();
+    void toolbarChanged();
 
 private:
     std::unique_ptr<Ui::PreferencesDialog> ui;
@@ -72,17 +79,32 @@ private:
 
     void populateTranslationComboBox();
     void updateThemeColors();
-    void setupThemeAndFeatureSettings();
+    void setupThemesAndToolbarTab();
+    void setupThemesGroup(QWidget *container);
+    void setupToolbarPacksGroup(QWidget *container);
+    void setupCustomToolbarTab(QMainWindow *mainWindow);
+    void populateIconPacksComboBox();
+    void updateIconPreview();
 
     QTabWidget *m_tabWidget = nullptr;
     ShortcutCustomizerWidget *m_shortcutWidget = nullptr;
+    QWidget *m_themesAndToolbarWidget = nullptr;
+    CustomizeToolbarWidget *m_toolbarCustomizerWidget = nullptr;
 
+    // Themes controls
     QComboBox *comboBoxTheme = nullptr;
     QPushButton *btnToggleDarkLight = nullptr;
     QSlider *sliderWindowOpacity = nullptr;
     QSpinBox *spinBoxWindowOpacity = nullptr;
     QSpinBox *spinBoxTailDebounce = nullptr;
     QCheckBox *checkBoxMultiMonitorSafety = nullptr;
+
+    // Toolbar Icon Packs controls
+    QComboBox *comboBoxIconPack = nullptr;
+    QLabel *lblIconPackDescription = nullptr;
+    QComboBox *comboBoxIconSize = nullptr;
+    QHBoxLayout *layoutIconPreview = nullptr;
+    QWidget *widgetIconPreview = nullptr;
 };
 
 #endif  // PREFERENCESDIALOG_H

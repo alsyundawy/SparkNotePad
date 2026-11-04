@@ -29,28 +29,40 @@
 #include "ThemeManager.h"
 #include "MainWindow.h"
 #include "ShortcutCustomizerDialog.h"
+#include "CustomizeToolbarDialog.h"
 #include "features/ThemePaletteData.h"
 #include "features/TransparentWindowManager.h"
+#include "features/ToolbarIconManager.h"
 
 #include <QAbstractItemView>
 #include <QListView>
 #include <QButtonGroup>
+#include <QDesktopServices>
+#include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QFormLayout>
+#include <QScrollArea>
 #include <QSlider>
 #include <QSpinBox>
 #include <QPushButton>
 #include <QTabWidget>
+#include <QToolBar>
+#include <QUrl>
 
 #include <algorithm>
+#include <array>
 #include <functional>
 
 PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent)
     : QDialog(parent, Qt::Tool), ui(std::make_unique<Ui::PreferencesDialog>()), settings(settings) {
     ui->setupUi(this);
 
-    // Setup Tabbed Interface: General (existing scrollArea) & Shortcuts
+    // Setup Tabbed Interface:
+    // Tab 0: General (existing scrollArea)
+    // Tab 1: Shortcuts (ShortcutCustomizerWidget)
+    // Tab 2: Themes & Toolbar (Relocated Themes + Toolbar Icon Packs configuration)
+    // Tab 3: Custom Toolbar Config (CustomizeToolbarWidget)
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->setObjectName(QStringLiteral("preferencesTabWidget"));
 
@@ -58,7 +70,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     ui->verticalLayout->removeWidget(ui->scrollArea);
     m_tabWidget->addTab(ui->scrollArea, QIcon(QStringLiteral(":/icons/settings.svg")), tr("&General"));
 
-    // Find main window for action harvesting in ShortcutCustomizerWidget
+    // Find main window for action harvesting in ShortcutCustomizerWidget and ToolbarCustomizer
     QMainWindow *mainWin = qobject_cast<QMainWindow *>(parent);
     if (!mainWin) {
         mainWin = qobject_cast<QMainWindow *>(window());
@@ -72,23 +84,29 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
         }
     }
 
+    // Tab 1: Shortcuts
     m_shortcutWidget = new ShortcutCustomizerWidget(mainWin, this);
     connect(m_shortcutWidget, &ShortcutCustomizerWidget::shortcutsChanged, this, &PreferencesDialog::shortcutsChanged);
     m_tabWidget->addTab(m_shortcutWidget, QIcon(QStringLiteral(":/icons/list_with_icons.svg")), tr("&Shortcuts"));
 
+    // Tab 2: Themes & Toolbar
+    setupThemesAndToolbarTab();
+
+    // Tab 3: Custom Toolbar Config
+    setupCustomToolbarTab(mainWin);
+
     // Insert tab widget at the top of the dialog layout
     ui->verticalLayout->insertWidget(0, m_tabWidget, 1);
 
-    resize(820, 640);
-    setMinimumSize(700, 520);
+    resize(860, 680);
+    setMinimumSize(740, 560);
 
-    setupThemeAndFeatureSettings();
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &PreferencesDialog::updateThemeColors);
     connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &PreferencesDialog::updateThemeColors);
     updateThemeColors();
 
-    QIcon icon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
-    QPixmap pixmap = icon.pixmap(QSize(16, 16));
+    const QIcon icon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
+    const QPixmap pixmap = icon.pixmap(QSize(16, 16));
     ui->labelAppRestartIcon->setPixmap(pixmap);
     ui->labelAppRestartIcon->hide();
     ui->labelAppRestart->hide();
@@ -209,22 +227,23 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
         ui->txtHardCodedPath->setEnabled(checked);
     });
 
-    connect(ui->btnSelectHardCodedPath, &QToolButton::clicked, this, [this]() {
+    connect(ui->btnSelectHardCodedPath, &QToolButton::clicked, this, [this] {
         const QString dir = QFileDialog::getExistingDirectory(this, tr("Default Directory"));
-        if (dir.isEmpty())
+        if (dir.isEmpty()) {
             return;  // user cancelled
+        }
 
         this->settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(dir));
     });
 
-    connect(ui->txtHardCodedPath, &QLineEdit::editingFinished, this, [this]() {
+    connect(ui->txtHardCodedPath, &QLineEdit::editingFinished, this, [this] {
         const QString dir = ui->txtHardCodedPath->text();
         this->settings->setDefaultDirectory(QDir::fromNativeSeparators(dir));
         ui->txtHardCodedPath->setText(QDir::toNativeSeparators(dir));
     });
 
-    if (auto b = buttonGroup->button(static_cast<int>(settings->defaultDirectoryBehavior()))) {
+    if (auto *b = buttonGroup->button(static_cast<int>(settings->defaultDirectoryBehavior()))) {
         b->setChecked(true);
     }
 
@@ -248,6 +267,18 @@ void PreferencesDialog::openShortcutsTab() {
     }
 }
 
+void PreferencesDialog::openThemesTab() {
+    if (m_tabWidget && m_themesAndToolbarWidget) {
+        m_tabWidget->setCurrentWidget(m_themesAndToolbarWidget);
+    }
+}
+
+void PreferencesDialog::openToolbarCustomizerTab() {
+    if (m_tabWidget && m_toolbarCustomizerWidget) {
+        m_tabWidget->setCurrentWidget(m_toolbarCustomizerWidget);
+    }
+}
+
 void PreferencesDialog::setCurrentTab(int index) {
     if (m_tabWidget && index >= 0 && index < m_tabWidget->count()) {
         m_tabWidget->setCurrentIndex(index);
@@ -259,35 +290,33 @@ void PreferencesDialog::accept() {
         m_shortcutWidget->saveShortcuts();
         emit shortcutsChanged();
     }
+    if (m_toolbarCustomizerWidget) {
+        m_toolbarCustomizerWidget->saveToolbar();
+        emit toolbarChanged();
+    }
     QDialog::accept();
 }
 
 template <typename Func1, typename Func2, typename Func3>
 void PreferencesDialog::MapSettingToCheckBox(QCheckBox *checkBox, Func1 getter, Func2 setter, Func3 notifier) const {
-    // Get the value and set the checkbox state
     checkBox->setChecked(std::invoke(getter, settings));
-
-    // Set up two way connection
     connect(settings, notifier, checkBox, &QCheckBox::setChecked);
     connect(checkBox, &QCheckBox::toggled, settings, setter);
 }
 
 template <typename Func1, typename Func2, typename Func3>
 void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, Func2 setter, Func3 notifier) const {
-    // Get the value and set the checkbox state
     groupBox->setChecked(std::invoke(getter, settings));
-
-    // Set up two way connection
     connect(settings, notifier, groupBox, &QGroupBox::setChecked);
     connect(groupBox, &QGroupBox::toggled, settings, setter);
 }
 
 void PreferencesDialog::populateTranslationComboBox() {
     const auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
-    if (!app)
+    if (!app) {
         return;
+    }
 
-    // Add the system default at the top
     ui->comboBoxTranslation->addItem(tr("<System Default>"), QStringLiteral(""));
 
     QList<std::pair<QString, QString>> translations;
@@ -309,31 +338,31 @@ void PreferencesDialog::populateTranslationComboBox() {
     }
 }
 
-void PreferencesDialog::setupThemeAndFeatureSettings() {
-    auto *gbxThemes = new QGroupBox(tr("Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
+void PreferencesDialog::setupThemesGroup(QWidget *container) {
+    auto *gbxThemes = new QGroupBox(tr("Themes & Visual Styling"), container);
     auto *themeLayout = new QFormLayout(gbxThemes);
     themeLayout->setSpacing(10);
     themeLayout->setContentsMargins(14, 16, 14, 14);
 
-    // 1. Theme Palette Selector
+    // Active Theme Palette Selector
     comboBoxTheme = new QComboBox(gbxThemes);
-    comboBoxTheme->setMaxVisibleItems(12);
+    comboBoxTheme->setMaxVisibleItems(14);
     if (comboBoxTheme->view()) {
         comboBoxTheme->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }
     int selectedIdx = 0;
-    QString currentId = ThemeManager::instance()->currentPaletteId();
+    const QString currentId = ThemeManager::instance()->currentPaletteId();
     QString lastFamily;
     for (const auto &pal : kAllThemePalettes) {
-        QString family = QString::fromUtf8(pal.family);
+        const QString family = QString::fromUtf8(pal.family);
         if (family != lastFamily) {
             if (!lastFamily.isEmpty()) {
                 comboBoxTheme->insertSeparator(comboBoxTheme->count());
             }
             lastFamily = family;
         }
-        QString label = QStringLiteral("[%1] %2 (%3)")
-                            .arg(family, QString::fromUtf8(pal.displayName), pal.isDark ? tr("Dark") : tr("Light"));
+        const QString label = QStringLiteral("[%1] %2 (%3)")
+                                  .arg(family, QString::fromUtf8(pal.displayName), pal.isDark ? tr("Dark") : tr("Light"));
         comboBoxTheme->addItem(label, QString::fromLatin1(pal.id));
         if (pal.id == currentId) {
             selectedIdx = comboBoxTheme->count() - 1;
@@ -341,11 +370,13 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     }
     comboBoxTheme->setCurrentIndex(selectedIdx);
     connect(comboBoxTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
-        if (index < 0)
+        if (index < 0) {
             return;
-        QString themeId = comboBoxTheme->itemData(index).toString();
-        if (themeId.isEmpty())
+        }
+        const QString themeId = comboBoxTheme->itemData(index).toString();
+        if (themeId.isEmpty()) {
             return;
+        }
         MainWindow *mw = qobject_cast<MainWindow *>(parentWidget());
         ThemeManager::instance()->setPalette(themeId, mw);
     });
@@ -355,20 +386,20 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
 
     btnToggleDarkLight = new QPushButton(tr("Toggle Dark/Light"), gbxThemes);
     btnToggleDarkLight->setToolTip(tr("Quickly switch between active dark and light modes"));
-    connect(btnToggleDarkLight, &QPushButton::clicked, this, [this]() {
+    connect(btnToggleDarkLight, &QPushButton::clicked, this, [this] {
         MainWindow *mw = qobject_cast<MainWindow *>(parentWidget());
         ThemeManager::instance()->toggleTheme(mw);
-        QString currentId = ThemeManager::instance()->currentPaletteId();
-        int found = comboBoxTheme->findData(currentId);
+        const QString curId = ThemeManager::instance()->currentPaletteId();
+        const int found = comboBoxTheme->findData(curId);
         if (found >= 0) {
-            QSignalBlocker blocker(comboBoxTheme);
+            const QSignalBlocker blocker(comboBoxTheme);
             comboBoxTheme->setCurrentIndex(found);
         }
     });
     themeRowLayout->addWidget(btnToggleDarkLight);
     themeLayout->addRow(tr("Active Theme:"), themeRowLayout);
 
-    // 2. Window Opacity / Transparency
+    // Window Opacity / Transparency
     auto *opacityLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     sliderWindowOpacity = new QSlider(Qt::Horizontal, gbxThemes);
     sliderWindowOpacity->setRange(20, 100);
@@ -376,7 +407,7 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     spinBoxWindowOpacity->setRange(20, 100);
     spinBoxWindowOpacity->setSuffix(QStringLiteral("%"));
 
-    int currentOpacity = settings->value("Window/Opacity", 100).toInt();
+    const int currentOpacity = settings->value("Window/Opacity", 100).toInt();
     sliderWindowOpacity->setValue(currentOpacity);
     spinBoxWindowOpacity->setValue(currentOpacity);
 
@@ -396,45 +427,225 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     opacityLayout->addWidget(spinBoxWindowOpacity);
     themeLayout->addRow(tr("Window Opacity:"), opacityLayout);
 
-    // 3. Tail -f Monitoring Debounce Interval
+    // Tail -f Monitoring Debounce Interval
     spinBoxTailDebounce = new QSpinBox(gbxThemes);
     spinBoxTailDebounce->setRange(100, 5000);
     spinBoxTailDebounce->setSingleStep(100);
     spinBoxTailDebounce->setSuffix(tr(" ms"));
-    int currentDebounce = settings->value("TailMonitoring/DebounceMs", 500).toInt();
+    const int currentDebounce = settings->value("TailMonitoring/DebounceMs", 500).toInt();
     spinBoxTailDebounce->setValue(currentDebounce);
     connect(spinBoxTailDebounce, QOverload<int>::of(&QSpinBox::valueChanged), this,
             [this](int val) { settings->setValue("TailMonitoring/DebounceMs", val); });
     themeLayout->addRow(tr("Tail -f Reload Interval:"), spinBoxTailDebounce);
 
-    // 4. Multi-Monitor Boundary Safety
+    // Multi-Monitor Boundary Safety
     checkBoxMultiMonitorSafety =
         new QCheckBox(tr("Guard windows against offscreen placement across multi-DPI displays"), gbxThemes);
-    bool currentSafety = settings->value("Screen/SafetyGuards", true).toBool();
+    const bool currentSafety = settings->value("Screen/SafetyGuards", true).toBool();
     checkBoxMultiMonitorSafety->setChecked(currentSafety);
     connect(checkBoxMultiMonitorSafety, &QCheckBox::toggled, this,
             [this](bool checked) { settings->setValue("Screen/SafetyGuards", checked); });
     themeLayout->addRow(tr("Display Safety:"), checkBoxMultiMonitorSafety);
 
-    // 5. Shortcuts & Key Bindings Customizer
-    auto *btnOpenShortcuts = new QPushButton(tr("Configure Keyboard Shortcuts (Shortcuts Tab)..."), gbxThemes);
-    btnOpenShortcuts->setIcon(QIcon(QStringLiteral(":/icons/list_with_icons.svg")));
-    connect(btnOpenShortcuts, &QPushButton::clicked, this, &PreferencesDialog::openShortcutsTab);
-    themeLayout->addRow(tr("Shortcuts:"), btnOpenShortcuts);
+    container->layout()->addWidget(gbxThemes);
+}
 
-    // Insert at the top of scrollAreaWidgetContents layout
-    ui->verticalLayout_4->insertWidget(0, gbxThemes);
+void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
+    auto *gbxToolbarPacks = new QGroupBox(tr("Toolbar Icon Packs & Icon Size"), container);
+    auto *toolbarLayout = new QFormLayout(gbxToolbarPacks);
+    toolbarLayout->setSpacing(10);
+    toolbarLayout->setContentsMargins(14, 16, 14, 14);
+
+    // ComboBox Icon Pack
+    comboBoxIconPack = new QComboBox(gbxToolbarPacks);
+    populateIconPacksComboBox();
+    connect(comboBoxIconPack, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int idx) {
+        if (idx < 0) {
+            return;
+        }
+        const QString packId = comboBoxIconPack->itemData(idx).toString();
+        if (packId.isEmpty()) {
+            return;
+        }
+        const auto *mw = qobject_cast<const MainWindow *>(parentWidget());
+        QToolBar *tb = mw ? mw->findChild<QToolBar *>() : nullptr;
+        ToolbarIconManager::instance()->setPack(packId, tb);
+        if (mw) {
+            ToolbarIconManager::instance()->applyToWindow(mw, tb);
+        }
+        if (const auto *pack = ToolbarIconManager::instance()->findPackById(packId); pack && lblIconPackDescription) {
+            lblIconPackDescription->setText(pack->description);
+        }
+        updateIconPreview();
+    });
+    toolbarLayout->addRow(tr("Active Icon Pack:"), comboBoxIconPack);
+
+    // Description
+    lblIconPackDescription = new QLabel(gbxToolbarPacks);
+    lblIconPackDescription->setWordWrap(true);
+    lblIconPackDescription->setStyleSheet(QStringLiteral("font-style: italic; color: #64748b;"));
+    if (const auto *curPack = ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId()); curPack) {
+        lblIconPackDescription->setText(curPack->description);
+    }
+    toolbarLayout->addRow(tr("Description:"), lblIconPackDescription);
+
+    // Icon Size
+    comboBoxIconSize = new QComboBox(gbxToolbarPacks);
+    struct SizeEntry {
+        QString label;
+        QSize size;
+    };
+    const std::array<SizeEntry, 6> sizes = {{
+        {tr("16 x 16 (Compact)"), QSize(16, 16)},
+        {tr("20 x 20 (Medium)"), QSize(20, 20)},
+        {tr("24 x 24 (Default / Recommended)"), QSize(24, 24)},
+        {tr("32 x 32 (Large / High-DPI)"), QSize(32, 32)},
+        {tr("48 x 48 (Extra Large)"), QSize(48, 48)},
+        {tr("64 x 64 (Ultra High-DPI)"), QSize(64, 64)},
+    }};
+    const QSize currentSize = ToolbarIconManager::instance()->iconSize();
+    int sizeIdx = 2;
+    for (size_t i = 0; i < sizes.size(); ++i) {
+        comboBoxIconSize->addItem(sizes[i].label, QVariant(sizes[i].size));
+        if (sizes[i].size == currentSize) {
+            sizeIdx = static_cast<int>(i);
+        }
+    }
+    comboBoxIconSize->setCurrentIndex(sizeIdx);
+    connect(comboBoxIconSize, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int idx) {
+        if (idx < 0) {
+            return;
+        }
+        const QSize size = comboBoxIconSize->itemData(idx).toSize();
+        const auto *mw = qobject_cast<const MainWindow *>(parentWidget());
+        QToolBar *tb = mw ? mw->findChild<QToolBar *>() : nullptr;
+        ToolbarIconManager::instance()->setIconSize(size, tb);
+    });
+    toolbarLayout->addRow(tr("Toolbar Icon Size:"), comboBoxIconSize);
+
+    // Pack Preview Row
+    widgetIconPreview = new QWidget(gbxToolbarPacks);
+    layoutIconPreview = new QHBoxLayout(widgetIconPreview);  // NOSONAR(cpp:S5025)
+    layoutIconPreview->setContentsMargins(4, 4, 4, 4);
+    layoutIconPreview->setSpacing(8);
+    updateIconPreview();
+    toolbarLayout->addRow(tr("Icon Preview:"), widgetIconPreview);
+
+    // Buttons: Open Custom Icon Packs & Rescan
+    auto *btnRowLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
+    auto *btnOpenCustomPacks = new QPushButton(tr("Open Custom Icon Packs Folder..."), gbxToolbarPacks);
+    btnOpenCustomPacks->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
+    connect(btnOpenCustomPacks, &QPushButton::clicked, this, [] {
+        const QString path = ToolbarIconManager::customPacksPath();
+        QDir().mkpath(path);
+        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    });
+    btnRowLayout->addWidget(btnOpenCustomPacks);
+
+    auto *btnRescan = new QPushButton(tr("Rescan Icon Packs"), gbxToolbarPacks);
+    btnRescan->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    connect(btnRescan, &QPushButton::clicked, this, [this] {
+        ToolbarIconManager::instance()->scanCustomPacks();
+        populateIconPacksComboBox();
+        updateIconPreview();
+    });
+    btnRowLayout->addWidget(btnRescan);
+    btnRowLayout->addStretch();
+
+    toolbarLayout->addRow(tr("Management:"), btnRowLayout);
+    container->layout()->addWidget(gbxToolbarPacks);
+}
+
+void PreferencesDialog::setupThemesAndToolbarTab() {
+    auto *scrollArea = new QScrollArea(this);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setFrameShape(QFrame::NoFrame);
+
+    auto *container = new QWidget(scrollArea);
+    auto *mainLayout = new QVBoxLayout(container);
+    mainLayout->setSpacing(14);
+    mainLayout->setContentsMargins(14, 16, 14, 14);
+
+    setupThemesGroup(container);
+    setupToolbarPacksGroup(container);
+    mainLayout->addStretch();
+
+    scrollArea->setWidget(container);
+    m_themesAndToolbarWidget = scrollArea;
+    m_tabWidget->addTab(m_themesAndToolbarWidget, QIcon(QStringLiteral(":/icons/view.svg")), tr("&Themes && Toolbar"));
+}
+
+void PreferencesDialog::setupCustomToolbarTab(QMainWindow *mainWindow) {
+    auto *mw = qobject_cast<MainWindow *>(mainWindow);
+    if (!mw) {
+        mw = qobject_cast<MainWindow *>(parentWidget());
+    }
+    m_toolbarCustomizerWidget = new CustomizeToolbarWidget(mw, this);
+    connect(m_toolbarCustomizerWidget, &CustomizeToolbarWidget::toolbarChanged, this,
+            &PreferencesDialog::toolbarChanged);
+    m_tabWidget->addTab(m_toolbarCustomizerWidget, QIcon(QStringLiteral(":/icons/table_edit.svg")),
+                        tr("&Custom Toolbar Config"));
+}
+
+void PreferencesDialog::populateIconPacksComboBox() {
+    if (!comboBoxIconPack)
+        return;
+    QSignalBlocker blocker(comboBoxIconPack);
+    comboBoxIconPack->clear();
+    const auto &packs = ToolbarIconManager::instance()->availablePacks();
+    const QString currentPack = ToolbarIconManager::instance()->currentPackId();
+    int currentIdx = 0;
+    for (int i = 0; i < packs.size(); ++i) {
+        const auto &pack = packs[i];
+        QString label = pack.displayName;
+        if (!pack.isBuiltIn) {
+            label += tr(" [Custom]");
+        }
+        comboBoxIconPack->addItem(label, pack.id);
+        if (pack.id == currentPack) {
+            currentIdx = i;
+        }
+    }
+    comboBoxIconPack->setCurrentIndex(currentIdx);
+}
+
+void PreferencesDialog::updateIconPreview() {
+    if (!layoutIconPreview || !widgetIconPreview) {
+        return;
+    }
+    QLayoutItem *child;
+    while ((child = layoutIconPreview->takeAt(0)) != nullptr) {
+        delete child->widget();  // NOSONAR(cpp:S5025)
+        delete child;            // NOSONAR(cpp:S5025)
+    }
+
+    const QStringList sampleActions = {QStringLiteral("New"),  QStringLiteral("Open"),  QStringLiteral("Save"),
+                                       QStringLiteral("Cut"),  QStringLiteral("Copy"),  QStringLiteral("Paste"),
+                                       QStringLiteral("Find"), QStringLiteral("Undo"),  QStringLiteral("Redo")};
+
+    for (const QString &actName : sampleActions) {
+        const QIcon icon = ToolbarIconManager::instance()->actionIcon(actName);
+        auto *lbl = new QLabel(widgetIconPreview);
+        lbl->setFixedSize(32, 32);
+        lbl->setAlignment(Qt::AlignCenter);
+        lbl->setStyleSheet(
+            QStringLiteral("background-color: rgba(128,128,128,0.12); border-radius: 4px; padding: 2px;"));
+        lbl->setPixmap(icon.pixmap(22, 22));
+        lbl->setToolTip(actName);
+        layoutIconPreview->addWidget(lbl);
+    }
+    layoutIconPreview->addStretch();
 }
 
 void PreferencesDialog::updateThemeColors() {
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
-    bool dark = ThemeManager::instance()->isDarkActive();
+    const bool dark = ThemeManager::instance()->isDarkActive();
 
     if (comboBoxTheme) {
-        QString currentId = ThemeManager::instance()->currentPaletteId();
-        int found = comboBoxTheme->findData(currentId);
+        const QString curId = ThemeManager::instance()->currentPaletteId();
+        const int found = comboBoxTheme->findData(curId);
         if (found >= 0 && comboBoxTheme->currentIndex() != found) {
-            QSignalBlocker blocker(comboBoxTheme);
+            const QSignalBlocker blocker(comboBoxTheme);
             comboBoxTheme->setCurrentIndex(found);
         }
     }
@@ -453,7 +664,7 @@ void PreferencesDialog::updateThemeColors() {
     const QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : defaultTxtPri;
     const QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : defaultTxtSec;
 
-    QString prefStyle =
+    const QString prefStyle =
         QString(
             "QDialog {"
             "  background-color: %1;"
@@ -549,130 +760,70 @@ void PreferencesDialog::updateThemeColors() {
             "  border-top: 5px solid %4;"
             "  margin: 0 auto;"
             "}"
-            "QComboBox QAbstractItemView, QListView {"
+            "QPushButton {"
             "  background-color: %2;"
             "  color: %4;"
             "  border: 1px solid %3;"
             "  border-radius: 6px;"
-            "  padding: 4px;"
-            "  selection-background-color: %6;"
-            "  selection-color: #ffffff;"
-            "  outline: none;"
+            "  padding: 6px 14px;"
+            "  font-size: 13px;"
+            "  font-weight: 500;"
             "}"
-            "QComboBox QAbstractItemView::item, QListView::item {"
-            "  min-height: 24px;"
-            "  padding: 3px 8px;"
-            "  border-radius: 4px;"
-            "  color: %4;"
-            "}"
-            "QComboBox QAbstractItemView::item:selected, QListView::item:selected {"
+            "QPushButton:hover {"
             "  background-color: %6;"
             "  color: #ffffff;"
+            "  border-color: %6;"
             "}"
-            "QComboBox QAbstractItemView::item:hover:!selected, QListView::item:hover:!selected {"
-            "  background-color: rgba(59, 130, 246, 0.2);"
-            "  color: %4;"
+            "QPushButton:pressed {"
+            "  background-color: %6;"
+            "  border-color: %6;"
             "}"
             "QSlider::groove:horizontal {"
             "  border: 1px solid %3;"
             "  height: 6px;"
-            "  background: %1;"
-            "  border-radius: 3px;"
-            "}"
-            "QSlider::sub-page:horizontal {"
-            "  background: %6;"
+            "  background: %2;"
+            "  margin: 2px 0;"
             "  border-radius: 3px;"
             "}"
             "QSlider::handle:horizontal {"
-            "  background: %2;"
-            "  border: 2px solid %6;"
-            "  width: 14px;"
-            "  height: 14px;"
-            "  margin-top: -5px;"
-            "  margin-bottom: -5px;"
-            "  border-radius: 8px;"
-            "}"
-            "QSlider::handle:horizontal:hover {"
             "  background: %6;"
-            "}"
-            "QPushButton, QToolButton {"
-            "  background-color: %2;"
-            "  color: %4;"
-            "  border: 1px solid %3;"
-            "  border-radius: 6px;"
-            "  padding: 6px 16px;"
-            "  font-weight: 600;"
-            "}"
-            "QPushButton:hover, QToolButton:hover {"
-            "  border-color: %6;"
-            "  color: %6;"
-            "}"
-            "QPushButton:pressed, QToolButton:pressed {"
-            "  background-color: %6;"
-            "  color: #ffffff;"
-            "}"
-            "QScrollBar:vertical {"
-            "  background: %1;"
-            "  width: 10px;"
-            "  margin: 0px;"
-            "}"
-            "QScrollBar::handle:vertical {"
-            "  background: %3;"
-            "  min-height: 20px;"
-            "  border-radius: 5px;"
-            "}"
-            "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
-            "  height: 0px;"
+            "  border: 1px solid %6;"
+            "  width: 16px;"
+            "  margin: -6px 0;"
+            "  border-radius: 8px;"
             "}"
             "QTabWidget::pane {"
-            "  background-color: %1;"
             "  border: 1px solid %3;"
-            "  border-radius: 8px;"
-            "  top: -1px;"
-            "}"
-            "QTabBar {"
-            "  background: transparent;"
-            "  border: none;"
-            "  qproperty-drawBase: 0;"
+            "  background-color: %1;"
+            "  border-radius: 6px;"
             "}"
             "QTabBar::tab {"
-            "  background-color: %2;"
+            "  background: %2;"
             "  color: %5;"
-            "  padding: 8px 18px;"
             "  border: 1px solid %3;"
             "  border-bottom: none;"
+            "  padding: 8px 16px;"
+            "  margin-right: 4px;"
             "  border-top-left-radius: 6px;"
             "  border-top-right-radius: 6px;"
-            "  margin-right: 4px;"
-            "  font-size: 13px;"
             "  font-weight: 500;"
             "}"
             "QTabBar::tab:selected {"
-            "  background-color: %1;"
+            "  background: %1;"
             "  color: %4;"
-            "  font-weight: bold;"
-            "  border-top: 2px solid %6;"
+            "  border-color: %3;"
+            "  border-bottom: 2px solid %6;"
+            "  font-weight: 600;"
             "}"
             "QTabBar::tab:hover:!selected {"
-            "  background-color: %3;"
+            "  background: %2;"
             "  color: %4;"
-            "}"
-            "QKeySequenceEdit {"
-            "  background-color: %2;"
-            "  color: %4;"
-            "  border: 1px solid %3;"
-            "  border-radius: 6px;"
-            "  padding: 6px 10px;"
-            "  font-size: 13px;"
-            "}"
-            "QKeySequenceEdit:focus {"
-            "  border-color: %6;"
             "}")
             .arg(winBg, cardBg, borderCol, txtPri, txtSec, accentCol);
 
     setStyleSheet(prefStyle);
-
     if (m_shortcutWidget) {
         m_shortcutWidget->applyThemeStyles();
     }
+    updateIconPreview();
 }

@@ -30,13 +30,13 @@
 RecentFilesListMenuBuilder::RecentFilesListMenuBuilder(RecentFilesListManager *manager)
     : QObject(manager), manager(manager) {}
 
-void RecentFilesListMenuBuilder::populateMenu(QMenu *menu) {
+void RecentFilesListMenuBuilder::populateMenu(QMenu *menu) const {
     int i = 0;
 
     QList<QAction *> recentFileListActions;
     for (const QString &file : manager->fileList()) {
         ++i;
-        QAction *action =
+        auto *action =
             new QAction(QString("%1%2: %3").arg(i < 10 ? "&" : "").arg(i).arg(QDir::toNativeSeparators(file)), menu);
         action->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
         action->setIconVisibleInMenu(true);

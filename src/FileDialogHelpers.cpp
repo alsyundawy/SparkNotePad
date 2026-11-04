@@ -54,7 +54,7 @@ QList<QUrl> FileDialogHelpers::getOpenFileUrls(QWidget *parent, const QString &c
 QStringList FileDialogHelpers::getOpenFileNames(QWidget *parent, const QString &caption, const QString &dir,
                                                 const QString &filter, QString *selectedFilter,
                                                 QFileDialog::Options options) {
-    const QStringList schemes = QStringList(QStringLiteral("file"));
+    const auto schemes = QStringList(QStringLiteral("file"));
     const QList<QUrl> selectedUrls = getOpenFileUrls(parent, caption, dir, filter, selectedFilter, options, schemes);
     QStringList fileNames;
 
@@ -91,7 +91,7 @@ QUrl FileDialogHelpers::getSaveFileUrl(QWidget *parent, const QString &caption, 
 QString FileDialogHelpers::getSaveFileName(QWidget *parent, const QString &caption, const QString &dir,
                                            const QString &filter, QString *selectedFilter,
                                            QFileDialog::Options options) {
-    const QStringList schemes = QStringList(QStringLiteral("file"));
+    const auto schemes = QStringList(QStringLiteral("file"));
     const QUrl selectedUrl = getSaveFileUrl(parent, caption, dir, filter, selectedFilter, options, schemes);
     if (selectedUrl.isLocalFile() || selectedUrl.isEmpty())
         return selectedUrl.toLocalFile();

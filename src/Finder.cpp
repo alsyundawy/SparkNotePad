@@ -108,8 +108,7 @@ int Finder::count() {
 
     int total = 0;
 
-    forEachMatch([&total](int start, int end) {
-        Q_UNUSED(start);
+    forEachMatch([&total](int /*start*/, int end) {
         ++total;
         return end;
     });

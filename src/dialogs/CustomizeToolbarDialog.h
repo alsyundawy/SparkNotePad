@@ -17,6 +17,7 @@
 #include <QDialog>
 #include <QMap>
 #include <QStringList>
+#include <QWidget>
 
 class QListWidget;
 class QListWidgetItem;
@@ -26,15 +27,23 @@ class QDialogButtonBox;
 class QAction;
 class MainWindow;
 
-class CustomizeToolbarDialog : public QDialog {
+class CustomizeToolbarWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit CustomizeToolbarDialog(MainWindow *mainWindow, QWidget *parent = nullptr);
-    ~CustomizeToolbarDialog() override = default;
+    explicit CustomizeToolbarWidget(MainWindow *mainWindow, QWidget *parent = nullptr);
+    ~CustomizeToolbarWidget() override = default;
 
     static const QStringList &defaultToolbarActions();
     [[nodiscard]] QStringList currentActionNames() const;
+    void saveToolbar();
+    void refreshActions();
+
+signals:
+    void toolbarChanged();
+
+public slots:
+    void onApplyClicked();
 
 private slots:
     void onAddClicked();
@@ -43,9 +52,8 @@ private slots:
     void onMoveUpClicked();
     void onMoveDownClicked();
     void onResetDefaultsClicked();
-    void onFilterTextChanged(const QString &text);
+    void onFilterTextChanged(const QString &text) const;
     void onCurrentItemSelectionChanged();
-    void onApplyClicked();
 
 private:
     void setupUi();
@@ -65,9 +73,27 @@ private:
     QPushButton *m_btnMoveUp = nullptr;
     QPushButton *m_btnMoveDown = nullptr;
     QPushButton *m_btnReset = nullptr;
-    QDialogButtonBox *m_buttonBox = nullptr;
+    QPushButton *m_btnApply = nullptr;
 
     QMap<QString, QAction *> m_availableActions;
+};
+
+class CustomizeToolbarDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit CustomizeToolbarDialog(MainWindow *mainWindow, QWidget *parent = nullptr);
+    ~CustomizeToolbarDialog() override = default;
+
+    [[nodiscard]] CustomizeToolbarWidget *customizerWidget() const { return m_customizerWidget; }
+    static const QStringList &defaultToolbarActions() { return CustomizeToolbarWidget::defaultToolbarActions(); }
+    [[nodiscard]] QStringList currentActionNames() const {
+        return m_customizerWidget ? m_customizerWidget->currentActionNames() : QStringList();
+    }
+
+private:
+    CustomizeToolbarWidget *m_customizerWidget = nullptr;
+    QDialogButtonBox *m_buttonBox = nullptr;
 };
 
 #endif  // CUSTOMIZETOOLBARDIALOG_H

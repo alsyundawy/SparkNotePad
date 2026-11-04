@@ -210,7 +210,7 @@ void CommandPaletteDialog::populateItems() {
         app && app->getRecentFilesListManager()) {
         const auto recentList = app->getRecentFilesListManager()->fileList();
         for (const auto &filePath : recentList) {
-            QFileInfo fi(filePath);
+            const QFileInfo fi(filePath);
             PaletteItem item;
             item.type = PaletteItem::Type::RecentFile;
             item.title = fi.fileName();

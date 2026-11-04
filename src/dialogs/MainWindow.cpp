@@ -340,6 +340,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
 
     ui->actionRestart->setStatusTip(tr("Gracefully saves settings and restarts SparkNotePad"));
+    ui->actionRestart->setMenuRole(QAction::ApplicationSpecificRole);
+    ui->menuEdit->removeAction(ui->actionRestart);
     ui->actionExit->setStatusTip(tr("Prompts to save open documents and quits SparkNotePad"));
 
 #ifdef Q_OS_WIN
@@ -577,6 +579,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     actionCompareFiles->setStatusTip(tr("Compare two open tabs or files side-by-side with synchronized scrolling"));
     connect(actionCompareFiles, &QAction::triggered, this, [this] { showFileDiffDialog(); });
     ui->menuView->addAction(actionCompareFiles);
+    ui->menuView->addAction(ui->actionToggleHexBinaryView);
 
     // JWT Decoder action
     auto *actionDecodeJwt = new QAction(tr("&Decode JSON Web Token (JWT)"), this);
@@ -2093,15 +2096,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     auto *actionNextChange = new QAction(tr("&Next Change"), this);
     actionNextChange->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F7));
     connect(actionNextChange, &QAction::triggered, this, [this] {
-        if (auto *ed = currentEditor()) {
-            if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
-                const auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
-                const int targetLine = dec->nextChangeAfter(curLine);
-                if (targetLine != -1) {
-                    ed->gotoLine(targetLine);
-                    ed->scrollVertical(targetLine, 0);
-                    ed->setFocus();
-                }
+        auto *ed = currentEditor();
+        if (auto *dec = ed ? ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly) : nullptr) {
+            const auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
+            const int targetLine = dec->nextChangeAfter(curLine);
+            if (targetLine != -1) {
+                ed->gotoLine(targetLine);
+                ed->scrollVertical(targetLine, 0);
+                ed->setFocus();
             }
         }
     });
@@ -2110,15 +2112,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     auto *actionPrevChange = new QAction(tr("&Previous Change"), this);
     actionPrevChange->setShortcut(QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F7));
     connect(actionPrevChange, &QAction::triggered, this, [this] {
-        if (auto *ed = currentEditor()) {
-            if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
-                const auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
-                const int targetLine = dec->previousChangeBefore(curLine);
-                if (targetLine != -1) {
-                    ed->gotoLine(targetLine);
-                    ed->scrollVertical(targetLine, 0);
-                    ed->setFocus();
-                }
+        auto *ed = currentEditor();
+        if (auto *dec = ed ? ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly) : nullptr) {
+            const auto curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
+            const int targetLine = dec->previousChangeBefore(curLine);
+            if (targetLine != -1) {
+                ed->gotoLine(targetLine);
+                ed->scrollVertical(targetLine, 0);
+                ed->setFocus();
             }
         }
     });
@@ -2377,7 +2378,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connect(ui->actionDebugInfo, &QAction::triggered, this,
             [this, app] { ModernMessageBox::information(this, tr("Debug Info"), app->debugInfo().join('\n')); });
 
-    tabsQuickActionsBar = new TabsQuickActionsBar(ui->menuBar);
+    tabsQuickActionsBar = new TabsQuickActionsBar(ui->menuBar);  // NOSONAR(cpp:S5025)
     ui->menuBar->setCornerWidget(tabsQuickActionsBar, Qt::TopRightCorner);
     connect(tabsQuickActionsBar, &TabsQuickActionsBar::createNewTabClicked, this, &MainWindow::newFile);
     connect(tabsQuickActionsBar, &TabsQuickActionsBar::closeCurrentTabClicked, this, &MainWindow::closeCurrentFile);
@@ -2456,26 +2457,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     ui->menuView->addAction(fawDock->toggleViewAction());
     ui->menuView->addAction(fileListDock->toggleViewAction());
     ui->menuView->addAction(toggleFunctionListAction);
-    auto *toggleMarkdownPreviewAction = markdownSafePreviewDock->toggleViewAction();
-    toggleMarkdownPreviewAction->setText(tr("HTML && Markdown Live Preview"));
-    toggleMarkdownPreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
-    toggleMarkdownPreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
-    ui->menuView->addAction(toggleMarkdownPreviewAction);
-
-    // Group side panels into View -> Side Panels submenu for advanced inspectors
-    auto *menuPanels = new QMenu(tr("&Side Panels"), this);
-    menuPanels->setIcon(QIcon(QStringLiteral(":/icons/layout.svg")));
-    menuPanels->addAction(toggleFileBrowserAction);
-    menuPanels->addAction(fawDock->toggleViewAction());
-    menuPanels->addAction(fileListDock->toggleViewAction());
-    menuPanels->addAction(toggleFunctionListAction);
-    menuPanels->addAction(srDock->toggleViewAction());
-    menuPanels->addSeparator();
-    menuPanels->addAction(toggleLanguageInspectorAction);
-    menuPanels->addAction(editorInspectorDock->toggleViewAction());
-    menuPanels->addAction(debugLogDock->toggleViewAction());
-    menuPanels->addAction(luaConsoleDock->toggleViewAction());
-    ui->menuView->addMenu(menuPanels);
 
     connect(app->getSettings(), &ApplicationSettings::showMenuBarChanged, this, [this](bool showMenuBar) {
         // Don't 'hide' it, else the actions won't be enabled
@@ -2491,15 +2472,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     // Register active window with MacServicesHandler
     MacServicesHandler::instance()->setActiveWindow(this);
-
-    // Native Emoji & Symbols
-    auto *actionEmoji = new QAction(tr("&Emoji && Symbols"), this);
-#ifdef Q_OS_MACOS
-    actionEmoji->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_Space));
-#endif
-    connect(actionEmoji, &QAction::triggered, this, [] { MacServicesHandler::showEmojiAndSymbolsPalette(); });
-    ui->menuEdit->addSeparator();
-    ui->menuEdit->addAction(actionEmoji);
 
     setupLanguageMenu();
     setupRunMenu();
@@ -4277,7 +4249,7 @@ void MainWindow::ensureMenuIconsVisible(QWidget *root) {
         }
     }
     if (const auto *menu = qobject_cast<const QMenu *>(target)) {
-        if (auto *act = menu->menuAction()) {
+        if (auto *act = menu->menuAction(); act) {
             act->setIconVisibleInMenu(true);
         }
         for (auto *action : menu->actions()) {
@@ -5575,7 +5547,7 @@ void MainWindow::onToolbarContextMenu(const QPoint &pos) {
 
     // Toolbar Icon Packs submenu
     QMenu *menuPacks = menu.addMenu(tr("Toolbar Icon Packs"));
-    auto *packsGroup = new QActionGroup(&menu);
+    auto *packsGroup = new QActionGroup(&menu);  // NOSONAR(cpp:S5025)
     packsGroup->setExclusive(true);
     const auto &packs = ToolbarIconManager::instance()->availablePacks();
     const QString currentPack = ToolbarIconManager::instance()->currentPackId();
@@ -5593,7 +5565,7 @@ void MainWindow::onToolbarContextMenu(const QPoint &pos) {
 
     // Toolbar Icon Size submenu
     QMenu *menuSizes = menu.addMenu(tr("Toolbar Icon Size"));
-    auto *sizesGroup = new QActionGroup(&menu);
+    auto *sizesGroup = new QActionGroup(&menu);  // NOSONAR(cpp:S5025)
     sizesGroup->setExclusive(true);
     struct ToolbarScaleEntry {
         QString label;
