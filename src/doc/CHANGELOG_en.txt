@@ -7,48 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.3.8] - 2026-11-02
+## [1.3.8] - 2026-11-04
 
-### 🎨 Toolbar Icon Packs Suite (10 Built-In Packs), Plus (+) Tab Button, In-Tab HTML/Markdown Preview, Modern File Commander, Reversible Hex/Binary View & 125 Lexilla Lexers
+### 🎨 21 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity
 
-SparkNotePad v1.3.8 introduces an extensive toolbar personalization architecture, rich multi-DPI icon suites, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, a modernized File Commander browser, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
+SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 21 curated icon packs, dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), desktop standard menu reorganization, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, intelligent dark-mode luminance tone mapping, Plus (+) tab button, in-tab HTML and Markdown preview, modernized File Commander browser, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
 
 #### 🆕 Added
 
-- **10 Built-in Toolbar Icon Packs Suite (Zero Duplicate Engineering)**:
-  - **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
-  - **Microsoft Fluent UI (Win 11)** (`fluentUi`): Modern Microsoft Fluent vector and bitmap icons.
-  - **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with Directory Opus iconography.
-  - **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite with translucent cyan glass gradients.
-  - **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia (master 64x64 PNG).
-  - **Fugue Classic (Silk Suite)** (`fugue`): Renowned Yusuke Kamiyamane Fugue iconography with multi-DPI retina scaling.
-  - **Notepad++ Retro (Nostalgia)** (`notepadPlusPlus`): High-DPI vector recreation of classic Notepad++ toolbar iconography.
-  - **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from upstream NotepadNext release.
-  - **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-  - **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
-  - Removed `archLinux` and `filledFluentUi` packs per visual design standardization.
+- **21 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
+  - Seamlessly switch among 21 built-in vector and pixel icon collections: Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Material Sharp, Pixel Fugue, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus, Cupertino, VS Code Codicons.
+  - Dynamic multi-DPI icon scaling: 16x16, 20x20, 24x24 (Default), 32x32, 48x48, 64x64.
+  - Crisp Retina @2x pixmaps without blur or distortion.
+  - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
+- **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - Tab 3 ("Themes & Toolbar"): Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
+  - Tab 4 ("Custom Toolbar Config"): Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
+- **Standard Desktop Editor Menu Hierarchy**:
+  - Reversible Hex/Binary View relocated directly below Compare in the top-level Tools/View menu (`Ctrl+Alt+H` / `Cmd+Alt+H`).
+  - Restart Application relocated to macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`).
+  - Duplicate manual Character Palette removed in favor of native macOS system palette (`Ctrl+Cmd+Space`).
+  - View menu streamlined without duplicate Side Panels submenu.
+- **100% Bilingual Localization Parity**:
+  - Full synchronization of English (`SparkNotePad_en.ts`) and Indonesian (`SparkNotePad_id.ts`) translation catalogs across 1,924 UI strings with 0 unfinished entries.
 - **Plus (+) Button at the End of Every Tab Bar**:
   - Interactive Plus (+) button located on the title bar next to editor tabs to open a new document instantly.
 - **Dynamic Menubar & Context Menu Icon Synchronization (`applyToWindow`)**:
   - Changing icon packs now propagates dynamically to all top-level menus in `menuBar()`, tab right-click context menus, and the Scintilla editor right-click context menu.
   - Default toolbar icon size is 24x24 and default menu icon size is 16x16 (with 32x32 retina pixmaps).
   - Icon size selection immediately resizes and updates toolbar geometry dynamically.
-- **In-Tab HTML & Markdown Preview (`PreviewTabWidget`)**:
+- **In-Tab & Dock HTML/Markdown Live Preview (`PreviewTabWidget` & `MarkdownSafePreviewDock`)**:
   - Center dock area (`ads::CenterDockWidgetArea`) in-tab preview for `.html` and `.md` files without opening detached external windows.
   - Tab right-click context menu provides instant "Preview HTML in New Tab" and "Preview Markdown in New Tab".
-  - Dedicated "Preview in Default Browser" action for `.html` documents.
+  - Dedicated "Preview in Default Browser" action for `.html` and `.md` documents (`Ctrl+Alt+B`).
   - Modern, elegant GitHub/DevDocs styling with adaptive Dark and Light mode parity, zoom controls (+ / - / reset), refresh button, and CVE-2026-20841 sandboxing.
-- **Modern File Commander Folder & File Browser (`FileBrowserDock`)**:
-  - Re-engineered file browser dock with quick bookmarks (Home, Documents, Downloads, Desktop, Workspace).
-  - Crisp SVG navigation iconography (Up, Folder, Refresh).
+  - Live document stats pill badge displaying word count and estimated reading time (`%1 words • %2 min read`).
+  - GitHub Alert Callout formatting for `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, and `[!CAUTION]` with distinct theme accents, subtle background tints, and SVG icons.
+- **Modern File Commander & Workspace TreeView Selection Highlight Fix**:
+  - Resolved selection box clipping/cropping in `FolderAsWorkspaceDock` and `FileBrowserDock` via full-row selection (`show-decoration-selected: 1`, `branch:selected`, full focus).
+  - Highlighting seamlessly tracks active theme selection colors with rounded corners and uniform row heights.
+  - Quick bookmarks (Home, Documents, Downloads, Desktop, Workspace) with crisp SVG icons.
   - Bottom status bar displaying file count, folder count, available disk space (`QStorageInfo`), and selection summary.
-  - Adaptive styling harmonized across dark and light themes.
 - **Reversible Hex / Binary View (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Real-time in-place hex inspection displaying 8-digit offset, 16 hex bytes with 8+8 grouping, and ASCII character column.
   - Reversible toggle restoring original text, language lexer, and read-only flags seamlessly.
-- **Relocated Toolbar Icon Packs Submenu**:
-  - Positioned at the very top of `Themes` menu with an elegant visual separator before editor themes.
-  - Clean, standardized, non-redundant icon pack naming.
 - **100% Lexilla Lexers Adoption (125 Languages)**:
   - Complete adoption of all 125 Lexilla lexer modules in `src/languages/`, registered in `src/scripts.qrc` and synchronized in `src/scripts/init.lua`.
   - Comprehensive syntax highlighting for modern programming languages, configuration formats, and technical DSLs.

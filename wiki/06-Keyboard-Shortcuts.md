@@ -85,6 +85,7 @@ SparkNotePad features a dual-mode quick palette architecture inspired by modern 
 | **Clipboard History**               | `Cmd+Alt+V`    | `Ctrl+Alt+V`             | Open multi-item clipboard history viewer              |
 | **Format Document (Prettier/JSON)** | `Cmd+Shift+I`  | `Ctrl+Shift+I`           | Auto-format current file buffer                       |
 | **Safe Markdown Preview**           | `Cmd+Shift+M`  | `Ctrl+Shift+M`           | Toggle sandboxed side-by-side Markdown HTML preview   |
+| **Toggle Hex / Binary View**        | `Cmd+Alt+H`    | `Ctrl+Alt+H`             | Toggle in-place reversible hexadecimal inspection     |
 | **Toggle Dark / Light Theme**       | `Cmd+Alt+T`    | `Ctrl+Alt+T`             | Cycle between configured Dark and Light theme presets |
 
 ---

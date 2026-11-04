@@ -7,55 +7,48 @@ dan proyek ini mengikuti [Semantic Versioning](https://semver.org/lang/id/).
 
 ---
 
-## [1.3.8] - 2026-11-02
+## [1.3.8] - 2026-11-04
 
-### 🎨 Paket Ikon Toolbar (21 Paket Bawaan), Skalabilitas High-DPI Retina, Adaptasi Luminans Tema Gelap, Pratinjau HTML/Markdown di Tab Baru & 125 Lexilla Lexer
+### 🎨 Rangkaian 21 Paket Ikon Toolbar, Tab Preferensi Themes & Toolbar, Ergonomi Menu Desktop & Paritas Penuh i18n
 
-SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap dengan 21 paket ikon terkurasi, preservasi vektor SVG asli, varian pixmap `@2x` Retina, adaptasi luminans HSL cerdas pada tema gelap, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
+SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap dengan 21 paket ikon terkurasi, tab Preferensi khusus ("Themes & Toolbar" & "Custom Toolbar Config"), penataan ulang menu standar desktop, sinkronisasi menyeluruh ke menu dan konteks klik kanan, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
 
 #### 🆕 Ditambahkan
 
-- **21 Paket Ikon Bawaan (Bebas Duplikasi)**:
-  - Modern Ribbon (Default Vektor SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Klasik (Nostalgia), NotepadNext Klasik (Silk), Monochrome Outline (Minimalis), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Humanity GNOME, Elementary OS Flat, Breeze KDE Plasma, Papirus Rounded, macOS Cupertino Clean, dan VS Code Codicons.
-  - Preservasi vektor SVG menghindari keburaman raster pada layar Retina.
-  - Multi-resolusi PNG dengan aset terdedikasi `@2x` Retina DPR (`setDevicePixelRatio(2.0)`).
-  - Tone mapping luminans cerdas HSL agar seluruh ikon tampak terang dan tajam pada tema gelap maupun terang.
+- **Rangkaian 21 Paket Ikon Toolbar Multi-Resolusi**:
+  - Modern Ribbon (Default Vector SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Klasik, NotepadNext Klasik, Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, dan VS Code Codicons.
+  - Skala ikon dinamis multi-DPI: 16x16, 20x20, 24x24 (Default), 32x32, 48x48, 64x64.
+  - Varian pixmap Retina @2x tajam dan jernih tanpa distorsi.
+  - Tone mapping luminans cerdas HSL pada tema gelap mencegah ikon memudar pada latar belakang gelap.
+- **Tab Khusus Preferensi ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - Tab 3 ("Themes & Toolbar"): Relokasi pengaturan gaya visual Tema (Tema Aktif, Opasitas Jendela, Interval Tail, Proteksi Layar) ke Tab 3 bersama pengatur Paket Ikon Toolbar lengkap (21 paket, kartu deskripsi dinamis, pengatur ukuran ikon, pratinjau langsung, dan pemuat paket kustom).
+  - Tab 4 ("Custom Toolbar Config"): Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung di Tab 4 dengan pencarian cepat, daftar aksi tersedia vs aktif, tambah/hapus aksi, pengurutan tombol, garis pemisah, dan hot-reload instan.
+- **Penataan Ulang Menu Aplikasi Standar Desktop**:
+  - Relokasi Tampilan Hex / Biner tepat di bawah Bandingkan (Compare) pada menu tingkat atas (`Ctrl+Alt+H` / `Cmd+Alt+H`).
+  - Menempatkan Mulai Ulang Aplikasi (Restart Application) di menu Aplikasi macOS tepat di atas Keluar (Quit) (`QAction::ApplicationSpecificRole`).
+  - Menghapus aksi manual Emoji & Simbol demi mendukung palet emoji bawaan macOS (`Ctrl+Cmd+Space`).
+  - Merampingkan menu Tampilan (View) dengan menghapus submenu Panel Samping dan aksi pratinjau markdown mandiri redundan.
+- **Paritas Penuh 100% Katalog Dwibahasa (i18n)**:
+  - Sinkronisasi menyeluruh katalog Bahasa Inggris (`SparkNotePad_en.ts`) dan Bahasa Indonesia (`SparkNotePad_id.ts`) pada 1.924 entri antarmuka pengguna dengan 0 entri belum selesai (unfinished).
 - **Tombol Plus (+) pada Setiap Samping Akhir Tab**:
   - Tombol interaktif Plus (+) diletakkan pada title bar di samping kanan tab editor untuk membuat berkas baru dengan cepat.
 - **Sinkronisasi Ikon Menubar & Menu Konteks Dinamis (`applyToWindow`)**:
   - Perubahan paket ikon toolbar secara otomatis menyinkronkan seluruh ikon pada toolbar, menubar utama, menu konteks klik kanan tab, dan menu klik kanan Scintilla editor.
   - Ukuran default ikon toolbar adalah 24x24 dan ikon menu adalah 16x16 (dengan aset retina 32x32).
   - Pemilihan ukuran ikon toolbar secara dinamis menyesuaikan geometri dan tata letak toolbar.
-- **Pratinjau HTML & Markdown di Tab Editor & Panel Dok (`PreviewTabWidget` & `MarkdownSafePreviewDock`)**:
-  - Pratinjau langsung di tab editor tengah (`ads::CenterDockWidgetArea`) tanpa jendela melayang terpisah.
+- **Pratinjau HTML & Markdown di Tab Editor Baru (`PreviewTabWidget`)**:
+  - Pratinjau langsung di tab editor tengah (`ads::CenterDockWidgetArea`), bukan di jendela baru terpisah.
   - Menu konteks tab menyediakan aksi "Preview HTML in New Tab" dan "Preview Markdown in New Tab".
-  - Aksi "Preview in Default Browser" khusus berkas `.html` dan `.md` (`Ctrl+Alt+B`) untuk membuka di peramban bawaan sistem.
-  - Desain modern GitHub/DevDocs dengan kesetaraan tema Dark/Light, kontrol zoom (+/-), tombol segarkan, dan proteksi sandbox CVE-2026-20841.
-  - Lencana statistik dokumen langsung menampilkan jumlah kata dan estimasi waktu baca (`%1 kata • %2 menit baca`).
-  - Pemformatan GitHub Alert Callout untuk `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, dan `[!CAUTION]` dengan aksen tema, latar belakang lembut, dan ikon penanda.
-  - Tombol aksi cepat untuk "Salin HTML" ke papan klip dan "Ekspor HTML" menjadi dokumen web mandiri yang lengkap.
-  - Pemeliharaan rasio posisi gulir selama pengeditan bertahap guna mencegah lompatan kursor.
-- **Reorganisasi Menu Standar Notepad (`MainWindow`)**:
-  - Penataan menu `View` dengan sub-menu khusus `Side Panels` yang mengelompokkan 9 panel kerja dan dok.
-  - Penambahan sub-menu terdedikasi `HTML & Markdown Preview` di menu `View` dan `Tools`.
-- **Folder & File Browser File Commander & Perbaikan Highlight Workspace TreeView**:
-  - Memperbaiki kotak sorotan seleksi yang terpotong di `FolderAsWorkspaceDock` dan `FileBrowserDock` (`show-decoration-selected: 1`, `branch:selected`, fokus baris penuh).
-  - Sorotan seleksi otomatis menyatu mulus dengan warna tema aktif, sudut membulat, dan tinggi baris seragam.
-  - Bilah pintasan cepat (Home, Documents, Downloads, Desktop, Workspace) dengan ikon navigasi SVG tajam.
+  - Aksi "Preview in Default Browser" khusus berkas `.html` untuk membuka berkas di peramban sistem.
+  - Desain modern GitHub/DevDocs dengan kesetaraan tema Dark/Light, tombol perbesaran (+/-), tombol segarkan, dan proteksi sandbox CVE-2026-20841.
+- **Folder & File Browser Bergaya File Commander Modern (`FileBrowserDock`)**:
+  - Bilah pintasan cepat (Home, Documents, Downloads, Desktop, Workspace).
+  - Ikon navigasi SVG tajam (Up, Folder, Refresh).
   - Bilah status metrik menampilkan jumlah berkas, folder, ruang disk kosong (`QStorageInfo`), dan detail seleksi.
+  - Keselarasan tema gelap dan terang.
 - **Tampilan Hex / Binary Reversibel (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Menampilkan offset 8-digit, 16 bita hex (8+8 grouping), dan kolom karakter ASCII.
   - Dapat dibatalkan seketika mengembalikan dokumen asli secara utuh.
-- **Tab Khusus Preferensi ("Themes & Toolbar" & "Custom Toolbar Config")**:
-  - Relokasi pengaturan gaya visual Tema (Tema Aktif, Opasitas Jendela, Interval Tail, Proteksi Layar) ke Tab 3 "Themes & Toolbar" bersama pengatur Paket Ikon Toolbar lengkap (21 paket, kartu deskripsi dinamis, pengatur ukuran ikon, pratinjau langsung, dan pemuat paket kustom).
-  - Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung di Tab 4 "Custom Toolbar Config".
-- **Penataan Ulang Menu Aplikasi Standar Desktop**:
-  - Relokasi Tampilan Hex / Biner tepat di bawah Bandingkan (Compare) pada menu tingkat atas.
-  - Menempatkan Mulai Ulang Aplikasi (Restart Application) di menu Aplikasi macOS tepat di atas Keluar (Quit).
-  - Menghapus aksi manual Emoji & Simbol demi mendukung palet emoji bawaan macOS.
-  - Merampingkan menu Tampilan (View) dengan menghapus submenu Panel Samping.
-- **Paritas Penuh 100% Katalog Dwibahasa (i18n)**:
-  - Sinkronisasi menyeluruh katalog Bahasa Inggris dan Bahasa Indonesia pada 1.924 entri dengan 0 entri belum selesai (unfinished).
 - **100% Pengadopsian Lexilla Lexer (125 Bahasa)**:
   - Seluruh 125 lexer Lexilla didukung lengkap dengan deskriptor Lua di `src/languages/`, didaftarkan di `src/scripts.qrc` dan `src/scripts/init.lua`.
 - **Audit Pintasan Keyboard & Resolusi Konflik**:

@@ -19,7 +19,7 @@
   <releases>
     <release version="1.3.8" date="2026-11-03">
       <description>
-        <p>SparkNotePad v1.3.8: Complete icon pack ecosystem (10 built-in packs including Fluent UI and Fugue), in-tab HTML and Markdown live preview tabs, tab bar quick new file button, reversible Hex/Binary buffer view, file commander browser enhancements, 125 Lexilla lexers, and full English and Indonesian translation parity.</p>
+        <p>SparkNotePad v1.3.8: 21 built-in toolbar icon packs suite, Preferences Themes &amp; Toolbar and Custom Toolbar Config tabs, in-tab HTML/Markdown live preview, desktop standard menu reorganization, 125 Lexilla lexers, and 100% finished bilingual localization parity (1,924 entries).</p>
       </description>
     </release>
     <release version="1.3.7" date="2026-11-01">

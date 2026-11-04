@@ -7,19 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.3.8] - 2026-11-02
+## [1.3.8] - 2026-11-04
 
-### 🎨 Toolbar Icon Packs Suite (21 Built-In Packs), High-DPI Retina Scaling, Dark Mode Luminance Adaptation, In-Tab HTML/Markdown Preview & 125 Lexilla Lexers
+### 🎨 21 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity
 
-SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 21 curated icon packs, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, intelligent dark-mode luminance tone mapping, Plus (+) tab button, in-tab HTML and Markdown preview, modernized File Commander browser, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
+SparkNotePad v1.3.8 features an extensive toolbar personalization architecture with 21 curated icon packs, dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), desktop standard menu reorganization, native vector SVG scaling, multi-resolution `@2x` Retina pixmaps, intelligent dark-mode luminance tone mapping, Plus (+) tab button, in-tab HTML and Markdown preview, modernized File Commander browser, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
 
 #### 🆕 Added
 
-- **21 Built-in Toolbar Icon Packs Suite**:
-  - Modern Ribbon (Default Vector SVG), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Classic (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Humanity GNOME, Elementary OS Flat, Breeze KDE Plasma, Papirus Rounded, macOS Cupertino Clean, and VS Code Codicons.
-  - Native vector SVG preservation avoiding raster blur on Retina displays.
-  - High-DPI multi-resolution PNG pixmaps with dedicated `@2x` Retina DPR (`setDevicePixelRatio(2.0)`).
-  - Intelligent Dark Mode HSL luminance tone mapping for bright, vivid icons across all themes.
+- **21 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
+  - Seamlessly switch among 21 built-in vector and pixel icon collections: Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Material Sharp, Pixel Fugue, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus, Cupertino, VS Code Codicons.
+  - Dynamic multi-DPI icon scaling: 16x16, 20x20, 24x24 (Default), 32x32, 48x48, 64x64.
+  - Crisp Retina @2x pixmaps without blur or distortion.
+  - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
+- **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
+  - Tab 3 ("Themes & Toolbar"): Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
+  - Tab 4 ("Custom Toolbar Config"): Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
+- **Standard Desktop Editor Menu Hierarchy**:
+  - Reversible Hex/Binary View relocated directly below Compare in the top-level Tools/View menu (`Ctrl+Alt+H` / `Cmd+Alt+H`).
+  - Restart Application relocated to macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`).
+  - Duplicate manual Character Palette removed in favor of native macOS system palette (`Ctrl+Cmd+Space`).
+  - View menu streamlined without duplicate Side Panels submenu.
+- **100% Bilingual Localization Parity**:
+  - Full synchronization of English (`SparkNotePad_en.ts`) and Indonesian (`SparkNotePad_id.ts`) translation catalogs across 1,924 UI strings with 0 unfinished entries.
 - **Plus (+) Button at the End of Every Tab Bar**:
   - Interactive Plus (+) button located on the title bar next to editor tabs to open a new document instantly.
 - **Dynamic Menubar & Context Menu Icon Synchronization (`applyToWindow`)**:
@@ -33,11 +43,6 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
   - Modern, elegant GitHub/DevDocs styling with adaptive Dark and Light mode parity, zoom controls (+ / - / reset), refresh button, and CVE-2026-20841 sandboxing.
   - Live document stats pill badge displaying word count and estimated reading time (`%1 words • %2 min read`).
   - GitHub Alert Callout formatting for `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, and `[!CAUTION]` with distinct theme accents, subtle background tints, and SVG icons.
-  - Quick action buttons to "Copy HTML" to clipboard and "Export HTML" as a standalone, fully-styled web document.
-  - Scroll position ratio preservation across incremental editing to prevent cursor jumping.
-- **Notepad-Standard Menu Reorganization (`MainWindow`)**:
-  - Streamlined `View` menu with a dedicated `Side Panels` sub-menu grouping all 9 workspace/dock panels (File Browser, Workspace, Function List, File List, Document Map, etc.).
-  - Added dedicated `HTML & Markdown Preview` sub-menu under `View` and `Tools` with direct keyboard shortcuts.
 - **Modern File Commander & Workspace TreeView Selection Highlight Fix**:
   - Resolved selection box clipping/cropping in `FolderAsWorkspaceDock` and `FileBrowserDock` via full-row selection (`show-decoration-selected: 1`, `branch:selected`, full focus).
   - Highlighting seamlessly tracks active theme selection colors with rounded corners and uniform row heights.
@@ -46,16 +51,6 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
 - **Reversible Hex / Binary View (`View > Toggle Hex / Binary View` - `Ctrl+Alt+H`)**:
   - Real-time in-place hex inspection displaying 8-digit offset, 16 hex bytes with 8+8 grouping, and ASCII character column.
   - Reversible toggle restoring original text, language lexer, and read-only flags seamlessly.
-- **Preferences Dedicated Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
-  - Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into dedicated Tab 3 "Themes & Toolbar", together with Toolbar Icon Packs manager (21 packs, description card layout, size selector, icon previews, and custom packs loader).
-  - Embedded visual toolbar customizer (`CustomizeToolbarWidget`) into dedicated Tab 4 "Custom Toolbar Config".
-- **Standard Desktop Editor Menu Reorganization**:
-  - Relocated Toggle Hex / Binary View directly beneath Compare in the top-level Tools/View menu.
-  - Positioned Restart Application in macOS Application menu directly above Quit.
-  - Removed duplicate manual Emoji & Symbol action in favor of native macOS Character Palette.
-  - Streamlined View menu by removing redundant Side Panels sub-menu.
-- **100% Bilingual Localization Parity**:
-  - Complete synchronization across English and Indonesian catalogs with 1,924 finished translations and 0 unfinished entries.
 - **100% Lexilla Lexers Adoption (125 Languages)**:
   - Complete adoption of all 125 Lexilla lexer modules in `src/languages/`, registered in `src/scripts.qrc` and synchronized in `src/scripts/init.lua`.
   - Comprehensive syntax highlighting for modern programming languages, configuration formats, and technical DSLs.

@@ -22,46 +22,32 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ## 1. Executive Summary: Release v1.3.8
 
-SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 8-pack icon theme architecture inspired by **Notepad++**, and refined editor context menu ergonomics:
+SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 21-pack icon theme architecture, dedicated Preferences tabs, desktop menu reorganization, and 100% finished bilingual localization parity:
 
-1. **8 Built-in Toolbar Icon Packs (Zero Duplicate Engineering)**:
-   - `modernRibbon`: SparkNotePad default high-DPI monoline vector icons (20x20 crisp SVG).
-   - `notepadNext`: Authentic 16x16 Silk PNG icons from NotepadNext (Default fallback).
-   - `notepadPlusPlus`: Classic retro Notepad++ vector icon pack.
-   - `windowsXp`: Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights (`XP 2026`).
-   - `windows11`: Microsoft Fluent Design System 2 with rounded geometry and soft depth (`Win11 2026`, aliased with `fluentUi`, zero duplication).
-   - `windows7`: Windows 7 Aero Glass translucent gradients and polished chrome accents (`Win 7 2026`).
-   - `monochrome`: Minimalist outline vector icons for dark and light palettes.
-   - `vibrantDuotone`: High-contrast cyber-neon duo-tone vector icons.
+1. **21 Built-in Toolbar Icon Packs (Multi-DPI & Retina @2x)**:
+   - Complete icon pack ecosystem: Modern Ribbon, Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Classic, NotepadNext Classic, Monochrome Outline, Vibrant DuoTone, Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary OS Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, and VS Code Codicons.
+   - Dynamic icon scaling across 16x16, 20x20, 24x24, 32x32, 48x48, and 64x64.
+   - Intelligent Dark Mode HSL luminance tone mapping preventing icon washing-out on dark canvases.
 
-2. **Custom Icon Packs Extension System (`toolbarIcons/`)**:
-   - `ToolbarIconManager::customPacksPath()` dynamically scans user AppData `toolbarIcons/` directory.
-   - Automatically surfaces custom packs in `Themes -> Toolbar Icon Packs`.
-   - "Open Custom Icon Packs Folder..." command opens the folder directly in Finder.
+2. **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:
+   - **Tab 3 ("Themes & Toolbar")**: Relocated Themes styling (Active Theme, Window Opacity, Tail Interval, Display Safety) into a unified tab with Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector, icon previews, custom pack folder launcher, and rescan).
+   - **Tab 4 ("Custom Toolbar Config")**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with live search, action adding/removing/reordering, separator insertion, and hot-reload.
 
-3. **Dynamic Toolbar Icon Sizing**:
-   - Real-time toolbar icon scaling without restart: 16x16, 20x20, 24x24, 32x32.
+3. **Standard Desktop Editor Menu Hierarchy**:
+   - Reversible Hex/Binary View relocated directly below Compare in the top-level Tools/View menu (`Ctrl+Alt+H` / `Cmd+Alt+H`).
+   - Restart Application relocated to macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`).
+   - Duplicate manual Character Palette removed in favor of native macOS system palette.
+   - View menu streamlined without duplicate Side Panels submenu.
 
-4. **Visual Toolbar Customizer Dialog (`CustomizeToolbarDialog`)**:
-   - Interactive dual-list interface for adding, removing, and reordering toolbar buttons.
-   - Drag-and-drop reordering with `InternalMove` support.
-   - Custom separator line insertion.
-   - Instant search/filter box.
-   - "Reset to Defaults" button restoring standard 33-entry SparkNotePad toolbar.
-   - "Apply" and "OK" saving to `Gui/ToolBar` settings.
+4. **100% Bilingual Localization Parity across English & Indonesian**:
+   - Complete synchronization of 1,924 UI strings with 0 unfinished entries across `SparkNotePad_en.ts` and `SparkNotePad_id.ts`.
 
-5. **Themes Menu & Toolbar Context Menu**:
-   - Dedicated `Themes -> Toolbar Icon Packs` submenu with exclusive radio checkmarks.
-   - Toolbar right-click context menu for instant customization and icon pack switching.
+5. **In-Tab Markdown & HTML Live Preview**:
+   - Central dock area (`ads::CenterDockWidgetArea`) live preview tabs with GitHub callout styling (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, etc.), zoom controls, reading time metrics badges, and "Preview in Default Browser" for HTML.
 
-6. **Editor Context Menu Ergonomics**:
-   - **Relocated Convert Case**: Positioned immediately below `Select All` (`ui->actionSelectAll`) for streamlined text transformation workflows.
-   - **Compact Typography & Icon Scaling**: Reduced font size by 1-2px (11px) and scaled context menu icons to 14x14px with sleek 3px vertical padding.
-   - **Clean Style Restoration**: Global menubar styles automatically restored to original state upon context menu close via `aboutToHide`.
-
-7. **14-Pillar Code Quality & Verification**:
+6. **14-Pillar Code Quality & Zero-Defect Linter Hardening**:
    - Comprehensive audit across Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability, and IDE Linter pillars.
-   - 100% test pass rate across all 7 unit tests in `TestToolbarIconManager` and 44 tests across the entire test suite.
+   - 100% test pass rate across all 51 unit tests in `SparkNotePadTests`.
 
 ---
 

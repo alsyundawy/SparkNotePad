@@ -85,6 +85,7 @@ SparkNotePad memiliki arsitektur palet cepat dua mode yang terinspirasi oleh lin
 | **Riwayat Papan Klip**          | `Cmd+Alt+V`    | `Ctrl+Alt+V`             | Membuka riwayat teks yang pernah disalin sebelumnya            |
 | **Format Dokumen**              | `Cmd+Shift+I`  | `Ctrl+Shift+I`           | Merapikan format kode dokumen secara otomatis                  |
 | **Pratinjau Aman Markdown**     | `Cmd+Shift+M`  | `Ctrl+Shift+M`           | Membuka pratinjau rendering HTML Markdown berdampingan         |
+| **Tampilan Hex / Biner**        | `Cmd+Alt+H`    | `Ctrl+Alt+H`             | Beralih inspeksi biner dan heksadesimal secara reversibel      |
 | **Ganti Tema Gelap / Terang**   | `Cmd+Alt+T`    | `Ctrl+Alt+T`             | Berganti cepat antara tema gelap dan terang favorit            |
 
 ---

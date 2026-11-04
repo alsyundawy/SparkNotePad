@@ -199,8 +199,10 @@ Transform SparkNotePad into an interactive scratchpad:
 Located under the `Tools`, `View`, and `Edit` menus:
 
 - **In-Tab HTML & Markdown Live Preview:** Right-click any `.html` or `.md` tab to open a preview in a new tab within the central dock area (`ads::CenterDockWidgetArea`), complete with dark/light mode parity, zoom controls, and "Preview in Default Browser" for HTML.
-- **Reversible Hex / Binary View (`Ctrl+Alt+H` / `Cmd+Alt+H`):** Toggle in-place hexadecimal inspection featuring 8-digit offsets, 16 hex bytes, and ASCII representation without altering underlying document content.
-- **Toolbar Icon Packs & Multi-DPI Sizing:** Switch between 10 built-in icon packs (Modern Ribbon, Fluent UI, Windows 11, Windows 7, Windows XP Luna, Fugue Classic, Notepad++ Retro, NotepadNext Silk, Monochrome, Vibrant DuoTone) from `Themes > Toolbar Icon Packs`, with sizing options from 16x16 to 64x64.
+- **Reversible Hex / Binary View (`Ctrl+Alt+H` / `Cmd+Alt+H`):** Toggle in-place hexadecimal inspection featuring 8-digit offsets, 16 hex bytes, and ASCII representation without altering underlying document content (located directly beneath Compare).
+- **21 Distinct Toolbar Icon Packs & Dynamic Sizing:** Switch between 21 built-in icon packs (Modern Ribbon, Fluent UI, Windows 11, Windows 7, Windows XP Luna, Fugue Classic, Notepad++, NotepadNext, Monoline Minimal, etc.) from `Preferences > Themes & Toolbar` tab, with sizing options from 16x16 to 64x64, live icon preview strip, and custom pack loading.
+- **Preferences Custom Toolbar Config Tab:** Visual toolbar editor embedded directly into Preferences (`Preferences > Custom Toolbar Config`) with search filtering, action adding/removing/reordering, separator insertion, and live hot-reload.
+- **Standard Desktop Editor Menu Hierarchy:** Menu layout adheres to desktop text editor conventions: Hex/Binary view situated below Compare, Restart Application in macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`), and clean View menu.
 - **Plus (+) Tab Button:** Instant document creation button on the title bar next to editor tabs.
 - **File Commander Explorer:** Modern file browser dock with quick bookmarks (Home, Documents, Downloads, Desktop, Workspace) and storage space metrics.
 - **Base64 Encoding & Decoding:** Encode or decode selected text (`Ctrl+Alt+B`).

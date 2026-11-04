@@ -90,7 +90,7 @@ SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tool
 - **Tab Bar Plus Button**: An integrated `+` button positioned at the end of the tab strip allows spawning new editor documents with one click.
 - **In-Tab Markdown & HTML Preview**: Right-clicking `.md` or `.html` tabs provides an in-tab preview pane rendered with GitHub styling, keeping workflows clean without opening external windows. For HTML files, a "Preview in Default Browser" action is also provided.
 - **File Commander Explorer**: Upgraded explorer dock featuring two-pane ergonomics, quick bookmark paths, breadcrumb navigation, and metrics bars.
-- **Hex/Binary View Toggle**: Switch instantly between normal text and hex memory dumps via `View > Toggle Hex / Binary View`.
+- **Hex/Binary View Toggle**: Switch instantly between normal text and hex memory dumps via `Tools > Toggle Hex / Binary View` (positioned directly beneath Compare, `Ctrl+Alt+H` / `Cmd+Alt+H`).
 
 ---
 
@@ -104,6 +104,14 @@ SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tool
 ## 9. Complete Lexilla 5.5.4 Lexer Suite (125 Highlighters)
 
 SparkNotePad includes the full complement of 125 Lexilla lexers, covering modern and legacy languages including AsciiDoc, BibTeX, Bicep, Clojure, Elixir, GDScript, GLSL, HLSL, Mojo, OCaml, Raku, Solidity, SystemVerilog, WebAssembly, and Zig.
+
+---
+
+## 10. Dedicated Preferences Tabs & Desktop Menu Ergonomics (v1.3.8)
+
+- **Themes & Toolbar Tab (Tab 3)**: Relocates visual theme configuration, window opacity slider, tail -f reload interval, and multi-DPI display placement guard alongside the Toolbar Icon Packs manager (21 packs, responsive description card layout, size selector 16x16 to 64x64, live icon preview, custom folder loader, and rescan).
+- **Custom Toolbar Config Tab (Tab 4)**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with search filtering, action adding/removing/reordering, separator insertion, and live hot-reload.
+- **Desktop Standard Menu Hierarchy**: Toggle Hex/Binary view below Compare, Restart Application in macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`), redundant Character Palette deduplicated, and clean View menu without duplicate Side Panels submenu.
 
 ---
 
