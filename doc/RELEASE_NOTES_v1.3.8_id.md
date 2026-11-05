@@ -1,4 +1,4 @@
-# Catatan Rilis SparkNotePad v1.3.8 — 23 Rangkaian Paket Ikon Toolbar, Pratinjau Langsung Markdown/HTML Dalam Tab, Susunan Menu Standar & Penyempurnaan Sorotan Treeview
+# Catatan Rilis SparkNotePad v1.3.8 — 40 Rangkaian Paket Ikon Toolbar, Pratinjau Langsung Markdown/HTML Dalam Tab, Susunan Menu Standar & Penyempurnaan Sorotan Treeview
 
 **Versi Rilis:** `v1.3.8`<br/>
 **Tanggal Rilis:** 2026-11-03<br/>
@@ -49,13 +49,13 @@
 
 ## ⚡ Ringkasan Eksekutif
 
-SparkNotePad v1.3.8 menghadirkan lompatan besar dalam ergonomi visual dan alur kerja penyuntingan. Pembaruan ini mencakup integrasi 23 rangkaian paket ikon bilah alat (toolbar) multi-resolusi (termasuk Fugue 3.5.6 otentik karya Yusuke Kamiyamane, Nicholas Roach's Elegant Themes, dan Seven Classic), pembaruan menyeluruh pratinjau langsung Markdown & HTML dalam tab dokumen maupun panel dok lengkap dengan lencana metrik format dan kotak catatan bergaya GitHub, penataan ulang hierarki menu utama sesuai standar aplikasi notepad desktop profesional, perbaikan garis sorotan seleksi pada File Browser dan Folder-as-Workspace agar tidak terpotong, serta verifikasi kelulusan 100% pada 14 pilar audit rekayasa kode.
+SparkNotePad v1.3.8 menghadirkan lompatan besar dalam ergonomi visual dan alur kerja penyuntingan. Pembaruan ini mencakup integrasi 40 rangkaian paket ikon bilah alat (toolbar) multi-resolusi (termasuk Fugue 3.5.6 otentik karya Yusuke Kamiyamane, Nicholas Roach's Elegant Themes, Seven Classic, WhiteSur, Colloid, Reversal, Big Sur, We10X, Win11OS KDE, dan banyak lagi), pembaruan menyeluruh pratinjau langsung Markdown & HTML dalam tab dokumen maupun panel dok lengkap dengan lencana metrik format dan kotak catatan bergaya GitHub, penataan ulang hierarki menu utama sesuai standar aplikasi notepad desktop profesional, perbaikan garis sorotan seleksi pada File Browser dan Folder-as-Workspace agar tidak terpotong, serta verifikasi kelulusan 100% pada 14 pilar audit rekayasa kode.
 
 ---
 
 ## 🌟 Fitur Utama & Inovasi di v1.3.8
 
-### 1. Rangkaian 23 Paket Ikon Toolbar Bawaan
+### 1. Rangkaian 40 Paket Ikon Toolbar Bawaan
 
 Dapat diakses langsung via `Preferensi > Themes & Toolbar` atau pengaturan toolbar secara bebas restart:
 
@@ -82,6 +82,23 @@ Dapat diakses langsung via `Preferensi > Themes & Toolbar` atau pengaturan toolb
 21. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
 22. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
 23. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+24. **Mignon** (`mignon`): Rangkaian ikon desktop vektor pastel modern karya Igor Moraes.
+25. **Palette** (`palette`): Rangkaian ikon vektor datar modern cerah karya mjkim0727.
+26. **Diagonal** (`diagonal`): Rangkaian ikon vektor geometris menyudut karya Tamas Csabi.
+27. **Argon** (`argon`): Rangkaian ikon sirkular monoline minimalis karya Stuart Hayhurst.
+28. **Reversal** (`reversal`): Ikonografi modern penuh warna kontras tinggi karya yeyushengfan258.
+29. **Big Sur** (`bigsur`): Ikonografi vektor otentik sudut membulat macOS Big Sur karya yeyushengfan258.
+30. **Mkos Big Sur** (`mkos_bigsur`): Rangkaian ikonografi kaca tembus pandang macOS karya zayronxio.
+31. **We10X** (`we10x`): Rangkaian ikonografi modern Windows 10X Fluent Design karya yeyushengfan258.
+32. **MacTahoe** (`mactahoe`): Rangkaian ikonografi vektor modern macOS Aqua karya Vince Liuice.
+33. **UOS FullDistro** (`uos`): Rangkaian ikon distribusi enterprise Linux UOS lengkap karya zayronxio.
+34. **Deepin 2022** (`deepin`): Rangkaian ikon resmi Deepin Desktop Environment 2022 karya zayronxio.
+35. **WhiteSur** (`whitesur`): Rangkaian ikonografi vektor tajam bergaya macOS WhiteSur karya Vince Liuice.
+36. **Elementary KDE** (`elementary_kde`): Rangkaian ikonografi vektor manusiawi bersih Elementary KDE karya zayronxio.
+37. **McMojave Circle** (`mcmojave_circle`): Rangkaian ikon sirkular terinspirasi macOS Mojave karya Vince Liuice.
+38. **Colloid** (`colloid`): Rangkaian ikon geometris bersih modern Colloid karya Vince Liuice.
+39. **Fluent KDE** (`fluent_kde`): Ikonografi vektor Fluent Design System untuk KDE karya zayronxio.
+40. **Win11OS KDE** (`win11os_kde`): Rangkaian ikonografi vektor otentik Windows 11 KDE karya yeyushengfan258.
 
 - **Kejelasan High-DPI & Layar Retina**: Menghilangkan tampilan buram dengan memuat vektor SVG langsung ke engine vektor Qt serta menghasilkan varian pixmap `@2x` Retina DPR (`setDevicePixelRatio(2.0)`) untuk paket berbasis raster.
 - **Tone Mapping Luminans Cerdas Tema Gelap**: Pada tema gelap, wireframe (`monoline_minimal`) diinversi menjadi perak-putih bercahaya, sedangkan paket berwarna (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) ditingkatkan kecerahannya melalui pemetaan HSL tanpa menggeser corak warna dan saturasi.
@@ -117,7 +134,7 @@ Menu pada `MainWindow.ui` dan `MainWindow.cpp` telah ditata ulang sesuai alur ke
 
 ### 5. Tab Preferensi Khusus ("Themes & Toolbar" & "Custom Toolbar Config")
 
-- **Tab 3 ("Themes & Toolbar")**: Pengaturan gaya visual tema, opasitas jendela, interval muat ulang `tail -f`, proteksi multi-layar, serta manajer paket ikon toolbar lengkap (23 paket ikon, pemilih paket dengan kartu deskripsi dinamis, pengatur ukuran ikon 16x16 hingga 64x64, pratinjau strip ikon langsung, pembuka folder kustom, dan pemindaian ulang instan).
+- **Tab 3 ("Themes & Toolbar")**: Pengaturan gaya visual tema, opasitas jendela, interval muat ulang `tail -f`, proteksi multi-layar, serta manajer paket ikon toolbar lengkap (40 paket ikon, pemilih paket dengan kartu deskripsi dinamis, pengatur ukuran ikon 16x16 hingga 64x64, pratinjau strip ikon langsung, pembuka folder kustom, dan pemindaian ulang instan).
 - **Tab 4 ("Custom Toolbar Config")**: Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung dalam Preferensi dengan pencarian cepat, penambahan/penghapusan tombol, pengurutan, garis pemisah, dan reset default dengan pembaruan instan (hot-reload).
 
 ### 6. Penyempurnaan Garis Sorotan File Browser & Workspace

@@ -58,9 +58,20 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 | **Lon McGregor (NotepadPlusPlusIcons)** | Lon McGregor               | Open-source chameleon and editor artwork series, adapted for SparkNotePad official branding. |
 | **SparkNotePad Monoline Vector Suite**  | Harry D.S. Alsyundawy      | Retina UI vector icons customized for 75 themes, menus, and toolbars.                        |
 | **Fugue Icons Suite**                   | Yusuke Kamiyamane          | Renowned pixel-perfect Fugue 3.5.6 iconography (Creative Commons Attribution 3.0).           |
-| **Elegant Themes Icons**                | Nicholas Roach             | Authentic classic 48x48 Elegant Themes iconography (Dual-licensed MIT / GPL).               |
+| **Elegant Themes Icons**                | Nicholas Roach             | Authentic classic 48x48 Elegant Themes iconography (Dual-licensed MIT / GPL).                |
 | **Microsoft Fluent Design Icons**       | Microsoft / Directory Opus | Fluent vector and bitmap toolbar icon set.                                                   |
 | **Classic Silk Icons**                  | Mark James (FAMFAMFAM)     | Classic 16x16 Silk icons from upstream NotepadNext / Silk suite.                             |
+| **WhiteSur & MacTahoe Suites**          | Vince Liuice               | Modern macOS Big Sur and Aqua vector iconography suites (GPLv3).                             |
+| **Colloid & McMojave Suites**           | Vince Liuice               | Clean geometric and rounded circular desktop vector iconography suites (GPLv3).              |
+| **Deepin & UOS FullDistro Suites**      | zayronxio                  | Deepin 2022 and UOS Linux enterprise distribution desktop vector icon suites (GPLv3).        |
+| **Elementary & Fluent KDE Suites**      | zayronxio                  | Elementary human-centered and Microsoft Fluent Design vector suites for KDE (GPLv3).         |
+| **Mkos Big Sur Icons**                  | zayronxio                  | Translucent glass macOS vector iconography suite (GPLv3).                                    |
+| **Reversal, BigSur & We10X Suites**     | yeyushengfan258            | High-contrast vivid modern, Apple Big Sur, and Windows 10X Fluent vector suites (GPLv3).     |
+| **Win11OS KDE Icons**                   | yeyushengfan258            | Windows 11 KDE desktop theme authentic vector iconography (GPLv3).                           |
+| **Palette Icons**                       | mjkim0727                  | Vibrant modern flat vector iconography suite (GPLv3).                                        |
+| **Diagonal Icons**                      | Tamas Csabi                | Sleek geometric angular vector iconography suite (GPLv3).                                    |
+| **Mignon Icons**                        | Igor Moraes                | Modern playful pastel vector desktop iconography suite (GPLv3).                              |
+| **Argon Icons**                         | Stuart Hayhurst            | Minimalist monoline and circular vector iconography suite (GPLv3).                           |
 
 ---
 

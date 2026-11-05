@@ -12,6 +12,11 @@
 #ifndef TOOLBARICONMANAGER_H
 #define TOOLBARICONMANAGER_H
 
+#include <cmath>
+#include <algorithm>
+#include <memory>
+#include <string>
+
 #include <QHash>
 #include <QIcon>
 #include <QList>

@@ -55,9 +55,20 @@ find_package(Qt6
 )
 
 set(CMAKE_AUTORCC ON)
-qt_standard_project_setup()
+if(COMMAND qt_standard_project_setup)
+    qt_standard_project_setup()
+else()
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTOUIC ON)
+    include(GNUInstallDirs)
+endif()
 
 if(APPLE)
+    if(CMAKE_OSX_DEPLOYMENT_TARGET AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "11.0")
+        if(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
+            add_link_options(-Wl,-ld_classic)
+        endif()
+    endif()
     # Fix for Qt 6 on modern macOS SDKs (Xcode 15+) where Apple removed AGL.framework
     # 1. Remove AGL framework references from Qt6 interface link libraries
     foreach(_qt_comp Core Gui Widgets Network PrintSupport Core5Compat OpenGL Gui_OpenGL)

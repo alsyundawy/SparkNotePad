@@ -8,6 +8,14 @@
  * (at your option) any later version.
  */
 
+#include <cmath>
+#include <algorithm>
+#include <array>
+#include <memory>
+#include <ranges>
+#include <string>
+#include <vector>
+
 #include "ToolbarIconManager.h"
 #include "../ApplicationSettings.h"
 
@@ -23,10 +31,6 @@
 #include <QToolBar>
 #include <QMenu>
 #include <QWidget>
-#include <algorithm>
-#include <array>
-#include <memory>
-#include <ranges>
 
 ToolbarIconManager *ToolbarIconManager::instance() {
     static ToolbarIconManager s_instance;
@@ -269,6 +273,176 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isBuiltIn = true,
         .isPngBased = true,
     });
+
+    // 24. Mignon (Cute Pastel)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("mignon"),
+        .displayName = tr("Mignon (Cute Pastel)"),
+        .description = tr("Playful modern pastel desktop iconography by Igor Moraes"),
+        .basePath = QStringLiteral(":/icons/packs/mignon"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 25. Palette (Modern Vibrant)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("palette"),
+        .displayName = tr("Palette (Modern Vibrant)"),
+        .description = tr("Vibrant modern flat vector iconography by mjkim0727"),
+        .basePath = QStringLiteral(":/icons/packs/palette"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 26. Diagonal (Sleek Angular)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("diagonal"),
+        .displayName = tr("Diagonal (Sleek Angular)"),
+        .description = tr("Sleek geometric angular vector iconography by Tamas Csabi"),
+        .basePath = QStringLiteral(":/icons/packs/diagonal"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 27. Argon (Minimalist Monoline)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("argon"),
+        .displayName = tr("Argon (Minimalist Monoline)"),
+        .description = tr("Minimalist circular and monoline iconography by Stuart Hayhurst"),
+        .basePath = QStringLiteral(":/icons/packs/argon"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 28. Reversal (Modern Colorful)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("reversal"),
+        .displayName = tr("Reversal (Modern Colorful)"),
+        .description = tr("High-contrast vivid modern iconography by yeyushengfan258"),
+        .basePath = QStringLiteral(":/icons/packs/reversal"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 29. Big Sur (Apple Skeuomorphic)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("bigsur"),
+        .displayName = tr("Big Sur (Apple Skeuomorphic)"),
+        .description = tr("macOS Big Sur rounded-rect authentic vector iconography by yeyushengfan258"),
+        .basePath = QStringLiteral(":/icons/packs/bigsur"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 30. Mkos Big Sur (macOS Translucent)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("mkos_bigsur"),
+        .displayName = tr("Mkos Big Sur (macOS Translucent)"),
+        .description = tr("Translucent glass macOS iconography suite by zayronxio"),
+        .basePath = QStringLiteral(":/icons/packs/mkos_bigsur"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 31. We10X (Windows 10X Fluent)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("we10x"),
+        .displayName = tr("We10X (Windows 10X Fluent)"),
+        .description = tr("Windows 10X Fluent Design modern iconography by yeyushengfan258"),
+        .basePath = QStringLiteral(":/icons/packs/we10x"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 32. MacTahoe (Aqua Modern)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("mactahoe"),
+        .displayName = tr("MacTahoe (Aqua Modern)"),
+        .description = tr("Modern macOS Aqua vector iconography by Vince Liuice"),
+        .basePath = QStringLiteral(":/icons/packs/mactahoe"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 33. UOS FullDistro (Deepin Enterprise)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("uos"),
+        .displayName = tr("UOS FullDistro (Deepin Enterprise)"),
+        .description = tr("Complete UOS Linux enterprise distribution icon suite by zayronxio"),
+        .basePath = QStringLiteral(":/icons/packs/uos"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 34. Deepin 2022 (Sleek UI)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("deepin"),
+        .displayName = tr("Deepin 2022 (Sleek UI)"),
+        .description = tr("Deepin Desktop Environment 2022 official icon suite by zayronxio"),
+        .basePath = QStringLiteral(":/icons/packs/deepin"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 35. WhiteSur (macOS Big Sur Vector)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("whitesur"),
+        .displayName = tr("WhiteSur (macOS Big Sur Vector)"),
+        .description = tr("WhiteSur macOS-styled crisp vector iconography by Vince Liuice"),
+        .basePath = QStringLiteral(":/icons/packs/whitesur"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 36. Elementary KDE (Humanity Vector)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("elementary_kde"),
+        .displayName = tr("Elementary KDE (Humanity Vector)"),
+        .description = tr("Elementary KDE clean human-centered vector iconography by zayronxio"),
+        .basePath = QStringLiteral(":/icons/packs/elementary_kde"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 37. McMojave Circle (macOS Mojave)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("mcmojave_circle"),
+        .displayName = tr("McMojave Circle (macOS Mojave)"),
+        .description = tr("McMojave circular macOS-inspired icon suite by Vince Liuice"),
+        .basePath = QStringLiteral(":/icons/packs/mcmojave_circle"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 38. Colloid (Clean Geometric)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("colloid"),
+        .displayName = tr("Colloid (Clean Geometric)"),
+        .description = tr("Colloid clean modern geometric icon suite by Vince Liuice"),
+        .basePath = QStringLiteral(":/icons/packs/colloid"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 39. Fluent KDE (Microsoft Fluent)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("fluent_kde"),
+        .displayName = tr("Fluent KDE (Microsoft Fluent)"),
+        .description = tr("Fluent Design System vector iconography for KDE by zayronxio"),
+        .basePath = QStringLiteral(":/icons/packs/fluent_kde"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 40. Win11OS (Windows 11 KDE)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("win11os_kde"),
+        .displayName = tr("Win11OS (Windows 11 KDE)"),
+        .description = tr("Windows 11 KDE authentic vector iconography by yeyushengfan258"),
+        .basePath = QStringLiteral(":/icons/packs/win11os_kde"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
 }
 
 void ToolbarIconManager::initialize(ApplicationSettings *settings) {
@@ -279,11 +453,8 @@ void ToolbarIconManager::initialize(ApplicationSettings *settings) {
     if (m_settings) {
         const QString savedPack =
             m_settings->value(QStringLiteral("Gui/ToolbarIconSet"), QStringLiteral("modernRibbon")).toString();
-        if (const ToolbarIconPack *pack = findPackById(savedPack)) {
-            m_currentPackId = pack->id;
-        } else {
-            m_currentPackId = QStringLiteral("modernRibbon");
-        }
+        const ToolbarIconPack *pack = findPackById(savedPack);
+        m_currentPackId = pack ? pack->id : QStringLiteral("modernRibbon");
 
         const int savedSize = m_settings->value(QStringLiteral("Gui/ToolbarIconSize"), 24).toInt();
         const int clampedSize = (savedSize >= 16 && savedSize <= 64) ? savedSize : 24;
@@ -305,6 +476,26 @@ const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) c
         targetId = QStringLiteral("arch_blue");
     } else if (targetId == QLatin1String("seven_icons") || targetId == QLatin1String("sevenIcons")) {
         targetId = QStringLiteral("seven");
+    } else if (targetId == QLatin1String("win11os") || targetId == QLatin1String("win11osKde")) {
+        targetId = QStringLiteral("win11os_kde");
+    } else if (targetId == QLatin1String("fluentKde")) {
+        targetId = QStringLiteral("fluent_kde");
+    } else if (targetId == QLatin1String("elementaryKde")) {
+        targetId = QStringLiteral("elementary_kde");
+    } else if (targetId == QLatin1String("mcmojave") || targetId == QLatin1String("mcmojaveCircle")) {
+        targetId = QStringLiteral("mcmojave_circle");
+    } else if (targetId == QLatin1String("mkosBigSur") || targetId == QLatin1String("mkos_big_sur")) {
+        targetId = QStringLiteral("mkos_bigsur");
+    } else if (targetId == QLatin1String("whiteSur") || targetId == QLatin1String("white_sur")) {
+        targetId = QStringLiteral("whitesur");
+    } else if (targetId == QLatin1String("bigSur") || targetId == QLatin1String("big_sur")) {
+        targetId = QStringLiteral("bigsur");
+    } else if (targetId == QLatin1String("macTahoe") || targetId == QLatin1String("mac_tahoe")) {
+        targetId = QStringLiteral("mactahoe");
+    } else if (targetId == QLatin1String("uos_fulldistro") || targetId == QLatin1String("uosDistro")) {
+        targetId = QStringLiteral("uos");
+    } else if (targetId == QLatin1String("deepin2022") || targetId == QLatin1String("deepin_2022")) {
+        targetId = QStringLiteral("deepin");
     }
 
     if (const auto it =

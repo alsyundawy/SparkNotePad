@@ -53,35 +53,52 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (23 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (40 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 23 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
+SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 40 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
-### Paket Ikon Toolbar Bawaan (23 Paket)
+### Paket Ikon Toolbar Bawaan (40 Paket)
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
-2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
-3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
-4. **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
-5. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue 3.5.6 otentik dengan skalabilitas multi-resolusi dan retina @2x.
-7. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
-8. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
-9. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-10. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
-11. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
-13. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
-14. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
-15. **Monoline Minimal** (`monoline_minimal`): Ikon garis minimalis ultra-bersih dengan inversi luminans otomatis pada tema gelap.
-16. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
-17. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
-18. **Humanity GNOME** (`humanity_gnome`): Ikonografi desktop Linux klasik dari proyek Humanity.
-19. **Elementary OS Flat** (`elementary_flat`): Desain datar modern minimalis dari Elementary OS.
-20. **Breeze KDE Plasma** (`breeze_kde`): Ikonografi KDE Plasma Breeze dengan keseimbangan geometris tajam.
-21. **Papirus Rounded** (`papirus_round`): Rangkaian ikon Linux modern dengan sudut membulat cerah.
-22. **macOS Cupertino Clean** (`mac_cupertino`): Simbol monokrom dan penuh warna mematuhi Apple HIG.
-23. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
+2. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue 3.5.6 otentik dengan skalabilitas multi-resolusi dan retina @2x.
+3. **Windows Vista (Aero Glass)** (`aero_vista`): Ikonografi vektor Windows Vista Aero.
+4. **Windows 7 (Aero Glass Vector)** (`aero_win7`): Ikonografi vektor Windows 7 Aero Glass.
+5. **Windows 7 (Classic Aero Desktop)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
+6. **Microsoft Fluent Design Regular** (`fluent_regular`): Rangkaian vektor reguler Microsoft Fluent Design.
+7. **Microsoft Fluent Design Filled** (`fluent_filled`): Rangkaian vektor tebal Microsoft Fluent Design.
+8. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
+9. **Windows 10 (Modern Flat)** (`windows10_flat`): Ikonografi vektor datar modern Windows 10.
+10. **Arch Linux (Rolling Cyan)** (`arch_blue`): Vektor minimalis sian cerah khas Arch Linux.
+11. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
+12. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
+13. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
+14. **Monoline Minimal** (`monoline_minimal`): Ikon garis minimalis ultra-bersih dengan inversi luminans otomatis pada tema gelap.
+15. **Glossy Orange** (`glossy_orange`): Ikon vektor oranye mengkilap skeuomorfik yang cerah.
+16. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
+17. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
+18. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
+19. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
+20. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+21. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
+22. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
+23. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+24. **Mignon Icon Theme** (`mignon`): Ikon vektor modern dan elegan karya Igor F. Moraes.
+25. **Palette Icon Theme** (`palette`): Tema ikon vektor penuh warna karya mjkim0727.
+26. **Diagonal Icon Theme** (`diagonal`): Gaya vektor diagonal dinamis karya Tamás Csábi.
+27. **Argon Icon Theme** (`argon`): Ikonografi vektor geometris modern karya Stuart Hayhurst.
+28. **Reversal Icon Theme** (`reversal`): Ikon vektor membulat bersih karya yeyushengfan258.
+29. **BigSur Icon Theme** (`bigsur`): Ikonografi vektor squircle khas Apple Big Sur karya yeyushengfan258.
+30. **Mkos Big Sur** (`mkos_bigsur`): Tema ikon detail macOS Big Sur karya zayronxio.
+31. **We10X Icon Theme** (`we10x`): Ikon vektor warna-warni Windows 10X modern karya yeyushengfan258.
+32. **MacTahoe Icon Theme** (`mactahoe`): Ikonografi vektor bergaya macOS Tahoe karya Vince Liuice.
+33. **UOS Full Distro Icons** (`uos`): Ikon vektor lengkap distro Deepin/UOS karya zayronxio.
+34. **Deepin Icons 2022** (`deepin`): Ikon vektor desktop Deepin OS karya zayronxio.
+35. **WhiteSur Icon Theme** (`whitesur`): Tema ikon vektor flagship WhiteSur karya Vince Liuice.
+36. **Elementary KDE Icons** (`elementary_kde`): Estetika Elementary OS diadaptasi untuk KDE karya zayronxio.
+37. **McMojave Circle** (`mcmojave_circle`): Ikon vektor lingkaran macOS Mojave karya Vince Liuice.
+38. **Colloid Icon Theme** (`colloid`): Ikonografi vektor modern bersih karya Vince Liuice.
+39. **Fluent KDE** (`fluent_kde`): Tema Microsoft Fluent untuk KDE karya zayronxio.
+40. **Win11OS KDE** (`win11os_kde`): Ikon vektor bergaya Windows 11 karya yeyushengfan258.
 
 ### Kejelasan High-DPI & Layar Retina
 
@@ -114,7 +131,7 @@ Ubah ukuran ikon secara instan dari `Tema > Paket Ikon Toolbar > Ukuran Ikon Too
 
 - **Tab Themes & Toolbar (Tab 3)**:
   - Menggabungkan pengaturan tema aktif, penggeser opasitas jendela, interval muat ulang `tail -f`, dan proteksi penempatan multi-display.
-  - Manajer Paket Ikon Toolbar lengkap yang mencakup 23 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
+  - Manajer Paket Ikon Toolbar lengkap yang mencakup 40 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
 - **Tab Custom Toolbar Config (Tab 4)**:
   - Mengintegrasikan editor penyesuai bilah alat visual (`CustomizeToolbarWidget`) langsung ke dalam kotak dialog Preferensi.
   - Tambah, hapus, dan atur ulang urutan tombol bilah alat dengan daftar ganda interaktif lengkap dengan filter pencarian instan.

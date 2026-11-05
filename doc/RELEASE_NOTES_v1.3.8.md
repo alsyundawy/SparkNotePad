@@ -1,4 +1,4 @@
-# SparkNotePad v1.3.8 — 23 Toolbar Icon Packs Suite, In-Tab Markdown/HTML Live Preview, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity
+# SparkNotePad v1.3.8 — 40 Toolbar Icon Packs Suite, In-Tab Markdown/HTML Live Preview, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity
 
 **Release Version:** `v1.3.8`<br/>
 **Release Date:** 2026-11-04<br/>
@@ -49,13 +49,13 @@
 
 ## ⚡ Executive Summary
 
-SparkNotePad v1.3.8 delivers a landmark milestone in editor ergonomics and visual presentation. It integrates 23 distinct multi-resolution toolbar icon packs (including authentic Fugue 3.5.6 by Yusuke Kamiyamane, Nicholas Roach's Elegant Themes, and Seven Classic), dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), overhauls both in-tab and dockable Markdown/HTML live previews with format metrics badges and authentic GitHub callout styling, reorganizes top-level application menus to strictly follow standard desktop text editors, achieves instant sub-millisecond theme switching with cached pixmaps, eliminates selection highlight cropping in the File Browser and Folder-as-Workspace panels, and achieves 100% zero-defect verification across all 14 engineering audit pillars alongside 100% finished bilingual localization parity.
+SparkNotePad v1.3.8 delivers a landmark milestone in editor ergonomics and visual presentation. It integrates 40 distinct multi-resolution toolbar icon packs (including authentic Fugue 3.5.6 by Yusuke Kamiyamane, Nicholas Roach's Elegant Themes, Seven Classic, WhiteSur, Colloid, Reversal, Big Sur, We10X, Win11OS KDE, and more), dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), overhauls both in-tab and dockable Markdown/HTML live previews with format metrics badges and authentic GitHub callout styling, reorganizes top-level application menus to strictly follow standard desktop text editors, achieves instant sub-millisecond theme switching with cached pixmaps, eliminates selection highlight cropping in the File Browser and Folder-as-Workspace panels, and achieves 100% zero-defect verification across all 14 engineering audit pillars alongside 100% finished bilingual localization parity.
 
 ---
 
 ## 🌟 Highlights & Key Innovations in v1.3.8
 
-### 1. 23 Built-in Distinct Toolbar Icon Packs Suite
+### 1. 40 Built-in Distinct Toolbar Icon Packs Suite
 
 Accessible instantly via `Preferences > Themes & Toolbar` or the dedicated toolbar settings without requiring an application restart:
 
@@ -82,6 +82,23 @@ Accessible instantly via `Preferences > Themes & Toolbar` or the dedicated toolb
 21. **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
 22. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
 23. **Seven Classic** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite across 6 multi-DPI resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+24. **Mignon** (`mignon`): Modern playful pastel vector desktop iconography suite by Igor Moraes.
+25. **Palette** (`palette`): Vibrant modern flat vector iconography suite by mjkim0727.
+26. **Diagonal** (`diagonal`): Sleek geometric angular vector iconography suite by Tamas Csabi.
+27. **Argon** (`argon`): Minimalist circular and monoline iconography suite by Stuart Hayhurst.
+28. **Reversal** (`reversal`): High-contrast vivid modern colorful iconography by yeyushengfan258.
+29. **Big Sur** (`bigsur`): macOS Big Sur rounded-rect authentic vector iconography by yeyushengfan258.
+30. **Mkos Big Sur** (`mkos_bigsur`): Translucent glass macOS vector iconography suite by zayronxio.
+31. **We10X** (`we10x`): Windows 10X Fluent Design modern iconography suite by yeyushengfan258.
+32. **MacTahoe** (`mactahoe`): Modern macOS Aqua vector iconography suite by Vince Liuice.
+33. **UOS FullDistro** (`uos`): Complete UOS Linux enterprise distribution desktop vector icon suite by zayronxio.
+34. **Deepin 2022** (`deepin`): Deepin Desktop Environment 2022 official desktop icon suite by zayronxio.
+35. **WhiteSur** (`whitesur`): WhiteSur macOS-styled crisp vector iconography suite by Vince Liuice.
+36. **Elementary KDE** (`elementary_kde`): Elementary KDE clean human-centered vector iconography suite by zayronxio.
+37. **McMojave Circle** (`mcmojave_circle`): McMojave circular macOS-inspired icon suite by Vince Liuice.
+38. **Colloid** (`colloid`): Colloid clean modern geometric icon suite by Vince Liuice.
+39. **Fluent KDE** (`fluent_kde`): Fluent Design System vector iconography for KDE by zayronxio.
+40. **Win11OS KDE** (`win11os_kde`): Windows 11 KDE authentic vector iconography suite by yeyushengfan258.
 
 - **High-DPI Retina Clarity**: Eliminates all icon blur by supplying native vector SVGs directly to Qt's vector engine and generating dedicated `@2x` Retina DPR pixmaps (`setDevicePixelRatio(2.0)`) for raster packs.
 - **Intelligent Dark Mode Tone Mapping**: Under dark themes, outline wireframes (`monoline_minimal`) are remapped to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL lightness boosting without shifting hue or saturation.
@@ -117,7 +134,7 @@ Menus in `MainWindow.ui` and `MainWindow.cpp` have been organized into the logic
 
 ### 5. Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")
 
-- **Tab 3 ("Themes & Toolbar")**: Relocated Themes visual styling (active theme selector, window opacity slider, tail -f reload interval, and multi-DPI display placement guard) and comprehensive Toolbar Icon Packs manager (23 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector 16x16 to 64x64, live icon sample preview strip, custom icon packs folder launcher, and live rescan).
+- **Tab 3 ("Themes & Toolbar")**: Relocated Themes visual styling (active theme selector, window opacity slider, tail -f reload interval, and multi-DPI display placement guard) and comprehensive Toolbar Icon Packs manager (40 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector 16x16 to 64x64, live icon sample preview strip, custom icon packs folder launcher, and live rescan).
 - **Tab 4 ("Custom Toolbar Config")**: Embedded visual toolbar customizer (`CustomizeToolbarWidget`) directly inside Preferences, allowing interactive search filtering, button additions/removals, reordering, separator insertions, and reset to defaults with hot-reload.
 
 ### 6. File Browser & Folder-as-Workspace Selection Highlight Polish

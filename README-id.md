@@ -427,10 +427,10 @@ trunk check -n -j 2
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.8] — 21 Paket Ikon Toolbar, Tab Preferensi Themes & Toolbar, Ergonomi Menu Desktop & Paritas Penuh i18n (2026-11-04)
+### [v1.3.8] — 40 Paket Ikon Toolbar, Tab Preferensi Themes & Toolbar, Ergonomi Menu Desktop & Paritas Penuh i18n (2026-11-04)
 
-- **Rangkaian 21 Paket Ikon Toolbar Multi-Resolusi**:
-  - Pilihan cepat 21 koleksi paket ikon vektor dan pixel (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, dll.) dengan skala ikon dinamis (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+- **Rangkaian 40 Paket Ikon Toolbar Multi-Resolusi**:
+  - Pilihan cepat 40 koleksi paket ikon vektor dan pixel (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Fugue 3.5.6 asli, Elegant Themes Nicholas Roach, Seven Classic, Mignon, Palette, Diagonal, Argon, Reversal, Big Sur, Mkos Big Sur, We10X, MacTahoe, UOS FullDistro, Deepin 2022, WhiteSur, Elementary KDE, McMojave Circle, Colloid, Fluent KDE, Win11OS KDE, dll.) dengan skala ikon dinamis (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
   - Dukungan paket ikon eksternal kustom dengan deteksi otomatis sistem berkas dan pemindaian ulang instan.
   - Penyelarasan ikon otomatis ke seluruh bilah menu, submenu, menu konteks tab, dan menu konteks klik kanan editor.
 - **Tab Preferensi Khusus ("Themes & Toolbar" & "Custom Toolbar Config")**:
