@@ -9,14 +9,12 @@
  * (at your option) any later version.
  */
 
-#include <cmath>
-#include <algorithm>
-#include <string>
-
 #include <QObject>
 #include <QTest>
 #include <QToolBar>
 #include <QAction>
+#include <QString>
+#include <QStringList>
 #include "features/ToolbarIconManager.h"
 
 class TestToolbarIconManager : public QObject {
@@ -56,24 +54,24 @@ private slots:
 
         for (const QString &id : expectedPackIds) {
             const ToolbarIconPack *pack = manager->findPackById(id);
-            QVERIFY2(pack != nullptr, qPrintable(QString("Pack %1 should exist").arg(id)));
+            QVERIFY2(pack != nullptr, qPrintable(QString::fromLatin1("Pack ") + id + QString::fromLatin1(" should exist")));
             QVERIFY(!pack->displayName.isEmpty());
             QVERIFY(!pack->basePath.isEmpty());
             QVERIFY(pack->isBuiltIn);
         }
 
         // Verify legacy aliases resolve smoothly
-        QVERIFY(manager->findPackById(QStringLiteral("fluentUi")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("windows11")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("windows7")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("seven_icons")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("archLinux")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("notepadPlusPlus")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("filledFluentUi")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("whiteSur")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("win11os")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("fluentKde")) != nullptr);
-        QVERIFY(manager->findPackById(QStringLiteral("mcmojaveCircle")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("fluentUi")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("windows11")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("windows7")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("seven_icons")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("archLinux")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("notepadPlusPlus")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("filledFluentUi")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("whiteSur")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("win11os")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("fluentKde")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("mcmojaveCircle")) != nullptr);
     }
 
     // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
@@ -156,7 +154,7 @@ private slots:
         for (const QString &packId : packs) {
             for (const QString &act : testActions) {
                 const QIcon icon = manager->getActionIcon(act, packId);
-                QVERIFY2(!icon.isNull(), qPrintable(QString("Icon for %1 in pack %2 should resolve").arg(act, packId)));
+                QVERIFY2(!icon.isNull(), qPrintable(QString::fromLatin1("Icon for ") + act + QString::fromLatin1(" in pack ") + packId + QString::fromLatin1(" should resolve")));
             }
         }
     }
@@ -166,25 +164,27 @@ private slots:
         auto *manager = ToolbarIconManager::instance();
         QToolBar toolBar;
 
-        auto *actNew = toolBar.addAction(QStringLiteral("New"));
-        actNew->setObjectName(QStringLiteral("actionNew"));
+        auto *actNew = new QAction(QString::fromLatin1("New"), &toolBar);
+        actNew->setObjectName(QString::fromLatin1("actionNew"));
+        toolBar.addAction(actNew);
 
-        auto *actSave = toolBar.addAction(QStringLiteral("Save"));
-        actSave->setObjectName(QStringLiteral("actionSave"));
+        auto *actSave = new QAction(QString::fromLatin1("Save"), &toolBar);
+        actSave->setObjectName(QString::fromLatin1("actionSave"));
+        toolBar.addAction(actSave);
 
-        manager->setPack(QStringLiteral("fluentUi"), &toolBar);
+        manager->setPack(QString::fromLatin1("fluentUi"), &toolBar);
         QVERIFY(!actNew->icon().isNull());
         QVERIFY(!actSave->icon().isNull());
 
-        manager->setPack(QStringLiteral("windowsXp"), &toolBar);
+        manager->setPack(QString::fromLatin1("windowsXp"), &toolBar);
         QVERIFY(!actNew->icon().isNull());
         QVERIFY(!actSave->icon().isNull());
 
-        manager->setPack(QStringLiteral("windows7"), &toolBar);
+        manager->setPack(QString::fromLatin1("windows7"), &toolBar);
         QVERIFY(!actNew->icon().isNull());
         QVERIFY(!actSave->icon().isNull());
 
-        manager->setPack(QStringLiteral("modernRibbon"), &toolBar);
+        manager->setPack(QString::fromLatin1("modernRibbon"), &toolBar);
         QVERIFY(!actNew->icon().isNull());
         QVERIFY(!actSave->icon().isNull());
     }
@@ -193,18 +193,18 @@ private slots:
     void testApplyToWindow() const {
         auto *manager = ToolbarIconManager::instance();
         QWidget window;
-        auto *actCut = new QAction(QStringLiteral("Cut"), &window);
-        actCut->setObjectName(QStringLiteral("actionCut"));
-        auto *actCopy = new QAction(QStringLiteral("Copy"), &window);
-        actCopy->setObjectName(QStringLiteral("actionCopy"));
+        auto *actCut = new QAction(QString::fromLatin1("Cut"), &window);
+        actCut->setObjectName(QString::fromLatin1("actionCut"));
+        auto *actCopy = new QAction(QString::fromLatin1("Copy"), &window);
+        actCopy->setObjectName(QString::fromLatin1("actionCopy"));
 
-        manager->setPack(QStringLiteral("windowsXp"));
+        manager->setPack(QString::fromLatin1("windowsXp"));
         manager->applyToWindow(&window);
         QVERIFY(!actCut->icon().isNull());
         QVERIFY(!actCopy->icon().isNull());
         QVERIFY(actCut->isIconVisibleInMenu());
 
-        manager->setPack(QStringLiteral("windows7"));
+        manager->setPack(QString::fromLatin1("windows7"));
         manager->applyToWindow(&window);
         QVERIFY(!actCut->icon().isNull());
         QVERIFY(!actCopy->icon().isNull());

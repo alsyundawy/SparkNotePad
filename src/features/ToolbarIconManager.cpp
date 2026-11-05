@@ -8,14 +8,7 @@
  * (at your option) any later version.
  */
 
-#include <cmath>
-#include <algorithm>
-#include <array>
-#include <memory>
-#include <ranges>
-#include <string>
-#include <vector>
-
+#include <QtGlobal>
 #include "ToolbarIconManager.h"
 #include "../ApplicationSettings.h"
 
@@ -498,10 +491,11 @@ const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) c
         targetId = QStringLiteral("deepin");
     }
 
-    if (const auto it =
-            std::ranges::find_if(m_packs, [&targetId](const ToolbarIconPack &p) { return p.id == targetId; });
-        it != m_packs.end()) {
-        return std::to_address(it);
+    const qsizetype packCount = m_packs.size();
+    for (qsizetype i = 0; i < packCount; ++i) {
+        if (m_packs.at(i).id == targetId) {
+            return &m_packs.at(i);
+        }
     }
     return nullptr;
 }
@@ -757,14 +751,14 @@ QRgb transformDarkPixel(QRgb px) {
 
     if (sat < 30) {
         if (lit < 160) {
-            const int newLit = std::clamp(240 - lit, 180, 255);
+            const int newLit = qBound(180, 240 - lit, 255);
             return QColor::fromHsl(hue, 0, newLit, a).rgba();
         }
         return px;
     }
 
     if (lit < 155) {
-        const int newLit = std::clamp(155 + (lit * 75 / 155), 155, 235);
+        const int newLit = qBound(155, 155 + (lit * 75 / 155), 235);
         return QColor::fromHsl(hue, sat, newLit, a).rgba();
     }
     return px;
@@ -802,7 +796,7 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool
     }
 
     const QImage adapted = adaptImageForTheme(baseImg, isDark);
-    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    static constexpr int s_dpiSizes[] = {16, 20, 24, 32, 48, 64};
     for (const int sz : s_dpiSizes) {
         if (const QPixmap px = QPixmap::fromImage(
                 adapted.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
@@ -845,7 +839,7 @@ void addDpiPixmapsToIcon(QIcon &icon, const QPixmap &px, int sz, QIcon::Mode mod
 }
 
 QIcon buildDualRecordMultiResIcon(const QString &basePath, bool isDark) {
-    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    static constexpr int s_dpiSizes[] = {16, 20, 24, 32, 48, 64};
     QIcon dualIcon;
     for (const int sz : s_dpiSizes) {
         const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);
@@ -860,7 +854,7 @@ QIcon buildDualRecordMultiResIcon(const QString &basePath, bool isDark) {
 }
 
 QIcon buildMultiResIcon(const QString &basePath, const QStringList &candidates, bool isDark) {
-    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
+    static constexpr int s_dpiSizes[] = {16, 20, 24, 32, 48, 64};
     QIcon icon;
     for (const int sz : s_dpiSizes) {
         const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);
@@ -929,9 +923,15 @@ QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString
     candidates << aliases;
 
     // Check if the pack contains multi-resolution folders (e.g. 16x16, 20x20, 24x24, etc.)
-    if (const bool hasMultiResolution = std::ranges::any_of(candidates, [&](const QString &c) {
-            return QFileInfo::exists(pack->basePath + QStringLiteral("/24x24/") + c + QStringLiteral(".png"));
-        }); hasMultiResolution) {
+    bool hasMultiResolution = false;
+    const qsizetype candidateCount = candidates.size();
+    for (qsizetype i = 0; i < candidateCount; ++i) {
+        if (QFileInfo::exists(pack->basePath + QStringLiteral("/24x24/") + candidates.at(i) + QStringLiteral(".png"))) {
+            hasMultiResolution = true;
+            break;
+        }
+    }
+    if (hasMultiResolution) {
         const bool isDark = m_isDarkMode;
         if (canonical == QStringLiteral("startRecord")) {
             if (const QIcon dualIcon = buildDualRecordMultiResIcon(pack->basePath, isDark); !dualIcon.isNull()) {
