@@ -12,6 +12,7 @@
 #ifndef TOOLBARICONMANAGER_H
 #define TOOLBARICONMANAGER_H
 
+#include <cmath>
 #ifdef isinf
 #undef isinf
 #endif

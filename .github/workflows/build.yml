@@ -236,6 +236,10 @@ jobs:
         shell: bash
         run: cmake --build build -j2
 
+      - name: Install DMG Packaging Tools
+        shell: bash
+        run: brew install create-dmg || true
+
       - name: Build MacOS Targets (dmg)
         shell: bash
         run: |
@@ -363,6 +367,10 @@ jobs:
       - name: Build
         shell: bash
         run: cmake --build build -j2
+
+      - name: Install DMG Packaging Tools
+        shell: bash
+        run: brew install create-dmg || true
 
       - name: Build MacOS Targets (dmg)
         shell: bash

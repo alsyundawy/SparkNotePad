@@ -9,6 +9,7 @@
  * (at your option) any later version.
  */
 
+#include <cmath>
 #ifdef isinf
 #undef isinf
 #endif
