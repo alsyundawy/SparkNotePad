@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 -->
 
-**Document Version:** 1.3.8<br/>
+**Document Version:** 1.3.9<br/>
 **Publication Date:** November 2026<br/>
 **Lead Maintainer:** Harry Dertin Sutisna Alsyundawy ([@alsyundawy](https://github.com/alsyundawy))<br/>
 **Organization:** ALSYUNDAWY IT SOLUTION ([https://alsyundawy.com](https://alsyundawy.com))<br/>

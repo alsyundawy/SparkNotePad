@@ -7,6 +7,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9] - 2026-11-07
+
+### ⚡ Scintilla 5.6.9 & Lexilla 5.5.5 Engine Upgrade, Default Language Setting, Regex Infinite-Loop Fix & 14-Pillar Hardening
+
+SparkNotePad v1.3.9 delivers upstream core engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, resolves critical algorithmic vulnerabilities in regular expression processing, introduces user-configurable default language preferences for new documents, expands Markdown front-matter syntax highlighting, and passes comprehensive 14-pillar static analysis and code review.
+
+#### 🆕 Added
+
+- **Official Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration**:
+  - Upgraded embedded Scintilla engine from 5.6.7 to **5.6.9** (official upstream release from `scintilla.org`).
+  - Upgraded embedded Lexilla lexer library from 5.5.4 to **5.5.5** (official upstream release from `scintilla.org`).
+  - Regenerated Qt wrapper interface (`ScintillaEdit.cpp` and `ScintillaEdit.h`) via upstream `WidgetGen.py`.
+  - Full Unicode 17 character category mapping and case conversions.
+- **Markdown Front-Matter Syntax Highlighting**:
+  - Implemented 3 new Lexilla 5.5.5 style definitions in `src/languages/markdown.lua`:
+    - `SCE_MARKDOWN_FRONT_MARK` (ID 22): Boundary delimiters for YAML (`---`), TOML (`+++`), and JSON (`{}`) front matter.
+    - `SCE_MARKDOWN_FRONT` (ID 23): Front matter body and property values.
+    - `SCE_MARKDOWN_FRONT_KEY` (ID 24): Front matter property keys and attributes.
+- **Default Language Setting for New Documents**:
+  - Added `DefaultLanguage` configuration key to `ApplicationSettings` (defaulting to `"Text"`).
+  - Added "Default Language" dropdown to Preferences > Editor (`PreferencesDialog`), populated with all supported languages.
+  - Automatically applies the user's preferred language when creating new untitled documents.
+- **Enhanced Lexer Capabilities**:
+  - HTML & JavaScript: Support for `$`, `#`, non-ASCII identifiers, and nested template literals.
+  - PHP: Support for variable variables (`$$var`) styling as `SCE_HPHP_VARIABLE`.
+  - SQL: Enhanced Oracle complement quote resolution (`GetQuoteComplement`).
+
+#### 🛡️ Security & Bug Fixes
+
+- **Infinite-Loop Regex Replace-All Fix (CWE-835 / DoS)**:
+  - Fixed application hang and event loop freeze in `Finder::replaceAll` (`src/Finder.cpp`) when matching zero-length regular expressions (`^`, `$`, `\b`, lookarounds).
+  - Enforced forward cursor progression using `editor->positionAfter()`.
+- **Search & Replace Dialog State Invariant Fix**:
+  - Automatically unchecks and disables backwards direction searching when Regular Expression search mode is selected in `FindReplaceDialog.cpp`.
+- **Lexilla Memory Safety Hardening**:
+  - Mitigated out-of-bounds write vulnerabilities (CWE-787) in DMIS, Perl here-doc delimiters, Raku, TCMD, and TeX lexers.
+  - Mitigated out-of-bounds read vulnerabilities (CWE-125) in Ruby and X12 lexers.
+  - Fixed preprocessor macro invocation crash in C++ lexer and deep nesting recursion crash in Visual Prolog lexer.
+- **Scintilla Performance & Stability**:
+  - Restored full-color rendering for XPM images.
+  - Accelerated line-start position queries by skipping unnecessary line layout calculations.
+  - Expanded cached lexeme buffer from 30 to 40 bytes for large identifiers.
+  - Fixed crash with change history undo caused by bulk deletion optimization.
+
+#### 🔧 Code Quality & 14-Pillar Verification
+
+- Zero warnings across `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
+- Strict Unix Makefiles compilation enforcement with controlled `-j2` concurrency.
+
+---
+
 ## [1.3.8] - 2026-11-02
 
 ### 🎨 Toolbar Icon Packs Suite (22 Built-In Vector & Bitmap Packs), High-DPI Retina Scaling & Dark Mode Luminance Adaptation

@@ -24,11 +24,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.8-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.8"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.9-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.9"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
-  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (125 Lexers)"></a>
+  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.9%20%2B%20Lexilla%205.5.5-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (125 Lexers)"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
 </p>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.8-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.9-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.3.8)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.3.9)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -426,6 +426,26 @@ trunk check -n -j 2
 ## Changelog
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.3.9] — Scintilla 5.6.9 & Lexilla 5.5.5 Upgrade, Default Language Setting, Regex Infinite-Loop Fix & 14-Pillar Hardening (2026-11-07)
+
+- **Official Upstream Scintilla 5.6.9 Core Upgrade**:
+  - Restored full-color rendering for XPM images.
+  - Accelerated line-start position lookups by eliminating unnecessary line layout computations.
+  - Expanded cached lexeme capacity from 30 to 40 bytes to optimize large identifier and SQL/JSON symbol handling.
+  - Full Unicode 17 category mappings and case conversions.
+  - Eliminated change history undo crashes during bulk deletion.
+- **Official Upstream Lexilla 5.5.5 Core Upgrade & Enhanced Syntax Highlighting**:
+  - **Markdown Front-Matter Styles**: Added support for `SCE_MARKDOWN_FRONT_MARK` (ID 22), `SCE_MARKDOWN_FRONT` (ID 23), and `SCE_MARKDOWN_FRONT_KEY` (ID 24) in `src/languages/markdown.lua` for YAML (`---`), TOML (`+++`), and JSON (`{}`) front-matter.
+  - **Memory Safety Hardening**: Mitigated out-of-bounds writes (CWE-787) and reads (CWE-125) in Lexilla lexers (DMIS, Perl here-doc, Raku, Ruby, TCMD, TeX, Visual Prolog, X12).
+  - Modernized lexers for C++, HTML/JavaScript (allowing `$`, `#`, non-ASCII identifiers and nested template literals), PHP (`$$var` variable variables), and SQL complement quotation.
+- **Selective NotepadNext Feature & Stability Ports**:
+  - **Infinite-Loop Regex Replace-All Fix (CWE-835)**: Prevented UI freeze and event loop starvation when replacing zero-length regex matches (`^`, `$`, `\b`, lookarounds).
+  - **Find & Replace Dialog Ergonomics**: Automatically unchecks and disables backwards direction search in Regular Expression mode.
+  - **Default Language Setting**: Added a user-configurable "Default Language" preference in Preferences > Editor for untitled/new documents with dynamic language enumeration.
+- **14-Pillar Code Quality & Deep Static Review**:
+  - Verified 0 diagnostics and 0 errors across `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
+  - Full adherence to strict Unix Makefiles compilation without Ninja.
 
 ### [v1.3.8] — 22 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
 

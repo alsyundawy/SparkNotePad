@@ -1,14 +1,15 @@
-# SparkNotePad Release DocNote — v1.3.8 (English)
+# SparkNotePad Release DocNote — v1.3.9 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version      : 1.3.8 (Toolbar Icon Packs Suite, In-Tab Preview & File Commander)
-Release Date         : 2026-11-04
+Release Version      : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
+Release Date         : 2026-11-07
 Lead Maintainer      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization         : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository           : https://github.com/alsyundawy/SparkNotePad
-Core Editing Engine  : Scintilla 5.6.7 & Lexilla 5.5.4 (Complete 125 Lexers)
-Embedded Lua Core    : Sandboxed Lua 5.5.1 / 5.4.7 & Python 3.13+ Bridge
+Core Editing Engine  : Scintilla 5.6.9 & Lexilla 5.5.5 (Official Upstream)
+Embedded Lua Core    : Sandboxed Lua 5.5.1 (Official Source)
+Scripting Runtime    : Python 3.13+ Engine Bridge
 GUI Framework        : Qt 6.5 / 6.8 LTS / 6.12 (C++20 ISO Standard)
 Target Platforms     : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD
 License              : GNU General Public License v3.0 (GPL-3.0-or-later)
@@ -17,7 +18,37 @@ License              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Executive Summary (English): Release v1.3.8
+## 1. Executive Summary (English): Release v1.3.9
+
+SparkNotePad v1.3.9 delivers official upstream upgrades to the Scintilla and Lexilla core editing engines, resolves critical algorithmic vulnerabilities in regular expression searching, enriches Markdown front-matter syntax highlighting, adds user-configurable default language settings for new documents, and passes complete 14-pillar static analysis and code review:
+
+1. Official Scintilla 5.6.9 Core Integration:
+   - Restores full-color rendering for XPM images.
+   - Skips unnecessary line layout calculations during line-start position queries for accelerated scrolling.
+   - Increases cached lexeme buffer capacity from 30 to 40 bytes to optimize large symbols and query identifiers.
+   - Full Unicode 17 standard character category tables and case conversion support.
+   - Resolves change history undo crashes during bulk deletion operations.
+
+2. Official Lexilla 5.5.5 Core Integration & Markdown Front-Matter:
+   - Introduces 3 new Lexilla 5.5.5 style IDs in src/languages/markdown.lua for YAML, TOML, and JSON front-matter:
+     - SCE_MARKDOWN_FRONT_MARK (ID 22): Delimiters (---, +++, {}).
+     - SCE_MARKDOWN_FRONT (ID 23): Front-matter body and value payload.
+     - SCE_MARKDOWN_FRONT_KEY (ID 24): Front-matter attribute keys.
+   - Mitigates memory safety issues including out-of-bounds writes (CWE-787) and reads (CWE-125) in Lexilla lexers (DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, X12).
+   - Enhances HTML/JavaScript, PHP, and SQL lexer syntax handling.
+
+3. Selective NotepadNext Feature & Bug Fix Ports:
+   - Fix Infinite Loop in Replace All (CWE-835 / DoS): Resolved an event loop hang in Finder::replaceAll when matching zero-length regular expressions (^, $, \b, lookarounds) by enforcing position advancement via editor->positionAfter().
+   - Search Dialog Direction Invariant: Automatically unchecks and disables backwards direction search in FindReplaceDialog.cpp when Regular Expression mode is selected.
+   - Default Language Setting: Added a user-configurable DefaultLanguage setting in Preferences > Editor for untitled/new documents, with dynamic language selection.
+
+4. 14-Pillar Code Quality & Zero-Defect Linter Verification:
+   - Verified 0 diagnostics and 0 errors across clangd --check, cppcheck, clang-tidy, and SonarLint.
+   - Strictly enforced standard Unix Makefiles compilation with controlled -j2 concurrency.
+
+---
+
+## 2. Historical Summary (English): Release v1.3.8
 
 SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 21 authentic high-definition icon packs, dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), desktop standard menu reorganization, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, File Commander modern explorer, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity:
 

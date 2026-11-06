@@ -2,16 +2,16 @@
   "updates": {
     "linux": {
       "open-url": "https://github.com/alsyundawy/SparkNotePad/releases/latest",
-      "latest-version": "1.3.0",
-      "download-url": "https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-1.3.0-Linux-x86_64.deb",
-      "changelog": "https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.0",
+      "latest-version": "1.3.9",
+      "download-url": "https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-1.3.9-Linux-x86_64.deb",
+      "changelog": "https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.9",
       "mandatory": false
     },
     "macos": {
       "open-url": "https://github.com/alsyundawy/SparkNotePad/releases/latest",
-      "latest-version": "1.3.0",
-      "download-url": "https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-arm64.dmg",
-      "changelog": "https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.0",
+      "latest-version": "1.3.9",
+      "download-url": "https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-v1.3.9-arm64.dmg",
+      "changelog": "https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.9",
       "mandatory": false
     }
   }

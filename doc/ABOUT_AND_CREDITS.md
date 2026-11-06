@@ -6,7 +6,7 @@
 
 ---
 
-## 2. Upstream Credits & Attribution (v1.0.0 – v1.3.8)
+## 2. Upstream Credits & Attribution (v1.0.0 – v1.3.9)
 
 SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, maintainers, communities, and tools:
 

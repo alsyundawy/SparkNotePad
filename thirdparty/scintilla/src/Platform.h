@@ -9,18 +9,6 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
-#include <cstddef>
-#include <cstdint> // IWYU pragma: keep // NOLINT
-#include <memory>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <vector>
-
-#include "ScintillaTypes.h"
-#include "Geometry.h"
-
-
 // PLAT_GTK = GTK+ on Linux or Win32
 // PLAT_GTK_WIN32 is defined additionally when running PLAT_GTK under Win32
 // PLAT_WIN = Win32 API on Win32 OS
@@ -122,17 +110,16 @@ struct FontParameters {
 	const char *localeName;
 	Scintilla::FontStretch stretch;
 
-	// NOSONAR(cpp:S107, cpp:S5498) // NOLINT
-	explicit constexpr FontParameters(
+	constexpr FontParameters(
 		const char *faceName_,
-		XYPOSITION size_=10,
-		Scintilla::FontWeight weight_= Scintilla::FontWeight::Normal,
-		bool italic_=false,
-		Scintilla::FontQuality extraFontFlag_= Scintilla::FontQuality::QualityDefault,
-		Scintilla::Technology technology_= Scintilla::Technology::Default,
-		Scintilla::CharacterSet characterSet_= Scintilla::CharacterSet::Ansi,
-		const char *localeName_=localeNameDefault,
-		Scintilla::FontStretch stretch_=Scintilla::FontStretch::Normal) noexcept :
+		XYPOSITION size_,
+		Scintilla::FontWeight weight_,
+		bool italic_,
+		Scintilla::FontQuality extraFontFlag_,
+		Scintilla::Technology technology_,
+		Scintilla::CharacterSet characterSet_,
+		const char *localeName_,
+		Scintilla::FontStretch stretch_) noexcept :
 
 		faceName(faceName_),
 		size(size_),
@@ -163,7 +150,6 @@ public:
 
 class IScreenLine {
 public:
-	virtual ~IScreenLine() noexcept = default;
 	virtual std::string_view Text() const = 0;
 	virtual size_t Length() const = 0;
 	virtual size_t RepresentationCount() const = 0;
@@ -198,7 +184,7 @@ struct SurfaceMode {
 /**
  * A surface abstracts a place to draw.
  */
-class Surface { // NOSONAR(cpp:S1448)
+class Surface {
 public:
 	Surface() noexcept = default;
 	Surface(const Surface &) = delete;
@@ -214,7 +200,7 @@ public:
 
 	virtual void SetMode(SurfaceMode mode)=0;
 
-	enum class Ends : std::uint8_t {
+	enum class Ends {
 		semiCircles = 0x0,
 		leftFlat = 0x1,
 		leftAngle = 0x2,
@@ -238,7 +224,7 @@ public:
 	virtual void FillRectangle(PRectangle rc, Surface &surfacePattern)=0;
 	virtual void RoundedRectangle(PRectangle rc, FillStroke fillStroke)=0;
 	virtual void AlphaRectangle(PRectangle rc, XYPOSITION cornerSize, FillStroke fillStroke)=0;
-	enum class GradientOptions : std::uint8_t { leftToRight, topToBottom };
+	enum class GradientOptions { leftToRight, topToBottom };
 	virtual void GradientRectangle(PRectangle rc, const std::vector<ColourStop> &stops, GradientOptions options)=0;
 	virtual void DrawRGBAImage(PRectangle rc, int width, int height, const unsigned char *pixelsImage) = 0;
 	virtual void Ellipse(PRectangle rc, FillStroke fillStroke)=0;
@@ -277,7 +263,7 @@ public:
  */
 class Window {
 protected:
-	WindowID wid = nullptr; // NOSONAR(cpp:S5495, cpp:S878)
+	WindowID wid {};
 public:
 	Window() noexcept = default;
 	Window(const Window &source) = delete;
@@ -300,7 +286,7 @@ public:
 	void Show(bool show=true);
 	void InvalidateAll();
 	void InvalidateRectangle(PRectangle rc);
-	enum class Cursor : std::uint8_t { invalid, text, arrow, up, wait, horizontal, vertical, reverseArrow, hand };
+	enum class Cursor { invalid, text, arrow, up, wait, horizontal, vertical, reverseArrow, hand };
 	void SetCursor(Cursor curs);
 	PRectangle GetMonitorRect(Point pt);
 private:
@@ -314,15 +300,13 @@ private:
 // ScintillaBase implements IListBoxDelegate to receive ListBoxEvents from a ListBox
 
 struct ListBoxEvent {
-	enum class EventType : std::uint8_t { selectionChange, doubleClick };
-	EventType event;
+	enum class EventType { selectionChange, doubleClick } event;
 	explicit ListBoxEvent(EventType event_) noexcept : event(event_) {
 	}
 };
 
 class IListBoxDelegate {
 public:
-	virtual ~IListBoxDelegate() = default;
 	virtual void ListNotify(ListBoxEvent *plbe)=0;
 };
 
@@ -388,7 +372,8 @@ const char *DefaultFont();
 int DefaultFontSize();
 unsigned int DoubleClickTime();
 constexpr long LongFromTwoShorts(short a,short b) noexcept {
-	return a | (b << 16);
+	constexpr short shortBits = 16;
+	return a | (b << shortBits);
 }
 
 }

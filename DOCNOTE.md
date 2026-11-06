@@ -1,14 +1,14 @@
-# SparkNotePad Release DocNote — v1.3.8
+# SparkNotePad Release DocNote — v1.3.9
 
 ```text
 ================================================================================
-Release Version     : 1.3.8 (Toolbar Icon Packs, Custom Extension Engine & Button Customizer)
-Release Date        : 2026-11-02
+Release Version     : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
+Release Date        : 2026-11-07
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
-Core Editing Engine : Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)
-Embedded Lua Core   : Sandboxed Lua 5.5.1 / 5.4.7 (Official Source)
+Core Editing Engine : Scintilla 5.6.9 (Vendored) & Lexilla 5.5.5 (Vendored)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Source)
 Scripting Runtime   : Python 3.13+ Engine Bridge
 GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
@@ -20,7 +20,37 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Release v1.3.8
+## 1. Executive Summary: Release v1.3.9
+
+SparkNotePad **v1.3.9** brings official upstream updates for the core Scintilla and Lexilla editing engines, addresses security and algorithmic issues in search and replace, enriches syntax highlighting for Markdown front-matter, adds user-configurable default language preferences for new documents, and passes complete 14-pillar code review:
+
+1. **Official Upstream Scintilla 5.6.9 Integration**:
+   - Restores full-color rendering for XPM images.
+   - Skips unnecessary line layout calculations during line-start position queries for accelerated scrolling and navigation.
+   - Increases cached lexeme buffer capacity from 30 to 40 bytes to optimize large symbols and query identifiers.
+   - Full Unicode 17 standard character category tables and case conversion support.
+   - Resolves change history undo crashes during bulk deletion operations.
+
+2. **Official Upstream Lexilla 5.5.5 Integration & Markdown Front-Matter**:
+   - Introduces 3 new Lexilla 5.5.5 style IDs in `src/languages/markdown.lua` for YAML, TOML, and JSON front-matter:
+     - `SCE_MARKDOWN_FRONT_MARK` (ID 22): Delimiters (`---`, `+++`, `{}`).
+     - `SCE_MARKDOWN_FRONT` (ID 23): Front-matter body and value payload.
+     - `SCE_MARKDOWN_FRONT_KEY` (ID 24): Front-matter attribute keys.
+   - Mitigates memory safety issues including out-of-bounds writes (CWE-787) and reads (CWE-125) in Lexilla lexers (DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, X12).
+   - Enhances HTML/JavaScript, PHP, and SQL lexer syntax handling.
+
+3. **Selective NotepadNext Feature & Bug Fix Ports**:
+   - **Fix Infinite Loop in Replace All (CWE-835 / DoS)**: Resolved an event loop hang in `Finder::replaceAll` when matching zero-length regular expressions (`^`, `$`, `\b`, lookarounds) by enforcing position advancement via `editor->positionAfter()`.
+   - **Search Dialog Direction Invariant**: Automatically unchecks and disables backwards direction search in `FindReplaceDialog.cpp` when Regular Expression mode is selected.
+   - **Default Language Setting**: Added a user-configurable `DefaultLanguage` setting in Preferences > Editor for untitled/new documents, with dynamic language selection.
+
+4. **14-Pillar Code Quality & Zero-Defect Linter Verification**:
+   - Verified 0 diagnostics and 0 errors across `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
+   - Strictly enforced standard `Unix Makefiles` compilation with controlled `-j2` concurrency.
+
+---
+
+## 2. Historical Summary: Release v1.3.8
 
 SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 21-pack icon theme architecture, dedicated Preferences tabs, desktop menu reorganization, and 100% finished bilingual localization parity:
 

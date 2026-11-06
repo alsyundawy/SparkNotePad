@@ -183,6 +183,18 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
         ui->comboBoxLineEndings->setCurrentIndex(idx == -1 ? 0 : idx);
     });
 
+    ui->comboBoxDefaultLanguage->setView(new QListView(ui->comboBoxDefaultLanguage));
+    const auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
+    if (app) {
+        ui->comboBoxDefaultLanguage->addItems(app->getLanguages());
+    }
+    ui->comboBoxDefaultLanguage->setCurrentText(settings->defaultLanguage());
+
+    connect(ui->comboBoxDefaultLanguage, &QComboBox::currentTextChanged, settings,
+            &ApplicationSettings::setDefaultLanguage);
+    connect(settings, &ApplicationSettings::defaultLanguageChanged, ui->comboBoxDefaultLanguage,
+            &QComboBox::setCurrentText);
+
     MapSettingToCheckBox(ui->checkBoxHighlightURLs, &ApplicationSettings::urlHighlighting,
                          &ApplicationSettings::setURLHighlighting, &ApplicationSettings::urlHighlightingChanged);
     ui->spinBoxUrlThreshold->setValue(settings->urlThreshold());

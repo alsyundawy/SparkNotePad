@@ -92,7 +92,7 @@ private slots:
     void adjustOpacity(int value);
     void transparencyToggled(bool on);
     void adjustOpacityWhenLosingFocus(bool checked);
-    void adjustOpacityAlways(bool on);
+    void adjustOpacityAlways(bool checked);
 
     void changeTab(int index);
 

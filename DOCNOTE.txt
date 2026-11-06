@@ -1,14 +1,14 @@
-# Catatan Rilis SparkNotePad — v1.3.8 (Bahasa Indonesia)
+# Catatan Rilis SparkNotePad — v1.3.9 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.3.8 (Toolbar Icon Packs Suite, In-Tab Preview & File Commander)
-Tanggal Rilis        : 2026-11-04
+Versi Rilis          : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
+Tanggal Rilis        : 2026-11-07
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
-Mesin Penyunting     : Scintilla 5.6.7 & Lexilla 5.5.4 (125 Lexer Lengkap)
-Runtime Skrip        : Sandboxed Lua 5.5.1 / 5.4.7 & Python 3.13+ Bridge
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (Official Upstream)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
 Kerangka Kerja GUI   : Qt 6.5 / 6.8 LTS / 6.12 (C++20 ISO Standard)
 Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD
 Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
@@ -17,7 +17,37 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.8
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.9
+
+SparkNotePad v1.3.9 menghadirkan pembaruan engine inti upstream ke Scintilla 5.6.9 dan Lexilla 5.5.5, mengatasi kerentanan algoritmik kritis dalam pencarian dan penggantian teks, memperluas pewarnaan sintaksis front-matter Markdown, menambahkan pengaturan bahasa default yang dapat dikonfigurasi pengguna untuk tab/dokumen baru, serta lolos audit dan verifikasi kode 14 pilar secara menyeluruh:
+
+1. Integrasi Resmi Engine Upstream Scintilla 5.6.9:
+   - Pemulihan perenderan warna penuh untuk gambar ikon XPM.
+   - Peniadaan kalkulasi tata letak baris yang tidak diperlukan saat pencarian posisi awal baris untuk akselerasi scrolling.
+   - Peningkatan kapasitas buffer cache lexeme dari 30 menjadi 40 byte guna mengoptimalkan identifier panjang dan simbol query SQL/JSON.
+   - Pemetaan kategori karakter dan konversi kapitalisasi penuh standar Unicode 17.
+   - Resolusi crash pada fitur undo change history yang disebabkan optimasi bulk deletion.
+
+2. Integrasi Resmi Engine Upstream Lexilla 5.5.5 & Front-Matter Markdown:
+   - Penambahan 3 ID style baru Lexilla 5.5.5 pada src/languages/markdown.lua untuk metadata YAML, TOML, dan JSON:
+     - SCE_MARKDOWN_FRONT_MARK (ID 22): Pembatas metadata (---, +++, {}).
+     - SCE_MARKDOWN_FRONT (ID 23): Isi dan nilai properti front-matter.
+     - SCE_MARKDOWN_FRONT_KEY (ID 24): Kunci dan atribut properti front-matter.
+   - Mitigasi kerentanan keamanan memori termasuk out-of-bounds write (CWE-787) dan out-of-bounds read (CWE-125) pada lexer DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, dan X12.
+   - Peningkatan lexer HTML/JavaScript, PHP, dan SQL.
+
+3. Porting Fitur & Perbaikan Kutu Terpilih NotepadNext:
+   - Perbaikan Infinite-Loop Regex Replace-All (CWE-835 / DoS): Memperbaiki freeze aplikasi pada Finder::replaceAll saat mencocokkan pola regex dengan panjang nol (^, $, \b, lookaround) dengan pergerakan kursor maju editor->positionAfter().
+   - Invarian Status Dialog Cari & Ganti: Secara otomatis menonaktifkan dan menghapus centang opsi pencarian arah mundur saat mode Regular Expression dipilih pada FindReplaceDialog.cpp.
+   - Pengaturan Bahasa Default: Menambahkan pengaturan DefaultLanguage pada Preferensi > Editor untuk tab baru/belum disimpan dengan enumerasi bahasa dinamis.
+
+4. Kualitas Kode 14 Pilar & Verifikasi Linter Bebas Cacat:
+   - Verifikasi 0 diagnostik dan 0 kesalahan pada clangd --check, cppcheck, clang-tidy, dan SonarLint.
+   - Penegakan kompilasi ketat Unix Makefiles dengan pembatasan konkurensi -j2.
+
+---
+
+## 2. Riwayat Rilis Sebelumnya: Rilis v1.3.8
 
 SparkNotePad v1.3.8 menghadirkan perombakan besar pada arsitektur personalisasi toolbar, 21 paket ikon resolusi tinggi, tab Preferensi khusus ("Themes & Toolbar" & "Custom Toolbar Config"), penataan ulang menu standar editor desktop, sinkronisasi ikon menyeluruh ke seluruh menu dan konteks klik kanan, tombol Tambah Tab (+) di samping tab, pratinjau HTML & Markdown di dalam tab baru, File Commander modern, Tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
 

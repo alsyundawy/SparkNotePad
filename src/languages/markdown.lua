@@ -123,9 +123,26 @@ L.styles = {
         bgColor = rgb(0xEEEEEE),
     },
     ["SCE_MARKDOWN_CODEBK"] = {
-        id = 20,
+        id = 21,
         fgColor = rgb(0x000088),
         bgColor = rgb(0xEEEEEE),
+    },
+    ["SCE_MARKDOWN_FRONT_MARK"] = {
+        id = 22,
+        fgColor = rgb(0x888888),
+        bgColor = rgb(0xF8F8F8),
+        fontStyle = 1,
+    },
+    ["SCE_MARKDOWN_FRONT"] = {
+        id = 23,
+        fgColor = rgb(0x008000),
+        bgColor = rgb(0xF8F8F8),
+    },
+    ["SCE_MARKDOWN_FRONT_KEY"] = {
+        id = 24,
+        fgColor = rgb(0x000088),
+        bgColor = rgb(0xF8F8F8),
+        fontStyle = 1,
     },
 }
 

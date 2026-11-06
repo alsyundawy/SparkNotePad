@@ -8,8 +8,6 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-#include <cstdint>
-
 namespace Scintilla::Internal {
 
 using XYPOSITION = double;
@@ -31,18 +29,24 @@ public:
 		return Point(static_cast<XYPOSITION>(x_), static_cast<XYPOSITION>(y_));
 	}
 
-	constexpr bool operator==(const Point &other) const noexcept = default;
-
-	friend constexpr Point operator+(Point a, Point b) noexcept {
-		return Point(a.x + b.x, a.y + b.y);
+	constexpr bool operator==(Point other) const noexcept {
+		return (x == other.x) && (y == other.y);
 	}
 
-	friend constexpr Point operator-(Point a, Point b) noexcept {
-		return Point(a.x - b.x, a.y - b.y);
+	constexpr bool operator!=(Point other) const noexcept {
+		return (x != other.x) || (y != other.y);
 	}
 
-	friend constexpr Point operator*(Point a, XYPOSITION multiplier) noexcept {
-		return Point(a.x * multiplier, a.y * multiplier);
+	constexpr Point operator+(Point other) const noexcept {
+		return Point(x + other.x, y + other.y);
+	}
+
+	constexpr Point operator-(Point other) const noexcept {
+		return Point(x - other.x, y - other.y);
+	}
+
+	constexpr Point operator*(XYPOSITION multiplier) const noexcept {
+		return Point(x * multiplier, y * multiplier);
 	}
 
 	// Other automatically defined methods (assignment, copy constructor, destructor) are fine
@@ -56,7 +60,9 @@ class Interval {
 public:
 	XYPOSITION left;
 	XYPOSITION right;
-	constexpr bool operator==(const Interval &other) const noexcept = default;
+	constexpr bool operator==(const Interval &other) const noexcept {
+		return (left == other.left) && (right == other.right);
+	}
 	[[nodiscard]] constexpr XYPOSITION Width() const noexcept { return right - left; }
 	[[nodiscard]] constexpr bool Empty() const noexcept {
 		return Width() <= 0;
@@ -84,7 +90,7 @@ public:
 	XYPOSITION right;
 	XYPOSITION bottom;
 
-	constexpr explicit PRectangle(XYPOSITION left_=0, XYPOSITION top_=0, XYPOSITION right_=0, XYPOSITION bottom_ = 0) noexcept : // NOLINT // NOSONAR
+	constexpr explicit PRectangle(XYPOSITION left_=0, XYPOSITION top_=0, XYPOSITION right_=0, XYPOSITION bottom_ = 0) noexcept :
 		left(left_), top(top_), right(right_), bottom(bottom_) {
 	}
 
@@ -95,14 +101,17 @@ public:
 
 	// Other automatically defined methods (assignment, copy constructor, destructor) are fine
 
-	constexpr bool operator==(const PRectangle &rc) const noexcept = default;
+	constexpr bool operator==(const PRectangle &rc) const noexcept {
+		return (rc.left == left) && (rc.right == right) &&
+			(rc.top == top) && (rc.bottom == bottom);
+	}
 	
-	friend constexpr PRectangle operator*(const PRectangle &rc, XYPOSITION multiplier) noexcept {
-		return PRectangle(rc.left * multiplier, rc.top * multiplier, rc.right * multiplier, rc.bottom * multiplier);
+	constexpr PRectangle operator*(XYPOSITION multiplier) const noexcept {
+		return PRectangle(left * multiplier, top * multiplier, right * multiplier, bottom * multiplier);
 	}
 
-	friend constexpr PRectangle operator/(const PRectangle &rc, XYPOSITION divisor) noexcept {
-		return PRectangle(rc.left / divisor, rc.top / divisor, rc.right / divisor, rc.bottom / divisor);
+	constexpr PRectangle operator/(XYPOSITION divisor) const noexcept {
+		return PRectangle(left / divisor, top / divisor, right / divisor, bottom / divisor);
 	}
 
 	[[nodiscard]] constexpr bool Contains(Point pt) const noexcept {
@@ -114,11 +123,11 @@ public:
 		return (pt.x >= left) && ((pt.x+1) <= right) &&
 			(pt.y >= top) && ((pt.y+1) <= bottom);
 	}
-	[[nodiscard]] constexpr bool Contains(const PRectangle &rc) const noexcept {
+	[[nodiscard]] constexpr bool Contains(PRectangle rc) const noexcept {
 		return (rc.left >= left) && (rc.right <= right) &&
 			(rc.top >= top) && (rc.bottom <= bottom);
 	}
-	[[nodiscard]] constexpr bool Intersects(const PRectangle &other) const noexcept {
+	[[nodiscard]] constexpr bool Intersects(PRectangle other) const noexcept {
 		return (right > other.left) && (left < other.right) &&
 			(bottom > other.top) && (top < other.bottom);
 	}
@@ -156,7 +165,7 @@ public:
 	}
 };
 
-enum class Edge : std::uint8_t { left, top, bottom, right };
+enum class Edge { left, top, bottom, right };
 
 PRectangle Clamp(PRectangle rc, Edge edge, XYPOSITION position) noexcept;
 PRectangle Side(PRectangle rc, Edge edge, XYPOSITION size) noexcept;
@@ -181,27 +190,29 @@ constexpr float componentMaximum = 255.0F;
 constexpr unsigned int maximumByte = 0xffU;
 class ColourRGBA {
 	static constexpr float ComponentAsFloat(unsigned char component) {
-		return static_cast<float>(component) / componentMaximum;
+		return component / componentMaximum;
 	}
 	static constexpr int rgbMask = 0xffffff;
+	// static constexpr int rShift = 0;
 	static constexpr int gShift = 8;
 	static constexpr int bShift = 16;
 	static constexpr int aShift = 24;
-	int co;
+	int co = 0;
 public:
-	constexpr explicit ColourRGBA(int co_ = 0) noexcept : co(co_) {
+	constexpr ColourRGBA() noexcept = default;
+	constexpr explicit ColourRGBA(int co_) noexcept : co(co_) {
 	}
 
 	constexpr ColourRGBA(unsigned int red, unsigned int green, unsigned int blue, unsigned int alpha=maximumByte) noexcept :
-		ColourRGBA(static_cast<int>(red | (green << gShift) | (blue << bShift) | (alpha << aShift))) {
+		ColourRGBA(red | (green << gShift) | (blue << bShift) | (alpha << aShift)) {
 	}
 
 	constexpr ColourRGBA(ColourRGBA cd, unsigned int alpha) noexcept :
-		ColourRGBA(cd.OpaqueRGB() | static_cast<int>(alpha << aShift)) {
+		ColourRGBA(cd.OpaqueRGB() | (alpha << aShift)) {
 	}
 
 	static constexpr ColourRGBA FromRGB(int co_) noexcept {
-		return ColourRGBA(co_ | static_cast<int>(maximumByte << aShift));
+		return ColourRGBA(co_ | (maximumByte << aShift));
 	}
 
 	static constexpr ColourRGBA Grey(unsigned int grey, unsigned int alpha=maximumByte) noexcept {
@@ -209,8 +220,8 @@ public:
 	}
 
 	static constexpr ColourRGBA FromIpRGB(intptr_t co_) noexcept {
-		const auto rgb = static_cast<int>(co_ & rgbMask);
-		return ColourRGBA(rgb | static_cast<int>(maximumByte << aShift));
+		const int rgb = co_ & rgbMask;
+		return ColourRGBA(rgb | (maximumByte << aShift));
 	}
 
 	[[nodiscard]] constexpr ColourRGBA WithoutAlpha() const noexcept {
@@ -218,7 +229,7 @@ public:
 	}
 
 	[[nodiscard]] constexpr ColourRGBA Opaque() const noexcept {
-		return ColourRGBA(co | static_cast<int>(maximumByte << aShift));
+		return ColourRGBA(co | (maximumByte << aShift));
 	}
 
 	[[nodiscard]] constexpr int AsInteger() const noexcept {
@@ -259,7 +270,12 @@ public:
 		return ComponentAsFloat(GetAlpha());
 	}
 
-	[[nodiscard]] constexpr bool operator==(const ColourRGBA &other) const noexcept = default;
+	[[nodiscard]] constexpr bool operator==(const ColourRGBA &other) const noexcept {
+		return co == other.co;
+	}
+	[[nodiscard]] constexpr bool operator!=(const ColourRGBA &other) const noexcept {
+		return co != other.co;
+	}
 
 	[[nodiscard]] constexpr bool IsOpaque() const noexcept {
 		return GetAlpha() == maximumByte;
@@ -279,7 +295,7 @@ class Stroke {
 public:
 	ColourRGBA colour;
 	XYPOSITION width;
-	constexpr Stroke(ColourRGBA colour_, XYPOSITION width_=1.0) noexcept : // NOLINT // NOSONAR(cpp:S1709)
+	constexpr Stroke(ColourRGBA colour_, XYPOSITION width_=1.0) noexcept :
 		colour(colour_), width(width_) {
 	}
 	[[nodiscard]] constexpr float WidthF() const noexcept {
@@ -293,7 +309,10 @@ public:
 class Fill {
 public:
 	ColourRGBA colour;
-	constexpr Fill(ColourRGBA colour_) noexcept : colour(colour_) {} // NOLINT // NOSONAR(cpp:S1709)
+	// Not explicit as used very often from simple contexts so would just be noise.
+	constexpr Fill(ColourRGBA colour_) noexcept :
+		colour(colour_) {
+	}
 };
 
 /**
@@ -303,10 +322,10 @@ class FillStroke {
 public:
 	Fill fill;
 	Stroke stroke;
-	constexpr FillStroke(ColourRGBA colourFill_, ColourRGBA colourStroke_, XYPOSITION widthStroke_=1.0) noexcept : // NOLINT // NOSONAR(cpp:S5498)
+	constexpr FillStroke(ColourRGBA colourFill_, ColourRGBA colourStroke_, XYPOSITION widthStroke_=1.0) noexcept :
 		fill(colourFill_), stroke(colourStroke_, widthStroke_) {
 	}
-	constexpr FillStroke(ColourRGBA colourBoth, XYPOSITION widthStroke_=1.0) noexcept : // NOLINT // NOSONAR(cpp:S1709)
+	constexpr FillStroke(ColourRGBA colourBoth, XYPOSITION widthStroke_=1.0) noexcept :
 		fill(colourBoth), stroke(colourBoth, widthStroke_) {
 	}
 };

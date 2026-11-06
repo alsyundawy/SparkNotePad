@@ -24,11 +24,11 @@
 #endif
 #endif
 
-class EXPORT_IMPORT_API ScintillaEdit : public ScintillaEditBase { // NOSONAR(cpp:S1448, cpp:S5495)
+class EXPORT_IMPORT_API ScintillaEdit : public ScintillaEditBase {
 	Q_OBJECT
 
 public:
-	explicit ScintillaEdit(QWidget *parent = nullptr);
+	ScintillaEdit(QWidget *parent = 0);
 	virtual ~ScintillaEdit();
 
 	QByteArray TextReturner(int message, uptr_t wParam) const;
@@ -365,7 +365,7 @@ public:
 	sptr_t lineFromPosition(sptr_t pos);
 	sptr_t positionFromLine(sptr_t line);
 	void lineScroll(sptr_t columns, sptr_t lines);
-	void scrollVertical(sptr_t docLine, sptr_t subLine); // NOLINT // NOSONAR(cpp:S5495)
+	void scrollVertical(sptr_t docLine, sptr_t subLine);
 	void scrollCaret();
 	void scrollRange(sptr_t secondary, sptr_t primary);
 	void replaceSel(const char * text);
@@ -594,7 +594,7 @@ public:
 	void usePopUp(sptr_t popUpMode);
 	bool selectionIsRectangle() const;
 	void setZoom(sptr_t zoomInPoints);
-	sptr_t zoom() const; // NOLINT // NOSONAR(cpp:S5495)
+	sptr_t zoom() const;
 	sptr_t createDocument(sptr_t bytes, sptr_t documentOptions);
 	void addRefDocument(sptr_t doc);
 	void releaseDocument(sptr_t doc);
@@ -602,7 +602,7 @@ public:
 	sptr_t modEventMask() const;
 	void setCommandEvents(bool commandEvents);
 	bool commandEvents() const;
-	void setFocus(bool focus); // NOLINT // NOSONAR(cpp:S5495)
+	void setFocus(bool focus);
 	bool focus() const;
 	void setStatus(sptr_t status);
 	sptr_t status() const;
@@ -610,8 +610,8 @@ public:
 	bool mouseDownCaptures() const;
 	void setMouseWheelCaptures(bool captures);
 	bool mouseWheelCaptures() const;
-	void setCursor(sptr_t cursorType); // NOLINT // NOSONAR(cpp:S5495)
-	sptr_t cursor() const; // NOLINT // NOSONAR(cpp:S5495)
+	void setCursor(sptr_t cursorType);
+	sptr_t cursor() const;
 	void setControlCharSymbol(sptr_t symbol);
 	sptr_t controlCharSymbol() const;
 	void wordPartLeft();
@@ -879,9 +879,9 @@ public:
 	void stopRecord();
 	sptr_t lexer() const;
 	void colourise(sptr_t start, sptr_t end);
-	void setProperty(const char * key, const char * value); // NOLINT // NOSONAR(cpp:S5495)
+	void setProperty(const char * key, const char * value);
 	void setKeyWords(sptr_t keyWordSet, const char * keyWords);
-	QByteArray property(const char * key) const; // NOLINT // NOSONAR(cpp:S5495)
+	QByteArray property(const char * key) const;
 	QByteArray propertyExpanded(const char * key) const;
 	sptr_t propertyInt(const char * key, sptr_t defaultValue) const;
 	QByteArray lexerLanguage() const;
