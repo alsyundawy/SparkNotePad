@@ -157,7 +157,7 @@ readonly UTIS=(
 # Comprehensive file extensions
 readonly EXTENSIONS=(
 	# Plain Text & Notes
-	"txt" "text" "log" "out" "err" "nfo" "diz" "me" "1st" "ans" "asc" "ascii"
+	"txt" "text" "log" "out" "err" "nfo" "inf" "diz" "me" "1st" "ans" "asc" "ascii"
 	"readme" "changelog" "license" "authors" "todo" "notes"
 
 	# Markdown & Documentation
@@ -168,14 +168,16 @@ readonly EXTENSIONS=(
 	"html" "htm" "xhtml" "shtml" "shtm" "phtml" "css" "scss" "sass" "less"
 	"styl" "stylus" "js" "mjs" "cjs" "jsx" "ts" "mts" "cts" "tsx" "vue"
 	"svelte" "astro" "json" "json5" "jsonc" "jsonl" "ndjson" "map" "svg"
+	"hta" "asp" "aspx" "jsp" "jsm" "xht" "xul" "kml" "xaml" "xsml"
 
 	# Config, Serialization & Data
 	"yaml" "yml" "toml" "ini" "cfg" "conf" "config" "cnf" "properties" "props"
 	"xml" "plist" "env" "editorconfig" "gitignore" "gitattributes" "gitmodules"
 	"dockerignore" "npmignore" "slugignore" "csv" "tsv" "tab" "sql" "cql"
+	"manifest" "vsprops" "vcproj" "vcxproj"
 
-	# Systems Programming (C, C++, Rust, Zig, Go, Resource Script)
-	"c" "h" "cpp" "hpp" "cc" "hh" "cxx" "hxx" "c++" "h++" "m" "mm" "rc"
+	# Systems Programming (C, C++, Rust, Zig, Go, Resource Script, Make)
+	"c" "h" "cpp" "hpp" "cc" "hh" "cxx" "hxx" "c++" "h++" "m" "mm" "rc" "inc" "mak"
 	"rs" "rlib" "zig" "go" "mod" "sum" "s" "asm"
 
 	# JVM & .NET Languages
@@ -184,10 +186,12 @@ readonly EXTENSIONS=(
 
 	# Scripting & Dynamic Languages
 	"py" "pyw" "pyi" "pyx" "pxd" "rb" "rbw" "rake" "gemspec" "php" "phtml"
-	"pl" "pm" "t" "pod" "lua" "tcl" "r" "rmd" "jl" "dart" "ex" "exs" "erl" "hrl"
+	"php3" "php4" "php5" "phps" "phpt" "pl" "pm" "t" "pod" "lua" "tcl" "r" "rmd" "jl" "dart" "ex" "exs" "erl" "hrl"
+	"pas" "pp" "as" "mx" "vbs"
 
-	# Shell & Automation
-	"sh" "bash" "zsh" "fish" "ksh" "csh" "tcsh" "awk" "sed" "bat" "cmd" "ps1" "psm1"
+	# Shell, Automation & Scientific
+	"sh" "bash" "zsh" "fish" "ksh" "csh" "tcsh" "awk" "sed" "bat" "cmd" "ps1" "psm1" "bsh" "nsi" "nsh"
+	"f" "for" "f90" "f95" "f2k"
 	"make" "makefile" "mk" "cmake" "dockerfile" "vagrantfile" "gemfile" "procfile"
 )
 

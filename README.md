@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.3.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.3.8)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;

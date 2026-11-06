@@ -158,13 +158,13 @@ Exhaustive verification across all 14 engineering pillars:
 
 | Artifact Name                                        | Platform / Architecture                                            | Size     | SHA-256 Checksum                                                   |
 | :--------------------------------------------------- | :----------------------------------------------------------------- | :------- | :----------------------------------------------------------------- |
-| **`SparkNotePad-v1.3.8-x64.dmg`** _(Verified Build)_ | macOS Intel (`x86_64`) & Apple Silicon via Rosetta 2 (macOS 11.0+) | 34.00 MB | `956c5cbbd0c6546f7e7e2fd3d8d00e7c57ae37753a04a186ac553e79b9f69740` |
+| **`SparkNotePad-v1.3.8-x64.dmg`** _(Verified Build)_ | macOS Intel (`x86_64`) & Apple Silicon via Rosetta 2 (macOS 11.0+) | 33.75 MB | `aa63656518fd4853497461b85c189450a08492bfb723957ed5d927a76230d8dc` |
 | **`SparkNotePad-v1.3.8-qt6.12-x64.dmg`**             | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.12)                      | 28.97 MB | `4434116cd1cf801634984693175402a4bf74581f33527498c558c4fe7c9ad0b3` |
 | **`SparkNotePad-v1.3.8-qt6.11-x64.dmg`**             | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.11)                      | 28.67 MB | `8ef3db8351b0ace57772b4d01b1a774902166e44b93bc657bb6b2707246ec4c3` |
 | **`SparkNotePad-v1.3.8-qt6.10-x64.dmg`**             | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.10)                      | 28.27 MB | `f05cd164e65efd58e4fef531dbb9134bc535be8566fae9185a5385d38a0f12ea` |
 | **`SparkNotePad-v1.3.8-qt6.8-x64.dmg`**              | macOS Intel (`x86_64`) (macOS 12.0+, Qt 6.8 LTS)                   | 28.05 MB | `6f3a7e45eb5256aa9fd3d18105ca23023e3e4f35839ce6f5e744e8ecab076f87` |
-| **`SparkNotePad-Default-Editor.sh`**                 | macOS Universal & Linux POSIX Association Script                   | 19.19 KB | `719b80f133c0d040a64d4788e9dad08c48ba846910d9bac555e3a629dd571522` |
-| **`SparkNotePad-Default-Editor-Linux.sh`**           | Linux Dedicated 5-Layer System Default Editor Engine               | 30.32 KB | `c6b9efec00d26d7a5e769f2e8730010cef9497e92ef4e3f8fabd272c6be624b3` |
+| **`SparkNotePad-Default-Editor.sh`**                 | macOS Universal & Linux POSIX Association Script                   | 19.82 KB | `f3e08201b7653284bff8fffd6bd28545b5c9932921517f6ed38479abc317521e` |
+| **`SparkNotePad-Default-Editor-Linux.sh`**           | Linux Dedicated 5-Layer System Default Editor Engine               | 30.38 KB | `7aa9212469cbe480ef4740635126bfcd903c9a4a97bf6e3f6b232764bf6237a4` |
 
 ---
 

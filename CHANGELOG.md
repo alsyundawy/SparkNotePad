@@ -63,6 +63,16 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
   - Real-time search filter for quick action discovery.
   - "Reset to Defaults" button restoring standard 33-entry SparkNotePad toolbar.
   - "Apply" and "OK" persistence to `Gui/ToolBar` settings.
+- **Nextpad++ Complete File Association Takeover (76 Extensions)**:
+  - Extracted and integrated all 76 file extensions declared in `/Applications/Nextpad++.app` (`org.nextpadplusplus.mac`) into `deploy/macos/info.plist`.
+  - Recaptured key default file associations including Windows Batch scripts (`.bat`, `.cmd`), Windows Resource scripts (`.rc`), Unix shell scripts (`.sh`, `.bsh`), and plain text (`.txt`, `.log`, `.inf`, `.nfo`).
+  - Expanded `SparkNotePad-Default-Editor.sh` and `scripts/SparkNotePad-Default-Editor.sh` to associate 210 file extensions via macOS `duti`.
+  - Added Linux MIME types (`application/x-bat`, `text/x-bat`, `application/x-shellscript`) to `deploy/linux/SparkNotePad.desktop` and `SparkNotePad-Default-Editor-Linux.sh`.
+- **Modern Styled macOS Drag-and-Drop DMG Installer**:
+  - Implemented custom DMG packaging pipeline (`scripts/package-dmg.sh` and `scripts/generate_dmg_background.py`) with `create-dmg`.
+  - High-DPI Retina `@2x` background featuring subtle geometric polygonal slate/blue accents.
+  - Header branding typography: *"SparkNotePad"* and tagline *"Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."*
+  - Elegant curved Bezier drag-and-drop indicator arrow pointing from `SparkNotePad.app` to `/Applications`.
 - **Themes Menu & Toolbar Context Menu Integration**:
   - Top-level `Themes -> Toolbar Icon Packs` submenu with exclusive radio checkmarks.
   - Right-click context menu on `mainToolBar` for fast access to customize buttons, switch icon packs, and adjust icon size.
@@ -82,9 +92,12 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
   - **Relocated Convert Case**: Moved the `Convert Case` submenu directly below `Select All` (`ui->actionSelectAll`), aligning text manipulation operations logically together.
   - **Compact Typography & Iconpack Scaling**: Reduced font size by 1-2px (11px) and scaled right-click menu icons to 14x14px with sleek 3px vertical padding.
   - **Non-Destructive Style Restoration**: Connected `aboutToHide` signal on context menu to cleanly revert global menubar styles to original state upon menu closure.
+- **Icon Pack Deprecation Purge**:
+  - Completely purged obsolete icon packs (`monoline_minimal`, `aero_vista`, `windows10_flat`, `arch_blue`) from codebase, QRC resources, settings, and documentation.
 - **14-Pillar Code Quality & Verification**:
   - Verified across Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability, and IDE Linter pillars.
-  - 100% test pass rate across all 55 unit tests in `SparkNotePadTests` including full icon resolution across all 15 packs and default 24x24 sizing.
+  - 100% test pass rate across all 57 unit tests in `SparkNotePadTests` including full icon resolution and default 24x24 sizing.
+  - 0 errors across `clangd --check`, `cppcheck`, `ctest`, `shellcheck`, `plutil`, `actionlint`, and `markdownlint-cli2`.
 
 ---
 

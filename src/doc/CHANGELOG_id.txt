@@ -61,3 +61,16 @@ SparkNotePad v1.3.8 memperkenalkan arsitektur personalisasi toolbar lengkap deng
 - **Penegakan Format Plaintext (.txt) & Dokumentasi Bilingual**:
   - Menu Help Docnote dan Changelog disajikan otomatis dalam bahasa aktif editor (Indonesia / English).
   - Disajikan secara murni dalam format plaintext monospaced `.txt`.
+- **Pengambilalihan Penuh Asosiasi Berkas Nextpad++ (76 Ekstensi Berkas)**:
+  - Integrasi 76 ekstensi berkas dari Nextpad++.app ke `deploy/macos/info.plist`.
+  - Dukungan berkas batch Windows (`.bat`, `.cmd`), resource Windows (`.rc`), shell script (`.sh`), dan teks biasa (`.txt`, `.log`).
+  - Pembaruan skrip otomasi `SparkNotePad-Default-Editor.sh` untuk 210 format berkas via `duti`.
+  - Penambahan tipe MIME Linux (`application/x-bat`, `text/x-bat`, `application/x-shellscript`) pada berkas desktop.
+- **Pemaket Berkas DMG macOS Modern Bergaya Drag-and-Drop**:
+  - Latar belakang grafis Retina @2x dengan aksen geometris modern dan tipografi resmi SparkNotePad.
+  - Penunjuk arah kurva halus (curved Bezier arrow) untuk aksi geser ke `/Applications`.
+- **Pembersihan Total Paket Ikon Kedaluwarsa**:
+  - Menghapus tuntas 4 paket ikon (`monoline_minimal`, `aero_vista`, `windows10_flat`, `arch_blue`).
+- **Audit Mutu Rekayasa 14 Pilar & 100% Lulus Pengujian Unit**:
+  - 57/57 pengujian unit lulus (100% pass rate).
+  - 0 eror pada `clangd --check`, `cppcheck`, `ctest`, `shellcheck`, `plutil`, dan `actionlint`.

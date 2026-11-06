@@ -45,6 +45,11 @@
 				<string>conf</string>
 				<string>md</string>
 				<string>markdown</string>
+				<string>inf</string>
+				<string>manifest</string>
+				<string>nfo</string>
+				<string>props</string>
+				<string>vsprops</string>
 			</array>
 			<key>LSItemContentTypes</key>
 			<array>
@@ -92,6 +97,50 @@
 				<string>sql</string>
 				<string>yaml</string>
 				<string>yml</string>
+				<string>as</string>
+				<string>asp</string>
+				<string>aspx</string>
+				<string>bsh</string>
+				<string>cs</string>
+				<string>f</string>
+				<string>f2k</string>
+				<string>f90</string>
+				<string>f95</string>
+				<string>for</string>
+				<string>hh</string>
+				<string>hta</string>
+				<string>hxx</string>
+				<string>inc</string>
+				<string>jsm</string>
+				<string>jsp</string>
+				<string>kml</string>
+				<string>mak</string>
+				<string>mjs</string>
+				<string>mx</string>
+				<string>nsh</string>
+				<string>nsi</string>
+				<string>pas</string>
+				<string>php3</string>
+				<string>php4</string>
+				<string>php5</string>
+				<string>phps</string>
+				<string>phpt</string>
+				<string>phtml</string>
+				<string>pl</string>
+				<string>pm</string>
+				<string>pp</string>
+				<string>shtm</string>
+				<string>shtml</string>
+				<string>tex</string>
+				<string>vb</string>
+				<string>vbs</string>
+				<string>vcproj</string>
+				<string>vcxproj</string>
+				<string>xaml</string>
+				<string>xht</string>
+				<string>xhtml</string>
+				<string>xsml</string>
+				<string>xul</string>
 			</array>
 			<key>LSItemContentTypes</key>
 			<array>

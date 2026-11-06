@@ -99,11 +99,24 @@ SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 40
    - Complete synchronization of 1,849 UI strings with 0 unfinished entries across `i18n/SparkNotePad_en.ts` and `i18n/SparkNotePad_id.ts`.
    - Localized Help docnotes and changelogs automatically displayed according to active application locale.
 
-8. **14-Pillar Code Quality & Zero-Defect Linter Hardening**:
-   - Zero linter and static analysis errors (`cppcheck`, `clang-tidy`, `SonarLint`, `markdownlint-cli2`).
-   - 11 unit test suites (51+ unit tests) passing with 100% success rate in `SparkNotePadTests`.
-   - Verified local DMG packaging (`hdiutil verify: VALID`) with SHA-256 checksum generation.
-   - MegaLinter workflow runner upgraded to v10.2.0.
+8. **Nextpad++ Complete File Association Takeover (76 Extensions)**:
+   - Full takeover and integration of all 76 file extensions declared in `/Applications/Nextpad++.app` (`org.nextpadplusplus.mac`) into `deploy/macos/info.plist` under `Plain Text Document` and `Source Code File`.
+   - Complete association of Windows Batch scripts (`.bat`, `.cmd`), Windows Resource scripts (`.rc`), Unix shell scripts (`.sh`, `.bsh`), and plain text (`.txt`, `.log`, `.inf`, `.nfo`).
+   - Expanded `SparkNotePad-Default-Editor.sh` to associate 210 file extensions via macOS `duti`.
+   - Added Linux MIME types (`application/x-bat`, `text/x-bat`, `application/x-shellscript`) to `deploy/linux/SparkNotePad.desktop` and `SparkNotePad-Default-Editor-Linux.sh`.
+
+9. **Modern Styled macOS Drag-and-Drop DMG Installer**:
+   - Custom high-DPI Retina `@2x` background featuring subtle geometric polygonal slate/blue accents.
+   - Header branding typography: *"SparkNotePad"* and tagline *"Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."*
+   - Smooth curved Bezier drag-and-drop indicator arrow pointing from `SparkNotePad.app` to `/Applications`.
+   - Built via `create-dmg` and verified via `hdiutil verify`: `VALID (CRC32 $ED64A1C0)`.
+   - SHA-256: `aa63656518fd4853497461b85c189450a08492bfb723957ed5d927a76230d8dc`.
+
+10. **14-Pillar Code Quality & Zero-Defect Linter Hardening**:
+    - Zero linter and static analysis errors (`cppcheck`, `clang-tidy`, `SonarLint`, `markdownlint-cli2`, `plutil`).
+    - 11 unit test suites (57 unit tests) passing with 100% success rate in `SparkNotePadTests`.
+    - Purged deprecated icon packs (`monoline_minimal`, `aero_vista`, `windows10_flat`, `arch_blue`).
+    - MegaLinter workflow runner upgraded to v10.2.0.
 
 ---
 
