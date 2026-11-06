@@ -12,6 +12,13 @@
 #ifndef TOOLBARICONMANAGER_H
 #define TOOLBARICONMANAGER_H
 
+#ifdef isinf
+#undef isinf
+#endif
+#ifdef isnan
+#undef isnan
+#endif
+
 #include <QHash>
 #include <QIcon>
 #include <QList>

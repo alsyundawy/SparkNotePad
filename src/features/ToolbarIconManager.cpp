@@ -8,6 +8,14 @@
  * (at your option) any later version.
  */
 
+#ifdef isinf
+#undef isinf
+#endif
+#ifdef isnan
+#undef isnan
+#endif
+
+#include <array>
 #include <QtGlobal>
 #include "ToolbarIconManager.h"
 #include "../ApplicationSettings.h"
@@ -459,38 +467,39 @@ const QList<ToolbarIconPack> &ToolbarIconManager::availablePacks() const {
     return m_packs;
 }
 
-const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) const {
-    QString targetId = packId;
-    if (targetId == QLatin1String("fluentUi")) {
-        targetId = QStringLiteral("fluent_regular");
-    } else if (targetId == QLatin1String("filledFluentUi")) {
-        targetId = QStringLiteral("fluent_filled");
-    } else if (targetId == QLatin1String("archLinux")) {
-        targetId = QStringLiteral("arch_blue");
-    } else if (targetId == QLatin1String("seven_icons") || targetId == QLatin1String("sevenIcons")) {
-        targetId = QStringLiteral("seven");
-    } else if (targetId == QLatin1String("win11os") || targetId == QLatin1String("win11osKde")) {
-        targetId = QStringLiteral("win11os_kde");
-    } else if (targetId == QLatin1String("fluentKde")) {
-        targetId = QStringLiteral("fluent_kde");
-    } else if (targetId == QLatin1String("elementaryKde")) {
-        targetId = QStringLiteral("elementary_kde");
-    } else if (targetId == QLatin1String("mcmojave") || targetId == QLatin1String("mcmojaveCircle")) {
-        targetId = QStringLiteral("mcmojave_circle");
-    } else if (targetId == QLatin1String("mkosBigSur") || targetId == QLatin1String("mkos_big_sur")) {
-        targetId = QStringLiteral("mkos_bigsur");
-    } else if (targetId == QLatin1String("whiteSur") || targetId == QLatin1String("white_sur")) {
-        targetId = QStringLiteral("whitesur");
-    } else if (targetId == QLatin1String("bigSur") || targetId == QLatin1String("big_sur")) {
-        targetId = QStringLiteral("bigsur");
-    } else if (targetId == QLatin1String("macTahoe") || targetId == QLatin1String("mac_tahoe")) {
-        targetId = QStringLiteral("mactahoe");
-    } else if (targetId == QLatin1String("uos_fulldistro") || targetId == QLatin1String("uosDistro")) {
-        targetId = QStringLiteral("uos");
-    } else if (targetId == QLatin1String("deepin2022") || targetId == QLatin1String("deepin_2022")) {
-        targetId = QStringLiteral("deepin");
-    }
+namespace {
+QString normalizePackId(const QString &packId) {
+    static const QHash<QString, QString> s_aliasMap = {
+        {QStringLiteral("fluentUi"), QStringLiteral("fluent_regular")},
+        {QStringLiteral("filledFluentUi"), QStringLiteral("fluent_filled")},
+        {QStringLiteral("archLinux"), QStringLiteral("arch_blue")},
+        {QStringLiteral("seven_icons"), QStringLiteral("seven")},
+        {QStringLiteral("sevenIcons"), QStringLiteral("seven")},
+        {QStringLiteral("win11os"), QStringLiteral("win11os_kde")},
+        {QStringLiteral("win11osKde"), QStringLiteral("win11os_kde")},
+        {QStringLiteral("fluentKde"), QStringLiteral("fluent_kde")},
+        {QStringLiteral("elementaryKde"), QStringLiteral("elementary_kde")},
+        {QStringLiteral("mcmojave"), QStringLiteral("mcmojave_circle")},
+        {QStringLiteral("mcmojaveCircle"), QStringLiteral("mcmojave_circle")},
+        {QStringLiteral("mkosBigSur"), QStringLiteral("mkos_bigsur")},
+        {QStringLiteral("mkos_big_sur"), QStringLiteral("mkos_bigsur")},
+        {QStringLiteral("whiteSur"), QStringLiteral("whitesur")},
+        {QStringLiteral("white_sur"), QStringLiteral("whitesur")},
+        {QStringLiteral("bigSur"), QStringLiteral("bigsur")},
+        {QStringLiteral("big_sur"), QStringLiteral("bigsur")},
+        {QStringLiteral("macTahoe"), QStringLiteral("mactahoe")},
+        {QStringLiteral("mac_tahoe"), QStringLiteral("mactahoe")},
+        {QStringLiteral("uos_fulldistro"), QStringLiteral("uos")},
+        {QStringLiteral("uosDistro"), QStringLiteral("uos")},
+        {QStringLiteral("deepin2022"), QStringLiteral("deepin")},
+        {QStringLiteral("deepin_2022"), QStringLiteral("deepin")}
+    };
+    return s_aliasMap.value(packId, packId);
+}
+} // namespace
 
+const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) const {
+    const QString targetId = normalizePackId(packId);
     const qsizetype packCount = m_packs.size();
     for (qsizetype i = 0; i < packCount; ++i) {
         if (m_packs.at(i).id == targetId) {
@@ -796,7 +805,7 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool
     }
 
     const QImage adapted = adaptImageForTheme(baseImg, isDark);
-    static constexpr int s_dpiSizes[] = {16, 20, 24, 32, 48, 64};
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
     for (const int sz : s_dpiSizes) {
         if (const QPixmap px = QPixmap::fromImage(
                 adapted.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
@@ -839,7 +848,7 @@ void addDpiPixmapsToIcon(QIcon &icon, const QPixmap &px, int sz, QIcon::Mode mod
 }
 
 QIcon buildDualRecordMultiResIcon(const QString &basePath, bool isDark) {
-    static constexpr int s_dpiSizes[] = {16, 20, 24, 32, 48, 64};
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
     QIcon dualIcon;
     for (const int sz : s_dpiSizes) {
         const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);
@@ -854,7 +863,7 @@ QIcon buildDualRecordMultiResIcon(const QString &basePath, bool isDark) {
 }
 
 QIcon buildMultiResIcon(const QString &basePath, const QStringList &candidates, bool isDark) {
-    static constexpr int s_dpiSizes[] = {16, 20, 24, 32, 48, 64};
+    static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
     QIcon icon;
     for (const int sz : s_dpiSizes) {
         const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);

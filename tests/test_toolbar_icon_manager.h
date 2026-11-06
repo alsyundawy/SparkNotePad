@@ -9,6 +9,13 @@
  * (at your option) any later version.
  */
 
+#ifdef isinf
+#undef isinf
+#endif
+#ifdef isnan
+#undef isnan
+#endif
+
 #include <QObject>
 #include <QTest>
 #include <QToolBar>
