@@ -110,7 +110,7 @@ SparkNotePad **v1.3.8** delivers complete toolbar customization, an expansive 40
    - Header branding typography: *"SparkNotePad"* and tagline *"Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."*
    - Smooth curved Bezier drag-and-drop indicator arrow pointing from `SparkNotePad.app` to `/Applications`.
    - Built via `create-dmg` and verified via `hdiutil verify`: `VALID (CRC32 $ED64A1C0)`.
-   - SHA-256: `aa63656518fd4853497461b85c189450a08492bfb723957ed5d927a76230d8dc`.
+   - SHA-256: `055aa9778df85424468cf4c3730a828bd01ef4d800ecccc6322fe74f0ff907db`.
 
 10. **14-Pillar Code Quality & Zero-Defect Linter Hardening**:
     - Zero linter and static analysis errors (`cppcheck`, `clang-tidy`, `SonarLint`, `markdownlint-cli2`, `plutil`).

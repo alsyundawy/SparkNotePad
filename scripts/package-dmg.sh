@@ -100,14 +100,23 @@ if command -v create-dmg >/dev/null 2>&1; then
     CREATE_DMG_ARGS+=(--background "${BG_IMG}")
   fi
 
-  if create-dmg "${CREATE_DMG_ARGS[@]}" "${DMG_OUTPUT}" "${STAGE_DIR}"; then
-    CREATED=1
-    echo "[*] Styled DMG successfully created with create-dmg."
-  else
-    echo "Warning: Standard create-dmg failed. Retrying with --skip-jenkins (headless mode)..." >&2
+  # In CI / headless runner environments (no WindowServer/Finder UI), skip Finder AppleScript directly
+  if [[ -n "${CI:-}" || -n "${GITHUB_ACTIONS:-}" ]]; then
+    echo "[*] Detected CI/headless environment. Passing --skip-jenkins to create-dmg..."
     if create-dmg "${CREATE_DMG_ARGS[@]}" --skip-jenkins "${DMG_OUTPUT}" "${STAGE_DIR}"; then
       CREATED=1
-      echo "[*] Styled DMG successfully created (headless mode)."
+      echo "[*] Styled DMG successfully created with create-dmg (CI headless mode)."
+    fi
+  else
+    if create-dmg "${CREATE_DMG_ARGS[@]}" "${DMG_OUTPUT}" "${STAGE_DIR}"; then
+      CREATED=1
+      echo "[*] Styled DMG successfully created with create-dmg."
+    else
+      echo "Warning: Standard create-dmg failed. Retrying with --skip-jenkins (headless mode)..." >&2
+      if create-dmg "${CREATE_DMG_ARGS[@]}" --skip-jenkins "${DMG_OUTPUT}" "${STAGE_DIR}"; then
+        CREATED=1
+        echo "[*] Styled DMG successfully created (headless mode)."
+      fi
     fi
   fi
 fi

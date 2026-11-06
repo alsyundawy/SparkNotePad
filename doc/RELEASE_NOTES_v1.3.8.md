@@ -158,7 +158,7 @@ Exhaustive verification across all 14 engineering pillars:
 
 | Artifact Name                                        | Platform / Architecture                                            | Size     | SHA-256 Checksum                                                   |
 | :--------------------------------------------------- | :----------------------------------------------------------------- | :------- | :----------------------------------------------------------------- |
-| **`SparkNotePad-v1.3.8-x64.dmg`** _(Verified Build)_ | macOS Intel (`x86_64`) & Apple Silicon via Rosetta 2 (macOS 11.0+) | 33.75 MB | `aa63656518fd4853497461b85c189450a08492bfb723957ed5d927a76230d8dc` |
+| **`SparkNotePad-v1.3.8-x64.dmg`** _(Verified Build)_ | macOS Intel (`x86_64`) & Apple Silicon via Rosetta 2 (macOS 11.0+) | 33.75 MB | `055aa9778df85424468cf4c3730a828bd01ef4d800ecccc6322fe74f0ff907db` |
 | **`SparkNotePad-v1.3.8-qt6.12-x64.dmg`**             | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.12)                      | 28.97 MB | `4434116cd1cf801634984693175402a4bf74581f33527498c558c4fe7c9ad0b3` |
 | **`SparkNotePad-v1.3.8-qt6.11-x64.dmg`**             | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.11)                      | 28.67 MB | `8ef3db8351b0ace57772b4d01b1a774902166e44b93bc657bb6b2707246ec4c3` |
 | **`SparkNotePad-v1.3.8-qt6.10-x64.dmg`**             | macOS Intel (`x86_64`) (macOS 13.0+, Qt 6.10)                      | 28.27 MB | `f05cd164e65efd58e4fef531dbb9134bc535be8566fae9185a5385d38a0f12ea` |

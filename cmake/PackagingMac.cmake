@@ -64,6 +64,10 @@ endif()
 set(MAC_DMG_NAME "SparkNotePad-v${PROJECT_VERSION}${PKG_QT_TAG}-${MAC_ARCH_SUFFIX}.dmg")
 
 find_program(MACDEPLOYQT_EXECUTABLE macdeployqt REQUIRED)
+find_program(BASH_EXECUTABLE NAMES bash PATHS /usr/local/bin /opt/homebrew/bin /bin /usr/bin)
+if(NOT BASH_EXECUTABLE)
+    set(BASH_EXECUTABLE "bash")
+endif()
 
 add_custom_target(dmg
     COMMAND ${CMAKE_COMMAND} -E rm -f ${INSTALL_DIR}/SparkNotePad.dmg ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
@@ -82,6 +86,6 @@ add_custom_target(dmg
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib
     COMMAND codesign --force --deep -s - ${INSTALL_DIR}/SparkNotePad.app
-    COMMAND /usr/local/bin/bash ${CMAKE_SOURCE_DIR}/scripts/package-dmg.sh ${INSTALL_DIR}/SparkNotePad.app ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME} SparkNotePad
+    COMMAND ${BASH_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/package-dmg.sh ${INSTALL_DIR}/SparkNotePad.app ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME} SparkNotePad
     DEPENDS install_local
 )
