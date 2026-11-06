@@ -55,53 +55,35 @@ SparkNotePad v1.3.8 menghadirkan lompatan besar dalam ergonomi visual dan alur k
 
 ## 🌟 Fitur Utama & Inovasi di v1.3.8
 
-### 1. Rangkaian 40 Paket Ikon Toolbar Bawaan
+### 1. Rangkaian 22 Paket Ikon Toolbar Bawaan
 
 Dapat diakses langsung via `Preferensi > Themes & Toolbar` atau pengaturan toolbar secara bebas restart:
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
-2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Ikonografi vektor dan bitmap Microsoft Fluent modern.
-3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
-4. **Windows 7 (Aero Glass)** (`windows7`): Rangkaian Windows 7/8 Aero Glass Azure otentik dengan gradien kaca sian tembus pandang dan bingkai krom.
-5. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Ikonografi otentik pixel-perfect Fugue 3.5.6 karya Yusuke Kamiyamane dengan skalabilitas multi-resolusi.
-7. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-8. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
-9. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-10. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
-11. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
-12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
-13. **Monoline Minimal** (`monoline_minimal`): Ikon garis minimalis ultra-bersih dengan inversi luminans otomatis pada tema gelap.
-14. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
-15. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
-16. **Humanity GNOME** (`humanity_gnome`): Ikonografi desktop Linux klasik dari proyek Humanity.
-17. **Elementary OS Flat** (`elementary_flat`): Desain datar modern minimalis dari Elementary OS.
-18. **Breeze KDE Plasma** (`breeze_kde`): Ikonografi KDE Plasma Breeze dengan keseimbangan geometris tajam.
-19. **Papirus Rounded** (`papirus_round`): Rangkaian ikon Linux modern dengan sudut membulat cerah.
-20. **macOS Cupertino Clean** (`mac_cupertino`): Simbol monokrom dan penuh warna mematuhi Apple HIG.
-21. **VS Code Codicons** (`vscode_codicons`): Wireframe developer bersih terinspirasi IDE modern.
-22. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
-23. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
-24. **Mignon** (`mignon`): Rangkaian ikon desktop vektor pastel modern karya Igor Moraes.
-25. **Palette** (`palette`): Rangkaian ikon vektor datar modern cerah karya mjkim0727.
-26. **Diagonal** (`diagonal`): Rangkaian ikon vektor geometris menyudut karya Tamas Csabi.
-27. **Argon** (`argon`): Rangkaian ikon sirkular monoline minimalis karya Stuart Hayhurst.
-28. **Reversal** (`reversal`): Ikonografi modern penuh warna kontras tinggi karya yeyushengfan258.
-29. **Big Sur** (`bigsur`): Ikonografi vektor otentik sudut membulat macOS Big Sur karya yeyushengfan258.
-30. **Mkos Big Sur** (`mkos_bigsur`): Rangkaian ikonografi kaca tembus pandang macOS karya zayronxio.
-31. **We10X** (`we10x`): Rangkaian ikonografi modern Windows 10X Fluent Design karya yeyushengfan258.
-32. **MacTahoe** (`mactahoe`): Rangkaian ikonografi vektor modern macOS Aqua karya Vince Liuice.
-33. **UOS FullDistro** (`uos`): Rangkaian ikon distribusi enterprise Linux UOS lengkap karya zayronxio.
-34. **Deepin 2022** (`deepin`): Rangkaian ikon resmi Deepin Desktop Environment 2022 karya zayronxio.
-35. **WhiteSur** (`whitesur`): Rangkaian ikonografi vektor tajam bergaya macOS WhiteSur karya Vince Liuice.
-36. **Elementary KDE** (`elementary_kde`): Rangkaian ikonografi vektor manusiawi bersih Elementary KDE karya zayronxio.
-37. **McMojave Circle** (`mcmojave_circle`): Rangkaian ikon sirkular terinspirasi macOS Mojave karya Vince Liuice.
-38. **Colloid** (`colloid`): Rangkaian ikon geometris bersih modern Colloid karya Vince Liuice.
-39. **Fluent KDE** (`fluent_kde`): Ikonografi vektor Fluent Design System untuk KDE karya zayronxio.
-40. **Win11OS KDE** (`win11os_kde`): Rangkaian ikonografi vektor otentik Windows 11 KDE karya yeyushengfan258.
+2. **Fugue Classic (Silk Suite)** (`fugue`): Ikonografi otentik pixel-perfect Fugue 3.5.6 karya Yusuke Kamiyamane dengan skalabilitas multi-resolusi.
+3. **Windows 7 Aero (Refined Glossy)** (`aero_win7`): Rangkaian ikonografi kaca tembus pandang Windows 7 Aero.
+4. **Windows 7 (Authentic)** (`windows7`): Rangkaian ikonografi bilah alat Windows 7 otentik.
+5. **Microsoft Fluent UI (Regular Outline)** (`fluent_regular`): Desain garis tepi Microsoft Fluent untuk Windows 11.
+6. **Microsoft Fluent UI (Filled Solid)** (`fluent_filled`): Desain solid Microsoft Fluent untuk Windows 11.
+7. **Windows 11 (Authentic Fluent)** (`windows11`): Ikonografi bilah alat Windows 11 Fluent otentik.
+8. **Notepad3 Warm (Classic Amber)** (`notepad3_warm`): Ikonografi editor teks klasik amber dan cokelat hangat Notepad3.
+9. **Notepad++ (Green Accents)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
+10. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
+11. **Glossy Orange (WinRAR Amber)** (`glossy_orange`): Ikonografi skeuomorfik hangat oranye dan amber berkilau.
+12. **Pixel Dense (Retro 16-Bit)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro tajam.
+13. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
+14. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
+15. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
+16. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+17. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
+18. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
+19. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+20. **Mignon** (`mignon`): Rangkaian ikon desktop vektor pastel modern karya Igor Moraes.
+21. **Palette** (`palette`): Rangkaian ikon vektor datar modern cerah karya mjkim0727.
+22. **Diagonal** (`diagonal`): Rangkaian ikon vektor geometris menyudut karya Tamas Csabi.
 
 - **Kejelasan High-DPI & Layar Retina**: Menghilangkan tampilan buram dengan memuat vektor SVG langsung ke engine vektor Qt serta menghasilkan varian pixmap `@2x` Retina DPR (`setDevicePixelRatio(2.0)`) untuk paket berbasis raster.
-- **Tone Mapping Luminans Cerdas Tema Gelap**: Pada tema gelap, wireframe (`monoline_minimal`) diinversi menjadi perak-putih bercahaya, sedangkan paket berwarna (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) ditingkatkan kecerahannya melalui pemetaan HSL tanpa menggeser corak warna dan saturasi.
+- **Tone Mapping Luminans Cerdas Tema Gelap**: Pada tema gelap, wireframe (`monochrome`) diinversi menjadi perak-putih bercahaya, sedangkan paket berwarna (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) ditingkatkan kecerahannya melalui pemetaan HSL tanpa menggeser corak warna dan saturasi.
 
 ### 2. Penskalaan Ukuran Dinamis & Sinkronisasi Seluruh Jendela
 

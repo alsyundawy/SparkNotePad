@@ -52,52 +52,34 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ---
 
-## 4. Toolbar Icon Packs Suite (40 Built-In Packs), Plus (+) Tab Button & Visual Customizer
+## 4. Toolbar Icon Packs Suite (22 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
-SparkNotePad v1.3.8 features a comprehensive toolbar theming and customization architecture with 40 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
+SparkNotePad v1.3.8 features a comprehensive toolbar theming and customization architecture with 22 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
 
-### Built-in Toolbar Icon Packs (40 Packs)
+### Built-in Toolbar Icon Packs (22 Packs)
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane across all 6 resolutions.
-3. **Windows Vista (Aero Glass)** (`aero_vista`): Windows Vista Aero vector iconography.
-4. **Windows 7 (Aero Glass Vector)** (`aero_win7`): Windows 7 Aero Glass vector iconography.
-5. **Windows 7 (Classic Aero Desktop)** (`windows7`): Authentic Windows 7/8 Aero Glass desktop suite rebuilt with translucent cyan gradients and polished chrome borders.
-6. **Microsoft Fluent Design Regular** (`fluent_regular`): Microsoft Fluent Design regular vector suite.
-7. **Microsoft Fluent Design Filled** (`fluent_filled`): Microsoft Fluent Design filled bold vector suite.
-8. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
-9. **Windows 10 (Modern Flat)** (`windows10_flat`): Windows 10 modern flat vector iconography suite.
-10. **Arch Linux (Rolling Cyan)** (`arch_blue`): Arch Linux rolling cyan minimalist vector suite.
-11. **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
-12. **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
-13. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
-14. **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
-15. **Glossy Orange** (`glossy_orange`): Vibrant skeuomorphic orange vector icons.
-16. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
-17. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
-18. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-19. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
-20. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
-21. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-22. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
-23. **Seven Classic** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite across 6 resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
-24. **Mignon Icon Theme** (`mignon`): Modern, elegant vector icons by Igor F. Moraes.
-25. **Palette Icon Theme** (`palette`): Colorful vector icon theme by mjkim0727.
-26. **Diagonal Icon Theme** (`diagonal`): Dynamic diagonal vector styling by Tamás Csábi.
-27. **Argon Icon Theme** (`argon`): Modern geometric vector iconography by Stuart Hayhurst.
-28. **Reversal Icon Theme** (`reversal`): Clean rounded vector icons by yeyushengfan258.
-29. **BigSur Icon Theme** (`bigsur`): Apple Big Sur squircle vector iconography by yeyushengfan258.
-30. **Mkos Big Sur** (`mkos_bigsur`): Detailed macOS Big Sur icon theme by zayronxio.
-31. **We10X Icon Theme** (`we10x`): Windows 10X modern colorful vector icons by yeyushengfan258.
-32. **MacTahoe Icon Theme** (`mactahoe`): macOS Tahoe styled vector iconography by Vince Liuice.
-33. **UOS Full Distro Icons** (`uos`): Deepin/UOS full distro vector icons by zayronxio.
-34. **Deepin Icons 2022** (`deepin`): Deepin OS desktop vector icons by zayronxio.
-35. **WhiteSur Icon Theme** (`whitesur`): Flagship WhiteSur vector icon theme by Vince Liuice.
-36. **Elementary KDE Icons** (`elementary_kde`): Elementary OS aesthetic adapted for KDE by zayronxio.
-37. **McMojave Circle** (`mcmojave_circle`): Circular macOS Mojave vector icons by Vince Liuice.
-38. **Colloid Icon Theme** (`colloid`): Clean modern vector iconography by Vince Liuice.
-39. **Fluent KDE** (`fluent_kde`): Microsoft Fluent theme for KDE by zayronxio.
-40. **Win11OS KDE** (`win11os_kde`): Windows 11 styled vector icons by yeyushengfan258.
+3. **Windows 7 (Aero Glass Vector)** (`aero_win7`): Windows 7 Aero Glass vector iconography.
+4. **Windows 7 (Classic Aero Desktop)** (`windows7`): Authentic Windows 7/8 Aero Glass desktop suite rebuilt with translucent cyan gradients and polished chrome borders.
+5. **Microsoft Fluent Design Regular** (`fluent_regular`): Microsoft Fluent Design regular vector suite.
+6. **Microsoft Fluent Design Filled** (`fluent_filled`): Microsoft Fluent Design filled bold vector suite.
+7. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
+8. **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
+9. **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
+10. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
+11. **Glossy Orange** (`glossy_orange`): Vibrant skeuomorphic orange vector icons.
+12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
+13. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
+14. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
+15. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
+16. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+17. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
+18. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
+19. **Seven Classic** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite across 6 resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+20. **Mignon Icon Theme** (`mignon`): Modern, elegant vector icons by Igor F. Moraes.
+21. **Palette Icon Theme** (`palette`): Colorful vector icon theme by mjkim0727.
+22. **Diagonal Icon Theme** (`diagonal`): Dynamic diagonal vector styling by Tamás Csábi.
 
 ### High-DPI & Retina Clarity
 
@@ -105,7 +87,7 @@ All icon packs feature multi-resolution pixmaps (16x16, 20x20, 24x24, 32x32, 48x
 
 ### Dark Mode Luminance Tone Mapping
 
-Under dark themes, wireframe outline packs (such as `monoline_minimal`) automatically invert dark pixels to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL tone mapping to boost lightness while preserving original hue and saturation.
+Under dark themes, wireframe outline packs (such as `monochrome`) automatically invert dark pixels to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL tone mapping to boost lightness while preserving original hue and saturation.
 
 ### Plus (+) Button on Tab Bar
 

@@ -55,53 +55,35 @@ SparkNotePad v1.3.8 delivers a landmark milestone in editor ergonomics and visua
 
 ## 🌟 Highlights & Key Innovations in v1.3.8
 
-### 1. 40 Built-in Distinct Toolbar Icon Packs Suite
+### 1. 22 Built-in Distinct Toolbar Icon Packs Suite
 
 Accessible instantly via `Preferences > Themes & Toolbar` or the dedicated toolbar settings without requiring an application restart:
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
-2. **Microsoft Fluent UI (Win 11)** (`fluentUi`): Microsoft Fluent Design vector and bitmap iconography suite.
-3. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 with rounded geometry from Directory Opus 32px iconography.
-4. **Windows 7 (Aero Glass)** (`windows7`): Authentic Windows 7/8 Aero Glass Azure suite rebuilt from UltimateDesktops sprite sheet with translucent cyan glass gradients and polished chrome borders.
-5. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-6. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane with multi-resolution scaling.
-7. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
-8. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
-9. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
-10. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
-11. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
-12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
-13. **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
-14. **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
-15. **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
-16. **Humanity GNOME** (`humanity_gnome`): Classic Linux desktop iconography from the Humanity icon project.
-17. **Elementary OS Flat** (`elementary_flat`): Modern, minimalist flat design from Elementary OS.
-18. **Breeze KDE Plasma** (`breeze_kde`): KDE Plasma Breeze iconography with crisp geometric balance.
-19. **Papirus Rounded** (`papirus_round`): Vibrant, rounded modern Linux icon suite.
-20. **macOS Cupertino Clean** (`mac_cupertino`): Apple HIG compliant monochrome and colorful symbols.
-21. **VS Code Codicons** (`vscode_codicons`): Clean developer wireframes inspired by modern IDEs.
-22. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
-23. **Seven Classic** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite across 6 multi-DPI resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
-24. **Mignon** (`mignon`): Modern playful pastel vector desktop iconography suite by Igor Moraes.
-25. **Palette** (`palette`): Vibrant modern flat vector iconography suite by mjkim0727.
-26. **Diagonal** (`diagonal`): Sleek geometric angular vector iconography suite by Tamas Csabi.
-27. **Argon** (`argon`): Minimalist circular and monoline iconography suite by Stuart Hayhurst.
-28. **Reversal** (`reversal`): High-contrast vivid modern colorful iconography by yeyushengfan258.
-29. **Big Sur** (`bigsur`): macOS Big Sur rounded-rect authentic vector iconography by yeyushengfan258.
-30. **Mkos Big Sur** (`mkos_bigsur`): Translucent glass macOS vector iconography suite by zayronxio.
-31. **We10X** (`we10x`): Windows 10X Fluent Design modern iconography suite by yeyushengfan258.
-32. **MacTahoe** (`mactahoe`): Modern macOS Aqua vector iconography suite by Vince Liuice.
-33. **UOS FullDistro** (`uos`): Complete UOS Linux enterprise distribution desktop vector icon suite by zayronxio.
-34. **Deepin 2022** (`deepin`): Deepin Desktop Environment 2022 official desktop icon suite by zayronxio.
-35. **WhiteSur** (`whitesur`): WhiteSur macOS-styled crisp vector iconography suite by Vince Liuice.
-36. **Elementary KDE** (`elementary_kde`): Elementary KDE clean human-centered vector iconography suite by zayronxio.
-37. **McMojave Circle** (`mcmojave_circle`): McMojave circular macOS-inspired icon suite by Vince Liuice.
-38. **Colloid** (`colloid`): Colloid clean modern geometric icon suite by Vince Liuice.
-39. **Fluent KDE** (`fluent_kde`): Fluent Design System vector iconography for KDE by zayronxio.
-40. **Win11OS KDE** (`win11os_kde`): Windows 11 KDE authentic vector iconography suite by yeyushengfan258.
+2. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane with multi-resolution scaling.
+3. **Windows 7 Aero (Refined Glossy)** (`aero_win7`): Refined Windows 7 Aero translucent glass iconography.
+4. **Windows 7 (Authentic)** (`windows7`): Authentic Windows 7 toolbar iconography.
+5. **Microsoft Fluent UI (Regular Outline)** (`fluent_regular`): Microsoft Fluent Design outlined iconography for Windows 11.
+6. **Microsoft Fluent UI (Filled Solid)** (`fluent_filled`): Microsoft Fluent Design filled solid iconography.
+7. **Windows 11 (Authentic Fluent)** (`windows11`): Authentic Windows 11 Fluent toolbar iconography.
+8. **Notepad3 Warm (Classic Amber)** (`notepad3_warm`): Notepad3 warm brown and amber classic text editor iconography.
+9. **Notepad++ (Green Accents)** (`notepadpp_green`): Classic Notepad++ toolbar iconography with green accents.
+10. **Notepad++ (Classic)** (`notepadPlusPlus`): Authentic Notepad++ dual-resolution SVG and PNG suite.
+11. **Glossy Orange (WinRAR Amber)** (`glossy_orange`): Warm glossy orange and amber skeuomorphic iconography.
+12. **Pixel Dense (Retro 16-Bit)** (`pixel_fugue_like`): Pixel-precise dense retro iconography with crisp edges.
+13. **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
+14. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
+15. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
+16. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
+17. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
+18. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
+19. **Seven Classic** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite across 6 multi-DPI resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+20. **Mignon** (`mignon`): Modern playful pastel vector desktop iconography suite by Igor Moraes.
+21. **Palette** (`palette`): Vibrant modern flat vector iconography suite by mjkim0727.
+22. **Diagonal** (`diagonal`): Sleek geometric angular vector iconography suite by Tamas Csabi.
 
 - **High-DPI Retina Clarity**: Eliminates all icon blur by supplying native vector SVGs directly to Qt's vector engine and generating dedicated `@2x` Retina DPR pixmaps (`setDevicePixelRatio(2.0)`) for raster packs.
-- **Intelligent Dark Mode Tone Mapping**: Under dark themes, outline wireframes (`monoline_minimal`) are remapped to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL lightness boosting without shifting hue or saturation.
+- **Intelligent Dark Mode Tone Mapping**: Under dark themes, outline wireframes (`monochrome`) are remapped to luminous silver-white, while chromatic packs (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) undergo HSL lightness boosting without shifting hue or saturation.
 
 ### 2. Multi-Resolution Sizing & Dynamic Window-Wide Synchronization
 

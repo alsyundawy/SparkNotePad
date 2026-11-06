@@ -28,7 +28,7 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
   - **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
   - **Material Design (Sharp Vector)** (`material_sharp`): Google Material Design iconography with sharp geometric vector lines.
   - **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Nostalgic pixel-art iconography reminiscent of desktop classics.
-  - **Monoline Minimal** (`monoline_minimal`): Ultra-clean minimalist outline wireframe icons with automatic dark-mode luminance inversion.
+  - **Seven Classic (Glossy Desktop)** (`seven`): Classic Windows 7 / Seven glossy desktop iconography suite.
   - **Notepad++ (Modern Green)** (`notepadpp_green`): Refreshed modern green Notepad++ style icons.
   - **Notepad3 (Warm Amber)** (`notepad3_warm`): Warm amber and brown accents inspired by the Notepad3 editor.
   - **Humanity GNOME** (`humanity_gnome`): Classic Linux desktop iconography from the Humanity icon project.

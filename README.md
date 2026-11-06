@@ -427,10 +427,10 @@ trunk check -n -j 2
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.8] — 40 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
+### [v1.3.8] — 22 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
 
-- **40 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
-  - Seamlessly switch among 40 built-in vector and pixel icon collections (Silk, Modern Ribbon, Fluent, Win7, Win11, Monoline, Authentic Fugue 3.5.6 by Yusuke Kamiyamane, Elegant Themes by Nicholas Roach, Seven Classic, Mignon, Palette, Diagonal, Argon, Reversal, Big Sur, Mkos Big Sur, We10X, MacTahoe, UOS FullDistro, Deepin 2022, WhiteSur, Elementary KDE, McMojave Circle, Colloid, Fluent KDE, Win11OS KDE, etc.) with dynamic icon scaling (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+- **22 Distinct Multi-Resolution Toolbar Icon Packs Suite**:
+  - Seamlessly switch among 22 built-in vector and pixel icon collections (Silk, Modern Ribbon, Fluent, Win7, Win11, Authentic Fugue 3.5.6 by Yusuke Kamiyamane, Elegant Themes by Nicholas Roach, Seven Classic, Mignon, Palette, Diagonal, etc.) with dynamic icon scaling (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
   - External custom icon pack support with automatic filesystem discovery and live rescan.
   - Full propagation of icon themes to all menus, submenus, tab context menus, and editor context menus.
 - **Dedicated Preferences Tabs ("Themes & Toolbar" & "Custom Toolbar Config")**:

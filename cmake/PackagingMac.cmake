@@ -82,6 +82,6 @@ add_custom_target(dmg
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib
     COMMAND codesign --force --deep -s - ${INSTALL_DIR}/SparkNotePad.app
-    COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/package-dmg.sh ${INSTALL_DIR}/SparkNotePad.app ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME} SparkNotePad
+    COMMAND /usr/local/bin/bash ${CMAKE_SOURCE_DIR}/scripts/package-dmg.sh ${INSTALL_DIR}/SparkNotePad.app ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME} SparkNotePad
     DEPENDS install_local
 )
