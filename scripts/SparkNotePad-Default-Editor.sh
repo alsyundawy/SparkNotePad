@@ -174,8 +174,8 @@ readonly EXTENSIONS=(
 	"xml" "plist" "env" "editorconfig" "gitignore" "gitattributes" "gitmodules"
 	"dockerignore" "npmignore" "slugignore" "csv" "tsv" "tab" "sql" "cql"
 
-	# Systems Programming (C, C++, Rust, Zig, Go)
-	"c" "h" "cpp" "hpp" "cc" "hh" "cxx" "hxx" "c++" "h++" "m" "mm"
+	# Systems Programming (C, C++, Rust, Zig, Go, Resource Script)
+	"c" "h" "cpp" "hpp" "cc" "hh" "cxx" "hxx" "c++" "h++" "m" "mm" "rc"
 	"rs" "rlib" "zig" "go" "mod" "sum" "s" "asm"
 
 	# JVM & .NET Languages

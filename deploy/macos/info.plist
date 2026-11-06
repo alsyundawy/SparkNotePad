@@ -81,6 +81,9 @@
 				<string>sh</string>
 				<string>bash</string>
 				<string>zsh</string>
+				<string>bat</string>
+				<string>cmd</string>
+				<string>rc</string>
 				<string>lua</string>
 				<string>rs</string>
 				<string>go</string>

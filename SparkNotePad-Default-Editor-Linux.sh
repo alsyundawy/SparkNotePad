@@ -187,6 +187,8 @@ readonly LINUX_MIME_TYPES=(
 	"application/x-php"
 	"text/x-shellscript"
 	"application/x-shellscript"
+	"application/x-bat"
+	"text/x-bat"
 	"text/x-bash"
 	"text/x-zsh"
 	"text/x-fish"

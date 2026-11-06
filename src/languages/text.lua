@@ -9,6 +9,8 @@ L.disableFoldMargin = true
 L.extensions = {
     "",
     "txt",
+    "text",
+    "log",
 }
 
 L.styles = {
