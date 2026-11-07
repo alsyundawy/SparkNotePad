@@ -45,5 +45,6 @@ public:
      * @param maxDepth Maximum permitted nesting depth (default: 32).
      * @param maxSizeBytes Maximum permitted file size in bytes (default: 10 MB).
      */
-    static bool isPayloadStructureSafe(const QByteArray &data, int maxDepth = 32, qint64 maxSizeBytes = 10LL * 1024LL * 1024LL, QString *errorMsg = nullptr);
+    static bool isPayloadStructureSafe(const QByteArray &data, int maxDepth = 32,
+                                       qint64 maxSizeBytes = 10LL * 1024LL * 1024LL, QString *errorMsg = nullptr);
 };

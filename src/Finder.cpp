@@ -45,8 +45,8 @@ bool Finder::isRegexSearch() const {
 
 Sci_CharacterRange Finder::searchTarget(Sci_Position start, Sci_Position end) {
     const QByteArray searchText = find_options.fuzzy
-        ? RegexSafetyEngine::buildFuzzySubsequencePattern(find_options.text).toUtf8()
-        : find_options.text.toUtf8();
+                                      ? RegexSafetyEngine::buildFuzzySubsequencePattern(find_options.text).toUtf8()
+                                      : find_options.text.toUtf8();
 
     editor->setTargetRange(start, end);
 

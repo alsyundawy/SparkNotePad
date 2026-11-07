@@ -175,9 +175,8 @@ void QuickFindWidget::navigateToNextMatch(bool skipCurrent) {
             startPos = static_cast<int>(editor->selectionStart());
         }
 
-        const auto it = std::ranges::lower_bound(matches, startPos, std::less<int>{}, [](const QPair<int, int> &pair) {
-            return pair.first;
-        });
+        const auto it = std::ranges::lower_bound(matches, startPos, std::less<int>{},
+                                                 [](const QPair<int, int> &pair) { return pair.first; });
 
         if (it != matches.end()) {
             currentMatchIndex = std::distance(matches.begin(), it);

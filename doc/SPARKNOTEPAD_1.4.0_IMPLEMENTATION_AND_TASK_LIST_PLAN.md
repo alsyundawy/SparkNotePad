@@ -24,18 +24,18 @@ The goal of version 1.4.0 is to adopt high-value user experience innovations fro
 
 ### 2.1 Architectural Taxonomy
 
-| Editor | Framework / UI Subsystem | Language Standard | Text Rendering Engine | Regex Subsystem | Extension / Scripting | Sandboxing / Isolation |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **SparkNotePad** | Qt 6.5–6.12 (Widgets, ADS Docking) | C++20 | Scintilla 5.6.9 + Lexilla 5.5.5 | Scintilla Native (`SCI_OWNREGEX`) | Sandboxed Lua 5.5.1 + Python Engine | Strict API restriction (`os`/`io`/`package`/`debug` stripped) |
-| **Nextpad++ (macOS)** | Cocoa / AppKit (Native) | Objective-C++ / C++20 | Scintilla + Lexilla | PCRE / Scintilla | Ported DLL/Dylib Plugins + CLI (`npp`) | macOS App Sandbox / Hardened Runtime |
-| **Nextpad++ (Linux)** | GTK4 (Native) | C11 / C++20 | Scintilla + Lexilla | PCRE / Scintilla | Ported `.so` Plugins | Linux user permissions / AppArmor |
-| **Notepad++** | Win32 API / STL | C++17/C++20 | Scintilla 5.6.9 + Lexilla 5.5.5 | PCRE / Boost.Regex | External C/C++ DLL Plugins | Process token; WinGUp XMLDSig updater |
-| **Notepad--** | Qt 5.15 / Qt 6.x | C++17 | Scintilla / QScintilla Custom | Qt `QRegularExpression` / PCRE2 | Native C++ Plugins | OS file permissions |
-| **Notepad2 / Mod** | Win32 API | C99 / C++11 | Scintilla | Custom NFA/DFA Regex | Win32 Messages | Standard user session |
-| **Notepad3** | Win32 API | C++17 | Scintilla + Oniguruma | Oniguruma Regex Engine | In-process Win32 hooks | Standard user session |
-| **Notepad4** | Win32 API | Modern C++ | Scintilla + `matepath` | Custom PCRE2 | Win32 hooks | Standard user session |
-| **Sublime Text** | Custom GPU/Skia UI | C++ / Python | Custom text layout engine | Oniguruma / PCRE | Embedded Python 3.8+ | In-process Python API |
-| **BBEdit** | macOS Cocoa / AppKit | Objective-C / Swift | Proprietary text engine | PCRE | AppleScript / Shell Text Factories | macOS App Sandbox |
+| Editor                | Framework / UI Subsystem           | Language Standard     | Text Rendering Engine           | Regex Subsystem                   | Extension / Scripting                  | Sandboxing / Isolation                                        |
+| :-------------------- | :--------------------------------- | :-------------------- | :------------------------------ | :-------------------------------- | :------------------------------------- | :------------------------------------------------------------ |
+| **SparkNotePad**      | Qt 6.5–6.12 (Widgets, ADS Docking) | C++20                 | Scintilla 5.6.9 + Lexilla 5.5.5 | Scintilla Native (`SCI_OWNREGEX`) | Sandboxed Lua 5.5.1 + Python Engine    | Strict API restriction (`os`/`io`/`package`/`debug` stripped) |
+| **Nextpad++ (macOS)** | Cocoa / AppKit (Native)            | Objective-C++ / C++20 | Scintilla + Lexilla             | PCRE / Scintilla                  | Ported DLL/Dylib Plugins + CLI (`npp`) | macOS App Sandbox / Hardened Runtime                          |
+| **Nextpad++ (Linux)** | GTK4 (Native)                      | C11 / C++20           | Scintilla + Lexilla             | PCRE / Scintilla                  | Ported `.so` Plugins                   | Linux user permissions / AppArmor                             |
+| **Notepad++**         | Win32 API / STL                    | C++17/C++20           | Scintilla 5.6.9 + Lexilla 5.5.5 | PCRE / Boost.Regex                | External C/C++ DLL Plugins             | Process token; WinGUp XMLDSig updater                         |
+| **Notepad--**         | Qt 5.15 / Qt 6.x                   | C++17                 | Scintilla / QScintilla Custom   | Qt `QRegularExpression` / PCRE2   | Native C++ Plugins                     | OS file permissions                                           |
+| **Notepad2 / Mod**    | Win32 API                          | C99 / C++11           | Scintilla                       | Custom NFA/DFA Regex              | Win32 Messages                         | Standard user session                                         |
+| **Notepad3**          | Win32 API                          | C++17                 | Scintilla + Oniguruma           | Oniguruma Regex Engine            | In-process Win32 hooks                 | Standard user session                                         |
+| **Notepad4**          | Win32 API                          | Modern C++            | Scintilla + `matepath`          | Custom PCRE2                      | Win32 hooks                            | Standard user session                                         |
+| **Sublime Text**      | Custom GPU/Skia UI                 | C++ / Python          | Custom text layout engine       | Oniguruma / PCRE                  | Embedded Python 3.8+                   | In-process Python API                                         |
+| **BBEdit**            | macOS Cocoa / AppKit               | Objective-C / Swift   | Proprietary text engine         | PCRE                              | AppleScript / Shell Text Factories     | macOS App Sandbox                                             |
 
 ---
 
@@ -54,22 +54,22 @@ Cross-referenced against primary security advisories, CVE databases, GHSA bullet
 ### 3.2 Notepad++: 2025–2026 Vulnerabilities & v8.9.9 Advisory
 
 - **CVE-2025-15556 (WinGUp Updater Supply Chain Hijack):** Unauthenticated update XML allowed man-in-the-middle payload delivery (Chrysalis RAT). Fixed in v8.8.9+ by enforcing XMLDSig signature verification.
-  - *SparkNotePad Mitigation:* `UpdateDialog` uses TLS with SHA-256 integrity validation from `updates.json`.
+  - _SparkNotePad Mitigation:_ `UpdateDialog` uses TLS with SHA-256 integrity validation from `updates.json`.
 - **CVE-2025-49144 (Installer Uncontrolled Search Path / Binary Planting):** DLL hijacking in installer directory.
-  - *SparkNotePad Mitigation:* macOS DMG uses signed universal binaries; Linux builds use standard distribution packages (`.deb`, `.rpm`) without dynamic library path search vulnerabilities.
+  - _SparkNotePad Mitigation:_ macOS DMG uses signed universal binaries; Linux builds use standard distribution packages (`.deb`, `.rpm`) without dynamic library path search vulnerabilities.
 - **CVE-2026-25926 (Command Injection via Explorer Launch):** Arbitrary code execution when opening files/projects.
-  - *SparkNotePad Mitigation:* `ExternalToolManager` and `RunDialog` strictly invoke `QProcess::start(program, arguments)` without invoking `/bin/sh -c` or `cmd.exe /c`.
+  - _SparkNotePad Mitigation:_ `ExternalToolManager` and `RunDialog` strictly invoke `QProcess::start(program, arguments)` without invoking `/bin/sh -c` or `cmd.exe /c`.
 - **CVE-2026-3008 & CVE-2026-48778 (Malformed XML Configuration Execution):** String injection and buffer overflow via crafted `config.xml`.
-  - *SparkNotePad Mitigation:* `ConfigIntegrityGuard` enforces strict schema checks, size bounds, and memory limits before reading settings.
+  - _SparkNotePad Mitigation:_ `ConfigIntegrityGuard` enforces strict schema checks, size bounds, and memory limits before reading settings.
 - **Notepad++ v8.9.9 (Nov 6, 2026) Security Patches:** Addressed `WM_COPYDATA` IPC injection, plugin privilege escalation under UAC, heap disclosures, and out-of-bounds array access via `NPPM_MENUCOMMAND`.
-  - *SparkNotePad Mitigation:* Single-instance IPC in SparkNotePad uses `SingleApplication` with local socket authentication and structured JSON payloads.
+  - _SparkNotePad Mitigation:_ Single-instance IPC in SparkNotePad uses `SingleApplication` with local socket authentication and structured JSON payloads.
 
 ### 3.3 Notepad2 & Notepad3 Security Advisories
 
 - **CVE-2026-4545 (Notepad2):** DLL search-order hijacking via `PROPSYS.dll`.
 - **CVE-2026-38972 (Notepad3):** Bare DLL loading `LoadLibrary(L"MSFTEDIT.DLL")` in About dialog.
 - **CVE-2026-4744 (Notepad3):** Critical out-of-bounds read and buffer overflow in Scintilla / Oniguruma regex parser (CVSS 9.3).
-  - *SparkNotePad Mitigation:* SparkNotePad uses Scintilla 5.6.9 with native `SCI_OWNREGEX` and `RegexSafetyEngine` with CPU backtracking limits (CWE-1333 mitigation).
+  - _SparkNotePad Mitigation:_ SparkNotePad uses Scintilla 5.6.9 with native `SCI_OWNREGEX` and `RegexSafetyEngine` with CPU backtracking limits (CWE-1333 mitigation).
 
 ### 3.4 Scintilla 5.6.9 & Lexilla 5.5.5 Stability & Security
 
@@ -79,7 +79,7 @@ Cross-referenced against primary security advisories, CVE databases, GHSA bullet
   - Fixed C++ Lexer crash on incomplete preprocessor macro invocations (Issue #388).
   - Fixed DMIS Lexer out-of-bounds write on long words (Issue #388, PR #387, CWE-787).
   - Fixed HTML Lexer comments embedded within scripts and allowed non-ASCII/`$`/`#` in JavaScript.
-  - *SparkNotePad Status:* Both Scintilla 5.6.9 and Lexilla 5.5.5 are fully integrated in `thirdparty/`.
+  - _SparkNotePad Status:_ Both Scintilla 5.6.9 and Lexilla 5.5.5 are fully integrated in `thirdparty/`.
 
 ### 3.5 Lua 5.5.1 Security & Performance
 
@@ -90,9 +90,9 @@ Cross-referenced against primary security advisories, CVE databases, GHSA bullet
 ### 3.6 Qt Framework 2025–2026 Advisories
 
 - **CVE-2026-16762 (Qt Core / `QXmlStreamReader` DoS):** Disproportionate CPU consumption on crafted XML documents (CVSS 8.7).
-  - *SparkNotePad Mitigation:* XML parsing capped at 32 levels of nesting and strict 10 MB payload ceiling.
+  - _SparkNotePad Mitigation:_ XML parsing capped at 32 levels of nesting and strict 10 MB payload ceiling.
 - **CVE-2026-8168 (Qt SVG / `QtSvg` DoS):** Deep element nesting stack exhaustion crash (CVSS 7.1).
-  - *SparkNotePad Mitigation:* SVG icon rendering strictly loads vetted static application resources (`:/icons/`).
+  - _SparkNotePad Mitigation:_ SVG icon rendering strictly loads vetted static application resources (`:/icons/`).
 
 ---
 
@@ -102,16 +102,16 @@ Analysis of `nextpad-plus-plus/nextpad-plus-plus-macos`, `nextpad-plus-plus/next
 
 ### 4.1 Features Analyzed for Safe Adoption in SparkNotePad v1.4.0
 
-| Feature from Nextpad++ | Technical Viability in SparkNotePad | Risk Level | Adoption Strategy for v1.4.0 |
-| :--- | :--- | :--- | :--- |
-| **Title-bar Proxy Icon (#336)** | Native Qt support via `QWidget::setWindowFilePath` | Zero | Set window file path on active tab change; enables native macOS drag-and-drop & folder breadcrumbs. |
-| **Enriched Tab Tooltips (#354)** | Qt TabBar tooltip event filtering | Zero | Show path, size, lines, characters, encoding, EOL, and modification timestamp on hover. |
-| **Change History Markers** | Built-in Scintilla 5.6.9 capability (`SCI_SETCHANGEHISTORY`) | Very Low | Enable in `ScintillaNext` in dedicated margin 4 with customizable theme colors. |
-| **Fine-Grained Line Spacing** | Supported via `SCI_SETEXTRAASCENT` / `DESCENT` | Very Low | Add extra ascent/descent sliders in Preferences Dialog. |
-| **Help → Debug Information** | Standard Qt system and application introspection | Zero | Format comprehensive diagnostics and copy to clipboard for bug reporting. |
-| **Fuzzy Subsequence Search** | `RegexSafetyEngine` bounded regex conversion | Low | Provide opt-in "Fuzzy Match" checkbox in Find/Replace and QuickFind. |
-| **Batch Macro Execution** | Extension of existing `MacroRunDialog` | Low | Allow running recorded macro over "All Open Files" or "Directory" with worker thread & abort. |
-| **Local Model Context Protocol (MCP)** | Qt local loopback socket / JSON-RPC server | Low | Strictly loopback `127.0.0.1`, token-guarded, read-only buffer inspection for AI pairing. |
+| Feature from Nextpad++                 | Technical Viability in SparkNotePad                          | Risk Level | Adoption Strategy for v1.4.0                                                                        |
+| :------------------------------------- | :----------------------------------------------------------- | :--------- | :-------------------------------------------------------------------------------------------------- |
+| **Title-bar Proxy Icon (#336)**        | Native Qt support via `QWidget::setWindowFilePath`           | Zero       | Set window file path on active tab change; enables native macOS drag-and-drop & folder breadcrumbs. |
+| **Enriched Tab Tooltips (#354)**       | Qt TabBar tooltip event filtering                            | Zero       | Show path, size, lines, characters, encoding, EOL, and modification timestamp on hover.             |
+| **Change History Markers**             | Built-in Scintilla 5.6.9 capability (`SCI_SETCHANGEHISTORY`) | Very Low   | Enable in `ScintillaNext` in dedicated margin 4 with customizable theme colors.                     |
+| **Fine-Grained Line Spacing**          | Supported via `SCI_SETEXTRAASCENT` / `DESCENT`               | Very Low   | Add extra ascent/descent sliders in Preferences Dialog.                                             |
+| **Help → Debug Information**           | Standard Qt system and application introspection             | Zero       | Format comprehensive diagnostics and copy to clipboard for bug reporting.                           |
+| **Fuzzy Subsequence Search**           | `RegexSafetyEngine` bounded regex conversion                 | Low        | Provide opt-in "Fuzzy Match" checkbox in Find/Replace and QuickFind.                                |
+| **Batch Macro Execution**              | Extension of existing `MacroRunDialog`                       | Low        | Allow running recorded macro over "All Open Files" or "Directory" with worker thread & abort.       |
+| **Local Model Context Protocol (MCP)** | Qt local loopback socket / JSON-RPC server                   | Low        | Strictly loopback `127.0.0.1`, token-guarded, read-only buffer inspection for AI pairing.           |
 
 ---
 

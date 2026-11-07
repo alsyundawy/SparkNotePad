@@ -594,7 +594,8 @@ void ScintillaNext::trimTrailingWhitespace() {
 void ScintillaNext::changeEvent(QEvent *event) {
     ScintillaEdit::changeEvent(event);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
-    const bool isDpiChange = event && (event->type() == QEvent::DevicePixelRatioChange || event->type() == QEvent::ScreenChangeInternal);
+    const bool isDpiChange =
+        event && (event->type() == QEvent::DevicePixelRatioChange || event->type() == QEvent::ScreenChangeInternal);
 #else
     const bool isDpiChange = event && (event->type() == QEvent::ScreenChangeInternal);
 #endif

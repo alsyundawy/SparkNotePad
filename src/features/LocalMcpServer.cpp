@@ -67,9 +67,9 @@ void LocalMcpServer::onNewConnection() {
         }
 
         // Enforce strict loopback validation
-        if (const QHostAddress peer = socket->peerAddress();
-            peer != QHostAddress::LocalHost && peer != QHostAddress(QStringLiteral("127.0.0.1")) &&
-            peer != QHostAddress(QStringLiteral("::1"))) {
+        if (const QHostAddress peer = socket->peerAddress(); peer != QHostAddress::LocalHost &&
+                                                             peer != QHostAddress(QStringLiteral("127.0.0.1")) &&
+                                                             peer != QHostAddress(QStringLiteral("::1"))) {
             socket->abort();
             socket->deleteLater();
             continue;
@@ -148,25 +148,21 @@ QJsonObject LocalMcpServer::handleToolsList() {
     QJsonObject t1;
     t1[QStringLiteral("name")] = QStringLiteral("list_open_tabs");
     t1[QStringLiteral("description")] = QStringLiteral("List all open document tabs in SparkNotePad");
-    t1[QStringLiteral("inputSchema")] = QJsonObject{
-        {QStringLiteral("type"), QStringLiteral("object")},
-        {QStringLiteral("properties"), QJsonObject{}}
-    };
+    t1[QStringLiteral("inputSchema")] =
+        QJsonObject{{QStringLiteral("type"), QStringLiteral("object")}, {QStringLiteral("properties"), QJsonObject{}}};
     tools.append(t1);
 
     // Tool 2: read_active_tab
     QJsonObject t2;
     t2[QStringLiteral("name")] = QStringLiteral("read_active_tab");
     t2[QStringLiteral("description")] = QStringLiteral("Read text content of the currently active editor tab");
-    t2[QStringLiteral("inputSchema")] = QJsonObject{
-        {QStringLiteral("type"), QStringLiteral("object")},
-        {QStringLiteral("properties"), QJsonObject{
-            {QStringLiteral("max_bytes"), QJsonObject{
-                {QStringLiteral("type"), QStringLiteral("integer")},
-                {QStringLiteral("description"), QStringLiteral("Maximum bytes to read (default: 65536)")}
-            }}
-        }}
-    };
+    t2[QStringLiteral("inputSchema")] =
+        QJsonObject{{QStringLiteral("type"), QStringLiteral("object")},
+                    {QStringLiteral("properties"),
+                     QJsonObject{{QStringLiteral("max_bytes"),
+                                  QJsonObject{{QStringLiteral("type"), QStringLiteral("integer")},
+                                              {QStringLiteral("description"),
+                                               QStringLiteral("Maximum bytes to read (default: 65536)")}}}}}};
     tools.append(t2);
 
     QJsonObject result;

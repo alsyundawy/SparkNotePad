@@ -27,7 +27,10 @@ bool isXmlDepthSafe(const QByteArray &data, int maxDepth, QString *errorMsg) {
             currentDepth++;
             if (currentDepth > maxDepth) {
                 if (errorMsg) {
-                    *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "XML nesting depth exceeded safe threshold of %1 levels (CVE-2026-16762).").arg(maxDepth);
+                    *errorMsg = QCoreApplication::translate(
+                                    "ConfigIntegrityGuard",
+                                    "XML nesting depth exceeded safe threshold of %1 levels (CVE-2026-16762).")
+                                    .arg(maxDepth);
                 }
                 return false;
             }
@@ -63,9 +66,10 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
 
     const QString lower = trimmed.toLower();
 
-    if (const auto bannedIt = std::ranges::find_if(kBannedPrefixes, [&lower](const QString &banned) {
-            return lower.startsWith(banned) || lower == banned.trimmed();
-        }); bannedIt != kBannedPrefixes.cend()) {
+    if (const auto bannedIt = std::ranges::find_if(
+            kBannedPrefixes,
+            [&lower](const QString &banned) { return lower.startsWith(banned) || lower == banned.trimmed(); });
+        bannedIt != kBannedPrefixes.cend()) {
         if (rejectedReason) {
             *rejectedReason = QCoreApplication::translate(
                                   "ConfigIntegrityGuard",
@@ -115,8 +119,8 @@ bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString 
                                                       QStringLiteral("/etc/sudoers"), QStringLiteral("/bin/sh"),
                                                       QStringLiteral("/bin/bash")};
 
-    if (const bool isSensitive = std::ranges::any_of(kSensitiveSystemPaths,
-                                                     [&canonical](const QString &sysPath) { return canonical == sysPath; });
+    if (const bool isSensitive = std::ranges::any_of(
+            kSensitiveSystemPaths, [&canonical](const QString &sysPath) { return canonical == sysPath; });
         isSensitive) {
         if (errorMsg) {
             *errorMsg =
@@ -134,10 +138,13 @@ bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString 
     return true;
 }
 
-bool ConfigIntegrityGuard::isPayloadStructureSafe(const QByteArray &data, int maxDepth, qint64 maxSizeBytes, QString *errorMsg) {
+bool ConfigIntegrityGuard::isPayloadStructureSafe(const QByteArray &data, int maxDepth, qint64 maxSizeBytes,
+                                                  QString *errorMsg) {
     if (data.size() > maxSizeBytes) {
         if (errorMsg) {
-            *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "Payload exceeds safe maximum size limit (%1 bytes).").arg(maxSizeBytes);
+            *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard",
+                                                    "Payload exceeds safe maximum size limit (%1 bytes).")
+                            .arg(maxSizeBytes);
         }
         return false;
     }
