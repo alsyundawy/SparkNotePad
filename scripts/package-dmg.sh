@@ -91,7 +91,8 @@ if command -v create-dmg >/dev/null 2>&1; then
 		--hide-extension "SparkNotePad.app"
 		--app-drop-link 510 245
 		--format UDZO
-		--hdiutil-retries 5
+		--hdiutil-retries 10
+		--applescript-sleep-duration 5
 		--overwrite
 	)
 
@@ -103,35 +104,45 @@ if command -v create-dmg >/dev/null 2>&1; then
 		CREATE_DMG_ARGS+=(--background "${BG_IMG}")
 	fi
 
-	# In CI / headless runner environments (no WindowServer/Finder UI), skip Finder AppleScript directly
-	if [[ -n ${CI:-} || -n ${GITHUB_ACTIONS:-} ]]; then
-		echo "[*] Detected CI/headless environment. Passing --skip-jenkins to create-dmg..."
+	# Always attempt full styled DMG with AppleScript first
+	if create-dmg "${CREATE_DMG_ARGS[@]}" "${DMG_OUTPUT}" "${STAGE_DIR}"; then
+		CREATED=1
+		echo "[*] Styled DMG successfully created with create-dmg."
+	else
+		echo "Warning: Standard create-dmg failed. Retrying with --skip-jenkins (headless mode)..." >&2
 		if create-dmg "${CREATE_DMG_ARGS[@]}" --skip-jenkins "${DMG_OUTPUT}" "${STAGE_DIR}"; then
 			CREATED=1
-			echo "[*] Styled DMG successfully created with create-dmg (CI headless mode)."
-		fi
-	else
-		if create-dmg "${CREATE_DMG_ARGS[@]}" "${DMG_OUTPUT}" "${STAGE_DIR}"; then
-			CREATED=1
-			echo "[*] Styled DMG successfully created with create-dmg."
-		else
-			echo "Warning: Standard create-dmg failed. Retrying with --skip-jenkins (headless mode)..." >&2
-			if create-dmg "${CREATE_DMG_ARGS[@]}" --skip-jenkins "${DMG_OUTPUT}" "${STAGE_DIR}"; then
-				CREATED=1
-				echo "[*] Styled DMG successfully created (headless mode)."
-			fi
+			echo "[*] Styled DMG created (headless mode)."
 		fi
 	fi
 fi
 
-# Fallback to native hdiutil if create-dmg is unavailable or failed
+# Fallback to native hdiutil packaging with pre-baked .DS_Store styling
 if [[ ${CREATED} -eq 0 ]]; then
-	echo "[*] Falling back to native hdiutil packaging..."
+	echo "[*] Falling back to native hdiutil packaging with styled .DS_Store..."
 	ln -s /Applications "${STAGE_DIR}/Applications"
 
 	if [[ -f ${BG_IMG} ]]; then
 		mkdir -p "${STAGE_DIR}/.background"
 		cp "${BG_IMG}" "${STAGE_DIR}/.background/dmg-background.png"
+		chflags hidden "${STAGE_DIR}/.background" 2>/dev/null || true
+	fi
+
+	DS_STORE_PRESET="${REPO_ROOT}/deploy/macos/dmg-ds-store"
+	if [[ -f ${DS_STORE_PRESET} ]]; then
+		cp "${DS_STORE_PRESET}" "${STAGE_DIR}/.DS_Store"
+	fi
+
+	if [[ -f ${VOL_ICON} ]]; then
+		cp "${VOL_ICON}" "${STAGE_DIR}/.VolumeIcon.icns"
+		chflags hidden "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
+	fi
+
+	if command -v SetFile >/dev/null 2>&1; then
+		SetFile -a V "${STAGE_DIR}/.background" 2>/dev/null || true
+		SetFile -a V "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
+		SetFile -c icnC "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
+		SetFile -a C "${STAGE_DIR}" 2>/dev/null || true
 	fi
 
 	hdiutil create \

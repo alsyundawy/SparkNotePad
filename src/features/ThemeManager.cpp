@@ -18,6 +18,7 @@
 #include <QStyleHints>
 #include <QPalette>
 #include <QColor>
+#include <QtGlobal>
 
 ThemeManager *ThemeManager::instance() {
     static ThemeManager s_instance;
@@ -25,10 +26,12 @@ ThemeManager *ThemeManager::instance() {
 }
 
 ThemeManager::ThemeManager(QObject *parent) : QObject(parent) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     if (QGuiApplication::styleHints()) {
         connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
                 &ThemeManager::onSystemColorSchemeChanged);
     }
+#endif
 }
 
 void ThemeManager::initialize(ApplicationSettings *settings) {
@@ -67,9 +70,11 @@ bool ThemeManager::isDarkActive() const {
     }
 
     // Auto: Follow system color scheme
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     if (QGuiApplication::styleHints()) {
         return QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
     }
+#endif
     return QGuiApplication::palette().color(QPalette::Window).lightness() < 128;
 }
 

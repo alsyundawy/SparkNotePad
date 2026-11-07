@@ -17,6 +17,7 @@
 #include <QColorDialog>
 #include <QRegularExpression>
 #include <QToolTip>
+#include <QtGlobal>
 #include <algorithm>
 
 static inline int QColorToScintillaColour(const QColor &c) {

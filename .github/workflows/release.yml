@@ -475,11 +475,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RELEASE_NOTES_PATH="doc/RELEASE_NOTES_${RELEASE_TAG}.md"
-          if [ ! -f "$RELEASE_NOTES_PATH" ]; then
-            RELEASE_NOTES_PATH="doc/RELEASE_NOTES_v1.3.8.md"
-          fi
-          if [ -f "$RELEASE_NOTES_PATH" ]; then
+          RELEASE_NOTES_PATH=""
+          for candidate in "doc/RELEASE_NOTES_${RELEASE_TAG}.md" "doc/RELEASE_NOTES_${RELEASE_TAG}_en.md" "DOCNOTE.md"; do
+            if [ -f "$candidate" ]; then
+              RELEASE_NOTES_PATH="$candidate"
+              break
+            fi
+          done
+
+          if [ -n "$RELEASE_NOTES_PATH" ]; then
             echo "Publishing release with rich notes: $RELEASE_NOTES_PATH"
             if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
               gh release edit "$RELEASE_TAG" --title "SparkNotePad $RELEASE_TAG Official Release" --notes-file "$RELEASE_NOTES_PATH"
