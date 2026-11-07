@@ -2,18 +2,16 @@
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Bahasa Default & Pengerasan 14-Pilar)
+Versi Rilis          : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
 Tanggal Rilis        : 2026-11-07
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
-Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Lengkap)
-Runtime Skrip        : Sandboxed Lua 5.5.1 (Sumber Resmi) & Python 3.13+ Bridge
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Resmi)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
 Kerangka Kerja GUI   : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
-Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD
+Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD 13–15
 Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
-Arsitektur           : 100% Peningkatan Aman Terinspirasi KDE Kate, Pluma MATE, Notepad-- & Notepad++
-Status CI/CD         : 100% Lulus di seluruh matriks rilis, MegaLinter & CodeQL
 ================================================================================
 --------------------------------------------------------------------------------
 
@@ -21,29 +19,52 @@ Status CI/CD         : 100% Lulus di seluruh matriks rilis, MegaLinter & CodeQL
 
 ## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.9
 
-SparkNotePad v1.3.9 menghadirkan pembaruan mesin inti resmi Scintilla 5.6.9 dan Lexilla 5.5.5, menyelesaikan kerentanan algoritmik kritis pada ekspresi reguler (regex), memperkenalkan preferensi bahasa default yang dapat dikonfigurasi pengguna untuk dokumen baru, memperluas penyorotan sintaksis front-matter Markdown, dan lulus verifikasi statis serta tinjauan kode 14 pilar secara menyeluruh:
+SparkNotePad v1.3.9 menghadirkan pembaruan inti editor Scintilla dan Lexilla langsung dari rilis resmi upstream, penanganan keamanan algoritma pencarian regex, pewarnaan sintaksis metadata front-matter Markdown, pengaturan bahasa default dokumen baru, estetika paket instalasi DMG macOS, serta lolos audit kualitas 14 pilar tanpa peringatan:
 
-1. Integrasi Mesin Resmi Scintilla 5.6.9:
-   - Pemulihan rendering warna penuh untuk gambar XPM.
-   - Akselerasi kueri posisi awal baris dengan melewati kalkulasi tata letak baris yang berulang.
-   - Perluasan kapasitas buffer lexeme dari 30 menjadi 40 byte untuk identifier dan simbol query besar.
-   - Paritas penuh pemetaan kategori karakter Unicode 17 dan konversi huruf besar/kecil.
-   - Penyelesaian crash pada change history undo saat operasi penghapusan massal.
+1. Integrasi Penuh Upstream Scintilla 5.6.9 & Lexilla 5.5.5:
+   - Pembaruan menyeluruh source code Scintilla ke 5.6.9 dan Lexilla ke 5.5.5 resmi dari scintilla.org di thirdparty/ (160 berkas diperbarui).
+   - Regenerasi wrapper Qt (ScintillaEdit.cpp dan ScintillaEdit.h) menggunakan script resmi upstream WidgetGen.py.
+   - Pemulihan rendering warna penuh untuk format gambar XPM.
+   - Peningkatan performa query posisi awal baris dengan melewati kalkulasi layout yang tidak diperlukan saat scrolling cepat.
+   - Peningkatan kapasitas cache lexeme dari 30 menjadi 40 bita untuk identifier panjang, kolom SQL, dan simbol.
+   - Pemutakhiran peta kategori karakter dan konversi huruf besar/kecil ke standar Unicode 17.
+   - Perbaikan crash pada undo histori perubahan akibat optimasi bulk deletion.
+   - Penguatan keamanan memori Lexilla: penambalan buffer out-of-bounds write (CWE-787) dan read (CWE-125) pada lexer DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, dan X12.
 
-2. Integrasi Mesin Resmi Lexilla 5.5.5 & Front-Matter Markdown:
-   - Implementasi 3 definisi gaya Lexilla 5.5.5 baru di `src/languages/markdown.lua` untuk metadata YAML, TOML, dan JSON:
-     - `SCE_MARKDOWN_FRONT_MARK` (ID 22): Pembatas metadata (`---`, `+++`, `{}`).
-     - `SCE_MARKDOWN_FRONT` (ID 23): Isi data dan nilai properti front-matter.
-     - `SCE_MARKDOWN_FRONT_KEY` (ID 24): Kunci atribut dan properti front-matter.
-   - Mitigasi kerentanan keamanan memori (out-of-bounds write CWE-787 dan read CWE-125) pada lexer DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, dan X12.
-   - Peningkatan penanganan sintaksis HTML/JavaScript, PHP, dan SQL.
+2. Integrasi Runtime Lua 5.5.1 Terisolasi (Sandboxed):
+   - Upgrade runtime embedded Lua ke versi resmi Lua 5.5.1 di thirdparty/lua.
+   - Penerapan sandboxing ketat: penonaktifan API sistem berisiko (os.execute, io.*, debug.*, package.loadlib) guna mencegah eksekusi kode liar melalui ekstensi atau tema pihak ketiga.
 
-3. Fitur Pilihan dari NotepadNext:
-   - Perbaikan infinite-loop replace-all pada regex dengan panjang nol (CWE-835 / DoS).
-   - Penonaktifan otomatis pencarian mundur saat regex aktif pada dialog Cari & Ganti.
-   - Pengaturan Bahasa Bawaan Dokumen Baru (Preferensi > Penyunting).
+3. Pewarnaan Sintaksis Front-Matter Markdown:
+   - Dukungan penuh blok metadata front-matter (YAML, TOML, JSON) di src/languages/markdown.lua memanfaatkan ID gaya Lexilla 5.5.5 terbaru:
+     - SCE_MARKDOWN_FRONT_MARK (ID 22): Pembatas metadata (---, +++, {}).
+     - SCE_MARKDOWN_FRONT (ID 23): Isi dan nilai properti metadata.
+     - SCE_MARKDOWN_FRONT_KEY (ID 24): Kunci dan atribut properti metadata.
 
-4. Kualitas Kode Tanpa Cacat & Verifikasi 14-Pilar:
-   - Lulus semua linter: `cppcheck`, `clang-tidy`, `clangd`, SonarLint.
-   - 100% kelulusan unit test (51/51 pengujian di 11 test suite).
-   - Pembuatan dan verifikasi integritas paket lokal macOS DMG (`SparkNotePad-v1.3.9-x64.dmg`).
+4. Port Fitur Pilihan & Perbaikan Bug dari NotepadNext:
+   - Perbaikan Infinite Loop pada Replace All (CWE-835 / DoS): Di src/Finder.cpp, perbaikan pembekuan aplikasi saat mencocokkan ekspresi reguler panjang-nol (^, $, \b, lookarounds) dengan penegakan cursor maju via editor->positionAfter().
+   - Invarian Dialog Cari & Ganti: Di src/dialogs/FindReplaceDialog.cpp, opsi arah pencarian mundur otomatis dimatikan saat mode Regular Expression dipilih.
+   - Pengaturan Bahasa Default Dokumen Baru: Penambahan konfigurasi DefaultLanguage pada Preferensi > Editor untuk dokumen baru tanpa judul, dengan daftar bahasa lengkap.
+
+5. Perampingan Framework & Peningkatan Estetika DMG macOS:
+   - Pembersihan framework Qt yang tidak digunakan (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) pada paket DMG untuk mengurangi ukuran binary.
+   - Penyempurnaan pipeline packaging DMG dengan background kustom, indikator drag-and-drop, jendela 680x440, serta perlindungan metadata tersembunyi.
+
+6. Verifikasi Kualitas Kode 14 Pilar & Audit Tanpa Cacat:
+   - Nol peringatan pada clangd --check, cppcheck, clang-tidy, dan SonarLint.
+   - Penegakan kompilasi Unix Makefiles standar dengan konkurensi terkontrol -j2.
+
+---
+
+## 2. Ringkasan Rilis Sebelumnya: Rilis v1.3.8
+
+SparkNotePad v1.3.8 menghadirkan personalisasi toolbar lengkap dengan 21 paket ikon terkurasi, tab Preferensi khusus ("Themes & Toolbar" & "Custom Toolbar Config"), penataan ulang menu standar desktop, sinkronisasi menyeluruh ke menu dan konteks klik kanan, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla.
+
+---
+
+## 3. Rilis Sebelumnya: Rilis v1.3.7
+
+1. Menu Tools Notepad++ & 16-Action MIME Tools Suite (Base64, Quoted-Printable, URL encoding).
+2. Hash & Authenticity Validator mandiri (MD5, SHA-1, SHA-256, SHA-512, SHA3).
+3. Pemetaan dan Kustomisasi Pintasan Keyboard Interaktif (Preferences > Shortcuts).
+4. Eliminasi Batasan API Rate Limit GitHub via HTTP ETag / 304 Caching.

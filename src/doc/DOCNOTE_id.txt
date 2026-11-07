@@ -1,86 +1,68 @@
-# Catatan Rilis SparkNotePad — v1.3.8 (Bahasa Indonesia)
+# Catatan Rilis SparkNotePad — v1.3.9 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.3.8 (Toolbar Icon Packs Suite, In-Tab Preview & File Commander)
-Tanggal Rilis        : 2026-11-04
+Versi Rilis          : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
+Tanggal Rilis        : 2026-11-07
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
-Mesin Penyunting     : Scintilla 5.6.7 & Lexilla 5.5.4 (125 Lexer Lengkap)
-Runtime Skrip        : Sandboxed Lua 5.5.1 / 5.4.7 & Python 3.13+ Bridge
-Kerangka Kerja GUI   : Qt 6.5 / 6.8 LTS / 6.12 (C++20 ISO Standard)
-Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Resmi)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
+Kerangka Kerja GUI   : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD 13–15
 Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 ================================================================================
 --------------------------------------------------------------------------------
 
 ---
 
-## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.8
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.9
 
-SparkNotePad v1.3.8 menghadirkan perombakan besar pada arsitektur personalisasi toolbar, 21 paket ikon resolusi tinggi, tab Preferensi khusus ("Themes & Toolbar" & "Custom Toolbar Config"), penataan ulang menu standar editor desktop, sinkronisasi ikon menyeluruh ke seluruh menu dan konteks klik kanan, tombol Tambah Tab (+) di samping tab, pratinjau HTML & Markdown di dalam tab baru, File Commander modern, Tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla:
+SparkNotePad v1.3.9 menghadirkan pembaruan inti editor Scintilla dan Lexilla langsung dari rilis resmi upstream, penanganan keamanan algoritma pencarian regex, pewarnaan sintaksis metadata front-matter Markdown, pengaturan bahasa default dokumen baru, estetika paket instalasi DMG macOS, serta lolos audit kualitas 14 pilar tanpa peringatan:
 
-1. Rangkaian 21 Paket Ikon Toolbar Bawaan (Toolbar Icon Packs Suite):
-   - Mendukung 21 paket ikon terintegrasi beresolusi tinggi: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11 Modern Vector), Windows 11 (Fluent 2 DOpus), Windows 7 (Aero Glass Azure), Windows XP (Luna Classic), Fugue Classic (Silk Suite), Notepad++ Klasik (Nostalgia), NotepadNext Klasik (Silk), Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design Sharp, Pixel Design, Monoline Minimal, Notepad++ Green, Notepad3 Warm, Humanity GNOME, Elementary Flat, Breeze KDE, Papirus Rounded, macOS Cupertino, dan VS Code Codicons.
-   - Dilengkapi aset visual multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64) serta aset retina @2x yang tajam dan jernih pada semua resolusi layar.
-   - Tone mapping luminans cerdas HSL pada tema gelap mencegah ikon memudar pada latar belakang gelap.
+1. Integrasi Penuh Upstream Scintilla 5.6.9 & Lexilla 5.5.5:
+   - Pembaruan menyeluruh source code Scintilla ke 5.6.9 dan Lexilla ke 5.5.5 resmi dari scintilla.org di thirdparty/ (160 berkas diperbarui).
+   - Regenerasi wrapper Qt (ScintillaEdit.cpp dan ScintillaEdit.h) menggunakan script resmi upstream WidgetGen.py.
+   - Pemulihan rendering warna penuh untuk format gambar XPM.
+   - Peningkatan performa query posisi awal baris dengan melewati kalkulasi layout yang tidak diperlukan saat scrolling cepat.
+   - Peningkatan kapasitas cache lexeme dari 30 menjadi 40 bita untuk identifier panjang, kolom SQL, dan simbol.
+   - Pemutakhiran peta kategori karakter dan konversi huruf besar/kecil ke standar Unicode 17.
+   - Perbaikan crash pada undo histori perubahan akibat optimasi bulk deletion.
+   - Penguatan keamanan memori Lexilla: penambalan buffer out-of-bounds write (CWE-787) dan read (CWE-125) pada lexer DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, dan X12.
 
-2. Tab Khusus Preferensi ("Themes & Toolbar" & "Custom Toolbar Config"):
-   - Tab 3 ("Themes & Toolbar"): Relokasi pengaturan gaya visual Tema (Tema Aktif, Opasitas Jendela, Interval Tail, Proteksi Layar) ke Tab 3 bersama pengatur Paket Ikon Toolbar lengkap (21 paket, kartu deskripsi dinamis, pengatur ukuran ikon, pratinjau langsung, dan pemuat paket kustom).
-   - Tab 4 ("Custom Toolbar Config"): Penyesuai visual bilah alat (`CustomizeToolbarWidget`) terintegrasi langsung di Tab 4 dengan pencarian cepat, daftar aksi tersedia vs aktif, tambah/hapus aksi, pengurutan tombol, garis pemisah, dan hot-reload instan.
+2. Integrasi Runtime Lua 5.5.1 Terisolasi (Sandboxed):
+   - Upgrade runtime embedded Lua ke versi resmi Lua 5.5.1 di thirdparty/lua.
+   - Penerapan sandboxing ketat: penonaktifan API sistem berisiko (os.execute, io.*, debug.*, package.loadlib) guna mencegah eksekusi kode liar melalui ekstensi atau tema pihak ketiga.
 
-3. Penataan Ulang Menu Aplikasi Standar Desktop:
-   - Relokasi Tampilan Hex / Biner tepat di bawah Bandingkan (Compare) pada menu tingkat atas (`Ctrl+Alt+H` / `Cmd+Alt+H`).
-   - Menempatkan Mulai Ulang Aplikasi (Restart Application) di menu Aplikasi macOS tepat di atas Keluar (Quit) (`QAction::ApplicationSpecificRole`).
-   - Menghapus aksi manual Emoji & Simbol demi mendukung palet emoji bawaan macOS (`Ctrl+Cmd+Space`).
-   - Merampingkan menu Tampilan (View) dengan menghapus submenu Panel Samping dan aksi pratinjau markdown mandiri redundan.
+3. Pewarnaan Sintaksis Front-Matter Markdown:
+   - Dukungan penuh blok metadata front-matter (YAML, TOML, JSON) di src/languages/markdown.lua memanfaatkan ID gaya Lexilla 5.5.5 terbaru:
+     - SCE_MARKDOWN_FRONT_MARK (ID 22): Pembatas metadata (---, +++, {}).
+     - SCE_MARKDOWN_FRONT (ID 23): Isi dan nilai properti metadata.
+     - SCE_MARKDOWN_FRONT_KEY (ID 24): Kunci dan atribut properti metadata.
 
-4. Paritas Penuh 100% Katalog Dwibahasa (i18n):
-   - Sinkronisasi menyeluruh katalog Bahasa Inggris (`SparkNotePad_en.ts`) dan Bahasa Indonesia (`SparkNotePad_id.ts`) pada 1.924 entri antarmuka pengguna dengan 0 entri belum selesai (unfinished).
+4. Port Fitur Pilihan & Perbaikan Bug dari NotepadNext:
+   - Perbaikan Infinite Loop pada Replace All (CWE-835 / DoS): Di src/Finder.cpp, perbaikan pembekuan aplikasi saat mencocokkan ekspresi reguler panjang-nol (^, $, \b, lookarounds) dengan penegakan cursor maju via editor->positionAfter().
+   - Invarian Dialog Cari & Ganti: Di src/dialogs/FindReplaceDialog.cpp, opsi arah pencarian mundur otomatis dimatikan saat mode Regular Expression dipilih.
+   - Pengaturan Bahasa Default Dokumen Baru: Penambahan konfigurasi DefaultLanguage pada Preferensi > Editor untuk dokumen baru tanpa judul, dengan daftar bahasa lengkap.
 
-5. Tombol Plus (+) pada Setiap Samping Akhir Tab:
-   - Menambahkan tombol interaktif Plus (+) pada title bar di samping kanan deretan tab editor.
-   - Memungkinkan pembukaan dokumen baru ("New 1", "New 2", dst.) secara instan hanya dengan sekali klik tanpa perlu pintasan keyboard.
+5. Perampingan Framework & Peningkatan Estetika DMG macOS:
+   - Pembersihan framework Qt yang tidak digunakan (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) pada paket DMG untuk mengurangi ukuran binary.
+   - Penyempurnaan pipeline packaging DMG dengan background kustom, indikator drag-and-drop, jendela 680x440, serta perlindungan metadata tersembunyi.
 
-6. Sinkronisasi Ikon Menubar & Menu Klik Kanan (Context Menu) Dinamis:
-   - Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon aksi pada Toolbar Utama, Menu Bar utama, submenu, menu klik kanan tab, dan menu klik kanan editor (Editor Context Menu).
-   - Mengimplementasikan `ToolbarIconManager::applyToWindow()` dan `applyToMenu()` yang secara rekursif memperbarui seluruh `QAction` jendela aktif, serta memastikan visibilitas ikon di menu (`setIconVisibleInMenu(true)`).
-   - Default ukuran icon toolbar adalah 24x24 dan icon menu adalah 16x16 (dengan aset retina 32x32).
-   - Pengubahan ukuran ikon toolbar secara instan menyesuaikan ukuran geometri toolbar secara dinamis.
-
-7. Pratinjau HTML & Markdown di Tab Editor Baru (PreviewTabWidget):
-   - Menu klik kanan pada tab `.html` dan `.md` menyediakan opsi "Preview HTML in New Tab" dan "Preview Markdown in New Tab" yang membuka tampilan pratinjau di dalam tab editor tengah (`ads::CenterDockWidgetArea`), bukan di jendela baru terpisah.
-   - Khusus berkas `.html`, tersedia opsi langsung "Preview in Default Browser" untuk membuka pratinjau di peramban web bawaan sistem operasi.
-   - Desain pratinjau modern, elegan, dan profesional berstandar GitHub/DevDocs dengan kesetaraan tema Dark dan Light, kontrol perbesaran interaktif (zoom in/out/reset), tombol segarkan, dan isolasi keamanan dari kerentanan injeksi.
-
-8. Folder & File Browser Bergaya File Commander Modern:
-   - Antarmuka panel peramban berkas dirancang ulang dengan sentuhan modern File Commander.
-   - Dilengkapi bilah pintasan cepat (Home, Documents, Downloads, Desktop, Workspace) untuk navigasi instan.
-   - Menggunakan ikon SVG modern yang tajam untuk navigasi direktori.
-   - Bilah status metrik di bagian bawah menampilkan jumlah berkas, folder, ruang disk kosong (`QStorageInfo`), dan detail item terpilih.
-   - Penyesuaian tema dinamis yang serasi pada mode gelap maupun terang.
-
-9. Pengadopsian Penuh 125 Lexer Lexilla (100% Lexilla Parity):
-   - Mengadopsi seluruh 125 modul lexer resmi Lexilla di `src/languages/`, teregistrasi di `src/scripts.qrc` dan disinkronkan ke dalam `src/scripts/init.lua`.
-   - Menghadirkan pewarnaan sintaksis lengkap untuk berbagai bahasa pemrograman modern, format konfigurasi, dan DSL teknis.
-
-10. Resolusi Konflik Pintasan Keyboard (Shortcut Collision Fix):
-    - Audit dan perbaikan menyeluruh terhadap konflik pintasan keyboard:
-      - `Ctrl+Alt+Shift+E`: Enkripsi Dokumen AES-256
-      - `Ctrl+Shift+R`: Jalankan Skrip Python
-      - `Ctrl+Alt+Shift+T`: Alihkan Transparansi Jendela
-      - `Ctrl+Alt+Shift+O`: Buka/Tutup File Browser Dock
-      - `Ctrl+Alt+Shift+F`: Fokus ke Editor Utama
-      - `Ctrl+Alt+H`: Beralih Tampilan Hex / Binary
-
-11. Penegakan Format Plaintext (.txt) & Lokalisasi Otomatis Menu Help:
-    - Tampilan Docnote dan Changelog di dalam AboutDialog dan menu Help disajikan otomatis sesuai bahasa aktif editor (Bahasa Indonesia saat editor berbahasa Indonesia, English saat editor berbahasa Inggris).
-    - Format strictly plaintext `.txt` monospaced tanpa pemformatan markdown yang berlebih, menjamin pembacaan yang cepat, jernih, dan akurat.
+6. Verifikasi Kualitas Kode 14 Pilar & Audit Tanpa Cacat:
+   - Nol peringatan pada clangd --check, cppcheck, clang-tidy, dan SonarLint.
+   - Penegakan kompilasi Unix Makefiles standar dengan konkurensi terkontrol -j2.
 
 ---
 
-## 2. Rilis Sebelumnya: Rilis v1.3.7
+## 2. Ringkasan Rilis Sebelumnya: Rilis v1.3.8
+
+SparkNotePad v1.3.8 menghadirkan personalisasi toolbar lengkap dengan 21 paket ikon terkurasi, tab Preferensi khusus ("Themes & Toolbar" & "Custom Toolbar Config"), penataan ulang menu standar desktop, sinkronisasi menyeluruh ke menu dan konteks klik kanan, tombol Tambah Tab (+), pratinjau HTML dan Markdown langsung di tab editor baru, penjelajah berkas modern bergaya File Commander, tampilan Hex/Biner reversibel, serta 100% kelengkapan 125 Lexer Lexilla.
+
+---
+
+## 3. Rilis Sebelumnya: Rilis v1.3.7
 
 1. Menu Tools Notepad++ & 16-Action MIME Tools Suite (Base64, Quoted-Printable, URL encoding).
 2. Hash & Authenticity Validator mandiri (MD5, SHA-1, SHA-256, SHA-512, SHA3).
