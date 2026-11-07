@@ -532,6 +532,16 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxFuzzy">
+           <property name="text">
+            <string>&amp;Fuzzy Match</string>
+           </property>
+           <property name="toolTip">
+            <string>Match scattered subsequence characters (e.g. fnpars matches FunctionParser)</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>

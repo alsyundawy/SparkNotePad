@@ -122,4 +122,7 @@ public:
     DEFINE_SETTING(SmartAutoIndent, smartAutoIndent, bool)
     DEFINE_SETTING(PreserveFileTime, preserveFileTime, bool)
     DEFINE_SETTING(StrictOfflineMode, strictOfflineMode, bool)
+    DEFINE_SETTING(ExtraLineAscent, extraLineAscent, int)
+    DEFINE_SETTING(ExtraLineDescent, extraLineDescent, int)
+    DEFINE_SETTING(FuzzySearchEnabled, fuzzySearchEnabled, bool)
 };

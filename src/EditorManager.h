@@ -43,6 +43,7 @@ public:
     ScintillaNext *getEditorByFilePath(const QString &filePath);
 
     void manageEditor(ScintillaNext *editor);
+    QList<QPointer<ScintillaNext>> getEditors();
 
 signals:
     void editorCreated(ScintillaNext *editor);
@@ -57,7 +58,6 @@ private:
     void setupUrlDecoratorConnections();
     void setupFeatureDecoratorConnections();
     void purgeOldEditorPointers();
-    QList<QPointer<ScintillaNext>> getEditors();
     int detectEOLMode(const ScintillaNext *editor) const;
 
     QList<QPointer<ScintillaNext>> editors;

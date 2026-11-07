@@ -62,8 +62,9 @@ bool RegexSafetyEngine::isSafeRegex(const QString &pattern, QString *vulnerabili
 }
 
 bool RegexSafetyEngine::executeWithTimeout(const std::function<void()> &operation, int timeoutMs) {
-    if (!operation)
+    if (!operation) {
         return false;
+    }
 
     QElapsedTimer timer;
     timer.start();
@@ -72,4 +73,26 @@ bool RegexSafetyEngine::executeWithTimeout(const std::function<void()> &operatio
     operation();
 
     return timer.elapsed() <= timeoutMs;
+}
+
+QString RegexSafetyEngine::buildFuzzySubsequencePattern(const QString &query) {
+    if (query.isEmpty()) {
+        return QString();
+    }
+
+    const QString trimmed = query.left(64);
+    QStringList tokens;
+
+    for (const QChar &ch : trimmed) {
+        if (ch == QLatin1Char('\r') || ch == QLatin1Char('\n')) {
+            continue;
+        }
+        tokens << QRegularExpression::escape(QString(ch));
+    }
+
+    if (tokens.isEmpty()) {
+        return QString();
+    }
+
+    return tokens.join(QStringLiteral(R"([^\r\n]*?)"));
 }

@@ -46,6 +46,7 @@ protected:
 
 signals:
     void execute(Macro *macro, int times);
+    void executeBatch(Macro *macro, int times, int scope);
 
 private:
     Ui::MacroRunDialog *ui;

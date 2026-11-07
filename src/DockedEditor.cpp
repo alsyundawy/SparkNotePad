@@ -31,7 +31,43 @@
 
 #include "ScintillaNext.h"
 
+#include <QDateTime>
+#include <QFileInfo>
+#include <QLocale>
 #include <QUuid>
+
+static QString buildEnrichedToolTip(const ScintillaNext *editor) {
+    if (!editor)
+        return QString();
+
+    QStringList parts;
+    const bool isFile = editor->isFile();
+    const bool isSaved = editor->isSavedToDisk();
+    const QString name = editor->getName();
+
+    parts << QStringLiteral("<b>%1</b> %2")
+                 .arg(name.toHtmlEscaped(),
+                      isSaved ? QString() : QStringLiteral("<span style='color:#e5a50a;'>[Modified]</span>"));
+
+    if (isFile) {
+        const QString path = editor->getFilePath();
+        parts << QStringLiteral("<b>Path:</b> %1").arg(path.toHtmlEscaped());
+        QFileInfo fi(path);
+        if (fi.exists()) {
+            parts << QStringLiteral("<b>Size:</b> %1").arg(QLocale().formattedDataSize(fi.size()));
+            parts << QStringLiteral("<b>Modified:</b> %1")
+                         .arg(fi.lastModified().toString(QStringLiteral("yyyy-MM-dd HH:mm:ss")));
+        }
+    }
+
+    parts << QStringLiteral("<b>Lines:</b> %1 | <b>Length:</b> %2").arg(editor->lineCount()).arg(editor->length());
+
+    parts << QStringLiteral("<b>Encoding:</b> %1 | <b>EOL:</b> %2")
+                 .arg(editor->encodingName().toHtmlEscaped(),
+                      ScintillaNext::eolModeToString(static_cast<int>(editor->eOLMode())).toHtmlEscaped());
+
+    return parts.join(QStringLiteral("<br>"));
+}
 
 class DockedEditorComponentsFactory : public ads::CDockComponentsFactory {
 public:
@@ -253,6 +289,7 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
     connect(editor, &ScintillaNext::closed, dockWidget, &ads::CDockWidget::closeDockWidget);
     connect(editor, &ScintillaNext::closed, this, [this, editor] { emit editorClosed(editor); });
     connect(editor, &ScintillaNext::renamed, this, [this, editor] { editorRenamed(editor); });
+    connect(editor, &ScintillaNext::savePointChanged, this, [this, editor](bool) { editorRenamed(editor); });
     connect(editor, &QObject::destroyed, this, [this](QObject *obj) {
         if (currentEditor == obj) {
             currentEditor = nullptr;
@@ -276,14 +313,12 @@ void DockedEditor::editorRenamed(const ScintillaNext *editor) const {
     Q_ASSERT(editor != Q_NULLPTR);
 
     ads::CDockWidget *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
+    if (!dockWidget) {
+        return;
+    }
 
     dockWidget->setWindowTitle(editor->getName());
-
-    if (editor->isFile()) {
-        dockWidget->tabWidget()->setToolTip(editor->getFilePath());
-    } else {
-        dockWidget->tabWidget()->setToolTip(editor->getName());
-    }
+    dockWidget->tabWidget()->setToolTip(buildEnrichedToolTip(editor));
 }
 
 void DockedEditor::splitToRight(const ScintillaNext *editor) {

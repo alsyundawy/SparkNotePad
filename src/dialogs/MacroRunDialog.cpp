@@ -30,7 +30,7 @@ MacroRunDialog::MacroRunDialog(QWidget *parent, MacroManager *mm)
     : QDialog(parent, Qt::Tool), ui(new Ui::MacroRunDialog), macroManager(mm) {
     ui->setupUi(this);
 
-    connect(ui->buttonRun, &QPushButton::clicked, this, [=, this]() {
+    connect(ui->buttonRun, &QPushButton::clicked, this, [this] {
         Macro *selectedMacro = ui->comboBox->currentData().value<Macro *>();
         int times = -1;  // for end of file
 
@@ -38,7 +38,9 @@ MacroRunDialog::MacroRunDialog(QWidget *parent, MacroManager *mm)
             times = ui->spinTimes->value();
         }
 
+        const int scope = ui->comboBoxScope->currentIndex();
         emit execute(selectedMacro, times);
+        emit executeBatch(selectedMacro, times, scope);
     });
 }
 

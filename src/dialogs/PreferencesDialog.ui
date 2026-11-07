@@ -248,6 +248,50 @@
         </layout>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="layoutExtraLineSpacing">
+         <item>
+          <widget class="QLabel" name="labelExtraLineAscent">
+           <property name="text">
+            <string>Extra Line Ascent:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxExtraLineAscent">
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>30</number>
+           </property>
+           <property name="suffix">
+            <string> px</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelExtraLineDescent">
+           <property name="text">
+            <string>Extra Line Descent:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxExtraLineDescent">
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>30</number>
+           </property>
+           <property name="suffix">
+            <string> px</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBoxShowLineNumbers">
          <property name="text">
           <string>Show Line Numbers</string>

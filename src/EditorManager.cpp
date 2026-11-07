@@ -172,6 +172,22 @@ void EditorManager::setupFeatureDecoratorConnections() {
             }
         }
     });
+
+    connect(settings, &ApplicationSettings::extraLineAscentChanged, this, [this](int val) {
+        for (const auto &editor : getEditors()) {
+            if (editor) {
+                editor->setExtraLineSpacing(val, settings->extraLineDescent());
+            }
+        }
+    });
+
+    connect(settings, &ApplicationSettings::extraLineDescentChanged, this, [this](int val) {
+        for (const auto &editor : getEditors()) {
+            if (editor) {
+                editor->setExtraLineSpacing(settings->extraLineAscent(), val);
+            }
+        }
+    });
 }
 
 ScintillaNext *EditorManager::createEditor(const QString &name) {
@@ -442,6 +458,8 @@ void EditorManager::setupEditor(ScintillaNext *editor) const {
 
     auto *ch = new ChangeHistoryDecorator(editor);
     ch->setEnabled(settings->showChangeHistory());
+
+    editor->setExtraLineSpacing(settings->extraLineAscent(), settings->extraLineDescent());
 
     auto *cp = new ColorPreviewCallTip(editor);
     cp->setEnabled(settings->colorPreviewCallTip());

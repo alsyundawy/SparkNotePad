@@ -135,6 +135,8 @@ public:
     QString getFilePath() const;
     QString getToolTip() const;
 
+    void setExtraLineSpacing(int extraAscent, int extraDescent);
+
     // NOTE: this is dangerous and should only be used in very rare situations
     void setFileInfo(const QString &targetFilePath);
 

@@ -39,4 +39,11 @@ public:
      * ensuring it is not pointing to sensitive system paths or world-writable.
      */
     static bool verifyFileIntegrity(const QString &filePath, QString *errorMsg = nullptr);
+
+    /**
+     * @brief Validates XML/JSON payload bounds and nesting depth to prevent DoS (CVE-2026-16762).
+     * @param maxDepth Maximum permitted nesting depth (default: 32).
+     * @param maxSizeBytes Maximum permitted file size in bytes (default: 10 MB).
+     */
+    static bool isPayloadStructureSafe(const QByteArray &data, int maxDepth = 32, qint64 maxSizeBytes = 10LL * 1024LL * 1024LL, QString *errorMsg = nullptr);
 };

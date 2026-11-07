@@ -609,6 +609,7 @@ void FindReplaceDialog::loadSettings() {
     ui->checkBoxMatchWholeWord->setChecked(settings.value("WholeWord").toBool());
     ui->checkBoxMatchCase->setChecked(settings.value("MatchCase").toBool());
     ui->checkBoxWrapAround->setChecked(settings.value("WrapAround", true).toBool());
+    ui->checkBoxFuzzy->setChecked(settings.value("Fuzzy", false).toBool());
 
     if (settings.contains("SearchMode")) {
         const QString searchMode = settings.value("SearchMode").toString();
@@ -662,6 +663,7 @@ void FindReplaceDialog::saveSettings() const {
     settings.setValue("WholeWord", ui->checkBoxMatchWholeWord->isChecked());
     settings.setValue("MatchCase", ui->checkBoxMatchCase->isChecked());
     settings.setValue("WrapAround", ui->checkBoxWrapAround->isChecked());
+    settings.setValue("Fuzzy", ui->checkBoxFuzzy->isChecked());
 
     if (ui->radioNormalSearch->isChecked()) {
         settings.setValue("SearchMode", "normal");
@@ -722,6 +724,7 @@ FindOptions FindReplaceDialog::findOptions() const {
     }
 
     options.wrapAround = ui->checkBoxWrapAround->isChecked();
+    options.fuzzy = ui->checkBoxFuzzy->isChecked();
 
     return options;
 }

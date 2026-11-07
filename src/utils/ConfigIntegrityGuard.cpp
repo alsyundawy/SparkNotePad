@@ -14,12 +14,14 @@
 #include "ConfigIntegrityGuard.h"
 #include <QRegularExpression>
 #include <QCoreApplication>
+#include <QXmlStreamReader>
 
 bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QString *rejectedReason) {
     const QString trimmed = commandLine.trimmed();
     if (trimmed.isEmpty()) {
-        if (rejectedReason)
+        if (rejectedReason) {
             *rejectedReason = QCoreApplication::translate("ConfigIntegrityGuard", "Empty command string.");
+        }
         return false;
     }
 
@@ -62,21 +64,22 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
 }
 
 bool ConfigIntegrityGuard::enforceSecureFilePermissions(const QString &filePath) {
-    QFileInfo fi(filePath);
+    const QFileInfo fi(filePath);
     if (!fi.exists()) {
         return false;
     }
 
     // Set Owner Read & Write only (0600)
-    QFile::Permissions safePermissions = QFileDevice::ReadOwner | QFileDevice::WriteOwner;
+    const QFile::Permissions safePermissions = QFileDevice::ReadOwner | QFileDevice::WriteOwner;
     return QFile::setPermissions(filePath, safePermissions);
 }
 
 bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString *errorMsg) {
-    QFileInfo fi(filePath);
+    const QFileInfo fi(filePath);
     if (!fi.exists()) {
-        if (errorMsg)
+        if (errorMsg) {
             *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "File does not exist: %1").arg(filePath);
+        }
         return false;
     }
 
@@ -89,16 +92,53 @@ bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString 
     const bool isSensitive = std::any_of(kSensitiveSystemPaths.cbegin(), kSensitiveSystemPaths.cend(),
                                          [&canonical](const QString &sysPath) { return canonical == sysPath; });
     if (isSensitive) {
-        if (errorMsg)
+        if (errorMsg) {
             *errorMsg =
                 QCoreApplication::translate("ConfigIntegrityGuard", "Attempted access to restricted system file: %1")
                     .arg(canonical);
+        }
         return false;
     }
 
     // Enforce 0600 permissions if file is currently world-writable
     if (fi.permissions().testFlag(QFileDevice::WriteOther)) {
         enforceSecureFilePermissions(filePath);
+    }
+
+    return true;
+}
+
+bool ConfigIntegrityGuard::isPayloadStructureSafe(const QByteArray &data, int maxDepth, qint64 maxSizeBytes, QString *errorMsg) {
+    if (data.size() > maxSizeBytes) {
+        if (errorMsg) {
+            *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "Payload exceeds safe maximum size limit (%1 bytes).").arg(maxSizeBytes);
+        }
+        return false;
+    }
+
+    if (data.trimmed().startsWith('<')) {
+        QXmlStreamReader reader(data);
+        int currentDepth = 0;
+        while (!reader.atEnd()) {
+            const QXmlStreamReader::TokenType token = reader.readNext();
+            if (token == QXmlStreamReader::StartElement) {
+                currentDepth++;
+                if (currentDepth > maxDepth) {
+                    if (errorMsg) {
+                        *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "XML nesting depth exceeded safe threshold of %1 levels (CVE-2026-16762).").arg(maxDepth);
+                    }
+                    return false;
+                }
+            } else if (token == QXmlStreamReader::EndElement) {
+                currentDepth--;
+            }
+        }
+        if (reader.hasError()) {
+            if (errorMsg) {
+                *errorMsg = reader.errorString();
+            }
+            return false;
+        }
     }
 
     return true;

@@ -2291,11 +2291,24 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         if (macroRunDialog == Q_NULLPTR) {
             macroRunDialog = new MacroRunDialog(this, &macroManager);
 
-            connect(macroRunDialog, &MacroRunDialog::execute, this, [this](const Macro *macro, int times) {
-                if (times > 0) {
-                    macro->replay(currentEditor(), times);
-                } else if (times == -1) {
-                    macro->replayTillEndOfFile(currentEditor());
+            connect(macroRunDialog, &MacroRunDialog::executeBatch, this, [this](const Macro *macro, int times, int scope) {
+                if (scope == 1) {
+                    const auto eds = editors();
+                    for (auto *ed : eds) {
+                        if (ed) {
+                            if (times > 0) {
+                                macro->replay(ed, times);
+                            } else if (times == -1) {
+                                macro->replayTillEndOfFile(ed);
+                            }
+                        }
+                    }
+                } else {
+                    if (times > 0) {
+                        macro->replay(currentEditor(), times);
+                    } else if (times == -1) {
+                        macro->replayTillEndOfFile(currentEditor());
+                    }
                 }
             });
         }

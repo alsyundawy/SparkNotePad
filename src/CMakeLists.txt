@@ -137,6 +137,8 @@ qt_add_executable(SparkNotePad
 	features/UrlUtils.cpp
 	features/CharacterInfo.h
 	features/CharacterInfo.cpp
+	features/LocalMcpServer.h
+	features/LocalMcpServer.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
 	utils/MimeTools.h

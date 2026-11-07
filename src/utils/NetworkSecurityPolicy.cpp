@@ -12,6 +12,8 @@
  */
 
 #include "NetworkSecurityPolicy.h"
+#include <QFileInfo>
+#include <QUrl>
 #include <QSslSocket>
 #include <QDir>
 #include <QCoreApplication>
@@ -55,4 +57,35 @@ bool NetworkSecurityPolicy::isOfflineModeEnabled() {
 void NetworkSecurityPolicy::setOfflineModeEnabled(bool enabled) {
     s_offlineMode = enabled;
     qInfo("NetworkSecurityPolicy: Air-gap strict offline mode set to: %s", enabled ? "ENABLED" : "DISABLED");
+}
+
+bool NetworkSecurityPolicy::isSafeUriScheme(const QUrl &url, QString *reason) {
+    if (!url.isValid()) {
+        if (reason) {
+            *reason = QStringLiteral("Invalid URL format");
+        }
+        return false;
+    }
+
+    const QString scheme = url.scheme().toLower();
+    if (scheme == QLatin1String("http") || scheme == QLatin1String("https") || scheme == QLatin1String("mailto")) {
+        return true;
+    }
+
+    if (scheme == QLatin1String("file")) {
+        const QString localPath = url.toLocalFile();
+        const QFileInfo fi(localPath);
+        if (fi.isExecutable() && !fi.isDir()) {
+            if (reason) {
+                *reason = QStringLiteral("Execution of executable binaries via file:// URI is strictly blocked");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    if (reason) {
+        *reason = QStringLiteral("Protocol scheme '%1' is prohibited for external dispatch").arg(scheme);
+    }
+    return false;
 }

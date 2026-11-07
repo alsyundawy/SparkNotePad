@@ -51,6 +51,7 @@ QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(new Ui::Q
     connect(ui->buttonMatchCase, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
     connect(ui->buttonWholeWord, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
     connect(ui->buttonRegexp, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
+    connect(ui->buttonFuzzy, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
 }
 
 QuickFindWidget::~QuickFindWidget() {
@@ -295,6 +296,7 @@ void QuickFindWidget::positionWidget() {
 void QuickFindWidget::prepareSearch() {
     finder->options().text = searchText();
     finder->options().flags = computeSearchFlags();
+    finder->options().fuzzy = ui->buttonFuzzy->isChecked();
 }
 
 void QuickFindWidget::focusIn() {

@@ -29,6 +29,7 @@ struct FindOptions {
     QString text;
     Scintilla::FindOption flags = {};
     bool wrapAround = false;
+    bool fuzzy = false;
 };
 
 struct FindResult {

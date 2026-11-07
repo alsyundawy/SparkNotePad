@@ -200,6 +200,14 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     ui->spinBoxUrlThreshold->setValue(settings->urlThreshold());
     connect(ui->spinBoxUrlThreshold, &QSpinBox::valueChanged, settings, &ApplicationSettings::setUrlThreshold);
     connect(settings, &ApplicationSettings::urlThresholdChanged, ui->spinBoxUrlThreshold, &QSpinBox::setValue);
+
+    ui->spinBoxExtraLineAscent->setValue(settings->extraLineAscent());
+    connect(ui->spinBoxExtraLineAscent, &QSpinBox::valueChanged, settings, &ApplicationSettings::setExtraLineAscent);
+    connect(settings, &ApplicationSettings::extraLineAscentChanged, ui->spinBoxExtraLineAscent, &QSpinBox::setValue);
+
+    ui->spinBoxExtraLineDescent->setValue(settings->extraLineDescent());
+    connect(ui->spinBoxExtraLineDescent, &QSpinBox::valueChanged, settings, &ApplicationSettings::setExtraLineDescent);
+    connect(settings, &ApplicationSettings::extraLineDescentChanged, ui->spinBoxExtraLineDescent, &QSpinBox::setValue);
     MapSettingToCheckBox(ui->checkBoxShowLineNumbers, &ApplicationSettings::showLineNumbers,
                          &ApplicationSettings::setShowLineNumbers, &ApplicationSettings::showLineNumbersChanged);
     MapSettingToCheckBox(ui->checkBoxShowChangeHistory, &ApplicationSettings::showChangeHistory,

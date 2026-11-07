@@ -54,6 +54,34 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutScope">
+     <property name="spacing">
+      <number>14</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="labelScope">
+       <property name="text">
+        <string>Scope:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxScope">
+       <item>
+        <property name="text">
+         <string>Current Document</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All Open Documents</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QRadioButton" name="radioEndOfFile">
      <property name="text">
       <string>Run Until End of File</string>

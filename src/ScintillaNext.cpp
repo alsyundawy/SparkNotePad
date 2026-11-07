@@ -136,6 +136,11 @@ int ScintillaNext::allocateIndicator(const QString &indicatorName) {
     return indicatorResources.requestResource(indicatorName);
 }
 
+void ScintillaNext::setExtraLineSpacing(int extraAscent, int extraDescent) {
+    setExtraAscent(std::clamp(extraAscent, 0, 30));
+    setExtraDescent(std::clamp(extraDescent, 0, 30));
+}
+
 void ScintillaNext::goToRange(const Sci_CharacterRange &range) {
     qInfo(Q_FUNC_INFO);
 

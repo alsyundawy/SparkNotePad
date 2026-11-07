@@ -43,6 +43,12 @@ public:
      */
     static void setOfflineModeEnabled(bool enabled);
 
+    /**
+     * @brief Validates an external URI scheme to prevent dangerous protocol injection (CVE-2026-20841).
+     * Rejects dangerous protocol handlers like ms-office:, cmd:, powershell:, or binary execution.
+     */
+    static bool isSafeUriScheme(const QUrl &url, QString *reason = nullptr);
+
 private:
     static bool s_offlineMode;
 };

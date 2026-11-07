@@ -24,6 +24,7 @@
 #include "Finder.h"
 
 #include "UndoAction.h"
+#include "RegexSafetyEngine.h"
 
 Finder::Finder(ScintillaNext *editor) : editor(editor) {}
 
@@ -32,15 +33,20 @@ void Finder::setEditor(ScintillaNext *targetEditor) {
 }
 
 int Finder::searchFlags() const {
+    if (find_options.fuzzy) {
+        return static_cast<int>(find_options.flags | Scintilla::FindOption::RegExp);
+    }
     return static_cast<int>(find_options.flags);
 }
 
 bool Finder::isRegexSearch() const {
-    return Scintilla::FlagSet(find_options.flags, Scintilla::FindOption::RegExp);
+    return find_options.fuzzy || Scintilla::FlagSet(find_options.flags, Scintilla::FindOption::RegExp);
 }
 
 Sci_CharacterRange Finder::searchTarget(Sci_Position start, Sci_Position end) {
-    const QByteArray searchText = find_options.text.toUtf8();
+    const QByteArray searchText = find_options.fuzzy
+        ? RegexSafetyEngine::buildFuzzySubsequencePattern(find_options.text).toUtf8()
+        : find_options.text.toUtf8();
 
     editor->setTargetRange(start, end);
 

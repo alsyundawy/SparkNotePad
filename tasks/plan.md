@@ -42,29 +42,29 @@
 
 ### Phase 1: Scintilla 5.6.9 Change History & Line Spacing Integration
 
-- [ ] **Task 1.1: ScintillaNext Change History Engine Hooks**
+- [x] **Task 1.1: ScintillaNext Change History Engine Hooks**
   - **Files:** `src/ScintillaNext.h`, `src/ScintillaNext.cpp`
   - **Interfaces:** `void setChangeHistoryEnabled(bool enabled)`, `bool isChangeHistoryEnabled() const`
   - Configure Scintilla change history (`SCI_SETCHANGEHISTORY`, `SC_CHANGE_HISTORY_RECORD | SC_CHANGE_HISTORY_INDICATORS`) in dedicated margin 4 without disturbing bookmarks (margin 1) or folding (margin 2).
   - Add configurable styling for modified (orange), saved (green), and reverted markers.
 
-- [ ] **Task 1.2: Fine-Grained Line Spacing (Extra Ascent & Descent)**
+- [x] **Task 1.2: Fine-Grained Line Spacing (Extra Ascent & Descent)**
   - **Files:** `src/ScintillaNext.h`, `src/ScintillaNext.cpp`, `src/ApplicationSettings.h`, `src/ApplicationSettings.cpp`
   - **Interfaces:** `void setExtraLineSpacing(int extraAscent, int extraDescent)`
   - Map settings to `SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT` with range validation [0..30] pixels.
 
-- [ ] **Task 1.3: Preferences UI for Change History and Line Spacing**
+- [x] **Task 1.3: Preferences UI for Change History and Line Spacing**
   - **Files:** `src/dialogs/PreferencesDialog.ui`, `src/dialogs/PreferencesDialog.cpp`
   - Add "Change History Margin" toggle and "Extra Ascent / Descent" spinboxes under Editor Settings.
 
 ### Phase 2: macOS Title-Bar Proxy Icon & Enriched Tab Tooltips
 
-- [ ] **Task 2.1: Native macOS Window File Path Proxy Icon**
+- [x] **Task 2.1: Native macOS Window File Path Proxy Icon**
   - **Files:** `src/MainWindow.cpp`, `src/SparkNotePadApplication.cpp`
   - When an editor tab gains focus, invoke `QMainWindow::setWindowFilePath(activeFilePath)` (or clear when untracked/untitled).
   - Enables macOS native document icon drag-and-drop to Terminal/Finder and ⌘-click directory breadcrumbs.
 
-- [ ] **Task 2.2: Enriched Tab Tooltips & Live Status Metrics**
+- [x] **Task 2.2: Enriched Tab Tooltips & Live Status Metrics**
   - **Files:** `src/DockedEditor.cpp`, `src/DockedEditor.h`
   - Formulate detailed HTML tooltips on tab hover:
     - Saved files: Full file path, file size, line count, character count, encoding, line ending format (CRLF/LF), and last modified timestamp.
@@ -72,25 +72,25 @@
 
 ### Phase 3: Search Enhancements (Fuzzy Matching) & Batch Automation
 
-- [ ] **Task 3.1: Fuzzy Subsequence Search Matcher**
+- [x] **Task 3.1: Fuzzy Subsequence Search Matcher**
   - **Files:** `src/utils/RegexSafetyEngine.h`, `src/utils/RegexSafetyEngine.cpp`, `src/Finder.h`, `src/Finder.cpp`
   - **Interfaces:** `static QString buildFuzzySubsequencePattern(const QString &query)`
   - Convert query (e.g. `fnpars`) into a safe, non-backtracking regex subsequence (`f[^f]*?n[^n]*?p...`) with bounded lookahead to avoid ReDoS (CWE-1333).
   - Add "Fuzzy Match" checkbox in `FindReplaceDialog.ui` and `QuickFindWidget.ui`.
 
-- [ ] **Task 3.2: Batch Macro Processing ("Run Macro on Open Files / Folder")**
+- [x] **Task 3.2: Batch Macro Processing ("Run Macro on Open Files / Folder")**
   - **Files:** `src/dialogs/MacroRunDialog.ui`, `src/dialogs/MacroRunDialog.h`, `src/dialogs/MacroRunDialog.cpp`
   - Add "Scope" selection: `Current Document`, `All Open Documents`, `Files in Folder`.
   - Include file filter (`*.cpp;*.h;*.txt`), recursive traversal toggle, dry-run preview, and progress bar with instant cancellation (Esc key / Cancel button).
 
 ### Phase 4: Diagnostic Transparency & Local MCP Tool Server (Read-Only)
 
-- [ ] **Task 4.1: Help → Copy Debug Information to Clipboard**
+- [x] **Task 4.1: Help → Copy Debug Information to Clipboard**
   - **Files:** `src/MainWindow.cpp`, `src/MainWindow.h`
   - Generate comprehensive diagnostic block: SparkNotePad version, Git commit hash, Qt version, OS version/architecture, active theme, active icon pack, compiler info, screen geometry, Scintilla/Lexilla/Lua versions, and loaded plugins.
   - Add menu action `actionCopyDebugInfo` in `Help` menu with confirmation toast indicator.
 
-- [ ] **Task 4.2: Local Read-Only Model Context Protocol (MCP) Server Interface**
+- [x] **Task 4.2: Local Read-Only Model Context Protocol (MCP) Server Interface**
   - **Files:** `src/features/LocalMcpServer.h`, `src/features/LocalMcpServer.cpp`
   - **Interfaces:** `void startServer(quint16 port = 0)`, `void stopServer()`
   - Implement a strictly loopback (`127.0.0.1`), token-authenticated TCP/WebSocket endpoint compliant with the Model Context Protocol (2026 spec).
@@ -99,45 +99,45 @@
 
 ### Phase 5: Security Hardening & 2025–2026 CVE Mitigations
 
-- [ ] **Task 5.1: Strict URI Scheme Validator (CVE-2026-20841 Mitigation)**
+- [x] **Task 5.1: Strict URI Scheme Validator (CVE-2026-20841 Mitigation)**
   - **Files:** `src/utils/NetworkSecurityPolicy.h`, `src/utils/NetworkSecurityPolicy.cpp`
   - Validate all links in `MarkdownSafePreviewDock`, `PreviewTabWidget`, and clickable editor URLs.
   - Allowlist strictly `http://`, `https://`, and `mailto:`. Intercept `file://` or custom URI schemes and verify target path sits within safe directory bounds; prompt user with security confirmation dialog before opening external system handlers.
 
-- [ ] **Task 5.2: XML & JSON Parser Depth Limiter (CVE-2026-16762 Mitigation)**
+- [x] **Task 5.2: XML & JSON Parser Depth Limiter (CVE-2026-16762 Mitigation)**
   - **Files:** `src/utils/ConfigIntegrityGuard.h`, `src/utils/ConfigIntegrityGuard.cpp`
   - Enforce maximum recursion depth (32 levels) and maximum entity expansion limits on all `QXmlStreamReader` and `QJsonDocument` routines.
 
-- [ ] **Task 5.3: Safe Process Argument Quoting (CVE-2026-25926 Mitigation)**
+- [x] **Task 5.3: Safe Process Argument Quoting (CVE-2026-25926 Mitigation)**
   - **Files:** `src/utils/ExternalToolManager.cpp`, `src/dialogs/RunDialog.cpp`
   - Ensure all external tool invocations invoke `QProcess::start(program, arguments)` directly rather than passing concatenated commands to `/bin/sh -c` or `cmd.exe /c`.
 
 ### Phase 6: i18n Translation & UI Text Synchronization
 
-- [ ] **Task 6.1: String Extraction via `lupdate`**
+- [x] **Task 6.1: String Extraction via `lupdate`**
   - Run `lupdate src/ -ts i18n/SparkNotePad_en.ts i18n/SparkNotePad_id.ts`.
-- [ ] **Task 6.2: Complete English and Indonesian Translations**
+- [x] **Task 6.2: Complete English and Indonesian Translations**
   - Ensure 100% translation coverage for new dialogs, settings, tooltips, and debug actions; verify `grep -c 'type="unfinished"'` returns 0.
-- [ ] **Task 6.3: Binary Catalog Compilation via `lrelease`**
+- [x] **Task 6.3: Binary Catalog Compilation via `lrelease`**
   - Compile `.qm` files and verify resource bundles.
 
 ### Phase 7: Static Analysis, 14-Pillar Quality Audit & IDE Linter Clean
 
-- [ ] **Task 7.1: Automated Syntax & Static Analysis**
+- [x] **Task 7.1: Automated Syntax & Static Analysis**
   - Run `cppcheck --enable=all`, `clangd --check`, and SonarLint language server restart (`sonar-restart-ext.sh`).
-- [ ] **Task 7.2: Atomic Diagnostic Remediation**
+- [x] **Task 7.2: Atomic Diagnostic Remediation**
   - Fix any detected issues (const correctness, null checks, integer promotions, SonarLint rules).
-- [ ] **Task 7.3: Comprehensive 14-Pillar Audit Sign-off**
+- [x] **Task 7.3: Comprehensive 14-Pillar Audit Sign-off**
   - Verify zero defects across Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance, Security, Maintainability, Scalability, Readability, and Architecture pillars.
 
 ### Phase 8: Build Verification, Unit Testing & Documentation Rebuild
 
-- [ ] **Task 8.1: Controlled CMake Build (Unix Makefiles, No Ninja)**
+- [x] **Task 8.1: Controlled CMake Build (Unix Makefiles, No Ninja)**
   - Execute `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j2`.
-- [ ] **Task 8.2: Unit Test Suite Execution**
+- [x] **Task 8.2: Unit Test Suite Execution**
   - Run `ctest --test-dir build --output-on-failure` or `./build/tests/SparkNotePadTests`.
-- [ ] **Task 8.3: Local macOS DMG Packaging & Notarization Pre-Check**
+- [x] **Task 8.3: Local macOS DMG Packaging & Notarization Pre-Check**
   - Build DMG via `cmake --build build --target dmg -j2` and verify via `hdiutil verify`.
-- [ ] **Task 8.4: Documentation & Release Artifacts Synchronization**
+- [x] **Task 8.4: Documentation & Release Artifacts Synchronization**
   - Update `CMakeLists.txt` to version `1.4.0`.
   - Update `README.md`, `README-id.md`, `doc/CHANGELOG.txt`, `doc/DOCNOTE.txt`, `wiki/*.md`.

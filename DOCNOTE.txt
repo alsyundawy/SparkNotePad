@@ -1,3 +1,61 @@
+# Catatan Rilis SparkNotePad — v1.4.0 (Bahasa Indonesia)
+
+--------------------------------------------------------------------------------
+================================================================================
+Versi Rilis          : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & Security Hardening)
+Tanggal Rilis        : 2026-11-07
+Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repositori           : https://github.com/alsyundawy/SparkNotePad
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Resmi)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
+Kerangka Kerja GUI   : Qt 6.2 LTS / 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platform      : macOS 10.15–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
+Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
+================================================================================
+--------------------------------------------------------------------------------
+
+---
+
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.0
+
+SparkNotePad v1.4.0 menghadirkan fitur-fitur produktivitas utama yang diadaptasi dari hasil riset mendalam terhadap Nextpad++ dan editor teks modern lainnya, serta penguatan keamanan menyeluruh terhadap potensi kerentanan CVE 2025–2026:
+
+1. Pengaturan Jarak Antar Baris Teks (Extra Ascent & Descent):
+   - Pengaturan langsung melalui menu Preferensi > Margins/Padding (0 sampai 30 piksel).
+   - Menggunakan panggilan native Scintilla SCI_SETEXTRAASCENT dan SCI_SETEXTRADESCENT via ScintillaNext.
+   - Diterapkan secara dinamis ke seluruh editor aktif dan tab yang baru dibuka melalui EditorManager.
+
+2. Tooltip Tab Dokumen Lengkap dengan Metadata:
+   - Tooltip kaya informasi diimplementasikan melalui DockedEditor::buildEnrichedToolTip().
+   - Menampilkan path kanonikal berkas, ukuran bita/KB pada disk, jumlah baris, panjang karakter, encoding (UTF-8, UTF-16, dll.), format EOL (CRLF, LF, CR), dan waktu modifikasi terakhir.
+   - Diperbarui secara otomatis saat berpindah tab, ganti nama berkas, atau status penyimpanan berubah.
+
+3. Mesin Pencarian Fuzzy Subsequence Aman (ReDoS-Safe):
+   - Implementasi RegexSafetyEngine::buildFuzzySubsequencePattern() yang mengubah input pencarian fuzzy menjadi pola regex linear non-backtracking.
+   - Opsi pencarian Fuzzy Match tersedia pada dialog Find & Replace dan widget Quick Find (~).
+
+4. Eksekusi Macro Massal (Batch Macro Run Across All Tabs):
+   - Pilihan cakupan eksekusi pada MacroRunDialog: "Current Document" atau "All Open Documents".
+   - Menjalankan makro secara berurutan di seluruh tab yang sedang terbuka.
+
+5. Server Model Context Protocol (MCP) Loopback:
+   - Implementasi LocalMcpServer berbasis JSON-RPC lokal pada 127.0.0.1 dengan autentikasi token kriptografis acak.
+   - Menyediakan perkakas pembacaan metadata tab (list_open_tabs) dan pembacaan isi tab secara aman (read_active_tab).
+
+6. Penguatan Keamanan Sistem (Mitigasi CVE 2025–2026):
+   - Mitigasi CVE-2026-20841: Pencegahan protokol berbahaya (ms-office:, cmd:, powershell:, dll.) melalui NetworkSecurityPolicy::isSafeUriScheme().
+   - Mitigasi CVE-2026-16762: Pembatasan ukuran muatan berkas (10 MB) dan kedalaman nesting XML (maksimal 32 level) via ConfigIntegrityGuard::isPayloadStructureSafe().
+   - Mitigasi CVE-2026-48778 / CVE-2026-48800: Pemblokiran injeksi perintah shell pada perkakas eksternal dan penegakan izin 0600 pada berkas konfigurasi.
+
+7. Penyalinan Laporan Diagnostik Sistem Sekali Klik:
+   - Bantuan > Debug Info menyalin seluruh informasi spesifikasi sistem, versi Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt, dan parameter layar langsung ke clipboard.
+
+8. Sinkronisasi Lokalisasi 100%:
+   - 12 frasa baru diterjemahkan secara tuntas dalam bahasa Indonesia dan Inggris (1.862 entri selesai, 0 belum selesai).
+
+---
+
 # Catatan Rilis SparkNotePad — v1.3.9 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------

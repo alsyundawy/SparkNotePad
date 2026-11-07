@@ -33,4 +33,10 @@ public:
      * @param timeoutMs Maximum allowed execution time in milliseconds (default: 2000 ms).
      */
     static bool executeWithTimeout(const std::function<void()> &operation, int timeoutMs = 2000);
+
+    /**
+     * @brief Transforms a plain text query into a safe, bounded fuzzy subsequence regex pattern.
+     * E.g. "fnpars" -> "f[^\\r\\n]*?n[^\\r\\n]*?p[^\\r\\n]*?a[^\\r\\n]*?r[^\\r\\n]*?s"
+     */
+    static QString buildFuzzySubsequencePattern(const QString &query);
 };
