@@ -73,17 +73,19 @@ struct IFaceProperty {
         IFaceFunction result = {"(property setter)", setter, iface_void, {valueType, iface_void}};
         if (paramType != iface_void) {
             result.paramType[0] = paramType;
-            if (valueType == iface_stringresult)
+            if (valueType == iface_stringresult) {
                 result.paramType[1] = iface_string;
-            else
+            } else {
                 result.paramType[1] = valueType;
+            }
         }
         if ((paramType == iface_void) && ((valueType == iface_string) || (valueType == iface_stringresult))) {
             result.paramType[0] = paramType;
-            if (valueType == iface_stringresult)
+            if (valueType == iface_stringresult) {
                 result.paramType[1] = iface_string;
-            else
+            } else {
                 result.paramType[1] = valueType;
+            }
         }
 
         return result;
@@ -110,6 +112,8 @@ inline bool IFacePropertyIsScriptable(const IFaceProperty &p) {
 
 class IFaceTableInterface {
 public:
+    virtual ~IFaceTableInterface() = default;
+
     virtual const IFaceConstant *FindConstant(const char *name) const = 0;
     virtual const IFaceFunction *FindFunction(const char *name) const = 0;
     virtual const IFaceFunction *FindFunctionByConstantName(const char *name) const = 0;
@@ -125,6 +129,7 @@ public:
     IFaceTable(const char *_prefix, const std::vector<IFaceFunction> &_functions,
                const std::vector<IFaceConstant> &_constants, const std::vector<IFaceProperty> &_properties)
         : prefix(_prefix), functions(_functions), constants(_constants), properties(_properties) {}
+    ~IFaceTable() override = default;
 
     const char *prefix;
 

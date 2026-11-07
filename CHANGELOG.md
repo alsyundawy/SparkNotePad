@@ -122,7 +122,7 @@ SparkNotePad v1.3.8 features an extensive toolbar personalization architecture w
 - **Modern Styled macOS Drag-and-Drop DMG Installer**:
   - Implemented custom DMG packaging pipeline (`scripts/package-dmg.sh` and `scripts/generate_dmg_background.py`) with `create-dmg`.
   - High-DPI Retina `@2x` background featuring subtle geometric polygonal slate/blue accents.
-  - Header branding typography: *"SparkNotePad"* and tagline *"Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."*
+  - Header branding typography: _"SparkNotePad"_ and tagline _"Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."_
   - Elegant curved Bezier drag-and-drop indicator arrow pointing from `SparkNotePad.app` to `/Applications`.
 - **Themes Menu & Toolbar Context Menu Integration**:
   - Top-level `Themes -> Toolbar Icon Packs` submenu with exclusive radio checkmarks.

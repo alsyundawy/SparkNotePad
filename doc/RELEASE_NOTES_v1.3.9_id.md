@@ -11,7 +11,7 @@
 
 ## 🌟 Yang Baru di v1.3.9
 
-SparkNotePad v1.3.9 merupakan rilis stabilitas dan peningkatan engine inti fundamental yang menghadirkan pembaruan upstream resmi ke **Scintilla 5.6.9** dan **Lexilla 5.5.5**, mengatasi kasus khusus (*edge cases*) berbahaya pada pencarian dan penggantian ekspresi reguler, memperkenalkan pengaturan bahasa default yang dapat dikonfigurasi pengguna untuk tab/dokumen baru, memperkaya penyorotan sintaksis front-matter Markdown, serta lolos audit kualitas kode dan analisis statis komprehensif 14 pilar.
+SparkNotePad v1.3.9 merupakan rilis stabilitas dan peningkatan engine inti fundamental yang menghadirkan pembaruan upstream resmi ke **Scintilla 5.6.9** dan **Lexilla 5.5.5**, mengatasi kasus khusus (_edge cases_) berbahaya pada pencarian dan penggantian ekspresi reguler, memperkenalkan pengaturan bahasa default yang dapat dikonfigurasi pengguna untuk tab/dokumen baru, memperkaya penyorotan sintaksis front-matter Markdown, serta lolos audit kualitas kode dan analisis statis komprehensif 14 pilar.
 
 ---
 
@@ -24,8 +24,8 @@ SparkNotePad v1.3.9 merupakan rilis stabilitas dan peningkatan engine inti funda
   - Pembaruan pemetaan kategori karakter dan konversi kapitalisasi penuh standar **Unicode 17**.
   - Mengatasi crash undo riwayat perubahan yang disebabkan optimasi bulk deletion pada Scintilla 5.3.8.
 - **Pustaka Lexer Upstream Lexilla 5.5.5**:
-  - Peningkatan keamanan memori lintas lexer: mengatasi celah *out-of-bounds write* (CWE-787) pada DMIS, pembatas here-doc Perl, Raku, TCMD, dan TeX.
-  - Mengatasi celah *out-of-bounds read* (CWE-125) pada lexer Ruby dan X12.
+  - Peningkatan keamanan memori lintas lexer: mengatasi celah _out-of-bounds write_ (CWE-787) pada DMIS, pembatas here-doc Perl, Raku, TCMD, dan TeX.
+  - Mengatasi celah _out-of-bounds read_ (CWE-125) pada lexer Ruby dan X12.
   - Mengatasi crash pemanggilan makro preprocessor pada lexer C++.
   - Mengatasi crash rekursi bersarang dalam pada lexer Visual Prolog.
 - **Antarmuka Qt yang Diregenerasi**:
@@ -36,6 +36,7 @@ SparkNotePad v1.3.9 merupakan rilis stabilitas dan peningkatan engine inti funda
 ### 2. Penyorotan Sintaksis Front-Matter Markdown
 
 Pada berkas `src/languages/markdown.lua`, tiga ID style baru dari Lexilla 5.5.5 telah diintegrasikan secara penuh:
+
 - **`SCE_MARKDOWN_FRONT_MARK` (ID 22)**: Gaya visual pembatas metadata (`---` pada YAML, `+++` pada TOML, `{}` pada JSON).
 - **`SCE_MARKDOWN_FRONT` (ID 23)**: Gaya visual isi dan nilai properti front-matter.
 - **`SCE_MARKDOWN_FRONT_KEY` (ID 24)**: Penyorotan tebal untuk kunci atribut metadata.
@@ -61,6 +62,7 @@ Pada berkas `src/languages/markdown.lua`, tiga ID style baru dari Lexilla 5.5.5 
 ### 4. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
 
 SparkNotePad v1.3.9 mematuhi standar ketat 14 Pilar Rekayasa Perangkat Lunak:
+
 - Terverifikasi bersih dengan 0 peringatan pada `clangd --check`, `cppcheck`, `clang-tidy`, dan SonarLint.
 - Dikompilasi secara ketat menggunakan generator default CMake `Unix Makefiles` (Ninja dilarang permanen per `AGENTS.md`).
 - Tingkat kelulusan pengujian 100% pada seluruh unit test di `SparkNotePadTests`.

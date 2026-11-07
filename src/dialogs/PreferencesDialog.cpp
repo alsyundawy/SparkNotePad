@@ -350,7 +350,8 @@ void PreferencesDialog::populateTranslationComboBox() {
 }
 
 void PreferencesDialog::setupThemesGroup(QWidget *container) {
-    auto *gbxThemes = new QGroupBox(tr("Themes & Visual Styling").replace(QLatin1Char('&'), QStringLiteral("&&")), container);
+    auto *gbxThemes =
+        new QGroupBox(tr("Themes & Visual Styling").replace(QLatin1Char('&'), QStringLiteral("&&")), container);
     auto *themeLayout = new QFormLayout(gbxThemes);
     themeLayout->setSpacing(10);
     themeLayout->setContentsMargins(14, 16, 14, 14);
@@ -372,8 +373,9 @@ void PreferencesDialog::setupThemesGroup(QWidget *container) {
             }
             lastFamily = family;
         }
-        const QString label = QStringLiteral("[%1] %2 (%3)")
-                                  .arg(family, QString::fromUtf8(pal.displayName), pal.isDark ? tr("Dark") : tr("Light"));
+        const QString label =
+            QStringLiteral("[%1] %2 (%3)")
+                .arg(family, QString::fromUtf8(pal.displayName), pal.isDark ? tr("Dark") : tr("Light"));
         comboBoxTheme->addItem(label, QString::fromLatin1(pal.id));
         if (pal.id == currentId) {
             selectedIdx = comboBoxTheme->count() - 1;
@@ -462,7 +464,8 @@ void PreferencesDialog::setupThemesGroup(QWidget *container) {
 }
 
 void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
-    auto *gbxToolbarPacks = new QGroupBox(tr("Toolbar Icon Packs & Icon Size").replace(QLatin1Char('&'), QStringLiteral("&&")), container);
+    auto *gbxToolbarPacks =
+        new QGroupBox(tr("Toolbar Icon Packs & Icon Size").replace(QLatin1Char('&'), QStringLiteral("&&")), container);
     auto *toolbarLayout = new QFormLayout(gbxToolbarPacks);
     toolbarLayout->setVerticalSpacing(12);
     toolbarLayout->setHorizontalSpacing(14);
@@ -482,7 +485,9 @@ void PreferencesDialog::setupToolbarPacksGroup(QWidget *container) {
     lblIconPackDescription->setWordWrap(true);
     lblIconPackDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
     lblIconPackDescription->setMinimumHeight(48);
-    if (const auto *curPack = ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId()); curPack) {
+    if (const auto *curPack =
+            ToolbarIconManager::instance()->findPackById(ToolbarIconManager::instance()->currentPackId());
+        curPack) {
         lblIconPackDescription->setText(curPack->description);
     }
     toolbarLayout->addRow(lblDescTitle, lblIconPackDescription);
@@ -633,9 +638,9 @@ void PreferencesDialog::updateIconPreview() {
         return;
     }
 
-    const QStringList sampleActions = {QStringLiteral("New"),  QStringLiteral("Open"),  QStringLiteral("Save"),
-                                       QStringLiteral("Cut"),  QStringLiteral("Copy"),  QStringLiteral("Paste"),
-                                       QStringLiteral("Find"), QStringLiteral("Undo"),  QStringLiteral("Redo")};
+    const QStringList sampleActions = {QStringLiteral("New"),  QStringLiteral("Open"), QStringLiteral("Save"),
+                                       QStringLiteral("Cut"),  QStringLiteral("Copy"), QStringLiteral("Paste"),
+                                       QStringLiteral("Find"), QStringLiteral("Undo"), QStringLiteral("Redo")};
 
     if (m_previewLabels.isEmpty()) {
         for (const QString &actName : sampleActions) {

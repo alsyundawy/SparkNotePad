@@ -159,15 +159,15 @@ cmake --build build --target rpm
 
 The compiled distribution packages will be created inside `build/`:
 
-- `build/sparknotepad_1.3.8_amd64.deb`
-- `build/sparknotepad-1.3.8-1.x86_64.rpm`
+- `build/sparknotepad_1.3.9_amd64.deb`
+- `build/sparknotepad-1.3.9-1.x86_64.rpm`
 
 Install with automatic dependency resolution:
 
 ```bash
 # Ubuntu / Debian
-sudo apt install ./build/sparknotepad_1.3.8_amd64.deb
+sudo apt install ./build/sparknotepad_1.3.9_amd64.deb
 
 # Fedora / RHEL
-sudo dnf install ./build/sparknotepad-1.3.8-1.x86_64.rpm
+sudo dnf install ./build/sparknotepad-1.3.9-1.x86_64.rpm
 ```

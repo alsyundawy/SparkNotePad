@@ -33,6 +33,6 @@
 #### 🔗 Quick Links
 
 - **[GitHub Repository](https://github.com/alsyundawy/SparkNotePad)**
-- **[Latest Releases (v1.3.8)](https://github.com/alsyundawy/SparkNotePad/releases/latest)**
+- **[Latest Releases (v1.3.9)](https://github.com/alsyundawy/SparkNotePad/releases/latest)**
 - **[Issue Tracker](https://github.com/alsyundawy/SparkNotePad/issues)**
 - **[Support Maintainer](https://www.paypal.me/alsyundawy)**

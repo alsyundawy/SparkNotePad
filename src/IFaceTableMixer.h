@@ -33,6 +33,7 @@ private:
     std::vector<IFaceTableInterface *> ifaces;
 
 public:
+    ~IFaceTableMixer() override = default;
     void AddIFaceTable(IFaceTableInterface *iface) { ifaces.push_back(iface); }
 
     // IFaceTableInterface

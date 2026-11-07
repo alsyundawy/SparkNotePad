@@ -1,6 +1,6 @@
 # 01. Getting Started & Installation
 
-Welcome to the installation guide for **SparkNotePad v1.3.8**. SparkNotePad provides native standalone binaries across macOS, Linux, and FreeBSD without web runtime overhead.
+Welcome to the installation guide for **SparkNotePad v1.3.9**. SparkNotePad provides native standalone binaries across macOS, Linux, and FreeBSD without web runtime overhead.
 
 ---
 
@@ -20,8 +20,8 @@ Welcome to the installation guide for **SparkNotePad v1.3.8**. SparkNotePad prov
 ### Method A: Standalone DMG Disk Image
 
 1. Download the appropriate `.dmg` package from [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
-   - **Apple Silicon (M1/M2/M3/M4):** `SparkNotePad-v1.3.8-arm64.dmg`
-   - **Intel x86_64:** `SparkNotePad-v1.3.8-x64.dmg`
+   - **Apple Silicon (M1/M2/M3/M4):** `SparkNotePad-v1.3.9-arm64.dmg`
+   - **Intel x86_64:** `SparkNotePad-v1.3.9-x64.dmg`
 2. Double-click the downloaded `.dmg` file to mount it.
 3. Drag **SparkNotePad.app** into your `/Applications` directory.
 4. Eject the DMG disk image.
@@ -35,12 +35,12 @@ Welcome to the installation guide for **SparkNotePad v1.3.8**. SparkNotePad prov
 
 ### Ubuntu 22.04 LTS+ & Debian 12+ (`.deb`)
 
-Download `sparknotepad_1.3.8_amd64.deb` and install it using `apt` with a leading `./` so all system Qt 6 dependencies are automatically resolved:
+Download `sparknotepad_1.3.9_amd64.deb` and install it using `apt` with a leading `./` so all system Qt 6 dependencies are automatically resolved:
 
 ```bash
 # Recommended high-level installation (auto-resolves dependencies):
 sudo apt update
-sudo apt install ./sparknotepad_1.3.8_amd64.deb
+sudo apt install ./sparknotepad_1.3.9_amd64.deb
 ```
 
 To remove the package:
@@ -51,10 +51,10 @@ sudo apt remove sparknotepad
 
 ### Fedora, RHEL 9+, Rocky Linux & openSUSE (`.rpm`)
 
-Download `sparknotepad-1.3.8-1.x86_64.rpm` and install it using `dnf`:
+Download `sparknotepad-1.3.9-1.x86_64.rpm` and install it using `dnf`:
 
 ```bash
-sudo dnf install ./sparknotepad-1.3.8-1.x86_64.rpm
+sudo dnf install ./sparknotepad-1.3.9-1.x86_64.rpm
 ```
 
 ---

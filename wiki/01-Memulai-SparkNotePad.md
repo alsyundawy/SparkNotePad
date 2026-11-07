@@ -21,7 +21,7 @@ Sebelum melakukan instalasi, pastikan sistem komputer Anda memenuhi spesifikasi 
 
 ### Menggunakan Paket Biner Resmi (.dmg)
 
-1. Unduh berkas disk image terbaru: `SparkNotePad-v1.3.8-macOS.dmg` dari halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases).
+1. Unduh berkas disk image terbaru: `SparkNotePad-v1.3.9-macOS.dmg` dari halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases).
 2. Klik dua kali pada berkas `.dmg` untuk membukanya.
 3. Seret ikon **SparkNotePad** ke dalam folder **Applications** Anda.
 4. Buka SparkNotePad melalui Spotlight (`Cmd + Spasi`) atau Launchpad.
@@ -39,11 +39,11 @@ SparkNotePad menyediakan paket native `.deb` yang kompatibel dengan Ubuntu 22.04
 
 ```bash
 # Unduh berkas .deb terbaru dari rilis resmi
-wget https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.8/sparknotepad_1.3.8_amd64.deb
+wget https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/sparknotepad_1.3.9_amd64.deb
 
 # Pasang dengan resolusi dependensi otomatis menggunakan APT
 sudo apt update
-sudo apt install ./sparknotepad_1.3.8_amd64.deb
+sudo apt install ./sparknotepad_1.3.9_amd64.deb
 ```
 
 > [!TIP]
@@ -55,10 +55,10 @@ Untuk distribusi berbasis RPM (Fedora 40+, AlmaLinux 9+, Rocky Linux 9+):
 
 ```bash
 # Unduh paket .rpm resmi
-wget https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.8/sparknotepad-1.3.8-1.x86_64.rpm
+wget https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/sparknotepad-1.3.9-1.x86_64.rpm
 
 # Pasang menggunakan manajer paket DNF
-sudo dnf install ./sparknotepad-1.3.8-1.x86_64.rpm
+sudo dnf install ./sparknotepad-1.3.9-1.x86_64.rpm
 ```
 
 ### Eksekusi Portabel: AppImage
@@ -67,10 +67,10 @@ Bagi pengguna distribusi Linux lain (seperti openSUSE, Solus, Void) atau sistem 
 
 ```bash
 # Berikan izin eksekusi pada berkas AppImage
-chmod +x SparkNotePad-1.3.8-x86_64.AppImage
+chmod +x SparkNotePad-1.3.9-x86_64.AppImage
 
 # Jalankan langsung
-./SparkNotePad-1.3.8-x86_64.AppImage
+./SparkNotePad-1.3.9-x86_64.AppImage
 ```
 
 ---

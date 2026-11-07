@@ -46,8 +46,6 @@ public:
     ~QuickFindWidget();
 
     void setEditor(ScintillaNext *newEditor);
-
-protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 private slots:

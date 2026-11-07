@@ -36,6 +36,7 @@ SparkNotePad v1.3.9 is a foundational engine and stability release that brings o
 ### 2. Markdown Front-Matter Syntax Highlighting
 
 In `src/languages/markdown.lua`, three new Lexilla 5.5.5 style IDs have been fully integrated:
+
 - **`SCE_MARKDOWN_FRONT_MARK` (ID 22)**: Visual styling for metadata delimiters (`---` in YAML, `+++` in TOML, `{}` in JSON).
 - **`SCE_MARKDOWN_FRONT` (ID 23)**: Visual styling for front-matter payload and property values.
 - **`SCE_MARKDOWN_FRONT_KEY` (ID 24)**: Bold highlighting for metadata property keys and attributes.
@@ -61,6 +62,7 @@ In `src/languages/markdown.lua`, three new Lexilla 5.5.5 style IDs have been ful
 ### 4. 14-Pillar Code Quality & Verification Suite
 
 SparkNotePad v1.3.9 adheres strictly to the 14 Pillars of Production Software Engineering:
+
 - Verified clean with 0 warnings on `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
 - Built strictly with default CMake `Unix Makefiles` (Ninja permanently prohibited per `AGENTS.md`).
 - 100% test pass rate across all unit tests in `SparkNotePadTests`.

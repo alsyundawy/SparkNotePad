@@ -40,6 +40,9 @@ static void secureZeroMemory(void *ptr, size_t len) noexcept {
 #endif
 
 // --- Portable Standard AES-256 implementation (FIPS-197) ---
+// Note: On macOS, CommonCrypto (CCCrypt) is used exclusively for hardware-accelerated
+// crypto, so PortableAes is only compiled on non-macOS platforms to eliminate unused code.
+#if !defined(Q_OS_MACOS)
 namespace PortableAes {
 
 static const uint8_t sbox[256] = {
@@ -251,6 +254,7 @@ static void decryptBlock(const uint8_t *in, uint8_t *out, const uint8_t *roundKe
 }
 
 }  // namespace PortableAes
+#endif
 
 // --- CryptoManager Implementation ---
 

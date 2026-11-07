@@ -62,38 +62,41 @@ QuickFindWidget::~QuickFindWidget() {
 }
 
 void QuickFindWidget::setEditor(ScintillaNext *newEditor) {
-    if (this->editor != Q_NULLPTR) {
+    if (this->editor != nullptr) {
         disconnect(this->editor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
     }
 
-    if (newEditor != Q_NULLPTR) {
+    if (newEditor != nullptr) {
         connect(newEditor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
     }
 
     this->editor = newEditor;
 
-    if (finder == Q_NULLPTR) {
+    if (finder == nullptr) {
         finder = new Finder(newEditor);
         finder->options().wrapAround = true;  // Always wrap the search
     } else {
         finder->setEditor(newEditor);
     }
 
-    initializeEditorIndicator();
-
-    positionWidget();
+    if (editor != nullptr) {
+        initializeEditorIndicator();
+        positionWidget();
+    }
 }
 
 bool QuickFindWidget::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        const QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
         // Use escape key to close the quick find widget
         if (keyEvent->key() == Qt::Key_Escape) {
             clearHighlights();
             clearCachedMatches();
             hide();
-            editor->grabFocus();
+            if (editor != nullptr) {
+                editor->grabFocus();
+            }
         }
     }
 
@@ -138,6 +141,10 @@ void QuickFindWidget::performNewSearch() {
 void QuickFindWidget::highlightMatches() {
     qInfo(Q_FUNC_INFO);
 
+    if (editor == nullptr) {
+        return;
+    }
+
     editor->setIndicatorCurrent(indicator);
     for (const auto &range : matches) {
         editor->indicatorFillRange(range.first, range.second - range.first);
@@ -152,7 +159,7 @@ void QuickFindWidget::navigateToNextMatch(bool skipCurrent) {
     qInfo(Q_FUNC_INFO);
 
     // Early out if there are no matches
-    if (matches.length() == 0) {
+    if (matches.empty()) {
         ui->lblInfo->hide();
         return;
     }
@@ -193,7 +200,7 @@ void QuickFindWidget::navigateToPrevMatch() {
     qInfo(Q_FUNC_INFO);
 
     // Early out if there are no matches
-    if (matches.length() == 0) {
+    if (matches.empty()) {
         ui->lblInfo->hide();
         return;
     }
@@ -217,6 +224,10 @@ void QuickFindWidget::navigateToPrevMatch() {
 }
 
 void QuickFindWidget::goToCurrentMatch() {
+    if (editor == nullptr || currentMatchIndex < 0 || currentMatchIndex >= matches.length()) {
+        return;
+    }
+
     editor->setSel(matches[currentMatchIndex].first, matches[currentMatchIndex].second);
     editor->verticalCentreCaret();
 
@@ -247,6 +258,10 @@ void QuickFindWidget::setSearchContextColor(const QString &color) {
 }
 
 void QuickFindWidget::initializeEditorIndicator() {
+    if (editor == nullptr) {
+        return;
+    }
+
     indicator = editor->allocateIndicator(QStringLiteral("quick_find"));
 
     editor->indicSetFore(indicator, 0xFF8000);
@@ -261,6 +276,10 @@ QString QuickFindWidget::searchText() const {
 }
 
 void QuickFindWidget::positionWidget() {
+    if (editor == nullptr) {
+        return;
+    }
+
     int usableWidth = editor->width();
 
     // Account for the scrollbar as the quick find will be underneath if the scrollbar is visible
@@ -268,7 +287,7 @@ void QuickFindWidget::positionWidget() {
         usableWidth -= editor->verticalScrollBar()->width();
     }
 
-    QPoint position = QPoint(usableWidth - width(), 0);
+    const QPoint position = QPoint(usableWidth - width(), 0);
 
     move(editor->mapTo(parentWidget(), position));
 }
@@ -299,6 +318,10 @@ void QuickFindWidget::returnPressed() {
 }
 
 void QuickFindWidget::clearHighlights() {
+    if (editor == nullptr) {
+        return;
+    }
+
     editor->setIndicatorCurrent(indicator);
     editor->indicatorClearRange(0, editor->length());
 }

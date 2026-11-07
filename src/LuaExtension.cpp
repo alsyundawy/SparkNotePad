@@ -106,7 +106,7 @@ static NppExtensionAPIPane check_pane_object(lua_State *L, int index);
 static void push_pane_object(lua_State *L, NppExtensionAPIPane p);
 static int iface_function_helper(lua_State *L, const IFaceFunction &func);
 
-inline void raise_error(lua_State *L, const char *errMsg = NULL) {
+inline void raise_error(lua_State *L, const char *errMsg = nullptr) {
     luaL_where(L, 1);
     if (errMsg) {
         lua_pushstring(L, errMsg);
@@ -467,7 +467,7 @@ static int cf_ifaceprop_metatable_newindex(lua_State *L) {
 
 static int cf_pane_iface_function(lua_State *L) {
     int funcidx = lua_upvalueindex(1);
-    const IFaceFunction *func = static_cast<IFaceFunction *>(lua_touserdata(L, funcidx));
+    const auto *func = static_cast<const IFaceFunction *>(lua_touserdata(L, funcidx));
     if (func) {
         return iface_function_helper(L, *func);
     } else {
@@ -480,7 +480,7 @@ static int push_iface_function(lua_State *L, const char *name, const IFaceTableI
     auto func = iface->FindFunction(name);
     if (func != nullptr) {
         if (IFaceFunctionIsScriptable(*func)) {
-            lua_pushlightuserdata(L, const_cast<IFaceFunction *>(func));
+            lua_pushlightuserdata(L, const_cast<void *>(static_cast<const void *>(func)));
             lua_pushcclosure(L, cf_pane_iface_function, 1);
 
             // Since Lua experts say it is inefficient to create closures / cfunctions
@@ -672,7 +672,7 @@ static int cf_global_metatable_index(lua_State *L) {
 static int LuaPanicFunction(lua_State *L) {
     if (L == luaState) {
         lua_close(luaState);
-        luaState = NULL;
+        luaState = nullptr;
         luaDisabled = true;
     }
     hostTraceError("\nError occurred in unprotected call.  This is very bad.\n");
@@ -746,8 +746,8 @@ bool LuaExtension::Finalise() {
         lua_close(luaState);
     }
 
-    luaState = NULL;
-    editor = NULL;
+    luaState = nullptr;
+    editor = nullptr;
 
     return false;
 }

@@ -68,8 +68,7 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
     dockManager->setStyleSheet("");
 
     connect(dockManager, &ads::CDockManager::focusedDockWidgetChanged, this,
-            [this](const ads::CDockWidget *old, const ads::CDockWidget *now) {
-                Q_UNUSED(old)
+            [this](ads::CDockWidget * /*old*/, ads::CDockWidget *now) {
                 if (!now || !now->widget()) {
                     auto edList = editors();
                     currentEditor = edList.isEmpty() ? nullptr : edList.first();
@@ -89,19 +88,15 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
                 emit editorActivated(editor);
             });
 
-    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](const ads::CDockAreaWidget *DockArea) {
+    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](ads::CDockAreaWidget *DockArea) {
         if (const auto *titleBar = qobject_cast<const DockedEditorTitleBar *>(DockArea->titleBar());
             titleBar != nullptr) {
             connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);
             connect(titleBar, &DockedEditorTitleBar::plusButtonClicked, this, &DockedEditor::newFileRequested);
         }
 
-        connect(DockArea->titleBar()->tabBar(), &ads::CDockAreaTabBar::tabMoved, this, [this](int from, int to) {
-            Q_UNUSED(from)
-            Q_UNUSED(to)
-
-            emit editorOrderChanged();
-        });
+        connect(DockArea->titleBar()->tabBar(), &ads::CDockAreaTabBar::tabMoved, this,
+                [this](int /*from*/, int /*to*/) { emit editorOrderChanged(); });
 
         // In theory the order changes when a new dock area is created (e.g. editor is dragged and dropped),
         // but the dockAreaCreated() signal is triggered before it is actually added to the CDockManager,
@@ -256,8 +251,8 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
     }
 
     connect(editor, &ScintillaNext::closed, dockWidget, &ads::CDockWidget::closeDockWidget);
-    connect(editor, &ScintillaNext::closed, this, [this, editor]() { emit editorClosed(editor); });
-    connect(editor, &ScintillaNext::renamed, this, [this, editor]() { editorRenamed(editor); });
+    connect(editor, &ScintillaNext::closed, this, [this, editor] { emit editorClosed(editor); });
+    connect(editor, &ScintillaNext::renamed, this, [this, editor] { editorRenamed(editor); });
     connect(editor, &QObject::destroyed, this, [this](QObject *obj) {
         if (currentEditor == obj) {
             currentEditor = nullptr;

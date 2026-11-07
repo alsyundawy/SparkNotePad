@@ -49,7 +49,7 @@ void convertToExtended(QString &str) {
     str.replace(R"(\\)", R"(\)");
     // Extended search escapes for CR, LF, TAB, NUL, and backslash
 }
-} // namespace
+}  // namespace
 
 FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainWindow *window)
     : QDialog(window, Qt::Dialog),
@@ -104,10 +104,8 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
             [this] { setStyleSheet(ThemeManager::instance()->getThemeStyleSheet()); });
 
     // If the selection changes highlight the text
-    connect(ui->comboFind, &QComboBox::currentIndexChanged,
-            ui->comboFind->lineEdit(), &QLineEdit::selectAll);
-    connect(ui->comboReplace, &QComboBox::currentIndexChanged,
-            ui->comboReplace->lineEdit(), &QLineEdit::selectAll);
+    connect(ui->comboFind, &QComboBox::currentIndexChanged, ui->comboFind->lineEdit(), &QLineEdit::selectAll);
+    connect(ui->comboReplace, &QComboBox::currentIndexChanged, ui->comboReplace->lineEdit(), &QLineEdit::selectAll);
 
     // Force focus on the find text box
     connect(this, &FindReplaceDialog::windowActivated, [this] {
@@ -253,7 +251,7 @@ void updateComboList(QComboBox *comboBox, const QString &text) {
     comboBox->insertItem(0, text);
     comboBox->setCurrentIndex(0);
 }
-} // namespace
+}  // namespace
 
 void FindReplaceDialog::updateFindList(const QString &text) {
     if (!text.isEmpty()) {

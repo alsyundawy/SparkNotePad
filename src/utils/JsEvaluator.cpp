@@ -49,14 +49,15 @@ QString formatJsValue(JSContextRef ctx, JSValueRef val) {
         JSValueRef jsonVal = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsonName, nullptr);
         JSStringRelease(jsonName);
         if (jsonVal && JSValueIsObject(ctx, jsonVal)) {
-            JSObjectRef jsonObj = (JSObjectRef)jsonVal;
+            JSObjectRef jsonObj = JSValueToObject(ctx, jsonVal, nullptr);
             JSStringRef stringifyName = JSStringCreateWithUTF8CString("stringify");
-            JSValueRef stringifyVal = JSObjectGetProperty(ctx, jsonObj, stringifyName, nullptr);
+            JSValueRef stringifyVal = jsonObj ? JSObjectGetProperty(ctx, jsonObj, stringifyName, nullptr) : nullptr;
             JSStringRelease(stringifyName);
             if (stringifyVal && JSValueIsObject(ctx, stringifyVal)) {
-                JSObjectRef fn = (JSObjectRef)stringifyVal;
+                JSObjectRef fn = JSValueToObject(ctx, stringifyVal, nullptr);
                 JSValueRef args[3] = {val, JSValueMakeNull(ctx), JSValueMakeNumber(ctx, 2)};
-                JSValueRef jsonRes = JSObjectCallAsFunction(ctx, fn, jsonObj, 3, args, nullptr);
+                JSValueRef jsonRes =
+                    (fn && jsonObj) ? JSObjectCallAsFunction(ctx, fn, jsonObj, 3, args, nullptr) : nullptr;
                 if (jsonRes && !JSValueIsUndefined(ctx, jsonRes)) {
                     JSStringRef s = JSValueToStringCopy(ctx, jsonRes, nullptr);
                     QString out = jsStringToQString(s);

@@ -235,8 +235,8 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Baseline TLS & Mode Air-Gap**  | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik                 |  Preferensi >> Pengaturan Umum  |
 | **27 Ikon Bilah Alat Monoline**  | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                                  |        Bilah Alat & Menu        |
 | **Ergonomi QComboBox Terpadu**   | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema                         |         Seluruh Dialog          |
-| **Tab Themes & Toolbar**         | 21 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             |  Preferensi >> Themes & Toolbar |
-| **Tab Custom Toolbar Config**    | Penyesuai visual bilah alat lengkap dengan pencarian, pengurutan aksi, pemisah, dan hot-reload instan                             |   Preferensi >> Custom Toolbar  |
+| **Tab Themes & Toolbar**         | 21 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             | Preferensi >> Themes & Toolbar  |
+| **Tab Custom Toolbar Config**    | Penyesuai visual bilah alat lengkap dengan pencarian, pengurutan aksi, pemisah, dan hot-reload instan                             |  Preferensi >> Custom Toolbar   |
 | **Menu Editor Standar Desktop**  | Menu standar: Tampilan Hex/Biner di bawah Bandingkan, Restart di menu macOS di atas Quit, menu bersih                             |           Menu Global           |
 | **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.924 teks (0 belum selesai)                         |   Preferensi >> Bahasa (Lang)   |
 | **Mulai Ulang Aplikasi Aman**    | Mengosongkan sesi, menyimpan pengaturan, dan meluncurkan ulang aplikasi tanpa konflik lock                                        |          `Ctrl+Alt+R`           |
@@ -434,14 +434,14 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
   - Akselerasi pencarian posisi awal baris dengan meniadakan komputasi tata letak baris yang tidak diperlukan.
   - Peningkatan kapasitas cache lexeme dari 30 menjadi 40 byte guna mengoptimalkan identifier panjang dan simbol query SQL/JSON.
   - Integrasi pemetaan kategori karakter dan konversi huruf kapital standar Unicode 17.
-  - Eliminasi crash pada fitur *undo change history* saat operasi penghapusan massal (*bulk deletion*).
+  - Eliminasi crash pada fitur _undo change history_ saat operasi penghapusan massal (_bulk deletion_).
 - **Pembaruan Engine Inti Lexilla 5.5.5 Resmi Upstream & Peningkatan Syntax Highlighting**:
   - **Dukungan Gaya Front-Matter Markdown**: Penambahan dukungan untuk `SCE_MARKDOWN_FRONT_MARK` (ID 22), `SCE_MARKDOWN_FRONT` (ID 23), dan `SCE_MARKDOWN_FRONT_KEY` (ID 24) pada `src/languages/markdown.lua` untuk metadata YAML (`---`), TOML (`+++`), dan JSON (`{}`).
-  - **Mitigasi Keamanan Memori (Memory Safety Hardening)**: Menutup celah *out-of-bounds write* (CWE-787) dan *out-of-bounds read* (CWE-125) pada lexer DMIS, Perl here-doc, Raku, Ruby, TCMD, TeX, Visual Prolog, dan X12.
+  - **Mitigasi Keamanan Memori (Memory Safety Hardening)**: Menutup celah _out-of-bounds write_ (CWE-787) dan _out-of-bounds read_ (CWE-125) pada lexer DMIS, Perl here-doc, Raku, Ruby, TCMD, TeX, Visual Prolog, dan X12.
   - Pembaruan lexer untuk C++, HTML/JavaScript (mendukung karakter `$`, `#`, identifier non-ASCII, dan template literal bersarang), PHP (variabel ganda `$$var`), dan kuotasi komplementer SQL.
 - **Porting Fitur & Stabilitas Terpilih NotepadNext**:
   - **Perbaikan Infinite-Loop Regex Replace-All (CWE-835)**: Mencegah UI freeze dan kehabisan sumber daya event loop saat melakukan penggantian ekspresi reguler dengan panjang 0 (`^`, `$`, `\b`, lookarounds).
-  - **Ergonomi Dialog Find & Replace**: Secara otomatis menonaktifkan dan menghapus centang opsi pencarian mundur (*backwards*) saat mode Regular Expression dipilih.
+  - **Ergonomi Dialog Find & Replace**: Secara otomatis menonaktifkan dan menghapus centang opsi pencarian mundur (_backwards_) saat mode Regular Expression dipilih.
   - **Pengaturan Bahasa Default**: Menambahkan preferensi konfigurasi "Default Language" pada Preferensi > Editor untuk tab baru/belum disimpan dengan enumerasi bahasa dinamis.
 - **Audit Kualitas Kode 14 Pilar & Pemeriksaan Statis Mendalam**:
   - Verifikasi 0 diagnostik dan 0 kesalahan pada `clangd --check`, `cppcheck`, `clang-tidy`, dan SonarLint.

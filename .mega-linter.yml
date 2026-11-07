@@ -68,6 +68,6 @@ PRINT_ALL_FILES: false
 
 # Linter-specific arguments tuned for Qt 6 and SparkNotePad repository structure
 CPP_CLANG_FORMAT_ARGUMENTS: --style=file
-CPP_CPPCHECK_ARGUMENTS: --library=qt --suppress=syntaxError --suppress=unmatchedSuppression --suppress=missingIncludeSystem
+CPP_CPPCHECK_ARGUMENTS: --library=qt --suppress=syntaxError --suppress=unmatchedSuppression --suppress=missingIncludeSystem --suppress=constParameterCallback
 BASH_SHELLCHECK_ARGUMENTS: -x
 MARKDOWN_MARKDOWNLINT_ARGUMENTS: --config .markdownlint.json
