@@ -109,11 +109,8 @@ if command -v create-dmg >/dev/null 2>&1; then
 		CREATED=1
 		echo "[*] Styled DMG successfully created with create-dmg."
 	else
-		echo "Warning: Standard create-dmg failed. Retrying with --skip-jenkins (headless mode)..." >&2
-		if create-dmg "${CREATE_DMG_ARGS[@]}" --skip-jenkins "${DMG_OUTPUT}" "${STAGE_DIR}"; then
-			CREATED=1
-			echo "[*] Styled DMG created (headless mode)."
-		fi
+		echo "Warning: Standard create-dmg failed (AppleScript unavailable or timed out). Falling back to native hdiutil with pre-baked .DS_Store..." >&2
+		CREATED=0
 	fi
 fi
 
