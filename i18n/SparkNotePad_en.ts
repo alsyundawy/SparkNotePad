@@ -1504,7 +1504,7 @@
 <context>
     <name>ColorPreviewCallTip</name>
     <message>
-        <location filename="../src/features/ColorPreviewCallTip.cpp" line="360"/>
+        <location filename="../src/features/ColorPreviewCallTip.cpp" line="388"/>
         <source>Pick New Color</source>
         <translation>Pick New Color</translation>
     </message>
@@ -3193,7 +3193,7 @@ Or fallback online URL:
     <message>
         <location filename="../src/dialogs/FindReplaceDialog.ui" line="20"/>
         <location filename="../src/dialogs/FindReplaceDialog.ui" line="262"/>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="71"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="73"/>
         <source>Find</source>
         <translation>Find</translation>
     </message>
@@ -3328,18 +3328,18 @@ Or fallback online URL:
         <translation>Wra&amp;p Around</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="72"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="74"/>
         <source>Replace</source>
         <translation>Replace</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="73"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="75"/>
         <source>Mark</source>
         <translation>Mark</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="181"/>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="369"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="183"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="375"/>
         <source>Replaced %Ln matches</source>
         <translation>
             <numerusform>Replaced %Ln match</numerusform>
@@ -3347,27 +3347,27 @@ Or fallback online URL:
         </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="273"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="279"/>
         <source>The end of the document has been reached. Found 1st occurrence from the top.</source>
         <translation>The end of the document has been reached. Found 1st occurrence from the top.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="284"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="290"/>
         <source>No matches found.</source>
         <translation>No matches found.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="343"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="349"/>
         <source>1 occurrence was replaced</source>
         <translation>1 occurrence was replaced</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="351"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="357"/>
         <source>No more occurrences were found</source>
         <translation>No more occurrences were found</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="379"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="385"/>
         <source>Found %Ln matches</source>
         <translation>
             <numerusform>Found %Ln match</numerusform>
@@ -3375,7 +3375,7 @@ Or fallback online URL:
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="775"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="788"/>
         <source>Mark: %Ln match in entire file</source>
         <translation>
             <numerusform>Mark: %Ln match in entire file</numerusform>
@@ -3383,17 +3383,17 @@ Or fallback online URL:
         </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="785"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="798"/>
         <source>All marks cleared</source>
         <translation>All marks cleared</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="808"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="821"/>
         <source>No marks to copy</source>
         <translation>No marks to copy</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="813"/>
+        <location filename="../src/dialogs/FindReplaceDialog.cpp" line="826"/>
         <source>Copied %Ln marked text(s)</source>
         <translation>
             <numerusform>Copied %Ln marked text</numerusform>
@@ -4334,7 +4334,7 @@ Or fallback online URL:
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="355"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4871"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4878"/>
         <source>&amp;Zoom</source>
         <translation>&amp;Zoom</translation>
     </message>
@@ -6134,9 +6134,9 @@ Or fallback online URL:
         <location filename="../src/dialogs/MainWindow.cpp" line="3068"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="3082"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="3096"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4702"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4722"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4814"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4709"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4729"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4821"/>
         <source>No active editor</source>
         <translation>No active editor</translation>
     </message>
@@ -6884,7 +6884,7 @@ Or fallback online URL:
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2788"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3751"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3758"/>
         <source>Reload File</source>
         <translation>Reload File</translation>
     </message>
@@ -6895,7 +6895,7 @@ Or fallback online URL:
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2793"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3653"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3660"/>
         <source>.LOG auto-timestamp appended to log file</source>
         <translation>.LOG auto-timestamp appended to log file</translation>
     </message>
@@ -7016,266 +7016,266 @@ Or fallback online URL:
         <translation>Administrator</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3752"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3759"/>
         <source>&lt;b&gt;%1&lt;/b&gt; has been modified by another program. Do you want to reload it?</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; has been modified by another program. Do you want to reload it?</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3773"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3780"/>
         <source>Read error</source>
         <translation>Read error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3776"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3783"/>
         <source>Write error</source>
         <translation>Write error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3779"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3786"/>
         <source>Fatal error</source>
         <translation>Fatal error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3782"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3789"/>
         <source>Resource error</source>
         <translation>Resource error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3785"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3792"/>
         <source>Open error</source>
         <translation>Open error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3788"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3795"/>
         <source>Abort error</source>
         <translation>Abort error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3791"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3798"/>
         <source>Timeout error</source>
         <translation>Timeout error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3794"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3801"/>
         <source>Unspecified error</source>
         <translation>Unspecified error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3797"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3804"/>
         <source>Remove error</source>
         <translation>Remove error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3800"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3807"/>
         <source>Rename error</source>
         <translation>Rename error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3803"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3810"/>
         <source>Position error</source>
         <translation>Position error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3806"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3813"/>
         <source>Resize error</source>
         <translation>Resize error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3809"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3816"/>
         <source>Permissions error</source>
         <translation>Permissions error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3812"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3819"/>
         <source>Copy error</source>
         <translation>Copy error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3815"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3822"/>
         <source>Unknown error (%1)</source>
         <translation>Unknown error (%1)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3819"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3826"/>
         <source>Error Saving File</source>
         <translation>Error Saving File</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3820"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3827"/>
         <source>An error occurred when saving &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>An error occurred when saving &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;&lt;br&gt;Error: %2</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3824"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3831"/>
         <source>Zoom: %1%</source>
         <translation>Zoom: %1%</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3866"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3873"/>
         <source>Untitled</source>
         <translation>Untitled</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3875"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3882"/>
         <source>Export to PDF</source>
         <translation>Export to PDF</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3876"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3883"/>
         <source>PDF Documents (*.pdf);;All Files (*)</source>
         <translation>PDF Documents (*.pdf);;All Files (*)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3890"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3897"/>
         <source>Export Failed</source>
         <translation>Export Failed</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3891"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3898"/>
         <source>Could not initialize PDF renderer for:
 %1</source>
         <translation>Could not initialize PDF renderer for:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3914"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3935"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3921"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3942"/>
         <source>%1 — SparkNotePad</source>
         <translation>%1 — SparkNotePad</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3928"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3959"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3935"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3966"/>
         <source>Page %1</source>
         <translation>Page %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="3962"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="3969"/>
         <source>Exported to PDF: %1</source>
         <translation>Exported to PDF: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4419"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4426"/>
         <source>Preview Markdown in New Tab</source>
         <translation>Preview Markdown in New Tab</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4424"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4431"/>
         <source>Preview HTML in New Tab</source>
         <translation>Preview HTML in New Tab</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4429"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4436"/>
         <source>Preview in Default Browser</source>
         <translation>Preview in Default Browser</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4475"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4482"/>
         <source>&amp;Run</source>
         <translation>&amp;Run</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4479"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4486"/>
         <source>&amp;Run...</source>
         <translation>&amp;Run...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4488"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4495"/>
         <source>Run Current &amp;File in Terminal</source>
         <translation>Run Current &amp;File in Terminal</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4495"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4502"/>
         <source>Open &amp;Terminal Here</source>
         <translation>Open &amp;Terminal Here</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4502"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4509"/>
         <source>Reveal in &amp;File Manager</source>
         <translation>Reveal in &amp;File Manager</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4508"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4515"/>
         <source>Open in Default &amp;Web Browser</source>
         <translation>Open in Default &amp;Web Browser</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4514"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4521"/>
         <source>Generate Development SSL &amp;Certificate (mkcert/OpenSSL)...</source>
         <translation>Generate Development SSL &amp;Certificate (mkcert/OpenSSL)...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4522"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4529"/>
         <source>Search on &amp;Google</source>
         <translation>Search on &amp;Google</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4526"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4533"/>
         <source>Search on &amp;Wikipedia</source>
         <translation>Search on &amp;Wikipedia</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4532"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4539"/>
         <source>Get &amp;PHP Help</source>
         <translation>Get &amp;PHP Help</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4537"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4544"/>
         <source>&amp;Rust Documentation</source>
         <translation>&amp;Rust Documentation</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4542"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4549"/>
         <source>P&amp;ython Documentation</source>
         <translation>P&amp;ython Documentation</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4547"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4554"/>
         <source>Search on &amp;GitHub</source>
         <translation>Search on &amp;GitHub</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4551"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4558"/>
         <source>Search on &amp;Stack Overflow</source>
         <translation>Search on &amp;Stack Overflow</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4558"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4565"/>
         <source>&amp;Manage External Tools...</source>
         <translation>&amp;Manage External Tools...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4563"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4570"/>
         <source>Saved &amp;Tools</source>
         <translation>Saved &amp;Tools</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4576"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4583"/>
         <source>(No saved tools)</source>
         <translation>(No saved tools)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4589"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4596"/>
         <source>Tool Execution Error</source>
         <translation>Tool Execution Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4605"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4612"/>
         <source>Run Current File</source>
         <translation>Run Current File</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4711"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4718"/>
         <source>🔒 Document configured for AES-256 encryption. Save to write to disk.</source>
         <translation>🔒 Document configured for AES-256 encryption. Save to write to disk.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4712"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4719"/>
         <source>Encryption Configured</source>
         <translation>Encryption Configured</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4713"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4720"/>
         <source>This document is now set to be encrypted with AES-256 upon saving.
 
 Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep your passphrase secure.</source>
@@ -7284,211 +7284,211 @@ Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep y
 Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep your passphrase secure.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4727"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4734"/>
         <source>Document is not encrypted</source>
         <translation>Document is not encrypted</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4731"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4738"/>
         <source>Remove Encryption</source>
         <translation>Remove Encryption</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4732"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4739"/>
         <source>Are you sure you want to remove encryption from &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt;The next save will store it as plain unencrypted text.</source>
         <translation>Are you sure you want to remove encryption from &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt;The next save will store it as plain unencrypted text.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4738"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4745"/>
         <source>🔓 Encryption removed. Save to write as plain text.</source>
         <translation>🔓 Encryption removed. Save to write as plain text.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4762"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4769"/>
         <source>📋 Clipboard Monitoring: ACTIVE (capturing copied text to document)</source>
         <translation>📋 Clipboard Monitoring: ACTIVE (capturing copied text to document)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4764"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4771"/>
         <source>📋 Clipboard Monitoring: STOPPED (Total captured: %1)</source>
         <translation>📋 Clipboard Monitoring: STOPPED (Total captured: %1)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4771"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4778"/>
         <source>📋 Captured clipboard item #%1 (%2 chars)</source>
         <translation>📋 Captured clipboard item #%1 (%2 chars)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4805"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4812"/>
         <source>Window Transparency: ON (Opacity: %1%)</source>
         <translation>Window Transparency: ON (Opacity: %1%)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4807"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4814"/>
         <source>Window Transparency: OFF (100% Opaque)</source>
         <translation>Window Transparency: OFF (100% Opaque)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4822"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4829"/>
         <source>Cannot monitor: File is not saved to disk.</source>
         <translation>Cannot monitor: File is not saved to disk.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4857"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4864"/>
         <source>&amp;Window</source>
         <translation>&amp;Window</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4861"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4868"/>
         <source>&amp;Minimize</source>
         <translation>&amp;Minimize</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4890"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4897"/>
         <source>Focus &amp;Editor</source>
         <translation>Focus &amp;Editor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4896"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4903"/>
         <source>Editor focused</source>
         <translation>Editor focused</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4904"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4911"/>
         <source>&amp;Bring All to Front</source>
         <translation>&amp;Bring All to Front</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4914"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4921"/>
         <source>Move to &amp;Next Screen</source>
         <translation>Move to &amp;Next Screen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4919"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4926"/>
         <source>Move to &amp;Previous Screen</source>
         <translation>Move to &amp;Previous Screen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4924"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4931"/>
         <source>&amp;Center Window on Screen</source>
         <translation>&amp;Center Window on Screen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="4929"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="4936"/>
         <source>&amp;Display &amp; Retina Diagnostics...</source>
         <translation>&amp;Display &amp; Retina Diagnostics...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5011"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5018"/>
         <source>&amp;Themes</source>
         <translation>&amp;Themes</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5052"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5576"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5059"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5583"/>
         <source>20 x 20 (Medium)</source>
         <translation>20 x 20 (Medium)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5053"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5577"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5060"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5584"/>
         <source>24 x 24 (Default / Recommended)</source>
         <translation>24 x 24 (Default / Recommended)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5055"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5579"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5062"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5586"/>
         <source>48 x 48 (Extra Large)</source>
         <translation>48 x 48 (Extra Large)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5056"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5580"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5063"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5587"/>
         <source>64 x 64 (Ultra High-DPI)</source>
         <translation>64 x 64 (Ultra High-DPI)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5092"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5099"/>
         <source>Open Theme Switcher...</source>
         <translation>Open Theme Switcher...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5103"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5110"/>
         <source>Light Themes Only</source>
         <translation>Light Themes Only</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5109"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5120"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5142"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5116"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5127"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5149"/>
         <source>Theme applied: %1</source>
         <translation>Theme applied: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5114"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5121"/>
         <source>Dark Themes Only</source>
         <translation>Dark Themes Only</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5127"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5134"/>
         <source>Themes by Family</source>
         <translation>Themes by Family</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5150"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5157"/>
         <source>Reset to Default (Light Mode - NotepadNext)</source>
         <translation>Reset to Default (Light Mode - NotepadNext)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5153"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5160"/>
         <source>Theme reset to default Light Mode (NotepadNext)</source>
         <translation>Theme reset to default Light Mode (NotepadNext)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5157"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5164"/>
         <source>Default Dark Mode</source>
         <translation>Default Dark Mode</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5160"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5167"/>
         <source>Theme set to Dark Mode (Dracula)</source>
         <translation>Theme set to Dark Mode (Dracula)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5164"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5171"/>
         <source>Toggle Dark / Light Mode</source>
         <translation>Toggle Dark / Light Mode</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5169"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5176"/>
         <source>Switched to Dark Mode</source>
         <translation>Switched to Dark Mode</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5169"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5176"/>
         <source>Switched to Light Mode</source>
         <translation>Switched to Light Mode</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5019"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5026"/>
         <source>&amp;Toolbar Icon Packs</source>
         <translation>&amp;Toolbar Icon Packs</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5035"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5562"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5042"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5569"/>
         <source>Toolbar icon pack changed to: %1</source>
         <translation>Toolbar icon pack changed to: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5042"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5567"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5049"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5574"/>
         <source>Toolbar Icon Size</source>
         <translation>Toolbar Icon Size</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5051"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5575"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5058"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5582"/>
         <source>16 x 16 (Compact)</source>
         <translation>16 x 16 (Compact)</translation>
     </message>
@@ -7501,111 +7501,111 @@ Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep y
         <translation type="vanished">24 x 24 (Medium)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5054"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5578"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5061"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5585"/>
         <source>32 x 32 (Large / High-DPI)</source>
         <translation>32 x 32 (Large / High-DPI)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5068"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5590"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5075"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5597"/>
         <source>Toolbar icon size changed to: %1</source>
         <translation>Toolbar icon size changed to: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5074"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5540"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5081"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5547"/>
         <source>Customize Toolbar Buttons...</source>
         <translation>Customize Toolbar Buttons...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5081"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5088"/>
         <source>Open Custom Icon Packs Folder...</source>
         <translation>Open Custom Icon Packs Folder...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5206"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5216"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5213"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5223"/>
         <source>Documentation Error</source>
         <translation>Documentation Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5207"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5214"/>
         <source>Unable to locate DOCNOTE.txt on disk or in application resources.</source>
         <translation>Unable to locate DOCNOTE.txt on disk or in application resources.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5217"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5224"/>
         <source>Unable to locate CHANGELOG.txt on disk or in application resources.</source>
         <translation>Unable to locate CHANGELOG.txt on disk or in application resources.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5301"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5308"/>
         <source>Hex / Binary View: Enabled (%1 bytes)</source>
         <translation>Hex / Binary View: Enabled (%1 bytes)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5320"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5327"/>
         <source>Hex / Binary View: Disabled (Restored original document)</source>
         <translation>Hex / Binary View: Disabled (Restored original document)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5334"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5341"/>
         <source>Preparing to restart SparkNotePad...</source>
         <translation>Preparing to restart SparkNotePad...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5338"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5345"/>
         <source>Restart canceled.</source>
         <translation>Restart canceled.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5395"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="5402"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5409"/>
         <source>Restart Failed</source>
         <translation>Restart Failed</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5396"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="5403"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5410"/>
         <source>Unable to relaunch SparkNotePad automatically from:
 %1</source>
         <translation>Unable to relaunch SparkNotePad automatically from:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5412"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5419"/>
         <source>Closing SparkNotePad...</source>
         <translation>Closing SparkNotePad...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5416"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5423"/>
         <source>Exit canceled.</source>
         <translation>Exit canceled.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5433"/>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5447"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5440"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5454"/>
         <source>No active document</source>
         <translation>No active document</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5461"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5468"/>
         <source>JWT Decode Error</source>
         <translation>JWT Decode Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5467"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5474"/>
         <source>JWT-Decoded.json</source>
         <translation>JWT-Decoded.json</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5550"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5557"/>
         <source>Toolbar Icon Packs</source>
         <translation>Toolbar Icon Packs</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/MainWindow.cpp" line="5596"/>
+        <location filename="../src/dialogs/MainWindow.cpp" line="5603"/>
         <source>Reset Toolbar to Defaults</source>
         <translation>Reset Toolbar to Defaults</translation>
     </message>
@@ -8341,98 +8341,103 @@ Key: %2</translation>
         <translation>Default Line Endings</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="209"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="207"/>
+        <source>Default Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="219"/>
         <source>Highlight URLs</source>
         <translation>Highlight URLs</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="218"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="228"/>
         <source>URL Highlighting Size Threshold:</source>
         <translation>URL Highlighting Size Threshold:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="231"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="241"/>
         <source> MB</source>
         <translation> MB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="234"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="244"/>
         <source>Maximum document size to scan for URLs (0 = disable scanning)</source>
         <translation>Maximum document size to scan for URLs (0 = disable scanning)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="243"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="253"/>
         <source>Show Line Numbers</source>
         <translation>Show Line Numbers</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="250"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="260"/>
         <source>Show Change History Margin</source>
         <translation>Show Change History Margin</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="257"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="267"/>
         <source>Auto Completion</source>
         <translation>Auto Completion</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="264"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="274"/>
         <source>Auto-close brackets ( ) [ ] { }</source>
         <translation>Auto-close brackets ( ) [ ] { }</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="271"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="281"/>
         <source>Auto-close quotes \&quot; &apos; `</source>
         <translation>Auto-close quotes \&quot; &apos; `</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="278"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="288"/>
         <source>Smart Auto-Indent</source>
         <translation>Smart Auto-Indent</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="285"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="295"/>
         <source>Color preview via CallTip (hex / rgb / hsl)</source>
         <translation>Color preview via CallTip (hex / rgb / hsl)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="292"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="302"/>
         <source>Preserve file modification timestamp on save</source>
         <translation>Preserve file modification timestamp on save</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="299"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="309"/>
         <source>Strict Offline Mode (Air-Gap: block all outbound network requests)</source>
         <translation>Strict Offline Mode (Air-Gap: block all outbound network requests)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="306"/>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="230"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="316"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="242"/>
         <source>Default Directory</source>
         <translation>Default Directory</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="315"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="325"/>
         <source>Follow Current Document</source>
         <translation>Follow Current Document</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="322"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="332"/>
         <source>Last Used Directory</source>
         <translation>Last Used Directory</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="344"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="354"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="375"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="385"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.ui" line="387"/>
+        <location filename="../src/dialogs/PreferencesDialog.ui" line="397"/>
         <source>An application restart is required to apply certain settings.</source>
         <translation>An application restart is required to apply certain settings.</translation>
     </message>
@@ -8477,7 +8482,7 @@ Key: %2</translation>
         <translation>Macintosh (CR)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="319"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="331"/>
         <source>&lt;System Default&gt;</source>
         <translation>&lt;System Default&gt;</translation>
     </message>
@@ -8486,147 +8491,147 @@ Key: %2</translation>
         <translation type="vanished">Themes, Visual Styling &amp; Modern Features</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="341"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="354"/>
         <source>Themes &amp; Visual Styling</source>
         <translation>Themes &amp; Visual Styling</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="364"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="378"/>
         <source>Dark</source>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="364"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="378"/>
         <source>Light</source>
         <translation>Light</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="386"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="400"/>
         <source>Toggle Dark/Light</source>
         <translation>Toggle Dark/Light</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="387"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="401"/>
         <source>Quickly switch between active dark and light modes</source>
         <translation>Quickly switch between active dark and light modes</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="399"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="413"/>
         <source>Active Theme:</source>
         <translation>Active Theme:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="427"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="441"/>
         <source>Window Opacity:</source>
         <translation>Window Opacity:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="433"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="447"/>
         <source> ms</source>
         <translation> ms</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="438"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="452"/>
         <source>Tail -f Reload Interval:</source>
         <translation>Tail -f Reload Interval:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="442"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="456"/>
         <source>Guard windows against offscreen placement across multi-DPI displays</source>
         <translation>Guard windows against offscreen placement across multi-DPI displays</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="447"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="461"/>
         <source>Display Safety:</source>
         <translation>Display Safety:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="453"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="468"/>
         <source>Toolbar Icon Packs &amp; Icon Size</source>
         <translation>Toolbar Icon Packs &amp; Icon Size</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="491"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="508"/>
         <source>No description provided for this icon pack.</source>
         <translation>No description provided for this icon pack.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="462"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="477"/>
         <source>Active Icon Pack:</source>
         <translation>Active Icon Pack:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="465"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="480"/>
         <source>Description:</source>
         <translation>Description:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="505"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="522"/>
         <source>16 x 16 (Compact)</source>
         <translation>16 x 16 (Compact)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="506"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="523"/>
         <source>20 x 20 (Medium)</source>
         <translation>20 x 20 (Medium)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="507"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="524"/>
         <source>24 x 24 (Default / Recommended)</source>
         <translation>24 x 24 (Default / Recommended)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="508"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="525"/>
         <source>32 x 32 (Large / High-DPI)</source>
         <translation>32 x 32 (Large / High-DPI)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="509"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="526"/>
         <source>48 x 48 (Extra Large)</source>
         <translation>48 x 48 (Extra Large)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="510"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="527"/>
         <source>64 x 64 (Ultra High-DPI)</source>
         <translation>64 x 64 (Ultra High-DPI)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="530"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="547"/>
         <source>Toolbar Icon Size:</source>
         <translation>Toolbar Icon Size:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="538"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="555"/>
         <source>Icon Preview:</source>
         <translation>Icon Preview:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="542"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="559"/>
         <source>Open Custom Icon Packs Folder...</source>
         <translation>Open Custom Icon Packs Folder...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="551"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="568"/>
         <source>Rescan Icon Packs</source>
         <translation>Rescan Icon Packs</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="561"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="578"/>
         <source>Management:</source>
         <translation>Management:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="581"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="598"/>
         <source>&amp;Themes &amp;&amp; Toolbar</source>
         <translation>&amp;Themes &amp;&amp; Toolbar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="593"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="610"/>
         <source>&amp;Custom Toolbar Config</source>
         <translation>&amp;Custom Toolbar Config</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/PreferencesDialog.cpp" line="609"/>
+        <location filename="../src/dialogs/PreferencesDialog.cpp" line="626"/>
         <source> [Custom]</source>
         <translation> [Custom]</translation>
     </message>
@@ -8828,7 +8833,7 @@ Key: %2</translation>
         <translation>. *</translation>
     </message>
     <message>
-        <location filename="../src/widgets/QuickFindWidget.cpp" line="224"/>
+        <location filename="../src/widgets/QuickFindWidget.cpp" line="235"/>
         <source>%L1/%L2</source>
         <translation>%L1/%L2</translation>
     </message>
