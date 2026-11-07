@@ -1,6 +1,8 @@
 # C++ objects and libs
 
 build/
+dist/
+*.dmg
 *.slo
 *.lo
 *.o
@@ -30,6 +32,7 @@ ui_*.h
 Makefile*
 !src/languages/makefile.lua
 *build-*
+!scripts/*
 
 
 # Qt unit tests
