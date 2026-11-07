@@ -95,12 +95,12 @@ TokenForensicUtils::JwtInfo TokenForensicUtils::decodeJwt(const QString &token) 
 
     if (info.payload.contains(QStringLiteral("iat"))) {
         const qint64 iatSec = info.payload.value(QStringLiteral("iat")).toInteger();
-        info.issuedAt = QDateTime::fromSecsSinceEpoch(iatSec, QTimeZone::UTC);
+        info.issuedAt = QDateTime::fromSecsSinceEpoch(iatSec, QTimeZone::utc());
     }
 
     if (info.payload.contains(QStringLiteral("exp"))) {
         const qint64 expSec = info.payload.value(QStringLiteral("exp")).toInteger();
-        info.expiration = QDateTime::fromSecsSinceEpoch(expSec, QTimeZone::UTC);
+        info.expiration = QDateTime::fromSecsSinceEpoch(expSec, QTimeZone::utc());
         info.isExpired = (info.expiration < QDateTime::currentDateTimeUtc());
     }
 
@@ -123,7 +123,7 @@ TokenForensicUtils::JwtInfo TokenForensicUtils::decodeJwt(const QString &token) 
     }
     out += QStringLiteral("Signature:       %1\n").arg(info.signature);
 
-    info.formattedOutput = out;
+    info.formattedOutput = std::move(out);
     return info;
 }
 

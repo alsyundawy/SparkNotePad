@@ -18,7 +18,7 @@ permissions:
 
 env:
   # Qt version used for the canonical build package (must match one of the matrix qt_version values)
-  QT_RELEASE_VER: "6.8"
+  QT_RELEASE_VER: "6.5"
 
 jobs:
   # ─── Linux Ubuntu Matrix ───────────────────────────────────────────
@@ -35,7 +35,7 @@ jobs:
             arch: x64
             cmake_arch: x86_64
             qt_arch: gcc_64
-            qt_version: "6.2.13"
+            qt_version: "6.2"
             qt_install_version: "6.2"
 
           - runs_on: ubuntu-22.04
@@ -151,6 +151,8 @@ jobs:
   # ─── Linux Ubuntu ARM64 Matrix ────────────────────────────────────
   build-linux-arm64:
     name: build (linux-arm64, ${{ matrix.qt_version }})
+    needs: [build-linux]
+    if: always() && !cancelled()
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 90
     strategy:
@@ -271,7 +273,7 @@ jobs:
             arch: x64
             cmake_arch: x86_64
             qt_arch: clang_64
-            qt_version: "6.2.13"
+            qt_version: "6.2"
             qt_install_version: "6.2"
             deployment_target: "10.15"
 
@@ -408,7 +410,7 @@ jobs:
             arch: arm64
             cmake_arch: arm64
             qt_arch: clang_64
-            qt_version: "6.2.13"
+            qt_version: "6.2"
             qt_install_version: "6.2"
             deployment_target: "12.0"
 
