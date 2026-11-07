@@ -80,7 +80,7 @@ Sejarah perkembangan SparkNotePad berakar dari tekad untuk mengatasi keterbatasa
 | Dimension / Dimensi     | Official NotepadNext 0.15 (Upstream)              | SparkNotePad v1.3.5 (Repository Ini)                           | Keunggulan SparkNotePad / Technological Advantage                                              |
 | :---------------------- | :------------------------------------------------ | :------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- |
 | **C++ Standard**        | C++17 with legacy C idioms and raw pointers       | **Strict ISO C++20** (`-std=c++20`)                            | Modern RAII, `using enum`, hidden friend operators, `std::string_view`, if-init statements.    |
-| **Scintilla Engine**    | Older Scintilla 5.x branch with untracked patches | **Scintilla 5.6.7** (Fully Vendored & Verified)                | Maximum rendering performance, 64-bit line indexing, optimized segmented buffer cache.         |
+| **Scintilla Engine**    | Older Scintilla 5.x branch with untracked patches | **Scintilla 5.6.9** (Fully Vendored & Verified)                | Maximum rendering performance, 64-bit line indexing, optimized segmented buffer cache.         |
 | **Lexilla Library**     | Older Lexilla release                             | **Lexilla 5.5.4** (Vendored & Tested)                          | 100+ robust language lexers without memory leak bugs found in older releases.                  |
 | **Scripting Engines**   | Basic Lua execution without isolation             | **Embedded Lua 5.5.1 + Python 3.13/3.15 Ready**                | Multi-engine scripting with inert data contracts and strict privilege isolation.               |
 | **Buffer Architecture** | Generic buffer handling prone to UTF-8 slicing    | **`SC_CP_UTF8` Locked Buffer Policy**                          | Zero character corruption when navigating multi-byte Unicode and complex emojis.               |
@@ -273,7 +273,7 @@ SparkNotePad v1.3.5 menerapkan **Kebijakan Kualitas Zero-Diagnostic**:
 | Feature / Capability                          | Official NotepadNext 0.15 |   SparkNotePad v1.3.5   | Status & Implementation Details                |
 | :-------------------------------------------- | :-----------------------: | :---------------------: | :--------------------------------------------- |
 | **C++ Standard**                              |           C++17           |      **ISO C++20**      | Modern C++20 standard library & idioms         |
-| **Scintilla Engine Version**                  |         Older 5.x         |  **5.6.7 (Vendored)**   | Up-to-date upstream Scintilla                  |
+| **Scintilla Engine Version**                  |         Older 5.x         |  **5.6.9 (Vendored)**   | Up-to-date upstream Scintilla                  |
 | **Lexilla Lexers Version**                    |         Older 5.x         |  **5.5.4 (Vendored)**   | 100+ language lexers                           |
 | **macOS Cocoa NSServices Bridge**             |           ❌ No           |       **✅ Yes**        | `MacServicesHandler.mm` AppKit bridge          |
 | **macOS Apple HIG Document Proxy Icon**       |           ❌ No           |       **✅ Yes**        | Drag-and-drop window title icon                |

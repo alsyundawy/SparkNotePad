@@ -35,8 +35,8 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 
 | Component             | Author / Maintainer                                                | Role & Contribution                                                                            |
 | :-------------------- | :----------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- |
-| **Scintilla 5.6.7**   | Neil Hodgson & Contributors                                        | Core text editing canvas, high-performance rendering, fold margins, and multi-caret selection. |
-| **Lexilla 5.5.4**     | Neil Hodgson & Contributors                                        | Syntax styling and highlighting lexers for over 100 programming languages.                     |
+| **Scintilla 5.6.9**   | Neil Hodgson & Contributors                                        | Core text editing canvas, high-performance rendering, fold margins, and multi-caret selection. |
+| **Lexilla 5.5.5**     | Neil Hodgson & Contributors                                        | Syntax styling and highlighting lexers for over 100 programming languages.                     |
 | **Lua 5.5.1 / 5.4.x** | Roberto Ierusalimschy, Waldemar Celes, Luiz Henrique de Figueiredo | Embedded scripting engine and automation runtime.                                              |
 
 ### D. Third-Party Libraries & Frameworks

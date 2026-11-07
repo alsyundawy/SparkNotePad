@@ -16,7 +16,7 @@
 
 <p align="center">
   <b>SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla &amp; Qt untuk Linux, FreeBSD dan macOS.</b><br>
-  <i>Dibangun dengan Qt 6 dan engine Scintilla 5.6.7 / Lexilla 5.5.4 native untuk performa maksimal dan efisiensi memori tinggi</i>
+  <i>Dibangun dengan Qt 6 dan engine Scintilla 5.6.9 / Lexilla 5.5.5 native untuk performa maksimal dan efisiensi memori tinggi</i>
 </p>
 
 <p align="center">
@@ -100,7 +100,7 @@
 > ### ⚠️ Architectural Heritage, Engine Invariants & Legal Notice
 >
 > **Core Editing Invariant**<br>
-> SparkNotePad terikat secara native pada engine inti **Scintilla 5.6.7** dan **Lexilla 5.5.4** (`src/ScintillaNext.h`). SparkNotePad tidak akan mengganti engine native Scintilla dengan runtime berbasis web (Electron/CEF) atau kontrol teks generik demi mempertahankan efisiensi dan reliabilitas mutlak.
+> SparkNotePad terikat secara native pada engine inti **Scintilla 5.6.9** dan **Lexilla 5.5.5** (`src/ScintillaNext.h`). SparkNotePad tidak akan mengganti engine native Scintilla dengan runtime berbasis web (Electron/CEF) atau kontrol teks generik demi mempertahankan efisiensi dan reliabilitas mutlak.
 >
 > **Independent Open-Source Lineage**<br>
 > SparkNotePad dikembangkan dari gagasan arsitektur proyek open-source terkemuka seperti NotepadNext (Justin Dailey), Notepad4 (Zufu Liu), dan Notepad3 (Rizonesoft), yang dimodernisasi dan direkayasa ulang dengan standar C++20, Qt 6, pengerasan keamanan AES-256, serta otomatisasi CI/CD mandiri.
@@ -190,7 +190,7 @@ SparkNotePad menyediakan basis dokumentasi dan referensi arsitektur komprehensif
 |  Bab   | Panduan Bahasa Indonesia                                                                                                      | Dokumentasi Bahasa Inggris                                                                                                 | Cakupan & Fokus                                 |
 | :----: | :---------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------- |
 | **01** | [Selamat Datang & Memulai](https://github.com/alsyundawy/SparkNotePad/wiki/01-Selamat-Datang-dan-Memulai)                     | [Welcome & Getting Started](https://github.com/alsyundawy/SparkNotePad/wiki/01-Welcome-and-Getting-Started)                | Peluncuran awal, tata letak, konsep dasar       |
-| **02** | [Arsitektur Inti & Engine Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Arsitektur-Inti-dan-Engine-Scintilla) | [Core Architecture & Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Core-Architecture-and-Scintilla-Engine) | Scintilla 5.6.7, Lexilla 5.5.4, ISO C++20       |
+| **02** | [Arsitektur Inti & Engine Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Arsitektur-Inti-dan-Engine-Scintilla) | [Core Architecture & Scintilla](https://github.com/alsyundawy/SparkNotePad/wiki/02-Core-Architecture-and-Scintilla-Engine) | Scintilla 5.6.9, Lexilla 5.5.5, ISO C++20       |
 | **03** | [Panduan Kompilasi & Instalasi](https://github.com/alsyundawy/SparkNotePad/wiki/03-Panduan-Kompilasi-dan-Instalasi)           | [Building & Installation Guide](https://github.com/alsyundawy/SparkNotePad/wiki/03-Building-and-Installation-Guide)        | macOS, Linux (DEB/RPM), FreeBSD 13–15           |
 | **04** | [Tema Developer & Sistem Visual](https://github.com/alsyundawy/SparkNotePad/wiki/04-Tema-Developer-dan-Sistem-Visual)         | [Themes & Visual System](https://github.com/alsyundawy/SparkNotePad/wiki/04-Developer-Themes-and-Visual-System)            | 75 tema dalam 25 rumpun (kontras WCAG AAA)      |
 | **05** | [Penguatan Keamanan & Zero Trust](https://github.com/alsyundawy/SparkNotePad/wiki/05-Penguatan-Keamanan-dan-Zero-Trust)       | [Security Hardening & Zero-Trust](https://github.com/alsyundawy/SparkNotePad/wiki/05-Security-Hardening-and-Zero-Trust)    | Sandbox Lua, mitigasi ReDoS, enkripsi AES-256   |
@@ -283,7 +283,7 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 │                                                                        │
 │  ┌───────────────────────┐  ┌───────────────────────────────────────┐  │
 │  │   UI & Dock System    │  │       ScintillaNext (Core View)       │  │
-│  │   (Qt 6 Widgets / ADS)│  │   - Scintilla 5.6.7 (Vendored)        │  │
+│  │   (Qt 6 Widgets / ADS)│  │   - Scintilla 5.6.9 (Vendored)        │  │
 │  └───────────┬───────────┘  │   - Lexilla 5.5.4 (Vendored)          │  │
 │              │              └───────────────────┬───────────────────┘  │
 │              ▼                                  ▼                      │

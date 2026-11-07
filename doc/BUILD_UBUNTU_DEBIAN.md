@@ -2,7 +2,7 @@
 
 ## 1. Overview & Lineage
 
-SparkNotePad is a fast, versatile native Linux and macOS desktop text editor built on the **Scintilla 5.6.7** and **Lexilla 5.5.4** editing engines with a native **Qt 6** GUI (no Win32 emulation, no Wine layer).
+SparkNotePad is a fast, versatile native Linux and macOS desktop text editor built on the **Scintilla 5.6.9** and **Lexilla 5.5.5** editing engines with a native **Qt 6** GUI (no Win32 emulation, no Wine layer).
 
 This guide provides step-by-step native compilation and `.deb` packaging instructions for:
 
@@ -55,8 +55,8 @@ _(On Ubuntu 22.04, `g++-12` provides optimal C++20 standard library support for 
 
 SparkNotePad vendors core editing algorithms directly within `thirdparty/` for reproducibility and offline stability:
 
-- **Scintilla 5.6.7** (`thirdparty/scintilla`)
-- **Lexilla 5.5.4** (`thirdparty/lexilla`)
+- **Scintilla 5.6.9** (`thirdparty/scintilla`)
+- **Lexilla 5.5.5** (`thirdparty/lexilla`)
 - **Lua 5.5.1 / 5.4.x** (`thirdparty/lua`)
 - **uchardet** (`thirdparty/uchardet`)
 

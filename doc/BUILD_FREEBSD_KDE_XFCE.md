@@ -2,7 +2,7 @@
 
 ## 1. Overview & Architecture
 
-SparkNotePad adalah editor teks dan source code native yang sangat cepat, ringan, dan kaya fitur, dibangun menggunakan standar **C++20**, GUI **Qt 6**, serta engine rendering teks **Scintilla 5.6.7** dan syntax lexer **Lexilla 5.5.4**.
+SparkNotePad adalah editor teks dan source code native yang sangat cepat, ringan, dan kaya fitur, dibangun menggunakan standar **C++20**, GUI **Qt 6**, serta engine rendering teks **Scintilla 5.6.9** dan syntax lexer **Lexilla 5.5.5**.
 
 Di FreeBSD, SparkNotePad berjalan sebagai aplikasi ELF native murni tanpa lapisan kompatibilitas Linux (tanpa Linuxulator) dan tanpa Wine.
 

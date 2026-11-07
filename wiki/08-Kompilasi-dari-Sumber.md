@@ -14,7 +14,7 @@ SparkNotePad memerlukan komponen berikut:
 - **CMake:** Versi 3.20 ke atas.
 - **Kerangka Kerja Qt 6:** Versi Qt 6.5.0 atau yang lebih baru (`qtbase`, `qt5compat`, `qttools`).
 
-Mesin inti penyuntingan (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, uchardet) telah tersemat langsung di dalam folder `thirdparty/` dan tidak membutuhkan instalasi manual terpisah. Pustaka utilitas pendukung (seperti Qt-Advanced-Docking-System, SingleApplication, dan EditorConfig Core) akan diunduh secara otomatis via CPM (_CMake Package Manager_) pada proses konfigurasi awal.
+Mesin inti penyuntingan (Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, uchardet) telah tersemat langsung di dalam folder `thirdparty/` dan tidak membutuhkan instalasi manual terpisah. Pustaka utilitas pendukung (seperti Qt-Advanced-Docking-System, SingleApplication, dan EditorConfig Core) akan diunduh secara otomatis via CPM (_CMake Package Manager_) pada proses konfigurasi awal.
 
 ---
 

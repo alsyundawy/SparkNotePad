@@ -4,9 +4,9 @@ SparkNotePad combines the heritage of the Scintilla text editing engine with mod
 
 ---
 
-## 1. Scintilla 5.6.7 Core Editing Canvas
+## 1. Scintilla 5.6.9 Core Editing Canvas
 
-At the heart of SparkNotePad is **Scintilla 5.6.7** paired with **Lexilla 5.5.4**, delivering:
+At the heart of SparkNotePad is **Scintilla 5.6.9** paired with **Lexilla 5.5.5**, delivering:
 
 - **Sub-Millisecond Line Rendering**: Zero lag on files containing millions of characters.
 - **Multi-Selection & Rectangular Column Editing**: Hold `Alt` (or `Option` on macOS) while dragging to select rectangular text blocks, or hold `Ctrl` (`Cmd` on macOS) while clicking to place multiple independent carets.
@@ -101,17 +101,27 @@ SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tool
 
 ---
 
-## 9. Complete Lexilla 5.5.4 Lexer Suite (125 Highlighters)
+## 9. Complete Lexilla 5.5.5 Lexer Suite (125 Highlighters)
 
 SparkNotePad includes the full complement of 125 Lexilla lexers, covering modern and legacy languages including AsciiDoc, BibTeX, Bicep, Clojure, Elixir, GDScript, GLSL, HLSL, Mojo, OCaml, Raku, Solidity, SystemVerilog, WebAssembly, and Zig.
 
 ---
 
-## 10. Dedicated Preferences Tabs & Desktop Menu Ergonomics (v1.3.8)
+## 10. Dedicated Preferences Tabs & Desktop Menu Ergonomics
 
 - **Themes & Toolbar Tab (Tab 3)**: Relocates visual theme configuration, window opacity slider, tail -f reload interval, and multi-DPI display placement guard alongside the Toolbar Icon Packs manager (23 packs, responsive description card layout, size selector 16x16 to 64x64, live icon preview, custom folder loader, and rescan).
 - **Custom Toolbar Config Tab (Tab 4)**: Embedded visual toolbar customizer widget (`CustomizeToolbarWidget`) directly inside Preferences with search filtering, action adding/removing/reordering, separator insertion, and live hot-reload.
 - **Desktop Standard Menu Hierarchy**: Toggle Hex/Binary view below Compare, Restart Application in macOS Application menu directly above Quit (`QAction::ApplicationSpecificRole`), redundant Character Palette deduplicated, and clean View menu without duplicate Side Panels submenu.
+
+---
+
+## 11. Upstream Engine v1.3.9 Enhancements & Robust Packaging
+
+- **Official Scintilla 5.6.9 & Lexilla 5.5.5 Core**: Accelerated line-start position queries, increased 40-byte cached lexeme capacity, Unicode 17 category maps, and memory safety hardening across all lexers.
+- **Markdown Front-Matter Syntax Highlighting**: Native styling support for metadata delimiters (`---`, `+++`, `{}`), keys, and payload in `src/languages/markdown.lua`.
+- **Default Document Language Preference**: Added configurable `DefaultLanguage` in `Preferences > Editor` applied automatically to all new untitled documents.
+- **Search & Replace Regex Invariants**: Fixed zero-length regex infinite loops in Replace All and automatically disabled backwards search under Regular Expression mode.
+- **Lean Bloatware-Free DMG**: Pruned unused Qt frameworks reducing installer footprint to ~31–33 MB, coupled with bulletproof `.DS_Store` styling guaranteeing branded backgrounds and icon placement across both local and CI environments.
 
 ---
 

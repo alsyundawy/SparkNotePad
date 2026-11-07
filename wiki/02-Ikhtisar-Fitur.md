@@ -4,9 +4,9 @@ SparkNotePad dirancang untuk memadukan kecepatan eksekusi editor teks native C++
 
 ---
 
-## 1. Mesin Penyunting Tingkat Tinggi: Scintilla 5.6.7 & Lexilla 5.5.4
+## 1. Mesin Penyunting Tingkat Tinggi: Scintilla 5.6.9 & Lexilla 5.5.5
 
-Jantung penyuntingan SparkNotePad ditenagai oleh mesin Scintilla 5.6.7 dan pemroses sintaksis Lexilla 5.5.4 terbaru:
+Jantung penyuntingan SparkNotePad ditenagai oleh mesin Scintilla 5.6.9 dan pemroses sintaksis Lexilla 5.5.5 terbaru:
 
 - **Dukungan Sintaksis Luas:** Pewarnaan sintaksis untuk lebih dari 80 bahasa pemrograman, format konfigurasi, dan markup (C/C++, Rust, Python, Go, TypeScript, JSON, YAML, Markdown, SQL, Shell, HTML/CSS, Lua, dan lainnya).
 - **Deteksi Encoding Cerdas:** Mengintegrasikan pustaka `uchardet` untuk mendeteksi secara instan set karakter UTF-8, UTF-16, ISO-8859, Windows-1252, hingga Shift-JIS tanpa risiko teks rusak (_garbled text_).
@@ -88,17 +88,27 @@ SparkNotePad v1.3.8 menyatukan utilitas pengembang tingkat lanjut ke dalam menu 
 
 ---
 
-## 10. Koleksi Lengkap 125 Lexer Lexilla 5.5.4
+## 10. Koleksi Lengkap 125 Lexer Lexilla 5.5.5
 
 SparkNotePad mengadopsi 125 lexer Lexilla secara lengkap, mendukung bahasa modern dan klasik termasuk AsciiDoc, BibTeX, Bicep, Clojure, Elixir, GDScript, GLSL, HLSL, Mojo, OCaml, Raku, Solidity, SystemVerilog, WebAssembly, dan Zig.
 
 ---
 
-## 11. Tab Khusus Preferensi & Ergonomi Menu Desktop (v1.3.8)
+## 11. Tab Khusus Preferensi & Ergonomi Menu Desktop
 
 - **Tab Themes & Toolbar (Tab 3)**: Menggabungkan konfigurasi tema visual, penggeser transparansi jendela, interval `tail -f`, proteksi penempatan multi-layar, serta manajer 23 paket ikon toolbar dengan kartu deskripsi elegan, ukuran dinamis 16x16 hingga 64x64, pratinjau langsung, dan pemuat paket eksternal.
 - **Tab Custom Toolbar Config (Tab 4)**: Editor visual bilah alat terintegrasi langsung dalam Preferensi (`CustomizeToolbarWidget`) lengkap dengan filter pencarian, tambah/hapus aksi, pengurutan tombol, pemisah kustom, dan hot-reload instan.
 - **Hierarki Menu Standar Desktop**: Tampilan Hex/Biner di bawah Bandingkan, Mulai Ulang Aplikasi di menu aplikasi macOS tepat di atas Keluar (`QAction::ApplicationSpecificRole`), deduplikasi palet emoji, dan pembersihan menu Tampilan (View).
+
+---
+
+## 12. Peningkatan Mesin Inti v1.3.9 & Pengemasan Handal
+
+- **Inti Resmi Scintilla 5.6.9 & Lexilla 5.5.5**: Akselerasi kueri posisi baris awal, peningkatan kapasitas buffer lexeme 40-byte, pemetaan kategori Unicode 17, dan pengerasan keamanan memori pada seluruh lexer.
+- **Pewarnaan Sintaksis Markdown Front-Matter**: Dukungan pewarnaan bawaan untuk pembatas metadata (`---`, `+++`, `{}`), kunci atribut, dan nilai payload pada `src/languages/markdown.lua`.
+- **Preferensi Bahasa Default Dokumen**: Pengaturan `DefaultLanguage` pada `Preferences > Editor` yang diterapkan otomatis pada setiap dokumen baru tanpa judul.
+- **Invarian Pencarian & Penggantian Regex**: Perbaikan infinite loop pada pencocokan regex panjang 0 di Replace All dan pencegahan otomatis arah pencarian mundur pada mode Regular Expression.
+- **Paket DMG macOS Bebas Bloatware & Berlatar Belakang Visual**: Pemangkasan framework Qt yang tidak diperlukan menghasilkan ukuran installer ramping ~31–33 MB, didukung file template master `.DS_Store` yang menjamin tampilan gambar background dan posisi ikon selalu presisi di build local maupun GitHub Actions.
 
 ---
 

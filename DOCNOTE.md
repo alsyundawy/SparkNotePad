@@ -214,7 +214,7 @@ SparkNotePad maintains strict software architecture invariants across its entire
                                       v
 +-----------------------------------------------------------------------------+
 |                        Text Editing Engine & Buffer                         |
-|      ScintillaNext (Scintilla 5.6.7)  |  Lexilla 5.5.4 Syntax Lexers        |
+|      ScintillaNext (Scintilla 5.6.9)  |  Lexilla 5.5.5 Syntax Lexers        |
 +-----------------------------------------------------------------------------+
                                       |
                                       v

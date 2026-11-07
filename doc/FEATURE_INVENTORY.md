@@ -1,8 +1,8 @@
 # SparkNotePad — Feature Inventory & Implementation Status
 
-- **Date:** 2026-11-02
-- **Release Version:** SparkNotePad v1.3.8
-- **Editor Engine:** Scintilla 5.6.7 + Lexilla 5.5.4 (125 lexers complete)
+- **Date:** 2026-11-07
+- **Release Version:** SparkNotePad v1.3.9
+- **Editor Engine:** Scintilla 5.6.9 + Lexilla 5.5.5 (125 lexers complete)
 - **Standard:** C++20 / Qt 6.5–6.12
 
 ---
