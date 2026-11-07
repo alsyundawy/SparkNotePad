@@ -1,96 +1,143 @@
-# Implementation Plan: SparkNotePad v1.3.8 Comprehensive Quality Audit, i18n & Release
+# SparkNotePad v1.4.0 Master Implementation Plan
 
-## Overview
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-Comprehensive quality audit, static analysis, translation completion, documentation rebuild, and release pipeline execution for SparkNotePad v1.3.8 across 5 skills (`planning-and-task-breakdown`, `production-code-review`, `ide-linter-error-fix`, `verification-before-completion`, `bash-pro`) and 14 review pillars:
+**Goal:** Deliver a production-grade, highly secure, performance-optimized upgrade for SparkNotePad v1.4.0 incorporating verified innovations from Nextpad++ (macOS & Linux) and upstream Scintilla 5.6.9 / Lexilla 5.5.5, while hardening against all identified 2025–2026 text editor vulnerabilities across 14 engineering review pillars.
 
-1. Bug Review
-2. Syntax Review
-3. Runtime Review
-4. Logic Review
-5. Memory / Resource Review
-6. Dead Code Review
-7. Duplicate Code Review
-8. Circular Dependency Review
-9. Performance Bottlenecks Review
-10. Security Vulnerability Review
-11. Maintainability Review
-12. Scalability Review
-13. Readability Review
-14. Architecture / Design / Completeness Review
+**Architecture:**
 
-## Architecture & Policy Decisions
+- **Engine Layer:** Activate Scintilla 5.6.9 native Change History markers (`SCI_SETCHANGEHISTORY`) for visual tracking of modified, saved, and reverted lines; expose fine-grained line spacing controls (`SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT`).
+- **macOS & Linux Desktop Integration Layer:** Integrate native macOS document title-bar proxy icons via `QMainWindow::setWindowFilePath` allowing drag-and-drop to Terminal/Finder and ⌘-click directory trail popups; implement rich tab tooltips with full file path, character/line counts, encoding, EOL format, and modification timestamps.
+- **Search & Automation Layer:** Add an opt-in Fuzzy Subsequence Search mode in `QuickFindWidget` and `FindReplaceDialog`; expand `MacroRunDialog` with batch execution capabilities ("Run Macro on Open Files / Folder").
+- **Diagnostics & Interoperability Layer:** Introduce "Help → Copy Debug Information" for reproducible issue reporting; establish a loopback-only (`127.0.0.1`), token-authenticated, read-only Model Context Protocol (MCP) server for local AI assistant pairing.
+- **Security Hardening Layer:** Enforce strict URI protocol allowlists against CVE-2026-20841, recursion-depth-capped XML/JSON parsing against CVE-2026-16762, and non-shell process spawning against CVE-2026-25926.
 
-- **Strict Repository Identity Separation**: This repository is `SparkNotePad`. Upstream/ancestral repositories such as `NotepadNext-MacOS`, `NotepadNext`, `Notepad4`, and `Notepad3` are strictly recognized as distinct external projects in attribution, credits, and documentation.
-- **Permanent Prohibition of Ninja**: As mandated by `AGENTS.md`, CMake builds MUST use Unix Makefiles with controlled concurrency (`-j2`) to protect the host MacBook from CPU thermal throttling.
-- **i18n Translation Completeness**: Both English (`i18n/SparkNotePad_en.ts`) and Indonesian (`i18n/SparkNotePad_id.ts`) must have 100% translation coverage with 0 unfinished entries (`type="unfinished"`).
-- **Mandatory Static Analysis Suite**: Every single `.cpp` file under `src/` and subdirectories will be audited using `clangd --check`, `cppcheck`, `clang-tidy`, SonarLint (`sonar-restart-ext.sh`), and `trunk`. Any detected warnings or errors must be fixed atomically on the spot.
-- **Release Lineage**: All release changes will be committed and tagged on branch `1.3.8`, and release files must be those produced by the official GitHub Actions runner.
+**Tech Stack:** C++20, Qt 6.5–6.12 (QtWidgets, QtGui, QtCore, QtSvg), Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt Advanced Docking System (ADS 5.1.1), CMake 3.21+ (standard Unix Makefiles, STRICTLY NO NINJA).
+
+**Spec:** Direct user requirements and architectural decisions derived from comprehensive research on Nextpad++, Notepad++, Notepad--, Notepad2/3/4, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, and 2025–2026 CVE threat models.
+
+---
+
+## Global Constraints
+
+- **STRICT PROHIBITION OF NINJA**: As mandated by `AGENTS.md`, never run `ninja`, `-G Ninja`, or `cmake-ninja`. All builds must use standard CMake Unix Makefiles (`cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j2`).
+- **SHELL EXECUTION**: All subshells must execute via `/usr/local/bin/bash -l` to source bash profiles correctly.
+- **NON-DESTRUCTIVE ARCHITECTURE**: All new features must be additive and opt-in or strictly backward-compatible. Existing keybindings, theme palettes, custom icon packs, and editor behaviors must remain unaffected.
+- **LINTER & SONARLINT COMPLIANCE**: Zero syntax errors, zero compiler warnings, zero SonarLint BLOCKER/CRITICAL/MAJOR issues on all touched files. Verify with `lint-check.sh` and restart SonarLint LS via `sonar-restart-ext.sh`.
+- **EVIDENCE BEFORE ASSERTIONS**: Never claim tasks or tests are passing without running verification commands and inspecting output.
+
+---
+
+## Review Focus (14 Pillars & Security Focus)
+
+1. **CVE-2026-20841 (Markdown URI Scheme Injection)**: Ensure all clickable links in editor and Markdown preview reject dangerous protocol handlers (`file://` execution of binaries, `cmd:`, `powershell:`, `ms-office:`), enforcing strict allowlists (`http`, `https`, or validated local paths with explicit user confirmation).
+2. **CVE-2026-16762 (QXmlStreamReader & XML DoS)**: Cap XML/JSON nesting depth and file size in `ConfigIntegrityGuard` and session loaders to prevent CPU exhaustion.
+3. **CVE-2026-25926 (Command Injection in Tool/File Launching)**: Never pass unescaped string concatenations to system shells. Ensure `ExternalToolManager` uses argument lists with `QProcess`.
+4. **Change History Margin Conflict**: Ensure `SCI_SETCHANGEHISTORY` markers do not overwrite breakpoint, bookmark, or folding margins (allocate distinct margin indices).
+5. **Memory & Concurrency Bounds**: Ensure batch macro execution runs on background worker threads with cancellation checks (`QAtomicInt` / `isInterruptionRequested()`), never blocking the UI event loop.
+
+---
 
 ## Task Breakdown
 
-### Phase 1: i18n Translation Double-Check & Synchronization
+### Phase 1: Scintilla 5.6.9 Change History & Line Spacing Integration
 
-- [x] Task 1.1: Run `lupdate` across `src/` to capture all strings (including new preview tabs, icon packs, docnote/changelog viewers).
-- [x] Task 1.2: Translate all newly discovered and unfinished strings in `i18n/SparkNotePad_en.ts` and `i18n/SparkNotePad_id.ts`.
-- [x] Task 1.3: Verify 0 unfinished entries via `grep 'type="unfinished"'` and compile `.qm` files via `lrelease`.
+- [ ] **Task 1.1: ScintillaNext Change History Engine Hooks**
+  - **Files:** `src/ScintillaNext.h`, `src/ScintillaNext.cpp`
+  - **Interfaces:** `void setChangeHistoryEnabled(bool enabled)`, `bool isChangeHistoryEnabled() const`
+  - Configure Scintilla change history (`SCI_SETCHANGEHISTORY`, `SC_CHANGE_HISTORY_RECORD | SC_CHANGE_HISTORY_INDICATORS`) in dedicated margin 4 without disturbing bookmarks (margin 1) or folding (margin 2).
+  - Add configurable styling for modified (orange), saved (green), and reverted markers.
 
-### Phase 2: Upstream Sources & About/Credits Section Update
+- [ ] **Task 1.2: Fine-Grained Line Spacing (Extra Ascent & Descent)**
+  - **Files:** `src/ScintillaNext.h`, `src/ScintillaNext.cpp`, `src/ApplicationSettings.h`, `src/ApplicationSettings.cpp`
+  - **Interfaces:** `void setExtraLineSpacing(int extraAscent, int extraDescent)`
+  - Map settings to `SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT` with range validation [0..30] pixels.
 
-- [x] Task 2.1: Audit git commit logs and history for all historical and upstream sources (`NotepadNext-MacOS`, `NotepadNext`, `Scintilla`, `Lexilla`, `uchardet`, `ADS`, `QSimpleUpdater`, `SingleApplication`, `EditorConfig`).
-- [x] Task 2.2: Update `src/dialogs/AboutDialog.cpp` to include `NotepadNext-MacOS` repository link (`https://github.com/alsyundawy/NotepadNext-MacOS`), update credits header to `(v1.0.0 – v1.3.8)`, and ensure proper translations.
-- [x] Task 2.3: Synchronize `doc/ABOUT_AND_CREDITS.md` and `README.md` with accurate attribution and clear non-affiliation statements.
+- [ ] **Task 1.3: Preferences UI for Change History and Line Spacing**
+  - **Files:** `src/dialogs/PreferencesDialog.ui`, `src/dialogs/PreferencesDialog.cpp`
+  - Add "Change History Margin" toggle and "Extra Ascent / Descent" spinboxes under Editor Settings.
 
-### Phase 3: Static Analysis & Deep Compiler Checks
+### Phase 2: macOS Title-Bar Proxy Icon & Enriched Tab Tooltips
 
-- [x] Task 3.1: Run `clangd --check` on all `.cpp` files in `src/*.cpp` and `src/*/*.cpp` using `compile_commands.json`.
-- [x] Task 3.2: Run `cppcheck --enable=all` with suppressed noise to identify potential null dereferences, buffer overflows, or uninitialized variables.
-- [x] Task 3.3: Run `clang-tidy` and SonarLint verification loop (restarting SonarLint Language Server via `sonar-restart-ext.sh`).
-- [x] Task 3.4: Apply atomic remediation to any detected warnings, syntax flaws, or diagnostic errors immediately.
+- [ ] **Task 2.1: Native macOS Window File Path Proxy Icon**
+  - **Files:** `src/MainWindow.cpp`, `src/SparkNotePadApplication.cpp`
+  - When an editor tab gains focus, invoke `QMainWindow::setWindowFilePath(activeFilePath)` (or clear when untracked/untitled).
+  - Enables macOS native document icon drag-and-drop to Terminal/Finder and ⌘-click directory breadcrumbs.
 
-### Phase 4: 14-Pillar Comprehensive Code Review Checklist
+- [ ] **Task 2.2: Enriched Tab Tooltips & Live Status Metrics**
+  - **Files:** `src/DockedEditor.cpp`, `src/DockedEditor.h`
+  - Formulate detailed HTML tooltips on tab hover:
+    - Saved files: Full file path, file size, line count, character count, encoding, line ending format (CRLF/LF), and last modified timestamp.
+    - Unsaved files: Document name, unsaved status indicator `[Modified]`, unsaved character delta, and time elapsed since last modification.
 
-- [x] Task 4.1: Perform structured audit across all 14 pillars on core subsystems (`src/`, `src/dialogs/`, `src/docks/`, `src/editor/`, `src/utils/`, `src/widgets/`).
-- [x] Task 4.2: Generate a formal 14-pillar review checklist and findings report artifact.
+### Phase 3: Search Enhancements (Fuzzy Matching) & Batch Automation
 
-### Phase 5: Meta-Linter & Build Verification
+- [ ] **Task 3.1: Fuzzy Subsequence Search Matcher**
+  - **Files:** `src/utils/RegexSafetyEngine.h`, `src/utils/RegexSafetyEngine.cpp`, `src/Finder.h`, `src/Finder.cpp`
+  - **Interfaces:** `static QString buildFuzzySubsequencePattern(const QString &query)`
+  - Convert query (e.g. `fnpars`) into a safe, non-backtracking regex subsequence (`f[^f]*?n[^n]*?p...`) with bounded lookahead to avoid ReDoS (CWE-1333).
+  - Add "Fuzzy Match" checkbox in `FindReplaceDialog.ui` and `QuickFindWidget.ui`.
 
-- [x] Task 5.1: Run `trunk check` and `lint-check.sh` on all modified files (`.cpp`, `.h`, `.ts`, `.md`, `.json`, `.lua`).
-- [x] Task 5.2: Execute standard CMake configuration and build with Unix Makefiles: `cmake --build build -j2`.
-- [x] Task 5.3: Run unit tests via `ctest --test-dir build --output-on-failure`.
+- [ ] **Task 3.2: Batch Macro Processing ("Run Macro on Open Files / Folder")**
+  - **Files:** `src/dialogs/MacroRunDialog.ui`, `src/dialogs/MacroRunDialog.h`, `src/dialogs/MacroRunDialog.cpp`
+  - Add "Scope" selection: `Current Document`, `All Open Documents`, `Files in Folder`.
+  - Include file filter (`*.cpp;*.h;*.txt`), recursive traversal toggle, dry-run preview, and progress bar with instant cancellation (Esc key / Cancel button).
 
-### Phase 6: Documentation Rebuild, Version 1.3.8 Sync & Release
+### Phase 4: Diagnostic Transparency & Local MCP Tool Server (Read-Only)
 
-- [x] Task 6.1: Update `README.md`, `README-id.md`, `wiki/*.md`, and all `.md` files in `doc/` to reflect v1.3.8 features.
-- [x] Task 6.2: Rebuild localized plaintext docnotes and changelogs (`DOCNOTE_en.txt`, `DOCNOTE_id.txt`, `CHANGELOG_en.txt`, `CHANGELOG_id.txt`).
-- [x] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+- [ ] **Task 4.1: Help → Copy Debug Information to Clipboard**
+  - **Files:** `src/MainWindow.cpp`, `src/MainWindow.h`
+  - Generate comprehensive diagnostic block: SparkNotePad version, Git commit hash, Qt version, OS version/architecture, active theme, active icon pack, compiler info, screen geometry, Scintilla/Lexilla/Lua versions, and loaded plugins.
+  - Add menu action `actionCopyDebugInfo` in `Help` menu with confirmation toast indicator.
 
-### Phase 7: Distinct Toolbar Icon Packs Integration & Diagnostics Remediation
+- [ ] **Task 4.2: Local Read-Only Model Context Protocol (MCP) Server Interface**
+  - **Files:** `src/features/LocalMcpServer.h`, `src/features/LocalMcpServer.cpp`
+  - **Interfaces:** `void startServer(quint16 port = 0)`, `void stopServer()`
+  - Implement a strictly loopback (`127.0.0.1`), token-authenticated TCP/WebSocket endpoint compliant with the Model Context Protocol (2026 spec).
+  - Expose read-only tools: `get_open_tabs`, `read_active_tab`, `get_editor_selection`, `get_document_statistics`.
+  - Strictly fail-closed: external network requests rejected; write/edit operations disabled unless explicitly confirmed by user via GUI dialog.
 
-- [x] Task 7.1: Synchronize all 13 distinct toolbar icon packs (with resolutions `16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`) from `/Users/alsyundawy/Downloads/SparkNotePad_Toolbar_IconPacks` into `src/icons/packs/`.
-- [x] Task 7.2: Generate `src/toolbar_icons.qrc` containing all 2,496 multi-DPI icons and link it in `src/CMakeLists.txt` and `tests/CMakeLists.txt`.
-- [x] Task 7.3: Enhance `ToolbarIconManager` to seamlessly support multi-resolution folder lookups, register all 13 new packs with descriptive names, and maintain fallback aliases.
-- [x] Task 7.4: Remediate all IDE warnings and diagnostics in `@[current_problems]` (`ThemePaletteData.h`, `ManageToolsDialog.cpp`, `MainWindow.cpp`).
-- [x] Task 7.5: Update and expand unit tests in `tests/test_toolbar_icon_manager.h` and verify all tests pass via `ctest`.
-- [x] Task 7.6: Compile local test build and package DMG (`cmake --build build -j2`), verify with `hdiutil`, and commit & push.
+### Phase 5: Security Hardening & 2025–2026 CVE Mitigations
 
-### Phase 8: Markdown/HTML Preview Refinement, Menu Reorganization, Workspace Highlight Fix & Complete Diagnostics Clean
+- [ ] **Task 5.1: Strict URI Scheme Validator (CVE-2026-20841 Mitigation)**
+  - **Files:** `src/utils/NetworkSecurityPolicy.h`, `src/utils/NetworkSecurityPolicy.cpp`
+  - Validate all links in `MarkdownSafePreviewDock`, `PreviewTabWidget`, and clickable editor URLs.
+  - Allowlist strictly `http://`, `https://`, and `mailto:`. Intercept `file://` or custom URI schemes and verify target path sits within safe directory bounds; prompt user with security confirmation dialog before opening external system handlers.
 
-- [x] Task 8.1: Refine HTML & Markdown Live Preview in `MarkdownSafePreviewDock` & `PreviewTabWidget` with modern UI/UX, pill badges (format, word count, reading time), and enhanced GitHub/DevDocs CSS with callouts (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, `[!IMPORTANT]`, `[!CAUTION]`), rounded code blocks, and export actions.
-- [x] Task 8.2: Reorganize and optimize all menus in `MainWindow.ui` and `MainWindow.cpp` to match professional standard notepad layouts (File, Edit, Search, View, Encoding, Language, Tools, Macro, Help) with dedicated `Preview` and `Panels` sub-menus.
-- [x] Task 8.3: Overhaul File Browser and Folder-as-Workspace docks (`FolderAsWorkspaceDock.cpp`, `FileBrowserDock.cpp`) to fix selection box cropping/clipping (`show-decoration-selected: 1`, `branch:selected`, full row focus, matching theme selection style) and modernize toolbar controls.
-- [x] Task 8.4: Complete full static analysis and IDE diagnostic remediation across `src/` (`formatHexDump`, static member methods, brace omissions, const qualifiers, SonarLint rules) and restart SonarLint LS.
-- [x] Task 8.5: Conduct 14-pillar code review audit and verify zero regression across unit tests (`./build/tests/SparkNotePadTests`).
-- [x] Task 8.6: Rebuild local macOS DMG package (`cmake --build build --target dmg -j2` strictly with Unix Makefiles, no Ninja) and verify with `hdiutil verify`.
-- [x] Task 8.7: Update documentation (`README.md`, `README-id.md`, `wiki/*.md`, `doc/`), commit, and push to branch `1.3.8`.
+- [ ] **Task 5.2: XML & JSON Parser Depth Limiter (CVE-2026-16762 Mitigation)**
+  - **Files:** `src/utils/ConfigIntegrityGuard.h`, `src/utils/ConfigIntegrityGuard.cpp`
+  - Enforce maximum recursion depth (32 levels) and maximum entity expansion limits on all `QXmlStreamReader` and `QJsonDocument` routines.
 
-## Risks and Mitigations
+- [ ] **Task 5.3: Safe Process Argument Quoting (CVE-2026-25926 Mitigation)**
+  - **Files:** `src/utils/ExternalToolManager.cpp`, `src/dialogs/RunDialog.cpp`
+  - Ensure all external tool invocations invoke `QProcess::start(program, arguments)` directly rather than passing concatenated commands to `/bin/sh -c` or `cmd.exe /c`.
 
-| Risk                                         | Impact | Mitigation                                                                           |
-| :------------------------------------------- | :----- | :----------------------------------------------------------------------------------- |
-| High CPU temperature / fan noise             | High   | Strict prohibition of Ninja; build with standard CMake Unix Makefiles and `-j2`.     |
-| Unfinished translation tags breaking release | Med    | Automated verification via `grep -c 'type="unfinished"' i18n/*.ts` asserting 0.      |
-| Clangd false positives on Qt MOC headers     | Med    | Pass `--compile-commands-dir=build` and check real diagnostic severity.              |
-| Branch confusion between main and 1.3.8      | High   | Keep commit history linear; update 1.3.8 branch cleanly and verify git ref pointers. |
-| Multi-DPI toolbar icon blurriness on Retina  | Med    | Include native 16x16 through 64x64 pixmaps in `QIcon` for pixel-perfect scaling.     |
-| TreeView selection highlight box cropped     | Med    | Set `show-decoration-selected: 1`, style `branch:selected`, and enable full focus.   |
+### Phase 6: i18n Translation & UI Text Synchronization
+
+- [ ] **Task 6.1: String Extraction via `lupdate`**
+  - Run `lupdate src/ -ts i18n/SparkNotePad_en.ts i18n/SparkNotePad_id.ts`.
+- [ ] **Task 6.2: Complete English and Indonesian Translations**
+  - Ensure 100% translation coverage for new dialogs, settings, tooltips, and debug actions; verify `grep -c 'type="unfinished"'` returns 0.
+- [ ] **Task 6.3: Binary Catalog Compilation via `lrelease`**
+  - Compile `.qm` files and verify resource bundles.
+
+### Phase 7: Static Analysis, 14-Pillar Quality Audit & IDE Linter Clean
+
+- [ ] **Task 7.1: Automated Syntax & Static Analysis**
+  - Run `cppcheck --enable=all`, `clangd --check`, and SonarLint language server restart (`sonar-restart-ext.sh`).
+- [ ] **Task 7.2: Atomic Diagnostic Remediation**
+  - Fix any detected issues (const correctness, null checks, integer promotions, SonarLint rules).
+- [ ] **Task 7.3: Comprehensive 14-Pillar Audit Sign-off**
+  - Verify zero defects across Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance, Security, Maintainability, Scalability, Readability, and Architecture pillars.
+
+### Phase 8: Build Verification, Unit Testing & Documentation Rebuild
+
+- [ ] **Task 8.1: Controlled CMake Build (Unix Makefiles, No Ninja)**
+  - Execute `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j2`.
+- [ ] **Task 8.2: Unit Test Suite Execution**
+  - Run `ctest --test-dir build --output-on-failure` or `./build/tests/SparkNotePadTests`.
+- [ ] **Task 8.3: Local macOS DMG Packaging & Notarization Pre-Check**
+  - Build DMG via `cmake --build build --target dmg -j2` and verify via `hdiutil verify`.
+- [ ] **Task 8.4: Documentation & Release Artifacts Synchronization**
+  - Update `CMakeLists.txt` to version `1.4.0`.
+  - Update `README.md`, `README-id.md`, `doc/CHANGELOG.txt`, `doc/DOCNOTE.txt`, `wiki/*.md`.

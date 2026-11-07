@@ -1,102 +1,106 @@
-# SparkNotePad v1.3.8 Task List
+# SparkNotePad v1.4.0 Task List & Actionable Checkpoints
 
-## Phase 1: i18n Translation Double-Check & Synchronization
+## Phase 1: Scintilla 5.6.9 Change History & Line Spacing Integration
 
-- [x] Task 1.1: Run `lupdate` across `src/` to capture all strings (including preview tabs, icon packs, docnote/changelog viewers).
-- [x] Task 1.2: Translate all newly discovered and unfinished strings in `i18n/SparkNotePad_en.ts` and `i18n/SparkNotePad_id.ts`.
-- [x] Task 1.3: Verify 0 unfinished entries via `grep 'type="unfinished"'` and compile `.qm` files via `lrelease`.
+- [ ] Task 1.1: Implement Change History indicators in `src/ScintillaNext.cpp` and `src/ScintillaNext.h` using Scintilla 5.6.9 native `SCI_SETCHANGEHISTORY`.
+- [ ] Task 1.2: Add fine-grained line spacing (`SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT`) in `ScintillaNext` and `ApplicationSettings`.
+- [ ] Task 1.3: Update `PreferencesDialog.ui` and `PreferencesDialog.cpp` to provide toggles and spinboxes for Change History and Line Spacing.
 
-## Checkpoint 1: i18n Translation Parity
+## Checkpoint 1: Engine Features Active
 
-- [x] Both English and Indonesian translation files have 0 unfinished strings.
-- [x] All `.qm` binary catalogs compiled without errors.
+- [ ] Change history markers display accurately in margin without overlapping bookmarks or folding.
+- [ ] Extra line ascent and descent correctly adjust text line height in the editor.
+- [ ] Preferences settings persist across editor restarts.
 
-## Phase 2: Upstream Sources & About/Credits Section Update
+---
 
-- [x] Task 2.1: Audit git commit logs and history for all historical and upstream sources (`NotepadNext-MacOS`, `NotepadNext`, `Scintilla`, `Lexilla`, `uchardet`, `ADS`, `QSimpleUpdater`, `SingleApplication`, `EditorConfig`).
-- [x] Task 2.2: Update `src/dialogs/AboutDialog.cpp` to include `NotepadNext-MacOS` repository link (`https://github.com/alsyundawy/NotepadNext-MacOS`), update credits header to `(v1.0.0 – v1.3.8)`, and ensure proper translations.
-- [x] Task 2.3: Synchronize `doc/ABOUT_AND_CREDITS.md` and `README.md` with accurate attribution and clear non-affiliation statements.
+## Phase 2: macOS Title-Bar Proxy Icon & Enriched Tab Tooltips
 
-## Checkpoint 2: Attribution & Credits Accuracy
+- [ ] Task 2.1: Implement `setWindowFilePath` in `MainWindow.cpp` for active document macOS title-bar proxy icon support.
+- [ ] Task 2.2: Add rich HTML tooltips to tabs in `DockedEditor.cpp` (path, size, line count, character count, encoding, EOL, last modified timestamp).
 
-- [x] `AboutDialog` and documentation explicitly reference `NotepadNext-MacOS` with link.
-- [x] `SparkNotePad` repository identity is pristine and distinct.
+## Checkpoint 2: Desktop Integration & Tab UX
 
-## Phase 3: Static Analysis & Deep Compiler Checks
+- [ ] macOS proxy icon displays active file and allows dragging to Terminal and Finder.
+- [ ] Tab tooltips show complete, clean diagnostic metadata on hover.
 
-- [x] Task 3.1: Run `clangd --check` on all `.cpp` files in `src/*.cpp` and `src/*/*.cpp` using `compile_commands.json`.
-- [x] Task 3.2: Run `cppcheck --enable=all` with suppressed noise to identify potential null dereferences, buffer overflows, or uninitialized variables.
-- [x] Task 3.3: Run `clang-tidy` and SonarLint verification loop (restarting SonarLint Language Server via `sonar-restart-ext.sh`).
-- [x] Task 3.4: Apply atomic remediation to any detected warnings, syntax flaws, or diagnostic errors immediately.
+---
 
-## Checkpoint 3: Static Analysis Zero Defect
+## Phase 3: Search Enhancements & Batch Automation
 
-- [x] `clangd --check` passes with zero critical diagnostic errors.
-- [x] `cppcheck` reports 0 issues.
-- [x] SonarLint and IDE diagnostics show 0 errors across touched files.
+- [ ] Task 3.1: Implement safe fuzzy subsequence pattern generation in `RegexSafetyEngine` and add "Fuzzy Match" checkbox in `FindReplaceDialog` and `QuickFindWidget`.
+- [ ] Task 3.2: Implement batch macro processing in `MacroRunDialog` ("Run Macro on All Open Documents / Folder") with background worker and cancellation.
 
-## Phase 4: 14-Pillar Comprehensive Code Review Checklist
+## Checkpoint 3: Search & Automation Verified
 
-- [x] Task 4.1: Perform structured audit across all 14 pillars on core subsystems (`src/`, `src/dialogs/`, `src/docks/`, `src/editor/`, `src/utils/`, `src/widgets/`).
-- [x] Task 4.2: Generate a formal 14-pillar review checklist and findings report artifact.
+- [ ] Fuzzy search finds scattered subsequence tokens without regex backtracking hangs (ReDoS safe).
+- [ ] Batch macro executes across target files with progress reporting and abort support.
 
-## Checkpoint 4: 14-Pillar Audit Sign-off
+---
 
-- [x] All 14 pillars reviewed and verified against evidence.
-- [x] Findings and remediations documented in formal artifact.
+## Phase 4: Diagnostic Transparency & Local MCP Tool Server
 
-## Phase 5: Meta-Linter & Build Verification
+- [ ] Task 4.1: Implement "Help → Copy Debug Information to Clipboard" in `MainWindow.cpp`.
+- [ ] Task 4.2: Implement local loopback-only, token-authenticated, read-only MCP server in `src/features/LocalMcpServer.cpp`.
 
-- [x] Task 5.1: Run `trunk check` and `lint-check.sh` on all modified files (`.cpp`, `.h`, `.ts`, `.md`, `.json`, `.lua`).
-- [x] Task 5.2: Execute standard CMake configuration and build with Unix Makefiles: `cmake --build build -j2`.
-- [x] Task 5.3: Run unit tests via `ctest --test-dir build --output-on-failure`.
+## Checkpoint 4: Diagnostics & AI Pairing Active
 
-## Checkpoint 5: Build & Tests Green
+- [ ] Debug Info clipboard copy outputs complete, accurate environment and configuration details.
+- [ ] Local MCP server accepts local loopback connections, authenticates tokens, and exposes read-only tab data safely.
 
-- [x] CMake Unix Makefiles build succeeds with exit code 0.
-- [x] All unit tests pass with 0 failures.
-- [x] Meta-linters report 0 errors.
+---
 
-## Phase 6: Documentation Rebuild, Version 1.3.8 Sync & Release
+## Phase 5: Security Hardening & 2025–2026 CVE Mitigations
 
-- [x] Task 6.1: Update `README.md`, `README-id.md`, `wiki/*.md`, and all `.md` files in `doc/` to reflect v1.3.8 features.
-- [x] Task 6.2: Rebuild localized plaintext docnotes and changelogs (`DOCNOTE_en.txt`, `DOCNOTE_id.txt`, `CHANGELOG_en.txt`, `CHANGELOG_id.txt`).
-- [x] Task 6.3: Ensure branch `1.3.8` is fully synchronized, committed with clean conventional commit messages, pushed to `origin/1.3.8`, and tagged for the GitHub Actions runner release.
+- [ ] Task 5.1: Harden link clicking in `NetworkSecurityPolicy` against CVE-2026-20841 (strict URI scheme allowlisting).
+- [ ] Task 5.2: Enforce XML and JSON recursion depth caps in `ConfigIntegrityGuard` against CVE-2026-16762.
+- [ ] Task 5.3: Ensure `QProcess` invocations in `ExternalToolManager` avoid shell string concatenation (CVE-2026-25926 mitigation).
 
-## Final Release Gate
+## Checkpoint 5: Security Invariants Enforced
 
-- [x] Release branch `1.3.8` and tag `v1.3.8` pushed to origin.
-- [x] GitHub Actions runner release workflow triggered and monitored.
+- [ ] Malicious URI schemes (`file://*.exe`, `cmd:`, `powershell:`) are intercepted and blocked.
+- [ ] Deeply nested XML/JSON files fail gracefully without CPU or memory exhaustion.
+- [ ] External tool execution is safe against shell command injection.
 
-## Phase 7: Distinct Toolbar Icon Packs Integration & Diagnostics Remediation
+---
 
-- [x] Task 7.1: Synchronize all 13 distinct toolbar icon packs (`16x16`, `20x20`, `24x24`, `32x32`, `48x48`, `64x64`) into `src/icons/packs/`.
-- [x] Task 7.2: Generate `src/toolbar_icons.qrc` and register it in `src/CMakeLists.txt` and `tests/CMakeLists.txt`.
-- [x] Task 7.3: Upgrade `ToolbarIconManager` with multi-resolution folder resolution, registration of all 13 packs, and backward-compatible aliasing.
-- [x] Task 7.4: Remediate all IDE warnings in `@[current_problems]` (`ThemePaletteData.h`, `ManageToolsDialog.cpp`, `MainWindow.cpp`).
-- [x] Task 7.5: Update and pass all unit tests in `tests/test_toolbar_icon_manager.h`.
-- [x] Task 7.6: Compile local build and verify DMG package with `hdiutil`.
+## Phase 6: i18n Translation & UI Text Synchronization
 
-## Checkpoint 7: Icon Packs & Diagnostics Verification Gate
+- [ ] Task 6.1: Run `lupdate src/ -ts i18n/SparkNotePad_en.ts i18n/SparkNotePad_id.ts`.
+- [ ] Task 6.2: Translate all newly introduced strings for English and Indonesian (ensure 0 unfinished strings).
+- [ ] Task 6.3: Compile translation catalogs using `lrelease`.
 
-- [x] All 13 packs load crisp icons at all sizes (16, 20, 24, 32, 48, 64).
-- [x] Zero compiler errors, zero linter issues, 100% tests passing.
-- [x] DMG build verified and ready for testing.
+## Checkpoint 6: 100% Translation Parity
 
-## Phase 8: Markdown/HTML Preview Refinement, Menu Reorganization, Workspace Highlight Fix & Complete Diagnostics Clean
+- [ ] Both `SparkNotePad_en.ts` and `SparkNotePad_id.ts` pass `grep 'type="unfinished"'` with 0 matches.
+- [ ] Binary `.qm` files compile and load cleanly.
 
-- [x] Task 8.1: Refine HTML & Markdown Live Preview in `MarkdownSafePreviewDock` & `PreviewTabWidget` with modern UI/UX, pill badges (format, word count, reading time), and enhanced GitHub/DevDocs CSS with callouts (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, `[!IMPORTANT]`, `[!CAUTION]`), rounded code blocks, and export actions.
-- [x] Task 8.2: Reorganize and optimize all menus in `MainWindow.ui` and `MainWindow.cpp` to match professional standard notepad layouts (File, Edit, Search, View, Encoding, Language, Tools, Macro, Help) with dedicated `Preview` and `Panels` sub-menus.
-- [x] Task 8.3: Overhaul File Browser and Folder-as-Workspace docks (`FolderAsWorkspaceDock.cpp`, `FileBrowserDock.cpp`) to fix selection box cropping/clipping (`show-decoration-selected: 1`, `branch:selected`, full row focus, matching theme selection style) and modernize toolbar controls.
-- [x] Task 8.4: Complete full static analysis and IDE diagnostic remediation across `src/` (`formatHexDump`, static member methods, brace omissions, const qualifiers, SonarLint rules) and restart SonarLint LS.
-- [x] Task 8.5: Conduct 14-pillar code review audit and verify zero regression across unit tests (`./build/tests/SparkNotePadTests`).
-- [x] Task 8.6: Rebuild local macOS DMG package (`cmake --build build --target dmg -j2` strictly with Unix Makefiles, no Ninja) and verify with `hdiutil verify`.
-- [x] Task 8.7: Update documentation (`README.md`, `README-id.md`, `wiki/*.md`, `doc/`), commit, and push to branch `1.3.8`.
+---
 
-## Checkpoint 8: Final Feature Polish & Release Gate
+## Phase 7: 14-Pillar Code Review & Static Analysis Verification
 
-- [x] HTML/Markdown preview provides modern, elegant live rendering with GitHub callouts and export options.
-- [x] Standard notepad menu structure is organized, clean, and intuitive.
-- [x] File Browser and Workspace docks have pixel-perfect, uncropped selection highlights matching the theme.
-- [x] Zero linter warnings, zero compiler warnings, 100% tests passing.
-- [x] Local DMG package rebuilt and validated with `hdiutil`.
+- [ ] Task 7.1: Run `cppcheck --enable=all` and `clangd --check` on all modified source files.
+- [ ] Task 7.2: Restart SonarLint language server (`sonar-restart-ext.sh`) and resolve all IDE diagnostics.
+- [ ] Task 7.3: Verify complete compliance against all 14 review pillars (Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance, Security, Maintainability, Scalability, Readability, Architecture).
+
+## Checkpoint 7: Zero-Defect Code Quality
+
+- [ ] Zero compiler errors, zero warnings.
+- [ ] SonarLint reports 0 BLOCKER, CRITICAL, or MAJOR issues.
+- [ ] 14-pillar review checklist fully satisfied with empirical citations.
+
+---
+
+## Phase 8: CMake Build & Release Synchronization
+
+- [ ] Task 8.1: Update project version to `1.4.0` in `CMakeLists.txt`.
+- [ ] Task 8.2: Build project using CMake Unix Makefiles (`cmake --build build -j2`, NO NINJA).
+- [ ] Task 8.3: Run unit tests (`ctest --test-dir build --output-on-failure`).
+- [ ] Task 8.4: Rebuild macOS DMG package (`cmake --build build --target dmg -j2`) and verify with `hdiutil`.
+- [ ] Task 8.5: Synchronize all documentation (`README.md`, `README-id.md`, `doc/CHANGELOG.txt`, `doc/DOCNOTE.txt`, `wiki/`).
+
+## Checkpoint 8: Release Gate Passed
+
+- [ ] Clean build and test execution exit with code 0.
+- [ ] Verified DMG package ready for distribution.
+- [ ] All documentation updated and synchronized for v1.4.0.
