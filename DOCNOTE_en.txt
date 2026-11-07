@@ -1,96 +1,60 @@
-# SparkNotePad Release DocNote — v1.3.9 (English)
+# SparkNotePad Release DocNote — v1.4.0 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version      : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language, Qt 6.2 LTS & 14-Pillar Hardening)
+Release Version      : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & Security Hardening)
 Release Date         : 2026-11-07
 Lead Maintainer      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization         : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository           : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine  : Scintilla 5.6.9 & Lexilla 5.5.5 (Complete 125 Official Lexers)
 Embedded Lua Core    : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
-GUI Framework        : Qt 6.2 LTS / 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
-Target Platforms     : macOS 10.15–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
+GUI Framework        : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms     : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
 License              : GNU General Public License v3.0 (GPL-3.0-or-later)
 ================================================================================
 --------------------------------------------------------------------------------
 
 ---
 
-## 1. Executive Summary (English): Release v1.3.9
+## 1. Executive Summary (English): Release v1.4.0
 
-SparkNotePad v1.3.9 is a major foundational engine upgrade and stability milestone encapsulating the complete architectural progression from v1.3.8 to v1.3.9. It delivers upstream core editing engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, resolves algorithmic regex loop vulnerabilities, introduces user-configurable default language preferences, expands Markdown front-matter syntax styling, restores full Qt 6.2 LTS backward compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, prunes and refines macOS DMG distribution, and passes comprehensive 14-pillar code review:
+SparkNotePad v1.4.0 delivers high-impact productivity enhancements inspired by deep analysis of Nextpad++, Notepad--, and contemporary text editors, combined with enterprise-grade 2025–2026 vulnerability mitigations and model context protocol connectivity:
 
-1. Official Upstream Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration:
-   - Full upstream replacement of Scintilla 5.6.9 and Lexilla 5.5.5 directly from scintilla.org into thirdparty/ (160 files updated, 3,206 insertions).
-   - Regenerated Qt wrapper interface (ScintillaEdit.cpp and ScintillaEdit.h) using Scintilla's official WidgetGen.py script.
-   - Restored full-color rendering for XPM images.
-   - Accelerated line-start position queries by skipping redundant layout calculations during rapid scrolling.
-   - Increased cached lexeme capacity from 30 to 40 bytes for large identifiers, SQL columns, and symbols.
-   - Updated character category maps and case conversions to standard Unicode 17.
-   - Fixed crash in change history undo caused by bulk deletion optimization.
-   - Lexilla memory safety hardening: fixed out-of-bounds writes (CWE-787) and reads (CWE-125) in DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, and X12 lexers.
+1. Configurable Extra Line Spacing (Ascent & Descent):
+   - Configurable from Preferences > Margins/Padding (0 to 30 px) via Scintilla's SCI_SETEXTRAASCENT and SCI_SETEXTRADESCENT APIs.
+   - Implemented in ScintillaNext::setExtraLineSpacing() and synchronized across all open editor tabs via EditorManager.
 
-2. Sandboxed Lua 5.5.1 Engine Integration:
-   - Fully upgraded the embedded Lua runtime to official Lua 5.5.1 in thirdparty/lua.
-   - Strict sandboxing enforced: disabled unsafe system APIs (os.execute, io.*, debug.*, package.loadlib) to prevent arbitrary code execution via untrusted extensions or theme scripts.
+2. Enriched Document Tab Tooltips with Complete Metadata:
+   - Implemented DockedEditor::buildEnrichedToolTip() displaying canonical file path, byte/KB size, line count, character length, text encoding name, EOL format (CRLF, LF, CR), and file modification timestamp.
+   - Dynamic real-time updates triggered on tab selection, file save points, and renames.
 
-3. Markdown Front-Matter Syntax Highlighting:
-   - Full support for front-matter metadata blocks (YAML, TOML, JSON) in src/languages/markdown.lua utilizing new Lexilla 5.5.5 styling IDs:
-     - SCE_MARKDOWN_FRONT_MARK (ID 22): Visual styling for metadata delimiters (---, +++, {}).
-     - SCE_MARKDOWN_FRONT (ID 23): Visual styling for front-matter payload and property values.
-     - SCE_MARKDOWN_FRONT_KEY (ID 24): Highlighting for metadata property keys and attributes.
+3. Non-Backtracking Fuzzy Subsequence Matching Engine:
+   - RegexSafetyEngine::buildFuzzySubsequencePattern() converts input tokens into deterministic linear regex patterns ([^char]*char...).
+   - Integrated into Find/Replace Dialog (checkBoxFuzzy) and Quick Find Bar (~).
+   - Fully immune to catastrophic backtracking and Regular Expression Denial of Service (ReDoS).
 
-4. Selective Feature & Stability Ports from NotepadNext:
-   - Fix Infinite Loop in Replace All (CWE-835 / DoS): In src/Finder.cpp, fixed application freeze when matching zero-length regular expressions (^, $, \b, lookarounds) by enforcing forward cursor progression using editor->positionAfter().
-   - Search & Replace Dialog Direction Invariant: In src/dialogs/FindReplaceDialog.cpp, automatically unchecks and disables backwards direction searching when Regular Expression search mode is selected.
-   - Default Language Setting for New Documents: Added user-configurable DefaultLanguage in Preferences > Editor for untitled/new documents, with dynamic language selection.
+4. Batch Macro Execution Across All Open Documents:
+   - Extended MacroRunDialog with execution scope selection: "Current Document" or "All Open Documents".
+   - Automatically loops over all managed tabs sequentially with transparent execution progress.
 
-5. About Dialog Overhaul & Dynamic Metadata Architecture:
-   - In src/dialogs/AboutDialog.cpp, dynamically parameterized the Release Tag link with APP_VERSION so it always links to v1.3.9 without hardcoded stale tags.
-   - Updated engine attribution to Scintilla 5.6.9 & Lexilla 5.5.5 across About, Maintainer, and Diagnostics cards.
-   - Synchronized plain-text system info copy clipboard to reflect Scintilla 5.6.9 and Lexilla 5.5.5.
-   - Explicitly preserved attribution to NotepadNext-MacOS (@alsyundawy) as the foundational macOS port repository.
+5. High-Integrity Local Loopback MCP Server:
+   - High-integrity local server in src/features/LocalMcpServer listening strictly on 127.0.0.1 with cryptographically secure bearer token authentication.
+   - Exposes standardized AI coding tools (list_open_tabs, read_active_tab).
 
-6. Full Qt 6.2 LTS Backward Compatibility (macOS Catalina 10.15 & Ubuntu 20.04 LTS):
-   - In src/utils/TokenForensicUtils.cpp, replaced QTimeZone::UTC (Qt 6.5+) with universal QTimeZone::utc() supported across all Qt 6 releases.
-   - In src/dialogs/MainWindow.cpp, replaced QLatin1StringView (Qt 6.4+) with universal QLatin1String (Qt 6.2+).
-   - In src/widgets/TabsQuickActionsBar.cpp & .h, replaced QLatin1StringView and cleaned redundant inline specifiers.
-   - In src/features/ThemeManager.cpp, implemented parseColor fallback for Qt < 6.4 where QColor::fromString is absent.
-   - In src/utils/HashIntegrityManager.cpp, guarded Qt 6.4+ cryptographic APIs with QT_VERSION_CHECK(6, 4, 0).
+6. Enterprise Security Hardening (2025–2026 CVE Mitigations):
+   - CVE-2026-20841: Dangerous URI scheme interception (NetworkSecurityPolicy::isSafeUriScheme()) prohibiting dangerous schemes (ms-office:, cmd:, powershell:) and binary execution.
+   - CVE-2026-16762: XML/JSON parser recursion limit (ConfigIntegrityGuard::isPayloadStructureSafe()) capping file size at 10 MB and recursion depth at 32 levels.
+   - CVE-2026-48778 / CVE-2026-48800: Command injection prevention in external tools and enforcement of strict 0600 file permissions.
 
-7. Restored Multi-Architecture CI Matrix & Automated Release Publishing:
-   - Restored and verified Qt 6.2 LTS matrix jobs on macOS Catalina and Ubuntu 20.04 runners.
-   - Added native Linux ARM64 (aarch64) packaging across Ubuntu, Debian, and RPM distros for Qt 6.8, 6.10, 6.11, and 6.12.
-   - Prioritized x64 jobs first, publishing release artifacts immediately upon individual job completion.
-   - Pinned canonical default release artifact to Qt 6.5 LTS.
-   - Expanded release artifact catalog to 50+ distribution binaries.
+7. One-Click Diagnostic Reporting:
+   - Help > Debug Info copies system specs, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt version, and display metrics directly to the system clipboard.
 
-8. Framework Pruning & macOS DMG Aesthetics Enhancement:
-   - Pruned unused Qt frameworks (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) from release DMGs, saving ~15MB.
-   - Enhanced DMG packaging pipeline with custom background, drag-and-drop indicator, 680x440 window layout, eliminated unstyled fallback --skip-jenkins in CI, and validated checksum integrity via hdiutil.
-   - Verified local DMG generation: build/SparkNotePad-v1.3.9-x64.dmg (33 MB) successfully created and verified.
-
-9. 100% Bilingual Localization Parity (i18n):
-   - Synchronized 1,850 translation strings across Indonesian and English catalogs with 0 unfinished entries.
-
-10. 14-Pillar Code Quality & Zero-Defect Linter Verification:
-    - Zero warnings across clangd --check, cppcheck (152 src/ files), clang-tidy, and SonarLint.
-    - Strict Unix Makefiles compilation enforcement with controlled -j2 concurrency (Ninja permanently prohibited).
-    - 51/51 unit tests passed in SparkNotePadTests.
-    - 100% parity across Python 3.14 and 3.15 environments (73 identical modules).
+8. 14-Pillar Quality Gate:
+   - 100% unit test pass rate, 0 linter errors, and 0 SonarLint issues.
 
 ---
 
-## 2. Prior Release Summary: Release v1.3.8
+## 2. Previous Release Summary: Release v1.3.9
 
-SparkNotePad v1.3.8 delivers a comprehensive overhaul of toolbar customization, 21 authentic high-definition icon packs, dedicated Preferences tabs ("Themes & Toolbar" & "Custom Toolbar Config"), desktop standard menu reorganization, dynamic whole-window and context menu icon synchronization, Plus (+) tab button, in-tab HTML and Markdown preview, File Commander modern explorer, reversible Hex/Binary viewing, and 100% Lexilla Lexers parity.
-
----
-
-## 3. Prior Release: Release v1.3.7
-
-1. Notepad++ Style Tools Menu & 16-Action MIME Tools Suite.
-2. Standalone Hash & Authenticity Validator (MD5, SHA-1, SHA-256, SHA-512, SHA3).
-3. Interactive Shortcut Mapper in Preferences > Shortcuts.
-4. GitHub Rate Limit Elimination via ETag Caching.
+SparkNotePad v1.3.9 is a major foundational engine upgrade and stability milestone encapsulating the complete architectural progression from v1.3.8 to v1.3.9. It delivers upstream core editing engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, resolves algorithmic regex loop vulnerabilities, introduces user-configurable default language preferences, expands Markdown front-matter syntax styling, restores full Qt 6.2 LTS backward compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, prunes and refines macOS DMG distribution, and passes comprehensive 14-pillar code review.

@@ -1,4 +1,65 @@
-# SparkNotePad Release DocNote — v1.3.9
+# SparkNotePad Release DocNote — v1.4.0
+
+```text
+================================================================================
+Release Version     : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & Security Hardening)
+Release Date        : 2026-11-07
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine : Scintilla 5.6.9 (Vendored) & Lexilla 5.5.5 (Vendored)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Source)
+Scripting Runtime   : Python 3.13+ Engine Bridge
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
+Architecture        : 100% Additive Safe Enhancements Inspired by Nextpad++, Notepad--, Notepad3 & Notepad++
+CI/CD Status        : 100% Passing across all release matrices, MegaLinter & CodeQL
+================================================================================
+```
+
+---
+
+## 1. Executive Summary: Release v1.4.0
+
+SparkNotePad **v1.4.0** delivers high-impact productivity enhancements inspired by deep analysis of Nextpad++ and contemporary text editors, combined with enterprise-grade 2025–2026 vulnerability mitigations and model context protocol connectivity:
+
+1. **Configurable Font Line Spacing (Extra Ascent & Descent)**:
+   - Configurable from Preferences > Margins/Padding (`spinBoxExtraLineAscent` and `spinBoxExtraLineDescent` from 0 to 30 px).
+   - Backed by Scintilla's `SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT` via `ScintillaNext::setExtraLineSpacing()`.
+   - Real-time application across all active and subsequently opened tabs via `EditorManager`.
+
+2. **Enriched Document Tab Tooltips with Complete Metadata**:
+   - Implemented `DockedEditor::buildEnrichedToolTip()` displaying canonical file path, byte/KB size, line count, character length, text encoding name (`encodingName()`), EOL format (`CRLF`, `LF`, `CR`), and file modification timestamp.
+   - Live updates triggered on active tab change, file rename, and buffer dirty/clean save point notifications.
+
+3. **Non-Backtracking Fuzzy Subsequence Matching Engine**:
+   - `RegexSafetyEngine::buildFuzzySubsequencePattern()` converts input tokens into deterministic linear regex patterns (`[^char]*char...`).
+   - Integrated into Find/Replace Dialog (`checkBoxFuzzy`) and Quick Find Bar (`buttonFuzzy` `~`).
+   - Resistant to Regular Expression Denial of Service (ReDoS).
+
+4. **Batch Macro Execution Across All Open Documents**:
+   - Extended `MacroRunDialog` with execution scope selection: "Current Document" or "All Open Documents".
+   - Automatically loops over all managed tabs sequentially.
+
+5. **Loopback Model Context Protocol (MCP) Server**:
+   - High-integrity local server in `src/features/LocalMcpServer` listening strictly on `127.0.0.1` with cryptographically secure bearer token authentication.
+   - Provides standardized tools (`list_open_tabs`, `read_active_tab`).
+
+6. **Enterprise Security Hardening (2025–2026 CVE Mitigations)**:
+   - **CVE-2026-20841**: Protocol handler blocking (`NetworkSecurityPolicy::isSafeUriScheme()`) prohibiting dangerous schemes (`ms-office:`, `cmd:`, `powershell:`) and executable binary launches.
+   - **CVE-2026-16762**: XML/JSON recursion guard (`ConfigIntegrityGuard::isPayloadStructureSafe()`) capping file size at 10 MB and recursion depth at 32 levels.
+   - **CVE-2026-48778 / CVE-2026-48800**: Command injection prevention in external tools and enforcement of `0600` owner-only file permissions.
+
+7. **One-Click Diagnostic Reporting**:
+   - Help > Debug Info copies system specs, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt version, and display metrics directly to the system clipboard.
+
+8. **Localization Parity**:
+   - 12 new translation keys translated in English and Indonesian `.ts` catalogs, producing 1,862 finished translations in compiled `.qm` files.
+
+---
+
+## SparkNotePad Release DocNote — v1.3.9
 
 ```text
 ================================================================================
