@@ -1,3 +1,46 @@
+# Catatan Rilis SparkNotePad — v1.4.0 (Bahasa Indonesia)
+
+--------------------------------------------------------------------------------
+================================================================================
+Versi Rilis          : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & 2025–2026 CVE Hardening)
+Tanggal Rilis        : 2026-11-07
+Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repositori           : https://github.com/alsyundawy/SparkNotePad
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (Vendored Resmi)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
+Kerangka Kerja GUI   : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD 13–15
+Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
+================================================================================
+--------------------------------------------------------------------------------
+
+---
+
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.0
+
+SparkNotePad v1.4.0 menghadirkan peningkatan produktivitas penting yang diadopsi dari riset Nextpad++ serta pengerasan keamanan terhadap kerentanan 2025–2026:
+
+1. Pengaturan Spasi Baris Ekstra Font (Ascent & Descent):
+   - Dapat dikonfigurasi melalui Preferences > Margins/Padding (0 hingga 30 px).
+   - Didukung Scintilla SCI_SETEXTRAASCENT dan SCI_SETEXTRADESCENT melalui ScintillaNext::setExtraLineSpacing().
+2. Enriched Tab Tooltip dengan Metadata Lengkap:
+   - Menampilkan path kanonikal, ukuran file, jumlah baris, karakter, encoding, EOL, dan timestamp modifikasi.
+3. Mesin Non-Backtracking Fuzzy Subsequence Search:
+   - Terintegrasi pada dialog Find/Replace dan Quick Find Bar dengan perlindungan ReDoS linear.
+4. Eksekusi Batch Macro pada Seluruh Dokumen Terbuka:
+   - Memungkinkan eksekusi makro berulang pada "Current Document" atau "All Open Documents".
+5. Local Loopback Model Context Protocol (MCP) Server:
+   - Server JSON-RPC 2.0 loopback (127.0.0.1) terotentikasi Bearer Token untuk integrasi asisten AI.
+6. Pengerasan Keamanan (Mitigasi CVE 2025–2026):
+   - CVE-2026-20841: Pembatasan skema URI berbahaya.
+   - CVE-2026-16762: Pembatasan kedalaman struktur XML/JSON (maksimal 32 tingkat dan 10 MB).
+   - CVE-2026-48778 / CVE-2026-48800: Proteksi command injection dan izin file ketat 0600.
+7. One-Click Debug Info:
+   - Menyalin spesifikasi sistem, versi Scintilla/Lexilla/Lua/Qt ke clipboard untuk diagnostik cepat.
+
+---
+
 # Catatan Rilis SparkNotePad — v1.3.9 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
