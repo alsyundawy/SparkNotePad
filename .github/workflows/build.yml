@@ -44,6 +44,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: gcc_64
             qt_version: "6.5"
+            qt_install_version: "6.5"
 
           - runs_on: ubuntu-22.04
             platform: linux
@@ -51,6 +52,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: linux_gcc_64
             qt_version: "6.8"
+            qt_install_version: "6.8"
 
           - runs_on: ubuntu-24.04
             platform: linux
@@ -58,6 +60,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: linux_gcc_64
             qt_version: "6.10"
+            qt_install_version: "6.10"
 
           - runs_on: ubuntu-24.04
             platform: linux
@@ -65,6 +68,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: linux_gcc_64
             qt_version: "6.11"
+            qt_install_version: "6.11"
 
           - runs_on: ubuntu-24.04
             platform: linux
@@ -72,6 +76,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: linux_gcc_64
             qt_version: "6.12"
+            qt_install_version: "6.12"
 
     steps:
       - name: Checkout Repository
@@ -143,6 +148,113 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
 
+  # ─── Linux Ubuntu ARM64 Matrix ────────────────────────────────────
+  build-linux-arm64:
+    name: build (linux-arm64, ${{ matrix.qt_version }})
+    runs-on: ${{ matrix.runs_on }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs_on: ubuntu-24.04-arm
+            platform: linux
+            arch: arm64
+            cmake_arch: aarch64
+            qt_arch: linux_gcc_arm64
+            qt_version: "6.8"
+            qt_install_version: "6.8"
+
+          - runs_on: ubuntu-24.04-arm
+            platform: linux
+            arch: arm64
+            cmake_arch: aarch64
+            qt_arch: linux_gcc_arm64
+            qt_version: "6.10"
+            qt_install_version: "6.10"
+
+          - runs_on: ubuntu-24.04-arm
+            platform: linux
+            arch: arm64
+            cmake_arch: aarch64
+            qt_arch: linux_gcc_arm64
+            qt_version: "6.11"
+            qt_install_version: "6.11"
+
+          - runs_on: ubuntu-24.04-arm
+            platform: linux
+            arch: arm64
+            cmake_arch: aarch64
+            qt_arch: linux_gcc_arm64
+            qt_version: "6.12"
+            qt_install_version: "6.12"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Linux Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake pkg-config \
+            libgl1-mesa-dev libxkbcommon-dev libxkbcommon-x11-0 \
+            libfontconfig1-dev libfreetype6-dev \
+            libxcb-cursor0 libxcb-glx0 libxcb-icccm4 libxcb-image0 \
+            libxcb-keysyms1 libxcb-randr0 libxcb-render0 \
+            libxcb-render-util0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 \
+            rpm dpkg-dev
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@b344308e4483fc892e0d27b3cd1b173ebdd95f06 # v4.5.0
+        with:
+          version: ${{ matrix.qt_install_version }}
+          host: linux_arm64
+          target: desktop
+          arch: ${{ matrix.qt_arch }}
+          modules: qt5compat
+          cache: true
+
+      - name: Set Distribution (linux)
+        shell: bash
+        run: echo "DISTRIBUTION=native" >> "$GITHUB_ENV"
+
+      - name: Configure (CMake)
+        shell: bash
+        run: |
+          echo "Configure: run=$GITHUB_RUN_ID runner=${{ matrix.runs_on }} qt=${{ matrix.qt_version }}"
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DAPP_DISTRIBUTION="${DISTRIBUTION}" -DPKG_QT_SUFFIX="qt${{ matrix.qt_version }}"
+
+      - name: Build
+        shell: bash
+        run: cmake --build build -j2
+
+      - name: Build Linux Targets (deb, rpm)
+        shell: bash
+        run: |
+          cmake --build build --target deb || true
+          cmake --build build --target rpm || true
+          if [ "${{ matrix.qt_version }}" = "${{ env.QT_RELEASE_VER }}" ]; then
+            for f in build/*-qt${{ matrix.qt_version }}_*.deb; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+            for f in build/*-qt${{ matrix.qt_version }}-1.*.rpm; do
+              [ -f "$f" ] && cp -v "$f" "${f//-qt${{ matrix.qt_version }}/}" || true
+            done
+          fi
+
+      - name: Upload Linux Packages (.deb, .rpm)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: SparkNotePad-Linux-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
+          path: |
+            build/*.deb
+            build/*.rpm
+          if-no-files-found: warn
+          retention-days: 90
+
   # ─── macOS Intel x64 Matrix (PRIORITAS 1) ──────────────────────────
   build-macos-x64:
     name: build (macos-x64, ${{ matrix.qt_version }})
@@ -169,6 +281,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: clang_64
             qt_version: "6.5"
+            qt_install_version: "6.5"
             deployment_target: "11.0"
 
           - runs_on: macos-15-intel
@@ -177,6 +290,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: clang_64
             qt_version: "6.8"
+            qt_install_version: "6.8"
             deployment_target: "12.0"
 
           - runs_on: macos-15-intel
@@ -185,6 +299,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: clang_64
             qt_version: "6.10"
+            qt_install_version: "6.10"
             deployment_target: "13.0"
 
           - runs_on: macos-15-intel
@@ -193,6 +308,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: clang_64
             qt_version: "6.11"
+            qt_install_version: "6.11"
             deployment_target: "13.0"
 
           - runs_on: macos-15-intel
@@ -201,6 +317,7 @@ jobs:
             cmake_arch: x86_64
             qt_arch: clang_64
             qt_version: "6.12"
+            qt_install_version: "6.12"
             deployment_target: "13.0"
 
     steps:
@@ -301,6 +418,7 @@ jobs:
             cmake_arch: arm64
             qt_arch: clang_64
             qt_version: "6.5"
+            qt_install_version: "6.5"
             deployment_target: "12.0"
 
           - runs_on: macos-15
@@ -309,6 +427,7 @@ jobs:
             cmake_arch: arm64
             qt_arch: clang_64
             qt_version: "6.8"
+            qt_install_version: "6.8"
             deployment_target: "13.0"
 
           - runs_on: macos-15
@@ -317,6 +436,7 @@ jobs:
             cmake_arch: arm64
             qt_arch: clang_64
             qt_version: "6.10"
+            qt_install_version: "6.10"
             deployment_target: "14.0"
 
           - runs_on: macos-15
@@ -325,6 +445,7 @@ jobs:
             cmake_arch: arm64
             qt_arch: clang_64
             qt_version: "6.11"
+            qt_install_version: "6.11"
             deployment_target: "14.0"
 
           - runs_on: macos-15
@@ -333,6 +454,7 @@ jobs:
             cmake_arch: arm64
             qt_arch: clang_64
             qt_version: "6.12"
+            qt_install_version: "6.12"
             deployment_target: "14.0"
 
     steps:
