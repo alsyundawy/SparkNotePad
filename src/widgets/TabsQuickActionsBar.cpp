@@ -31,9 +31,9 @@
 #include "TabsQuickActionsBar.h"
 
 namespace {
-constexpr QLatin1StringView IconPlusPath(":/icons/plus.svg");
-constexpr QLatin1StringView IconListPath(":/icons/list_with_icons.svg");
-constexpr QLatin1StringView IconCrossPath(":/icons/cross.svg");
+constexpr auto IconPlusPath = ":/icons/plus.svg";
+constexpr auto IconListPath = ":/icons/list_with_icons.svg";
+constexpr auto IconCrossPath = ":/icons/cross.svg";
 }  // namespace
 
 TabsQuickActionsBar::TabsQuickActionsBar(const Buttons &visibileButtons, QWidget *parent) : QToolBar(parent) {

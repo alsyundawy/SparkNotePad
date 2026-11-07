@@ -5354,8 +5354,8 @@ void MainWindow::restartApplication(bool safeMode) {
     //    running binary, preventing any working-directory binary hijacking.
     const QString appFilePath = QCoreApplication::applicationFilePath();
     QStringList args = QCoreApplication::arguments().mid(1);
-    if (safeMode && !args.contains(QLatin1StringView("--safe-mode"))) {
-        args.append(QLatin1StringView("--safe-mode"));
+    if (safeMode && !args.contains(QLatin1String("--safe-mode"))) {
+        args.append(QLatin1String("--safe-mode"));
     }
 
     // 4. Release SingleApplication instance lock so the new process can acquire it
@@ -5369,8 +5369,8 @@ void MainWindow::restartApplication(bool safeMode) {
     const QDir appDir(QCoreApplication::applicationDirPath());
     bool isBundle = false;
     QString bundlePath;
-    if (QDir bundleDir = appDir; bundleDir.dirName() == QLatin1StringView("MacOS") && bundleDir.cdUp() &&
-                                 bundleDir.cdUp() && bundleDir.dirName().endsWith(QLatin1StringView(".app"))) {
+    if (QDir bundleDir = appDir; bundleDir.dirName() == QLatin1String("MacOS") && bundleDir.cdUp() &&
+                                 bundleDir.cdUp() && bundleDir.dirName().endsWith(QLatin1String(".app"))) {
         isBundle = true;
         bundlePath = bundleDir.absolutePath();
     }
