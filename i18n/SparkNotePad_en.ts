@@ -9662,12 +9662,12 @@ Key: %2</translation>
         <translation type="vanished">Modern Ribbon (Default)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="46"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="51"/>
         <source>Modern Ribbon (Default Vector)</source>
         <translation>Modern Ribbon (Default Vector)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="47"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="52"/>
         <source>High-DPI 20x20 monoline vector SVG suite with refined contours</source>
         <translation>High-DPI 20x20 monoline vector SVG suite with refined contours</translation>
     </message>
@@ -9696,12 +9696,12 @@ Key: %2</translation>
         <translation type="vanished">Windows 7 Aero Glass translucent iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="216"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="181"/>
         <source>Windows XP (Luna Classic)</source>
         <translation>Windows XP (Luna Classic)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="217"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="182"/>
         <source>Windows XP Luna skeuomorphic authentic iconography</source>
         <translation>Windows XP Luna skeuomorphic authentic iconography</translation>
     </message>
@@ -9718,7 +9718,7 @@ Key: %2</translation>
         <translation type="vanished">Notepad++ Retro (Nostalgia)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="56"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="61"/>
         <source>Fugue Classic (Silk Mini-Icons)</source>
         <translation>Fugue Classic (Silk Mini-Icons)</translation>
     </message>
@@ -9727,172 +9727,164 @@ Key: %2</translation>
         <translation type="vanished">Detailed mini-icons with soft shadows by Yusuke Kamiyamane</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="57"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="62"/>
         <source>Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane</source>
         <translation>Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="66"/>
         <source>Windows Vista Aero (Glossy)</source>
-        <translation>Windows Vista Aero (Glossy)</translation>
+        <translation type="vanished">Windows Vista Aero (Glossy)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="67"/>
         <source>Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth</source>
-        <translation>Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth</translation>
+        <translation type="vanished">Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="76"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="71"/>
         <source>Windows 7 Aero (Refined Glossy)</source>
         <translation>Windows 7 Aero (Refined Glossy)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="77"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="72"/>
         <source>Refined Windows 7 Aero translucent glass iconography</source>
         <translation>Refined Windows 7 Aero translucent glass iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="86"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="81"/>
         <source>Windows 7</source>
         <translation>Windows 7</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="87"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="82"/>
         <source>Authentic Windows 7 toolbar iconography</source>
         <translation>Authentic Windows 7 toolbar iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="96"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="91"/>
         <source>Microsoft Fluent UI (Regular Outline)</source>
         <translation>Microsoft Fluent UI (Regular Outline)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="97"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="92"/>
         <source>Microsoft Fluent Design outlined iconography for Windows 11</source>
         <translation>Microsoft Fluent Design outlined iconography for Windows 11</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="106"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="101"/>
         <source>Microsoft Fluent UI (Filled Solid)</source>
         <translation>Microsoft Fluent UI (Filled Solid)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="107"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="102"/>
         <source>Microsoft Fluent Design filled solid iconography</source>
         <translation>Microsoft Fluent Design filled solid iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="116"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="111"/>
         <source>Windows 11</source>
         <translation>Windows 11</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="117"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="112"/>
         <source>Authentic Windows 11 Fluent toolbar iconography</source>
         <translation>Authentic Windows 11 Fluent toolbar iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="126"/>
         <source>Windows 10 Modern (Flat)</source>
-        <translation>Windows 10 Modern (Flat)</translation>
+        <translation type="vanished">Windows 10 Modern (Flat)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="127"/>
         <source>Crisp geometric flat modern iconography from Windows 10</source>
-        <translation>Crisp geometric flat modern iconography from Windows 10</translation>
+        <translation type="vanished">Crisp geometric flat modern iconography from Windows 10</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="136"/>
         <source>Arch Linux (High-Contrast Blue)</source>
-        <translation>Arch Linux (High-Contrast Blue)</translation>
+        <translation type="vanished">Arch Linux (High-Contrast Blue)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="137"/>
         <source>High-contrast Arch Linux cobalt and cyan iconography</source>
-        <translation>High-contrast Arch Linux cobalt and cyan iconography</translation>
+        <translation type="vanished">High-contrast Arch Linux cobalt and cyan iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="146"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="121"/>
         <source>Notepad3 Warm (Classic Amber)</source>
         <translation>Notepad3 Warm (Classic Amber)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="147"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="122"/>
         <source>Notepad3 warm brown and amber classic text editor iconography</source>
         <translation>Notepad3 warm brown and amber classic text editor iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="156"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="131"/>
         <source>Notepad++ (Green Accents)</source>
         <translation>Notepad++ (Green Accents)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="157"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="132"/>
         <source>Classic Notepad++ toolbar iconography with green accents</source>
         <translation>Classic Notepad++ toolbar iconography with green accents</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="166"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="141"/>
         <source>Notepad++ (Classic)</source>
         <translation>Notepad++ (Classic)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="167"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="142"/>
         <source>Authentic Notepad++ dual-resolution SVG and PNG suite</source>
         <translation>Authentic Notepad++ dual-resolution SVG and PNG suite</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="176"/>
         <source>Monoline Minimal (Ultra-Thin)</source>
-        <translation>Monoline Minimal (Ultra-Thin)</translation>
+        <translation type="vanished">Monoline Minimal (Ultra-Thin)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="177"/>
         <source>Ultra-thin 1.5px monoline wireframe vector styling</source>
-        <translation>Ultra-thin 1.5px monoline wireframe vector styling</translation>
+        <translation type="vanished">Ultra-thin 1.5px monoline wireframe vector styling</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="186"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="151"/>
         <source>Glossy Orange (WinRAR Amber)</source>
         <translation>Glossy Orange (WinRAR Amber)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="187"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="152"/>
         <source>Warm glossy orange and amber skeuomorphic iconography</source>
         <translation>Warm glossy orange and amber skeuomorphic iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="196"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="161"/>
         <source>Pixel Dense (Retro 16-Bit)</source>
         <translation>Pixel Dense (Retro 16-Bit)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="197"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="162"/>
         <source>Pixel-precise dense retro iconography with crisp edges</source>
         <translation>Pixel-precise dense retro iconography with crisp edges</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="206"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="171"/>
         <source>Material Design (Sharp)</source>
         <translation>Material Design (Sharp)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="207"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="172"/>
         <source>Google Material Design sharp geometric iconography</source>
         <translation>Google Material Design sharp geometric iconography</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="226"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="191"/>
         <source>NotepadNext Classic (Silk)</source>
         <translation>NotepadNext Classic (Silk)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="227"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="192"/>
         <source>Authentic 16x16 Silk bitmap icons from NotepadNext</source>
         <translation>Authentic 16x16 Silk bitmap icons from NotepadNext</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="236"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="201"/>
         <source>Vibrant DuoTone (Cyberpunk)</source>
         <translation>Vibrant DuoTone (Cyberpunk)</translation>
     </message>
@@ -9985,12 +9977,12 @@ Key: %2</translation>
         <translation type="vanished">Florian Balmer Notepad2 classic retro 16-color nostalgic palette</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="246"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="211"/>
         <source>Monochrome Outline (Minimalist)</source>
         <translation>Monochrome Outline (Minimalist)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="247"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="212"/>
         <source>Clean 1.8px monoline wireframes engineered for dark and light themes</source>
         <translation>Clean 1.8px monoline wireframes engineered for dark and light themes</translation>
     </message>
@@ -9999,32 +9991,62 @@ Key: %2</translation>
         <translation type="vanished">Vibrant DuoTone (Neon/Cyber)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="237"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="202"/>
         <source>High-luminance electric cyan &amp; radiant magenta dual-tone contrast</source>
         <translation>High-luminance electric cyan &amp; radiant magenta dual-tone contrast</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="256"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="221"/>
         <source>Elegant Themes (Nicholas Roach)</source>
         <translation>Elegant Themes (Nicholas Roach)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="257"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="222"/>
         <source>Authentic classic 48x48 Elegant Themes iconography by Nicholas Roach</source>
         <translation>Authentic classic 48x48 Elegant Themes iconography by Nicholas Roach</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="265"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="231"/>
         <source>Seven Classic (Glossy Desktop)</source>
         <translation>Seven Classic (Glossy Desktop)</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="266"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="232"/>
         <source>Classic Windows 7 / Seven glossy desktop iconography suite</source>
         <translation>Classic Windows 7 / Seven glossy desktop iconography suite</translation>
     </message>
     <message>
-        <location filename="../src/features/ToolbarIconManager.cpp" line="372"/>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="241"/>
+        <source>Mignon (Cute Pastel)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="242"/>
+        <source>Playful modern pastel desktop iconography by Igor Moraes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="251"/>
+        <source>Palette (Modern Vibrant)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="252"/>
+        <source>Vibrant modern flat vector iconography by mjkim0727</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="261"/>
+        <source>Diagonal (Sleek Angular)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="262"/>
+        <source>Sleek geometric angular vector iconography by Tamas Csabi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/features/ToolbarIconManager.cpp" line="379"/>
         <source>Custom external icon pack from %1</source>
         <translation>Custom external icon pack from %1</translation>
     </message>
