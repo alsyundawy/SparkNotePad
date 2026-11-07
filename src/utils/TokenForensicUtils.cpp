@@ -30,12 +30,12 @@ double TokenForensicUtils::calculateShannonEntropy(const QByteArray &data) {
         frequencies.at(byte)++;
     }
 
-    const double total = static_cast<double>(data.size());
+    const auto total = static_cast<double>(data.size());
     double entropy = 0.0;
 
     for (const std::size_t count : frequencies) {
         if (count > 0) {
-            const double prob = static_cast<double>(count) / total;
+            const auto prob = static_cast<double>(count) / total;
             entropy -= prob * (std::log(prob) / std::log(2.0));
         }
     }
@@ -134,9 +134,9 @@ TokenForensicUtils::DocumentStats TokenForensicUtils::analyzeText(const QString 
     const auto lines = text.split(QLatin1Char('\n'));
     stats.lines = lines.size();
     stats.nonEmptyLines =
-        std::count_if(lines.cbegin(), lines.cend(), [](const QString &line) { return !line.trimmed().isEmpty(); });
+        std::ranges::count_if(lines, [](const QString &line) { return !line.trimmed().isEmpty(); });
 
-    stats.charsNoSpaces = std::count_if(text.cbegin(), text.cend(), [](const QChar &ch) { return !ch.isSpace(); });
+    stats.charsNoSpaces = std::ranges::count_if(text, [](const QChar &ch) { return !ch.isSpace(); });
 
     // Word count based on non-whitespace sequences
     static const QRegularExpression wordRegex(QStringLiteral("\\S+"));
