@@ -1,8 +1,8 @@
 # SparkNotePad — Operating System & Platform Support Matrix
 
-- **Release Target:** SparkNotePad v1.3.8+
-- **Baseline Standard:** C++20 / Qt 6.5–6.12
-- **Binary Baseline:** Ubuntu 22.04 LTS (glibc 2.35, GCC 12)
+- **Release Target:** SparkNotePad v1.3.9+
+- **Baseline Standard:** C++20 / Qt 6.2–6.12
+- **Binary Baseline:** Ubuntu 22.04 LTS (glibc 2.35, GCC 12) & Ubuntu 20.04 LTS (glibc 2.31, Qt 6.2 LTS)
 - **Lead Maintainer:** HARRY DERTIN SUTISNA ALSYUNDAWY (`@alsyundawy`)
 
 ---
@@ -19,7 +19,7 @@ Because SparkNotePad requires modern C++20 and Qt 6.5+, official native `.deb` a
 
 | Platform / Distro      | Version Range                           | Official Distro Qt 6 Support   | Recommended Delivery / Package                                 | Technical & Architectural Notes                                                     |
 | :--------------------- | :-------------------------------------- | :----------------------------- | :------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| **Ubuntu**             | 20.04 LTS (Focal)                       | None (Qt 5.12 only)            | AppImage / Build from source                                   | Base repositories lack `qt6-base`. Use Qt 6.2+ PPA or AppImage.                     |
+| **Ubuntu**             | 20.04 LTS (Focal)                       | Qt 6.2 LTS (CI Runner / PPA)   | Native `.deb` / AppImage                                       | Full Qt 6.2 LTS backward compatibility with glibc 2.31 support.                     |
 |                        | 22.04 LTS (Jammy)                       | Qt 6.2.4                       | Native `.deb` (Canonical Release Baseline)                     | glibc 2.35 baseline. Supports `libxcb-cursor0` and core Qt6 runtime.                |
 |                        | 24.04 LTS (Noble)                       | Qt 6.4.2                       | Native `.deb`                                                  | Fully compatible with Debian 64-bit `time_t` transition packages.                   |
 |                        | 26.04 LTS (Resolute)                    | Qt 6.10.x / 6.11.x             | Native `.deb`                                                  | Verified ABI compatibility with next-generation LTS toolchains.                     |
@@ -36,8 +36,8 @@ Because SparkNotePad requires modern C++20 and Qt 6.5+, official native `.deb` a
 | **openSUSE**           | Leap 15.x                               | Community (`KDE:Qt6`)          | Zypper package / AppImage                                      | Official openSUSE Leap requires community Qt 6 repo; AppImage works out of the box. |
 |                        | Tumbleweed                              | Rolling Latest (Qt 6.12+)      | Native RPM (`zypper install`)                                  | Continuously validated against rolling Qt snapshots.                                |
 | **Slackware**          | 15.0 / Current                          | SlackBuilds / Manual           | SlackBuild from source                                         | Standard SlackBuild script compilation against installed Qt 6.                      |
-| **macOS**              | 11 (Big Sur)                            | Qt 6.2 – 6.7                   | Universal Application Bundle                                   | Minimum supported macOS version for legacy Intel hardware.                          |
-|                        | 12 – 26 (Monterey through modern macOS) | Qt 6.5 – 6.12                  | Native `.dmg` (Universal / Apple Silicon arm64 & Intel x86_64) | Full macOS AppKit integration, menu bar, services, and codesigning.                 |
+| **macOS**              | 10.15 (Catalina) – 11 (Big Sur)         | Qt 6.2 – 6.7                   | Native `.dmg` (Intel x86_64)                                   | Full Qt 6.2 LTS backward compatibility with legacy Intel hardware.                  |
+|                        | 12 – 26 (Monterey through modern macOS) | Qt 6.2 – 6.12                  | Native `.dmg` (Universal / Apple Silicon arm64 & Intel x86_64) | Full macOS AppKit integration, menu bar, services, and codesigning.                 |
 
 ---
 
@@ -75,14 +75,14 @@ SparkNotePad has been empirically verified across the following desktop environm
 
 ### 5.1 Packaging Artifact Matrix
 
-| Format            | Target Platforms                        | Package Generator                       | Configuration File                 |
-| :---------------- | :-------------------------------------- | :-------------------------------------- | :--------------------------------- |
-| **macOS DMG**     | macOS 11–26 (Universal arm64 + x86_64)  | CPack `DragNDrop`                       | `packaging/mac/`                   |
-| **Debian (.deb)** | Ubuntu 22.04–26.04, Debian 12–14        | CPack `DEB`                             | `cmake/PackagingLinux.cmake`       |
-| **RedHat (.rpm)** | Fedora 40–44, Alma/Rocky 9–11, openSUSE | CPack `RPM`                             | `cmake/PackagingLinux.cmake`       |
-| **AppImage**      | Universal portable Linux (glibc 2.35+)  | `linuxdeploy` / `linuxdeploy-plugin-qt` | `packaging/appimage/`              |
-| **Flatpak**       | Flathub / Sandboxed desktop             | `flatpak-builder`                       | `org.alsyundawy.SparkNotePad.json` |
-| **FreeBSD Port**  | FreeBSD 13.x–15.x                       | Native `ports` / `pkg`                  | `ports/editors/sparknotepad`       |
+| Format            | Target Platforms                                         | Package Generator                       | Configuration File                 |
+| :---------------- | :------------------------------------------------------- | :-------------------------------------- | :--------------------------------- |
+| **macOS DMG**     | macOS 10.15–26 (Apple Silicon arm64 & Intel x86_64)      | CPack `DragNDrop` / `hdiutil`           | `packaging/mac/`                   |
+| **Debian (.deb)** | Ubuntu 20.04–26.04, Debian 11–14 (x86_64 & ARM64)        | CPack `DEB`                             | `cmake/PackagingLinux.cmake`       |
+| **RedHat (.rpm)** | Fedora 40–44, Alma/Rocky 9–11, openSUSE (x86_64 & ARM64) | CPack `RPM`                             | `cmake/PackagingLinux.cmake`       |
+| **AppImage**      | Universal portable Linux (glibc 2.31+)                   | `linuxdeploy` / `linuxdeploy-plugin-qt` | `packaging/appimage/`              |
+| **Flatpak**       | Flathub / Sandboxed desktop                              | `flatpak-builder`                       | `org.alsyundawy.SparkNotePad.json` |
+| **FreeBSD Port**  | FreeBSD 13.x–15.x                                        | Native `ports` / `pkg`                  | `ports/editors/sparknotepad`       |
 
 ---
 

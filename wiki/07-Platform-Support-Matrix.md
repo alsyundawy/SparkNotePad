@@ -1,6 +1,6 @@
 # Platform & Operating System Support Matrix
 
-SparkNotePad is engineered as a cross-platform text and code editor built on **modern C++20 and Qt 6 (6.5–6.12)**. This document provides the official platform support matrix, binary baselines, desktop environment compatibility, and deployment strategies across macOS, Linux, and FreeBSD.
+SparkNotePad is engineered as a cross-platform text and code editor built on **modern C++20 and Qt 6 (6.2–6.12)**. This document provides the official platform support matrix, binary baselines, desktop environment compatibility, and deployment strategies across macOS, Linux, and FreeBSD.
 
 ---
 
@@ -8,10 +8,11 @@ SparkNotePad is engineered as a cross-platform text and code editor built on **m
 
 | Operating System         | Version / Release                       | Architecture                   | Native Support Level        | Recommended Packaging         |
 | :----------------------- | :-------------------------------------- | :----------------------------- | :-------------------------- | :---------------------------- |
-| **macOS**                | 11 (Big Sur) to 26+                     | Universal (`arm64` + `x86_64`) | Tier 1 (Official Release)   | Signed `.dmg` / Homebrew Cask |
+| **macOS**                | 10.15 (Catalina) to 26+                 | Universal (`arm64` + `x86_64`) | Tier 1 (Official Release)   | Signed `.dmg` / Homebrew Cask |
+| **Ubuntu Linux**         | 20.04 LTS (Focal Fossa)                 | `x86_64` / `aarch64`           | Tier 1 (Qt 6.2 LTS Matrix)  | Native `.deb` (glibc 2.31)    |
 | **Ubuntu Linux**         | 22.04 LTS (Jammy Jellyfish)             | `x86_64` / `aarch64`           | Tier 1 (Canonical Baseline) | Native `.deb` (glibc 2.35)    |
 | **Ubuntu Linux**         | 24.04 LTS (Noble) to 26.04 LTS          | `x86_64` / `aarch64`           | Tier 1 (Official Release)   | Native `.deb`                 |
-| **Debian GNU/Linux**     | 12 (Bookworm) to 14 (Forky)             | `amd64` / `arm64`              | Tier 1 (Official Release)   | Native `.deb`                 |
+| **Debian GNU/Linux**     | 11 (Bullseye) to 14 (Forky)             | `amd64` / `arm64`              | Tier 1 (Official Release)   | Native `.deb`                 |
 | **Fedora Linux**         | 40, 41, 42, 43, 44                      | `x86_64` / `aarch64`           | Tier 1 (Official Release)   | Native `.rpm`                 |
 | **RHEL / Rocky / Alma**  | 9, 10, 11                               | `x86_64` / `aarch64`           | Tier 1 (Workstation)        | Native `.rpm` (via EPEL)      |
 | **openSUSE**             | Tumbleweed / Leap 15.6+                 | `x86_64`                       | Tier 2 (Supported)          | Native `.rpm` / Flatpak       |

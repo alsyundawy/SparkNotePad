@@ -1,6 +1,6 @@
 # Matriks Dukungan Platform & Sistem Operasi
 
-SparkNotePad dibangun menggunakan standar bahasa **C++20 modern dan kerangka kerja Qt 6 (6.5–6.12)**. Dokumen ini merinci matriks dukungan platform resmi, dasar pustaka biner (_binary baseline_), kompatibilitas lingkungan desktop, serta standar keamanan biner pada macOS, Linux, dan FreeBSD.
+SparkNotePad dibangun menggunakan standar bahasa **C++20 modern dan kerangka kerja Qt 6 (6.2–6.12)**. Dokumen ini merinci matriks dukungan platform resmi, dasar pustaka biner (_binary baseline_), kompatibilitas lingkungan desktop, serta standar keamanan biner pada macOS, Linux, dan FreeBSD.
 
 ---
 
@@ -8,10 +8,11 @@ SparkNotePad dibangun menggunakan standar bahasa **C++20 modern dan kerangka ker
 
 | Sistem Operasi             | Versi / Rilis                           | Arsitektur                     | Tingkat Dukungan           | Format Paket Rekomendasi         |
 | :------------------------- | :-------------------------------------- | :----------------------------- | :------------------------- | :------------------------------- |
-| **macOS**                  | 11 (Big Sur) hingga 26+                 | Universal (`arm64` + `x86_64`) | Tingkat 1 (Rilis Resmi)    | Berkas `.dmg` resmi / Homebrew   |
+| **macOS**                  | 10.15 (Catalina) hingga 26+             | Universal (`arm64` + `x86_64`) | Tingkat 1 (Rilis Resmi)    | Berkas `.dmg` resmi / Homebrew   |
+| **Ubuntu Linux**           | 20.04 LTS (Focal Fossa)                 | `x86_64` / `aarch64`           | Tingkat 1 (Matriks Qt 6.2) | Paket native `.deb` (glibc 2.31) |
 | **Ubuntu Linux**           | 22.04 LTS (Jammy Jellyfish)             | `x86_64` / `aarch64`           | Tingkat 1 (Acuan Standar)  | Paket native `.deb` (glibc 2.35) |
 | **Ubuntu Linux**           | 24.04 LTS (Noble) s.d. 26.04 LTS        | `x86_64` / `aarch64`           | Tingkat 1 (Rilis Resmi)    | Paket native `.deb`              |
-| **Debian GNU/Linux**       | 12 (Bookworm) s.d. 14 (Forky)           | `amd64` / `arm64`              | Tingkat 1 (Rilis Resmi)    | Paket native `.deb`              |
+| **Debian GNU/Linux**       | 11 (Bullseye) s.d. 14 (Forky)           | `amd64` / `arm64`              | Tingkat 1 (Rilis Resmi)    | Paket native `.deb`              |
 | **Fedora Linux**           | 40, 41, 42, 43, 44                      | `x86_64` / `aarch64`           | Tingkat 1 (Rilis Resmi)    | Paket native `.rpm`              |
 | **RHEL / Rocky / Alma**    | 9, 10, 11                               | `x86_64` / `aarch64`           | Tingkat 1 (Stasiun Kerja)  | Paket native `.rpm` (via EPEL)   |
 | **openSUSE**               | Tumbleweed / Leap 15.6+                 | `x86_64`                       | Tingkat 2 (Didukung Penuh) | Paket RPM / Flatpak              |

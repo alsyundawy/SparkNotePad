@@ -35,7 +35,7 @@
 #include "SparkNotePadApplication.h"
 
 #ifndef APP_VERSION
-#define APP_VERSION "1.3.8"
+#define APP_VERSION "1.3.9"
 #endif
 
 int main(int argc, char *argv[]) {

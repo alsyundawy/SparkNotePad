@@ -12,7 +12,7 @@ SparkNotePad requires:
 
 - **C++20 Standard Compiler:** Apple Clang 14+, GCC 12+, or LLVM Clang 15+.
 - **CMake:** Version 3.20 or higher.
-- **Qt 6 Framework:** Qt 6.5.0 or newer (`qtbase`, `qt5compat`, `qttools`).
+- **Qt 6 Framework:** Qt 6.2.0 or newer (`qtbase`, `qt5compat`, `qttools`).
 
 Vendored core engines (Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, uchardet) are embedded in `thirdparty/` and require no manual installation. Secondary Qt helper libraries (Qt-Advanced-Docking-System, SingleApplication, EditorConfig Core) are retrieved automatically via CPM (CMake Package Manager) during initial CMake configuration.
 

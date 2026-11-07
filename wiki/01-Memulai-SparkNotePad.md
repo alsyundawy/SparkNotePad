@@ -9,8 +9,8 @@ Selamat datang di dokumentasi resmi **SparkNotePad**! Panduan ini dirancang untu
 Sebelum melakukan instalasi, pastikan sistem komputer Anda memenuhi spesifikasi berikut:
 
 - **Sistem Operasi:**
-  - macOS 11.0 (Big Sur) hingga macOS 26+ (Apple Silicon M1–M4 & Intel 64-bit)
-  - Distribusi Linux modern 64-bit dengan glibc 2.35+ (Ubuntu 22.04+, Debian 12+, Fedora 40+, Arch Linux)
+  - macOS 10.15 (Catalina) hingga macOS 26+ (Apple Silicon M1–M4 & Intel 64-bit)
+  - Distribusi Linux modern 64-bit dengan glibc 2.31+ (Ubuntu 20.04+, Debian 11+, Fedora 40+, Arch Linux)
   - FreeBSD 13.x, 14.x, atau 15-CURRENT (arsitektur `amd64` / `aarch64`)
 - **Memori (RAM):** Minimal 256 MB (Direkomendasikan 1 GB+ untuk pengolahan file log berukuran besar)
 - **Ruang Disk:** 80 MB untuk file aplikasi biner

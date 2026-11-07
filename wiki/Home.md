@@ -81,7 +81,7 @@
 4. **[[04. Military-Grade Document Encryption|04-Military-Grade-Encryption]]**: Authenticated AES-256-CBC encryption with PBKDF2 100k iterations and HMAC-SHA256 integrity verification.
 5. **[[05. Code Transformation & Forensics|05-Code-Transformation-Forensics]]**: XML/HTML and SQL formatters, JSON/CSS/JS minifiers, JWT token inspection, and Shannon Entropy document statistics.
 6. **[[06. Keyboard Shortcuts Quick Reference|06-Keyboard-Shortcuts]]**: Comprehensive cross-platform hotkeys for macOS, Linux, and Windows.
-7. **[[07. Platform Support Matrix|07-Platform-Support-Matrix]]**: Operating system compatibility matrix spanning macOS 11–26 (Apple Silicon & Intel), Ubuntu, Debian, Fedora, openSUSE, and FreeBSD.
+7. **[[07. Platform Support Matrix|07-Platform-Support-Matrix]]**: Operating system compatibility matrix spanning macOS 10.15–26 (Apple Silicon & Intel), Ubuntu, Debian, Fedora, openSUSE, and FreeBSD.
 8. **[[08. Building from Source|08-Building-from-Source]]**: Compiling SparkNotePad natively using CMake and Qt 6.
 
 ---
@@ -98,7 +98,7 @@
 4. **[[04. Enkripsi Dokumen Standar Militer AES-256|04-Enkripsi-Dokumen-AES-256]]**: Enkripsi terotentikasi AES-256-CBC dengan derivasi kunci PBKDF2 100.000 iterasi dan verifikasi integritas HMAC-SHA256.
 5. **[[05. Transformasi Kode & Forensik Dokumen|05-Transformasi-Kode-Forensik]]**: Formatter XML/HTML/SQL, pemadat kode, inspeksi token JWT, dan analisis Shannon Entropy.
 6. **[[06. Daftar Lengkap Pintasan Keyboard|06-Daftar-Pintasan-Keyboard]]**: Panduan tombol pintas lintas sistem untuk macOS, Linux, dan Windows.
-7. **[[07. Matriks Dukungan Platform Sistem Operasi|07-Matriks-Dukungan-Platform]]**: Kompatibilitas platform mencakup macOS 11–26 (Apple Silicon & Intel), Ubuntu, Debian, Fedora, openSUSE, dan FreeBSD.
+7. **[[07. Matriks Dukungan Platform Sistem Operasi|07-Matriks-Dukungan-Platform]]**: Kompatibilitas platform mencakup macOS 10.15–26 (Apple Silicon & Intel), Ubuntu, Debian, Fedora, openSUSE, dan FreeBSD.
 8. **[[08. Panduan Kompilasi dari Kode Sumber|08-Kompilasi-dari-Sumber]]**: Langkah-langkah build native menggunakan CMake dan Qt 6.
 
 ---

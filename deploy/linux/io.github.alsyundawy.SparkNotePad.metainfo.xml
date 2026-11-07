@@ -17,6 +17,11 @@
     <binary>SparkNotePad</binary>
   </provides>
   <releases>
+    <release version="1.3.9" date="2026-11-07">
+      <description>
+        <p>SparkNotePad v1.3.9: Scintilla 5.6.9 &amp; Lexilla 5.5.5 engine upgrades, Default Language setting in Preferences &gt; Editor, Markdown front-matter syntax styling, full Qt 6.2 LTS backward compatibility, Linux ARM64 release packaging, and 14-pillar security hardening.</p>
+      </description>
+    </release>
     <release version="1.3.8" date="2026-11-03">
       <description>
         <p>SparkNotePad v1.3.8: 21 built-in toolbar icon packs suite, Preferences Themes &amp; Toolbar and Custom Toolbar Config tabs, in-tab HTML/Markdown live preview, desktop standard menu reorganization, 125 Lexilla lexers, and 100% finished bilingual localization parity (1,924 entries).</p>

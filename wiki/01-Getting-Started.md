@@ -8,9 +8,9 @@ Welcome to the installation guide for **SparkNotePad v1.3.9**. SparkNotePad prov
 
 | Operating System             | Supported Versions                      | Minimum Architecture                       | Memory & Storage       |
 | :--------------------------- | :-------------------------------------- | :----------------------------------------- | :--------------------- |
-| **macOS**                    | macOS 11.0 (Big Sur) – macOS 26.0+      | Apple Silicon (`arm64`) & Intel (`x86_64`) | 100 MB RAM, 60 MB Disk |
-| **Linux (Ubuntu/Debian)**    | Ubuntu 22.04–26.04, Debian 12–14        | `x86_64` (glibc ≥ 2.35)                    | 100 MB RAM, 50 MB Disk |
-| **Linux (Fedora/RHEL/SUSE)** | Fedora 40–44, RHEL/Rocky 9–11, openSUSE | `x86_64`                                   | 100 MB RAM, 50 MB Disk |
+| **macOS**                    | macOS 10.15 (Catalina) – macOS 26.0+    | Apple Silicon (`arm64`) & Intel (`x86_64`) | 100 MB RAM, 60 MB Disk |
+| **Linux (Ubuntu/Debian)**    | Ubuntu 20.04–26.04, Debian 11–14        | `x86_64` & `arm64` (glibc ≥ 2.31)          | 100 MB RAM, 50 MB Disk |
+| **Linux (Fedora/RHEL/SUSE)** | Fedora 40–44, RHEL/Rocky 9–11, openSUSE | `x86_64` & `aarch64`                       | 100 MB RAM, 50 MB Disk |
 | **FreeBSD**                  | FreeBSD 13.x, 14.x, 15.x                | `amd64` (KDE Plasma 6 & XFCE)              | 100 MB RAM, 50 MB Disk |
 
 ---

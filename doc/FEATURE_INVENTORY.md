@@ -87,13 +87,36 @@
 - **100% Lexilla Parity (125 Languages)**: Complete adoption of all Lexilla lexers in `src/languages/`.
 - **Localized Plaintext Documentation System**: Help menu Docnote and Changelog automatically load localized English or Indonesian documents matching the editor language.
 
+### 1.9 Scintilla 5.6.9, Lexilla 5.5.5, Default Language, Qt 6.2 LTS & Multi-Architecture Distribution (v1.3.9)
+
+- **Official Scintilla 5.6.9 & Lexilla 5.5.5 Upstream Integration**: 160 files updated, 3,206 insertions directly from upstream `scintilla.org` with full Unicode 17 mapping, full-color XPM rendering, accelerated line-start queries, and 40-byte lexeme caching.
+- **Lexilla Memory Safety Hardening**: Patched buffer overflows (CWE-787) and out-of-bounds reads (CWE-125) across DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, and X12.
+- **Markdown Front-Matter Syntax Styling**: Native styling for YAML (`---`), TOML (`+++`), and JSON (`{}`) front-matter metadata blocks in Markdown documents (`SCE_MARKDOWN_FRONT_MARK`, `SCE_MARKDOWN_FRONT`, `SCE_MARKDOWN_FRONT_KEY`).
+- **Sandboxed Embedded Lua 5.5.1 Runtime**: Official Lua 5.5.1 runtime with unsafe OS/IO APIs stripped for high-assurance script isolation.
+- **Default Language Preference for New Documents**: Configurable default programming language for untitled documents in Preferences > Editor.
+- **Infinite-Loop Regex Replace-All Mitigation (CWE-835 / DoS)**: Enforced forward cursor progression preventing application hangs on zero-length regex matches (`^`, `$`, `\b`, lookarounds).
+- **Search Dialog Direction Invariant**: Automatically unchecks and disables backwards direction search in Regular Expression mode.
+- **Dynamic About Dialog Metadata**: Release Tag dynamically parameterized with `APP_VERSION`, engine versions synchronized to Scintilla 5.6.9 / Lexilla 5.5.5.
+- **Full Qt 6.2 LTS Backward Compatibility**: Universal support for macOS Catalina 10.15 and Ubuntu 20.04 LTS via `QTimeZone::utc()`, `QLatin1String`, `parseColor`, and version-guarded cryptographic checks.
+- **Multi-Architecture Linux ARM64 & x64 Release Matrix (50+ Packages)**: Automated native packaging for Linux ARM64 (`aarch64`) and x64 across DEB and RPM distributions, immediate per-job publishing, and lean DMG packaging with bloatware pruned.
+
 ---
 
 ## 2. Capability Implementation Matrix
 
-| Capability                                  | Status in v1.3.8 | Engine / Implementation                                             |
+| Capability                                  | Status in v1.3.9 | Engine / Implementation                                             |
 | :------------------------------------------ | :--------------: | :------------------------------------------------------------------ |
-| **Toolbar Icon Packs Suite (21 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, Win7, Win11, etc.)     |
+| **Scintilla 5.6.9 Official Engine**         |   ✅ Complete    | Core text rendering canvas, fold margins, Unicode 17                |
+| **Lexilla 5.5.5 Official Lexer Library**    |   ✅ Complete    | Complete 125 language lexers with memory safety hardening           |
+| **Markdown Front-Matter Syntax Styling**    |   ✅ Complete    | YAML (`---`), TOML (`+++`), JSON (`{}`) front-matter styling        |
+| **Sandboxed Lua 5.5.1 Runtime**             |   ✅ Complete    | Official Lua 5.5.1 with unsafe OS/IO system APIs disabled           |
+| **Default Language for New Documents**      |   ✅ Complete    | `ApplicationSettings::DefaultLanguage` in Preferences > Editor      |
+| **Infinite-Loop Regex Fix (CWE-835)**       |   ✅ Complete    | `Finder::replaceAll()` with enforced forward cursor advancement     |
+| **Dynamic About Dialog Metadata**           |   ✅ Complete    | `AboutDialog` dynamic `APP_VERSION` binding & Scintilla 5.6.9       |
+| **Qt 6.2 LTS Universal Compatibility**      |   ✅ Complete    | macOS Catalina 10.15 & Ubuntu 20.04 support                         |
+| **Multi-Arch Linux ARM64 & x64 Matrix**     |   ✅ Complete    | 50+ binary release packages across DEB, RPM, and DMG                |
+| **Lean macOS DMG Packaging (33 MB)**        |   ✅ Complete    | Bloatware Qt frameworks pruned, styled layout verified via hdiutil  |
+| **Toolbar Icon Packs Suite (22 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, Win7, Win11, etc.)     |
 | **Dynamic Menu & Context Menu Icon Sync**   |   ✅ Complete    | `ToolbarIconManager::applyToWindow()` & `applyToMenu()`             |
 | **Tab Bar Plus (+) Button**                 |   ✅ Complete    | `DockedEditorTitleBar` (`m_plusButton`)                             |
 | **In-Tab HTML & Markdown Preview**          |   ✅ Complete    | `PreviewTabWidget` + `ads::CenterDockWidgetArea`                    |
@@ -128,4 +151,4 @@
 | **Preferences Themes & Toolbar Tab**        |   ✅ Complete    | `PreferencesDialog` (Themes & Toolbar Icon Packs with card layout)  |
 | **Preferences Custom Toolbar Config Tab**   |   ✅ Complete    | `PreferencesDialog` (Embedded visual toolbar customizer widget)     |
 | **Standard Desktop Editor Menu Hierarchy**  |   ✅ Complete    | `MainWindow` (Hex/Binary below Compare, macOS app menu Restart)     |
-| **Complete Indonesian Localization**        |   ✅ Complete    | 1,924 translations finished (100% complete, 0 unfinished)           |
+| **Complete Indonesian Localization**        |   ✅ Complete    | 1,850 translations finished (100% complete, 0 unfinished)           |
