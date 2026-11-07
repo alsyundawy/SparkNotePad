@@ -12,14 +12,18 @@
  */
 
 #include "HashIntegrityManager.h"
-#include <QByteArrayView>
 #include <QFile>
 #include <QFileInfo>
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+#include <QByteArrayView>
+#endif
 
 QString HashIntegrityManager::computeFileHash(const QString &filePath, QCryptographicHash::Algorithm algorithm,
                                               bool *ok, const std::function<void(qint64, qint64)> &progressCallback) {
-    if (ok)
+    if (ok) {
         *ok = false;
+    }
 
     QFile file(filePath);
     if (!file.open(QFile::ReadOnly)) {
@@ -37,7 +41,11 @@ QString HashIntegrityManager::computeFileHash(const QString &filePath, QCryptogr
     while (!file.atEnd()) {
         const qint64 bytesRead = file.read(buffer, kChunkSize);
         if (bytesRead > 0) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
             hasher.addData(QByteArrayView(buffer, bytesRead));
+#else
+            hasher.addData(buffer, bytesRead);
+#endif
             processedBytes += bytesRead;
             if (progressCallback) {
                 progressCallback(processedBytes, totalBytes);
@@ -47,8 +55,9 @@ QString HashIntegrityManager::computeFileHash(const QString &filePath, QCryptogr
         }
     }
 
-    if (ok)
+    if (ok) {
         *ok = true;
+    }
     return QString::fromLatin1(hasher.result().toHex().toLower());
 }
 
