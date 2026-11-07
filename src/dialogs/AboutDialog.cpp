@@ -310,17 +310,17 @@ void AboutDialog::updateThemeColors() {
                     "https://github.com/alsyundawy/SparkNotePad</a></div>"
                     "<div style='margin-bottom: 5px;'><b style='color: %1;'>%4:</b> "
                     "<a style='text-decoration: none;' "
-                    "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.8'>"
+                    "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v%8'>"
                     "<span style='background-color: #238636; color: #ffffff; padding: 2px 8px; border-radius: 10px; "
-                    "font-weight: bold; font-size: 10px;'>🏷️ v1.3.8 %5</span></a></div>"
+                    "font-weight: bold; font-size: 10px;'>🏷️ v%8 %5</span></a></div>"
                     "<div style='margin-bottom: 5px;'><b style='color: %1;'>%6:</b> "
                     "<b>Harry Dertin Sutisna Alsyundawy</b> (<a style='color: %3; text-decoration: none;' "
                     "href='https://github.com/alsyundawy'>@alsyundawy</a>) — <b>ALSYUNDAWY IT SOLUTION</b></div>"
-                    "<div><b style='color: %1;'>%7:</b> GNU General Public License v3.0 &bull; Scintilla 5.6.7 + "
-                    "Lexilla 5.5.4 &bull; Qt 6</div>"
+                    "<div><b style='color: %1;'>%7:</b> GNU General Public License v3.0 &bull; Scintilla 5.6.9 + "
+                    "Lexilla 5.5.5 &bull; Qt 6</div>"
                     "</div>")
                 .arg(txtPri, tr("GitHub Repository:"), accentCol, tr("Release Tag:"), tr("Official Release"),
-                     tr("Lead Maintainer:"), tr("License & Engine:")));
+                     tr("Lead Maintainer:"), tr("License & Engine:"), APP_VERSION));
     }
 
     if (m_diagnosticsCard) {
@@ -337,7 +337,7 @@ void AboutDialog::updateThemeColors() {
                 "<b>%13:</b> %14x (Retina / High-DPI)<br/>"
                 "<b>%15:</b> v%16<br/>"
                 "<b>%17:</b> %18<br/>"
-                "<b>%19:</b> Scintilla 5.6.7 &bull; Lexilla 5.5.4 &bull; Lua 5.5.1<br/>"
+                "<b>%19:</b> Scintilla 5.6.9 &bull; Lexilla 5.5.5 &bull; Lua 5.5.1<br/>"
                 "<b>%20:</b> Google DeepMind Antigravity IDE &bull; Gemini 3.8 Flash"
                 "</div>")
                 .arg(txtPri, tr("Operating System:"), QSysInfo::prettyProductName(), QSysInfo::kernelVersion(),
@@ -387,7 +387,7 @@ void AboutDialog::updateThemeColors() {
                            "<p>%4</p>")
                            .arg(txtPri, accentCol, tr("Credits, Resources & Upstream Attribution"),
                                 tr("SparkNotePad stands on the shoulders of giants. We express our deepest gratitude "
-                                   "to the following projects, communities, and tools (v1.0.0 – v1.3.8):"));
+                                   "to the following projects, communities, and tools (v1.0.0 – v%1):").arg(APP_VERSION));
 
         creditsHtml += QString(
                            "<h4 style='color: %1; margin: 12px 0 4px 0; font-size: 12px;'>🤖 %2</h4>"
@@ -438,9 +438,9 @@ void AboutDialog::updateThemeColors() {
             QString(
                 "<h4 style='color: %1; margin: 12px 0 4px 0; font-size: 12px;'>⚡ %2</h4>"
                 "<ul>"
-                "<li><b>Scintilla 5.6.7:</b> %3 (<a style='color: %1;' "
+                "<li><b>Scintilla 5.6.9:</b> %3 (<a style='color: %1;' "
                 "href='https://www.scintilla.org'>scintilla.org</a>)</li>"
-                "<li><b>Lexilla 5.5.4:</b> %4 (<a style='color: %1;' "
+                "<li><b>Lexilla 5.5.5:</b> %4 (<a style='color: %1;' "
                 "href='https://www.scintilla.org/Lexilla.html'>scintilla.org/Lexilla.html</a>)</li>"
                 "<li><b>Lua 5.5.1 / 5.4.x:</b> %5 (<a style='color: %1;' href='https://www.lua.org'>lua.org</a>)</li>"
                 "</ul>")
@@ -753,7 +753,7 @@ void AboutDialog::copySystemInfoToClipboard() {
                                   "CPU: %5 (Build Target: %6)\n"
                                   "Qt: %7 (Built with %8)\n"
                                   "Display Scale: %9x\n"
-                                  "Core Engines: Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1\n"
+                                  "Core Engines: Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1\n"
                                   "AI Code Review & Auditor: Google Gemini 3.8 Flash via Antigravity IDE\n"
                                   "License: GNU General Public License v3.0\n")
                                   .arg(APP_VERSION)

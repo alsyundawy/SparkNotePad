@@ -329,8 +329,8 @@
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="389"/>
-        <source>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.8):</source>
-        <translation>SparkNotePad berdiri di atas bahu para raksasa. Kami menyampaikan rasa terima kasih terdalam kepada proyek, komunitas, dan alat berikut (v1.0.0 – v1.3.8):</translation>
+        <source>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v%1):</source>
+        <translation>SparkNotePad berdiri di atas bahu para raksasa. Kami menyampaikan rasa terima kasih terdalam kepada proyek, komunitas, dan alat berikut (v1.0.0 – v%1):</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="402"/>
