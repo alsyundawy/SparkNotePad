@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Dokumentasi Resmi GitHub Wiki (Bilingual EN/ID)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Rilis Terbaru (v1.3.9)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Rilis Terbaru (v1.4.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Matriks Dukungan Platform (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -305,19 +305,19 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Berkas biner resmi SparkNotePad v1.3.9 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (lihat matriks lengkap di [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
+Berkas biner resmi SparkNotePad v1.4.0 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (lihat matriks lengkap di [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
 | Platform                     | Arsitektur Target              |  Format Paket   | Tautan Unduhan                                                                                                                                   |
 | :--------------------------- | :----------------------------- | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS Intel (Kanonikal)**  | x86_64                         |     `.dmg`      | [SparkNotePad-v1.3.9-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-v1.3.9-x64.dmg)                   |
-| **macOS Apple Silicon**      | arm64 (M1/M2/M3/M4)            |     `.dmg`      | [SparkNotePad-v1.3.9-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-v1.3.9-arm64.dmg)               |
-| **macOS Multi-Qt Builds**    | x86_64 / arm64 (Qt 6.5–6.12)   |     `.dmg`      | [GitHub Releases v1.3.9](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.9)                                                         |
-| **Linux Ubuntu/Debian**      | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.deb`      | [sparknotepad_1.3.9_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/sparknotepad_1.3.9_amd64.deb)                 |
-| **Linux Fedora/RHEL/SUSE**   | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.rpm`      | [sparknotepad-1.3.9-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/sparknotepad-1.3.9-1.x86_64.rpm)           |
-| **Linux Multi-Qt Builds**    | Debian / RPM (Qt 6.5–6.12)     | `.deb` / `.rpm` | [GitHub Releases v1.3.9](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.9)                                                         |
-| **Linux (Semua Distro)**     | Skrip Editor Default (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**            | Skrip Asosiasi Universal       |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-Default-Editor.sh)             |
-| **Manifes Checksum SHA-256** | Manifes Integritas SHA-256     |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SHA256SUMS.txt)                                             |
+| **macOS Intel (Kanonikal)**  | x86_64                         |     `.dmg`      | [SparkNotePad-v1.4.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-v1.4.0-x64.dmg)                   |
+| **macOS Apple Silicon**      | arm64 (M1/M2/M3/M4)            |     `.dmg`      | [SparkNotePad-v1.4.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-v1.4.0-arm64.dmg)               |
+| **macOS Multi-Qt Builds**    | x86_64 / arm64 (Qt 6.5–6.12)   |     `.dmg`      | [GitHub Releases v1.4.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.0)                                                         |
+| **Linux Ubuntu/Debian**      | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.deb`      | [sparknotepad_1.4.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/sparknotepad_1.4.0_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**   | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.rpm`      | [sparknotepad-1.4.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/sparknotepad-1.4.0-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**    | Debian / RPM (Qt 6.5–6.12)     | `.deb` / `.rpm` | [GitHub Releases v1.4.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.0)                                                         |
+| **Linux (Semua Distro)**     | Skrip Editor Default (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**            | Skrip Asosiasi Universal       |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-Default-Editor.sh)             |
+| **Manifes Checksum SHA-256** | Manifes Integritas SHA-256     |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SHA256SUMS.txt)                                             |
 | **FreeBSD**                  | 13.x – 15.x (KDE 6 / XFCE)     |  Source / Pkg   | [Panduan Build & Integrasi FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Pemasangan Paket Linux (Instalasi Dependensi Otomatis)
@@ -326,7 +326,7 @@ Berkas biner resmi SparkNotePad v1.3.9 siap pakai dapat diunduh langsung melalui
   Pasang melalui perintah `apt` dengan awalan `./` agar seluruh pustaka dependensi Qt 6 dan desktop diunduh dan dipasang otomatis dari repositori resmi:
 
   ```bash
-  sudo apt install ./sparknotepad_1.3.9_amd64.deb
+  sudo apt install ./sparknotepad_1.4.0_amd64.deb
   ```
 
   _(Lihat panduan lengkap [Panduan Build Native Debian & Ubuntu](doc/BUILD_UBUNTU_DEBIAN.md) serta [Panduan Paket Linux](doc/LINUX_DEB_RPM_PACKAGING.md))._
@@ -334,7 +334,7 @@ Berkas biner resmi SparkNotePad v1.3.9 siap pakai dapat diunduh langsung melalui
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
 
   ```bash
-  sudo dnf install ./sparknotepad-1.3.9-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-1.4.0-1.x86_64.rpm
   ```
 
 ### Build Native & Pemasangan FreeBSD (KDE Plasma 6 & XFCE)
@@ -426,6 +426,27 @@ trunk check -n -j 2
 ## Changelog
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.4.0] — Spasi Baris Ekstra, Tooltip Tab Diperkaya, Pencarian Fuzzy Aman, Eksekusi Batch Makro, MCP Server & Mitigasi CVE 2025–2026 (2026-11-07)
+
+- **Pengaturan Spasi Baris Ekstra (Ascent & Descent)**:
+  - Konfigurasi penambahan tinggi baris atas (ascent) dan bawah (descent) 0–30 px di Preferences > Margins/Padding melalui API Scintilla `SCI_SETEXTRAASCENT` dan `SCI_SETEXTRADESCENT`.
+  - Propagasi langsung secara real-time ke semua tab aktif via `EditorManager`.
+- **Tooltip Tab Diperkaya dengan Inspeksi Metadata Dokumen**:
+  - Tampilan tooltip di `DockedEditor` menyajikan path absolut, ukuran file disk, jumlah baris, karakter, encoding teks, format baris baru, serta timestamp modifikasi berkas.
+- **Mesin Pencarian Subsekuens Fuzzy Tanpa Backtracking**:
+  - Generator regex linier pada `RegexSafetyEngine` yang mencegah ReDoS dan catastrophic backtracking.
+  - Opsi pencarian fuzzy interaktif pada Dialog Find & Replace serta Quick Find Widget.
+- **Eksekusi Makro Batch Lintas Dokumen Terbuka**:
+  - Pemilih cakupan eksekusi di `MacroRunDialog`: "Current Document" atau "All Open Documents".
+- **Server MCP Loopback Lokal Berintegritas Tinggi**:
+  - Server Model Context Protocol lokal port loopback `127.0.0.1` berbasis JSON-RPC dengan otentikasi Bearer Token kriptografis (`list_open_tabs`, `read_active_tab`).
+- **Mitigasi Kerentanan Keamanan CVE 2025–2026**:
+  - **CVE-2026-20841**: Perlindungan skema URI berbahaya dan pemblokiran eksekusi biner langsung di `NetworkSecurityPolicy`.
+  - **CVE-2026-16762**: Pembatasan kedalaman nesting XML (maksimal 32 tingkat) dan batas ukuran berkas 10 MB di `ConfigIntegrityGuard`.
+  - **CVE-2026-48778 & CVE-2026-48800**: Pencegahan eskalasi hak istimewa dan penegakan izin berkas konfigurasi ketat 0600.
+- **Salin Info Diagnostik Debug Satu Klik**:
+  - Bantuan > Debug Info menyalin seluruh detail konfigurasi runtime, versi Scintilla/Lexilla/Lua, dan platform OS ke clipboard.
 
 ### [v1.3.9] — Pembaruan Scintilla 5.6.9 & Lexilla 5.5.5, Pengaturan Bahasa Default, Perbaikan Regex Infinite-Loop & Penguatan 14 Pilar (2026-11-07)
 

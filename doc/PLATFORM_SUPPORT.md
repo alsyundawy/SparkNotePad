@@ -1,6 +1,6 @@
 # SparkNotePad — Operating System & Platform Support Matrix
 
-- **Release Target:** SparkNotePad v1.3.9+
+- **Release Target:** SparkNotePad v1.4.0+
 - **Baseline Standard:** C++20 / Qt 6.2–6.12
 - **Binary Baseline:** Ubuntu 22.04 LTS (glibc 2.35, GCC 12) & Ubuntu 20.04 LTS (glibc 2.31, Qt 6.2 LTS)
 - **Lead Maintainer:** HARRY DERTIN SUTISNA ALSYUNDAWY (`@alsyundawy`)
