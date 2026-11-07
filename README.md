@@ -284,7 +284,7 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 │  ┌───────────────────────┐  ┌───────────────────────────────────────┐  │
 │  │   UI & Dock System    │  │       ScintillaNext (Core View)       │  │
 │  │   (Qt 6 Widgets / ADS)│  │   - Scintilla 5.6.9 (Vendored)        │  │
-│  └───────────┬───────────┘  │   - Lexilla 5.5.4 (Vendored)          │  │
+│  └───────────┬───────────┘  │   - Lexilla 5.5.5 (Vendored)          │  │
 │              │              └───────────────────┬───────────────────┘  │
 │              ▼                                  ▼                      │
 │  ┌──────────────────────────────────────────────────────────────────┐  │
@@ -305,19 +305,19 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Official production binary packages for SparkNotePad v1.3.7 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
+Official production binary packages for SparkNotePad v1.3.9 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
 | Platform                    | Target Architecture             | Package Format  | Download Link                                                                                                                                    |
 | :-------------------------- | :------------------------------ | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.3.7-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-v1.3.7-x64.dmg)                   |
-| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.3.7-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-v1.3.7-arm64.dmg)               |
-| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.3.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.7)                                                         |
-| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.3.7_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/sparknotepad_1.3.7_amd64.deb)                 |
-| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.3.7-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/sparknotepad-1.3.7-1.x86_64.rpm)           |
-| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.3.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.7)                                                         |
-| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SparkNotePad-Default-Editor.sh)             |
-| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.7/SHA256SUMS.txt)                                             |
+| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.3.9-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-v1.3.9-x64.dmg)                   |
+| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.3.9-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-v1.3.9-arm64.dmg)               |
+| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.3.9](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.9)                                                         |
+| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.3.9_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/sparknotepad_1.3.9_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.3.9-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/sparknotepad-1.3.9-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.3.9](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.9)                                                         |
+| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SparkNotePad-Default-Editor.sh)             |
+| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.9/SHA256SUMS.txt)                                             |
 | **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)      |  Source / Pkg   | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Linux Package Installation (Automated Dependencies)
@@ -326,7 +326,7 @@ Official production binary packages for SparkNotePad v1.3.7 are ready for immedi
   Install via `apt` with a leading `./` so all Qt 6 and desktop dependencies are automatically resolved and installed from official repositories:
 
   ```bash
-  sudo apt install ./sparknotepad_1.3.7_amd64.deb
+  sudo apt install ./sparknotepad_1.3.9_amd64.deb
   ```
 
   _(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md))._
@@ -334,7 +334,7 @@ Official production binary packages for SparkNotePad v1.3.7 are ready for immedi
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
 
   ```bash
-  sudo dnf install ./sparknotepad-1.3.7-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-1.3.9-1.x86_64.rpm
   ```
 
 ### FreeBSD Build & Desktop Installation (KDE Plasma 6 & XFCE)
@@ -446,6 +446,23 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 - **14-Pillar Code Quality & Deep Static Review**:
   - Verified 0 diagnostics and 0 errors across `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
   - Full adherence to strict Unix Makefiles compilation without Ninja.
+
+### [v1.3.9] — Official Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration, Sandboxed Lua 5.5.1, Markdown Front-Matter Syntax Styling & 14-Pillar Hardening (2026-11-07)
+
+- **Official Upstream Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration**:
+  - Full official upstream replacement (`scintilla569.tgz` and `lexilla555.tgz`) across 160 files and 3,206 insertions.
+  - Accelerated line-start position queries, increased lexeme cache capacity (40 bytes), restored full-color XPM rendering, and updated character mappings to Unicode 17.
+  - Hardened memory safety against buffer overflows (CWE-787/CWE-125) in Lexilla lexers (DMIS, Perl here-doc, Raku, Ruby, TCMD, TeX).
+- **Sandboxed Lua 5.5.1 Runtime & Markdown Front-Matter Styling**:
+  - Embedded official sandboxed Lua 5.5.1 engine with dangerous OS/IO APIs stripped for high-security automation.
+  - Multi-syntax front-matter highlighting (YAML, TOML, JSON) within Markdown documents.
+- **Preferences Ergonomics & Stability Ports**:
+  - Default language configuration for new/untitled documents in Preferences > Editor.
+  - Infinite-loop regex replace-all fix (CWE-835) preventing UI hangs on zero-length matches.
+  - Automatic disabling of backwards direction search in regex find/replace mode.
+  - Multi-Qt matrix support across Qt 6.2, 6.5, 6.8, 6.10, 6.11, and 6.12.
+- **14-Pillar Code Quality & Verification**:
+  - 100% clean verification across `cppcheck`, `clangd --check`, SonarLint/SonarQube, and Trunk linters with 0 errors.
 
 ### [v1.3.8] — 22 Toolbar Icon Packs Suite, Preferences Themes & Toolbar Tabs, Desktop Menu Ergonomics & 100% i18n Parity (2026-11-04)
 

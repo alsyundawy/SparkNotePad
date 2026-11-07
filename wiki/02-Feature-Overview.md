@@ -18,7 +18,7 @@ At the heart of SparkNotePad is **Scintilla 5.6.9** paired with **Lexilla 5.5.5*
 
 ## 2. Omnibar Command Palette & Quick Open
 
-SparkNotePad v1.3.8 provides a floating spotlight modal:
+SparkNotePad v1.3.9 provides a floating spotlight modal:
 
 ### Quick Open Mode (`Cmd+P` / `Ctrl+P` or Kate `Ctrl+Alt+O`)
 
@@ -75,7 +75,7 @@ Manage codebase files with an integrated file system dock:
 
 ## 6. Notepad++ Style Tools Menu Suite
 
-SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tools** menu:
+SparkNotePad v1.3.9 organizes power developer utilities under a top-level **Tools** menu:
 
 - **Cryptographic Hash Submenu**: MD5, CRC32, XXHASH, SHA-1, SHA-256, SHA-512 with Generate (entire file), Generate From File, Generate From Selection, and Verify actions.
 - **Cryptographic Hash & Authenticity Validator**: Direct launcher for streaming 64 KB chunk hash validation.
@@ -85,7 +85,7 @@ SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tool
 
 ---
 
-## 7. Tab Bar Plus (+) Button & In-Tab Previews (v1.3.8)
+## 7. Tab Bar Plus (+) Button & In-Tab Previews (v1.3.9)
 
 - **Tab Bar Plus Button**: An integrated `+` button positioned at the end of the tab strip allows spawning new editor documents with one click.
 - **In-Tab Markdown & HTML Preview**: Right-clicking `.md` or `.html` tabs provides an in-tab preview pane rendered with GitHub styling, keeping workflows clean without opening external windows. For HTML files, a "Preview in Default Browser" action is also provided.
@@ -94,7 +94,7 @@ SparkNotePad v1.3.8 organizes power developer utilities under a top-level **Tool
 
 ---
 
-## 8. Universal High-DPI, Retina & Multi-Monitor Scaling (v1.3.8)
+## 8. Universal High-DPI, Retina & Multi-Monitor Scaling (v1.3.9)
 
 - **LCD-Optimized Font Rendering**: Enabled `SC_EFF_QUALITY_LCD_OPTIMIZED` and double-buffered drawing (`setBufferedDraw(true)`) for razor-sharp text on Apple Silicon Retina MacBooks, Intel Retina, 4K/5K/6K external monitors, and standard 1366×768 / 1080p displays.
 - **Scale Factor Adaptation**: Dynamically recalculates font metric geometry and canvas repaint upon display scale changes (`DevicePixelRatioChange` and `ScreenChangeInternal`).

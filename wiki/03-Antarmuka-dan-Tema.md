@@ -55,7 +55,7 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ## 5. Rangkaian Paket Ikon Toolbar (22 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.3.8 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 22 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
+SparkNotePad v1.3.9 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 22 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
 ### Paket Ikon Toolbar Bawaan (22 Paket)
 

@@ -62,7 +62,7 @@ SparkNotePad menyertakan dialog visual perbandingan berkas bawaan (`FileDiffDial
 
 ## 7. Rangkaian Menu Tools Gaya Notepad++
 
-SparkNotePad v1.3.8 menyatukan utilitas pengembang tingkat lanjut ke dalam menu utama **Tools**:
+SparkNotePad v1.3.9 menyatukan utilitas pengembang tingkat lanjut ke dalam menu utama **Tools**:
 
 - **Submenu Hash Kriptografis**: Dukungan algoritma MD5, CRC32, XXHASH, SHA-1, SHA-256, dan SHA-512 dengan aksi Generate (seluruh berkas), Generate Dari Berkas, Generate Dari Teks Terpilih, serta Verifikasi Checksum.
 - **Validator Hash & Otentisitas**: Peluncur langsung verifikasi streaming hash berbasis buffer 64 KB.
@@ -72,7 +72,7 @@ SparkNotePad v1.3.8 menyatukan utilitas pengembang tingkat lanjut ke dalam menu 
 
 ---
 
-## 8. Tombol Plus (+) pada Tab & Pratinjau dalam Tab (v1.3.8)
+## 8. Tombol Plus (+) pada Tab & Pratinjau dalam Tab (v1.3.9)
 
 - **Tombol Plus Bilah Tab**: Tombol `+` terintegrasi di samping bilah tab untuk membuka dokumen baru secara instan dengan satu klik.
 - **Pratinjau Markdown & HTML dalam Tab**: Klik kanan tab `.md` atau `.html` menyediakan opsi pratinjau langsung di dalam tab editor dengan gaya resmi GitHub tanpa harus membuka jendela luar. Khusus berkas HTML, tersedia juga opsi buka di peramban standar.
@@ -81,7 +81,7 @@ SparkNotePad v1.3.8 menyatukan utilitas pengembang tingkat lanjut ke dalam menu 
 
 ---
 
-## 9. Skalabilitas Universal High-DPI, Retina & Multi-Monitor (v1.3.8)
+## 9. Skalabilitas Universal High-DPI, Retina & Multi-Monitor (v1.3.9)
 
 - **Rendering Font Teroptimasi LCD**: Mengaktifkan `SC_EFF_QUALITY_LCD_OPTIMIZED` dan double-buffered drawing (`setBufferedDraw(true)`) demi ketajaman teks maksimal pada layar MacBook Retina (Apple Silicon & Intel), layar 4K/5K/6K eksternal, dan resolusi generik 1366×768 / 1080p.
 - **Adaptasi Skala Otomatis**: Menghitung ulang metrik font dan geometri canvas seketika saat terjadi perubahan rasio piksel atau perpindahan layar (`DevicePixelRatioChange` dan `ScreenChangeInternal`).

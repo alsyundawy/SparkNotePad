@@ -1,6 +1,6 @@
 # 05. Code Transformation & Forensics
 
-SparkNotePad v1.3.8 provides an extensive Swiss-Army toolkit for formatting, minifying, analyzing, and inspecting source code and security tokens.
+SparkNotePad v1.3.9 provides an extensive Swiss-Army toolkit for formatting, minifying, analyzing, and inspecting source code and security tokens.
 
 ---
 

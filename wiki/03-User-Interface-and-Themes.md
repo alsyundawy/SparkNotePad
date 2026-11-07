@@ -54,7 +54,7 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ## 4. Toolbar Icon Packs Suite (22 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
-SparkNotePad v1.3.8 features a comprehensive toolbar theming and customization architecture with 22 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
+SparkNotePad v1.3.9 features a comprehensive toolbar theming and customization architecture with 22 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
 
 ### Built-in Toolbar Icon Packs (22 Packs)
 
