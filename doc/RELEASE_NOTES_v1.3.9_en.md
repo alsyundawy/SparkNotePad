@@ -59,10 +59,55 @@ In `src/languages/markdown.lua`, three new Lexilla 5.5.5 style IDs have been ful
 
 ---
 
-### 4. 14-Pillar Code Quality & Verification Suite
+### 4. About Dialog Overhaul & Dynamic Metadata Architecture
+
+- **Dynamic Version Parameterization**: In `src/dialogs/AboutDialog.cpp`, the Release Tag badge and URL are parameterized dynamically with `APP_VERSION`, guaranteeing that every release links directly to its own tag (`v1.3.9`) without stale hardcoded values.
+- **Engine Versioning Synchronization**: Updated Scintilla 5.6.9 and Lexilla 5.5.5 labels across the About tab, Maintainer tab, and Diagnostics card.
+- **System Diagnostics Copy**: Synchronized the plain-text system info clipboard export to accurately reflect the upgraded editing subsystem.
+- **Ancestral Port Attribution**: Explicitly attributed `NotepadNext-MacOS` (`@alsyundawy`) as the ancestral macOS port repository from which SparkNotePad branched and evolved.
+
+---
+
+### 5. Full Qt 6.2 LTS Backward Compatibility (macOS Catalina & Ubuntu 20.04 LTS)
+
+- **UTC Time Zone API**: Replaced `QTimeZone::UTC` with universal `QTimeZone::utc()` in `src/utils/TokenForensicUtils.cpp`, restoring full compatibility across Qt 6.2+.
+- **String View Compatibility**: Replaced `QLatin1StringView` with `QLatin1String` in `src/dialogs/MainWindow.cpp` and `src/widgets/TabsQuickActionsBar.cpp`.
+- **Compiler Warning Elimination**: Removed redundant `inline` specifiers in `src/widgets/TabsQuickActionsBar.h`.
+- **Color Parsing Fallback**: Implemented `parseColor` in `src/features/ThemeManager.cpp` providing a robust fallback for `QColor::fromString` when compiled under Qt < 6.4.
+- **Cryptographic Guards**: Guarded Qt 6.4+ cryptographic APIs in `src/utils/HashIntegrityManager.cpp` using `QT_VERSION_CHECK(6, 4, 0)`.
+
+---
+
+### 6. Multi-Architecture CI Matrix & Automated Release Publishing
+
+- **Linux ARM64 Packaging**: Added native Linux ARM64 (`aarch64`) packaging for Ubuntu, Debian, and RPM distributions across Qt 6.8, 6.10, 6.11, and 6.12.
+- **Restored Legacy Runners**: Re-enabled and verified Qt 6.2 LTS compilation on macOS Catalina and Ubuntu 20.04 runners.
+- **Accelerated Publishing**: Prioritized x64 jobs and enabled immediate asset release publishing upon individual job completion.
+- **Canonical Default Target**: Pinned canonical default release artifact to Qt 6.5 LTS.
+- **Distribution Scope**: Expanded binary distribution catalog to 50+ packages.
+
+---
+
+### 7. macOS DMG Packaging & Aesthetic Polish
+
+- **Official Styled Layout**: Eliminated unstyled `--skip-jenkins` fallback in CI to guarantee styled DMG layout (`dmg-background.png`, custom volume icon, Applications alias, 680x440 geometry).
+- **Framework Bloatware Pruning**: Pruned unused Qt frameworks (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`) saving ~15 MB.
+- **Local DMG Verification**: Verified local DMG generation: `build/SparkNotePad-v1.3.9-x64.dmg` (33 MB) is valid and checksum-verified via `hdiutil`.
+
+---
+
+### 8. 100% Bilingual Localization Parity (i18n)
+
+- Complete synchronization of Indonesian (`SparkNotePad_id.ts`) and English (`SparkNotePad_en.ts`) translation catalogs.
+- Compiled via `lrelease`: exactly 1,850 translations finished, 0 unfinished.
+
+---
+
+### 9. 14-Pillar Code Quality & Verification Suite
 
 SparkNotePad v1.3.9 adheres strictly to the 14 Pillars of Production Software Engineering:
 
-- Verified clean with 0 warnings on `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
+- Verified clean with 0 warnings on `clangd --check`, `cppcheck` (152 files in `src/`), `clang-tidy`, and SonarLint.
 - Built strictly with default CMake `Unix Makefiles` (Ninja permanently prohibited per `AGENTS.md`).
-- 100% test pass rate across all unit tests in `SparkNotePadTests`.
+- 100% test pass rate across all unit tests in `SparkNotePadTests` (51/51 passed).
+- 100% module parity between Python 3.14 and 3.15 environments (73 identical packages).

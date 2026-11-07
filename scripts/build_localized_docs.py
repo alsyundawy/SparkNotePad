@@ -14,15 +14,15 @@ DOCNOTE_ID = """# Catatan Rilis SparkNotePad — v1.3.9 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
+Versi Rilis          : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language, Qt 6.2 LTS & 14-Pillar Hardening)
 Tanggal Rilis        : 2026-11-07
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
 Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Resmi)
 Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
-Kerangka Kerja GUI   : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
-Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD 13–15
+Kerangka Kerja GUI   : Qt 6.2 LTS / 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platform      : macOS 10.15–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
 Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 ================================================================================
 --------------------------------------------------------------------------------
@@ -31,10 +31,10 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.3.9
 
-SparkNotePad v1.3.9 menghadirkan pembaruan inti editor Scintilla dan Lexilla langsung dari rilis resmi upstream, penanganan keamanan algoritma pencarian regex, pewarnaan sintaksis metadata front-matter Markdown, pengaturan bahasa default dokumen baru, estetika paket instalasi DMG macOS, serta lolos audit kualitas 14 pilar tanpa peringatan:
+SparkNotePad v1.3.9 adalah rilis peningkatan fondasional dan stabilitas besar yang merangkum seluruh evolusi teknis dari v1.3.8 ke v1.3.9. Rilis ini mencakup peningkatan mesin inti Scintilla dan Lexilla langsung dari upstream resmi, resolusi kerentanan regex loop, penambahan preferensi bahasa default, pewarnaan front-matter Markdown, restorasi penuh kompatibilitas Qt 6.2 LTS (macOS Catalina & Ubuntu 20.04), arsitektur rilis multi-arsitektur Linux ARM64 & x64 (50+ paket biner), perampingan dan penyempurnaan packaging DMG macOS, serta lolos audit kualitas 14 pilar tanpa kompromi:
 
 1. Integrasi Penuh Upstream Scintilla 5.6.9 & Lexilla 5.5.5:
-   - Pembaruan menyeluruh source code Scintilla ke 5.6.9 dan Lexilla ke 5.5.5 resmi dari scintilla.org di thirdparty/ (160 berkas diperbarui).
+   - Pembaruan menyeluruh source code Scintilla ke 5.6.9 dan Lexilla ke 5.5.5 resmi dari scintilla.org di thirdparty/ (160 berkas diperbarui, 3.206 baris penambahan).
    - Regenerasi wrapper Qt (ScintillaEdit.cpp dan ScintillaEdit.h) menggunakan script resmi upstream WidgetGen.py.
    - Pemulihan rendering warna penuh untuk format gambar XPM.
    - Peningkatan performa query posisi awal baris dengan melewati kalkulasi layout yang tidak diperlukan saat scrolling cepat.
@@ -58,13 +58,38 @@ SparkNotePad v1.3.9 menghadirkan pembaruan inti editor Scintilla dan Lexilla lan
    - Invarian Dialog Cari & Ganti: Di src/dialogs/FindReplaceDialog.cpp, opsi arah pencarian mundur otomatis dimatikan saat mode Regular Expression dipilih.
    - Pengaturan Bahasa Default Dokumen Baru: Penambahan konfigurasi DefaultLanguage pada Preferensi > Editor untuk dokumen baru tanpa judul, dengan daftar bahasa lengkap.
 
-5. Perampingan Framework & Peningkatan Estetika DMG macOS:
-   - Pembersihan framework Qt yang tidak digunakan (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) pada paket DMG untuk mengurangi ukuran binary.
-   - Penyempurnaan pipeline packaging DMG dengan background kustom, indikator drag-and-drop, jendela 680x440, serta perlindungan metadata tersembunyi.
+5. Pembaruan Dialog About & Dinamisasi Metadata:
+   - Di src/dialogs/AboutDialog.cpp, Release Tag kini terhubung langsung secara dinamis ke APP_VERSION sehingga selalu menunjuk ke v1.3.9 tanpa hardcode tag usang.
+   - Pembaruan label mesin inti menjadi Scintilla 5.6.9 & Lexilla 5.5.5 pada tab About, Maintainer, dan kartu Diagnostik.
+   - Sinkronisasi teks salin informasi sistem (clipboard system info) mencerminkan Scintilla 5.6.9 dan Lexilla 5.5.5.
+   - Pengakuan eksplisit NotepadNext-MacOS (@alsyundawy) sebagai repositori port fondasional macOS.
 
-6. Verifikasi Kualitas Kode 14 Pilar & Audit Tanpa Cacat:
-   - Nol peringatan pada clangd --check, cppcheck, clang-tidy, dan SonarLint.
-   - Penegakan kompilasi Unix Makefiles standar dengan konkurensi terkontrol -j2.
+6. Kompatibilitas Penuh Qt 6.2 LTS (macOS Catalina 10.15 & Ubuntu 20.04 LTS):
+   - Di src/utils/TokenForensicUtils.cpp, penggantian QTimeZone::UTC (Qt 6.5+) menjadi QTimeZone::utc() yang didukung universal sejak Qt 6.2.
+   - Di src/dialogs/MainWindow.cpp, penggantian QLatin1StringView (Qt 6.4+) menjadi QLatin1String (Qt 6.2+).
+   - Di src/widgets/TabsQuickActionsBar.cpp & .h, perbaikan QLatin1StringView dan pembersihan specifier inline redundan.
+   - Di src/features/ThemeManager.cpp, penyediaan fungsi pembantu parseColor sebagai fallback QColor::fromString untuk Qt < 6.4.
+   - Di src/utils/HashIntegrityManager.cpp, pemagaran fungsi kriptografi Qt 6.4+ dengan pengecekan QT_VERSION_CHECK(6, 4, 0).
+
+7. Restorasi Matriks CI & Distribusi Rilis Multi-Arsitektur (50+ Berkas):
+   - Pengembalian penuh kompilasi Qt 6.2 LTS untuk runner macOS Catalina dan Ubuntu 20.04.
+   - Penambahan packaging biner native untuk Linux ARM64 (aarch64) lintas Qt 6.8, 6.10, 6.11, dan 6.12.
+   - Prioritas eksekusi dan publikasi x64 lebih awal, serta penerbitan aset rilis instan per-job.
+   - Default build rilis dan artefak dipatok pada Qt 6.5 LTS.
+
+8. Perampingan Framework & Peningkatan Estetika DMG macOS:
+   - Pembersihan framework Qt yang tidak digunakan (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) pada paket DMG untuk mengurangi ukuran binary (~15 MB dihemat).
+   - Penyempurnaan pipeline packaging DMG dengan background kustom, indikator drag-and-drop, jendela 680x440, eliminasi fallback unstyled --skip-jenkins di CI, serta validasi integritas checksum hdiutil.
+   - Build DMG lokal SparkNotePad-v1.3.9-x64.dmg (33 MB) berhasil dibuat dan diverifikasi valid secara lokal.
+
+9. Paritas Terjemahan 100% (i18n):
+   - Sinkronisasi 1.850 entri terjemahan dwibahasa (Bahasa Indonesia & Inggris) dengan 0 entri belum selesai.
+
+10. Verifikasi Kualitas Kode 14 Pilar & Audit Tanpa Cacat:
+    - Nol peringatan pada clangd --check, cppcheck (152 berkas src/), clang-tidy, dan SonarLint.
+    - Penegakan kompilasi Unix Makefiles standar dengan konkurensi terkontrol -j2 (Ninja dilarang permanen).
+    - Lolos 51/51 unit tests pada SparkNotePadTests.
+    - Paritas 100% modul Python 3.14 dan 3.15 (73 modul identik).
 
 ---
 
@@ -86,15 +111,15 @@ DOCNOTE_EN = """# SparkNotePad Release DocNote — v1.3.9 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version      : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language & 14-Pillar Hardening)
+Release Version      : 1.3.9 (Scintilla 5.6.9, Lexilla 5.5.5, Default Language, Qt 6.2 LTS & 14-Pillar Hardening)
 Release Date         : 2026-11-07
 Lead Maintainer      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization         : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository           : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine  : Scintilla 5.6.9 & Lexilla 5.5.5 (Complete 125 Official Lexers)
 Embedded Lua Core    : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
-GUI Framework        : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
-Target Platforms     : macOS 11.0–26.0 (Apple Silicon & Intel), Linux, FreeBSD 13–15
+GUI Framework        : Qt 6.2 LTS / 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms     : macOS 10.15–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
 License              : GNU General Public License v3.0 (GPL-3.0-or-later)
 ================================================================================
 --------------------------------------------------------------------------------
@@ -103,10 +128,10 @@ License              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Executive Summary (English): Release v1.3.9
 
-SparkNotePad v1.3.9 is a major foundational engine upgrade and stability release, featuring upstream core editing engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, search/replace algorithmic security fixes, Markdown front-matter syntax styling, user-configurable default language preference, macOS DMG aesthetics enhancement, and zero-defect 14-pillar verification:
+SparkNotePad v1.3.9 is a major foundational engine upgrade and stability milestone encapsulating the complete architectural progression from v1.3.8 to v1.3.9. It delivers upstream core editing engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, resolves algorithmic regex loop vulnerabilities, introduces user-configurable default language preferences, expands Markdown front-matter syntax styling, restores full Qt 6.2 LTS backward compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, prunes and refines macOS DMG distribution, and passes comprehensive 14-pillar code review:
 
 1. Official Upstream Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration:
-   - Full upstream replacement of Scintilla 5.6.9 and Lexilla 5.5.5 directly from scintilla.org into thirdparty/ (160 files updated).
+   - Full upstream replacement of Scintilla 5.6.9 and Lexilla 5.5.5 directly from scintilla.org into thirdparty/ (160 files updated, 3,206 insertions).
    - Regenerated Qt wrapper interface (ScintillaEdit.cpp and ScintillaEdit.h) using Scintilla's official WidgetGen.py script.
    - Restored full-color rendering for XPM images.
    - Accelerated line-start position queries by skipping redundant layout calculations during rapid scrolling.
@@ -130,13 +155,39 @@ SparkNotePad v1.3.9 is a major foundational engine upgrade and stability release
    - Search & Replace Dialog Direction Invariant: In src/dialogs/FindReplaceDialog.cpp, automatically unchecks and disables backwards direction searching when Regular Expression search mode is selected.
    - Default Language Setting for New Documents: Added user-configurable DefaultLanguage in Preferences > Editor for untitled/new documents, with dynamic language selection.
 
-5. Framework Pruning & macOS DMG Aesthetics Enhancement:
-   - Pruned unused Qt frameworks (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) from release DMGs to eliminate bloatware.
-   - Enhanced DMG packaging pipeline with custom background, drag-and-drop indicator, 680x440 window layout, and hidden metadata preservation.
+5. About Dialog Overhaul & Dynamic Metadata Architecture:
+   - In src/dialogs/AboutDialog.cpp, dynamically parameterized the Release Tag link with APP_VERSION so it always links to v1.3.9 without hardcoded stale tags.
+   - Updated engine attribution to Scintilla 5.6.9 & Lexilla 5.5.5 across About, Maintainer, and Diagnostics cards.
+   - Synchronized plain-text system info copy clipboard to reflect Scintilla 5.6.9 and Lexilla 5.5.5.
+   - Explicitly preserved attribution to NotepadNext-MacOS (@alsyundawy) as the foundational macOS port repository.
 
-6. 14-Pillar Code Quality & Zero-Defect Linter Verification:
-   - Zero warnings across clangd --check, cppcheck, clang-tidy, and SonarLint.
-   - Strict Unix Makefiles compilation enforcement with controlled -j2 concurrency.
+6. Full Qt 6.2 LTS Backward Compatibility (macOS Catalina 10.15 & Ubuntu 20.04 LTS):
+   - In src/utils/TokenForensicUtils.cpp, replaced QTimeZone::UTC (Qt 6.5+) with universal QTimeZone::utc() supported across all Qt 6 releases.
+   - In src/dialogs/MainWindow.cpp, replaced QLatin1StringView (Qt 6.4+) with universal QLatin1String (Qt 6.2+).
+   - In src/widgets/TabsQuickActionsBar.cpp & .h, replaced QLatin1StringView and cleaned redundant inline specifiers.
+   - In src/features/ThemeManager.cpp, implemented parseColor fallback for Qt < 6.4 where QColor::fromString is absent.
+   - In src/utils/HashIntegrityManager.cpp, guarded Qt 6.4+ cryptographic APIs with QT_VERSION_CHECK(6, 4, 0).
+
+7. Restored Multi-Architecture CI Matrix & Automated Release Publishing:
+   - Restored and verified Qt 6.2 LTS matrix jobs on macOS Catalina and Ubuntu 20.04 runners.
+   - Added native Linux ARM64 (aarch64) packaging across Ubuntu, Debian, and RPM distros for Qt 6.8, 6.10, 6.11, and 6.12.
+   - Prioritized x64 jobs first, publishing release artifacts immediately upon individual job completion.
+   - Pinned canonical default release artifact to Qt 6.5 LTS.
+   - Expanded release artifact catalog to 50+ distribution binaries.
+
+8. Framework Pruning & macOS DMG Aesthetics Enhancement:
+   - Pruned unused Qt frameworks (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) from release DMGs, saving ~15MB.
+   - Enhanced DMG packaging pipeline with custom background, drag-and-drop indicator, 680x440 window layout, eliminated unstyled fallback --skip-jenkins in CI, and validated checksum integrity via hdiutil.
+   - Verified local DMG generation: build/SparkNotePad-v1.3.9-x64.dmg (33 MB) successfully created and verified.
+
+9. 100% Bilingual Localization Parity (i18n):
+   - Synchronized 1,850 translation strings across Indonesian and English catalogs with 0 unfinished entries.
+
+10. 14-Pillar Code Quality & Zero-Defect Linter Verification:
+    - Zero warnings across clangd --check, cppcheck (152 src/ files), clang-tidy, and SonarLint.
+    - Strict Unix Makefiles compilation enforcement with controlled -j2 concurrency (Ninja permanently prohibited).
+    - 51/51 unit tests passed in SparkNotePadTests.
+    - 100% parity across Python 3.14 and 3.15 environments (73 identical modules).
 
 ---
 
@@ -165,17 +216,20 @@ dan proyek ini mengikuti [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [1.3.9] - 2026-11-07
 
-### ⚡ Pembaruan Mesin Scintilla 5.6.9 & Lexilla 5.5.5, Pengaturan Bahasa Default, Perbaikan Infinite-Loop Regex & Pengerasan 14 Pilar
+### ⚡ Pembaruan Mesin Scintilla 5.6.9 & Lexilla 5.5.5, Pengaturan Bahasa Default, Kompatibilitas Qt 6.2 LTS, Matriks Rilis Linux ARM64 & Pengerasan 14 Pilar
 
-SparkNotePad v1.3.9 menghadirkan pembaruan mesin editor ke Scintilla 5.6.9 dan Lexilla 5.5.5, menyelesaikan kerentanan algoritmik ekspresi reguler, memperkenalkan pengaturan bahasa default untuk dokumen baru, memperluas pewarnaan sintaksis front-matter Markdown, dan lolos audit kode statis 14 pilar:
+SparkNotePad v1.3.9 adalah rilis fondasional besar yang merangkum seluruh perubahan arsitektural dari v1.3.8 ke v1.3.9. Rilis ini memperbarui mesin inti Scintilla 5.6.9 dan Lexilla 5.5.5, menyelesaikan kerentanan ekspresi reguler, menambahkan preferensi bahasa default, memperluas penyorotan sintaksis front-matter Markdown, memulihkan kompatibilitas penuh Qt 6.2 LTS (macOS Catalina & Ubuntu 20.04), menghadirkan matriks rilis Linux ARM64 & x64 (50+ paket biner), serta lolos audit kualitas kode 14 pilar tanpa peringatan:
 
 #### 🆕 Ditambahkan
 
 - **Integrasi Penuh Scintilla 5.6.9 & Lexilla 5.5.5 Upstream Resmi**:
-  - Pembaruan Scintilla dari 5.6.7 ke 5.6.9 resmi scintilla.org.
-  - Pembaruan Lexilla dari 5.5.4 ke 5.5.5 resmi scintilla.org.
+  - Pembaruan Scintilla dari 5.6.7 ke 5.6.9 resmi scintilla.org di thirdparty/scintilla (160 berkas diperbarui, 3.206 baris penambahan).
+  - Pembaruan Lexilla dari 5.5.4 ke 5.5.5 resmi scintilla.org di thirdparty/lexilla.
   - Regenerasi Qt wrapper (ScintillaEdit.cpp dan ScintillaEdit.h) via WidgetGen.py resmi.
   - Peta kategori karakter dan konversi teks standar Unicode 17 lengkap.
+  - Restorasi rendering warna penuh untuk format gambar XPM.
+  - Akselerasi kueri posisi baris awal saat scrolling cepat.
+  - Peningkatan kapasitas cache lexeme dari 30 ke 40 bita untuk identifier panjang dan kolom query SQL.
 - **Pewarnaan Sintaksis Front-Matter Markdown**:
   - Tiga ID gaya Lexilla 5.5.5 di src/languages/markdown.lua:
     - SCE_MARKDOWN_FRONT_MARK (ID 22): Pembatas metadata YAML (---), TOML (+++), JSON ({}).
@@ -189,6 +243,16 @@ SparkNotePad v1.3.9 menghadirkan pembaruan mesin editor ke Scintilla 5.6.9 dan L
   - HTML & JavaScript: Dukungan $, #, identifier non-ASCII, dan template literal bersarang.
   - PHP: Dukungan variabel variabel ($$var) dengan gaya SCE_HPHP_VARIABLE.
   - SQL: Resolusi kutipan komplemen Oracle (GetQuoteComplement).
+- **Matriks Rilis Linux ARM64 & x64 Multi-Distro (50+ Berkas Biner)**:
+  - Penambahan paket rilis biner native Linux ARM64 (aarch64) untuk DEB dan RPM di seluruh matriks Qt 6.8, 6.10, 6.11, dan 6.12.
+  - Pemulihan runner macOS Catalina (Qt 6.2 LTS) dan Ubuntu 20.04 LTS (Qt 6.2 LTS).
+  - Publikasi langsung aset rilis saat job kompilasi selesai tanpa menunggu seluruh matriks tuntas.
+  - Pengutamaan proses build arsitektur x64 terlebih dahulu.
+  - Penetapan target build rilis dan artefak default ke Qt 6.5 LTS.
+- **Dinamisasi Metadata Dialog About**:
+  - Release Tag terhubung secara dinamis ke APP_VERSION sehingga selalu menunjuk ke v1.3.9.
+  - Pemutakhiran string Scintilla 5.6.9 dan Lexilla 5.5.5 pada tab About, Maintainer, dan Diagnostik.
+  - Pengakuan eksplisit NotepadNext-MacOS (@alsyundawy) sebagai repositori port fondasional macOS.
 
 #### 🛡️ Keamanan & Perbaikan Bug
 
@@ -201,16 +265,24 @@ SparkNotePad v1.3.9 menghadirkan pembaruan mesin editor ke Scintilla 5.6.9 dan L
   - Mitigasi kerentanan out-of-bounds write (CWE-787) pada lexer DMIS, Perl here-doc, Raku, TCMD, dan TeX.
   - Mitigasi kerentanan out-of-bounds read (CWE-125) pada lexer Ruby dan X12.
   - Perbaikan crash makro preprocessor pada lexer C++ dan deep recursion pada Visual Prolog.
-- **Stabilitas & Performa Scintilla**:
-  - Pemulihan rendering warna penuh untuk gambar XPM.
-  - Percepatan query posisi awal baris saat scrolling cepat.
-  - Peningkatan kapasitas buffer lexeme dari 30 ke 40 bita.
-  - Perbaikan crash undo riwayat perubahan pada bulk deletion.
+- **Stabilitas & Kompatibilitas Qt 6.2 LTS**:
+  - Mengganti QTimeZone::UTC menjadi QTimeZone::utc() di TokenForensicUtils.cpp untuk kompatibilitas Qt 6.2+.
+  - Mengganti QLatin1StringView menjadi QLatin1String di MainWindow.cpp dan TabsQuickActionsBar.cpp.
+  - Menghapus specifier inline redundan pada TabsQuickActionsBar.h.
+  - Menyediakan fungsi pembantu parseColor sebagai fallback QColor::fromString untuk Qt < 6.4.
+  - Pemagaran fungsi kriptografi Qt 6.4+ di HashIntegrityManager.cpp.
+- **Penyempurnaan Packaging macOS DMG**:
+  - Menghilangkan fallback unstyled --skip-jenkins di CI agar DMG selalu ber-layout grafis resmi.
+  - Pembersihan framework Qt bloatware tak terpakai (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) menghemat ~15 MB.
+  - Pembuatan DMG lokal SparkNotePad-v1.3.9-x64.dmg (33 MB) terverifikasi valid dengan hdiutil.
 
-#### 🔧 Kualitas Kode & Verifikasi 14 Pilar
+#### 🔧 Kualitas Kode, i18n & Verifikasi 14 Pilar
 
-- Nol peringatan pada clangd --check, cppcheck, clang-tidy, dan SonarLint.
-- Penegakan kompilasi Unix Makefiles standar dengan kontrol batas beban -j2.
+- 100% paritas terjemahan dwibahasa (1.850 selesai, 0 belum selesai) untuk Bahasa Indonesia dan Inggris.
+- Nol peringatan pada clangd --check, cppcheck (152 berkas src/), clang-tidy, dan SonarLint.
+- Penegakan kompilasi Unix Makefiles standar dengan kontrol batas beban -j2 (Ninja dilarang permanen).
+- Lolos 51/51 unit tests pada SparkNotePadTests.
+- Paritas 100% modul Python 3.14 dan 3.15 (73 modul identik).
 
 ---
 
@@ -267,17 +339,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.9] - 2026-11-07
 
-### ⚡ Scintilla 5.6.9 & Lexilla 5.5.5 Engine Upgrade, Default Language Setting, Regex Infinite-Loop Fix & 14-Pillar Hardening
+### ⚡ Scintilla 5.6.9 & Lexilla 5.5.5 Engine Upgrade, Default Language Setting, Qt 6.2 LTS Compatibility, Linux ARM64 Matrix & 14-Pillar Hardening
 
-SparkNotePad v1.3.9 delivers upstream core engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, resolves critical algorithmic vulnerabilities in regular expression processing, introduces user-configurable default language preferences for new documents, expands Markdown front-matter syntax highlighting, and passes comprehensive 14-pillar static analysis and code review:
+SparkNotePad v1.3.9 is a major foundational milestone consolidating all architectural evolutions from v1.3.8 to v1.3.9. It upgrades the core editing subsystem to Scintilla 5.6.9 and Lexilla 5.5.5, resolves algorithmic regular expression vulnerabilities, adds user-configurable default language preferences, expands Markdown front-matter syntax styling, restores complete Qt 6.2 LTS compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, and passes rigorous 14-pillar static analysis and code review:
 
 #### 🆕 Added
 
 - **Official Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration**:
-  - Upgraded embedded Scintilla engine from 5.6.7 to 5.6.9 (official upstream release from scintilla.org).
-  - Upgraded embedded Lexilla lexer library from 5.5.4 to 5.5.5 (official upstream release from scintilla.org).
+  - Upgraded embedded Scintilla engine from 5.6.7 to 5.6.9 (official upstream release from scintilla.org) in thirdparty/scintilla (160 files updated, 3,206 insertions).
+  - Upgraded embedded Lexilla lexer library from 5.5.4 to 5.5.5 (official upstream release from scintilla.org) in thirdparty/lexilla.
   - Regenerated Qt wrapper interface (ScintillaEdit.cpp and ScintillaEdit.h) via upstream WidgetGen.py.
   - Full Unicode 17 character category mapping and case conversions.
+  - Restored full-color rendering for XPM images.
+  - Accelerated line-start position queries by skipping unnecessary line layout calculations during rapid scrolling.
+  - Expanded cached lexeme buffer from 30 to 40 bytes for large identifiers and SQL query columns.
 - **Markdown Front-Matter Syntax Highlighting**:
   - Implemented 3 new Lexilla 5.5.5 style definitions in src/languages/markdown.lua:
     - SCE_MARKDOWN_FRONT_MARK (ID 22): Boundary delimiters for YAML (---), TOML (+++), and JSON ({}) front matter.
@@ -291,6 +366,16 @@ SparkNotePad v1.3.9 delivers upstream core engine upgrades to Scintilla 5.6.9 an
   - HTML & JavaScript: Support for $, #, non-ASCII identifiers, and nested template literals.
   - PHP: Support for variable variables ($$var) styling as SCE_HPHP_VARIABLE.
   - SQL: Enhanced Oracle complement quote resolution (GetQuoteComplement).
+- **Multi-Architecture Linux ARM64 & x64 Release Matrix (50+ Distribution Binaries)**:
+  - Added native Linux ARM64 (aarch64) packaging for Ubuntu, Debian, and RPM distributions across Qt 6.8, 6.10, 6.11, and 6.12.
+  - Restored macOS Catalina (Qt 6.2 LTS) and Ubuntu 20.04 LTS (Qt 6.2 LTS) matrix runners.
+  - Immediate publishing of release assets per job completion without waiting for whole matrix completion.
+  - Prioritized x64 build pipeline execution.
+  - Pinned canonical default release artifact to Qt 6.5 LTS.
+- **About Dialog Overhaul & Dynamic Metadata Architecture**:
+  - Release Tag dynamically parameterized with APP_VERSION so it always links to v1.3.9.
+  - Updated Scintilla 5.6.9 and Lexilla 5.5.5 labels across About, Maintainer, and Diagnostics tabs.
+  - Explicitly recognized NotepadNext-MacOS (@alsyundawy) as the ancestral macOS port repository.
 
 #### 🛡️ Security & Bug Fixes
 
@@ -303,16 +388,24 @@ SparkNotePad v1.3.9 delivers upstream core engine upgrades to Scintilla 5.6.9 an
   - Mitigated out-of-bounds write vulnerabilities (CWE-787) in DMIS, Perl here-doc delimiters, Raku, TCMD, and TeX lexers.
   - Mitigated out-of-bounds read vulnerabilities (CWE-125) in Ruby and X12 lexers.
   - Fixed preprocessor macro invocation crash in C++ lexer and deep nesting recursion crash in Visual Prolog lexer.
-- **Scintilla Performance & Stability**:
-  - Restored full-color rendering for XPM images.
-  - Accelerated line-start position queries by skipping unnecessary line layout calculations.
-  - Expanded cached lexeme buffer from 30 to 40 bytes for large identifiers.
-  - Fixed crash with change history undo caused by bulk deletion optimization.
+- **Qt 6.2 LTS Stability & Backward Compatibility**:
+  - Replaced QTimeZone::UTC with universal QTimeZone::utc() in TokenForensicUtils.cpp for Qt 6.2+ support.
+  - Replaced QLatin1StringView with QLatin1String in MainWindow.cpp and TabsQuickActionsBar.cpp.
+  - Removed redundant inline specifiers in TabsQuickActionsBar.h.
+  - Implemented parseColor fallback for Qt < 6.4 where QColor::fromString is absent.
+  - Guarded Qt 6.4+ cryptographic APIs in HashIntegrityManager.cpp.
+- **macOS DMG Packaging & Aesthetic Polish**:
+  - Eliminated unstyled --skip-jenkins fallback in CI so DMG always builds with official background, icon, and 680x440 geometry.
+  - Pruned bloatware Qt frameworks (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) from DMG bundles, saving ~15 MB.
+  - Verified local DMG generation: build/SparkNotePad-v1.3.9-x64.dmg (33 MB) valid and verified with hdiutil.
 
-#### 🔧 Code Quality & 14-Pillar Verification
+#### 🔧 Code Quality, i18n & 14-Pillar Verification
 
-- Zero warnings across clangd --check, cppcheck, clang-tidy, and SonarLint.
-- Strict Unix Makefiles compilation enforcement with controlled -j2 concurrency.
+- 100% bilingual translation parity (1,850 finished, 0 unfinished) across Indonesian and English catalogs.
+- Zero warnings across clangd --check, cppcheck (152 src/ files), clang-tidy, and SonarLint.
+- Strict Unix Makefiles compilation enforcement with controlled -j2 concurrency (Ninja permanently prohibited).
+- 51/51 unit tests passed in SparkNotePadTests.
+- 100% parity across Python 3.14 and 3.15 environments (73 identical modules).
 
 ---
 

@@ -59,10 +59,55 @@ Pada berkas `src/languages/markdown.lua`, tiga ID style baru dari Lexilla 5.5.5 
 
 ---
 
-### 4. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
+### 4. Pembaruan Dialog About & Dinamisasi Metadata
+
+- **Dinamisasi Versi Tag Rilis**: Pada `src/dialogs/AboutDialog.cpp`, badge dan tautan Release Tag kini diikat secara dinamis ke konstanta `APP_VERSION`, menjamin tautan rilis selalu tepat mengarah ke `v1.3.9` tanpa teks tag usang.
+- **Pembaruan Label Mesin Inti**: Menyelaraskan teks mesin penyunting menjadi Scintilla 5.6.9 & Lexilla 5.5.5 pada tab About, tab Pengelola (Maintainer), dan kartu Diagnostik.
+- **Salin Info Sistem**: Menyelaraskan fungsi salin informasi sistem (clipboard system info) ke Scintilla 5.6.9 dan Lexilla 5.5.5.
+- **Atribusi Repositori Leluhur**: Mengakui secara eksplisit `NotepadNext-MacOS` (`@alsyundawy`) sebagai repositori port fondasional macOS tempat SparkNotePad berakar dan berkembang.
+
+---
+
+### 5. Kompatibilitas Penuh Qt 6.2 LTS (macOS Catalina & Ubuntu 20.04 LTS)
+
+- **API Zona Waktu Universal**: Mengganti `QTimeZone::UTC` dengan `QTimeZone::utc()` pada `src/utils/TokenForensicUtils.cpp`, memulihkan kompatibilitas penuh lintas Qt 6.2+.
+- **Kompatibilitas String**: Mengganti `QLatin1StringView` menjadi `QLatin1String` pada `src/dialogs/MainWindow.cpp` dan `src/widgets/TabsQuickActionsBar.cpp`.
+- **Pembersihan Peringatan Compiler**: Menghapus specifier `inline` redundan pada `src/widgets/TabsQuickActionsBar.h`.
+- **Fallback Penguraian Warna**: Mengimplementasikan fungsi pembantu `parseColor` pada `src/features/ThemeManager.cpp` sebagai fallback aman untuk `QColor::fromString` saat dikompilasi pada Qt < 6.4.
+- **Pemagaran Kriptografi**: Memagari API kriptografi Qt 6.4+ pada `src/utils/HashIntegrityManager.cpp` menggunakan `QT_VERSION_CHECK(6, 4, 0)`.
+
+---
+
+### 6. Matriks CI Multi-Arsitektur & Publikasi Rilis Otomatis
+
+- **Paket Native Linux ARM64**: Menambahkan packaging biner native Linux ARM64 (`aarch64`) untuk distribusi Ubuntu, Debian, dan RPM pada matriks Qt 6.8, 6.10, 6.11, dan 6.12.
+- **Pemulihan Runner Legacy**: Mengaktifkan kembali kompilasi Qt 6.2 LTS pada runner macOS Catalina dan Ubuntu 20.04.
+- **Akselerasi Distribusi**: Mengutamakan job x64 dan menerbitkan aset rilis seketika saat job kompilasi selesai.
+- **Standar Rilis Kanonikal**: Mematok target build rilis dan artefak default ke Qt 6.5 LTS.
+- **Cakupan Distribusi**: Memperluas katalog distribusi biner hingga 50+ paket.
+
+---
+
+### 7. Penyempurnaan Packaging macOS DMG & Perampingan Framework
+
+- **Tata Letak Grafis Resmi**: Menghilangkan fallback unstyled `--skip-jenkins` di CI sehingga layout DMG selalu bergaya resmi (`dmg-background.png`, ikon volume kustom, tautan Applications, koordinat jendela 680x440).
+- **Pembersihan Framework Bloatware**: Memangkas framework Qt yang tidak terpakai (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`), menghemat ~15 MB.
+- **Verifikasi DMG Lokal**: Pembuatan berkas `build/SparkNotePad-v1.3.9-x64.dmg` (33 MB) berhasil dibuat dan lolos verifikasi integritas checksum `hdiutil`.
+
+---
+
+### 8. Paritas Terjemahan Dwibahasa 100% (i18n)
+
+- Penyelarasan penuh katalog terjemahan Bahasa Indonesia (`SparkNotePad_id.ts`) dan Bahasa Inggris (`SparkNotePad_en.ts`).
+- Kompilasi melalui `lrelease`: tepat 1.850 entri terjemahan selesai, 0 belum selesai.
+
+---
+
+### 9. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
 
 SparkNotePad v1.3.9 mematuhi standar ketat 14 Pilar Rekayasa Perangkat Lunak:
 
-- Terverifikasi bersih dengan 0 peringatan pada `clangd --check`, `cppcheck`, `clang-tidy`, dan SonarLint.
+- Terverifikasi bersih dengan 0 peringatan pada `clangd --check`, `cppcheck` (152 berkas `src/`), `clang-tidy`, dan SonarLint.
 - Dikompilasi secara ketat menggunakan generator default CMake `Unix Makefiles` (Ninja dilarang permanen per `AGENTS.md`).
-- Tingkat kelulusan pengujian 100% pada seluruh unit test di `SparkNotePadTests`.
+- Tingkat kelulusan pengujian 100% pada seluruh unit test di `SparkNotePadTests` (51/51 lolos).
+- Paritas 100% modul Python 3.14 dan 3.15 (73 modul identik).

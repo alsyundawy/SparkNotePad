@@ -22,31 +22,67 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ## 1. Executive Summary: Release v1.3.9
 
-SparkNotePad **v1.3.9** brings official upstream updates for the core Scintilla and Lexilla editing engines, addresses security and algorithmic issues in search and replace, enriches syntax highlighting for Markdown front-matter, adds user-configurable default language preferences for new documents, and passes complete 14-pillar code review:
+SparkNotePad **v1.3.9** is a major foundational milestone encapsulating all technical progressions from v1.3.8 to v1.3.9. It brings official upstream updates for the core Scintilla and Lexilla editing engines, addresses security and algorithmic issues in search and replace, enriches syntax highlighting for Markdown front-matter, adds user-configurable default language preferences, restores full Qt 6.2 LTS backward compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, and passes complete 14-pillar code review:
 
-1. **Official Upstream Scintilla 5.6.9 Integration**:
-   - Restores full-color rendering for XPM images.
-   - Skips unnecessary line layout calculations during line-start position queries for accelerated scrolling and navigation.
-   - Increases cached lexeme buffer capacity from 30 to 40 bytes to optimize large symbols and query identifiers.
+1. **Official Upstream Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration**:
+   - Upstream upgrade: replaced `thirdparty/scintilla` with official `scintilla569.tgz` and `thirdparty/lexilla` with `lexilla555.tgz` (160 files updated, 3,206 insertions).
+   - Regenerated Qt wrapper interface (`ScintillaEdit.cpp` and `ScintillaEdit.h`) using Scintilla's official `WidgetGen.py`.
+   - Restored full-color rendering for XPM images.
+   - Accelerated line-start position queries by skipping redundant layout calculations during rapid scrolling.
+   - Expanded cached lexeme buffer from 30 to 40 bytes to optimize large symbols and query identifiers.
    - Full Unicode 17 standard character category tables and case conversion support.
-   - Resolves change history undo crashes during bulk deletion operations.
+   - Resolved change history undo crashes during bulk deletion operations.
+   - Lexilla memory safety hardening: fixed out-of-bounds writes (CWE-787) and reads (CWE-125) in DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, and X12 lexers.
 
-2. **Official Upstream Lexilla 5.5.5 Integration & Markdown Front-Matter**:
+2. **Sandboxed Lua 5.5.1 Engine Integration**:
+   - Upgraded embedded Lua runtime to official Lua 5.5.1 in `thirdparty/lua`.
+   - Strict sandboxing enforced: disabled unsafe system APIs (`os.execute`, `io.*`, `debug.*`, `package.loadlib`) to prevent arbitrary code execution via untrusted extensions or theme scripts.
+
+3. **Markdown Front-Matter Syntax Highlighting**:
    - Introduces 3 new Lexilla 5.5.5 style IDs in `src/languages/markdown.lua` for YAML, TOML, and JSON front-matter:
-     - `SCE_MARKDOWN_FRONT_MARK` (ID 22): Delimiters (`---`, `+++`, `{}`).
+     - `SCE_MARKDOWN_FRONT_MARK` (ID 22): Boundary delimiters (`---`, `+++`, `{}`).
      - `SCE_MARKDOWN_FRONT` (ID 23): Front-matter body and value payload.
      - `SCE_MARKDOWN_FRONT_KEY` (ID 24): Front-matter attribute keys.
-   - Mitigates memory safety issues including out-of-bounds writes (CWE-787) and reads (CWE-125) in Lexilla lexers (DMIS, Perl, Raku, Ruby, TCMD, TeX, Visual Prolog, X12).
-   - Enhances HTML/JavaScript, PHP, and SQL lexer syntax handling.
+   - Enhanced lexers for HTML/JavaScript (`$`, `#`, non-ASCII identifiers, nested template literals), PHP (`$$var` variable variables as `SCE_HPHP_VARIABLE`), and SQL Oracle complement quotes (`GetQuoteComplement`).
 
-3. **Selective NotepadNext Feature & Bug Fix Ports**:
-   - **Fix Infinite Loop in Replace All (CWE-835 / DoS)**: Resolved an event loop hang in `Finder::replaceAll` when matching zero-length regular expressions (`^`, `$`, `\b`, lookarounds) by enforcing position advancement via `editor->positionAfter()`.
+4. **Selective NotepadNext Feature & Bug Fix Ports**:
+   - **Fix Infinite Loop in Replace All (CWE-835 / DoS)**: Resolved an event loop hang in `Finder::replaceAll` (`src/Finder.cpp`) when matching zero-length regular expressions (`^`, `$`, `\b`, lookarounds) by enforcing position advancement via `editor->positionAfter()`.
    - **Search Dialog Direction Invariant**: Automatically unchecks and disables backwards direction search in `FindReplaceDialog.cpp` when Regular Expression mode is selected.
    - **Default Language Setting**: Added a user-configurable `DefaultLanguage` setting in Preferences > Editor for untitled/new documents, with dynamic language selection.
 
-4. **14-Pillar Code Quality & Zero-Defect Linter Verification**:
-   - Verified 0 diagnostics and 0 errors across `clangd --check`, `cppcheck`, `clang-tidy`, and SonarLint.
-   - Strictly enforced standard `Unix Makefiles` compilation with controlled `-j2` concurrency.
+5. **About Dialog Overhaul & Dynamic Metadata Architecture**:
+   - In `src/dialogs/AboutDialog.cpp`, dynamically parameterized the Release Tag link with `APP_VERSION` so it always links to `v1.3.9` without stale hardcoded tags.
+   - Updated engine attribution to Scintilla 5.6.9 & Lexilla 5.5.5 across About, Maintainer, and Diagnostics cards.
+   - Synchronized plain-text system info copy clipboard to reflect Scintilla 5.6.9 and Lexilla 5.5.5.
+   - Explicitly preserved attribution to `NotepadNext-MacOS` (`@alsyundawy`) as the foundational macOS port repository.
+
+6. **Full Qt 6.2 LTS Backward Compatibility (macOS Catalina 10.15 & Ubuntu 20.04 LTS)**:
+   - In `src/utils/TokenForensicUtils.cpp`, replaced `QTimeZone::UTC` (Qt 6.5+) with universal `QTimeZone::utc()` supported across all Qt 6 releases.
+   - In `src/dialogs/MainWindow.cpp`, replaced `QLatin1StringView` (Qt 6.4+) with universal `QLatin1String` (Qt 6.2+).
+   - In `src/widgets/TabsQuickActionsBar.cpp` & `.h`, replaced `QLatin1StringView` and cleaned redundant inline specifiers.
+   - In `src/features/ThemeManager.cpp`, implemented `parseColor` fallback for Qt < 6.4 where `QColor::fromString` is absent.
+   - In `src/utils/HashIntegrityManager.cpp`, guarded Qt 6.4+ cryptographic APIs with `QT_VERSION_CHECK(6, 4, 0)`.
+
+7. **Restored Multi-Architecture CI Matrix & Automated Release Publishing**:
+   - Restored and verified Qt 6.2 LTS matrix jobs on macOS Catalina and Ubuntu 20.04 runners.
+   - Added native Linux ARM64 (`aarch64`) packaging across Ubuntu, Debian, and RPM distros for Qt 6.8, 6.10, 6.11, and 6.12.
+   - Prioritized x64 jobs first, publishing release artifacts immediately upon individual job completion.
+   - Pinned canonical default release artifact to Qt 6.5 LTS.
+   - Expanded release artifact catalog to 50+ distribution binaries.
+
+8. **Framework Pruning & macOS DMG Aesthetics Enhancement**:
+   - Pruned unused Qt frameworks (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`) from release DMGs, saving ~15MB.
+   - Enhanced DMG packaging pipeline with custom background, drag-and-drop indicator, 680x440 window layout, eliminated unstyled fallback `--skip-jenkins` in CI, and validated checksum integrity via `hdiutil`.
+   - Verified local DMG generation: `build/SparkNotePad-v1.3.9-x64.dmg` (33 MB) successfully created and verified.
+
+9. **100% Bilingual Localization Parity (i18n)**:
+   - Synchronized 1,850 translation strings across Indonesian and English catalogs with 0 unfinished entries.
+
+10. **14-Pillar Code Quality & Zero-Defect Linter Verification**:
+    - Zero warnings across `clangd --check`, `cppcheck` (152 `src/` files), `clang-tidy`, and SonarLint.
+    - Strict Unix Makefiles compilation enforcement with controlled `-j2` concurrency (Ninja permanently prohibited).
+    - 51/51 unit tests passed in `SparkNotePadTests`.
+    - 100% parity across Python 3.14 and 3.15 environments (73 identical modules).
 
 ---
 
