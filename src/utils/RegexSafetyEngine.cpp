@@ -24,22 +24,20 @@ bool RegexSafetyEngine::isSafeRegex(const QString &pattern, QString *vulnerabili
 
     // Detect nested exponential quantifiers: (x+)+, (x*)*, (x+)*, (x*)+, ([a-z]+)+, etc.
     static const QRegularExpression kNestedQuantifier(QStringLiteral(R"(\([^\)\\]*[\+\*]\s*\)\s*[\+\*\{])"));
-
-    if (kNestedQuantifier.match(pattern).hasMatch()) {
+    if (const auto match = kNestedQuantifier.match(pattern); match.hasMatch()) {
         if (vulnerabilityDescription) {
             *vulnerabilityDescription =
                 QCoreApplication::translate("RegexSafetyEngine",
                                             "Catastrophic backtracking vulnerability detected: nested quantifiers "
                                             "'(%1)' can cause application hang (ReDoS).")
-                    .arg(kNestedQuantifier.match(pattern).captured(0));
+                    .arg(match.captured(0));
         }
         return false;
     }
 
     // Detect nested range quantifiers: (x{1,5})+ or (x+){2,}
     static const QRegularExpression kNestedRangeQuantifier(QStringLiteral(R"(\([^\)\\]*\{\d+,?\d*\}\s*\)\s*[\+\*\{])"));
-
-    if (kNestedRangeQuantifier.match(pattern).hasMatch()) {
+    if (const auto match = kNestedRangeQuantifier.match(pattern); match.hasMatch()) {
         if (vulnerabilityDescription) {
             *vulnerabilityDescription = QCoreApplication::translate(
                 "RegexSafetyEngine", "Exponential nested range quantifier detected in regex pattern.");
@@ -49,8 +47,7 @@ bool RegexSafetyEngine::isSafeRegex(const QString &pattern, QString *vulnerabili
 
     // Detect wildcard nested loops: (.*[a-z])+, (.+[0-9])*
     static const QRegularExpression kWildcardNestedLoop(QStringLiteral(R"(\(\s*\.[*+]\s*[^)]*\)\s*[\+\*])"));
-
-    if (kWildcardNestedLoop.match(pattern).hasMatch()) {
+    if (const auto match = kWildcardNestedLoop.match(pattern); match.hasMatch()) {
         if (vulnerabilityDescription) {
             *vulnerabilityDescription = QCoreApplication::translate(
                 "RegexSafetyEngine", "High-risk wildcard repetition loop detected in pattern.");

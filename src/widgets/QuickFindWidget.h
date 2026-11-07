@@ -30,6 +30,7 @@
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QObject>
+#include <memory>
 
 #include "Finder.h"
 #include "ScintillaNext.h"
@@ -77,7 +78,7 @@ private:
     void goToCurrentMatch();
     void showWrapIndicator();
 
-    Ui::QuickFindWidget *ui;
+    std::unique_ptr<Ui::QuickFindWidget> ui;
     ScintillaNext *editor = Q_NULLPTR;
     Finder *finder = Q_NULLPTR;
     int indicator;

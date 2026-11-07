@@ -57,6 +57,7 @@ private:
     void setupFontAndGuideConnections();
     void setupUrlDecoratorConnections();
     void setupFeatureDecoratorConnections();
+    void setupLineSpacingConnections();
     void purgeOldEditorPointers();
     int detectEOLMode(const ScintillaNext *editor) const;
 

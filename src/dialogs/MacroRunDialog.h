@@ -26,6 +26,7 @@
 #define MACRORUNDIALOG_H
 
 #include <QDialog>
+#include <memory>
 
 class Macro;
 class MacroManager;
@@ -49,7 +50,7 @@ signals:
     void executeBatch(Macro *macro, int times, int scope);
 
 private:
-    Ui::MacroRunDialog *ui;
+    std::unique_ptr<Ui::MacroRunDialog> ui;
     MacroManager *macroManager;
 };
 

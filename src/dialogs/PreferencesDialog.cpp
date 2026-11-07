@@ -184,8 +184,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     });
 
     ui->comboBoxDefaultLanguage->setView(new QListView(ui->comboBoxDefaultLanguage));
-    const auto *app = qobject_cast<SparkNotePadApplication *>(qApp);
-    if (app) {
+    if (const auto *app = qobject_cast<SparkNotePadApplication *>(qApp); app != nullptr) {
         ui->comboBoxDefaultLanguage->addItems(app->getLanguages());
     }
     ui->comboBoxDefaultLanguage->setCurrentText(settings->defaultLanguage());

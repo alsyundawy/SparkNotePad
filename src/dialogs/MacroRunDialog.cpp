@@ -27,7 +27,7 @@
 #include "ui_MacroRunDialog.h"
 
 MacroRunDialog::MacroRunDialog(QWidget *parent, MacroManager *mm)
-    : QDialog(parent, Qt::Tool), ui(new Ui::MacroRunDialog), macroManager(mm) {
+    : QDialog(parent, Qt::Tool), ui(std::make_unique<Ui::MacroRunDialog>()), macroManager(mm) {
     ui->setupUi(this);
 
     connect(ui->buttonRun, &QPushButton::clicked, this, [this] {
@@ -44,9 +44,7 @@ MacroRunDialog::MacroRunDialog(QWidget *parent, MacroManager *mm)
     });
 }
 
-MacroRunDialog::~MacroRunDialog() {
-    delete ui;
-}
+MacroRunDialog::~MacroRunDialog() = default;
 
 void MacroRunDialog::showEvent(QShowEvent *event) {
     ui->comboBox->clear();

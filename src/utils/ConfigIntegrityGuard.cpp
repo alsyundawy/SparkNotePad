@@ -15,6 +15,35 @@
 #include <QRegularExpression>
 #include <QCoreApplication>
 #include <QXmlStreamReader>
+#include <algorithm>
+
+namespace {
+bool isXmlDepthSafe(const QByteArray &data, int maxDepth, QString *errorMsg) {
+    QXmlStreamReader reader(data);
+    int currentDepth = 0;
+    while (!reader.atEnd()) {
+        const QXmlStreamReader::TokenType token = reader.readNext();
+        if (token == QXmlStreamReader::StartElement) {
+            currentDepth++;
+            if (currentDepth > maxDepth) {
+                if (errorMsg) {
+                    *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "XML nesting depth exceeded safe threshold of %1 levels (CVE-2026-16762).").arg(maxDepth);
+                }
+                return false;
+            }
+        } else if (token == QXmlStreamReader::EndElement) {
+            currentDepth--;
+        }
+    }
+    if (reader.hasError()) {
+        if (errorMsg) {
+            *errorMsg = reader.errorString();
+        }
+        return false;
+    }
+    return true;
+}
+}  // namespace
 
 bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QString *rejectedReason) {
     const QString trimmed = commandLine.trimmed();
@@ -34,10 +63,9 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
 
     const QString lower = trimmed.toLower();
 
-    const auto bannedIt =
-        std::find_if(kBannedPrefixes.cbegin(), kBannedPrefixes.cend(),
-                     [&lower](const QString &banned) { return lower.startsWith(banned) || lower == banned.trimmed(); });
-    if (bannedIt != kBannedPrefixes.cend()) {
+    if (const auto bannedIt = std::ranges::find_if(kBannedPrefixes, [&lower](const QString &banned) {
+            return lower.startsWith(banned) || lower == banned.trimmed();
+        }); bannedIt != kBannedPrefixes.cend()) {
         if (rejectedReason) {
             *rejectedReason = QCoreApplication::translate(
                                   "ConfigIntegrityGuard",
@@ -48,11 +76,10 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
     }
 
     // Check for suspicious direct shell chaining attempting pipe injection
-    static const QRegularExpression kDangerousChaining(
-        QStringLiteral("(^|[;&|])\\s*(sudo|doas|pkexec|su|rm\\s+-rf\\s+/)\\b"),
-        QRegularExpression::CaseInsensitiveOption);
-
-    if (kDangerousChaining.match(trimmed).hasMatch()) {
+    if (static const QRegularExpression kDangerousChaining(
+            QStringLiteral("(^|[;&|])\\s*(sudo|doas|pkexec|su|rm\\s+-rf\\s+/)\\b"),
+            QRegularExpression::CaseInsensitiveOption);
+        kDangerousChaining.match(trimmed).hasMatch()) {
         if (rejectedReason) {
             *rejectedReason =
                 QCoreApplication::translate("ConfigIntegrityGuard", "Disallowed dangerous command sequence detected.");
@@ -64,8 +91,7 @@ bool ConfigIntegrityGuard::isExternalCommandSafe(const QString &commandLine, QSt
 }
 
 bool ConfigIntegrityGuard::enforceSecureFilePermissions(const QString &filePath) {
-    const QFileInfo fi(filePath);
-    if (!fi.exists()) {
+    if (const QFileInfo fi(filePath); !fi.exists()) {
         return false;
     }
 
@@ -89,9 +115,9 @@ bool ConfigIntegrityGuard::verifyFileIntegrity(const QString &filePath, QString 
                                                       QStringLiteral("/etc/sudoers"), QStringLiteral("/bin/sh"),
                                                       QStringLiteral("/bin/bash")};
 
-    const bool isSensitive = std::any_of(kSensitiveSystemPaths.cbegin(), kSensitiveSystemPaths.cend(),
-                                         [&canonical](const QString &sysPath) { return canonical == sysPath; });
-    if (isSensitive) {
+    if (const bool isSensitive = std::ranges::any_of(kSensitiveSystemPaths,
+                                                     [&canonical](const QString &sysPath) { return canonical == sysPath; });
+        isSensitive) {
         if (errorMsg) {
             *errorMsg =
                 QCoreApplication::translate("ConfigIntegrityGuard", "Attempted access to restricted system file: %1")
@@ -117,28 +143,7 @@ bool ConfigIntegrityGuard::isPayloadStructureSafe(const QByteArray &data, int ma
     }
 
     if (data.trimmed().startsWith('<')) {
-        QXmlStreamReader reader(data);
-        int currentDepth = 0;
-        while (!reader.atEnd()) {
-            const QXmlStreamReader::TokenType token = reader.readNext();
-            if (token == QXmlStreamReader::StartElement) {
-                currentDepth++;
-                if (currentDepth > maxDepth) {
-                    if (errorMsg) {
-                        *errorMsg = QCoreApplication::translate("ConfigIntegrityGuard", "XML nesting depth exceeded safe threshold of %1 levels (CVE-2026-16762).").arg(maxDepth);
-                    }
-                    return false;
-                }
-            } else if (token == QXmlStreamReader::EndElement) {
-                currentDepth--;
-            }
-        }
-        if (reader.hasError()) {
-            if (errorMsg) {
-                *errorMsg = reader.errorString();
-            }
-            return false;
-        }
+        return isXmlDepthSafe(data, maxDepth, errorMsg);
     }
 
     return true;

@@ -126,6 +126,7 @@ void EditorManager::setupFontAndGuideConnections() {
 void EditorManager::setupEditorDecoratorConnections() {
     setupUrlDecoratorConnections();
     setupFeatureDecoratorConnections();
+    setupLineSpacingConnections();
 }
 
 void EditorManager::setupUrlDecoratorConnections() {
@@ -172,7 +173,9 @@ void EditorManager::setupFeatureDecoratorConnections() {
             }
         }
     });
+}
 
+void EditorManager::setupLineSpacingConnections() {
     connect(settings, &ApplicationSettings::extraLineAscentChanged, this, [this](int val) {
         for (const auto &editor : getEditors()) {
             if (editor) {

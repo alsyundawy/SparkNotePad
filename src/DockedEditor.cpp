@@ -104,7 +104,7 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
     dockManager->setStyleSheet("");
 
     connect(dockManager, &ads::CDockManager::focusedDockWidgetChanged, this,
-            [this](ads::CDockWidget * /*old*/, ads::CDockWidget *now) {
+            [this](const ads::CDockWidget * /*old*/, const ads::CDockWidget *now) {
                 if (!now || !now->widget()) {
                     auto edList = editors();
                     currentEditor = edList.isEmpty() ? nullptr : edList.first();
@@ -124,7 +124,7 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
                 emit editorActivated(editor);
             });
 
-    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](ads::CDockAreaWidget *DockArea) {
+    connect(dockManager, &ads::CDockManager::dockAreaCreated, this, [this](const ads::CDockAreaWidget *DockArea) {
         if (const auto *titleBar = qobject_cast<const DockedEditorTitleBar *>(DockArea->titleBar());
             titleBar != nullptr) {
             connect(titleBar, &DockedEditorTitleBar::doubleClicked, this, &DockedEditor::titleBarDoubleClicked);

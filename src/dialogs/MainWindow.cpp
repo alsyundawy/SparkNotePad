@@ -231,6 +231,17 @@ QString computeFileHash(const QString &algStr, const QString &filePath, QString 
     return GenerateHashDigestDialog::computeSingleDigest(algStr, data);
 }
 
+void executeMacroOnEditor(const Macro *macro, ScintillaNext *ed, int times) {
+    if (!ed || !macro) {
+        return;
+    }
+    if (times > 0) {
+        macro->replay(ed, times);
+    } else if (times == -1) {
+        macro->replayTillEndOfFile(ed);
+    }
+}
+
 QAction *findActionByName(const MainWindow *window, const QString &actionName, const QList<QAction *> &allActions) {
     QAction *action = window->findChild<QAction *>(QStringLiteral("action") + actionName, Qt::FindDirectChildrenOnly);
     if (!action) {
@@ -2293,22 +2304,11 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
             connect(macroRunDialog, &MacroRunDialog::executeBatch, this, [this](const Macro *macro, int times, int scope) {
                 if (scope == 1) {
-                    const auto eds = editors();
-                    for (auto *ed : eds) {
-                        if (ed) {
-                            if (times > 0) {
-                                macro->replay(ed, times);
-                            } else if (times == -1) {
-                                macro->replayTillEndOfFile(ed);
-                            }
-                        }
+                    for (auto *ed : editors()) {
+                        executeMacroOnEditor(macro, ed, times);
                     }
                 } else {
-                    if (times > 0) {
-                        macro->replay(currentEditor(), times);
-                    } else if (times == -1) {
-                        macro->replayTillEndOfFile(currentEditor());
-                    }
+                    executeMacroOnEditor(macro, currentEditor(), times);
                 }
             });
         }

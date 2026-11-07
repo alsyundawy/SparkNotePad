@@ -31,8 +31,9 @@
 #include <QLineEdit>
 #include <QShortcut>
 #include <QScrollBar>
+#include <algorithm>
 
-QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(new Ui::QuickFindWidget) {
+QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(std::make_unique<Ui::QuickFindWidget>()) {
     ui->setupUi(this);
 
     // Move the focus to the line edit widget
@@ -40,7 +41,7 @@ QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(new Ui::Q
 
     ui->lineEdit->installEventFilter(this);
 
-    FocusWatcher *fw = new FocusWatcher(ui->lineEdit);
+    const auto *fw = new FocusWatcher(ui->lineEdit);
     connect(fw, &FocusWatcher::focusOut, this, &QuickFindWidget::focusOut);
     connect(fw, &FocusWatcher::focusIn, this, &QuickFindWidget::focusIn);
 
@@ -55,11 +56,7 @@ QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(new Ui::Q
 }
 
 QuickFindWidget::~QuickFindWidget() {
-    if (finder) {
-        delete finder;
-    }
-
-    delete ui;
+    delete finder;
 }
 
 void QuickFindWidget::setEditor(ScintillaNext *newEditor) {
@@ -124,7 +121,7 @@ void QuickFindWidget::performNewSearch() {
     }
 
     prepareSearch();
-    finder->forEachMatch([&](int start, int end) {
+    finder->forEachMatch([this](int start, int end) {
         matches.append(qMakePair(start, end));
         return qMax(start + 1, end);
     });
@@ -147,8 +144,8 @@ void QuickFindWidget::highlightMatches() {
     }
 
     editor->setIndicatorCurrent(indicator);
-    for (const auto &range : matches) {
-        editor->indicatorFillRange(range.first, range.second - range.first);
+    for (const auto &[start, end] : matches) {
+        editor->indicatorFillRange(start, end - start);
     }
 }
 
@@ -173,13 +170,14 @@ void QuickFindWidget::navigateToNextMatch(bool skipCurrent) {
     } else {
         int startPos = INVALID_POSITION;
         if (skipCurrent) {
-            startPos = editor->selectionEnd();
+            startPos = static_cast<int>(editor->selectionEnd());
         } else {
-            startPos = editor->selectionStart();
+            startPos = static_cast<int>(editor->selectionStart());
         }
 
-        auto it = std::lower_bound(matches.begin(), matches.end(), startPos,
-                                   [](const QPair<int, int> &pair, int value) { return pair.first < value; });
+        const auto it = std::ranges::lower_bound(matches, startPos, std::less<int>{}, [](const QPair<int, int> &pair) {
+            return pair.first;
+        });
 
         if (it != matches.end()) {
             currentMatchIndex = std::distance(matches.begin(), it);
@@ -237,18 +235,19 @@ void QuickFindWidget::goToCurrentMatch() {
 }
 
 Scintilla::FindOption QuickFindWidget::computeSearchFlags() const {
+    using enum Scintilla::FindOption;
     Scintilla::FindOption searchFlags = {};
 
     if (ui->buttonMatchCase->isChecked()) {
-        searchFlags |= Scintilla::FindOption::MatchCase;
+        searchFlags |= MatchCase;
     }
 
     if (ui->buttonWholeWord->isChecked()) {
-        searchFlags |= Scintilla::FindOption::WholeWord;
+        searchFlags |= WholeWord;
     }
 
     if (ui->buttonRegexp->isChecked()) {
-        searchFlags |= Scintilla::FindOption::RegExp;
+        searchFlags |= RegExp;
     }
 
     return searchFlags;
@@ -288,7 +287,7 @@ void QuickFindWidget::positionWidget() {
         usableWidth -= editor->verticalScrollBar()->width();
     }
 
-    const QPoint position = QPoint(usableWidth - width(), 0);
+    const auto position = QPoint(usableWidth - width(), 0);
 
     move(editor->mapTo(parentWidget(), position));
 }

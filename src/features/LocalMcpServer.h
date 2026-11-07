@@ -45,6 +45,11 @@ private slots:
 private:
     QByteArray processJsonRpcRequest(const QByteArray &requestData);
     QJsonObject handleRpcMethod(const QString &method, const QJsonObject &params, const QJsonValue &id);
+    static QJsonObject handleInitialize();
+    static QJsonObject handleToolsList();
+    QJsonObject handleToolCall(const QString &toolName, const QJsonObject &arguments);
+    QJsonObject callListOpenTabs();
+    QJsonObject callReadActiveTab(const QJsonObject &arguments);
 
     EditorManager *editorManager;
     QTcpServer *tcpServer;

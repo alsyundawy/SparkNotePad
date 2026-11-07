@@ -175,7 +175,7 @@ public:
     QByteArray languageSingleLineComment;
 
     // NOLINTNEXTLINE(llvm-include-order)
-#include "ScintillaEnums.h"  // NOSONAR
+#include "ScintillaEnums.h"  // NOSONAR(cpp:S954)
 
 public slots:
     void close();  // NOLINT // NOSONAR(cpp:S5495)

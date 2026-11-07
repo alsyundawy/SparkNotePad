@@ -74,8 +74,7 @@ bool NetworkSecurityPolicy::isSafeUriScheme(const QUrl &url, QString *reason) {
 
     if (scheme == QLatin1String("file")) {
         const QString localPath = url.toLocalFile();
-        const QFileInfo fi(localPath);
-        if (fi.isExecutable() && !fi.isDir()) {
+        if (const QFileInfo fi(localPath); fi.isExecutable() && !fi.isDir()) {
             if (reason) {
                 *reason = QStringLiteral("Execution of executable binaries via file:// URI is strictly blocked");
             }

@@ -67,8 +67,8 @@ void LocalMcpServer::onNewConnection() {
         }
 
         // Enforce strict loopback validation
-        const QHostAddress peer = socket->peerAddress();
-        if (peer != QHostAddress::LocalHost && peer != QHostAddress(QStringLiteral("127.0.0.1")) &&
+        if (const QHostAddress peer = socket->peerAddress();
+            peer != QHostAddress::LocalHost && peer != QHostAddress(QStringLiteral("127.0.0.1")) &&
             peer != QHostAddress(QStringLiteral("::1"))) {
             socket->abort();
             socket->deleteLater();
@@ -125,114 +125,135 @@ QByteArray LocalMcpServer::processJsonRpcRequest(const QByteArray &requestData) 
     return QJsonDocument(resp).toJson(QJsonDocument::Compact) + "\n";
 }
 
+QJsonObject LocalMcpServer::handleInitialize() {
+    QJsonObject result;
+    result[QStringLiteral("protocolVersion")] = QStringLiteral("2024-11-05");
+    QJsonObject serverInfo;
+    serverInfo[QStringLiteral("name")] = QStringLiteral("SparkNotePad-MCP");
+    serverInfo[QStringLiteral("version")] = QStringLiteral("1.4.0");
+    result[QStringLiteral("serverInfo")] = serverInfo;
+
+    QJsonObject capabilities;
+    QJsonObject toolsCap;
+    toolsCap[QStringLiteral("listChanged")] = false;
+    capabilities[QStringLiteral("tools")] = toolsCap;
+    result[QStringLiteral("capabilities")] = capabilities;
+    return result;
+}
+
+QJsonObject LocalMcpServer::handleToolsList() {
+    QJsonArray tools;
+
+    // Tool 1: list_open_tabs
+    QJsonObject t1;
+    t1[QStringLiteral("name")] = QStringLiteral("list_open_tabs");
+    t1[QStringLiteral("description")] = QStringLiteral("List all open document tabs in SparkNotePad");
+    t1[QStringLiteral("inputSchema")] = QJsonObject{
+        {QStringLiteral("type"), QStringLiteral("object")},
+        {QStringLiteral("properties"), QJsonObject{}}
+    };
+    tools.append(t1);
+
+    // Tool 2: read_active_tab
+    QJsonObject t2;
+    t2[QStringLiteral("name")] = QStringLiteral("read_active_tab");
+    t2[QStringLiteral("description")] = QStringLiteral("Read text content of the currently active editor tab");
+    t2[QStringLiteral("inputSchema")] = QJsonObject{
+        {QStringLiteral("type"), QStringLiteral("object")},
+        {QStringLiteral("properties"), QJsonObject{
+            {QStringLiteral("max_bytes"), QJsonObject{
+                {QStringLiteral("type"), QStringLiteral("integer")},
+                {QStringLiteral("description"), QStringLiteral("Maximum bytes to read (default: 65536)")}
+            }}
+        }}
+    };
+    tools.append(t2);
+
+    QJsonObject result;
+    result[QStringLiteral("tools")] = tools;
+    return result;
+}
+
+QJsonObject LocalMcpServer::callListOpenTabs() {
+    QJsonArray tabsArr;
+    if (editorManager != nullptr) {
+        for (const auto &ed : editorManager->getEditors()) {
+            if (!ed) {
+                continue;
+            }
+            QJsonObject tabObj;
+            tabObj[QStringLiteral("name")] = ed->getName();
+            tabObj[QStringLiteral("path")] = ed->isFile() ? ed->getFilePath() : QString();
+            tabObj[QStringLiteral("is_saved")] = ed->isSavedToDisk();
+            tabObj[QStringLiteral("lines")] = static_cast<qint64>(ed->lineCount());
+            tabObj[QStringLiteral("length")] = static_cast<qint64>(ed->length());
+            tabsArr.append(tabObj);
+        }
+    }
+    QJsonObject result;
+    QJsonArray contentArr;
+    QJsonObject contentObj;
+    contentObj[QStringLiteral("type")] = QStringLiteral("text");
+    contentObj[QStringLiteral("text")] = QString::fromUtf8(QJsonDocument(tabsArr).toJson(QJsonDocument::Indented));
+    contentArr.append(contentObj);
+    result[QStringLiteral("content")] = contentArr;
+    return result;
+}
+
+QJsonObject LocalMcpServer::callReadActiveTab(const QJsonObject &arguments) {
+    QString textContent;
+    if (editorManager != nullptr) {
+        const auto eds = editorManager->getEditors();
+        if (!eds.isEmpty() && eds.first() != nullptr) {
+            const int maxBytes = arguments.value(QStringLiteral("max_bytes")).toInt(65536);
+            QByteArray raw = eds.first()->getText();
+            if (raw.size() > maxBytes) {
+                raw.truncate(maxBytes);
+            }
+            textContent = QString::fromUtf8(raw);
+        }
+    }
+
+    QJsonObject result;
+    QJsonArray contentArr;
+    QJsonObject contentObj;
+    contentObj[QStringLiteral("type")] = QStringLiteral("text");
+    contentObj[QStringLiteral("text")] = textContent;
+    contentArr.append(contentObj);
+    result[QStringLiteral("content")] = contentArr;
+    return result;
+}
+
+QJsonObject LocalMcpServer::handleToolCall(const QString &toolName, const QJsonObject &arguments) {
+    if (toolName == QLatin1String("list_open_tabs")) {
+        return callListOpenTabs();
+    }
+    if (toolName == QLatin1String("read_active_tab")) {
+        return callReadActiveTab(arguments);
+    }
+    return {};
+}
+
 QJsonObject LocalMcpServer::handleRpcMethod(const QString &method, const QJsonObject &params, const QJsonValue &id) {
     QJsonObject resp;
     resp[QStringLiteral("jsonrpc")] = QStringLiteral("2.0");
     resp[QStringLiteral("id")] = id;
 
     if (method == QLatin1String("initialize")) {
-        QJsonObject result;
-        result[QStringLiteral("protocolVersion")] = QStringLiteral("2024-11-05");
-        QJsonObject serverInfo;
-        serverInfo[QStringLiteral("name")] = QStringLiteral("SparkNotePad-MCP");
-        serverInfo[QStringLiteral("version")] = QStringLiteral("1.4.0");
-        result[QStringLiteral("serverInfo")] = serverInfo;
-
-        QJsonObject capabilities;
-        QJsonObject toolsCap;
-        toolsCap[QStringLiteral("listChanged")] = false;
-        capabilities[QStringLiteral("tools")] = toolsCap;
-        result[QStringLiteral("capabilities")] = capabilities;
-
-        resp[QStringLiteral("result")] = result;
+        resp[QStringLiteral("result")] = handleInitialize();
         return resp;
     }
 
     if (method == QLatin1String("tools/list")) {
-        QJsonArray tools;
-
-        // Tool 1: list_open_tabs
-        QJsonObject t1;
-        t1[QStringLiteral("name")] = QStringLiteral("list_open_tabs");
-        t1[QStringLiteral("description")] = QStringLiteral("List all open document tabs in SparkNotePad");
-        t1[QStringLiteral("inputSchema")] = QJsonObject{
-            {QStringLiteral("type"), QStringLiteral("object")},
-            {QStringLiteral("properties"), QJsonObject{}}
-        };
-        tools.append(t1);
-
-        // Tool 2: read_active_tab
-        QJsonObject t2;
-        t2[QStringLiteral("name")] = QStringLiteral("read_active_tab");
-        t2[QStringLiteral("description")] = QStringLiteral("Read text content of the currently active editor tab");
-        t2[QStringLiteral("inputSchema")] = QJsonObject{
-            {QStringLiteral("type"), QStringLiteral("object")},
-            {QStringLiteral("properties"), QJsonObject{
-                {QStringLiteral("max_bytes"), QJsonObject{
-                    {QStringLiteral("type"), QStringLiteral("integer")},
-                    {QStringLiteral("description"), QStringLiteral("Maximum bytes to read (default: 65536)")}
-                }}
-            }}
-        };
-        tools.append(t2);
-
-        QJsonObject result;
-        result[QStringLiteral("tools")] = tools;
-        resp[QStringLiteral("result")] = result;
+        resp[QStringLiteral("result")] = handleToolsList();
         return resp;
     }
 
     if (method == QLatin1String("tools/call")) {
         const QString toolName = params.value(QStringLiteral("name")).toString();
         const QJsonObject arguments = params.value(QStringLiteral("arguments")).toObject();
-
-        if (toolName == QLatin1String("list_open_tabs")) {
-            QJsonArray tabsArr;
-            if (editorManager) {
-                for (const auto &ed : editorManager->getEditors()) {
-                    if (ed) {
-                        QJsonObject tabObj;
-                        tabObj[QStringLiteral("name")] = ed->getName();
-                        tabObj[QStringLiteral("path")] = ed->isFile() ? ed->getFilePath() : QString();
-                        tabObj[QStringLiteral("is_saved")] = ed->isSavedToDisk();
-                        tabObj[QStringLiteral("lines")] = static_cast<qint64>(ed->lineCount());
-                        tabObj[QStringLiteral("length")] = static_cast<qint64>(ed->length());
-                        tabsArr.append(tabObj);
-                    }
-                }
-            }
-            QJsonObject result;
-            QJsonArray contentArr;
-            QJsonObject contentObj;
-            contentObj[QStringLiteral("type")] = QStringLiteral("text");
-            contentObj[QStringLiteral("text")] = QString::fromUtf8(QJsonDocument(tabsArr).toJson(QJsonDocument::Indented));
-            contentArr.append(contentObj);
-            result[QStringLiteral("content")] = contentArr;
-            resp[QStringLiteral("result")] = result;
-            return resp;
-        }
-
-        if (toolName == QLatin1String("read_active_tab")) {
-            QString textContent;
-            if (editorManager) {
-                const auto eds = editorManager->getEditors();
-                if (!eds.isEmpty() && eds.first()) {
-                    const int maxBytes = arguments.value(QStringLiteral("max_bytes")).toInt(65536);
-                    QByteArray raw = eds.first()->getText();
-                    if (raw.size() > maxBytes) {
-                        raw.truncate(maxBytes);
-                    }
-                    textContent = QString::fromUtf8(raw);
-                }
-            }
-
-            QJsonObject result;
-            QJsonArray contentArr;
-            QJsonObject contentObj;
-            contentObj[QStringLiteral("type")] = QStringLiteral("text");
-            contentObj[QStringLiteral("text")] = textContent;
-            contentArr.append(contentObj);
-            result[QStringLiteral("content")] = contentArr;
+        const QJsonObject result = handleToolCall(toolName, arguments);
+        if (!result.isEmpty()) {
             resp[QStringLiteral("result")] = result;
             return resp;
         }
