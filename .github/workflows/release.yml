@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Release Tag (e.g. v1.3.9)"
+        description: "Release Tag (e.g. v1.4.0)"
         required: false
-        default: "v1.3.9"
+        default: "v1.4.0"
 
 permissions:
   contents: write
@@ -164,7 +164,7 @@ jobs:
           elif [ -n "$PROJECT_VER" ]; then
             TAG="v${PROJECT_VER}"
           else
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.9")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.4.0")
           fi
           echo "Target Release: ${TAG}"
           gh release view "${TAG}" >/dev/null 2>&1 || \
@@ -304,7 +304,7 @@ jobs:
           elif [ -n "$PROJECT_VER" ]; then
             TAG="v${PROJECT_VER}"
           else
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.9")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.4.0")
           fi
           echo "Target Release: ${TAG}"
           gh release view "${TAG}" >/dev/null 2>&1 || \
@@ -470,7 +470,7 @@ jobs:
           elif [ -n "$PROJECT_VER" ]; then
             TAG="v${PROJECT_VER}"
           else
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.9")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.4.0")
           fi
           echo "Target Release: ${TAG}"
           gh release view "${TAG}" >/dev/null 2>&1 || \
@@ -638,7 +638,7 @@ jobs:
           elif [ -n "$PROJECT_VER" ]; then
             TAG="v${PROJECT_VER}"
           else
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.9")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.4.0")
           fi
           echo "Target Release: ${TAG}"
           gh release view "${TAG}" >/dev/null 2>&1 || \
@@ -685,7 +685,7 @@ jobs:
           elif [ -n "$PROJECT_VER" ]; then
             TAG="v${PROJECT_VER}"
           else
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.3.9")
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.4.0")
           fi
           echo "Resolved release tag: ${TAG}"
           echo "RELEASE_TAG=${TAG}" >> "$GITHUB_ENV"
