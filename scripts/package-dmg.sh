@@ -13,7 +13,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 # Input parameters
 APP_DIR="${1:-${REPO_ROOT}/build/install/SparkNotePad.app}"
-DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.3.9-x64.dmg}"
+DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.4.0-x64.dmg}"
 VOL_NAME="${3:-SparkNotePad}"
 
 # Ensure absolute paths
