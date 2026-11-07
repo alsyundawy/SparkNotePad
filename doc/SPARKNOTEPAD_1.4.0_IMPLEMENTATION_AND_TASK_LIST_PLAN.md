@@ -140,72 +140,72 @@ Every task and subsystem in v1.4.0 is audited against these 14 pillars:
 
 ### Phase 1: Scintilla 5.6.9 Change History & Line Spacing Integration
 
-- [ ] **Task 1.1: ScintillaNext Change History Engine Hooks**
+- [x] **Task 1.1: ScintillaNext Change History Engine Hooks**
   - Implement `setChangeHistoryEnabled(bool)` in `ScintillaNext.cpp` using `SCI_SETCHANGEHISTORY`.
   - Assign margin 4 with indicators for modified (orange), saved (green), and reverted states.
-- [ ] **Task 1.2: Fine-Grained Line Spacing Controls**
+- [x] **Task 1.2: Fine-Grained Line Spacing Controls**
   - Implement `setExtraLineSpacing(int ascent, int descent)` in `ScintillaNext.cpp` using `SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT`.
   - Store configuration in `ApplicationSettings`.
-- [ ] **Task 1.3: Preferences Dialog UI Updates**
+- [x] **Task 1.3: Preferences Dialog UI Updates**
   - Update `PreferencesDialog.ui` with controls for Change History and Line Spacing.
 
 ### Phase 2: macOS Title-Bar Proxy Icon & Enriched Tab Tooltips
 
-- [ ] **Task 2.1: Native macOS Window File Path Proxy Icon**
+- [x] **Task 2.1: Native macOS Window File Path Proxy Icon**
   - Call `QMainWindow::setWindowFilePath` when switching active tabs in `MainWindow.cpp`.
-- [ ] **Task 2.2: Enriched Tab Tooltips**
+- [x] **Task 2.2: Enriched Tab Tooltips**
   - Format rich HTML tooltips in `DockedEditor.cpp` displaying path, size, lines, characters, encoding, EOL, and modification time.
 
 ### Phase 3: Search Enhancements & Batch Automation
 
-- [ ] **Task 3.1: Fuzzy Subsequence Search Matcher**
+- [x] **Task 3.1: Fuzzy Subsequence Search Matcher**
   - Implement `buildFuzzySubsequencePattern` in `RegexSafetyEngine` with ReDoS protection.
   - Add "Fuzzy Match" checkbox in `FindReplaceDialog` and `QuickFindWidget`.
-- [ ] **Task 3.2: Batch Macro Processing**
+- [x] **Task 3.2: Batch Macro Processing**
   - Add "All Open Files" and "Directory" batch modes in `MacroRunDialog`.
   - Implement cancellable background execution with progress feedback.
 
 ### Phase 4: Diagnostic Transparency & Local MCP Tool Server
 
-- [ ] **Task 4.1: Help → Copy Debug Information to Clipboard**
+- [x] **Task 4.1: Help → Copy Debug Information to Clipboard**
   - Format comprehensive diagnostic string (OS, Qt, compiler, theme, plugins) in `MainWindow.cpp`.
-- [ ] **Task 4.2: Local Read-Only Model Context Protocol (MCP) Server**
+- [x] **Task 4.2: Local Read-Only Model Context Protocol (MCP) Server**
   - Implement loopback-only, token-authenticated, read-only MCP server in `src/features/LocalMcpServer.cpp`.
 
 ### Phase 5: Security Hardening & 2025–2026 CVE Mitigations
 
-- [ ] **Task 5.1: Strict URI Scheme Validator (CVE-2026-20841)**
+- [x] **Task 5.1: Strict URI Scheme Validator (CVE-2026-20841)**
   - Validate and sanitize all external links in `NetworkSecurityPolicy`.
-- [ ] **Task 5.2: XML & JSON Parser Depth Limiter (CVE-2026-16762)**
+- [x] **Task 5.2: XML & JSON Parser Depth Limiter (CVE-2026-16762)**
   - Enforce 32-level recursion limit in `ConfigIntegrityGuard`.
-- [ ] **Task 5.3: Safe Process Argument Quoting (CVE-2026-25926)**
+- [x] **Task 5.3: Safe Process Argument Quoting (CVE-2026-25926)**
   - Ensure all external process calls use argument arrays without shell invocation.
 
 ### Phase 6: i18n Translation & UI Text Synchronization
 
-- [ ] **Task 6.1: String Extraction (`lupdate`)**
+- [x] **Task 6.1: String Extraction (`lupdate`)**
   - Extract newly added strings into `SparkNotePad_en.ts` and `SparkNotePad_id.ts`.
-- [ ] **Task 6.2: Translation Completion**
+- [x] **Task 6.2: Translation Completion**
   - Translate all strings for 100% coverage (0 unfinished strings).
-- [ ] **Task 6.3: Binary Compilation (`lrelease`)**
+- [x] **Task 6.3: Binary Compilation (`lrelease`)**
   - Compile `.qm` binary catalogs.
 
 ### Phase 7: Static Analysis & 14-Pillar Quality Verification
 
-- [ ] **Task 7.1: Automated Lint & Syntax Check**
+- [x] **Task 7.1: Automated Lint & Syntax Check**
   - Execute `cppcheck` and `clangd --check`.
-- [ ] **Task 7.2: SonarLint Verification**
+- [x] **Task 7.2: SonarLint Verification**
   - Restart SonarLint language server (`sonar-restart-ext.sh`) and resolve diagnostics.
-- [ ] **Task 7.3: 14-Pillar Review Sign-Off**
+- [x] **Task 7.3: 14-Pillar Review Sign-Off**
   - Validate all 14 review pillars with empirical evidence.
 
 ### Phase 8: CMake Build & Release Synchronization
 
-- [ ] **Task 8.1: Update Version in CMakeLists.txt**
+- [x] **Task 8.1: Update Version in CMakeLists.txt**
   - Bump version to `1.4.0`.
-- [ ] **Task 8.2: CMake Build (Unix Makefiles, No Ninja)**
+- [x] **Task 8.2: CMake Build (Unix Makefiles, No Ninja)**
   - Compile with `cmake --build build -j2`.
-- [ ] **Task 8.3: Unit Test Suite**
+- [x] **Task 8.3: Unit Test Suite**
   - Run all tests via `ctest --test-dir build --output-on-failure`.
-- [ ] **Task 8.4: Documentation Rebuild**
+- [x] **Task 8.4: Documentation Rebuild**
   - Synchronize `README.md`, `README-id.md`, `doc/CHANGELOG.txt`, `doc/DOCNOTE.txt`, `wiki/`.
