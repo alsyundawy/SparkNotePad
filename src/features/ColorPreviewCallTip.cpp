@@ -17,9 +17,36 @@
 #include <QColorDialog>
 #include <QRegularExpression>
 #include <QToolTip>
+#include <algorithm>
 
 static inline int QColorToScintillaColour(const QColor &c) {
     return c.red() | (c.green() << 8) | (c.blue() << 16);
+}
+
+static inline QColor parseColor(const QString &text) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    return QColor::fromString(text);
+#else
+    QColor c(text);
+    if (c.isValid()) {
+        return c;
+    }
+    // Fallback for Qt < 6.4: parse functional rgb/rgba notation
+    static const QRegularExpression rgbFuncRegex(
+        QStringLiteral("rgba?\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})(?:\\s*,\\s*([0-9.]+))?\\s*\\)"),
+        QRegularExpression::CaseInsensitiveOption);
+    const auto rgbMatch = rgbFuncRegex.match(text);
+    if (rgbMatch.hasMatch()) {
+        const int r = std::clamp(rgbMatch.captured(1).toInt(), 0, 255);
+        const int g = std::clamp(rgbMatch.captured(2).toInt(), 0, 255);
+        const int b = std::clamp(rgbMatch.captured(3).toInt(), 0, 255);
+        const int a = rgbMatch.captured(4).isEmpty()
+                          ? 255
+                          : std::clamp(static_cast<int>(rgbMatch.captured(4).toDouble() * 255.0), 0, 255);
+        return QColor(r, g, b, a);
+    }
+    return QColor();
+#endif
 }
 
 ColorPreviewCallTip::ColorPreviewCallTip(ScintillaNext *editor) : EditorDecorator(editor) {
@@ -98,9 +125,9 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
             const QString selText = QString::fromUtf8(editor->get_text_range(selStart, selEnd)).trimmed();
             QColor c;
             if (selText.startsWith(QLatin1String("0x"), Qt::CaseInsensitive)) {
-                c = QColor::fromString(QStringLiteral("#") + selText.mid(2));
+                c = parseColor(QStringLiteral("#") + selText.mid(2));
             } else {
-                c = QColor::fromString(selText);
+                c = parseColor(selText);
             }
             if (c.isValid()) {
                 match.found = true;
@@ -153,10 +180,10 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
             const QString raw = m.captured(0);
             QColor c;
             if (raw.startsWith(QLatin1String("0x"), Qt::CaseInsensitive)) {
-                c = QColor::fromString(QStringLiteral("#") + raw.mid(2));
+                c = parseColor(QStringLiteral("#") + raw.mid(2));
                 match.format = Hex0x;
             } else {
-                c = QColor::fromString(raw);
+                c = parseColor(raw);
                 if (raw.length() == 4)
                     match.format = Hex3;
                 else if (raw.length() == 5)
@@ -187,7 +214,7 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
         auto m = rgbIt.next();
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString raw = m.captured(0);
-            const QColor c = QColor::fromString(raw);
+            const QColor c = parseColor(raw);
             if (c.isValid()) {
                 match.found = true;
                 match.startPos = lineStart + m.capturedStart();
@@ -210,7 +237,7 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
         auto m = hslIt.next();
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString raw = m.captured(0);
-            const QColor c = QColor::fromString(raw);
+            const QColor c = parseColor(raw);
             if (c.isValid()) {
                 match.found = true;
                 match.startPos = lineStart + m.capturedStart();
@@ -239,7 +266,7 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString word = m.captured(0).toLower();
             if (namedColors.contains(word)) {
-                const QColor c = QColor::fromString(word);
+                const QColor c = parseColor(word);
                 if (c.isValid()) {
                     match.found = true;
                     match.startPos = lineStart + m.capturedStart();
