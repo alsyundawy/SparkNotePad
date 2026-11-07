@@ -1133,20 +1133,24 @@
 <context>
     <name>AuthenticateDialog</name>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="vanished">Dialog</translation>
+        <translation>Dialog</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="26"/>
         <source>Please provide the user name and password for the download location.</source>
-        <translation type="vanished">Please provide the user name and password for the download location.</translation>
+        <translation>Please provide the user name and password for the download location.</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="35"/>
         <source>&amp;User name:</source>
-        <translation type="vanished">&amp;User name:</translation>
+        <translation>&amp;User name:</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="48"/>
         <source>&amp;Password:</source>
-        <translation type="vanished">&amp;Password:</translation>
+        <translation>&amp;Password:</translation>
     </message>
 </context>
 <context>
@@ -2124,128 +2128,167 @@ Or fallback online URL:
 <context>
     <name>Downloader</name>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="23"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="311"/>
         <source>Updater</source>
-        <translation type="vanished">Updater</translation>
+        <translation>Updater</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="90"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="144"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="385"/>
         <source>Downloading updates</source>
-        <translation type="vanished">Downloading updates</translation>
+        <translation>Downloading updates</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="113"/>
         <source>Time remaining: 0 minutes</source>
-        <translation type="vanished">Time remaining: 0 minutes</translation>
+        <translation>Time remaining: 0 minutes</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="154"/>
         <source>Open</source>
-        <translation type="vanished">Open</translation>
+        <translation>Open</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="161"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="143"/>
         <source>Stop</source>
-        <translation type="vanished">Stop</translation>
+        <translation>Stop</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="145"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="483"/>
         <source>Time remaining</source>
-        <translation type="vanished">Time remaining</translation>
+        <translation>Time remaining</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="145"/>
         <source>unknown</source>
-        <translation type="vanished">unknown</translation>
+        <translation>unknown</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="251"/>
         <source>Error</source>
-        <translation type="vanished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="251"/>
         <source>Cannot find downloaded update!</source>
-        <translation type="vanished">Cannot find downloaded update!</translation>
+        <translation>Cannot find downloaded update!</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="267"/>
         <source>Close</source>
-        <translation type="vanished">Close</translation>
+        <translation>Close</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="268"/>
         <source>Download complete!</source>
-        <translation type="vanished">Download complete!</translation>
+        <translation>Download complete!</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="269"/>
         <source>The installer opens separately</source>
-        <translation type="vanished">The installer opens separately</translation>
+        <translation>The installer opens separately</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="276"/>
         <source>Click &quot;OK&quot; to begin installing the update</source>
-        <translation type="vanished">Click &quot;OK&quot; to begin installing the update</translation>
+        <translation>Click &quot;OK&quot; to begin installing the update</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="278"/>
         <source>In order to install the update, you may need to quit the application.</source>
-        <translation type="vanished">In order to install the update, you may need to quit the application.</translation>
+        <translation>In order to install the update, you may need to quit the application.</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="282"/>
         <source>In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</source>
-        <translation type="vanished">In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</translation>
+        <translation>In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="298"/>
         <source>Click the &quot;Open&quot; button to apply the update</source>
-        <translation type="vanished">Click the &quot;Open&quot; button to apply the update</translation>
+        <translation>Click the &quot;Open&quot; button to apply the update</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="315"/>
         <source>Are you sure you want to cancel the download?</source>
-        <translation type="vanished">Are you sure you want to cancel the download?</translation>
+        <translation>Are you sure you want to cancel the download?</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="317"/>
         <source>Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</source>
-        <translation type="vanished">Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</translation>
+        <translation>Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="372"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="379"/>
         <source>%1 bytes</source>
-        <translation type="vanished">%1 bytes</translation>
+        <translation>%1 bytes</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="374"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="381"/>
         <source>%1 KB</source>
-        <translation type="vanished">%1 KB</translation>
+        <translation>%1 KB</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="376"/>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="383"/>
         <source>%1 MB</source>
-        <translation type="vanished">%1 MB</translation>
+        <translation>%1 MB</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="385"/>
         <source>of</source>
-        <translation type="vanished">of</translation>
+        <translation>of</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="430"/>
         <source>Downloading Updates</source>
-        <translation type="vanished">Downloading Updates</translation>
+        <translation>Downloading Updates</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="431"/>
         <source>Time Remaining</source>
-        <translation type="vanished">Time Remaining</translation>
+        <translation>Time Remaining</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="431"/>
         <source>Unknown</source>
-        <translation type="vanished">Unknown</translation>
+        <translation>Unknown</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="459"/>
         <source>about %1 hours</source>
-        <translation type="vanished">about %1 hours</translation>
+        <translation>about %1 hours</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="461"/>
         <source>about one hour</source>
-        <translation type="vanished">about one hour</translation>
+        <translation>about one hour</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="469"/>
         <source>%1 minutes</source>
-        <translation type="vanished">%1 minutes</translation>
+        <translation>%1 minutes</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="471"/>
         <source>1 minute</source>
-        <translation type="vanished">1 minute</translation>
+        <translation>1 minute</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="478"/>
         <source>%1 seconds</source>
-        <translation type="vanished">%1 seconds</translation>
+        <translation>%1 seconds</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="480"/>
         <source>1 second</source>
-        <translation type="vanished">1 second</translation>
+        <translation>1 second</translation>
     </message>
 </context>
 <context>
@@ -8343,7 +8386,7 @@ Key: %2</translation>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="207"/>
         <source>Default Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Default Language</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="219"/>
@@ -8754,20 +8797,24 @@ Key: %2</translation>
         <translation>[Error: Invalid Base64 Data or Padding]</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="209"/>
         <source>List All Tabs</source>
-        <translation type="vanished">List All Tabs</translation>
+        <translation>List All Tabs</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="220"/>
         <source>Detach Group</source>
-        <translation type="vanished">Detach Group</translation>
+        <translation>Detach Group</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="247"/>
         <source>Minimize</source>
-        <translation type="vanished">Minimize</translation>
+        <translation>Minimize</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="274"/>
         <source>Close Tab</source>
-        <translation type="vanished">Close Tab</translation>
+        <translation>Close Tab</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="214"/>
@@ -10023,32 +10070,32 @@ Key: %2</translation>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="241"/>
         <source>Mignon (Cute Pastel)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mignon (Cute Pastel)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="242"/>
         <source>Playful modern pastel desktop iconography by Igor Moraes</source>
-        <translation type="unfinished"></translation>
+        <translation>Playful modern pastel desktop iconography by Igor Moraes</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="251"/>
         <source>Palette (Modern Vibrant)</source>
-        <translation type="unfinished"></translation>
+        <translation>Palette (Modern Vibrant)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="252"/>
         <source>Vibrant modern flat vector iconography by mjkim0727</source>
-        <translation type="unfinished"></translation>
+        <translation>Vibrant modern flat vector iconography by mjkim0727</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="261"/>
         <source>Diagonal (Sleek Angular)</source>
-        <translation type="unfinished"></translation>
+        <translation>Diagonal (Sleek Angular)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="262"/>
         <source>Sleek geometric angular vector iconography by Tamas Csabi</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleek geometric angular vector iconography by Tamas Csabi</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="379"/>
@@ -10226,172 +10273,217 @@ Key: %2</translation>
 <context>
     <name>Updater</name>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="477"/>
         <source>Would you like to download the update now?</source>
-        <translation type="vanished">Would you like to download the update now?</translation>
+        <translation>Would you like to download the update now?</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="479"/>
         <source>Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</source>
-        <translation type="vanished">Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</translation>
+        <translation>Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="485"/>
         <source>&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</source>
-        <translation type="vanished">&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</translation>
+        <translation>&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="488"/>
         <source>Version %1 of %2 has been released!</source>
-        <translation type="vanished">Version %1 of %2 has been released!</translation>
+        <translation>Version %1 of %2 has been released!</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="520"/>
         <source>No updates are available for the moment</source>
-        <translation type="vanished">No updates are available for the moment</translation>
+        <translation>No updates are available for the moment</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="522"/>
         <source>Congratulations! You are running the latest version of %1</source>
-        <translation type="vanished">Congratulations! You are running the latest version of %1</translation>
+        <translation>Congratulations! You are running the latest version of %1</translation>
     </message>
 </context>
 <context>
     <name>ads::CAutoHideTab</name>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="394"/>
         <source>Detach</source>
-        <translation type="vanished">Detach</translation>
+        <translation>Detach</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="399"/>
         <source>Pin To...</source>
-        <translation type="vanished">Pin To...</translation>
+        <translation>Pin To...</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="401"/>
         <source>Top</source>
-        <translation type="vanished">Top</translation>
+        <translation>Top</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="402"/>
         <source>Left</source>
-        <translation type="vanished">Left</translation>
+        <translation>Left</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="403"/>
         <source>Right</source>
-        <translation type="vanished">Right</translation>
+        <translation>Right</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="404"/>
         <source>Bottom</source>
-        <translation type="vanished">Bottom</translation>
+        <translation>Bottom</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="406"/>
         <source>Unpin (Dock)</source>
-        <translation type="vanished">Unpin (Dock)</translation>
+        <translation>Unpin (Dock)</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="408"/>
         <source>Close</source>
-        <translation type="vanished">Close</translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockAreaTitleBar</name>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="885"/>
         <source>Detach</source>
-        <translation type="vanished">Detach</translation>
+        <translation>Detach</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="885"/>
         <source>Detach Group</source>
-        <translation type="vanished">Detach Group</translation>
+        <translation>Detach Group</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="890"/>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="946"/>
         <source>Unpin (Dock)</source>
-        <translation type="vanished">Unpin (Dock)</translation>
+        <translation>Unpin (Dock)</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="890"/>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="951"/>
         <source>Pin Group</source>
-        <translation type="vanished">Pin Group</translation>
+        <translation>Pin Group</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="896"/>
         <source>Pin Group To...</source>
-        <translation type="vanished">Pin Group To...</translation>
+        <translation>Pin Group To...</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="898"/>
         <source>Top</source>
-        <translation type="vanished">Top</translation>
+        <translation>Top</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="899"/>
         <source>Left</source>
-        <translation type="vanished">Left</translation>
+        <translation>Left</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="900"/>
         <source>Right</source>
-        <translation type="vanished">Right</translation>
+        <translation>Right</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="901"/>
         <source>Bottom</source>
-        <translation type="vanished">Bottom</translation>
+        <translation>Bottom</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="909"/>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="963"/>
         <source>Minimize</source>
-        <translation type="vanished">Minimize</translation>
+        <translation>Minimize</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="910"/>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="914"/>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="963"/>
         <source>Close</source>
-        <translation type="vanished">Close</translation>
+        <translation>Close</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="914"/>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="972"/>
         <source>Close Group</source>
-        <translation type="vanished">Close Group</translation>
+        <translation>Close Group</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="920"/>
         <source>Close Other Groups</source>
-        <translation type="vanished">Close Other Groups</translation>
+        <translation>Close Other Groups</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="955"/>
         <source>Pin Active Tab (Press Ctrl to Pin Group)</source>
-        <translation type="vanished">Pin Active Tab (Press Ctrl to Pin Group)</translation>
+        <translation>Pin Active Tab (Press Ctrl to Pin Group)</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="968"/>
         <source>Close Active Tab</source>
-        <translation type="vanished">Close Active Tab</translation>
+        <translation>Close Active Tab</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockManager</name>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockManager.cpp" line="544"/>
         <source>Show View</source>
-        <translation type="vanished">Show View</translation>
+        <translation>Show View</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockWidgetTab</name>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="618"/>
         <source>Detach</source>
-        <translation type="vanished">Detach</translation>
+        <translation>Detach</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="622"/>
         <source>Pin</source>
-        <translation type="vanished">Pin</translation>
+        <translation>Pin</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="626"/>
         <source>Pin To...</source>
-        <translation type="vanished">Pin To...</translation>
+        <translation>Pin To...</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="628"/>
         <source>Top</source>
-        <translation type="vanished">Top</translation>
+        <translation>Top</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="629"/>
         <source>Left</source>
-        <translation type="vanished">Left</translation>
+        <translation>Left</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="630"/>
         <source>Right</source>
-        <translation type="vanished">Right</translation>
+        <translation>Right</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="631"/>
         <source>Bottom</source>
-        <translation type="vanished">Bottom</translation>
+        <translation>Bottom</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="636"/>
         <source>Close</source>
-        <translation type="vanished">Close</translation>
+        <translation>Close</translation>
     </message>
     <message>
+        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="640"/>
         <source>Close Others</source>
-        <translation type="vanished">Close Others</translation>
+        <translation>Close Others</translation>
     </message>
 </context>
 </TS>
