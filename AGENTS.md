@@ -11,3 +11,22 @@
    - Configuration: `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release`
    - Build: `cmake --build build` (or controlled jobs `cmake --build build -j2`)
    - Test: `ctest --test-dir build --output-on-failure` or `./build/tests/SparkNotePadTests`
+
+3. **PERMANENT LIGHTWEIGHT DMG PACKAGING STANDARD (STRICTLY ~30MB–34MB, < 35MB CEILING)**:
+   - **Zero Bloatware Mandate**: Under NO circumstances may unused Qt frameworks (`QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, `QtVirtualKeyboardQml.framework`, `libqtvirtualkeyboardplugin.dylib`, extra `imageformats` dylibs, redundant `tls` plugins) be bundled into macOS release DMGs.
+   - **Binary Stripping**: Always strip binary symbols from `SparkNotePad.app/Contents/MacOS/SparkNotePad` using `strip -x`.
+   - **Strict Size Ceiling**: The packaged DMG must strictly remain between 30MB and 34MB (hard ceiling: 35MB / 36,700,160 bytes). Any DMG build exceeding 35MB is considered defective bloatware and will immediately fail build verification.
+
+4. **PERMANENT DMG BRANDING & BACKGROUND PRESERVATION**:
+   - **Canonical Packager**: Always package macOS DMGs using `scripts/package-dmg.sh` via native `hdiutil` with the pre-baked layout preset (`deploy/macos/dmg-ds-store`, 10,244 bytes).
+   - **Prohibition of Flaky AppleScript Tools**: Never invoke unverified `create-dmg` AppleScripts that strip `backgroundImageAlias` or fail on modern macOS.
+   - **Required Presentation Assets**: Every DMG bundle MUST preserve:
+     - `.background/dmg-background.png` and `.background/dmg-background@2x.png`
+     - Pre-baked `.DS_Store` containing `backgroundImageAlias`, 680x440 window bounds, and icon coordinates
+     - `Applications -> /Applications` drag-and-drop symlink
+     - `.VolumeIcon.icns` with custom volume attributes
+   - **Automated Verification Gate**: `scripts/package-dmg.sh` automatically mounts the output DMG, asserts that `backgroundImageAlias` is present and valid, checks file size <= 35MB, and validates CRC32 checksum via `hdiutil verify`.
+
+5. **STRICT GIT DISCIPLINE & ZERO-TRASH COMMITS**:
+   - Do not create superfluous, noisy, or scattered git commits ("no nyampah git commits").
+   - Every commit must be atomic, purposeful, and follow Conventional Commits formatting (`feat(...)`, `fix(...)`, `docs(...)`).

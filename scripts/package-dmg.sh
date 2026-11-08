@@ -46,6 +46,7 @@ fi
 
 # Ensure background image exists, regenerate if needed
 BG_IMG="${REPO_ROOT}/deploy/macos/dmg-background.png"
+BG_IMG_2X="${REPO_ROOT}/deploy/macos/dmg-background@2x.png"
 if [[ ! -f ${BG_IMG} ]]; then
 	echo "[*] Generating DMG background image..."
 	if command -v python3 >/dev/null 2>&1; then
@@ -56,14 +57,11 @@ if [[ ! -f ${BG_IMG} ]]; then
 fi
 
 VOL_ICON="${REPO_ROOT}/icon/SparkNotePad.icns"
+DS_STORE_PRESET="${REPO_ROOT}/deploy/macos/dmg-ds-store"
 
-# Ensure create-dmg is installed
-if ! command -v create-dmg >/dev/null 2>&1; then
-	echo "[*] create-dmg not found in PATH. Checking Homebrew..."
-	if command -v brew >/dev/null 2>&1; then
-		echo "[*] Installing create-dmg via Homebrew..."
-		brew install create-dmg || true
-	fi
+if [[ ! -f ${DS_STORE_PRESET} ]]; then
+	echo "Error: Required DMG layout preset not found at '${DS_STORE_PRESET}'" >&2
+	exit 1
 fi
 
 # Cleanup previous DMG if present
@@ -112,79 +110,41 @@ codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 # Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
 touch "${STAGE_DIR}/SparkNotePad.app"
 
-# Attempt DMG creation using create-dmg if available
-CREATED=0
-if command -v create-dmg >/dev/null 2>&1; then
-	echo "[*] Packaging styled DMG using create-dmg..."
-	CREATE_DMG_ARGS=(
-		--volname "${VOL_NAME}"
-		--window-pos 200 120
-		--window-size 680 440
-		--icon-size 128
-		--text-size 12
-		--icon "SparkNotePad.app" 170 245
-		--hide-extension "SparkNotePad.app"
-		--app-drop-link 510 245
-		--format UDZO
-		--hdiutil-retries 10
-		--applescript-sleep-duration 5
-		--overwrite
-	)
+# Stage styled presentation assets (background, Applications symlink, volume icon, .DS_Store)
+echo "[*] Staging custom presentation assets with preserved background..."
+ln -s /Applications "${STAGE_DIR}/Applications"
 
-	if [[ -f ${VOL_ICON} ]]; then
-		CREATE_DMG_ARGS+=(--volicon "${VOL_ICON}")
-	fi
+mkdir -p "${STAGE_DIR}/.background"
+if [[ -f ${BG_IMG} ]]; then
+	cp "${BG_IMG}" "${STAGE_DIR}/.background/dmg-background.png"
+fi
+if [[ -f ${BG_IMG_2X} ]]; then
+	cp "${BG_IMG_2X}" "${STAGE_DIR}/.background/dmg-background@2x.png"
+fi
+chflags hidden "${STAGE_DIR}/.background" 2>/dev/null || true
 
-	if [[ -f ${BG_IMG} ]]; then
-		CREATE_DMG_ARGS+=(--background "${BG_IMG}")
-	fi
+cp "${DS_STORE_PRESET}" "${STAGE_DIR}/.DS_Store"
 
-	# Always attempt full styled DMG with AppleScript first
-	if create-dmg "${CREATE_DMG_ARGS[@]}" "${DMG_OUTPUT}" "${STAGE_DIR}"; then
-		CREATED=1
-		echo "[*] Styled DMG successfully created with create-dmg."
-	else
-		echo "Warning: Standard create-dmg failed (AppleScript unavailable or timed out). Falling back to native hdiutil with pre-baked .DS_Store..." >&2
-		CREATED=0
-	fi
+if [[ -f ${VOL_ICON} ]]; then
+	cp "${VOL_ICON}" "${STAGE_DIR}/.VolumeIcon.icns"
+	chflags hidden "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
 fi
 
-# Fallback to native hdiutil packaging with pre-baked .DS_Store styling
-if [[ ${CREATED} -eq 0 ]]; then
-	echo "[*] Falling back to native hdiutil packaging with styled .DS_Store..."
-	ln -s /Applications "${STAGE_DIR}/Applications"
-
-	if [[ -f ${BG_IMG} ]]; then
-		mkdir -p "${STAGE_DIR}/.background"
-		cp "${BG_IMG}" "${STAGE_DIR}/.background/dmg-background.png"
-		chflags hidden "${STAGE_DIR}/.background" 2>/dev/null || true
-	fi
-
-	DS_STORE_PRESET="${REPO_ROOT}/deploy/macos/dmg-ds-store"
-	if [[ -f ${DS_STORE_PRESET} ]]; then
-		cp "${DS_STORE_PRESET}" "${STAGE_DIR}/.DS_Store"
-	fi
-
-	if [[ -f ${VOL_ICON} ]]; then
-		cp "${VOL_ICON}" "${STAGE_DIR}/.VolumeIcon.icns"
-		chflags hidden "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
-	fi
-
-	if command -v SetFile >/dev/null 2>&1; then
-		SetFile -a V "${STAGE_DIR}/.background" 2>/dev/null || true
-		SetFile -a V "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
-		SetFile -c icnC "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
-		SetFile -a C "${STAGE_DIR}" 2>/dev/null || true
-	fi
-
-	hdiutil create \
-		-volname "${VOL_NAME}" \
-		-srcfolder "${STAGE_DIR}" \
-		-ov \
-		-format UDZO \
-		-imagekey zlib-level=9 \
-		"${DMG_OUTPUT}"
+if command -v SetFile >/dev/null 2>&1; then
+	SetFile -a V "${STAGE_DIR}/.background" 2>/dev/null || true
+	SetFile -a V "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
+	SetFile -c icnC "${STAGE_DIR}/.VolumeIcon.icns" 2>/dev/null || true
+	SetFile -a C "${STAGE_DIR}" 2>/dev/null || true
 fi
+
+echo "[*] Packaging styled lightweight DMG via native hdiutil..."
+hdiutil create \
+	-volname "${VOL_NAME}" \
+	-srcfolder "${STAGE_DIR}" \
+	-ov \
+	-format UDZO \
+	-imagekey zlib-level=9 \
+	"${DMG_OUTPUT}"
 
 # Verification
 if [[ ! -f ${DMG_OUTPUT} ]]; then
@@ -195,7 +155,36 @@ fi
 echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
+# Strict size gate: must not exceed 35MB (36700160 bytes)
+DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c < "${DMG_OUTPUT}")"
+MAX_ALLOWED_BYTES=36700160 # 35 MB
 DMG_SIZE="$(du -h "${DMG_OUTPUT}" | cut -f1)"
+
+if (( DMG_SIZE_BYTES > MAX_ALLOWED_BYTES )); then
+	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) exceeds the strict 35MB limit! Bloatware detected." >&2
+	exit 1
+fi
+
+# Strict background & layout integrity gate
+VERIFY_MOUNT="$(mktemp -d /tmp/sparknotepad-verify-mount.XXXXXX)"
+if hdiutil attach "${DMG_OUTPUT}" -mountpoint "${VERIFY_MOUNT}" -nobrowse >/dev/null 2>&1; then
+	if ! strings "${VERIFY_MOUNT}/.DS_Store" | grep -q "backgroundImageAlias"; then
+		hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
+		rm -rf "${VERIFY_MOUNT}"
+		echo "[-] FATAL ERROR: Built DMG .DS_Store is missing backgroundImageAlias! Background image was lost." >&2
+		exit 1
+	fi
+	if [[ ! -f "${VERIFY_MOUNT}/.background/dmg-background.png" ]]; then
+		hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
+		rm -rf "${VERIFY_MOUNT}"
+		echo "[-] FATAL ERROR: Built DMG is missing .background/dmg-background.png!" >&2
+		exit 1
+	fi
+	hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
+fi
+rm -rf "${VERIFY_MOUNT}"
+
 echo "=========================================================="
 echo "✔ SparkNotePad DMG packaging complete: ${DMG_OUTPUT} (${DMG_SIZE})"
+echo "✔ Verified lightweight size (< 35MB) and custom background presentation"
 echo "=========================================================="
