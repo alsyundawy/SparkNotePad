@@ -13,6 +13,7 @@
 
 #include "TabColorManager.h"
 #include <QSettings>
+#include <QtGlobal>
 #include <algorithm>
 
 TabColorManager::TabColorManager(QObject *parent) : QObject(parent) {
@@ -24,14 +25,14 @@ TabColorManager *TabColorManager::instance() {
     return &s_instance;
 }
 
-QList<TabColorPreset> TabColorManager::presets() const {
+QList<TabColorPreset> TabColorManager::presets() {
     return {{tr("Red"), QColor(QStringLiteral("#cf222e"))},    {tr("Orange"), QColor(QStringLiteral("#bc4c00"))},
             {tr("Yellow"), QColor(QStringLiteral("#bf8700"))}, {tr("Green"), QColor(QStringLiteral("#1a7f37"))},
             {tr("Cyan"), QColor(QStringLiteral("#0969da"))},   {tr("Blue"), QColor(QStringLiteral("#0550ae"))},
             {tr("Purple"), QColor(QStringLiteral("#8250df"))}, {tr("Magenta"), QColor(QStringLiteral("#bf3989"))}};
 }
 
-QList<QColor> TabColorManager::paletteColors() const {
+QList<QColor> TabColorManager::paletteColors() {
     const auto p = presets();
     QList<QColor> list;
     list.reserve(p.size());
@@ -67,7 +68,7 @@ bool TabColorManager::hasTabColor(const QString &filePath) const {
     return m_tabColors.contains(filePath) && m_tabColors.value(filePath).isValid();
 }
 
-QMap<QString, QColor> TabColorManager::allTabColors() const {
+const QMap<QString, QColor> &TabColorManager::allTabColors() const {
     return m_tabColors;
 }
 
@@ -80,7 +81,11 @@ void TabColorManager::loadSettings() {
         settings.setArrayIndex(i);
         const QString path = settings.value(QStringLiteral("path")).toString();
         const QString colorHex = settings.value(QStringLiteral("color")).toString();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
         const QColor c = QColor::fromString(colorHex);
+#else
+        const QColor c(colorHex);
+#endif
         if (!path.isEmpty() && c.isValid()) {
             m_tabColors.insert(path, c);
         }

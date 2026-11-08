@@ -12,6 +12,7 @@
  */
 
 #include "ClosedTabsManager.h"
+#include <QtGlobal>
 
 QJsonObject ClosedTabInfo::toJson() const {
     QJsonObject obj;
@@ -38,7 +39,11 @@ ClosedTabInfo ClosedTabInfo::fromJson(const QJsonObject &obj) {
     info.cursorPosition = obj[QStringLiteral("cursorPosition")].toInteger();
     info.firstVisibleLine = obj[QStringLiteral("firstVisibleLine")].toInteger();
     if (obj.contains(QStringLiteral("tabColor"))) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
         info.tabColor = QColor::fromString(obj[QStringLiteral("tabColor")].toString());
+#else
+        info.tabColor = QColor(obj[QStringLiteral("tabColor")].toString());
+#endif
     }
     info.encoding = obj[QStringLiteral("encoding")].toString();
     info.eolMode = obj[QStringLiteral("eolMode")].toInt();
@@ -94,7 +99,7 @@ void ClosedTabsManager::clear() {
     }
 }
 
-QList<ClosedTabInfo> ClosedTabsManager::allClosedTabs() const {
+const QList<ClosedTabInfo> &ClosedTabsManager::allClosedTabs() const {
     return m_stack;
 }
 

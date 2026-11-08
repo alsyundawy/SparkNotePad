@@ -55,7 +55,7 @@ public:
     [[nodiscard]] int count() const;
     void clear();
 
-    [[nodiscard]] QList<ClosedTabInfo> allClosedTabs() const;
+    [[nodiscard]] const QList<ClosedTabInfo> &allClosedTabs() const;
 
     [[nodiscard]] QJsonArray toJson() const;
     void fromJson(const QJsonArray &arr);

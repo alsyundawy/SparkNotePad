@@ -32,15 +32,15 @@ public:
 
     static TabColorManager *instance();
 
-    [[nodiscard]] QList<QColor> paletteColors() const;
-    [[nodiscard]] QList<TabColorPreset> presets() const;
+    [[nodiscard]] static QList<QColor> paletteColors();
+    [[nodiscard]] static QList<TabColorPreset> presets();
 
     void setTabColor(const QString &filePath, const QColor &color);
     [[nodiscard]] QColor tabColor(const QString &filePath) const;
     void clearTabColor(const QString &filePath);
     [[nodiscard]] bool hasTabColor(const QString &filePath) const;
 
-    [[nodiscard]] QMap<QString, QColor> allTabColors() const;
+    [[nodiscard]] const QMap<QString, QColor> &allTabColors() const;
 
     void loadSettings();
     void saveSettings() const;
