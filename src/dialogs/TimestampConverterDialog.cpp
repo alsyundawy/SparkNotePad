@@ -115,7 +115,7 @@ void TimestampConverterDialog::convertFromEpoch() {
         editEpochMs->setText(QString::number(sec * 1000));
     }
 
-    const QDateTime dt = QDateTime::fromSecsSinceEpoch(sec, QTimeZone::UTC);
+    const QDateTime dt = QDateTime::fromSecsSinceEpoch(sec, QTimeZone::utc());
     editIsoUtc->setText(dt.toString(Qt::ISODate));
     editIsoLocal->setText(dt.toLocalTime().toString(Qt::ISODate));
     lblHuman->setText(dt.toLocalTime().toString(QStringLiteral("dddd, MMMM d, yyyy h:mm:ss AP")));
@@ -132,7 +132,7 @@ void TimestampConverterDialog::convertFromIso() {
     editEpochSec->setText(QString::number(sec));
     editEpochMs->setText(QString::number(sec * 1000));
 
-    const QDateTime dt = QDateTime::fromSecsSinceEpoch(sec, QTimeZone::UTC);
+    const QDateTime dt = QDateTime::fromSecsSinceEpoch(sec, QTimeZone::utc());
     editIsoLocal->setText(dt.toLocalTime().toString(Qt::ISODate));
     lblHuman->setText(dt.toLocalTime().toString(QStringLiteral("dddd, MMMM d, yyyy h:mm:ss AP")));
 }

@@ -139,7 +139,7 @@ QString DeveloperToolsEngine::generateUuidV4(bool uppercase, bool withBraces, bo
 }
 
 QString DeveloperToolsEngine::epochToIso(qint64 epochSeconds) {
-    const QDateTime dt = QDateTime::fromSecsSinceEpoch(epochSeconds, QTimeZone::UTC);
+    const QDateTime dt = QDateTime::fromSecsSinceEpoch(epochSeconds, QTimeZone::utc());
     return dt.toString(Qt::ISODate);
 }
 
