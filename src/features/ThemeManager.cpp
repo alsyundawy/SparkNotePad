@@ -454,12 +454,13 @@ QString ThemeManager::getThemeStyleSheet() const {
         accent = QStringLiteral("#0969da");
     }
 
-    // User requirement: In light mode, toolbar background must be dark (charcoal/dracula),
-    // and light mode default is NotepadNext. In dark mode, toolbar background matches dark theme.
-    const QString tbBg = darkActive ? win : QStringLiteral("#21252b");
-    const QString tbBorder = darkActive ? border : QStringLiteral("#181a1f");
-    const QString tbText = darkActive ? txtPri : QStringLiteral("#e6edf3");
-    const QString tbHover = darkActive ? border : QStringLiteral("rgba(255, 255, 255, 0.12)");
+    // Permanent requirement: Toolbar background must ALWAYS remain dark mode in ANY mode (light, dark, or auto).
+    // In dark palettes, it adopts the palette's dark background. In light palettes/modes, it strictly uses dark charcoal (#21252b).
+    const bool paletteIsDark = pal && pal->isDark;
+    const QString tbBg = paletteIsDark ? win : QStringLiteral("#21252b");
+    const QString tbBorder = paletteIsDark ? border : QStringLiteral("#181a1f");
+    const QString tbText = paletteIsDark ? txtPri : QStringLiteral("#e6edf3");
+    const QString tbHover = paletteIsDark ? border : QStringLiteral("rgba(255, 255, 255, 0.12)");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -973,15 +974,15 @@ QTextBrowser:not(#markdownPreviewBrowser):not(#previewBrowser) {
     border-radius: 8px;
 }
 
-/* ToolBars */
-QToolBar {
+/* ToolBars - Always Dark Mode in ANY mode */
+QToolBar, #mainToolBar {
     background-color: %7;
     border: none;
     border-bottom: 1px solid %8;
     spacing: 3px;
     padding: 2px 6px;
 }
-QToolBar QToolButton {
+QToolBar QToolButton, #mainToolBar QToolButton {
     background: transparent;
     color: %9;
     border: 1px solid transparent;
@@ -989,15 +990,19 @@ QToolBar QToolButton {
     padding: 3px;
     margin: 1px;
 }
-QToolBar QToolButton:hover {
+QToolBar QToolButton:hover, #mainToolBar QToolButton:hover {
     background-color: %10;
     border-color: %8;
 }
-QToolBar QToolButton:pressed {
+QToolBar QToolButton:pressed, #mainToolBar QToolButton:pressed {
     background-color: %6;
     color: #ffffff;
 }
-QToolBar::separator {
+QToolBar QToolButton:checked, #mainToolBar QToolButton:checked {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: %8;
+}
+QToolBar::separator, #mainToolBar::separator {
     width: 1px;
     background-color: %8;
     margin: 4px 6px;
