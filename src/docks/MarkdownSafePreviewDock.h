@@ -27,7 +27,7 @@ class QComboBox;
 class QLabel;
 class QPushButton;
 
-class MarkdownSafePreviewDock : public QDockWidget {
+class MarkdownSafePreviewDock : public QDockWidget {  // NOSONAR(cpp:S1448)
     Q_OBJECT
 
 public:

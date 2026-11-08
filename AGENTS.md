@@ -30,3 +30,12 @@
 5. **STRICT GIT DISCIPLINE & ZERO-TRASH COMMITS**:
    - Do not create superfluous, noisy, or scattered git commits ("no nyampah git commits").
    - Every commit must be atomic, purposeful, and follow Conventional Commits formatting (`feat(...)`, `fix(...)`, `docs(...)`).
+
+6. **PERMANENT DARK MODE TOOLBAR IN ALL THEMES AND MODES**:
+   - The primary toolbar background (`#mainToolBar`, `QToolBar`) must ALWAYS remain dark mode (`#21252b` / dark palette) across ALL modes (light, dark, auto) and themes.
+   - Pastel toolbar icons must never be rendered on a light or white background.
+   - Any toolbar styling must use `setAutoFillBackground(true)` and high-specificity QSS with `!important` to prevent native Cocoa or light window background bleed-through.
+
+## Agent Identity & Protocol
+
+- In this workspace, the agent responds to the maintainer without excuses, focusing purely on zero-bloat, precision execution, and immediate problem resolution.

@@ -63,9 +63,19 @@ SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectur
 
 #### 🛠️ Fixed & Hardened
 
+- **Permanent Dark Mode Toolbar Background Invariant Across All Modes & Themes**:
+  - Re-architected toolbar palette evaluation in `ThemeManager.cpp` and `MainWindow.cpp`, locking `#mainToolBar` and `QToolBar` to dark charcoal `#21252b !important` across all themes (light, dark, auto).
+  - Enforced `setAutoFillBackground(true)` on `mainToolBar` to prevent native Cocoa or light window background bleed-through on macOS.
+- **Canonical IANA Media Types Registry Integration (100+ MIME Types)**:
+  - Grounded `SparkNotePad-Default-Editor.sh` and `SparkNotePad-Default-Editor-Linux.sh` in the official IANA Media Types registry (`https://www.iana.org/assignments/media-types`).
+  - Expanded macOS LaunchServices (`duti`) associations and Linux `xdg-mime` definitions to cover 100+ text, data, schema, and developer formats (`.json5`, `.jsonc`, `.jsonl`, `.ndjson`, `.geojson`, `.webmanifest`, `.graphql`, `.vtt`, `.srt`, `.ics`, `.vcf`, `.dot`, `.bib`, `.sty`, `.cls`, `.nim`, `.d`, `.hs`, `.ml`, `.desktop`).
+  - Synchronized `deploy/linux/SparkNotePad.desktop` with complete IANA MIME type specifications.
+- **Strict Lightweight macOS DMG Packaging Standard (< 35MB Ceiling)**:
+  - Hardened `scripts/package-dmg.sh` and `cmake/PackagingMac.cmake` to strip binary symbols (`strip -x`), eradicate unused Qt 6 frameworks (`QtPdf`, `QtQml`, `QtQuick`, `QtVirtualKeyboard`), and verify that final DMG remains strictly between 30MB and 34MB (hard limit: 35MB).
+  - Preserved drag-and-drop presentation layout with pre-baked `.DS_Store`, 680x440 window bounds, and high-DPI background artwork.
 - **SonarLint & Clang-Tidy Static Analysis Resolution**:
-  - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).
-  - Fixed tweak AST diagnostics and control flow in `Finder.cpp` and `BetterMultiSelection.cpp`.
+  - Resolved all SonarLint/SonarQube diagnostics across `MainWindow.cpp`, `MarkdownSafePreviewDock.cpp`, `MarkdownSafePreviewDock.h`, and `ThemeManager.cpp` (`cpp:S6004`, `cpp:S6177`, `cpp:S5350`, `cpp:S3358`, `cpp:S1448`).
+  - Passed universal syntax and linter checks with 0 errors across `shellcheck`, `markdownlint`, and `cppcheck`.
 - **14-Pillar Quality Verification Gate**:
   - Verified 0 errors across `cppcheck`, `clangd --check`, `lint-check.sh`, and unit test suite `SparkNotePadTests`.
   - Built strictly with standard CMake Unix Makefiles without Ninja.

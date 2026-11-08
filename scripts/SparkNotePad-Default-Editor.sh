@@ -150,79 +150,203 @@ readonly UTIS=(
 	"public.css"
 	"public.html"
 	"public.yaml"
+	"public.svg-image"
+	"com.apple.property-list"
+	"public.makefile"
 	"org.rust-lang.rust-source"
 	"org.golang.go-source"
 )
 
-# Comprehensive file extensions
+# Comprehensive file extensions (Grounded in IANA Media Types registry & developer formats)
 readonly EXTENSIONS=(
-	# Plain Text & Notes
+	# Plain Text, Documentation & System Messages
 	"txt" "text" "log" "out" "err" "nfo" "inf" "diz" "me" "1st" "ans" "asc" "ascii"
-	"readme" "changelog" "license" "authors" "todo" "notes"
+	"readme" "changelog" "license" "authors" "todo" "notes" "msg" "man" "roff" "tr"
 
-	# Markdown & Documentation
+	# Markdown, LaTeX & Typesetting
 	"md" "markdown" "mdown" "mkd" "mkdn" "mdwn" "mdtxt" "mdtext" "rst" "adoc"
-	"asciidoc" "tex" "latex" "ltx" "org" "wiki" "textile"
+	"asciidoc" "tex" "latex" "ltx" "sty" "cls" "dtx" "ins" "bib" "rtx" "org" "wiki" "textile"
 
-	# Web & Front-End
+	# Web, Markup & Frontend
 	"html" "htm" "xhtml" "shtml" "shtm" "phtml" "css" "scss" "sass" "less"
 	"styl" "stylus" "js" "mjs" "cjs" "jsx" "ts" "mts" "cts" "tsx" "vue"
 	"svelte" "astro" "json" "json5" "jsonc" "jsonl" "ndjson" "map" "svg"
-	"hta" "asp" "aspx" "jsp" "jsm" "xht" "xul" "kml" "xaml" "xsml"
+	"xml" "xsl" "xslt" "atom" "rss" "gpx" "kml" "dtd" "ui" "qrc" "vtt" "srt"
+	"hta" "asp" "aspx" "jsp" "jsm" "xht" "xul" "xaml" "xsml"
 
-	# Config, Serialization & Data
+	# Configuration, Serialization, Environment & Dotfiles
 	"yaml" "yml" "toml" "ini" "cfg" "conf" "config" "cnf" "properties" "props"
-	"xml" "plist" "env" "editorconfig" "gitignore" "gitattributes" "gitmodules"
+	"plist" "env" "editorconfig" "gitignore" "gitattributes" "gitmodules"
 	"dockerignore" "npmignore" "slugignore" "csv" "tsv" "tab" "sql" "cql"
-	"manifest" "vsprops" "vcproj" "vcxproj"
+	"graphql" "gql" "geojson" "webmanifest" "desktop" "service"
+	"manifest" "vsprops" "vcproj" "vcxproj" "ics" "vcf" "vcard" "dot" "gv"
 
-	# Systems Programming (C, C++, Rust, Zig, Go, Resource Script, Make)
+	# Systems Programming (C, C++, Rust, Zig, Go, Nim, D, Assembly)
 	"c" "h" "cpp" "hpp" "cc" "hh" "cxx" "hxx" "c++" "h++" "m" "mm" "rc" "inc" "mak"
-	"rs" "rlib" "zig" "go" "mod" "sum" "s" "asm"
+	"rs" "rlib" "zig" "go" "mod" "sum" "nim" "d" "s" "asm"
 
-	# JVM & .NET Languages
+	# JVM, .NET & Enterprise Languages
 	"java" "class" "kt" "kts" "scala" "sc" "groovy" "gvy" "gradle" "clj" "cljs"
 	"cljc" "edn" "cs" "csx" "fs" "fsi" "fsx" "vb"
 
-	# Scripting & Dynamic Languages
+	# Scripting, Dynamic & Functional Languages
 	"py" "pyw" "pyi" "pyx" "pxd" "rb" "rbw" "rake" "gemspec" "php" "phtml"
-	"php3" "php4" "php5" "phps" "phpt" "pl" "pm" "t" "pod" "lua" "tcl" "r" "rmd" "jl" "dart" "ex" "exs" "erl" "hrl"
-	"pas" "pp" "as" "mx" "vbs"
+	"php3" "php4" "php5" "phps" "phpt" "pl" "pm" "t" "pod" "lua" "tcl" "r" "rmd" "jl" "dart"
+	"ex" "exs" "erl" "hrl" "hs" "lhs" "ml" "mli" "pas" "pp" "as" "mx" "vbs"
 
-	# Shell, Automation & Scientific
-	"sh" "bash" "zsh" "fish" "ksh" "csh" "tcsh" "awk" "sed" "bat" "cmd" "ps1" "psm1" "bsh" "nsi" "nsh"
-	"f" "for" "f90" "f95" "f2k"
-	"make" "makefile" "mk" "cmake" "dockerfile" "vagrantfile" "gemfile" "procfile"
+	# Shell, Automation, DevOps & Scientific
+	"sh" "bash" "zsh" "fish" "ksh" "csh" "tcsh" "awk" "sed" "bat" "cmd" "ps1" "psm1" "psd1" "bsh" "nsi" "nsh"
+	"f" "for" "f90" "f95" "f2k" "diff" "patch"
+	"make" "makefile" "mk" "cmake" "dockerfile" "vagrantfile" "gemfile" "procfile" "rakefile"
 )
 
-# Linux MIME types
+# Linux MIME types (Aligned with IANA Media Types registry & FreeDesktop XDG specifications)
 readonly LINUX_MIME_TYPES=(
+	# Plain Text & Generic Documents
 	"text/plain"
+	"text/plain;charset=utf-8"
+	"application/x-zerosize"
+	"text/x-log"
+
+	# Markdown & Documentation
+	"text/markdown"
+	"text/x-markdown"
+	"text/x-rst"
+	"text/x-asciidoc"
+	"text/x-tex"
+	"text/x-latex"
+	"text/x-bibtex"
+	"text/richtext"
+	"text/vtt"
+
+	# Web & Styles
+	"text/html"
+	"application/xhtml+xml"
+	"text/css"
+	"text/less"
+	"text/x-scss"
+	"text/x-sass"
+	"text/x-stylus"
+
+	# ECMAScript / JavaScript / TypeScript
+	"text/javascript"
+	"application/javascript"
+	"application/ecmascript"
+	"application/x-javascript"
+	"text/typescript"
+	"application/typescript"
+	"application/x-typescript"
+
+	# Serialization & Data Formats (JSON, YAML, TOML, XML, CSV, TSV)
+	"application/json"
+	"application/ld+json"
+	"application/geo+json"
+	"application/manifest+json"
+	"application/schema+json"
+	"application/x-ndjson"
+	"application/json5"
+	"application/jsonc"
+	"application/x-yaml"
+	"text/x-yaml"
+	"text/yaml"
+	"application/yaml"
+	"application/toml"
+	"text/x-toml"
+	"application/x-toml"
+	"application/xml"
+	"text/xml"
+	"application/xml-dtd"
+	"application/xslt+xml"
+	"application/svg+xml"
+	"application/atom+xml"
+	"application/rss+xml"
+	"application/gpx+xml"
+	"application/kml+xml"
+	"application/x-plist"
+	"text/csv"
+	"text/tab-separated-values"
+
+	# Systems Programming (C, C++, Objective-C, C#)
 	"text/x-c"
 	"text/x-c++"
 	"text/x-csrc"
 	"text/x-chdr"
 	"text/x-c++src"
 	"text/x-c++hdr"
-	"text/x-python"
-	"text/x-shellscript"
-	"application/json"
-	"text/markdown"
-	"text/html"
-	"text/css"
-	"application/xml"
-	"text/x-lua"
+	"text/x-objcsrc"
+	"text/x-csharp"
+
+	# Modern Compiled & Systems Languages (Rust, Go, Zig, Nim, D, Assembly)
 	"text/x-rust"
+	"text/rust"
 	"text/x-go"
+	"text/x-golang"
+	"text/x-zig"
+	"text/x-nim"
+	"text/x-dsrc"
+	"text/x-asm"
+
+	# Scripting & Interpreted Languages (Python, Lua, Ruby, Perl, PHP, Shell)
+	"text/x-python"
+	"text/x-python3"
+	"text/x-script.python"
+	"text/x-lua"
+	"application/x-lua"
+	"text/x-ruby"
+	"application/x-ruby"
+	"text/x-perl"
+	"application/x-perl"
 	"text/x-php"
-	"text/x-java"
-	"text/x-sql"
-	"text/x-yaml"
-	"text/javascript"
-	"application/javascript"
+	"application/x-php"
+	"application/x-httpd-php"
+	"text/x-shellscript"
 	"application/x-shellscript"
-	"application/x-yaml"
-	"application/toml"
+	"application/x-bat"
+	"text/x-bat"
+	"text/x-bash"
+	"application/x-bash"
+	"text/x-zsh"
+	"application/x-zsh"
+	"text/x-fish"
+	"application/x-fish"
+	"application/x-powershell"
+	"text/x-tcl"
+	"text/x-r"
+
+	# JVM, Mobile & Functional Languages
+	"text/x-java"
+	"text/x-java-source"
+	"text/x-kotlin"
+	"text/x-scala"
+	"text/x-groovy"
+	"text/x-dart"
+	"text/x-swift"
+	"text/x-haskell"
+	"text/x-ocaml"
+	"text/x-clojure"
+	"text/x-elixir"
+	"text/x-erlang"
+	"text/x-pascal"
+	"text/x-fortran"
+
+	# Configuration, Build & DevOps
+	"text/x-config"
+	"text/x-ini"
+	"application/x-wine-extension-ini"
+	"text/x-cmake"
+	"text/x-makefile"
+	"text/x-dockerfile"
+	"text/x-diff"
+	"text/x-patch"
+	"text/x-sql"
+	"application/sql"
+	"application/x-sql"
+	"application/graphql"
+	"application/x-desktop"
+	"application/x-subrip"
+	"text/calendar"
+	"text/vcard"
+	"text/vnd.graphviz"
 )
 
 # Resolve application bundle path on macOS

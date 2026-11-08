@@ -561,6 +561,7 @@ void MarkdownSafePreviewDock::setPreviewTheme(MarkdownThemeManager::ThemeId newT
 }
 
 void MarkdownSafePreviewDock::renderPreview() {
+    using enum PreviewFormat;
     if (!currentEditor) {
         browser->clear();
         if (m_ui.lblFormatStatus) {
@@ -573,7 +574,7 @@ void MarkdownSafePreviewDock::renderPreview() {
     }
 
     const PreviewFormat effectiveFormat =
-        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
     updateFormatLabel(m_ui.lblFormatStatus, currentFormat, effectiveFormat);
 
     const QString text = QString::fromUtf8(currentEditor->getText());
@@ -593,7 +594,7 @@ void MarkdownSafePreviewDock::renderPreview() {
         scrollRatio = static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum());
     }
 
-    if (effectiveFormat == PreviewFormat::Html) {
+    if (effectiveFormat == Html) {
         browser->setHtml(text);
     } else {
         const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(text, isDark);
@@ -633,14 +634,15 @@ void MarkdownSafePreviewDock::setAutoShowEnabled(bool enabled) {
 }
 
 void MarkdownSafePreviewDock::copyHtml() {
+    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
     const PreviewFormat effectiveFormat =
-        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
     QString bodyHtml;
-    if (effectiveFormat == PreviewFormat::Html) {
+    if (effectiveFormat == Html) {
         bodyHtml = rawContent;
     } else {
         QTextDocument doc;
@@ -663,6 +665,7 @@ void MarkdownSafePreviewDock::copyHtml() {
 }
 
 void MarkdownSafePreviewDock::exportHtml() {
+    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
@@ -689,9 +692,9 @@ void MarkdownSafePreviewDock::exportHtml() {
     }
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
     const PreviewFormat effectiveFormat =
-        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
 
-    if (effectiveFormat == PreviewFormat::Html) {
+    if (effectiveFormat == Html) {
         QFile file(savePath);
         if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
             file.write(rawContent.toUtf8());
@@ -703,6 +706,7 @@ void MarkdownSafePreviewDock::exportHtml() {
 }
 
 void MarkdownSafePreviewDock::exportPdf() {
+    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
@@ -730,21 +734,22 @@ void MarkdownSafePreviewDock::exportPdf() {
 
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
     const PreviewFormat effectiveFormat =
-        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
-    const bool isMarkdown = (effectiveFormat != PreviewFormat::Html);
+        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
+    const bool isMarkdown = (effectiveFormat != Html);
 
     DocumentExportManager::exportToPdf(rawContent, isMarkdown, savePath, dlg.options());
 }
 
 void MarkdownSafePreviewDock::openInBrowser() {
+    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
 
     const PreviewFormat effectiveFormat =
-        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
 
-    if (effectiveFormat == PreviewFormat::Html && currentEditor->isFile() && currentEditor->getFileInfo().exists()) {
+    if (effectiveFormat == Html && currentEditor->isFile() && currentEditor->getFileInfo().exists()) {
         const QString path = currentEditor->getFileInfo().absoluteFilePath();
         QDesktopServices::openUrl(QUrl::fromLocalFile(path));
         return;
@@ -753,7 +758,7 @@ void MarkdownSafePreviewDock::openInBrowser() {
     // Render full styled page
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
     QString bodyHtml;
-    if (effectiveFormat == PreviewFormat::Html) {
+    if (effectiveFormat == Html) {
         bodyHtml = rawContent;
     } else {
         QTextDocument doc;

@@ -218,6 +218,9 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 
 | Fitur                             | Deskripsi Kapabilitas                                                                                                             |       Pintasan (Shortcut)       |
 | :-------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Bilah Alat Gelap Permanen**     | `#mainToolBar` dikunci secara permanen pada latar gelap (`#21252b !important`) di semua tema dan mode tampilan OS                    |        Semua Mode & Tema        |
+| **Editor Default Tipe Media IANA**| Integrasi tipe media resmi IANA (`SparkNotePad-Default-Editor.sh`) mengasosiasikan 100+ ekstensi & MIME standar                      |        Integrasi Sistem         |
+| **Paket DMG Ringan Permanen**     | Paket DMG macOS native tanpa bloatware terjaga pada 30MB–34MB (< 35MB ceiling) dengan tata letak visual `.DS_Store` presisi          | `cmake --build build --target dmg` |
 | **Tumpukan Tab Ditutup**          | Antrean FIFO 50 entri memulihkan posisi kursor, rasio scroll, encoding, lexer bahasa, dan tag warna tab                           | `Ctrl+Shift+T` / `Cmd+Shift+T`  |
 | **Penandaan Warna & Grup Tab**    | 8 preset warna kontras tinggi dengan garis visual tepi atas dan penyimpanan persisten via QSettings                               |        Menu Konteks Tab         |
 | **Autosave & Pemulihan Crash**    | Snapshot latar belakang 10 detik dengan izin strict POSIX 0600, checksum SHA-256, dan dialog pemulihan interaktif                 |            Otomatis             |
@@ -377,10 +380,10 @@ SparkNotePad dapat dikompilasi secara native di macOS menggunakan Apple Clang da
 ```bash
 # 1. Konfigurasi dan kompilasi executable
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Qt/6.12.0/macos
-cmake --build build -j 4
+cmake --build build -j 2
 
-# 2. Pembuatan paket mandiri DMG macOS beserta framework embedded dan ad-hoc codesign
-cmake --build build --target dmg -j 4
+# 2. Pembuatan paket mandiri DMG macOS beserta framework embedded dan ad-hoc codesign (< 35MB paket ringan)
+cmake --build build --target dmg -j 2
 ```
 
 _(Lihat panduan lengkap [Panduan Codesign & Notarisasi macOS](doc/MACOS_CODESIGN_AND_NOTARIZATION.md) serta [Panduan Pengembang](doc/DEVELOPER_GUIDE.md))._

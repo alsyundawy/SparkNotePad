@@ -57,6 +57,15 @@ SparkNotePad **v1.4.5** merupakan rilis fitur dan stabilitas besar yang menghadi
 14. **Penuntasan Analisis Statis SonarLint & Clang-Tidy (0 Masalah)**:
     - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy pada direktori `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).
     - Terverifikasi 0 diagnostik eror pada `clangd --check`, `cppcheck`, dan lulus 100% unit test.
+15. **Invarian Bilah Alat Mode Gelap Permanen di Semua Tema & Mode**:
+    - Bilah alat utama (`#mainToolBar`, `QToolBar`) dikunci secara permanen pada latar belakang gelap (`#21252b !important`) di seluruh tema warna, mode terang/gelap, dan setelan tampilan OS.
+    - Mencegah ikon pastel dan kromatik ditampilkan pada latar belakang putih, diperkuat dengan `setAutoFillBackground(true)` pada `#mainToolBar` untuk mencegah tembus pandang background Cocoa native atau jendela terang.
+16. **Integrasi Editor Default Tipe Media IANA Kanonikal (100+ Format)**:
+    - Skrip `SparkNotePad-Default-Editor.sh` dan skrip Linux diperluas sesuai registri resmi IANA Media Types.
+    - Menghubungkan secara mulus 100+ ekstensi berkas kode sumber, format data konfigurasi, bahasa pemrograman sistem, dan dokumen web dengan SparkNotePad.
+17. **Standar Paket DMG Ringan Permanen (30MB–34MB, Batas Maksimal < 35MB)**:
+    - Bundel DMG rilis macOS melalui `scripts/package-dmg.sh` dijaga ketat pada rentang 30MB–34MB (di bawah batas absolut 35MB).
+    - Mempertahankan tata letak presisi `.DS_Store` (`dmg-ds-store`), aset grafis latar belakang Retina `@2x` (`.background/dmg-background@2x.png`), dan ikon volume kustom (`.VolumeIcon.icns`).
 
 ---
 

@@ -110,7 +110,7 @@ readonly CANDIDATE_DESKTOP_FILES=(
 	"${HOME}/.local/share/flatpak/exports/share/applications/${FLATPAK_APP_ID}.desktop"
 )
 
-# Exhaustive list of 80+ text, source code, data, serialization, and config MIME types
+# Exhaustive list of 100+ text, source code, data, serialization, and config MIME types (IANA & FreeDesktop compliant)
 readonly LINUX_MIME_TYPES=(
 	# Plain Text & Generic Documents
 	"text/plain"
@@ -125,6 +125,9 @@ readonly LINUX_MIME_TYPES=(
 	"text/x-asciidoc"
 	"text/x-tex"
 	"text/x-latex"
+	"text/x-bibtex"
+	"text/richtext"
+	"text/vtt"
 
 	# Web & Styles
 	"text/html"
@@ -133,25 +136,43 @@ readonly LINUX_MIME_TYPES=(
 	"text/less"
 	"text/x-scss"
 	"text/x-sass"
+	"text/x-stylus"
 
 	# ECMAScript / JavaScript / TypeScript
 	"text/javascript"
 	"application/javascript"
+	"application/ecmascript"
 	"application/x-javascript"
 	"text/typescript"
 	"application/typescript"
 	"application/x-typescript"
 
-	# Serialization & Data Formats
+	# Serialization & Data Formats (JSON, YAML, TOML, XML, CSV, TSV)
 	"application/json"
 	"application/ld+json"
+	"application/geo+json"
+	"application/manifest+json"
+	"application/schema+json"
+	"application/x-ndjson"
+	"application/json5"
+	"application/jsonc"
 	"application/x-yaml"
 	"text/x-yaml"
 	"text/yaml"
+	"application/yaml"
 	"application/toml"
 	"text/x-toml"
+	"application/x-toml"
 	"application/xml"
 	"text/xml"
+	"application/xml-dtd"
+	"application/xslt+xml"
+	"application/svg+xml"
+	"application/atom+xml"
+	"application/rss+xml"
+	"application/gpx+xml"
+	"application/kml+xml"
+	"application/x-plist"
 	"text/csv"
 	"text/tab-separated-values"
 
@@ -165,7 +186,7 @@ readonly LINUX_MIME_TYPES=(
 	"text/x-objcsrc"
 	"text/x-csharp"
 
-	# Modern Compiled & Systems Languages (Rust, Go, Zig, Nim, D)
+	# Modern Compiled & Systems Languages (Rust, Go, Zig, Nim, D, Assembly)
 	"text/x-rust"
 	"text/rust"
 	"text/x-go"
@@ -173,25 +194,32 @@ readonly LINUX_MIME_TYPES=(
 	"text/x-zig"
 	"text/x-nim"
 	"text/x-dsrc"
+	"text/x-asm"
 
 	# Scripting & Interpreted Languages (Python, Lua, Ruby, Perl, PHP, Shell)
 	"text/x-python"
 	"text/x-python3"
 	"text/x-script.python"
 	"text/x-lua"
+	"application/x-lua"
 	"text/x-ruby"
 	"application/x-ruby"
 	"text/x-perl"
 	"application/x-perl"
 	"text/x-php"
 	"application/x-php"
+	"application/x-httpd-php"
 	"text/x-shellscript"
 	"application/x-shellscript"
 	"application/x-bat"
 	"text/x-bat"
 	"text/x-bash"
+	"application/x-bash"
 	"text/x-zsh"
+	"application/x-zsh"
 	"text/x-fish"
+	"application/x-fish"
+	"application/x-powershell"
 	"text/x-tcl"
 	"text/x-r"
 
@@ -208,8 +236,10 @@ readonly LINUX_MIME_TYPES=(
 	"text/x-clojure"
 	"text/x-elixir"
 	"text/x-erlang"
+	"text/x-pascal"
+	"text/x-fortran"
 
-	# Configuration, Build & DevOps
+	# Configuration, Build, Query & DevOps
 	"text/x-config"
 	"text/x-ini"
 	"application/x-wine-extension-ini"
@@ -220,6 +250,13 @@ readonly LINUX_MIME_TYPES=(
 	"text/x-patch"
 	"text/x-sql"
 	"application/sql"
+	"application/x-sql"
+	"application/graphql"
+	"application/x-desktop"
+	"application/x-subrip"
+	"text/calendar"
+	"text/vcard"
+	"text/vnd.graphviz"
 )
 
 # Detect Linux Distribution and Packaging Family

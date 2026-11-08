@@ -975,34 +975,35 @@ QTextBrowser:not(#markdownPreviewBrowser):not(#previewBrowser) {
 }
 
 /* ToolBars - Always Dark Mode in ANY mode */
-QToolBar, #mainToolBar {
-    background-color: %7;
+QToolBar, #mainToolBar, QToolBar#mainToolBar {
+    background-color: %7 !important;
+    background: %7 !important;
     border: none;
     border-bottom: 1px solid %8;
     spacing: 3px;
     padding: 2px 6px;
 }
-QToolBar QToolButton, #mainToolBar QToolButton {
+QToolBar QToolButton, #mainToolBar QToolButton, QToolBar#mainToolBar QToolButton {
     background: transparent;
-    color: %9;
+    color: %9 !important;
     border: 1px solid transparent;
     border-radius: 4px;
     padding: 3px;
     margin: 1px;
 }
-QToolBar QToolButton:hover, #mainToolBar QToolButton:hover {
+QToolBar QToolButton:hover, #mainToolBar QToolButton:hover, QToolBar#mainToolBar QToolButton:hover {
     background-color: %10;
     border-color: %8;
 }
-QToolBar QToolButton:pressed, #mainToolBar QToolButton:pressed {
+QToolBar QToolButton:pressed, #mainToolBar QToolButton:pressed, QToolBar#mainToolBar QToolButton:pressed {
     background-color: %6;
-    color: #ffffff;
+    color: #ffffff !important;
 }
-QToolBar QToolButton:checked, #mainToolBar QToolButton:checked {
+QToolBar QToolButton:checked, #mainToolBar QToolButton:checked, QToolBar#mainToolBar QToolButton:checked {
     background-color: rgba(255, 255, 255, 0.18);
     border-color: %8;
 }
-QToolBar::separator, #mainToolBar::separator {
+QToolBar::separator, #mainToolBar::separator, QToolBar#mainToolBar::separator {
     width: 1px;
     background-color: %8;
     margin: 4px 6px;

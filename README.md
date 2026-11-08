@@ -218,6 +218,9 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 
 | Feature                           | Capability Description                                                                                                               |            Shortcut             |
 | :-------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Permanent Dark Mode Toolbar**   | `#mainToolBar` permanently locked to dark background (`#21252b !important`) across all themes and light/dark modes                   |       All Modes & Themes        |
+| **IANA Media Types Default Editor**| Official IANA Media Types integration (`SparkNotePad-Default-Editor.sh` & Linux scripts) associating 100+ standard extensions & MIMEs |       System Integration        |
+| **Lightweight DMG Packaging**     | Zero-bloat native macOS DMG packaging strictly maintained at 30MB–34MB (< 35MB ceiling) with pre-baked `.DS_Store` layout             | `cmake --build build --target dmg` |
 | **Reopen Closed Tab Stack**       | 50-entry FIFO stack restoring caret position, line ratio, encoding, language lexer, and tab color tags                               | `Ctrl+Shift+T` / `Cmd+Shift+T`  |
 | **Tab Color Tagging & Grouping**  | 8 accessible high-contrast color presets with visual tab borders and persistent storage via QSettings                                |        Tab Context Menu         |
 | **Autosave & Crash Recovery**     | 10-second background snapshots with strict POSIX 0600 permissions, SHA-256 validation, and interactive restore dialog                |            Automatic            |
@@ -377,10 +380,10 @@ SparkNotePad compiles natively on macOS with Apple Clang and Qt 6.5–6.12, with
 ```bash
 # 1. Configure and build executable
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Qt/6.12.0/macos
-cmake --build build -j 4
+cmake --build build -j 2
 
-# 2. Package standalone macOS DMG with embedded frameworks & ad-hoc codesign
-cmake --build build --target dmg -j 4
+# 2. Package standalone macOS DMG with embedded frameworks & ad-hoc codesign (< 35MB lightweight packaging)
+cmake --build build --target dmg -j 2
 ```
 
 _(See detailed [macOS Codesign & Notarization Guide](doc/MACOS_CODESIGN_AND_NOTARIZATION.md) and [Cross-Platform Developer Guide](doc/DEVELOPER_GUIDE.md))._

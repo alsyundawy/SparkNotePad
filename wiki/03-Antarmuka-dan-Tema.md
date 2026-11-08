@@ -96,6 +96,14 @@ Semua paket ikon dilengkapi pixmap multi-resolusi (16x16, 20x20, 24x24, 32x32, 4
 
 Pada tema gelap, paket ikon outline (seperti `monochrome`) secara otomatis menginversi piksel gelap menjadi silver-white luminous, sedangkan paket berwarna ditingkatkan kecerahannya dengan pemetaan HSL tone mapping tanpa merusak corak warna dan saturasi aslinya.
 
+### Invarian Bilah Alat Mode Gelap Permanen
+
+SparkNotePad menegakkan invarian arsitektur di mana bilah alat utama (`#mainToolBar`, `QToolBar`) secara permanen dirender dalam latar belakang gelap (`#21252b !important`) di seluruh tema (terang, gelap, otomatis) maupun preferensi tampilan OS:
+
+- **Kontras Visual Konsisten**: Paket ikon toolbar pastel dan berwarna mempertahankan visibilitas tajam dan kontras tinggi tanpa risiko memudar pada kanvas putih.
+- **Pencegahan Tembus Pandang Jendela Native**: Penggunaan eksplisit `setAutoFillBackground(true)` dan stylesheet QSS prioritas tinggi mencegah latar belakang native Cocoa atau jendela induk menembus bilah alat.
+- **Pemisah Gelap Halus**: Batas bawah 1px (`#181a1f`) memisahkan bilah alat secara elegan dari header panel dock dan area kerja Scintilla.
+
 ### Tombol Plus (+) pada Samping Deretan Tab
 
 Setiap title bar area dock kini dilengkapi tombol interaktif **Plus (+)** tepat di samping kanan deretan tab editor. Mengklik tombol ini seketika membuka tab dokumen baru ("New 1", "New 2", dst.).

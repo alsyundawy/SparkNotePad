@@ -95,6 +95,14 @@ All icon packs feature multi-resolution pixmaps (16x16, 20x20, 24x24, 32x32, 48x
 
 Under dark themes, wireframe outline packs (such as `monochrome`) automatically invert dark pixels to luminous silver-white, while chromatic packs undergo HSL tone mapping to boost lightness while preserving original hue and saturation.
 
+### Permanent Dark Mode Toolbar Invariant
+
+SparkNotePad enforces an architectural invariant where the primary toolbar (`#mainToolBar`, `QToolBar`) is permanently rendered in dark mode (`#21252b !important`) across all themes (light, dark, auto) and OS appearance modes:
+
+- **Consistent Visual Contrast**: Pastel and chromatic toolbar icon packs maintain sharp visibility and high contrast without risk of blending into white or light gray canvas backgrounds.
+- **Native Window Bleed-Through Prevention**: Explicit `setAutoFillBackground(true)` and high-specificity QSS prevent native Cocoa or light parent widget backgrounds from bleeding through the toolbar.
+- **Subtle Dark Separation**: A 1px dark border (`#181a1f`) cleanly delineates the toolbar from dock headers and the central Scintilla workspace.
+
 ### Plus (+) Button on Tab Bar
 
 Every dock area title bar includes an interactive **Plus (+)** button positioned directly next to the open editor tabs. Clicking this button immediately creates a new editor tab ("New 1", "New 2", etc.).
