@@ -48,8 +48,8 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
             m_themeMode = Light;
         }
 
-        QString savedPalette = m_settings->value(QStringLiteral("App/ThemePalette"), QString()).toString();
-        if (!savedPalette.isEmpty() && findThemePaletteById(savedPalette)) {
+        if (QString savedPalette = m_settings->value(QStringLiteral("App/ThemePalette"), QString()).toString();
+            !savedPalette.isEmpty() && findThemePaletteById(savedPalette)) {
             m_currentPaletteId = std::move(savedPalette);
         } else {
             m_currentPaletteId =
@@ -126,8 +126,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
         applyTheme(m_activeWindow);
     }
 
-    const bool newDark = isDarkActive();
-    if (oldDark != newDark) {
+    if (const bool newDark = isDarkActive(); oldDark != newDark) {
         emit themeChanged(newDark);
     }
     emit paletteChanged(m_currentPaletteId);
@@ -161,8 +160,7 @@ void ThemeManager::setPalette(const QString &paletteId, MainWindow *window) {
         applyTheme(m_activeWindow);
     }
 
-    const bool newDark = isDarkActive();
-    if (oldDark != newDark) {
+    if (const bool newDark = isDarkActive(); oldDark != newDark) {
         emit themeChanged(newDark);
     }
     emit paletteChanged(m_currentPaletteId);

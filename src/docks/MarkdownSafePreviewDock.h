@@ -57,9 +57,6 @@ public slots:
     void copyHtml();
     void exportHtml();
     void exportPdf();
-    void zoomIn();
-    void zoomOut();
-    void resetZoom();
     void syncScrollFromEditor(Scintilla::Update updated);
     void syncScrollFromBrowser();
 
@@ -72,8 +69,6 @@ protected:
 
 private slots:
     void handleAnchorClicked(const QUrl &url);
-    void onFormatComboChanged(int index);
-    void onThemeComboChanged(int index);
 
 private:
     struct ToolbarUi {
@@ -92,7 +87,6 @@ private:
     };
 
     void setupUi();
-    void updateFormatLabel(PreviewFormat effectiveFormat);
     void applyGitHubTheme();
 
     ToolbarUi m_ui;

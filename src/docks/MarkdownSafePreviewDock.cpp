@@ -137,6 +137,26 @@ QString generateFullHtmlDocument(const QString &bodyHtml, const QString &title, 
                "</html>\n")
         .arg(title.toHtmlEscaped(), css, bodyHtml);
 }
+
+void updateFormatLabel(QLabel *lblFormatStatus, MarkdownSafePreviewDock::PreviewFormat currentFormat,
+                       MarkdownSafePreviewDock::PreviewFormat effectiveFormat) {
+    if (!lblFormatStatus) {
+        return;
+    }
+
+    using enum MarkdownSafePreviewDock::PreviewFormat;
+    if (currentFormat == Auto) {
+        if (effectiveFormat == Html) {
+            lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Auto (HTML)"));
+        } else {
+            lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Auto (Markdown)"));
+        }
+    } else if (currentFormat == Html) {
+        lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "HTML"));
+    } else {
+        lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Markdown"));
+    }
+}
 }  // namespace
 
 MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
@@ -205,7 +225,11 @@ void MarkdownSafePreviewDock::setupUi() {
     m_ui.comboFormat->addItem(tr("HTML"), static_cast<int>(PreviewFormat::Html));
     m_ui.comboFormat->setCurrentIndex(static_cast<int>(currentFormat));
     m_ui.comboFormat->setToolTip(tr("Select preview rendering format (Auto detects Markdown or HTML)"));
-    connect(m_ui.comboFormat, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onFormatComboChanged);
+    connect(m_ui.comboFormat, &QComboBox::currentIndexChanged, this, [this](int index) {
+        if (index >= 0 && index <= 2) {
+            setPreviewFormat(static_cast<PreviewFormat>(index));
+        }
+    });
     topLayout->addWidget(m_ui.comboFormat);
 
     const QStringList themeList = MarkdownThemeManager::themeNames();
@@ -214,7 +238,11 @@ void MarkdownSafePreviewDock::setupUi() {
     }
     m_ui.comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
     m_ui.comboTheme->setToolTip(tr("Select Markdown theme (30 cleanrmd / markdown-it themes)"));
-    connect(m_ui.comboTheme, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onThemeComboChanged);
+    connect(m_ui.comboTheme, &QComboBox::currentIndexChanged, this, [this](int index) {
+        if (index >= 0 && index < static_cast<int>(MarkdownThemeManager::themeNames().size())) {
+            setPreviewTheme(static_cast<MarkdownThemeManager::ThemeId>(index));
+        }
+    });
     topLayout->addWidget(m_ui.comboTheme);
 
     m_ui.lblFormatStatus->setObjectName(QStringLiteral("lblFormatStatus"));
@@ -232,7 +260,7 @@ void MarkdownSafePreviewDock::setupUi() {
     m_ui.btnZoomOut->setToolTip(tr("Zoom Out"));
     m_ui.btnZoomOut->setFixedSize(28, 24);
     m_ui.btnZoomOut->setCursor(Qt::PointingHandCursor);
-    connect(m_ui.btnZoomOut, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomOut);
+    connect(m_ui.btnZoomOut, &QPushButton::clicked, this, [this] { browser->zoomOut(1); });
     topLayout->addWidget(m_ui.btnZoomOut);
 
     m_ui.btnResetZoom->setText(QStringLiteral("100%"));
@@ -240,7 +268,11 @@ void MarkdownSafePreviewDock::setupUi() {
     m_ui.btnResetZoom->setFixedHeight(24);
     m_ui.btnResetZoom->setMinimumWidth(48);
     m_ui.btnResetZoom->setCursor(Qt::PointingHandCursor);
-    connect(m_ui.btnResetZoom, &QPushButton::clicked, this, &MarkdownSafePreviewDock::resetZoom);
+    connect(m_ui.btnResetZoom, &QPushButton::clicked, this, [this] {
+        QFont f = browser->font();
+        f.setPointSize(baseFontSize);
+        browser->setFont(f);
+    });
     topLayout->addWidget(m_ui.btnResetZoom);
 
     m_ui.btnZoomIn->setIcon(QIcon(QStringLiteral(":/icons/zoomIn.svg")));
@@ -248,7 +280,7 @@ void MarkdownSafePreviewDock::setupUi() {
     m_ui.btnZoomIn->setToolTip(tr("Zoom In"));
     m_ui.btnZoomIn->setFixedSize(28, 24);
     m_ui.btnZoomIn->setCursor(Qt::PointingHandCursor);
-    connect(m_ui.btnZoomIn, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomIn);
+    connect(m_ui.btnZoomIn, &QPushButton::clicked, this, [this] { browser->zoomIn(1); });
     topLayout->addWidget(m_ui.btnZoomIn);
 
     m_ui.btnRefresh->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
@@ -514,18 +546,6 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
     m_isUpdatingTheme = false;
 }
 
-void MarkdownSafePreviewDock::onThemeComboChanged(int index) {
-    if (index < 0 || index >= static_cast<int>(MarkdownThemeManager::themeNames().size())) {
-        return;
-    }
-    currentTheme = static_cast<MarkdownThemeManager::ThemeId>(index);
-    m_userExplicitTheme = true;
-    QSettings settings;
-    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
-    applyGitHubTheme();
-    renderPreview();
-}
-
 void MarkdownSafePreviewDock::setPreviewTheme(MarkdownThemeManager::ThemeId newTheme) {
     currentTheme = newTheme;
     m_userExplicitTheme = true;
@@ -554,7 +574,7 @@ void MarkdownSafePreviewDock::renderPreview() {
 
     const PreviewFormat effectiveFormat =
         (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
-    updateFormatLabel(effectiveFormat);
+    updateFormatLabel(m_ui.lblFormatStatus, currentFormat, effectiveFormat);
 
     const QString text = QString::fromUtf8(currentEditor->getText());
     if (m_ui.lblStats) {
@@ -588,25 +608,6 @@ void MarkdownSafePreviewDock::renderPreview() {
     }
 }
 
-void MarkdownSafePreviewDock::updateFormatLabel(PreviewFormat effectiveFormat) {
-    if (!m_ui.lblFormatStatus) {
-        return;
-    }
-
-    using enum PreviewFormat;
-    if (currentFormat == Auto) {
-        if (effectiveFormat == Html) {
-            m_ui.lblFormatStatus->setText(tr("Auto (HTML)"));
-        } else {
-            m_ui.lblFormatStatus->setText(tr("Auto (Markdown)"));
-        }
-    } else if (currentFormat == Html) {
-        m_ui.lblFormatStatus->setText(tr("HTML"));
-    } else {
-        m_ui.lblFormatStatus->setText(tr("Markdown"));
-    }
-}
-
 void MarkdownSafePreviewDock::setPreviewFormat(PreviewFormat newFormat) {
     if (currentFormat == newFormat) {
         return;
@@ -619,12 +620,6 @@ void MarkdownSafePreviewDock::setPreviewFormat(PreviewFormat newFormat) {
     settings.setValue(QStringLiteral("Gui/PreviewFormat"), static_cast<int>(newFormat));
     emit formatChanged(newFormat);
     renderPreview();
-}
-
-void MarkdownSafePreviewDock::onFormatComboChanged(int index) {
-    if (index >= 0 && index <= 2) {
-        setPreviewFormat(static_cast<PreviewFormat>(index));
-    }
 }
 
 void MarkdownSafePreviewDock::setAutoShowEnabled(bool enabled) {
@@ -777,20 +772,6 @@ void MarkdownSafePreviewDock::openInBrowser() {
         tempFile.close();
         QDesktopServices::openUrl(QUrl::fromLocalFile(tempPath));
     }
-}
-
-void MarkdownSafePreviewDock::zoomIn() {
-    browser->zoomIn(1);
-}
-
-void MarkdownSafePreviewDock::zoomOut() {
-    browser->zoomOut(1);
-}
-
-void MarkdownSafePreviewDock::resetZoom() {
-    QFont f = browser->font();
-    f.setPointSize(baseFontSize);
-    browser->setFont(f);
 }
 
 void MarkdownSafePreviewDock::handleAnchorClicked(const QUrl &url) {
