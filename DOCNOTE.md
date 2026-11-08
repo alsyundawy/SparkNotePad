@@ -58,6 +58,12 @@ SparkNotePad **v1.4.5** represents a major architectural milestone delivering 12
     - `QuickSwitcherDialog` provides a spotlight-style frameless quick switcher with subsequence fuzzy matching scoring open tabs and recent files.
     - `DocumentMinimapDock` delivers a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
     - Native macOS Dock recent documents integration via `MacServicesHandler::updateDockRecentMenu`.
+13. **Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics**:
+    - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles (28 built-in packs total).
+    - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu, and removed Open Custom Icon Pack from the menubar.
+    - Integrated into `toolbar_icons.qrc` and `ToolbarIconManager.cpp` with alias normalization and comprehensive unit test coverage.
+14. **SonarLint & Clang-Tidy Static Analysis Eradication**:
+    - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across `src/` with 0 errors.
 
 ---
 

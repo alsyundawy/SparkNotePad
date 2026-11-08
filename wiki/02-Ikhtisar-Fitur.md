@@ -96,7 +96,7 @@ SparkNotePad mengadopsi 125 lexer Lexilla secara lengkap, mendukung bahasa moder
 
 ## 11. Tab Khusus Preferensi & Ergonomi Menu Desktop
 
-- **Tab Themes & Toolbar (Tab 3)**: Menggabungkan konfigurasi tema visual, penggeser transparansi jendela, interval `tail -f`, proteksi penempatan multi-layar, serta manajer 38 paket ikon toolbar dengan kartu deskripsi elegan, ukuran dinamis 16x16 hingga 64x64, pratinjau langsung, dan pemuat paket eksternal.
+- **Tab Themes & Toolbar (Tab 3)**: Menggabungkan konfigurasi tema visual, penggeser transparansi jendela, interval `tail -f`, proteksi penempatan multi-layar, serta manajer 28 paket ikon toolbar dengan kartu deskripsi elegan, ukuran dinamis 16x16 hingga 64x64, pratinjau langsung, dan pemuat paket eksternal.
 - **Tab Custom Toolbar Config (Tab 4)**: Editor visual bilah alat terintegrasi langsung dalam Preferensi (`CustomizeToolbarWidget`) lengkap dengan filter pencarian, tambah/hapus aksi, pengurutan tombol, pemisah kustom, dan hot-reload instan.
 - **Hierarki Menu Standar Desktop**: Tampilan Hex/Biner di bawah Bandingkan, Mulai Ulang Aplikasi di menu aplikasi macOS tepat di atas Keluar (`QAction::ApplicationSpecificRole`), deduplikasi palet emoji, dan pembersihan menu Tampilan (View).
 

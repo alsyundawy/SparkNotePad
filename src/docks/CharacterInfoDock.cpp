@@ -107,6 +107,7 @@ void CharacterInfoDock::updateCharacter(uint32_t codePoint) {
     populateDetails(details);
 }
 
+// NOLINTNEXTLINE(readability-convert-member-functions-to-static)
 void CharacterInfoDock::updateFromEditor(ScintillaNext *editor) {
 #ifdef UNIT_TESTING
     (void)editor;
@@ -165,7 +166,7 @@ uint32_t CharacterInfoDock::currentCodePoint() const {
     return m_details.codePoint;
 }
 
-QString CharacterInfoDock::characterName() const {
+const QString &CharacterInfoDock::characterName() const {
     return m_details.name;
 }
 

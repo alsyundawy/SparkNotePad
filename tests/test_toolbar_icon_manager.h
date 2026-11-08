@@ -34,31 +34,32 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 38 built-in packs (22 base + 16 Aksara suites)
-        QCOMPARE(packs.size(), 38);
+        // 28 built-in packs (18 base + 10 Aksara suites)
+        QCOMPARE(packs.size(), 28);
 
         const QStringList expectedPackIds = {
-            QString::fromLatin1("modernRibbon"),     QString::fromLatin1("fugue"),
-            QString::fromLatin1("aero_win7"),        QString::fromLatin1("windows7"),
-            QString::fromLatin1("fluent_regular"),   QString::fromLatin1("fluent_filled"),
-            QString::fromLatin1("windows11"),        QString::fromLatin1("notepad3_warm"),
-            QString::fromLatin1("notepadpp_green"),  QString::fromLatin1("notepadPlusPlus"),
-            QString::fromLatin1("glossy_orange"),    QString::fromLatin1("pixel_fugue_like"),
-            QString::fromLatin1("material_sharp"),   QString::fromLatin1("windowsXp"),
-            QString::fromLatin1("notepadNext"),      QString::fromLatin1("vibrantDuotone"),
-            QString::fromLatin1("monochrome"),       QString::fromLatin1("eleganticons"),
-            QString::fromLatin1("seven"),            QString::fromLatin1("mignon"),
-            QString::fromLatin1("palette"),          QString::fromLatin1("diagonal"),
+            QString::fromLatin1("modernRibbon"),
+            QString::fromLatin1("fugue"),
+            QString::fromLatin1("aero_win7"),
+            QString::fromLatin1("windows7"),
+            QString::fromLatin1("fluent_regular"),
+            QString::fromLatin1("fluent_filled"),
+            QString::fromLatin1("windows11"),
+            QString::fromLatin1("notepadPlusPlus"),
+            QString::fromLatin1("glossy_orange"),
+            QString::fromLatin1("windowsXp"),
+            QString::fromLatin1("notepadNext"),
+            QString::fromLatin1("vibrantDuotone"),
+            QString::fromLatin1("monochrome"),
+            QString::fromLatin1("eleganticons"),
+            QString::fromLatin1("seven"),
+            QString::fromLatin1("mignon"),
+            QString::fromLatin1("palette"),
+            QString::fromLatin1("diagonal"),
             QString::fromLatin1("aksara-arch-linux"),
             QString::fromLatin1("aksara-elementary-os"),
-            QString::fromLatin1("aksara-icon-pack-bold"),
-            QString::fromLatin1("aksara-icon-pack-duotone"),
-            QString::fromLatin1("aksara-icon-pack-outline"),
             QString::fromLatin1("aksara-icon-pack-rounded"),
-            QString::fromLatin1("aksara-icon-pack-sharp"),
             QString::fromLatin1("aksara-macos-bigsur"),
-            QString::fromLatin1("aksara-npp-gnome51"),
-            QString::fromLatin1("aksara-npp-kde6"),
             QString::fromLatin1("aksara-npp-vista"),
             QString::fromLatin1("aksara-npp-win10"),
             QString::fromLatin1("aksara-npp-win11"),
@@ -69,7 +70,8 @@ private slots:
 
         for (const QString &id : expectedPackIds) {
             const ToolbarIconPack *pack = manager->findPackById(id);
-            QVERIFY2(pack != nullptr, qPrintable(QString::fromLatin1("Pack ") + id + QString::fromLatin1(" should exist")));
+            QVERIFY2(pack != nullptr,
+                     qPrintable(QString::fromLatin1("Pack ") + id + QString::fromLatin1(" should exist")));
             QVERIFY(!pack->displayName.isEmpty());
             QVERIFY(!pack->basePath.isEmpty());
             QVERIFY(pack->isBuiltIn);
@@ -82,8 +84,6 @@ private slots:
         QVERIFY(manager->findPackById(QString::fromLatin1("seven_icons")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("notepadPlusPlus")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("filledFluentUi")) != nullptr);
-        QVERIFY(manager->findPackById(QString::fromLatin1("aksara_bold")) != nullptr);
-        QVERIFY(manager->findPackById(QString::fromLatin1("aksara-bold")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("aksara_npp_win11")) != nullptr);
     }
 
@@ -150,23 +150,23 @@ private slots:
         };
 
         const QStringList packs = {
-            QString::fromLatin1("modernRibbon"),     QString::fromLatin1("fugue"),
-            QString::fromLatin1("aero_win7"),        QString::fromLatin1("windows7"),
-            QString::fromLatin1("fluent_regular"),   QString::fromLatin1("fluent_filled"),
-            QString::fromLatin1("notepad3_warm"),    QString::fromLatin1("notepadpp_green"),
-            QString::fromLatin1("glossy_orange"),    QString::fromLatin1("pixel_fugue_like"),
-            QString::fromLatin1("material_sharp"),   QString::fromLatin1("windowsXp"),
-            QString::fromLatin1("notepadNext"),      QString::fromLatin1("vibrantDuotone"),
-            QString::fromLatin1("monochrome"),       QString::fromLatin1("windows11"),
-            QString::fromLatin1("fluentUi"),         QString::fromLatin1("eleganticons"),
-            QString::fromLatin1("seven"),            QString::fromLatin1("mignon"),
-            QString::fromLatin1("palette"),          QString::fromLatin1("diagonal"),
+            QString::fromLatin1("modernRibbon"),   QString::fromLatin1("fugue"),
+            QString::fromLatin1("aero_win7"),      QString::fromLatin1("windows7"),
+            QString::fromLatin1("fluent_regular"), QString::fromLatin1("fluent_filled"),
+            QString::fromLatin1("glossy_orange"),  QString::fromLatin1("windowsXp"),
+            QString::fromLatin1("notepadNext"),    QString::fromLatin1("vibrantDuotone"),
+            QString::fromLatin1("monochrome"),     QString::fromLatin1("windows11"),
+            QString::fromLatin1("fluentUi"),       QString::fromLatin1("eleganticons"),
+            QString::fromLatin1("seven"),          QString::fromLatin1("mignon"),
+            QString::fromLatin1("palette"),        QString::fromLatin1("diagonal"),
         };
 
         for (const QString &packId : packs) {
             for (const QString &act : testActions) {
                 const QIcon icon = manager->getActionIcon(act, packId);
-                QVERIFY2(!icon.isNull(), qPrintable(QString::fromLatin1("Icon for ") + act + QString::fromLatin1(" in pack ") + packId + QString::fromLatin1(" should resolve")));
+                QVERIFY2(!icon.isNull(),
+                         qPrintable(QString::fromLatin1("Icon for ") + act + QString::fromLatin1(" in pack ") + packId +
+                                    QString::fromLatin1(" should resolve")));
             }
         }
     }

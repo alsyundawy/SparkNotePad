@@ -31,8 +31,8 @@ public:
     void updateCharacter(uint32_t codePoint);
     void updateFromEditor(ScintillaNext *editor);
 
-    uint32_t currentCodePoint() const;
-    QString characterName() const;
+    [[nodiscard]] uint32_t currentCodePoint() const;
+    [[nodiscard]] const QString &characterName() const;
 
 private slots:
     void onCopyGlyphClicked() const;

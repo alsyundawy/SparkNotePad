@@ -21,8 +21,9 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
   - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
 - **Manajer Autosave & Pemulihan Crash**:
   - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
-- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
-  - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, dan gaya modern.
+- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu**:
+  - Penataan 10 paket ikon toolbar Aksara kurasi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern (total 28 paket bawaan).
+  - Relokasi menu Themes: Toolbar Icon Size ditempatkan di atas Toolbar Icon Packs, memindahkan menu Kustomisasi Toolbar ke menu Tools, dan menghapus Open Custom Icon Pack dari menubar.
 - **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
   - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
 - **Peralatan Pengembang & Utilitas**:

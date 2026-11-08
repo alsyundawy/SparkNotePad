@@ -1,4 +1,4 @@
-# SparkNotePad v1.4.5 — Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar
+# SparkNotePad v1.4.5 — Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (28 Koleksi) & Penguatan 14 Pilar
 
 **Versi Rilis:** `v1.4.5`<br/>
 **Tanggal Rilis:** 2026-11-08<br/>
@@ -49,8 +49,9 @@ SparkNotePad **v1.4.5** merupakan rilis fitur dan stabilitas besar yang menghadi
     - Dialog frameless bergaya Spotlight `QuickSwitcherDialog` dengan pencocokan subsekuens fuzzy pada tab terbuka dan berkas terkini.
     - `DocumentMinimapDock` menyediakan tinjauan dokumen ringan dengan pelacakan viewport dan batas aman berkas besar (>50 MB).
     - Integrasi berkas terkini native macOS Dock via `MacServicesHandler::updateDockRecentMenu`.
-13. **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
-    - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME 51, KDE 6, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern.
+13. **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu**:
+    - Penataan 10 paket ikon toolbar Aksara kurasi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern (total 28 paket bawaan).
+    - Relokasi menu Themes: Toolbar Icon Size ditempatkan di atas Toolbar Icon Packs, memindahkan menu Kustomisasi Toolbar ke menu Tools, dan menghapus pintasan folder custom pack dari menubar.
     - Terdaftar pada `toolbar_icons.qrc` dan `ToolbarIconManager.cpp` lengkap dengan normalisasi alias ID dan cakupan unit test.
 14. **Penuntasan Analisis Statis SonarLint & Clang-Tidy (0 Masalah)**:
     - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy pada direktori `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).

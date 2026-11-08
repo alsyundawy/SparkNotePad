@@ -440,7 +440,7 @@ trunk check -n -j 2
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.4.5] — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening (2026-11-08)
+### [v1.4.5] — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening (2026-11-08)
 
 - **Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
   - Implemented `ClosedTabsManager` maintaining a resilient FIFO stack of up to 50 recently closed document tabs with caret, scroll, encoding, and color tag preservation.
@@ -448,8 +448,9 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
   - Implemented `TabColorManager` providing 8 accessible color presets with high-contrast tab bar indicators.
 - **Autosave & Crash Recovery Manager**:
   - Implemented `AutosaveRecoveryManager` writing background snapshots every 10s with 0600 POSIX permissions and SHA-256 integrity checksums.
-- **Aksara Toolbar Icon Packs Integration (38 Packs Total)**:
-  - Integrated 16 new Aksara toolbar icon packs (544 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, and modern styles.
+- **Aksara Toolbar Icon Packs Suite (28 Packs Total) & Menu Ergonomics**:
+  - Curated 10 high-fidelity Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, and modern styles (28 built-in packs total).
+  - Streamlined Themes & Tools menus: relocated Toolbar Icon Size above Toolbar Icon Packs in Themes, moved Customize Toolbar into the Tools menu (`Tools > Customize Toolbar Buttons...`), and removed Open Custom Icon Pack from the menubar.
 - **Markdown / PDF Export & Enhanced Previews**:
   - Native PDF/HTML export via `QPrinter`, Mermaid diagram container rendering, and full LaTeX math support.
 - **Developer Tools & Utilities**:

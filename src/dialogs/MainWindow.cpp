@@ -436,7 +436,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     connect(ui->actionInsertDateTimeShort, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateTimeShort);
+        const auto result =
+            GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateTimeShort);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -445,7 +446,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertDateTimeLong, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateTimeLong);
+        const auto result =
+            GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateTimeLong);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -454,7 +456,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertTimestampIso, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::Iso8601Local);
+        const auto result =
+            GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::Iso8601Local);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted ISO timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -463,7 +466,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertTimestampUnix, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::UnixTimestampSecs);
+        const auto result =
+            GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::UnixTimestampSecs);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted Unix timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -1610,6 +1614,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     // Also place HTML & Markdown Preview prominently in the View menu
     ui->menuView->addSeparator();
     ui->menuView->addMenu(menuPreview);
+
+    menuTools->addSeparator();
+    actionCustomizeToolbar = menuTools->addAction(tr("Customize Toolbar Buttons..."));
+    actionCustomizeToolbar->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
+    connect(actionCustomizeToolbar, &QAction::triggered, this, [this] {
+        CustomizeToolbarDialog dlg(this, this);
+        dlg.exec();
+    });
 
     // Insert Tools menu before Macro in menubar
     menuBar()->insertMenu(ui->menuMacro->menuAction(), menuTools);
@@ -3513,10 +3525,10 @@ void MainWindow::applyEditorTextTransform(TransformFn &&fn, const QString &label
         return;
     }
     const bool hasSelection = (editor->selectionStart() != editor->selectionEnd());
-    const QString original =
-        hasSelection ? QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()),
-                                                                static_cast<int>(editor->selectionEnd())))
-                     : QString::fromUtf8(editor->getText());
+    const QString original = hasSelection
+                                 ? QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()),
+                                                                            static_cast<int>(editor->selectionEnd())))
+                                 : QString::fromUtf8(editor->getText());
     QString err;
     const QString transformed = fn(original, &err);
     if (!err.isEmpty()) {
@@ -4800,7 +4812,7 @@ void MainWindow::populateTabBarColorActions(QMenu *menu, ScintillaNext *editor) 
     }
     menu->addSeparator();
     auto *tabColorMenu = menu->addMenu(tr("Set Tab Color"));
-    const auto presets = TabColorManager::instance()->presets();
+    const auto presets = TabColorManager::presets();
     for (const auto &preset : presets) {
         QPixmap px(14, 14);
         px.fill(Qt::transparent);
@@ -5439,31 +5451,8 @@ void MainWindow::setupThemeMenu() {
         ui->menuBar->addMenu(menuTheme);
     }
 
-    // 1. Toolbar Icon Packs & Customization (Relocated to top of Themes menu)
-    menuToolbarIconPacks = menuTheme->addMenu(tr("&Toolbar Icon Packs"));
-    toolbarPacksGroup = new QActionGroup(this);
-    toolbarPacksGroup->setExclusive(true);
-
-    const auto &packs = ToolbarIconManager::instance()->availablePacks();
-    const QString currentPack = ToolbarIconManager::instance()->currentPackId();
-
-    for (const auto &pack : packs) {
-        auto *act = menuToolbarIconPacks->addAction(pack.displayName);
-        act->setCheckable(true);
-        act->setChecked(pack.id == currentPack);
-        act->setData(pack.id);
-        toolbarPacksGroup->addAction(act);
-
-        connect(act, &QAction::triggered, this, [this, pack] {
-            ToolbarIconManager::instance()->setPack(pack.id, ui->mainToolBar);
-            ui->statusBar->showMessage(tr("Toolbar icon pack changed to: %1").arg(pack.displayName), 3000);
-        });
-    }
-
-    menuToolbarIconPacks->addSeparator();
-
-    // Submenu: Toolbar Icon Size
-    menuToolbarIconSizes = menuToolbarIconPacks->addMenu(tr("Toolbar Icon Size"));
+    // 1. Toolbar Icon Size (Submenu placed above Toolbar Icon Packs)
+    menuToolbarIconSizes = menuTheme->addMenu(tr("Toolbar Icon Size"));
     toolbarSizesGroup = new QActionGroup(this);
     toolbarSizesGroup->setExclusive(true);
 
@@ -5493,26 +5482,30 @@ void MainWindow::setupThemeMenu() {
         });
     }
 
-    menuToolbarIconPacks->addSeparator();
+    // 2. Toolbar Icon Packs (Submenu placed below Toolbar Icon Size)
+    menuToolbarIconPacks = menuTheme->addMenu(tr("&Toolbar Icon Packs"));
+    toolbarPacksGroup = new QActionGroup(this);
+    toolbarPacksGroup->setExclusive(true);
 
-    actionCustomizeToolbar = menuToolbarIconPacks->addAction(tr("Customize Toolbar Buttons..."));
-    actionCustomizeToolbar->setIcon(QIcon(QStringLiteral(":/icons/settings.svg")));
-    connect(actionCustomizeToolbar, &QAction::triggered, this, [this] {
-        CustomizeToolbarDialog dlg(this, this);
-        dlg.exec();
-    });
+    const auto &packs = ToolbarIconManager::instance()->availablePacks();
+    const QString currentPack = ToolbarIconManager::instance()->currentPackId();
 
-    auto *actionOpenCustomPacks = menuToolbarIconPacks->addAction(tr("Open Custom Icon Packs Folder..."));
-    actionOpenCustomPacks->setIcon(QIcon(QStringLiteral(":/icons/openfile.svg")));
-    connect(actionOpenCustomPacks, &QAction::triggered, this, [] {
-        const QString path = ToolbarIconManager::customPacksPath();
-        QDir().mkpath(path);
-        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
-    });
+    for (const auto &pack : packs) {
+        auto *act = menuToolbarIconPacks->addAction(pack.displayName);
+        act->setCheckable(true);
+        act->setChecked(pack.id == currentPack);
+        act->setData(pack.id);
+        toolbarPacksGroup->addAction(act);
+
+        connect(act, &QAction::triggered, this, [this, pack] {
+            ToolbarIconManager::instance()->setPack(pack.id, ui->mainToolBar);
+            ui->statusBar->showMessage(tr("Toolbar icon pack changed to: %1").arg(pack.displayName), 3000);
+        });
+    }
 
     menuTheme->addSeparator();
 
-    // 2. Open Theme Switcher... (Ctrl+Shift+T)
+    // 3. Open Theme Switcher... (Ctrl+Shift+T)
     actionThemeSwitcher = new QAction(tr("Open Theme Switcher..."), this);
     actionThemeSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(actionThemeSwitcher, &QAction::triggered, this, [this] {
@@ -5595,6 +5588,7 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addAction(actionToggleTheme);
 
     ensureMenuIconsVisible(menuTheme);
+    ensureMenuIconsVisible(menuToolbarIconSizes);
     ensureMenuIconsVisible(menuToolbarIconPacks);
 }
 

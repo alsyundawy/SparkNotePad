@@ -55,9 +55,10 @@ SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectur
   - Implemented Spotlight-style frameless `QuickSwitcherDialog` with subsequence fuzzy matching scoring open tabs and recent files.
   - Implemented `DocumentMinimapDock` providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
   - Added native macOS Dock recent documents integration via `MacServicesHandler::updateDockRecentMenu`.
-- **Aksara Toolbar Icon Pack Suite Integration (38 Packs Total)**:
-  - Integrated 16 new Aksara toolbar icon packs (544 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-bold`, `aksara-icon-pack-duotone`, `aksara-icon-pack-outline`, `aksara-icon-pack-rounded`, `aksara-icon-pack-sharp`, `aksara-macos-bigsur`, `aksara-npp-gnome51`, `aksara-npp-kde6`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
-  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, expanding the built-in toolbar icon collection to 38 packs with robust alias normalization and unit test coverage.
+- **Aksara Toolbar Icon Pack Suite (28 Packs Total) & Menu Ergonomics**:
+  - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-rounded`, `aksara-macos-bigsur`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
+  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, maintaining 28 built-in toolbar icon packs with robust alias normalization and unit test coverage.
+  - Streamlined Themes & Tools menus: relocated Toolbar Icon Size above Toolbar Icon Packs in Themes, moved Customize Toolbar into the Tools menu (`Tools > Customize Toolbar Buttons...`), and removed Open Custom Icon Pack from the menubar.
 
 #### 🛠️ Fixed & Hardened
 

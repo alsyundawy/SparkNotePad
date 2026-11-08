@@ -493,8 +493,8 @@ void AboutDialog::updateThemeColors() {
                      tr("Designer of the open-source editor and chameleon artwork series, adapted for SparkNotePad "
                         "official branding."),
                      tr("Modern high-DPI Retina vector icons customized for 75 themes, menus, and toolbars."),
-                     tr("Comprehensive 16-suite toolbar icon pack library (544 scalable SVGs and PNGs) spanning macOS "
-                        "Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, Elementary OS, and modern "
+                     tr("Comprehensive 10-suite toolbar icon pack library (340 scalable SVGs and PNGs) spanning macOS "
+                        "Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern "
                         "minimalist styles."));
 
         m_creditsBrowser->setHtml(creditsHtml);

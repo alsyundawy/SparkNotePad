@@ -115,27 +115,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 8. Notepad3 Warm (Classic Amber)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepad3_warm"),
-        .displayName = tr("Notepad3 Warm (Classic Amber)"),
-        .description = tr("Notepad3 warm brown and amber classic text editor iconography"),
-        .basePath = QStringLiteral(":/icons/packs/notepad3_warm"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 9. Notepad++ (Green Accents)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("notepadpp_green"),
-        .displayName = tr("Notepad++ (Green Accents)"),
-        .description = tr("Classic Notepad++ toolbar iconography with green accents"),
-        .basePath = QStringLiteral(":/icons/packs/notepadpp_green"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 10. Notepad++ (Classic)
+    // 8. Notepad++ (Classic)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("notepadPlusPlus"),
         .displayName = tr("Notepad++ (Classic)"),
@@ -155,27 +135,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 12. Pixel Dense (Retro 16-Bit)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("pixel_fugue_like"),
-        .displayName = tr("Pixel Dense (Retro 16-Bit)"),
-        .description = tr("Pixel-precise dense retro iconography with crisp edges"),
-        .basePath = QStringLiteral(":/icons/packs/pixel_fugue_like"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 13. Material Design (Sharp)
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("material_sharp"),
-        .displayName = tr("Material Design (Sharp)"),
-        .description = tr("Google Material Design sharp geometric iconography"),
-        .basePath = QStringLiteral(":/icons/packs/material_sharp"),
-        .isBuiltIn = true,
-        .isPngBased = true,
-    });
-
-    // 14. Windows XP (Luna Classic)
+    // 10. Windows XP (Luna Classic)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("windowsXp"),
         .displayName = tr("Windows XP (Luna Classic)"),
@@ -285,37 +245,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = false,
     });
 
-    // 25. Aksara Bold
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("aksara-icon-pack-bold"),
-        .displayName = tr("Aksara Bold"),
-        .description = tr("Bold strokes with rounded caps, maximum readability and contrast"),
-        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-bold"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 26. Aksara Duotone
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("aksara-icon-pack-duotone"),
-        .displayName = tr("Aksara Duotone"),
-        .description = tr("Dark gray contours with subtle translucent purple accent circular backing"),
-        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-duotone"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 27. Aksara Outline
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("aksara-icon-pack-outline"),
-        .displayName = tr("Aksara Outline"),
-        .description = tr("Clean line-art wireframe aesthetic with rounded terminators"),
-        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-outline"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 28. Aksara Rounded
+    // 21. Aksara Rounded
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("aksara-icon-pack-rounded"),
         .displayName = tr("Aksara Rounded"),
@@ -325,17 +255,7 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = false,
     });
 
-    // 29. Aksara Sharp
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("aksara-icon-pack-sharp"),
-        .displayName = tr("Aksara Sharp"),
-        .description = tr("Crisp sharp corners with technical precision styling"),
-        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-sharp"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 30. Aksara macOS Big Sur
+    // 22. Aksara macOS Big Sur
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("aksara-macos-bigsur"),
         .displayName = tr("Aksara macOS Big Sur"),
@@ -345,31 +265,12 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = false,
     });
 
-    // 31. Aksara NPP GNOME 5.1
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("aksara-npp-gnome51"),
-        .displayName = tr("Aksara NPP GNOME 5.1"),
-        .description = tr("GNOME Adwaita aesthetic: warm balanced contrast, smooth rounded corners, Linux desktop feel"),
-        .basePath = QStringLiteral(":/icons/packs/aksara-npp-gnome51"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 32. Aksara NPP KDE 6
-    m_packs.append(ToolbarIconPack{
-        .id = QStringLiteral("aksara-npp-kde6"),
-        .displayName = tr("Aksara NPP KDE 6"),
-        .description = tr("KDE Breeze 6 styling: electric cyan accents, sharp geometric edges, futuristic vibe"),
-        .basePath = QStringLiteral(":/icons/packs/aksara-npp-kde6"),
-        .isBuiltIn = true,
-        .isPngBased = false,
-    });
-
-    // 33. Aksara NPP Windows Vista
+    // 23. Aksara NPP Windows Vista
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("aksara-npp-vista"),
         .displayName = tr("Aksara NPP Windows Vista"),
-        .description = tr("Windows Vista Aero Glass: bright cyan gradients, translucent reflections, 2006 skeuomorphism"),
+        .description =
+            tr("Windows Vista Aero Glass: bright cyan gradients, translucent reflections, 2006 skeuomorphism"),
         .basePath = QStringLiteral(":/icons/packs/aksara-npp-vista"),
         .isBuiltIn = true,
         .isPngBased = false,
@@ -419,7 +320,8 @@ void ToolbarIconManager::registerBuiltInPacks() {
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("aksara-vista-aero"),
         .displayName = tr("Aksara Vista Aero"),
-        .description = tr("Glossy and reflective: azure gradients, bright specular highlights, Aero Glass rounded tiles"),
+        .description =
+            tr("Glossy and reflective: azure gradients, bright specular highlights, Aero Glass rounded tiles"),
         .basePath = QStringLiteral(":/icons/packs/aksara-vista-aero"),
         .isBuiltIn = true,
         .isPngBased = false,
@@ -456,34 +358,19 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("sevenIcons"), QStringLiteral("seven")},
         {QStringLiteral("aksara_arch_linux"), QStringLiteral("aksara-arch-linux")},
         {QStringLiteral("aksara_elementary_os"), QStringLiteral("aksara-elementary-os")},
-        {QStringLiteral("aksara_bold"), QStringLiteral("aksara-icon-pack-bold")},
-        {QStringLiteral("aksara-bold"), QStringLiteral("aksara-icon-pack-bold")},
-        {QStringLiteral("aksara_icon_pack_bold"), QStringLiteral("aksara-icon-pack-bold")},
-        {QStringLiteral("aksara_duotone"), QStringLiteral("aksara-icon-pack-duotone")},
-        {QStringLiteral("aksara-duotone"), QStringLiteral("aksara-icon-pack-duotone")},
-        {QStringLiteral("aksara_icon_pack_duotone"), QStringLiteral("aksara-icon-pack-duotone")},
-        {QStringLiteral("aksara_outline"), QStringLiteral("aksara-icon-pack-outline")},
-        {QStringLiteral("aksara-outline"), QStringLiteral("aksara-icon-pack-outline")},
-        {QStringLiteral("aksara_icon_pack_outline"), QStringLiteral("aksara-icon-pack-outline")},
         {QStringLiteral("aksara_rounded"), QStringLiteral("aksara-icon-pack-rounded")},
         {QStringLiteral("aksara-rounded"), QStringLiteral("aksara-icon-pack-rounded")},
         {QStringLiteral("aksara_icon_pack_rounded"), QStringLiteral("aksara-icon-pack-rounded")},
-        {QStringLiteral("aksara_sharp"), QStringLiteral("aksara-icon-pack-sharp")},
-        {QStringLiteral("aksara-sharp"), QStringLiteral("aksara-icon-pack-sharp")},
-        {QStringLiteral("aksara_icon_pack_sharp"), QStringLiteral("aksara-icon-pack-sharp")},
         {QStringLiteral("aksara_macos_bigsur"), QStringLiteral("aksara-macos-bigsur")},
-        {QStringLiteral("aksara_npp_gnome51"), QStringLiteral("aksara-npp-gnome51")},
-        {QStringLiteral("aksara_npp_kde6"), QStringLiteral("aksara-npp-kde6")},
         {QStringLiteral("aksara_npp_vista"), QStringLiteral("aksara-npp-vista")},
         {QStringLiteral("aksara_npp_win10"), QStringLiteral("aksara-npp-win10")},
         {QStringLiteral("aksara_npp_win11"), QStringLiteral("aksara-npp-win11")},
         {QStringLiteral("aksara_npp_xp"), QStringLiteral("aksara-npp-xp")},
         {QStringLiteral("aksara_ubuntu_yaru"), QStringLiteral("aksara-ubuntu-yaru")},
-        {QStringLiteral("aksara_vista_aero"), QStringLiteral("aksara-vista-aero")}
-    };
+        {QStringLiteral("aksara_vista_aero"), QStringLiteral("aksara-vista-aero")}};
     return s_aliasMap.value(packId, packId);
 }
-} // namespace
+}  // namespace
 
 const ToolbarIconPack *ToolbarIconManager::findPackById(const QString &packId) const {
     const QString targetId = normalizePackId(packId);
@@ -794,8 +681,8 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool
     const QImage adapted = adaptImageForTheme(baseImg, isDark);
     static constexpr std::array<int, 6> s_dpiSizes = {16, 20, 24, 32, 48, 64};
     for (const int sz : s_dpiSizes) {
-        if (const QPixmap px = QPixmap::fromImage(
-                adapted.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        if (const QPixmap px =
+                QPixmap::fromImage(adapted.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             !px.isNull()) {
             icon.addPixmap(px);
             if (sz == 32 || sz == 48 || sz == 64) {
@@ -825,7 +712,8 @@ void addHiDpiPixmaps(QIcon &icon, const QString &filePath, bool isPngBased, bool
     }
 }
 
-void addDpiPixmapsToIcon(QIcon &icon, const QPixmap &px, int sz, QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off) {
+void addDpiPixmapsToIcon(QIcon &icon, const QPixmap &px, int sz, QIcon::Mode mode = QIcon::Normal,
+                         QIcon::State state = QIcon::Off) {
     icon.addPixmap(px, mode, state);
     if (sz == 32 || sz == 48 || sz == 64) {
         QPixmap px2 = px;
@@ -840,10 +728,12 @@ QIcon buildDualRecordMultiResIcon(const QString &basePath, bool isDark) {
     for (const int sz : s_dpiSizes) {
         const QString szDir = QStringLiteral("%1/%2x%2").arg(basePath).arg(sz);
         if (const QImage offImg(szDir + QStringLiteral("/startRecord.png")); !offImg.isNull()) {
-            addDpiPixmapsToIcon(dualIcon, QPixmap::fromImage(adaptImageForTheme(offImg, isDark)), sz, QIcon::Normal, QIcon::Off);
+            addDpiPixmapsToIcon(dualIcon, QPixmap::fromImage(adaptImageForTheme(offImg, isDark)), sz, QIcon::Normal,
+                                QIcon::Off);
         }
         if (const QImage onImg(szDir + QStringLiteral("/stopRecord.png")); !onImg.isNull()) {
-            addDpiPixmapsToIcon(dualIcon, QPixmap::fromImage(adaptImageForTheme(onImg, isDark)), sz, QIcon::Normal, QIcon::On);
+            addDpiPixmapsToIcon(dualIcon, QPixmap::fromImage(adaptImageForTheme(onImg, isDark)), sz, QIcon::Normal,
+                                QIcon::On);
         }
     }
     return dualIcon;
@@ -897,7 +787,9 @@ void syncActionIcon(QAction *action, const ToolbarIconManager &mgr, bool isMenuC
 QIcon ToolbarIconManager::getActionIcon(const QString &actionName, const QString &packId) const {
     const QString targetPackId = packId.isEmpty() ? m_currentPackId : packId;
     const QString canonical = canonicalNameForAction(actionName);
-    const QString cacheKey = QStringLiteral("%1:%2:%3").arg(targetPackId, canonical, m_isDarkMode ? QStringLiteral("1") : QStringLiteral("0"));
+    const QString cacheKey =
+        QStringLiteral("%1:%2:%3")
+            .arg(targetPackId, canonical, m_isDarkMode ? QStringLiteral("1") : QStringLiteral("0"));
 
     if (const auto it = m_iconCache.constFind(cacheKey); it != m_iconCache.constEnd()) {
         return it.value();

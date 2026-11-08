@@ -53,11 +53,11 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (38 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (28 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.4.5 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 38 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
+SparkNotePad v1.4.5 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 28 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
-### Paket Ikon Toolbar Bawaan (38 Paket)
+### Paket Ikon Toolbar Bawaan (28 Paket)
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue 3.5.6 otentik dengan skalabilitas multi-resolusi dan retina @2x.
@@ -66,37 +66,27 @@ SparkNotePad v1.4.5 menghadirkan arsitektur personalisasi toolbar lengkap terins
 5. **Microsoft Fluent Design Regular** (`fluent_regular`): Rangkaian vektor reguler Microsoft Fluent Design.
 6. **Microsoft Fluent Design Filled** (`fluent_filled`): Rangkaian vektor tebal Microsoft Fluent Design.
 7. **Windows 11 (Fluent 2)** (`windows11`): Microsoft Fluent Design System 2 beresolusi tinggi Directory Opus.
-8. **Notepad3 (Warm Amber)** (`notepad3_warm`): Aksen amber hangat terinspirasi dari editor Notepad3.
-9. **Notepad++ (Modern Green)** (`notepadpp_green`): Nuansa hijau segar khas ikonografi modern Notepad++.
-10. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
-11. **Glossy Orange** (`glossy_orange`): Ikon vektor oranye mengkilap skeuomorfik yang cerah.
-12. **Pixel Design (Fugue-like)** (`pixel_fugue_like`): Ikonografi seni piksel klasik desktop bernuansa retro.
-13. **Material Design (Sharp Vector)** (`material_sharp`): Ikonografi Google Material Design dengan garis vektor geometris tajam.
-14. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-15. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
-16. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
-17. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
-18. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
-19. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
-20. **Mignon Icon Theme** (`mignon`): Ikon vektor modern dan elegan karya Igor F. Moraes.
-21. **Palette Icon Theme** (`palette`): Tema ikon vektor penuh warna karya mjkim0727.
-22. **Diagonal Icon Theme** (`diagonal`): Gaya vektor diagonal dinamis karya Tamás Csábi.
-23. **Aksara Icon Pack Bold** (`aksara-icon-pack-bold`): Ikon vektor tebal modern dengan garis kontras tinggi.
-24. **Aksara Icon Pack Duotone** (`aksara-icon-pack-duotone`): Rangkaian ikon dua warna harmonis untuk toolbar ekspresif.
-25. **Aksara Icon Pack Outline** (`aksara-icon-pack-outline`): Desain wireframe garis minimalis untuk antarmuka bersih.
-26. **Aksara Icon Pack Rounded** (`aksara-icon-pack-rounded`): Geometri membulat modern yang lembut dan elegan.
-27. **Aksara Icon Pack Sharp** (`aksara-icon-pack-sharp`): Ikonografi sudut tajam untuk ketegasan visual optimal.
-28. **Aksara macOS Big Sur** (`aksara-macos-bigsur`): Estetika squircle modern Apple macOS Big Sur & Monterey.
-29. **Aksara Windows XP** (`aksara-npp-xp`): Nostalgia ikonografi klasik Windows XP Luna.
-30. **Aksara Windows Vista** (`aksara-npp-vista`): Ikonografi glossy transparan Windows Vista.
-31. **Aksara Windows 10** (`aksara-npp-win10`): Ikonografi vektor monokromatik datar Windows 10.
-32. **Aksara Windows 11** (`aksara-npp-win11`): Ikonografi membulat Fluent 2 modern Windows 11.
-33. **Aksara Vista Aero** (`aksara-vista-aero`): Estetika kaca Aero Glass otentik Windows Vista.
-34. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ikonografi tema resmi Ubuntu Yaru Desktop.
-35. **Aksara GNOME 51** (`aksara-npp-gnome51`): Ikonografi modern Linux desktop GNOME Adwaita.
-36. **Aksara KDE 6** (`aksara-npp-kde6`): Rangkaian vektor modern KDE Plasma 6 Breeze.
-37. **Aksara Arch Linux** (`aksara-arch-linux`): Ikonografi minimalis biru sian khas Arch Linux.
-38. **Aksara Elementary OS** (`aksara-elementary-os`): Ikonografi humanis rapi khas Elementary OS.
+8. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
+9. **Glossy Orange** (`glossy_orange`): Ikon vektor oranye mengkilap skeuomorfik yang cerah.
+10. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
+11. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
+12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
+13. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
+14. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.
+15. **Seven Classic** (`seven`): Rangkaian ikonografi desktop berkilau klasik Windows 7 / Seven di 6 skala multi-DPI (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+16. **Mignon Icon Theme** (`mignon`): Ikon vektor modern dan elegan karya Igor F. Moraes.
+17. **Palette Icon Theme** (`palette`): Tema ikon vektor penuh warna karya mjkim0727.
+18. **Diagonal Icon Theme** (`diagonal`): Gaya vektor diagonal dinamis karya Tamás Csábi.
+19. **Aksara Icon Pack Rounded** (`aksara-icon-pack-rounded`): Geometri membulat modern yang lembut dan elegan.
+20. **Aksara macOS Big Sur** (`aksara-macos-bigsur`): Estetika squircle modern Apple macOS Big Sur & Monterey.
+21. **Aksara Windows XP** (`aksara-npp-xp`): Nostalgia ikonografi klasik Windows XP Luna.
+22. **Aksara Windows Vista** (`aksara-npp-vista`): Ikonografi glossy transparan Windows Vista.
+23. **Aksara Windows 10** (`aksara-npp-win10`): Ikonografi vektor monokromatik datar Windows 10.
+24. **Aksara Windows 11** (`aksara-npp-win11`): Ikonografi membulat Fluent 2 modern Windows 11.
+25. **Aksara Vista Aero** (`aksara-vista-aero`): Estetika kaca Aero Glass otentik Windows Vista.
+26. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ikonografi tema resmi Ubuntu Yaru Desktop.
+27. **Aksara Arch Linux** (`aksara-arch-linux`): Ikonografi minimalis biru sian khas Arch Linux.
+28. **Aksara Elementary OS** (`aksara-elementary-os`): Ikonografi humanis rapi khas Elementary OS.
 
 ### Kejelasan High-DPI & Layar Retina
 
@@ -104,7 +94,7 @@ Semua paket ikon dilengkapi pixmap multi-resolusi (16x16, 20x20, 24x24, 32x32, 4
 
 ### Adaptasi Luminans Tema Gelap (Dark Mode Tone Mapping)
 
-Pada tema gelap, paket ikon outline (seperti `monochrome`) secara otomatis menginversi piksel gelap menjadi silver-white luminous, sedangkan paket berwarna (`material_sharp`, `pixel_fugue_like`, `notepadpp_green`, `notepad3_warm`) ditingkatkan kecerahannya dengan pemetaan HSL tone mapping tanpa merusak corak warna dan saturasi aslinya.
+Pada tema gelap, paket ikon outline (seperti `monochrome`) secara otomatis menginversi piksel gelap menjadi silver-white luminous, sedangkan paket berwarna ditingkatkan kecerahannya dengan pemetaan HSL tone mapping tanpa merusak corak warna dan saturasi aslinya.
 
 ### Tombol Plus (+) pada Samping Deretan Tab
 
@@ -114,9 +104,9 @@ Setiap title bar area dock kini dilengkapi tombol interaktif **Plus (+)** tepat 
 
 Penggantian paket ikon toolbar kini secara otomatis menyinkronkan seluruh ikon aksi pada Toolbar Utama, Menu Bar utama, submenu, menu konteks klik kanan tab, dan menu klik kanan editor secara instan melalui `ToolbarIconManager::applyToWindow()` dan `applyToMenu()`. Ukuran default ikon toolbar adalah 24×24 dan ikon menu adalah 16×16 (dengan aset retina 32×32).
 
-### Skala Ukuran Ikon Toolbar Dinamis
+### Skala Ukuran Ikon Toolbar Dinamis & Ergonomi Menu
 
-Ubah ukuran ikon secara instan dari `Tema > Paket Ikon Toolbar > Ukuran Ikon Toolbar`:
+Ubah ukuran ikon secara instan dari menu `Themes > Toolbar Icon Size` (terletak di atas `Toolbar Icon Packs`) atau menu klik kanan toolbar. Kustomisasi tombol toolbar dapat diakses melalui `Tools > Customize Toolbar Buttons...`:
 
 - **16 × 16** (Kompak / Compact)
 - **20 × 20** (Sedang / Medium)
@@ -129,7 +119,7 @@ Ubah ukuran ikon secara instan dari `Tema > Paket Ikon Toolbar > Ukuran Ikon Too
 
 - **Tab Themes & Toolbar (Tab 3)**:
   - Menggabungkan pengaturan tema aktif, penggeser opasitas jendela, interval muat ulang `tail -f`, dan proteksi penempatan multi-display.
-  - Manajer Paket Ikon Toolbar lengkap yang mencakup 40 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
+  - Manajer Paket Ikon Toolbar lengkap yang mencakup 28 paket ikon, pemilih paket aktif dengan kartu deskripsi yang responsif dan elegan, pengatur ukuran ikon multi-DPI (16x16 hingga 64x64), bilah pratinjau sampel ikon langsung, pemuat folder paket kustom, dan tombol pemindaian ulang instan.
 - **Tab Custom Toolbar Config (Tab 4)**:
   - Mengintegrasikan editor penyesuai bilah alat visual (`CustomizeToolbarWidget`) langsung ke dalam kotak dialog Preferensi.
   - Tambah, hapus, dan atur ulang urutan tombol bilah alat dengan daftar ganda interaktif lengkap dengan filter pencarian instan.

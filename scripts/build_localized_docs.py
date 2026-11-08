@@ -14,7 +14,7 @@ DOCNOTE_ID = """# Catatan Rilis SparkNotePad — v1.4.5 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.5 (Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar)
+Versi Rilis          : 1.4.5 (Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (28 Koleksi) & Penguatan 14 Pilar)
 Tanggal Rilis        : 2026-11-08
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -79,8 +79,9 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
     - DocumentMinimapDock menyediakan tinjauan dokumen ringan dengan pelacakan viewport dan batas aman berkas besar (>50 MB).
     - Integrasi berkas terkini native macOS Dock via MacServicesHandler::updateDockRecentMenu.
 
-13. Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket):
-    - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME 51, KDE 6, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern.
+13. Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu:
+    - Penataan 10 paket ikon toolbar Aksara kurasi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern (total 28 paket bawaan).
+    - Relokasi menu Themes: Toolbar Icon Size ditempatkan di atas Toolbar Icon Packs, memindahkan menu Kustomisasi Toolbar ke menu Tools, dan menghapus pintasan folder custom pack dari menubar.
     - Terdaftar pada toolbar_icons.qrc dan ToolbarIconManager.cpp lengkap dengan normalisasi alias ID dan cakupan unit test.
 
 14. Penuntasan Analisis Statis SonarLint & Clang-Tidy (0 Masalah):
@@ -92,7 +93,7 @@ DOCNOTE_EN = """# SparkNotePad Release DocNote — v1.4.5 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.4.5 (Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening)
+Release Version     : 1.4.5 (Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening)
 Release Date        : 2026-11-08
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -158,8 +159,9 @@ SparkNotePad v1.4.5 represents a major feature and stabilization milestone deliv
     - DocumentMinimapDock providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
     - Native macOS Dock recent documents integration via MacServicesHandler::updateDockRecentMenu.
 
-13. Aksara Toolbar Icon Pack Suite Integration (38 Packs Total):
-    - Integrated 16 new curated Aksara toolbar icon packs (544 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, GNOME 51, KDE 6, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles.
+13. Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics:
+    - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles (28 built-in packs total).
+    - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu, and removed Open Custom Icon Pack from the menubar.
     - Integrated into toolbar_icons.qrc and ToolbarIconManager.cpp with alias normalization and comprehensive unit test coverage.
 
 14. SonarLint & Clang-Tidy Static Analysis Eradication:
@@ -190,8 +192,9 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
   - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
 - **Manajer Autosave & Pemulihan Crash**:
   - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
-- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
-  - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, dan gaya modern.
+- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu**:
+  - Penataan 10 paket ikon toolbar Aksara kurasi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern (total 28 paket bawaan).
+  - Relokasi menu Themes: Toolbar Icon Size ditempatkan di atas Toolbar Icon Packs, memindahkan menu Kustomisasi Toolbar ke menu Tools, dan menghapus Open Custom Icon Pack dari menubar.
 - **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
   - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
 - **Peralatan Pengembang & Utilitas**:
@@ -237,7 +240,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.5] - 2026-11-08
 
-### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening
 
 SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectural pillars inspired by modern IDE standards and power-user workflows:
 
@@ -252,9 +255,10 @@ SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectur
   - Implemented `AutosaveRecoveryManager` writing background snapshots every 10 seconds for modified documents.
   - Protected with strict `0600` POSIX file permissions and SHA-256 integrity checksums.
   - Interactive `CrashRecoveryDialog` enabling selective document restoration or discard on startup.
-- **Aksara Toolbar Icon Pack Suite Integration (38 Packs Total)**:
-  - Integrated 16 new Aksara toolbar icon packs (544 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-bold`, `aksara-icon-pack-duotone`, `aksara-icon-pack-outline`, `aksara-icon-pack-rounded`, `aksara-icon-pack-sharp`, `aksara-macos-bigsur`, `aksara-npp-gnome51`, `aksara-npp-kde6`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
-  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, expanding the built-in toolbar icon collection to 38 packs with robust alias normalization and unit test coverage.
+- **Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics**:
+  - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-rounded`, `aksara-macos-bigsur`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
+  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, establishing the built-in toolbar icon collection at 28 packs with robust alias normalization and unit test coverage.
+  - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu (`Tools > Customize Toolbar Buttons...`), and removed Open Custom Icon Pack from the menubar.
 - **Native Markdown / HTML / PDF Export Pipeline**:
   - Implemented `DocumentExportManager` with native Qt 6 `QPrinter` / `Qt6::PrintSupport` and Pandoc fallback engine.
   - Interactive `ExportOptionsDialog` supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.

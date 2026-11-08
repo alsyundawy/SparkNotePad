@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.5] - 2026-11-08
 
-### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening
 
 SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectural pillars inspired by modern IDE standards and power-user workflows:
 
@@ -24,9 +24,10 @@ SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectur
   - Implemented `AutosaveRecoveryManager` writing background snapshots every 10 seconds for modified documents.
   - Protected with strict `0600` POSIX file permissions and SHA-256 integrity checksums.
   - Interactive `CrashRecoveryDialog` enabling selective document restoration or discard on startup.
-- **Aksara Toolbar Icon Pack Suite Integration (38 Packs Total)**:
-  - Integrated 16 new Aksara toolbar icon packs (544 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-bold`, `aksara-icon-pack-duotone`, `aksara-icon-pack-outline`, `aksara-icon-pack-rounded`, `aksara-icon-pack-sharp`, `aksara-macos-bigsur`, `aksara-npp-gnome51`, `aksara-npp-kde6`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
-  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, expanding the built-in toolbar icon collection to 38 packs with robust alias normalization and unit test coverage.
+- **Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics**:
+  - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-rounded`, `aksara-macos-bigsur`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
+  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, establishing the built-in toolbar icon collection at 28 packs with robust alias normalization and unit test coverage.
+  - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu (`Tools > Customize Toolbar Buttons...`), and removed Open Custom Icon Pack from the menubar.
 - **Native Markdown / HTML / PDF Export Pipeline**:
   - Implemented `DocumentExportManager` with native Qt 6 `QPrinter` / `Qt6::PrintSupport` and Pandoc fallback engine.
   - Interactive `ExportOptionsDialog` supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.

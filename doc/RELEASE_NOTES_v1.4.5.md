@@ -1,4 +1,4 @@
-# SparkNotePad v1.4.5 — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening
+# SparkNotePad v1.4.5 — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening
 
 **Release Version:** `v1.4.5`<br/>
 **Release Date:** 2026-11-08<br/>
@@ -49,8 +49,9 @@ SparkNotePad **v1.4.5** represents a major feature and stabilization milestone d
     - Spotlight-style frameless `QuickSwitcherDialog` with subsequence fuzzy matching scoring open tabs and recent files.
     - `DocumentMinimapDock` providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
     - Native macOS Dock recent documents integration via `MacServicesHandler::updateDockRecentMenu`.
-13. **Aksara Toolbar Icon Pack Suite Integration (38 Packs Total)**:
-    - Integrated 16 new curated Aksara toolbar icon packs (544 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, GNOME 51, KDE 6, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles.
+13. **Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics**:
+    - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles (28 built-in packs total).
+    - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu, and removed Open Custom Icon Pack from the menubar.
     - Integrated into `toolbar_icons.qrc` and `ToolbarIconManager.cpp` with alias normalization and comprehensive unit test coverage.
 14. **SonarLint & Clang-Tidy Static Analysis Eradication**:
     - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).
