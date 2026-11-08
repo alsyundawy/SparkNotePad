@@ -14,20 +14,20 @@ The maintainer utility `scripts/prepare-release.sh` coordinates end-to-end packa
 
 ```bash
 # Prepare release for a specific version tag:
-./scripts/prepare-release.sh v1.4.0
+./scripts/prepare-release.sh v1.4.5
 
 # Dry-run validation:
-./scripts/prepare-release.sh v1.4.0 --dry-run
+./scripts/prepare-release.sh v1.4.5 --dry-run
 ```
 
 Outputs produced:
 
-- `SparkNotePad-v1.4.0-arm64.dmg` (macOS Apple Silicon M1/M2/M3/M4)
-- `SparkNotePad-v1.4.0-x64.dmg` (macOS Intel x86_64)
-- `sparknotepad_1.4.0_amd64.deb` (Debian / Ubuntu x86_64)
-- `sparknotepad_1.4.0_arm64.deb` (Debian / Ubuntu ARM64)
-- `sparknotepad-1.4.0-1.x86_64.rpm` (Fedora / RHEL x86_64)
-- `sparknotepad-1.4.0-1.aarch64.rpm` (Fedora / RHEL ARM64)
+- `SparkNotePad-v1.4.5-arm64.dmg` (macOS Apple Silicon M1/M2/M3/M4)
+- `SparkNotePad-v1.4.5-x64.dmg` (macOS Intel x86_64)
+- `sparknotepad_1.4.5_amd64.deb` (Debian / Ubuntu x86_64)
+- `sparknotepad_1.4.5_arm64.deb` (Debian / Ubuntu ARM64)
+- `sparknotepad-1.4.5-1.x86_64.rpm` (Fedora / RHEL x86_64)
+- `sparknotepad-1.4.5-1.aarch64.rpm` (Fedora / RHEL ARM64)
 - `SparkNotePad-Default-Editor.sh` (File association integration helper)
 
 ### 2.2 Native In-App Update Engine (ReleaseManager)
@@ -43,7 +43,7 @@ Unlike legacy Windows-only updater implementations, `ReleaseManager`:
 
 ## 3. GitHub Actions CI/CD Release Flow
 
-When a new version tag is pushed (e.g., `git push origin v1.4.0`):
+When a new version tag is pushed (e.g., `git push origin v1.4.5`):
 
 1. `.github/workflows/release.yml` triggers automatically (or can be dispatched manually).
 2. Matrix compiles SparkNotePad on macOS and Linux across Qt 6 versions.

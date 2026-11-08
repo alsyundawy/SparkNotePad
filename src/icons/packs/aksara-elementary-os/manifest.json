@@ -1,7 +1,7 @@
 {
   "name": "Aksara elementary OS",
   "slug": "aksara-elementary-os",
-  "description": "Warna vibrant, outline tipis 1px, siluet khas, dan elemen transparan khas elementary OS.",
+  "description": "Warna vibrant, outline tipis 1px, siluet khas, dan unsur transparan khas elementary OS.",
   "renderer": "elementary",
   "canvas": "24x24 SVG, 64x64 PNG",
   "icons": [
