@@ -14,6 +14,7 @@
 #ifndef GUIDTIMESTAMPUTILS_H
 #define GUIDTIMESTAMPUTILS_H
 
+#include <cstdint>
 #include <QString>
 
 #ifndef UNIT_TESTING
@@ -22,16 +23,22 @@ class ScintillaNext;
 
 class GuidTimestampUtils {
 public:
-    enum GuidFormat {
+    enum class GuidFormat : std::uint8_t {
         GuidHyphenatedLower,  // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (RFC 4122)
         GuidHyphenatedUpper,  // XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-        GuidWithBracesUpper,  // {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} (Windows registry format)
-        GuidWithBracesLower,  // {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
+        GuidWithBracesUpper,  // Format: uppercase GUID enclosed in braces
+        GuidWithBracesLower,  // Format: lowercase GUID enclosed in braces
         GuidCompactUpper,     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX (32 hex uppercase)
         GuidCompactLower      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx (32 hex lowercase)
     };
+    static constexpr GuidFormat GuidHyphenatedLower = GuidFormat::GuidHyphenatedLower;
+    static constexpr GuidFormat GuidHyphenatedUpper = GuidFormat::GuidHyphenatedUpper;
+    static constexpr GuidFormat GuidWithBracesUpper = GuidFormat::GuidWithBracesUpper;
+    static constexpr GuidFormat GuidWithBracesLower = GuidFormat::GuidWithBracesLower;
+    static constexpr GuidFormat GuidCompactUpper = GuidFormat::GuidCompactUpper;
+    static constexpr GuidFormat GuidCompactLower = GuidFormat::GuidCompactLower;
 
-    enum TimestampFormat {
+    enum class TimestampFormat : std::uint8_t {
         DateTimeShort,       // yyyy-MM-dd HH:mm:ss
         DateTimeLong,        // Locale long date & time
         Iso8601Local,        // yyyy-MM-ddTHH:mm:ss±HH:mm
@@ -41,6 +48,14 @@ public:
         UnixTimestampSecs,   // 1792352700
         UnixTimestampMillis  // 1792352700000
     };
+    static constexpr TimestampFormat DateTimeShort = TimestampFormat::DateTimeShort;
+    static constexpr TimestampFormat DateTimeLong = TimestampFormat::DateTimeLong;
+    static constexpr TimestampFormat Iso8601Local = TimestampFormat::Iso8601Local;
+    static constexpr TimestampFormat Iso8601Utc = TimestampFormat::Iso8601Utc;
+    static constexpr TimestampFormat DateOnly = TimestampFormat::DateOnly;
+    static constexpr TimestampFormat TimeOnly = TimestampFormat::TimeOnly;
+    static constexpr TimestampFormat UnixTimestampSecs = TimestampFormat::UnixTimestampSecs;
+    static constexpr TimestampFormat UnixTimestampMillis = TimestampFormat::UnixTimestampMillis;
 
     struct Result {
         bool success{false};

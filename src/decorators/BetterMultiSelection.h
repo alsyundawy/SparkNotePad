@@ -26,7 +26,9 @@
 #define BETTERMULTISELECTION_H
 
 #include <QObject>
+#include <QVector>
 #include <QWidget>
+#include <functional>
 
 #include "EditorDecorator.h"
 
@@ -43,9 +45,12 @@ public slots:
     void notify(const Scintilla::NotificationData *pscn) override;
 
 private:
-    QVector<Selection> GetSelections();
+    bool handleControlNavigation(int key, bool isShiftPressed);
+    bool handleStandardNavigation(int key, bool isShiftPressed);
+    QVector<Selection> GetSelections() const;
     void SetSelections(const QVector<Selection> &selections);
-    void EditSelections(const std::function<void(Selection &selection)> &edit);
+    template <typename EditFn>
+    void EditSelections(EditFn &&edit);
     std::function<void(Selection &selection)> SimpleEdit(int message);
 };
 

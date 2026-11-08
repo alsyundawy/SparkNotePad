@@ -38,12 +38,11 @@ class LuaConsoleDock : public QDockWidget {
     Q_OBJECT
 
 public:
-    explicit LuaConsoleDock(LuaState *l, QWidget *parent = 0);
+    explicit LuaConsoleDock(LuaState *l, QWidget *parent = nullptr);
     ~LuaConsoleDock();
 
     void writeToOutput(const char *s);
     void writeErrorToOutput(const char *s);
-    LuaState *L = Q_NULLPTR;
 
     void historyNext();
     void historyPrevious();
@@ -57,6 +56,8 @@ public slots:
 
 private:
     Ui::LuaConsoleDock *ui;
+
+    LuaState *L = nullptr;
 
     ScintillaNext *output;
     ScintillaNext *input;

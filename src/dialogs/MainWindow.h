@@ -257,6 +257,13 @@ private:
     void openQuickSwitcher();
     static bool isMarkdownOrHtml(const ScintillaNext *editor);
 
+    void exportHtmlDocument();
+    template <typename TransformFn>
+    void applyEditorTextTransform(TransformFn &&fn, const QString &label);
+    void checkCrashRecoverySnapshots();
+    void populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor);
+    void populateTabBarColorActions(QMenu *menu, ScintillaNext *editor);
+
     void setupRunMenu();
     void updateCustomToolsMenu();
     void onRunTriggered();

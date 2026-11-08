@@ -11,7 +11,7 @@
  */
 
 #include "NumberConverter.h"
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 #include "ScintillaNext.h"
 #endif
 
@@ -55,6 +55,7 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
     }
 
     QString formatted;
+    using enum TargetBase;
     switch (targetBase) {
         case ToHex: {
             QString hex = QString::number(value, 16);
@@ -69,12 +70,12 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
             break;
         }
         case ToBin: {
-            QString bin = QString::number(value, 2);
+            const QString bin = QString::number(value, 2);
             formatted = addPrefix ? (QStringLiteral("0b") + bin) : bin;
             break;
         }
         case ToOct: {
-            QString oct = QString::number(value, 8);
+            const QString oct = QString::number(value, 8);
             formatted = addPrefix ? (QStringLiteral("0o") + oct) : oct;
             break;
         }
@@ -83,25 +84,25 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
     return {true, text, formatted, QString()};
 }
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex,
                                                  bool addPrefix) {
     if (!editor) {
         return {false, QString(), QString(), QStringLiteral("No active editor")};
     }
 
-    int startPos = editor->selectionStart();
-    int endPos = editor->selectionEnd();
+    auto startPos = static_cast<int>(editor->selectionStart());
+    auto endPos = static_cast<int>(editor->selectionEnd());
 
     // If no selection, expand to number token under cursor
     if (startPos == endPos) {
-        const int curPos = editor->currentPos();
-        const int docLen = editor->length();
+        const auto curPos = static_cast<int>(editor->currentPos());
+        const auto docLen = static_cast<int>(editor->length());
 
         // Scan backward for word/number chars
         startPos = curPos;
         while (startPos > 0) {
-            const char ch = editor->charAt(startPos - 1);
+            const auto ch = static_cast<char>(editor->charAt(startPos - 1));
             if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == 'x' ||
                 ch == 'X' || ch == 'b' || ch == 'B' || ch == 'o' || ch == 'O') {
                 startPos--;
@@ -113,7 +114,7 @@ NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBa
         // Scan forward
         endPos = curPos;
         while (endPos < docLen) {
-            const char ch = editor->charAt(endPos);
+            const auto ch = static_cast<char>(editor->charAt(endPos));
             if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
                 endPos++;
             } else {

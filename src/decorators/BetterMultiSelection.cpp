@@ -21,6 +21,11 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
+#include <concepts>
+#include <iterator>
+#include <vector>
+
 #include <QEvent>
 #include <QKeyEvent>
 
@@ -35,14 +40,17 @@ struct Selection {
     int start() const { return qMin(caret, anchor); }
     int end() const { return qMax(caret, anchor); }
     int length() const { return end() - start(); }
-    void set(int pos) { anchor = caret = pos; }
+    void set(int pos) {
+        anchor = pos;
+        caret = pos;
+    }
     void offset(int offset) {
         anchor += offset;
         caret += offset;
     }
 };
 
-template <typename It>
+template <std::forward_iterator It>
 It uniquify(It begin, It const end) {
     std::vector<It> v;
     v.reserve(static_cast<size_t>(std::distance(begin, end)));
@@ -51,20 +59,22 @@ It uniquify(It begin, It const end) {
         v.push_back(i);
     }
 
-    std::sort(v.begin(), v.end(), [](const It &lhs, const It &rhs) {
+    std::ranges::sort(v, [](const It &lhs, const It &rhs) {
         return (*lhs).start() < (*rhs).start() || (!((*rhs).start() < (*lhs).start()) && (*lhs).end() < (*rhs).end());
     });
 
-    v.erase(std::unique(v.begin(), v.end(),
-                        [](const It &lhs, const It &rhs) {
-                            return (*lhs).start() == (*rhs).start() && (*lhs).end() == (*rhs).end();
-                        }),
-            v.end());
+    const auto subrange = std::ranges::unique(v, [](const It &lhs, const It &rhs) {
+        return (*lhs).start() == (*rhs).start() && (*lhs).end() == (*rhs).end();
+    });
+    v.erase(subrange.begin(), subrange.end());
 
-    std::sort(v.begin(), v.end());
+    std::ranges::sort(v);
 
     size_t j = 0;
-    for (It i = begin; i != end && j != v.size(); ++i) {
+    for (It i = begin; i != end; ++i) {
+        if (j == v.size()) {
+            break;
+        }
         if (i == v[j]) {
             using std::iter_swap;
             iter_swap(i, begin);
@@ -84,89 +94,92 @@ BetterMultiSelection::BetterMultiSelection(ScintillaNext *editor) : EditorDecora
     editor->installEventFilter(this);
 }
 
-bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event) {
-    Q_UNUSED(obj)
-
-    if (event->type() == QEvent::KeyPress) {
-        const auto *keyEvent = static_cast<const QKeyEvent *>(event);
-        const bool isAltPressed = (keyEvent->modifiers() & Qt::AltModifier);
-        const bool isControlPressed = (keyEvent->modifiers() & Qt::ControlModifier);
-        const bool isShiftPressed = (keyEvent->modifiers() & Qt::ShiftModifier);
-
-        if (isAltPressed) {
+bool BetterMultiSelection::handleControlNavigation(int key, bool isShiftPressed) {
+    switch (key) {
+        case Qt::Key_Left:
+            EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDLEFTEXTEND : SCI_WORDLEFT));
+            return true;
+        case Qt::Key_Right:
+            EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDRIGHTENDEXTEND : SCI_WORDRIGHT));
+            return true;
+        case Qt::Key_Back:
+            EditSelections(SimpleEdit(SCI_DELWORDLEFT));
+            return true;
+        case Qt::Key_Delete:
+            EditSelections(SimpleEdit(SCI_DELWORDRIGHT));
+            return true;
+        default:
             return false;
-        }
-
-        if (editor->selections() > 1) {
-            if (isControlPressed) {
-                switch (keyEvent->key()) {
-                    case Qt::Key_Left:
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDLEFTEXTEND : SCI_WORDLEFT));
-                        return true;
-                    case Qt::Key_Right:
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDRIGHTENDEXTEND : SCI_WORDRIGHT));
-                        return true;
-                    case Qt::Key_Back:
-                        EditSelections(SimpleEdit(SCI_DELWORDLEFT));
-                        return true;
-                    case Qt::Key_Delete:
-                        EditSelections(SimpleEdit(SCI_DELWORDRIGHT));
-                        return true;
-                    default:
-                        break;
-                }
-            } else {
-                switch (keyEvent->key()) {
-                    case Qt::Key_Escape: {
-                        const auto caret = static_cast<int>(editor->selectionNCaret(editor->mainSelection()));
-                        editor->setSelection(caret, caret);
-                        return true;
-                    }
-                    case Qt::Key_Left:
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARLEFTEXTEND : SCI_CHARLEFT));
-                        return true;
-                    case Qt::Key_Right:
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARRIGHTEXTEND : SCI_CHARRIGHT));
-                        return true;
-                    case Qt::Key_Home:
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_VCHOMEWRAPEXTEND : SCI_VCHOMEWRAP));
-                        return true;
-                    case Qt::Key_End:
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEENDWRAPEXTEND : SCI_LINEENDWRAP));
-                        return true;
-                    case Qt::Key_Return:
-                        if (!editor->autoCActive()) {
-                            EditSelections(SimpleEdit(SCI_NEWLINE));
-                            return true;
-                        }
-                        break;
-                    case Qt::Key_Up:
-                        if (!editor->autoCActive()) {
-                            EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEUPEXTEND : SCI_LINEUP));
-                            return true;
-                        }
-                        break;
-                    case Qt::Key_Down:
-                        if (!editor->autoCActive()) {
-                            EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEDOWNEXTEND : SCI_LINEDOWN));
-                            return true;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
     }
+}
 
+bool BetterMultiSelection::handleStandardNavigation(int key, bool isShiftPressed) {
+    switch (key) {
+        case Qt::Key_Escape: {
+            const auto caret = static_cast<int>(editor->selectionNCaret(editor->mainSelection()));
+            editor->setSelection(caret, caret);
+            return true;
+        }
+        case Qt::Key_Left:
+            EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARLEFTEXTEND : SCI_CHARLEFT));
+            return true;
+        case Qt::Key_Right:
+            EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARRIGHTEXTEND : SCI_CHARRIGHT));
+            return true;
+        case Qt::Key_Home:
+            EditSelections(SimpleEdit(isShiftPressed ? SCI_VCHOMEWRAPEXTEND : SCI_VCHOMEWRAP));
+            return true;
+        case Qt::Key_End:
+            EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEENDWRAPEXTEND : SCI_LINEENDWRAP));
+            return true;
+        case Qt::Key_Return:
+            if (!editor->autoCActive()) {
+                EditSelections(SimpleEdit(SCI_NEWLINE));
+                return true;
+            }
+            break;
+        case Qt::Key_Up:
+            if (!editor->autoCActive()) {
+                EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEUPEXTEND : SCI_LINEUP));
+                return true;
+            }
+            break;
+        case Qt::Key_Down:
+            if (!editor->autoCActive()) {
+                EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEDOWNEXTEND : SCI_LINEDOWN));
+                return true;
+            }
+            break;
+        default:
+            break;
+    }
     return false;
 }
 
-void BetterMultiSelection::notify(const Scintilla::NotificationData *pscn) {
-    Q_UNUSED(pscn);
+bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event) {
+    Q_UNUSED(obj);
+
+    if (event->type() != QEvent::KeyPress) {
+        return false;
+    }
+
+    const auto *keyEvent = static_cast<const QKeyEvent *>(event);
+    if ((keyEvent->modifiers() & Qt::AltModifier) || editor->selections() <= 1) {
+        return false;
+    }
+
+    const bool isShiftPressed = (keyEvent->modifiers() & Qt::ShiftModifier);
+    if (keyEvent->modifiers() & Qt::ControlModifier) {
+        return handleControlNavigation(keyEvent->key(), isShiftPressed);
+    }
+    return handleStandardNavigation(keyEvent->key(), isShiftPressed);
 }
 
-QVector<Selection> BetterMultiSelection::GetSelections() {
+void BetterMultiSelection::notify(const Scintilla::NotificationData * /*pscn*/) {
+    // Intentionally empty: notification handling not required for multi-selection
+}
+
+QVector<Selection> BetterMultiSelection::GetSelections() const {
     QVector<Selection> selections;
 
     const auto num = static_cast<int>(editor->selections());
@@ -190,12 +203,13 @@ void BetterMultiSelection::SetSelections(const QVector<Selection> &selections) {
     }
 }
 
-void BetterMultiSelection::EditSelections(const std::function<void(Selection &selection)> &edit) {
+template <typename EditFn>
+void BetterMultiSelection::EditSelections(EditFn &&edit) {
     auto selections = GetSelections();
 
     editor->clearSelections();
 
-    std::sort(selections.begin(), selections.end(), [](const Selection &lhs, const Selection &rhs) {
+    std::ranges::sort(selections, [](const Selection &lhs, const Selection &rhs) {
         return lhs.start() < rhs.start() || (!(rhs.start() < lhs.start()) && lhs.end() < rhs.end());
     });
 
@@ -219,7 +233,7 @@ void BetterMultiSelection::EditSelections(const std::function<void(Selection &se
 }
 
 std::function<void(Selection &selection)> BetterMultiSelection::SimpleEdit(int message) {
-    return [=, this](Selection &selection) {
+    return [this, message](Selection &selection) {
         editor->setSelection(selection.caret, selection.anchor);
         editor->send(message);
 

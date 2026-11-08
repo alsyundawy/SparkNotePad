@@ -23,10 +23,12 @@ class ScintillaNext;
 
 class MathEvaluator {
 public:
-    enum Action : std::uint8_t {
+    enum class Action : std::uint8_t {
         AppendResult,      // "15 * 4" -> "15 * 4 = 60"
         ReplaceExpression  // "15 * 4" -> "60"
     };
+    static constexpr Action AppendResult = Action::AppendResult;
+    static constexpr Action ReplaceExpression = Action::ReplaceExpression;
 
     struct Result {
         bool success{false};

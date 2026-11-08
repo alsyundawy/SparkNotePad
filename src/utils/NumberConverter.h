@@ -14,6 +14,7 @@
 #ifndef NUMBERCONVERTER_H
 #define NUMBERCONVERTER_H
 
+#include <cstdint>
 #include <QString>
 
 #ifndef UNIT_TESTING
@@ -22,7 +23,11 @@ class ScintillaNext;
 
 class NumberConverter {
 public:
-    enum TargetBase { ToHex, ToDec, ToBin, ToOct };
+    enum class TargetBase : std::uint8_t { ToHex, ToDec, ToBin, ToOct };
+    static constexpr TargetBase ToHex = TargetBase::ToHex;
+    static constexpr TargetBase ToDec = TargetBase::ToDec;
+    static constexpr TargetBase ToBin = TargetBase::ToBin;
+    static constexpr TargetBase ToOct = TargetBase::ToOct;
 
     struct Result {
         bool success{false};

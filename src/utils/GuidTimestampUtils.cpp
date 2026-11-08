@@ -11,7 +11,7 @@
  */
 
 #include "GuidTimestampUtils.h"
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 #include "ScintillaNext.h"
 #endif
 
@@ -20,6 +20,7 @@
 #include <QLocale>
 
 QString GuidTimestampUtils::generateGuid(GuidFormat format) {
+    using enum GuidFormat;
     const QUuid uuid = QUuid::createUuid();
     QString result;
 
@@ -47,6 +48,7 @@ QString GuidTimestampUtils::generateGuid(GuidFormat format) {
 }
 
 QString GuidTimestampUtils::generateTimestamp(TimestampFormat format) {
+    using enum TimestampFormat;
     const QDateTime now = QDateTime::currentDateTime();
 
     switch (format) {
@@ -71,7 +73,7 @@ QString GuidTimestampUtils::generateTimestamp(TimestampFormat format) {
     return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
 }
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 GuidTimestampUtils::Result GuidTimestampUtils::insertText(ScintillaNext *editor, const QString &text) {
     if (!editor) {
         return {false, QString(), QStringLiteral("No active editor")};
@@ -81,20 +83,20 @@ GuidTimestampUtils::Result GuidTimestampUtils::insertText(ScintillaNext *editor,
         return {false, QString(), QStringLiteral("Document is read-only")};
     }
 
-    const int startPos = editor->selectionStart();
-    const int endPos = editor->selectionEnd();
+    const auto startPos = static_cast<int>(editor->selectionStart());
+    const auto endPos = static_cast<int>(editor->selectionEnd());
 
     editor->beginUndoAction();
     if (startPos != endPos) {
         editor->setTargetRange(startPos, endPos);
     } else {
-        const int curPos = editor->currentPos();
+        const auto curPos = static_cast<int>(editor->currentPos());
         editor->setTargetRange(curPos, curPos);
     }
 
     const QByteArray utf8 = text.toUtf8();
     editor->replaceTarget(utf8.length(), utf8.constData());
-    const int targetPos = (startPos != endPos ? startPos : editor->currentPos()) + utf8.length();
+    const auto targetPos = static_cast<int>((startPos != endPos ? startPos : editor->currentPos()) + utf8.length());
     editor->setSelection(targetPos, targetPos);
     editor->endUndoAction();
 

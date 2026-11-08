@@ -409,43 +409,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             &QAction::setChecked);
     connect(ui->actionRename, &QAction::triggered, this, &MainWindow::renameFile);
 
-    connect(ui->actionExportHtml, &QAction::triggered, this, [this] {
-        ScintillaNext *const editor = currentEditor();
-        if (!editor) {
-            return;
-        }
-        const QString filePath = editor->getFilePath();
-        const bool isMd = filePath.endsWith(QStringLiteral(".md"), Qt::CaseInsensitive) ||
-                          filePath.endsWith(QStringLiteral(".markdown"), Qt::CaseInsensitive);
-        if (isMd) {
-            QString defaultName = editor->getName();
-            if (const auto dot = static_cast<int>(defaultName.lastIndexOf('.')); dot > 0) {
-                defaultName = defaultName.left(dot);
-            }
-            defaultName += QStringLiteral(".html");
-
-            ExportOptionsDialog dlg(ExportOptionsDialog::TargetFormat::Html, defaultName, this);
-            if (dlg.exec() != QDialog::Accepted) {
-                return;
-            }
-
-            const QString savePath = QFileDialog::getSaveFileName(this, tr("Export HTML Document"), defaultName,
-                                                                  tr("HTML files (*.html);;All Files (*)"));
-            if (savePath.isEmpty()) {
-                return;
-            }
-
-            const QString rawContent = QString::fromUtf8(editor->getText());
-            if (DocumentExportManager::exportMarkdownToHtml(rawContent, savePath, dlg.options())) {
-                ui->statusBar->showMessage(tr("Successfully exported HTML to %1").arg(savePath), 4000);
-            } else {
-                ui->statusBar->showMessage(tr("Failed to export HTML"), 4000);
-            }
-        } else {
-            HtmlConverter html(editor);
-            exportAsFormat(&html, QStringLiteral("HTML files (*.html)"));
-        }
-    });
+    connect(ui->actionExportHtml, &QAction::triggered, this, &MainWindow::exportHtmlDocument);
 
     connect(ui->actionExportRtf, &QAction::triggered, this, [this] {
         RtfConverter rtf(currentEditor());
@@ -1502,67 +1466,40 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     auto *const menuDevTools = menuTools->addMenu(tr("&Developer Tools"));
     menuDevTools->setIcon(QIcon(QStringLiteral(":/icons/wrench.svg")));
 
-    const auto applyTextTransform = [this](const std::function<QString(const QString &, QString *)> &fn,
-                                           const QString &label) {
-        ScintillaNext *const editor = currentEditor();
-        if (!editor) {
-            ui->statusBar->showMessage(tr("No active editor"), 3000);
-            return;
-        }
-        const bool hasSelection = (editor->selectionStart() != editor->selectionEnd());
-        const QString original =
-            hasSelection ? QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()),
-                                                                    static_cast<int>(editor->selectionEnd())))
-                         : QString::fromUtf8(editor->getText());
-        QString err;
-        const QString transformed = fn(original, &err);
-        if (!err.isEmpty()) {
-            ui->statusBar->showMessage(err, 4000);
-            return;
-        }
-        editor->beginUndoAction();
-        if (hasSelection) {
-            editor->replaceSel(transformed.toUtf8().constData());
-        } else {
-            editor->selectAll();
-            editor->replaceSel(transformed.toUtf8().constData());
-        }
-        editor->endUndoAction();
-        ui->statusBar->showMessage(tr("%1 applied").arg(label), 3000);
-    };
-
-    connect(menuDevTools->addAction(tr("JSON Format / Prettify")), &QAction::triggered, this, [applyTextTransform] {
-        applyTextTransform([](const QString &in, QString *err) { return DeveloperToolsEngine::formatJson(in, 4, err); },
-                           tr("JSON Prettify"));
+    connect(menuDevTools->addAction(tr("JSON Format / Prettify")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatJson(in, 4, err); },
+            tr("JSON Prettify"));
     });
 
-    connect(menuDevTools->addAction(tr("JSON Minify / Compact")), &QAction::triggered, this, [applyTextTransform] {
-        applyTextTransform([](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJson(in, err); },
-                           tr("JSON Minify"));
+    connect(menuDevTools->addAction(tr("JSON Minify / Compact")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJson(in, err); },
+            tr("JSON Minify"));
     });
 
     menuDevTools->addSeparator();
 
-    connect(menuDevTools->addAction(tr("URL Encode")), &QAction::triggered, this, [applyTextTransform] {
-        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlEncode(in); },
-                           tr("URL Encode"));
+    connect(menuDevTools->addAction(tr("URL Encode")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlEncode(in); },
+                                 tr("URL Encode"));
     });
 
-    connect(menuDevTools->addAction(tr("URL Decode")), &QAction::triggered, this, [applyTextTransform] {
-        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlDecode(in); },
-                           tr("URL Decode"));
+    connect(menuDevTools->addAction(tr("URL Decode")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlDecode(in); },
+                                 tr("URL Decode"));
     });
 
     menuDevTools->addSeparator();
 
-    connect(menuDevTools->addAction(tr("Unicode Escape (\\uXXXX)")), &QAction::triggered, this, [applyTextTransform] {
-        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeEscape(in); },
-                           tr("Unicode Escape"));
+    connect(menuDevTools->addAction(tr("Unicode Escape (\\uXXXX)")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeEscape(in); },
+                                 tr("Unicode Escape"));
     });
 
-    connect(menuDevTools->addAction(tr("Unicode Unescape")), &QAction::triggered, this, [applyTextTransform] {
-        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeUnescape(in); },
-                           tr("Unicode Unescape"));
+    connect(menuDevTools->addAction(tr("Unicode Unescape")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeUnescape(in); },
+                                 tr("Unicode Unescape"));
     });
 
     menuDevTools->addSeparator();
@@ -2712,36 +2649,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     AutosaveRecoveryManager::instance()->start();
 
     // Check for crash recovery snapshots on startup
-    QTimer::singleShot(250, this, [this] {
-        const auto recoverable = AutosaveRecoveryManager::instance()->recoverableSnapshots();
-        if (!recoverable.isEmpty()) {
-            CrashRecoveryDialog dlg(recoverable, this);
-            if (dlg.exec() == QDialog::Accepted) {
-                if (dlg.discardRequested()) {
-                    AutosaveRecoveryManager::instance()->clearSnapshots();
-                } else {
-                    for (const auto &snap : dlg.selectedSnapshots()) {
-                        if (snap.isUntitled) {
-                            newFile();
-                            ScintillaNext *ed = currentEditor();
-                            if (ed) {
-                                ed->setText(snap.content.toUtf8().constData());
-                                ed->gotoPos(snap.cursorPosition);
-                            }
-                        } else {
-                            openFile(snap.originalPath);
-                            ScintillaNext *ed = currentEditor();
-                            if (ed) {
-                                ed->setText(snap.content.toUtf8().constData());
-                                ed->gotoPos(snap.cursorPosition);
-                            }
-                        }
-                    }
-                    AutosaveRecoveryManager::instance()->clearSnapshots();
-                }
-            }
-        }
-    });
+    QTimer::singleShot(250, this, &MainWindow::checkCrashRecoverySnapshots);
 
     ensureMenuIconsVisible(this);
     for (auto *menu : ui->menuBar->findChildren<QMenu *>()) {
@@ -3559,6 +3467,103 @@ void MainWindow::exportAsFormat(Converter *converter, const QString &filter) {
     }
 }
 
+void MainWindow::exportHtmlDocument() {
+    ScintillaNext *const editor = currentEditor();
+    if (!editor) {
+        return;
+    }
+    const QString filePath = editor->getFilePath();
+    const bool isMd = filePath.endsWith(QStringLiteral(".md"), Qt::CaseInsensitive) ||
+                      filePath.endsWith(QStringLiteral(".markdown"), Qt::CaseInsensitive);
+    if (isMd) {
+        QString defaultName = editor->getName();
+        if (const auto dot = static_cast<int>(defaultName.lastIndexOf('.')); dot > 0) {
+            defaultName = defaultName.left(dot);
+        }
+        defaultName += QStringLiteral(".html");
+
+        ExportOptionsDialog dlg(ExportOptionsDialog::TargetFormat::Html, defaultName, this);
+        if (dlg.exec() != QDialog::Accepted) {
+            return;
+        }
+
+        const QString savePath = QFileDialog::getSaveFileName(this, tr("Export HTML Document"), defaultName,
+                                                              tr("HTML files (*.html);;All Files (*)"));
+        if (savePath.isEmpty()) {
+            return;
+        }
+
+        const QString rawContent = QString::fromUtf8(editor->getText());
+        if (DocumentExportManager::exportMarkdownToHtml(rawContent, savePath, dlg.options())) {
+            ui->statusBar->showMessage(tr("Successfully exported HTML to %1").arg(savePath), 4000);
+        } else {
+            ui->statusBar->showMessage(tr("Failed to export HTML"), 4000);
+        }
+    } else {
+        HtmlConverter html(editor);
+        exportAsFormat(&html, QStringLiteral("HTML files (*.html)"));
+    }
+}
+
+template <typename TransformFn>
+void MainWindow::applyEditorTextTransform(TransformFn &&fn, const QString &label) {
+    ScintillaNext *const editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+    const bool hasSelection = (editor->selectionStart() != editor->selectionEnd());
+    const QString original =
+        hasSelection ? QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()),
+                                                                static_cast<int>(editor->selectionEnd())))
+                     : QString::fromUtf8(editor->getText());
+    QString err;
+    const QString transformed = fn(original, &err);
+    if (!err.isEmpty()) {
+        ui->statusBar->showMessage(err, 4000);
+        return;
+    }
+    editor->beginUndoAction();
+    if (hasSelection) {
+        editor->replaceSel(transformed.toUtf8().constData());
+    } else {
+        editor->selectAll();
+        editor->replaceSel(transformed.toUtf8().constData());
+    }
+    editor->endUndoAction();
+    ui->statusBar->showMessage(tr("%1 applied").arg(label), 3000);
+}
+
+void MainWindow::checkCrashRecoverySnapshots() {
+    const auto recoverable = AutosaveRecoveryManager::instance()->recoverableSnapshots();
+    if (recoverable.isEmpty()) {
+        return;
+    }
+
+    CrashRecoveryDialog dlg(recoverable, this);
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    if (dlg.discardRequested()) {
+        AutosaveRecoveryManager::instance()->clearSnapshots();
+        return;
+    }
+
+    for (const auto &snap : dlg.selectedSnapshots()) {
+        if (snap.isUntitled) {
+            newFile();
+        } else {
+            openFile(snap.originalPath);
+        }
+        if (ScintillaNext *ed = currentEditor()) {
+            ed->setText(snap.content.toUtf8().constData());
+            ed->gotoPos(snap.cursorPosition);
+        }
+    }
+    AutosaveRecoveryManager::instance()->clearSnapshots();
+}
+
 void MainWindow::copyAsFormat(Converter *converter, const QString &mimeType) {
     const ScintillaNext *editor = currentEditor();
     if (!editor) {
@@ -4234,11 +4239,9 @@ void MainWindow::exportPdf() {
     }
 
     const auto opt = dlg.options();
-    const QString filePath = editor->getFilePath();
-    const bool isMd = filePath.endsWith(QStringLiteral(".md"), Qt::CaseInsensitive) ||
-                      filePath.endsWith(QStringLiteral(".markdown"), Qt::CaseInsensitive);
-
-    if (isMd) {
+    if (const QString filePath = editor->getFilePath();
+        filePath.endsWith(QStringLiteral(".md"), Qt::CaseInsensitive) ||
+        filePath.endsWith(QStringLiteral(".markdown"), Qt::CaseInsensitive)) {
         const QString rawContent = QString::fromUtf8(editor->getText());
         if (DocumentExportManager::exportToPdf(rawContent, true, savePath, opt)) {
             FadingIndicator::showText(editor, tr("Exported to PDF: %1").arg(QFileInfo(savePath).fileName()));
@@ -4752,6 +4755,80 @@ QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
     return menu;
 }
 
+void MainWindow::populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor) {
+    if (!editor || !editor->isFile()) {
+        return;
+    }
+    const QString ext = editor->getFileInfo().suffix().toLower();
+    const bool isMd = (ext == QStringLiteral("md") || ext == QStringLiteral("markdown"));
+    const bool isHtml =
+        (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml"));
+    if (!isMd && !isHtml) {
+        return;
+    }
+
+    menu->addSeparator();
+    if (isMd) {
+        auto *actPreviewMd =
+            menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
+        actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
+        connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, false); });
+    } else if (isHtml) {
+        auto *actPreviewHtml =
+            menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview HTML in New Tab"));
+        actPreviewHtml->setObjectName(QStringLiteral("previewHtml"));
+        connect(actPreviewHtml, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, true); });
+
+        auto *actPreviewBrowser =
+            menu->addAction(QIcon(QStringLiteral(":/icons/openFile.svg")), tr("Preview in Default Browser"));
+        actPreviewBrowser->setObjectName(QStringLiteral("previewHtmlInBrowser"));
+        connect(actPreviewBrowser, &QAction::triggered, this, [this, editor] {
+            if (editor->isFile() && editor->getFileInfo().exists()) {
+                openInDefaultBrowser(editor->getFileInfo().absoluteFilePath());
+            } else {
+                openPreviewInNewTab(editor, true);
+            }
+        });
+    }
+    ToolbarIconManager::instance()->applyToMenu(menu);
+    ensureMenuIconsVisible(menu);
+}
+
+void MainWindow::populateTabBarColorActions(QMenu *menu, ScintillaNext *editor) {
+    if (!editor) {
+        return;
+    }
+    menu->addSeparator();
+    auto *tabColorMenu = menu->addMenu(tr("Set Tab Color"));
+    const auto presets = TabColorManager::instance()->presets();
+    for (const auto &preset : presets) {
+        QPixmap px(14, 14);
+        px.fill(Qt::transparent);
+        {
+            QPainter p(&px);
+            p.setRenderHint(QPainter::Antialiasing);
+            p.setBrush(preset.color);
+            p.setPen(Qt::NoPen);
+            p.drawEllipse(1, 1, 12, 12);
+        }
+        const auto *const colorAct = tabColorMenu->addAction(QIcon(px), preset.name);
+        connect(colorAct, &QAction::triggered, this, [this, editor, c = preset.color] {
+            if (editor) {
+                TabColorManager::instance()->setTabColor(editor->getFilePath(), c);
+                dockedEditor->setEditorTabColor(editor, c);
+            }
+        });
+    }
+    tabColorMenu->addSeparator();
+    const auto *const clearColorAct = tabColorMenu->addAction(tr("Clear Tab Color"));
+    connect(clearColorAct, &QAction::triggered, this, [this, editor] {
+        if (editor) {
+            TabColorManager::instance()->clearTabColor(editor->getFilePath());
+            dockedEditor->setEditorTabColor(editor, QColor());
+        }
+    });
+}
+
 void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
@@ -4784,68 +4861,8 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
 
     auto *menu = buildMenu(actionNames);
 
-    const QString ext = (editor && editor->isFile()) ? editor->getFileInfo().suffix().toLower() : QString();
-    if (const bool isMd = (ext == QStringLiteral("md") || ext == QStringLiteral("markdown")),
-        isHtml = (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml"));
-        editor && (isMd || isHtml)) {
-        menu->addSeparator();
-        if (isMd) {
-            auto *actPreviewMd =
-                menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
-            actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
-            connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, false); });
-        } else if (isHtml) {
-            auto *actPreviewHtml =
-                menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview HTML in New Tab"));
-            actPreviewHtml->setObjectName(QStringLiteral("previewHtml"));
-            connect(actPreviewHtml, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, true); });
-
-            auto *actPreviewBrowser =
-                menu->addAction(QIcon(QStringLiteral(":/icons/openFile.svg")), tr("Preview in Default Browser"));
-            actPreviewBrowser->setObjectName(QStringLiteral("previewHtmlInBrowser"));
-            connect(actPreviewBrowser, &QAction::triggered, this, [this, editor] {
-                if (editor->isFile() && editor->getFileInfo().exists()) {
-                    openInDefaultBrowser(editor->getFileInfo().absoluteFilePath());
-                } else {
-                    openPreviewInNewTab(editor, true);
-                }
-            });
-        }
-        ToolbarIconManager::instance()->applyToMenu(menu);
-        ensureMenuIconsVisible(menu);
-    }
-
-    if (editor) {
-        menu->addSeparator();
-        auto *tabColorMenu = menu->addMenu(tr("Set Tab Color"));
-        const auto presets = TabColorManager::instance()->presets();
-        for (const auto &preset : presets) {
-            QPixmap px(14, 14);
-            px.fill(Qt::transparent);
-            {
-                QPainter p(&px);
-                p.setRenderHint(QPainter::Antialiasing);
-                p.setBrush(preset.color);
-                p.setPen(Qt::NoPen);
-                p.drawEllipse(1, 1, 12, 12);
-            }
-            const auto *const colorAct = tabColorMenu->addAction(QIcon(px), preset.name);
-            connect(colorAct, &QAction::triggered, this, [this, editor, c = preset.color] {
-                if (editor) {
-                    TabColorManager::instance()->setTabColor(editor->getFilePath(), c);
-                    dockedEditor->setEditorTabColor(editor, c);
-                }
-            });
-        }
-        tabColorMenu->addSeparator();
-        const auto *const clearColorAct = tabColorMenu->addAction(tr("Clear Tab Color"));
-        connect(clearColorAct, &QAction::triggered, this, [this, editor] {
-            if (editor) {
-                TabColorManager::instance()->clearTabColor(editor->getFilePath());
-                dockedEditor->setEditorTabColor(editor, QColor());
-            }
-        });
-    }
+    populateTabBarPreviewActions(menu, editor);
+    populateTabBarColorActions(menu, editor);
 
     const auto contextMenuStyle = QStringLiteral(
         "QMenu { font-size: 11px; }"
