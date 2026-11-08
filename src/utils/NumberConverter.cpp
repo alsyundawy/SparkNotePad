@@ -55,9 +55,8 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
     }
 
     QString formatted;
-    using enum TargetBase;
     switch (targetBase) {
-        case ToHex: {
+        case TargetBase::ToHex: {
             QString hex = QString::number(value, 16);
             if (uppercaseHex) {
                 hex = hex.toUpper();
@@ -65,16 +64,16 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
             formatted = addPrefix ? (QStringLiteral("0x") + hex) : hex;
             break;
         }
-        case ToDec: {
+        case TargetBase::ToDec: {
             formatted = QString::number(value, 10);
             break;
         }
-        case ToBin: {
+        case TargetBase::ToBin: {
             const QString bin = QString::number(value, 2);
             formatted = addPrefix ? (QStringLiteral("0b") + bin) : bin;
             break;
         }
-        case ToOct: {
+        case TargetBase::ToOct: {
             const QString oct = QString::number(value, 8);
             formatted = addPrefix ? (QStringLiteral("0o") + oct) : oct;
             break;

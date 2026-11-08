@@ -20,27 +20,26 @@
 #include <QLocale>
 
 QString GuidTimestampUtils::generateGuid(GuidFormat format) {
-    using enum GuidFormat;
     const QUuid uuid = QUuid::createUuid();
     QString result;
 
     switch (format) {
-        case GuidHyphenatedLower:
+        case GuidFormat::GuidHyphenatedLower:
             result = uuid.toString(QUuid::WithoutBraces).toLower();
             break;
-        case GuidHyphenatedUpper:
+        case GuidFormat::GuidHyphenatedUpper:
             result = uuid.toString(QUuid::WithoutBraces).toUpper();
             break;
-        case GuidWithBracesUpper:
+        case GuidFormat::GuidWithBracesUpper:
             result = uuid.toString(QUuid::WithBraces).toUpper();
             break;
-        case GuidWithBracesLower:
+        case GuidFormat::GuidWithBracesLower:
             result = uuid.toString(QUuid::WithBraces).toLower();
             break;
-        case GuidCompactUpper:
+        case GuidFormat::GuidCompactUpper:
             result = uuid.toString(QUuid::Id128).toUpper();
             break;
-        case GuidCompactLower:
+        case GuidFormat::GuidCompactLower:
             result = uuid.toString(QUuid::Id128).toLower();
             break;
     }
@@ -48,25 +47,24 @@ QString GuidTimestampUtils::generateGuid(GuidFormat format) {
 }
 
 QString GuidTimestampUtils::generateTimestamp(TimestampFormat format) {
-    using enum TimestampFormat;
     const QDateTime now = QDateTime::currentDateTime();
 
     switch (format) {
-        case DateTimeShort:
+        case TimestampFormat::DateTimeShort:
             return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
-        case DateTimeLong:
+        case TimestampFormat::DateTimeLong:
             return QLocale::system().toString(now, QLocale::LongFormat);  // flawfinder: ignore
-        case Iso8601Local:
+        case TimestampFormat::Iso8601Local:
             return now.toString(Qt::ISODate);
-        case Iso8601Utc:
+        case TimestampFormat::Iso8601Utc:
             return QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-        case DateOnly:
+        case TimestampFormat::DateOnly:
             return now.toString(QStringLiteral("yyyy-MM-dd"));
-        case TimeOnly:
+        case TimestampFormat::TimeOnly:
             return now.toString(QStringLiteral("HH:mm:ss"));
-        case UnixTimestampSecs:
+        case TimestampFormat::UnixTimestampSecs:
             return QString::number(now.toSecsSinceEpoch());
-        case UnixTimestampMillis:
+        case TimestampFormat::UnixTimestampMillis:
             return QString::number(now.toMSecsSinceEpoch());
     }
 
