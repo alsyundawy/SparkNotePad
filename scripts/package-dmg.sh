@@ -87,6 +87,17 @@ if [[ ! -f "${RESOURCES_DIR}/SparkNotePad.icns" ]]; then
 	fi
 fi
 
+# Prune unneeded heavy plugins and unneeded debug symbols from staged bundle
+rm -f "${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
+strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+
 # Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
 touch "${STAGE_DIR}/SparkNotePad.app"
 

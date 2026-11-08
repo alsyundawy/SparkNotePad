@@ -259,7 +259,7 @@ private:
 
     void exportHtmlDocument();
     template <typename TransformFn>
-    void applyEditorTextTransform(TransformFn &&fn, const QString &label);
+    void applyEditorTextTransform(TransformFn &&fn, const QString &label) const;
     void checkCrashRecoverySnapshots();
     void populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor);
     void populateTabBarColorActions(QMenu *menu, ScintillaNext *editor);

@@ -27,8 +27,6 @@ public:
         AppendResult,      // "15 * 4" -> "15 * 4 = 60"
         ReplaceExpression  // "15 * 4" -> "60"
     };
-    static constexpr Action AppendResult = Action::AppendResult;
-    static constexpr Action ReplaceExpression = Action::ReplaceExpression;
 
     struct Result {
         bool success{false};
@@ -39,7 +37,7 @@ public:
     };
 
 #ifndef UNIT_TESTING
-    static Result evaluateInEditor(ScintillaNext *editor, Action action = AppendResult);
+    static Result evaluateInEditor(ScintillaNext *editor, Action action = Action::AppendResult);
 #endif
 
     // Direct string evaluation

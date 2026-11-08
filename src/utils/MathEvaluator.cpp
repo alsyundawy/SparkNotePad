@@ -370,7 +370,7 @@ MathEvaluator::Result MathEvaluator::evaluateInEditor(ScintillaNext *editor, Act
 
     editor->beginUndoAction();
     QString replacement;
-    if (action == AppendResult) {
+    if (action == Action::AppendResult) {
         replacement = exprText.trimmed();
         if (!replacement.endsWith('=')) {
             replacement += QStringLiteral(" = ");

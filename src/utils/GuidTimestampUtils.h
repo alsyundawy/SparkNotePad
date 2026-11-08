@@ -31,12 +31,6 @@ public:
         GuidCompactUpper,     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX (32 hex uppercase)
         GuidCompactLower      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx (32 hex lowercase)
     };
-    static constexpr GuidFormat GuidHyphenatedLower = GuidFormat::GuidHyphenatedLower;
-    static constexpr GuidFormat GuidHyphenatedUpper = GuidFormat::GuidHyphenatedUpper;
-    static constexpr GuidFormat GuidWithBracesUpper = GuidFormat::GuidWithBracesUpper;
-    static constexpr GuidFormat GuidWithBracesLower = GuidFormat::GuidWithBracesLower;
-    static constexpr GuidFormat GuidCompactUpper = GuidFormat::GuidCompactUpper;
-    static constexpr GuidFormat GuidCompactLower = GuidFormat::GuidCompactLower;
 
     enum class TimestampFormat : std::uint8_t {
         DateTimeShort,       // yyyy-MM-dd HH:mm:ss
@@ -48,14 +42,6 @@ public:
         UnixTimestampSecs,   // 1792352700
         UnixTimestampMillis  // 1792352700000
     };
-    static constexpr TimestampFormat DateTimeShort = TimestampFormat::DateTimeShort;
-    static constexpr TimestampFormat DateTimeLong = TimestampFormat::DateTimeLong;
-    static constexpr TimestampFormat Iso8601Local = TimestampFormat::Iso8601Local;
-    static constexpr TimestampFormat Iso8601Utc = TimestampFormat::Iso8601Utc;
-    static constexpr TimestampFormat DateOnly = TimestampFormat::DateOnly;
-    static constexpr TimestampFormat TimeOnly = TimestampFormat::TimeOnly;
-    static constexpr TimestampFormat UnixTimestampSecs = TimestampFormat::UnixTimestampSecs;
-    static constexpr TimestampFormat UnixTimestampMillis = TimestampFormat::UnixTimestampMillis;
 
     struct Result {
         bool success{false};
@@ -63,12 +49,12 @@ public:
         QString errorMessage;
     };
 
-    static QString generateGuid(GuidFormat format = GuidHyphenatedLower);
-    static QString generateTimestamp(TimestampFormat format = DateTimeShort);
+    static QString generateGuid(GuidFormat format = GuidFormat::GuidHyphenatedLower);
+    static QString generateTimestamp(TimestampFormat format = TimestampFormat::DateTimeShort);
 
 #ifndef UNIT_TESTING
-    static Result insertGuid(ScintillaNext *editor, GuidFormat format = GuidHyphenatedLower);
-    static Result insertTimestamp(ScintillaNext *editor, TimestampFormat format = DateTimeShort);
+    static Result insertGuid(ScintillaNext *editor, GuidFormat format = GuidFormat::GuidHyphenatedLower);
+    static Result insertTimestamp(ScintillaNext *editor, TimestampFormat format = TimestampFormat::DateTimeShort);
     static Result insertText(ScintillaNext *editor, const QString &text);
 #endif
 };

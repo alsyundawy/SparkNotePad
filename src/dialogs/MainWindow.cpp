@@ -426,7 +426,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     connect(ui->actionConvertToHex, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = NumberConverter::convert(editor, NumberConverter::ToHex);
+        const auto result = NumberConverter::convert(editor, NumberConverter::TargetBase::ToHex);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
@@ -436,7 +436,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     connect(ui->actionInsertDateTimeShort, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeShort);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateTimeShort);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -445,7 +445,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertDateTimeLong, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeLong);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateTimeLong);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -454,7 +454,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertTimestampIso, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::Iso8601Local);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::Iso8601Local);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted ISO timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -463,7 +463,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertTimestampUnix, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::UnixTimestampSecs);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::UnixTimestampSecs);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted Unix timestamp: %1").arg(result.insertedText), 3000);
         } else {
@@ -472,7 +472,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertDateOnly, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateOnly);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::DateOnly);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted date: %1").arg(result.insertedText), 3000);
         } else {
@@ -481,7 +481,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertTimeOnly, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimeOnly);
+        const auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimestampFormat::TimeOnly);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted time: %1").arg(result.insertedText), 3000);
         } else {
@@ -490,7 +490,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertGuidHyphens, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidHyphenatedLower);
+        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidFormat::GuidHyphenatedLower);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
@@ -499,7 +499,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertGuidBraces, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidWithBracesUpper);
+        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidFormat::GuidWithBracesUpper);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
@@ -508,7 +508,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionInsertGuidCompact, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidCompactUpper);
+        const auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidFormat::GuidCompactUpper);
         if (result.success) {
             ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
@@ -517,7 +517,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionConvertToDec, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = NumberConverter::convert(editor, NumberConverter::ToDec);
+        const auto result = NumberConverter::convert(editor, NumberConverter::TargetBase::ToDec);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
@@ -526,7 +526,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionConvertToBin, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = NumberConverter::convert(editor, NumberConverter::ToBin);
+        const auto result = NumberConverter::convert(editor, NumberConverter::TargetBase::ToBin);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
@@ -535,7 +535,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
     connect(ui->actionConvertToOct, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
-        const auto result = NumberConverter::convert(editor, NumberConverter::ToOct);
+        const auto result = NumberConverter::convert(editor, NumberConverter::TargetBase::ToOct);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
@@ -633,7 +633,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
         }
-        const auto result = MathEvaluator::evaluateInEditor(editor, MathEvaluator::AppendResult);
+        const auto result = MathEvaluator::evaluateInEditor(editor, MathEvaluator::Action::AppendResult);
         if (result.success) {
             ui->statusBar->showMessage(tr("Calculated: %1 = %2").arg(result.expression, result.formattedResult), 3000);
         } else {
@@ -647,7 +647,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
         }
-        const auto result = MathEvaluator::evaluateInEditor(editor, MathEvaluator::ReplaceExpression);
+        const auto result = MathEvaluator::evaluateInEditor(editor, MathEvaluator::Action::ReplaceExpression);
         if (result.success) {
             ui->statusBar->showMessage(tr("Calculated: %1 → %2").arg(result.expression, result.formattedResult), 3000);
         } else {
@@ -3506,7 +3506,7 @@ void MainWindow::exportHtmlDocument() {
 }
 
 template <typename TransformFn>
-void MainWindow::applyEditorTextTransform(TransformFn &&fn, const QString &label) {
+void MainWindow::applyEditorTextTransform(TransformFn &&fn, const QString &label) const {
     ScintillaNext *const editor = currentEditor();
     if (!editor) {
         ui->statusBar->showMessage(tr("No active editor"), 3000);

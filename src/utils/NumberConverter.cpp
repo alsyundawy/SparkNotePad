@@ -36,7 +36,7 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
         value = text.mid(2).toULongLong(&ok, 8);
     } else {
         // Check if string contains hex digits A-F
-        const bool hasHexAlpha = std::any_of(text.cbegin(), text.cend(), [](const QChar &ch) {
+        const bool hasHexAlpha = std::ranges::any_of(text, [](const QChar &ch) {
             return (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
         });
 
