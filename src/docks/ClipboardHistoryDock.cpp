@@ -24,7 +24,7 @@ ClipboardHistoryDock::ClipboardHistoryDock(QWidget *parent) : QDockWidget(tr("Cl
     setObjectName(QStringLiteral("ClipboardHistoryDock"));
     setupUi();
 
-    if (QClipboard *const clipboard = QApplication::clipboard(); clipboard) {
+    if (const QClipboard *const clipboard = QApplication::clipboard(); clipboard) {
         connect(clipboard, &QClipboard::dataChanged, this, &ClipboardHistoryDock::onClipboardChanged);
     }
 }
@@ -63,7 +63,7 @@ void ClipboardHistoryDock::setupUi() {
     setWidget(container);
 }
 
-QStringList ClipboardHistoryDock::entries() const {
+const QStringList &ClipboardHistoryDock::entries() const {
     return m_history;
 }
 

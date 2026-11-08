@@ -103,6 +103,6 @@ void CrashRecoveryDialog::onDiscardClicked() {
     accept();
 }
 
-QList<RecoverySnapshot> CrashRecoveryDialog::selectedSnapshots() const {
+const QList<RecoverySnapshot> &CrashRecoveryDialog::selectedSnapshots() const {
     return m_selectedSnapshots;
 }

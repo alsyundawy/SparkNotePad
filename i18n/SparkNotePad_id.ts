@@ -111,10 +111,6 @@
         <translation>Evaluasi Matematika</translation>
     </message>
     <message>
-        <source>100+ Lexers</source>
-        <translation type="vanished">100+ Lekser</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="290"/>
         <source>Export PDF</source>
         <translation>Ekspor PDF</translation>
@@ -250,10 +246,6 @@
         <translation>Lihat Kode Batang QRIS Resmi</translation>
     </message>
     <message>
-        <source>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.7):</source>
-        <translation type="vanished">SparkNotePad berdiri di atas bahu para raksasa. Kami menyampaikan rasa terima kasih mendalam kepada proyek, komunitas, dan perangkat berikut (v1.0.0 – v1.3.7):</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="547"/>
         <source>SparkNotePad Keyboard Shortcuts &amp;amp; Hotkeys</source>
         <translation>Pintasan Papan Ketik &amp;amp; Tombol Cepat SparkNotePad</translation>
@@ -302,10 +294,6 @@
         <location filename="../src/dialogs/AboutDialog.cpp" line="808"/>
         <source>Copy All</source>
         <translation>Salin Semua</translation>
-    </message>
-    <message>
-        <source>Open Terminal Here</source>
-        <translation type="vanished">Buka Terminal di Sini</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="555"/>
@@ -441,10 +429,6 @@
         <location filename="../src/dialogs/AboutDialog.cpp" line="401"/>
         <source>Lead AI Pair Programming IDE &amp; Agentic Workflow Environment driving architecture, refactoring, and quality assurance.</source>
         <translation>IDE Pemrograman Berpasangan AI Utama &amp; Lingkungan Alur Kerja Agen yang mendorong arsitektur, refaktorisasi, dan jaminan kualitas.</translation>
-    </message>
-    <message>
-        <source>Continuous AI Code Review, 13-Pillar Security Auditing, Static Analysis, and Linter Compliance Engine.</source>
-        <translation type="vanished">Mesin Tinjauan Kode AI Berkelanjutan, Audit Keamanan 13 Pilar, Analisis Statis, dan Kepatuhan Linter.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="426"/>
@@ -1136,25 +1120,6 @@
     </message>
 </context>
 <context>
-    <name>AuthenticateDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="vanished">Autentikasi</translation>
-    </message>
-    <message>
-        <source>Please provide the user name and password for the download location.</source>
-        <translation type="vanished">Harap masukkan nama pengguna dan kata sandi untuk lokasi pengunduhan.</translation>
-    </message>
-    <message>
-        <source>&amp;User name:</source>
-        <translation type="vanished">&amp;Nama pengguna:</translation>
-    </message>
-    <message>
-        <source>&amp;Password:</source>
-        <translation type="vanished">&amp;Kata sandi:</translation>
-    </message>
-</context>
-<context>
     <name>CaseConverter</name>
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="121"/>
@@ -1826,74 +1791,6 @@ Select which documents you would like to recover:</source>
         <source>Customize Toolbar Buttons</source>
         <translation>Kustomisasi Tombol Toolbar</translation>
     </message>
-    <message>
-        <source>Select actions to display on the main toolbar. You can add, remove, and reorder items or insert separators.</source>
-        <translation type="vanished">Pilih tindakan untuk ditampilkan di toolbar utama. Anda dapat menambah, menghapus, dan mengatur ulang item atau menyisipkan pemisah.</translation>
-    </message>
-    <message>
-        <source>Available Actions:</source>
-        <translation type="vanished">Tindakan Tersedia:</translation>
-    </message>
-    <message>
-        <source>Search actions...</source>
-        <translation type="vanished">Cari tindakan...</translation>
-    </message>
-    <message>
-        <source>Add ▶</source>
-        <translation type="vanished">Tambah ▶</translation>
-    </message>
-    <message>
-        <source>Add selected action to toolbar</source>
-        <translation type="vanished">Tambahkan tindakan yang dipilih ke toolbar</translation>
-    </message>
-    <message>
-        <source>◀ Remove</source>
-        <translation type="vanished">◀ Hapus</translation>
-    </message>
-    <message>
-        <source>Remove selected item from toolbar</source>
-        <translation type="vanished">Hapus item yang dipilih dari toolbar</translation>
-    </message>
-    <message>
-        <source>+ Separator</source>
-        <translation type="vanished">+ Pemisah</translation>
-    </message>
-    <message>
-        <source>Insert a separator line at selected position</source>
-        <translation type="vanished">Sisipkan garis pemisah pada posisi yang dipilih</translation>
-    </message>
-    <message>
-        <source>▲ Move Up</source>
-        <translation type="vanished">▲ Geser ke Atas</translation>
-    </message>
-    <message>
-        <source>Move selected item up</source>
-        <translation type="vanished">Pindahkan item yang dipilih ke atas</translation>
-    </message>
-    <message>
-        <source>▼ Move Down</source>
-        <translation type="vanished">▼ Geser ke Bawah</translation>
-    </message>
-    <message>
-        <source>Move selected item down</source>
-        <translation type="vanished">Pindahkan item yang dipilih ke bawah</translation>
-    </message>
-    <message>
-        <source>Current Toolbar Buttons:</source>
-        <translation type="vanished">Tombol Toolbar Saat Ini:</translation>
-    </message>
-    <message>
-        <source>Reset to Defaults</source>
-        <translation type="vanished">Atur Ulang ke Standar</translation>
-    </message>
-    <message>
-        <source>Restore standard SparkNotePad toolbar buttons</source>
-        <translation type="vanished">Pulihkan tombol toolbar standar SparkNotePad</translation>
-    </message>
-    <message>
-        <source>─────────── [ Separator ] ───────────</source>
-        <translation type="vanished">─────────── [ Pemisah ] ───────────</translation>
-    </message>
 </context>
 <context>
     <name>CustomizeToolbarWidget</name>
@@ -2343,133 +2240,6 @@ Or fallback online URL:
 
 Atau URL daring cadangan:
 %2</translation>
-    </message>
-</context>
-<context>
-    <name>Downloader</name>
-    <message>
-        <source>Updater</source>
-        <translation type="vanished">Pembaruan Aplikasi</translation>
-    </message>
-    <message>
-        <source>Downloading updates</source>
-        <translation type="vanished">Mengunduh pembaruan</translation>
-    </message>
-    <message>
-        <source>Time remaining: 0 minutes</source>
-        <translation type="vanished">Sisa waktu: 0 menit</translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="vanished">Buka</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="vanished">Hentikan</translation>
-    </message>
-    <message>
-        <source>Time remaining</source>
-        <translation type="vanished">Sisa waktu</translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="vanished">tidak diketahui</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Kesalahan</translation>
-    </message>
-    <message>
-        <source>Cannot find downloaded update!</source>
-        <translation type="vanished">Tidak dapat menemukan pembaruan yang diunduh!</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Tutup</translation>
-    </message>
-    <message>
-        <source>Download complete!</source>
-        <translation type="vanished">Pengunduhan selesai!</translation>
-    </message>
-    <message>
-        <source>The installer opens separately</source>
-        <translation type="vanished">Pemasang terbuka secara terpisah</translation>
-    </message>
-    <message>
-        <source>Click &quot;OK&quot; to begin installing the update</source>
-        <translation type="vanished">Klik &quot;OK&quot; untuk mulai memasang pembaruan</translation>
-    </message>
-    <message>
-        <source>In order to install the update, you may need to quit the application.</source>
-        <translation type="vanished">Untuk memasang pembaruan, Anda mungkin perlu keluar dari aplikasi.</translation>
-    </message>
-    <message>
-        <source>In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</source>
-        <translation type="vanished">Untuk memasang pembaruan, Anda mungkin perlu keluar dari aplikasi. Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi.</translation>
-    </message>
-    <message>
-        <source>Click the &quot;Open&quot; button to apply the update</source>
-        <translation type="vanished">Klik tombol &quot;Buka&quot; untuk menerapkan pembaruan</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to cancel the download?</source>
-        <translation type="vanished">Apakah Anda yakin ingin membatalkan pengunduhan?</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</source>
-        <translation type="vanished">Apakah Anda yakin ingin membatalkan pengunduhan? Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi</translation>
-    </message>
-    <message>
-        <source>%1 bytes</source>
-        <translation type="vanished">%1 bita</translation>
-    </message>
-    <message>
-        <source>%1 KB</source>
-        <translation type="vanished">%1 KB</translation>
-    </message>
-    <message>
-        <source>%1 MB</source>
-        <translation type="vanished">%1 MB</translation>
-    </message>
-    <message>
-        <source>of</source>
-        <translation type="vanished">dari</translation>
-    </message>
-    <message>
-        <source>Downloading Updates</source>
-        <translation type="vanished">Mengunduh Pembaruan</translation>
-    </message>
-    <message>
-        <source>Time Remaining</source>
-        <translation type="vanished">Sisa Waktu</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="vanished">Tidak Diketahui</translation>
-    </message>
-    <message>
-        <source>about %1 hours</source>
-        <translation type="vanished">sekitar %1 jam</translation>
-    </message>
-    <message>
-        <source>about one hour</source>
-        <translation type="vanished">sekitar satu jam</translation>
-    </message>
-    <message>
-        <source>%1 minutes</source>
-        <translation type="vanished">%1 menit</translation>
-    </message>
-    <message>
-        <source>1 minute</source>
-        <translation type="vanished">1 menit</translation>
-    </message>
-    <message>
-        <source>%1 seconds</source>
-        <translation type="vanished">%1 detik</translation>
-    </message>
-    <message>
-        <source>1 second</source>
-        <translation type="vanished">1 detik</translation>
     </message>
 </context>
 <context>
@@ -3774,18 +3544,6 @@ Atau URL daring cadangan:
         <location filename="../src/features/FocusedView.cpp" line="258"/>
         <source>[Bookmarks]</source>
         <translation>[Markah]</translation>
-    </message>
-    <message>
-        <source>Bookmark decorator unavailable</source>
-        <translation type="vanished">Dekorator markah tidak tersedia</translation>
-    </message>
-    <message>
-        <source>Invalid regular expression: %1</source>
-        <translation type="vanished">Ekspresi reguler tidak valid: %1</translation>
-    </message>
-    <message>
-        <source>No filter criteria provided</source>
-        <translation type="vanished">Tidak ada kriteria filter yang diberikan</translation>
     </message>
     <message>
         <location filename="../src/features/FocusedView.cpp" line="233"/>
@@ -6968,14 +6726,6 @@ Atau URL daring cadangan:
         <translation>Daftar Fungsi</translation>
     </message>
     <message>
-        <source>Markdown Safe Preview</source>
-        <translation type="vanished">Pratinjau Aman Markdown</translation>
-    </message>
-    <message>
-        <source>&amp;Emoji &amp;&amp; Symbols</source>
-        <translation type="vanished">&amp;Emoji &amp;&amp; Simbol</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2810"/>
         <source>Cannot open file: %1</source>
         <translation>Tidak dapat membuka berkas: %1</translation>
@@ -7324,10 +7074,6 @@ Atau URL daring cadangan:
         <location filename="../src/dialogs/MainWindow.cpp" line="2351"/>
         <source>Shortcut &amp;Mapper / Customize Shortcuts...</source>
         <translation>Pemetaan &amp;Pintasan / Sesuaikan Pintasan...</translation>
-    </message>
-    <message>
-        <source>HTML &amp;&amp; Markdown Live Preview</source>
-        <translation type="vanished">Pratinjau Langsung HTML &amp;&amp; Markdown</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2830"/>
@@ -7986,14 +7732,6 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
         <translation>16 x 16 (Kompak)</translation>
     </message>
     <message>
-        <source>20 x 20 (Standard / Recommended)</source>
-        <translation type="vanished">20 x 20 (Standar / Disarankan)</translation>
-    </message>
-    <message>
-        <source>24 x 24 (Medium)</source>
-        <translation type="vanished">24 x 24 (Sedang)</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5478"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="6052"/>
         <source>32 x 32 (Large / High-DPI)</source>
@@ -8209,14 +7947,6 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
 <context>
     <name>MarkdownSafePreviewDock</name>
     <message>
-        <source>Markdown Safe Preview</source>
-        <translation type="vanished">Pratinjau Aman Markdown</translation>
-    </message>
-    <message>
-        <source>HTML &amp; Markdown Preview</source>
-        <translation type="vanished">Pratinjau HTML &amp; Markdown</translation>
-    </message>
-    <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="43"/>
         <source>HTML &amp; Markdown Live Preview</source>
         <translation>Pratinjau Langsung HTML &amp; Markdown</translation>
@@ -8360,14 +8090,6 @@ Only http, https, and mailto URLs are permitted in HTML &amp; Markdown Preview (
         <translation>Navigasi ke tautan &apos;%1&apos; dengan skema &apos;%2&apos; diblokir demi keamanan.
 
 Hanya URL http, https, dan mailto yang diizinkan dalam Pratinjau HTML &amp; Markdown (mitigasi CVE-2026-20841).</translation>
-    </message>
-    <message>
-        <source>Navigation to link &apos;%1&apos; with scheme &apos;%2&apos; is blocked for security.
-
-Only http, https, and mailto URLs are permitted in Markdown Safe Preview (mitigating CVE-2026-20841).</source>
-        <translation type="vanished">Navigasi ke tautan &apos;%1&apos; dengan skema &apos;%2&apos; diblokir demi keamanan.
-
-Hanya URL http, https, dan mailto yang diizinkan dalam Pratinjau Aman Markdown (mitigasi CVE-2026-20841).</translation>
     </message>
 </context>
 <context>
@@ -9012,10 +8734,6 @@ Kunci: %2</translation>
         <translation>&lt;Bawaan Sistem&gt;</translation>
     </message>
     <message>
-        <source>Themes, Visual Styling &amp; Modern Features</source>
-        <translation type="vanished">Tema, Gaya Visual &amp; Fitur Modern</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="361"/>
         <source>Themes &amp; Visual Styling</source>
         <translation>Tema &amp; Gaya Visual</translation>
@@ -9160,14 +8878,6 @@ Kunci: %2</translation>
         <source> [Custom]</source>
         <translation> [Kustom]</translation>
     </message>
-    <message>
-        <source>Configure Keyboard Shortcuts (Shortcuts Tab)...</source>
-        <translation type="vanished">Konfigurasi Pintasan Papan Ketik (Tab Pintasan)...</translation>
-    </message>
-    <message>
-        <source>Shortcuts:</source>
-        <translation type="vanished">Pintasan:</translation>
-    </message>
 </context>
 <context>
     <name>PreviewTabWidget</name>
@@ -9277,22 +8987,6 @@ Kunci: %2</translation>
         <location filename="../src/utils/MimeTools.cpp" line="58"/>
         <source>[Error: Invalid Base64 Data or Padding]</source>
         <translation>[Kesalahan: Data atau Bantalan Base64 Tidak Valid]</translation>
-    </message>
-    <message>
-        <source>List All Tabs</source>
-        <translation type="vanished">Daftar Semua Tab</translation>
-    </message>
-    <message>
-        <source>Detach Group</source>
-        <translation type="vanished">Lepaskan Grup</translation>
-    </message>
-    <message>
-        <source>Minimize</source>
-        <translation type="vanished">Minimalkan</translation>
-    </message>
-    <message>
-        <source>Close Tab</source>
-        <translation type="vanished">Tutup Tab</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="229"/>
@@ -9938,42 +9632,42 @@ Kunci: %2</translation>
 <context>
     <name>TabColorManager</name>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="28"/>
+        <location filename="../src/features/TabColorManager.cpp" line="29"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="28"/>
+        <location filename="../src/features/TabColorManager.cpp" line="29"/>
         <source>Orange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="29"/>
+        <location filename="../src/features/TabColorManager.cpp" line="30"/>
         <source>Yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="29"/>
+        <location filename="../src/features/TabColorManager.cpp" line="30"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="30"/>
+        <location filename="../src/features/TabColorManager.cpp" line="31"/>
         <source>Cyan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="30"/>
+        <location filename="../src/features/TabColorManager.cpp" line="31"/>
         <source>Blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="31"/>
+        <location filename="../src/features/TabColorManager.cpp" line="32"/>
         <source>Purple</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="31"/>
+        <location filename="../src/features/TabColorManager.cpp" line="32"/>
         <source>Magenta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10327,10 +10021,6 @@ Kunci: %2</translation>
 <context>
     <name>ToolbarIconManager</name>
     <message>
-        <source>Modern Ribbon (Default)</source>
-        <translation type="vanished">Modern Ribbon (Standar)</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="51"/>
         <source>Modern Ribbon (Default Vector)</source>
         <translation>Pita Modern (Vektor Default)</translation>
@@ -10339,30 +10029,6 @@ Kunci: %2</translation>
         <location filename="../src/features/ToolbarIconManager.cpp" line="52"/>
         <source>High-DPI 20x20 monoline vector SVG suite with refined contours</source>
         <translation>Rangkaian vektor monoline SVG 20x20 High-DPI dengan kontur halus</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent UI (Win 11)</source>
-        <translation type="vanished">Microsoft Fluent UI (Win 11)</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent Design vector iconography suite</source>
-        <translation type="vanished">Rangkaian ikonografi vektor Microsoft Fluent Design</translation>
-    </message>
-    <message>
-        <source>Windows 11 (Fluent 2)</source>
-        <translation type="vanished">Windows 11 (Fluent 2)</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent Design System 2 with Directory Opus iconography</source>
-        <translation type="vanished">Microsoft Fluent Design System 2 dengan ikonografi Directory Opus</translation>
-    </message>
-    <message>
-        <source>Windows 7 (Aero Glass)</source>
-        <translation type="vanished">Windows 7 (Aero Glass)</translation>
-    </message>
-    <message>
-        <source>Windows 7 Aero Glass translucent iconography</source>
-        <translation type="vanished">Ikonografi tembus pandang Windows 7 Aero Glass</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="181"/>
@@ -10375,38 +10041,14 @@ Kunci: %2</translation>
         <translation>Ikonografi autentik skeuomorphic Windows XP Luna</translation>
     </message>
     <message>
-        <source>Fugue Classic (Silk Suite)</source>
-        <translation type="vanished">Fugue Klasik (Rangkaian Silk)</translation>
-    </message>
-    <message>
-        <source>Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography</source>
-        <translation type="vanished">Ikonografi piksel sempurna Yusuke Kamiyamane Fugue Silk 2</translation>
-    </message>
-    <message>
-        <source>Notepad++ Retro (Nostalgia)</source>
-        <translation type="vanished">Notepad++ Retro (Nostalgia)</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="61"/>
         <source>Fugue Classic (Silk Mini-Icons)</source>
         <translation>Fugue Classic (Silk Mini-Icons)</translation>
     </message>
     <message>
-        <source>Detailed mini-icons with soft shadows by Yusuke Kamiyamane</source>
-        <translation type="vanished">Mini-ikon detail dengan bayangan lembut karya Yusuke Kamiyamane</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="62"/>
         <source>Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane</source>
         <translation>Ikonografi otentik pixel-perfect Fugue 3.5.6 karya Yusuke Kamiyamane</translation>
-    </message>
-    <message>
-        <source>Windows Vista Aero (Glossy)</source>
-        <translation type="vanished">Windows Vista Aero (Mengilap)</translation>
-    </message>
-    <message>
-        <source>Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth</source>
-        <translation type="vanished">Gaya prototipe Aero Vista Iconfactory mengilap dengan sorotan dan kedalaman kaca</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="71"/>
@@ -10459,22 +10101,6 @@ Kunci: %2</translation>
         <translation>Ikonografi bilah alat autentik Windows 11 Fluent</translation>
     </message>
     <message>
-        <source>Windows 10 Modern (Flat)</source>
-        <translation type="vanished">Windows 10 Modern (Datar)</translation>
-    </message>
-    <message>
-        <source>Crisp geometric flat modern iconography from Windows 10</source>
-        <translation type="vanished">Ikonografi modern datar geometris yang tajam dari Windows 10</translation>
-    </message>
-    <message>
-        <source>Arch Linux (High-Contrast Blue)</source>
-        <translation type="vanished">Arch Linux (Biru Kontras Tinggi)</translation>
-    </message>
-    <message>
-        <source>High-contrast Arch Linux cobalt and cyan iconography</source>
-        <translation type="vanished">Ikonografi kobalt dan sian kontras tinggi Arch Linux</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="121"/>
         <source>Notepad3 Warm (Classic Amber)</source>
         <translation>Notepad3 Warm (Kuning Tua Klasik)</translation>
@@ -10503,14 +10129,6 @@ Kunci: %2</translation>
         <location filename="../src/features/ToolbarIconManager.cpp" line="142"/>
         <source>Authentic Notepad++ dual-resolution SVG and PNG suite</source>
         <translation>Rangkaian SVG dan PNG resolusi ganda autentik Notepad++</translation>
-    </message>
-    <message>
-        <source>Monoline Minimal (Ultra-Thin)</source>
-        <translation type="vanished">Monoline Minimal (Sangat Tipis)</translation>
-    </message>
-    <message>
-        <source>Ultra-thin 1.5px monoline wireframe vector styling</source>
-        <translation type="vanished">Gaya vektor kerangka kawat monoline 1.5px yang sangat tipis</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="151"/>
@@ -10558,94 +10176,6 @@ Kunci: %2</translation>
         <translation>DuoTone Cerah (Cyberpunk)</translation>
     </message>
     <message>
-        <source>Notepad++ Retro (Classic Nostalgia)</source>
-        <translation type="vanished">Notepad++ Retro (Nostalgia Klasik)</translation>
-    </message>
-    <message>
-        <source>High-DPI vector recreations of classic Notepad++ iconography</source>
-        <translation type="vanished">Rekreasi vektor High-DPI dari ikonografi klasik Notepad++</translation>
-    </message>
-    <message>
-        <source>android material 2026</source>
-        <translation type="vanished">android material 2026</translation>
-    </message>
-    <message>
-        <source>Google Material You / M3 adaptive geometry and tonal depth</source>
-        <translation type="vanished">Geometri adaptif Google Material You / M3 dan kedalaman tonal</translation>
-    </message>
-    <message>
-        <source>Vista 2026</source>
-        <translation type="vanished">Vista 2026</translation>
-    </message>
-    <message>
-        <source>Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting</source>
-        <translation type="vanished">Estetika kaca Windows Vista Aero dengan kilau kaya dan pencahayaan volumetrik</translation>
-    </message>
-    <message>
-        <source>XP 2026</source>
-        <translation type="vanished">XP 2026</translation>
-    </message>
-    <message>
-        <source>Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights</source>
-        <translation type="vanished">Nostalgia skeuomorfik Windows XP Luna dengan sorotan cerah klasik</translation>
-    </message>
-    <message>
-        <source>Win10 2026</source>
-        <translation type="vanished">Win10 2026</translation>
-    </message>
-    <message>
-        <source>Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic</source>
-        <translation type="vanished">Estetika monoline wireframe tajam Windows 10 Metro / MDL2</translation>
-    </message>
-    <message>
-        <source>Win11 2026</source>
-        <translation type="vanished">Win11 2026</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent Design System 2 with rounded geometry and soft depth</source>
-        <translation type="vanished">Microsoft Fluent Design System 2 dengan geometri membulat dan kedalaman halus</translation>
-    </message>
-    <message>
-        <source>Win 7 2026</source>
-        <translation type="vanished">Win 7 2026</translation>
-    </message>
-    <message>
-        <source>Windows 7 Aero Glass translucent gradients and polished chrome accents</source>
-        <translation type="vanished">Gradien tembus pandang Windows 7 Aero Glass dan aksen krom yang dipoles</translation>
-    </message>
-    <message>
-        <source>Monterey 2026</source>
-        <translation type="vanished">Monterey 2026</translation>
-    </message>
-    <message>
-        <source>macOS Monterey modern SF Symbols aesthetic with clean Apple styling</source>
-        <translation type="vanished">Estetika modern SF Symbols macOS Monterey dengan gaya bersih khas Apple</translation>
-    </message>
-    <message>
-        <source>NOTEPAD3 ICONPACK</source>
-        <translation type="vanished">NOTEPAD3 ICONPACK</translation>
-    </message>
-    <message>
-        <source>Rizonesoft Notepad3 technical teal and sharp developer-focused vectors</source>
-        <translation type="vanished">Teal teknis Rizonesoft Notepad3 dan vektor tajam berorientasi pengembang</translation>
-    </message>
-    <message>
-        <source>NOTEPAD4 ICONPACK</source>
-        <translation type="vanished">NOTEPAD4 ICONPACK</translation>
-    </message>
-    <message>
-        <source>Zufuliu Notepad4 modern deep indigo flat vector iconography</source>
-        <translation type="vanished">Ikonografi vektor datar nila gelap modern Zufuliu Notepad4</translation>
-    </message>
-    <message>
-        <source>NOTEPAD2 ICONPACK</source>
-        <translation type="vanished">NOTEPAD2 ICONPACK</translation>
-    </message>
-    <message>
-        <source>Florian Balmer Notepad2 classic retro 16-color nostalgic palette</source>
-        <translation type="vanished">Palet nostalgia 16-warna retro klasik Florian Balmer Notepad2</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="211"/>
         <source>Monochrome Outline (Minimalist)</source>
         <translation>Monochrome Outline (Minimalis)</translation>
@@ -10654,10 +10184,6 @@ Kunci: %2</translation>
         <location filename="../src/features/ToolbarIconManager.cpp" line="212"/>
         <source>Clean 1.8px monoline wireframes engineered for dark and light themes</source>
         <translation>Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang</translation>
-    </message>
-    <message>
-        <source>Vibrant DuoTone (Neon/Cyber)</source>
-        <translation type="vanished">Vibrant DuoTone (Neon/Cyber)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="202"/>
@@ -11045,177 +10571,6 @@ Kunci: %2</translation>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="710"/>
         <source>Close</source>
         <translation>Tutup</translation>
-    </message>
-</context>
-<context>
-    <name>Updater</name>
-    <message>
-        <source>Would you like to download the update now?</source>
-        <translation type="vanished">Apakah Anda ingin mengunduh pembaruan sekarang?</translation>
-    </message>
-    <message>
-        <source>Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</source>
-        <translation type="vanished">Apakah Anda ingin mengunduh pembaruan sekarang?&lt;br /&gt;Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi.</translation>
-    </message>
-    <message>
-        <source>&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</source>
-        <translation type="vanished">&lt;strong&gt;Catatan perubahan:&lt;/strong&gt;&lt;br/&gt;%1</translation>
-    </message>
-    <message>
-        <source>Version %1 of %2 has been released!</source>
-        <translation type="vanished">Versi %1 dari %2 telah dirilis!</translation>
-    </message>
-    <message>
-        <source>No updates are available for the moment</source>
-        <translation type="vanished">Tidak ada pembaruan yang tersedia saat ini</translation>
-    </message>
-    <message>
-        <source>Congratulations! You are running the latest version of %1</source>
-        <translation type="vanished">Selamat! Anda menjalankan versi terbaru dari %1</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CAutoHideTab</name>
-    <message>
-        <source>Detach</source>
-        <translation type="vanished">Lepaskan</translation>
-    </message>
-    <message>
-        <source>Pin To...</source>
-        <translation type="vanished">Sematkan Ke...</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Atas</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="vanished">Kiri</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="vanished">Kanan</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation type="vanished">Bawah</translation>
-    </message>
-    <message>
-        <source>Unpin (Dock)</source>
-        <translation type="vanished">Lepas Sematan (Dok)</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Tutup</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockAreaTitleBar</name>
-    <message>
-        <source>Detach</source>
-        <translation type="vanished">Lepaskan</translation>
-    </message>
-    <message>
-        <source>Detach Group</source>
-        <translation type="vanished">Lepaskan Grup</translation>
-    </message>
-    <message>
-        <source>Unpin (Dock)</source>
-        <translation type="vanished">Lepas Sematan (Dok)</translation>
-    </message>
-    <message>
-        <source>Pin Group</source>
-        <translation type="vanished">Sematkan Grup</translation>
-    </message>
-    <message>
-        <source>Pin Group To...</source>
-        <translation type="vanished">Sematkan Grup Ke...</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Atas</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="vanished">Kiri</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="vanished">Kanan</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation type="vanished">Bawah</translation>
-    </message>
-    <message>
-        <source>Minimize</source>
-        <translation type="vanished">Minimalkan</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Tutup</translation>
-    </message>
-    <message>
-        <source>Close Group</source>
-        <translation type="vanished">Tutup Grup</translation>
-    </message>
-    <message>
-        <source>Close Other Groups</source>
-        <translation type="vanished">Tutup Grup Lain</translation>
-    </message>
-    <message>
-        <source>Pin Active Tab (Press Ctrl to Pin Group)</source>
-        <translation type="vanished">Sematkan Tab Aktif (Tekan Ctrl untuk Sematkan Grup)</translation>
-    </message>
-    <message>
-        <source>Close Active Tab</source>
-        <translation type="vanished">Tutup Tab Aktif</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockManager</name>
-    <message>
-        <source>Show View</source>
-        <translation type="vanished">Tampilkan Panel</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockWidgetTab</name>
-    <message>
-        <source>Detach</source>
-        <translation type="vanished">Lepaskan</translation>
-    </message>
-    <message>
-        <source>Pin</source>
-        <translation type="vanished">Sematkan</translation>
-    </message>
-    <message>
-        <source>Pin To...</source>
-        <translation type="vanished">Sematkan Ke...</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Atas</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="vanished">Kiri</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="vanished">Kanan</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation type="vanished">Bawah</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Tutup</translation>
-    </message>
-    <message>
-        <source>Close Others</source>
-        <translation type="vanished">Tutup Lainnya</translation>
     </message>
 </context>
 </TS>

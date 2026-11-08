@@ -27,7 +27,7 @@ public:
     explicit ClipboardHistoryDock(QWidget *parent = nullptr);
     ~ClipboardHistoryDock() override = default;
 
-    [[nodiscard]] QStringList entries() const;
+    [[nodiscard]] const QStringList &entries() const;
     void addClip(const QString &text);
     void clear();
     void setMaxEntries(int max);

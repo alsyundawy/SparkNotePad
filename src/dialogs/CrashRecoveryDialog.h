@@ -26,7 +26,7 @@ public:
     explicit CrashRecoveryDialog(const QList<RecoverySnapshot> &snapshots, QWidget *parent = nullptr);
     ~CrashRecoveryDialog() override = default;
 
-    [[nodiscard]] QList<RecoverySnapshot> selectedSnapshots() const;
+    [[nodiscard]] const QList<RecoverySnapshot> &selectedSnapshots() const;
     [[nodiscard]] bool discardRequested() const { return m_discardRequested; }
 
 private slots:

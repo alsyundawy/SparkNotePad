@@ -20,8 +20,8 @@
 #include <QJsonObject>
 #include <QSaveFile>
 
-AutosaveRecoveryManager::AutosaveRecoveryManager(QObject *parent) : QObject(parent) {
-    m_recoveryDir = defaultRecoveryPath();
+AutosaveRecoveryManager::AutosaveRecoveryManager(QObject *parent)
+    : QObject(parent), m_recoveryDir(defaultRecoveryPath()) {
     m_timer.setInterval(kDefaultIntervalMs);
     connect(&m_timer, &QTimer::timeout, this, &AutosaveRecoveryManager::triggerAutosave);
 }
@@ -31,7 +31,7 @@ AutosaveRecoveryManager *AutosaveRecoveryManager::instance() {
     return &s_instance;
 }
 
-QString AutosaveRecoveryManager::defaultRecoveryPath() const {
+QString AutosaveRecoveryManager::defaultRecoveryPath() {
     return QDir::cleanPath(QDir::homePath() + QStringLiteral("/.sparknotepad/recovery"));
 }
 
@@ -40,7 +40,7 @@ void AutosaveRecoveryManager::setRecoveryDirectory(const QString &dirPath) {
     (void)QDir().mkpath(m_recoveryDir);
 }
 
-QString AutosaveRecoveryManager::recoveryDirectory() const {
+const QString &AutosaveRecoveryManager::recoveryDirectory() const {
     return m_recoveryDir;
 }
 
@@ -59,7 +59,7 @@ QString AutosaveRecoveryManager::saveSnapshot(const QString &originalPath, const
     const bool isUntitled = originalPath.isEmpty();
     const QString identifier = isUntitled ? title : originalPath;
     const QString fileName = QStringLiteral("draft_%1.json").arg(sanitizeKey(identifier));
-    const QString targetPath = dir.filePath(fileName);
+    QString targetPath = dir.filePath(fileName);
 
     QJsonObject obj;
     obj[QStringLiteral("originalPath")] = originalPath;

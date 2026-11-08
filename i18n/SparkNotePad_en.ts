@@ -111,10 +111,6 @@
         <translation>Math Eval</translation>
     </message>
     <message>
-        <source>100+ Lexers</source>
-        <translation type="vanished">100+ Lexers</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="290"/>
         <source>Export PDF</source>
         <translation>Export PDF</translation>
@@ -250,10 +246,6 @@
         <translation>View Official QRIS Barcode</translation>
     </message>
     <message>
-        <source>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.7):</source>
-        <translation type="vanished">SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, communities, and tools (v1.0.0 – v1.3.7):</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="547"/>
         <source>SparkNotePad Keyboard Shortcuts &amp;amp; Hotkeys</source>
         <translation>SparkNotePad Keyboard Shortcuts &amp;amp; Hotkeys</translation>
@@ -302,10 +294,6 @@
         <location filename="../src/dialogs/AboutDialog.cpp" line="808"/>
         <source>Copy All</source>
         <translation>Copy All</translation>
-    </message>
-    <message>
-        <source>Open Terminal Here</source>
-        <translation type="vanished">Open Terminal Here</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="555"/>
@@ -441,10 +429,6 @@
         <location filename="../src/dialogs/AboutDialog.cpp" line="401"/>
         <source>Lead AI Pair Programming IDE &amp; Agentic Workflow Environment driving architecture, refactoring, and quality assurance.</source>
         <translation>Lead AI Pair Programming IDE &amp; Agentic Workflow Environment driving architecture, refactoring, and quality assurance.</translation>
-    </message>
-    <message>
-        <source>Continuous AI Code Review, 13-Pillar Security Auditing, Static Analysis, and Linter Compliance Engine.</source>
-        <translation type="vanished">Continuous AI Code Review, 13-Pillar Security Auditing, Static Analysis, and Linter Compliance Engine.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="426"/>
@@ -1136,25 +1120,6 @@
     </message>
 </context>
 <context>
-    <name>AuthenticateDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="vanished">Dialog</translation>
-    </message>
-    <message>
-        <source>Please provide the user name and password for the download location.</source>
-        <translation type="vanished">Please provide the user name and password for the download location.</translation>
-    </message>
-    <message>
-        <source>&amp;User name:</source>
-        <translation type="vanished">&amp;User name:</translation>
-    </message>
-    <message>
-        <source>&amp;Password:</source>
-        <translation type="vanished">&amp;Password:</translation>
-    </message>
-</context>
-<context>
     <name>CaseConverter</name>
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="121"/>
@@ -1826,74 +1791,6 @@ Select which documents you would like to recover:</source>
         <source>Customize Toolbar Buttons</source>
         <translation>Customize Toolbar Buttons</translation>
     </message>
-    <message>
-        <source>Select actions to display on the main toolbar. You can add, remove, and reorder items or insert separators.</source>
-        <translation type="vanished">Select actions to display on the main toolbar. You can add, remove, and reorder items or insert separators.</translation>
-    </message>
-    <message>
-        <source>Available Actions:</source>
-        <translation type="vanished">Available Actions:</translation>
-    </message>
-    <message>
-        <source>Search actions...</source>
-        <translation type="vanished">Search actions...</translation>
-    </message>
-    <message>
-        <source>Add ▶</source>
-        <translation type="vanished">Add ▶</translation>
-    </message>
-    <message>
-        <source>Add selected action to toolbar</source>
-        <translation type="vanished">Add selected action to toolbar</translation>
-    </message>
-    <message>
-        <source>◀ Remove</source>
-        <translation type="vanished">◀ Remove</translation>
-    </message>
-    <message>
-        <source>Remove selected item from toolbar</source>
-        <translation type="vanished">Remove selected item from toolbar</translation>
-    </message>
-    <message>
-        <source>+ Separator</source>
-        <translation type="vanished">+ Separator</translation>
-    </message>
-    <message>
-        <source>Insert a separator line at selected position</source>
-        <translation type="vanished">Insert a separator line at selected position</translation>
-    </message>
-    <message>
-        <source>▲ Move Up</source>
-        <translation type="vanished">▲ Move Up</translation>
-    </message>
-    <message>
-        <source>Move selected item up</source>
-        <translation type="vanished">Move selected item up</translation>
-    </message>
-    <message>
-        <source>▼ Move Down</source>
-        <translation type="vanished">▼ Move Down</translation>
-    </message>
-    <message>
-        <source>Move selected item down</source>
-        <translation type="vanished">Move selected item down</translation>
-    </message>
-    <message>
-        <source>Current Toolbar Buttons:</source>
-        <translation type="vanished">Current Toolbar Buttons:</translation>
-    </message>
-    <message>
-        <source>Reset to Defaults</source>
-        <translation type="vanished">Reset to Defaults</translation>
-    </message>
-    <message>
-        <source>Restore standard SparkNotePad toolbar buttons</source>
-        <translation type="vanished">Restore standard SparkNotePad toolbar buttons</translation>
-    </message>
-    <message>
-        <source>─────────── [ Separator ] ───────────</source>
-        <translation type="vanished">─────────── [ Separator ] ───────────</translation>
-    </message>
 </context>
 <context>
     <name>CustomizeToolbarWidget</name>
@@ -2343,133 +2240,6 @@ Or fallback online URL:
 
 Or fallback online URL:
 %2</translation>
-    </message>
-</context>
-<context>
-    <name>Downloader</name>
-    <message>
-        <source>Updater</source>
-        <translation type="vanished">Updater</translation>
-    </message>
-    <message>
-        <source>Downloading updates</source>
-        <translation type="vanished">Downloading updates</translation>
-    </message>
-    <message>
-        <source>Time remaining: 0 minutes</source>
-        <translation type="vanished">Time remaining: 0 minutes</translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="vanished">Open</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="vanished">Stop</translation>
-    </message>
-    <message>
-        <source>Time remaining</source>
-        <translation type="vanished">Time remaining</translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="vanished">unknown</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Error</translation>
-    </message>
-    <message>
-        <source>Cannot find downloaded update!</source>
-        <translation type="vanished">Cannot find downloaded update!</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Close</translation>
-    </message>
-    <message>
-        <source>Download complete!</source>
-        <translation type="vanished">Download complete!</translation>
-    </message>
-    <message>
-        <source>The installer opens separately</source>
-        <translation type="vanished">The installer opens separately</translation>
-    </message>
-    <message>
-        <source>Click &quot;OK&quot; to begin installing the update</source>
-        <translation type="vanished">Click &quot;OK&quot; to begin installing the update</translation>
-    </message>
-    <message>
-        <source>In order to install the update, you may need to quit the application.</source>
-        <translation type="vanished">In order to install the update, you may need to quit the application.</translation>
-    </message>
-    <message>
-        <source>In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</source>
-        <translation type="vanished">In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</translation>
-    </message>
-    <message>
-        <source>Click the &quot;Open&quot; button to apply the update</source>
-        <translation type="vanished">Click the &quot;Open&quot; button to apply the update</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to cancel the download?</source>
-        <translation type="vanished">Are you sure you want to cancel the download?</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</source>
-        <translation type="vanished">Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</translation>
-    </message>
-    <message>
-        <source>%1 bytes</source>
-        <translation type="vanished">%1 bytes</translation>
-    </message>
-    <message>
-        <source>%1 KB</source>
-        <translation type="vanished">%1 KB</translation>
-    </message>
-    <message>
-        <source>%1 MB</source>
-        <translation type="vanished">%1 MB</translation>
-    </message>
-    <message>
-        <source>of</source>
-        <translation type="vanished">of</translation>
-    </message>
-    <message>
-        <source>Downloading Updates</source>
-        <translation type="vanished">Downloading Updates</translation>
-    </message>
-    <message>
-        <source>Time Remaining</source>
-        <translation type="vanished">Time Remaining</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="vanished">Unknown</translation>
-    </message>
-    <message>
-        <source>about %1 hours</source>
-        <translation type="vanished">about %1 hours</translation>
-    </message>
-    <message>
-        <source>about one hour</source>
-        <translation type="vanished">about one hour</translation>
-    </message>
-    <message>
-        <source>%1 minutes</source>
-        <translation type="vanished">%1 minutes</translation>
-    </message>
-    <message>
-        <source>1 minute</source>
-        <translation type="vanished">1 minute</translation>
-    </message>
-    <message>
-        <source>%1 seconds</source>
-        <translation type="vanished">%1 seconds</translation>
-    </message>
-    <message>
-        <source>1 second</source>
-        <translation type="vanished">1 second</translation>
     </message>
 </context>
 <context>
@@ -3778,18 +3548,6 @@ Or fallback online URL:
         <location filename="../src/features/FocusedView.cpp" line="258"/>
         <source>[Bookmarks]</source>
         <translation>[Bookmarks]</translation>
-    </message>
-    <message>
-        <source>Bookmark decorator unavailable</source>
-        <translation type="vanished">Bookmark decorator unavailable</translation>
-    </message>
-    <message>
-        <source>Invalid regular expression: %1</source>
-        <translation type="vanished">Invalid regular expression: %1</translation>
-    </message>
-    <message>
-        <source>No filter criteria provided</source>
-        <translation type="vanished">No filter criteria provided</translation>
     </message>
     <message>
         <location filename="../src/features/FocusedView.cpp" line="233"/>
@@ -6972,14 +6730,6 @@ Or fallback online URL:
         <translation>Function List</translation>
     </message>
     <message>
-        <source>Markdown Safe Preview</source>
-        <translation type="vanished">Markdown Safe Preview</translation>
-    </message>
-    <message>
-        <source>&amp;Emoji &amp;&amp; Symbols</source>
-        <translation type="vanished">&amp;Emoji &amp;&amp; Symbols</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2810"/>
         <source>Cannot open file: %1</source>
         <translation>Cannot open file: %1</translation>
@@ -7328,10 +7078,6 @@ Or fallback online URL:
         <location filename="../src/dialogs/MainWindow.cpp" line="2351"/>
         <source>Shortcut &amp;Mapper / Customize Shortcuts...</source>
         <translation>Shortcut &amp;Mapper / Customize Shortcuts...</translation>
-    </message>
-    <message>
-        <source>HTML &amp;&amp; Markdown Live Preview</source>
-        <translation type="vanished">HTML &amp;&amp; Markdown Live Preview</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2830"/>
@@ -7990,14 +7736,6 @@ Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep y
         <translation>16 x 16 (Compact)</translation>
     </message>
     <message>
-        <source>20 x 20 (Standard / Recommended)</source>
-        <translation type="vanished">20 x 20 (Standard / Recommended)</translation>
-    </message>
-    <message>
-        <source>24 x 24 (Medium)</source>
-        <translation type="vanished">24 x 24 (Medium)</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5478"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="6052"/>
         <source>32 x 32 (Large / High-DPI)</source>
@@ -8213,14 +7951,6 @@ Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep y
 <context>
     <name>MarkdownSafePreviewDock</name>
     <message>
-        <source>Markdown Safe Preview</source>
-        <translation type="vanished">Markdown Safe Preview</translation>
-    </message>
-    <message>
-        <source>HTML &amp; Markdown Preview</source>
-        <translation type="vanished">HTML &amp; Markdown Preview</translation>
-    </message>
-    <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="43"/>
         <source>HTML &amp; Markdown Live Preview</source>
         <translation>HTML &amp; Markdown Live Preview</translation>
@@ -8364,14 +8094,6 @@ Only http, https, and mailto URLs are permitted in HTML &amp; Markdown Preview (
         <translation>Navigation to link &apos;%1&apos; with scheme &apos;%2&apos; is blocked for security.
 
 Only http, https, and mailto URLs are permitted in HTML &amp; Markdown Preview (mitigating CVE-2026-20841).</translation>
-    </message>
-    <message>
-        <source>Navigation to link &apos;%1&apos; with scheme &apos;%2&apos; is blocked for security.
-
-Only http, https, and mailto URLs are permitted in Markdown Safe Preview (mitigating CVE-2026-20841).</source>
-        <translation type="vanished">Navigation to link &apos;%1&apos; with scheme &apos;%2&apos; is blocked for security.
-
-Only http, https, and mailto URLs are permitted in Markdown Safe Preview (mitigating CVE-2026-20841).</translation>
     </message>
 </context>
 <context>
@@ -9016,10 +8738,6 @@ Key: %2</translation>
         <translation>&lt;System Default&gt;</translation>
     </message>
     <message>
-        <source>Themes, Visual Styling &amp; Modern Features</source>
-        <translation type="vanished">Themes, Visual Styling &amp; Modern Features</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="361"/>
         <source>Themes &amp; Visual Styling</source>
         <translation>Themes &amp; Visual Styling</translation>
@@ -9164,14 +8882,6 @@ Key: %2</translation>
         <source> [Custom]</source>
         <translation> [Custom]</translation>
     </message>
-    <message>
-        <source>Configure Keyboard Shortcuts (Shortcuts Tab)...</source>
-        <translation type="vanished">Configure Keyboard Shortcuts (Shortcuts Tab)...</translation>
-    </message>
-    <message>
-        <source>Shortcuts:</source>
-        <translation type="vanished">Shortcuts:</translation>
-    </message>
 </context>
 <context>
     <name>PreviewTabWidget</name>
@@ -9281,22 +8991,6 @@ Key: %2</translation>
         <location filename="../src/utils/MimeTools.cpp" line="58"/>
         <source>[Error: Invalid Base64 Data or Padding]</source>
         <translation>[Error: Invalid Base64 Data or Padding]</translation>
-    </message>
-    <message>
-        <source>List All Tabs</source>
-        <translation type="vanished">List All Tabs</translation>
-    </message>
-    <message>
-        <source>Detach Group</source>
-        <translation type="vanished">Detach Group</translation>
-    </message>
-    <message>
-        <source>Minimize</source>
-        <translation type="vanished">Minimize</translation>
-    </message>
-    <message>
-        <source>Close Tab</source>
-        <translation type="vanished">Close Tab</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="229"/>
@@ -9942,42 +9636,42 @@ Key: %2</translation>
 <context>
     <name>TabColorManager</name>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="28"/>
+        <location filename="../src/features/TabColorManager.cpp" line="29"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="28"/>
+        <location filename="../src/features/TabColorManager.cpp" line="29"/>
         <source>Orange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="29"/>
+        <location filename="../src/features/TabColorManager.cpp" line="30"/>
         <source>Yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="29"/>
+        <location filename="../src/features/TabColorManager.cpp" line="30"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="30"/>
+        <location filename="../src/features/TabColorManager.cpp" line="31"/>
         <source>Cyan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="30"/>
+        <location filename="../src/features/TabColorManager.cpp" line="31"/>
         <source>Blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="31"/>
+        <location filename="../src/features/TabColorManager.cpp" line="32"/>
         <source>Purple</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/features/TabColorManager.cpp" line="31"/>
+        <location filename="../src/features/TabColorManager.cpp" line="32"/>
         <source>Magenta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10331,10 +10025,6 @@ Key: %2</translation>
 <context>
     <name>ToolbarIconManager</name>
     <message>
-        <source>Modern Ribbon (Default)</source>
-        <translation type="vanished">Modern Ribbon (Default)</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="51"/>
         <source>Modern Ribbon (Default Vector)</source>
         <translation>Modern Ribbon (Default Vector)</translation>
@@ -10343,30 +10033,6 @@ Key: %2</translation>
         <location filename="../src/features/ToolbarIconManager.cpp" line="52"/>
         <source>High-DPI 20x20 monoline vector SVG suite with refined contours</source>
         <translation>High-DPI 20x20 monoline vector SVG suite with refined contours</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent UI (Win 11)</source>
-        <translation type="vanished">Microsoft Fluent UI (Win 11)</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent Design vector iconography suite</source>
-        <translation type="vanished">Microsoft Fluent Design vector iconography suite</translation>
-    </message>
-    <message>
-        <source>Windows 11 (Fluent 2)</source>
-        <translation type="vanished">Windows 11 (Fluent 2)</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent Design System 2 with Directory Opus iconography</source>
-        <translation type="vanished">Microsoft Fluent Design System 2 with Directory Opus iconography</translation>
-    </message>
-    <message>
-        <source>Windows 7 (Aero Glass)</source>
-        <translation type="vanished">Windows 7 (Aero Glass)</translation>
-    </message>
-    <message>
-        <source>Windows 7 Aero Glass translucent iconography</source>
-        <translation type="vanished">Windows 7 Aero Glass translucent iconography</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="181"/>
@@ -10379,38 +10045,14 @@ Key: %2</translation>
         <translation>Windows XP Luna skeuomorphic authentic iconography</translation>
     </message>
     <message>
-        <source>Fugue Classic (Silk Suite)</source>
-        <translation type="vanished">Fugue Classic (Silk Suite)</translation>
-    </message>
-    <message>
-        <source>Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography</source>
-        <translation type="vanished">Pixel-perfect Yusuke Kamiyamane Fugue Silk 2 iconography</translation>
-    </message>
-    <message>
-        <source>Notepad++ Retro (Nostalgia)</source>
-        <translation type="vanished">Notepad++ Retro (Nostalgia)</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="61"/>
         <source>Fugue Classic (Silk Mini-Icons)</source>
         <translation>Fugue Classic (Silk Mini-Icons)</translation>
     </message>
     <message>
-        <source>Detailed mini-icons with soft shadows by Yusuke Kamiyamane</source>
-        <translation type="vanished">Detailed mini-icons with soft shadows by Yusuke Kamiyamane</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="62"/>
         <source>Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane</source>
         <translation>Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane</translation>
-    </message>
-    <message>
-        <source>Windows Vista Aero (Glossy)</source>
-        <translation type="vanished">Windows Vista Aero (Glossy)</translation>
-    </message>
-    <message>
-        <source>Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth</source>
-        <translation type="vanished">Glossy Aero Vista Iconfactory prototypes style with highlights and glass depth</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="71"/>
@@ -10463,22 +10105,6 @@ Key: %2</translation>
         <translation>Authentic Windows 11 Fluent toolbar iconography</translation>
     </message>
     <message>
-        <source>Windows 10 Modern (Flat)</source>
-        <translation type="vanished">Windows 10 Modern (Flat)</translation>
-    </message>
-    <message>
-        <source>Crisp geometric flat modern iconography from Windows 10</source>
-        <translation type="vanished">Crisp geometric flat modern iconography from Windows 10</translation>
-    </message>
-    <message>
-        <source>Arch Linux (High-Contrast Blue)</source>
-        <translation type="vanished">Arch Linux (High-Contrast Blue)</translation>
-    </message>
-    <message>
-        <source>High-contrast Arch Linux cobalt and cyan iconography</source>
-        <translation type="vanished">High-contrast Arch Linux cobalt and cyan iconography</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="121"/>
         <source>Notepad3 Warm (Classic Amber)</source>
         <translation>Notepad3 Warm (Classic Amber)</translation>
@@ -10507,14 +10133,6 @@ Key: %2</translation>
         <location filename="../src/features/ToolbarIconManager.cpp" line="142"/>
         <source>Authentic Notepad++ dual-resolution SVG and PNG suite</source>
         <translation>Authentic Notepad++ dual-resolution SVG and PNG suite</translation>
-    </message>
-    <message>
-        <source>Monoline Minimal (Ultra-Thin)</source>
-        <translation type="vanished">Monoline Minimal (Ultra-Thin)</translation>
-    </message>
-    <message>
-        <source>Ultra-thin 1.5px monoline wireframe vector styling</source>
-        <translation type="vanished">Ultra-thin 1.5px monoline wireframe vector styling</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="151"/>
@@ -10562,94 +10180,6 @@ Key: %2</translation>
         <translation>Vibrant DuoTone (Cyberpunk)</translation>
     </message>
     <message>
-        <source>Notepad++ Retro (Classic Nostalgia)</source>
-        <translation type="vanished">Notepad++ Retro (Classic Nostalgia)</translation>
-    </message>
-    <message>
-        <source>High-DPI vector recreations of classic Notepad++ iconography</source>
-        <translation type="vanished">High-DPI vector recreations of classic Notepad++ iconography</translation>
-    </message>
-    <message>
-        <source>android material 2026</source>
-        <translation type="vanished">android material 2026</translation>
-    </message>
-    <message>
-        <source>Google Material You / M3 adaptive geometry and tonal depth</source>
-        <translation type="vanished">Google Material You / M3 adaptive geometry and tonal depth</translation>
-    </message>
-    <message>
-        <source>Vista 2026</source>
-        <translation type="vanished">Vista 2026</translation>
-    </message>
-    <message>
-        <source>Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting</source>
-        <translation type="vanished">Windows Vista Aero glass aesthetic with rich gloss and volumetric lighting</translation>
-    </message>
-    <message>
-        <source>XP 2026</source>
-        <translation type="vanished">XP 2026</translation>
-    </message>
-    <message>
-        <source>Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights</source>
-        <translation type="vanished">Windows XP Luna skeuomorphic nostalgia with classic vibrant highlights</translation>
-    </message>
-    <message>
-        <source>Win10 2026</source>
-        <translation type="vanished">Win10 2026</translation>
-    </message>
-    <message>
-        <source>Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic</source>
-        <translation type="vanished">Windows 10 Metro / MDL2 sharp wireframe monoline aesthetic</translation>
-    </message>
-    <message>
-        <source>Win11 2026</source>
-        <translation type="vanished">Win11 2026</translation>
-    </message>
-    <message>
-        <source>Microsoft Fluent Design System 2 with rounded geometry and soft depth</source>
-        <translation type="vanished">Microsoft Fluent Design System 2 with rounded geometry and soft depth</translation>
-    </message>
-    <message>
-        <source>Win 7 2026</source>
-        <translation type="vanished">Win 7 2026</translation>
-    </message>
-    <message>
-        <source>Windows 7 Aero Glass translucent gradients and polished chrome accents</source>
-        <translation type="vanished">Windows 7 Aero Glass translucent gradients and polished chrome accents</translation>
-    </message>
-    <message>
-        <source>Monterey 2026</source>
-        <translation type="vanished">Monterey 2026</translation>
-    </message>
-    <message>
-        <source>macOS Monterey modern SF Symbols aesthetic with clean Apple styling</source>
-        <translation type="vanished">macOS Monterey modern SF Symbols aesthetic with clean Apple styling</translation>
-    </message>
-    <message>
-        <source>NOTEPAD3 ICONPACK</source>
-        <translation type="vanished">NOTEPAD3 ICONPACK</translation>
-    </message>
-    <message>
-        <source>Rizonesoft Notepad3 technical teal and sharp developer-focused vectors</source>
-        <translation type="vanished">Rizonesoft Notepad3 technical teal and sharp developer-focused vectors</translation>
-    </message>
-    <message>
-        <source>NOTEPAD4 ICONPACK</source>
-        <translation type="vanished">NOTEPAD4 ICONPACK</translation>
-    </message>
-    <message>
-        <source>Zufuliu Notepad4 modern deep indigo flat vector iconography</source>
-        <translation type="vanished">Zufuliu Notepad4 modern deep indigo flat vector iconography</translation>
-    </message>
-    <message>
-        <source>NOTEPAD2 ICONPACK</source>
-        <translation type="vanished">NOTEPAD2 ICONPACK</translation>
-    </message>
-    <message>
-        <source>Florian Balmer Notepad2 classic retro 16-color nostalgic palette</source>
-        <translation type="vanished">Florian Balmer Notepad2 classic retro 16-color nostalgic palette</translation>
-    </message>
-    <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="211"/>
         <source>Monochrome Outline (Minimalist)</source>
         <translation>Monochrome Outline (Minimalist)</translation>
@@ -10658,10 +10188,6 @@ Key: %2</translation>
         <location filename="../src/features/ToolbarIconManager.cpp" line="212"/>
         <source>Clean 1.8px monoline wireframes engineered for dark and light themes</source>
         <translation>Clean 1.8px monoline wireframes engineered for dark and light themes</translation>
-    </message>
-    <message>
-        <source>Vibrant DuoTone (Neon/Cyber)</source>
-        <translation type="vanished">Vibrant DuoTone (Neon/Cyber)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="202"/>
@@ -11049,177 +10575,6 @@ Key: %2</translation>
         <location filename="../src/dialogs/UpdateDialog.cpp" line="710"/>
         <source>Close</source>
         <translation>Close</translation>
-    </message>
-</context>
-<context>
-    <name>Updater</name>
-    <message>
-        <source>Would you like to download the update now?</source>
-        <translation type="vanished">Would you like to download the update now?</translation>
-    </message>
-    <message>
-        <source>Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</source>
-        <translation type="vanished">Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</translation>
-    </message>
-    <message>
-        <source>&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</source>
-        <translation type="vanished">&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</translation>
-    </message>
-    <message>
-        <source>Version %1 of %2 has been released!</source>
-        <translation type="vanished">Version %1 of %2 has been released!</translation>
-    </message>
-    <message>
-        <source>No updates are available for the moment</source>
-        <translation type="vanished">No updates are available for the moment</translation>
-    </message>
-    <message>
-        <source>Congratulations! You are running the latest version of %1</source>
-        <translation type="vanished">Congratulations! You are running the latest version of %1</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CAutoHideTab</name>
-    <message>
-        <source>Detach</source>
-        <translation type="vanished">Detach</translation>
-    </message>
-    <message>
-        <source>Pin To...</source>
-        <translation type="vanished">Pin To...</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Top</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="vanished">Left</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="vanished">Right</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation type="vanished">Bottom</translation>
-    </message>
-    <message>
-        <source>Unpin (Dock)</source>
-        <translation type="vanished">Unpin (Dock)</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Close</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockAreaTitleBar</name>
-    <message>
-        <source>Detach</source>
-        <translation type="vanished">Detach</translation>
-    </message>
-    <message>
-        <source>Detach Group</source>
-        <translation type="vanished">Detach Group</translation>
-    </message>
-    <message>
-        <source>Unpin (Dock)</source>
-        <translation type="vanished">Unpin (Dock)</translation>
-    </message>
-    <message>
-        <source>Pin Group</source>
-        <translation type="vanished">Pin Group</translation>
-    </message>
-    <message>
-        <source>Pin Group To...</source>
-        <translation type="vanished">Pin Group To...</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Top</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="vanished">Left</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="vanished">Right</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation type="vanished">Bottom</translation>
-    </message>
-    <message>
-        <source>Minimize</source>
-        <translation type="vanished">Minimize</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Close</translation>
-    </message>
-    <message>
-        <source>Close Group</source>
-        <translation type="vanished">Close Group</translation>
-    </message>
-    <message>
-        <source>Close Other Groups</source>
-        <translation type="vanished">Close Other Groups</translation>
-    </message>
-    <message>
-        <source>Pin Active Tab (Press Ctrl to Pin Group)</source>
-        <translation type="vanished">Pin Active Tab (Press Ctrl to Pin Group)</translation>
-    </message>
-    <message>
-        <source>Close Active Tab</source>
-        <translation type="vanished">Close Active Tab</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockManager</name>
-    <message>
-        <source>Show View</source>
-        <translation type="vanished">Show View</translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockWidgetTab</name>
-    <message>
-        <source>Detach</source>
-        <translation type="vanished">Detach</translation>
-    </message>
-    <message>
-        <source>Pin</source>
-        <translation type="vanished">Pin</translation>
-    </message>
-    <message>
-        <source>Pin To...</source>
-        <translation type="vanished">Pin To...</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Top</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="vanished">Left</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="vanished">Right</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation type="vanished">Bottom</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Close</translation>
-    </message>
-    <message>
-        <source>Close Others</source>
-        <translation type="vanished">Close Others</translation>
     </message>
 </context>
 </TS>

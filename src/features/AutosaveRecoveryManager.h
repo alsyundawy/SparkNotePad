@@ -41,7 +41,7 @@ public:
     static AutosaveRecoveryManager *instance();
 
     void setRecoveryDirectory(const QString &dirPath);
-    [[nodiscard]] QString recoveryDirectory() const;
+    [[nodiscard]] const QString &recoveryDirectory() const;
 
     QString saveSnapshot(const QString &originalPath, const QString &title, const QString &content,
                          qint64 cursorPosition = 0) const;
@@ -59,7 +59,7 @@ signals:
     void triggerAutosave();
 
 private:
-    [[nodiscard]] QString defaultRecoveryPath() const;
+    [[nodiscard]] static QString defaultRecoveryPath();
     [[nodiscard]] static QString sanitizeKey(const QString &raw);
 
     QString m_recoveryDir;
