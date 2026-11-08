@@ -310,7 +310,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     ui->setupUi(this);
     ui->mainToolBar->setIconSize(QSize(24, 24));
-    ui->mainToolBar->setAutoFillBackground(true);
     ui->mainToolBar->setAttribute(Qt::WA_AlwaysShowToolTips, true);
     ui->mainToolBar->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->mainToolBar, &QToolBar::customContextMenuRequested, this, &MainWindow::onToolbarContextMenu);

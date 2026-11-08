@@ -66,8 +66,8 @@ SparkNotePad **v1.4.5** represents a major architectural milestone delivering 12
 14. **SonarLint & Clang-Tidy Static Analysis Eradication**:
     - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across `src/` with 0 errors.
 15. **Permanent Dark Mode Toolbar Invariant Across All Modes and Themes**:
-    - The main toolbar (`#mainToolBar`, `QToolBar`) is permanently locked to a dark background (`#21252b !important`) across all color themes, light/dark modes, and operating system appearance settings.
-    - Prevents pastel and chromatic icons from rendering on light backgrounds, with `setAutoFillBackground(true)` applied on `#mainToolBar` to prevent native Cocoa or light window background bleed-through.
+    - The main toolbar (`#mainToolBar`, `QToolBar`) is permanently locked to a dark background (`#21252b`) across all color themes, light/dark modes, and operating system appearance settings.
+    - Prevents pastel and chromatic icons from rendering on light backgrounds, eliminating invalid Qt Style Sheet tokens (`:not()` and `!important`) to ensure 100% clean QSS parsing without Cocoa native bleed-through.
 16. **Canonical IANA Media Types Default Editor Integration (100+ Formats)**:
     - Expanded `SparkNotePad-Default-Editor.sh` and Linux default handler scripts to adhere to the official IANA Media Types registry.
     - Seamlessly associates 100+ file extensions across source code, configuration languages, systems programming, and web documents with SparkNotePad.

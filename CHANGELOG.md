@@ -64,8 +64,8 @@ SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectur
 #### 🛠️ Fixed & Hardened
 
 - **Permanent Dark Mode Toolbar Background Invariant Across All Modes & Themes**:
-  - Re-architected toolbar palette evaluation in `ThemeManager.cpp` and `MainWindow.cpp`, locking `#mainToolBar` and `QToolBar` to dark charcoal `#21252b !important` across all themes (light, dark, auto).
-  - Enforced `setAutoFillBackground(true)` on `mainToolBar` to prevent native Cocoa or light window background bleed-through on macOS.
+  - Re-architected toolbar styling in `ThemeManager.cpp` and `MainWindow.cpp`, eliminating invalid Qt Style Sheet syntax (`:not(...)` and `!important`) and removing `setAutoFillBackground(true)` to lock `#mainToolBar` and `QToolBar` permanently to dark charcoal `#21252b` across all themes (light, dark, auto).
+  - Preserved pastel icon contrast on permanent dark toolbar background without Qt QSS parser warnings or native Cocoa window bleed-through.
 - **Canonical IANA Media Types Registry Integration (100+ MIME Types)**:
   - Grounded `SparkNotePad-Default-Editor.sh` and `SparkNotePad-Default-Editor-Linux.sh` in the official IANA Media Types registry (`https://www.iana.org/assignments/media-types`).
   - Expanded macOS LaunchServices (`duti`) associations and Linux `xdg-mime` definitions to cover 100+ text, data, schema, and developer formats (`.json5`, `.jsonc`, `.jsonl`, `.ndjson`, `.geojson`, `.webmanifest`, `.graphql`, `.vtt`, `.srt`, `.ics`, `.vcf`, `.dot`, `.bib`, `.sty`, `.cls`, `.nim`, `.d`, `.hs`, `.ml`, `.desktop`).

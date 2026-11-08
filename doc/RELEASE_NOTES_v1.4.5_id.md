@@ -58,8 +58,8 @@ SparkNotePad **v1.4.5** merupakan rilis fitur dan stabilitas besar yang menghadi
     - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy pada direktori `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).
     - Terverifikasi 0 diagnostik eror pada `clangd --check`, `cppcheck`, dan lulus 100% unit test.
 15. **Invarian Bilah Alat Mode Gelap Permanen di Semua Tema & Mode**:
-    - Bilah alat utama (`#mainToolBar`, `QToolBar`) dikunci secara permanen pada latar belakang gelap (`#21252b !important`) di seluruh tema warna, mode terang/gelap, dan setelan tampilan OS.
-    - Mencegah ikon pastel dan kromatik ditampilkan pada latar belakang putih, diperkuat dengan `setAutoFillBackground(true)` pada `#mainToolBar` untuk mencegah tembus pandang background Cocoa native atau jendela terang.
+    - Bilah alat utama (`#mainToolBar`, `QToolBar`) dikunci secara permanen pada latar belakang gelap (`#21252b`) di seluruh tema warna, mode terang/gelap, dan setelan tampilan OS.
+    - Mencegah ikon pastel dan kromatik ditampilkan pada latar belakang putih, serta menghapus token Qt Style Sheet tidak valid (`:not()` dan `!important`) guna menjamin 100% parsing QSS yang bersih tanpa tembus pandang background Cocoa native.
 16. **Integrasi Editor Default Tipe Media IANA Kanonikal (100+ Format)**:
     - Skrip `SparkNotePad-Default-Editor.sh` dan skrip Linux diperluas sesuai registri resmi IANA Media Types.
     - Menghubungkan secara mulus 100+ ekstensi berkas kode sumber, format data konfigurasi, bahasa pemrograman sistem, dan dokumen web dengan SparkNotePad.
