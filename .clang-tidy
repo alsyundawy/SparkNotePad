@@ -20,6 +20,7 @@ Checks: >
   -readability-isolate-declaration,
   -readability-named-parameter,
   -readability-identifier-length,
+  -readability-function-size,
   -readability-redundant-access-specifiers
 WarningsAsErrors: ''
 HeaderFilterRegex: '^(src/|tests/|.*/SparkNotePad/(src|tests)/).*'

@@ -9,21 +9,31 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ## [1.4.5] - 2026-11-08
 
-### 🌟 Rilis Mayor: Tumpukan Tab Ditutup, Penandaan Warna Tab, Pemulihan Crash, Pencarian Extended, Ekspor PDF, Pratinjau Mermaid/LaTeX, Alat Pengembang, Pengalih Berkas Berpasangan, EditorConfig, Riwayat Clipboard & Quick Switcher
+### 🌟 Rilis Utama: Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Peralatan Pengembang, Pengalih Header/Source, EditorConfig, Riwayat Clipboard, Quick Switcher, Paket Ikon Aksara & Penguatan 14 Pilar
 
-SparkNotePad v1.4.5 adalah rilis fitur mayor yang menghadirkan 12 pilar arsitektur utama:
-- **Tumpukan Tab Ditutup & Buka Kembali Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**: Mengembalikan hingga 50 tab terakhir lengkap dengan posisi kursor, rasio scroll, encoding, bahasa, dan tag warna tab.
-- **Penandaan Warna & Pengelompokan Tab**: 8 preset warna kontras tinggi dengan garis visual tepi atas dan penyimpanan persisten via QSettings.
-- **Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Strict 0600)**: Snapshot latar belakang berkas yang dimodifikasi dengan checksum integritas SHA-256 dan dialog pemulihan interaktif saat startup.
-- **Mesin Escape Karakter Pencarian Diperluas**: Dukungan `\xHH` (heksadesimal), `\dDDD` (desimal), `\0` (NUL), `\b`, `\f`, dan `\v` pada Cari/Ganti dan Quick Find.
-- **Audit 100+ Lexer & Dukungan Bahasa Modern (Total 129 Bahasa)**: Lexer baru untuk Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), dan JSON5 (`.json5`); pembaruan standar C23, Rust 2024, Swift 6, dan TypeScript 5.8.
-- **Pipeline Ekspor Asli Markdown / HTML / PDF**: Integrasi modul murni `Qt6::PrintSupport` dan fallback Pandoc untuk konversi berkas siap cetak dengan ukuran kertas kustom.
-- **Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX)**: Rendering diagram alur, sekuens, state, dan rumus matematika LaTeX (`$$...$$` dan `$...$`) serta Two-Way SyncScroll sinkronisasi scroll dua arah editor dan pratinjau.
-- **Suite Alat Pengembang (Developer Tools Suite)**: Format & Minifikasi JSON, Enkoding/Dekoding URL, Escape/Unescape Unicode, Generator UUID v4, dan Dialog Konverter Unix Epoch Timestamp.
-- **Penanda Navigasi Scrollbar & Pengalih Header/Source Berpasangan (`F4` / `Alt+O`)**: Navigasi instan dua arah antara header (`.h`/`.hpp`) dan implementasi (`.cpp`/`.c`), serta berkas kode dan tes TypeScript/JavaScript (`.test.ts`).
-- **Parser & Penegakan Otomatis `.editorconfig` Asli**: Penegakan gaya indentasi (Tab/Spasi), lebar tab, dan format EOL dengan penelusuran hierarki direktori hingga `root = true`.
-- **Panel Riwayat Clipboard & Inspektur Karakter Unicode**: Panel dock riwayat clipboard FIFO 20 entri dengan filter pencarian dan panel inspektur Unicode real-time dengan rincian code point U+XXXX, UTF-8/16/32, dan entitas HTML.
-- **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Panel Minimap Dokumen**: Dialog frameless spotlight dengan skor subsekuens fuzzy untuk tab terbuka dan berkas terbaru, serta panel minimap Scintilla dengan batas pengaman dokumen besar (> 50 MB) dan integrasi macOS Dock recent documents.
+SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
+
+#### 🆕 Ditambahkan
+
+- **Tumpukan Tab Tertutup & Buka Kembali Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
+  - Implementasi `ClosedTabsManager` yang mengelola antrean FIFO hingga 50 tab terakhir dengan pemulihan posisi kursor, rasio scroll, encoding, dan warna tab.
+- **Pemberian Tag & Pengelompokan Warna Tab**:
+  - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
+- **Manajer Autosave & Pemulihan Crash**:
+  - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
+- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
+  - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, dan gaya modern.
+- **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
+  - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
+- **Peralatan Pengembang & Utilitas**:
+  - Konverter timestamp, JSON prettify/minify, URL encode/decode, escape Unicode, UUID v4, parser `.editorconfig`, dan dock Riwayat Clipboard.
+
+#### 🛠️ Diperbaiki & Diperkuat
+
+- **Penuntasan Analisis Statis SonarLint & Clang-Tidy**:
+  - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy tanpa eror.
+- **Kepatuhan Kualitas 14 Pilar**:
+  - 100% lulus uji unit `SparkNotePadTests` dan kompilasi aman tanpa Ninja.
 
 ---
 
@@ -43,35 +53,5 @@ SparkNotePad v1.4.0 menghadirkan fitur produktivitas esensial yang terinspirasi 
   - Implementasi DockedEditor::buildEnrichedToolTip() menampilkan path absolut, ukuran di disk, jumlah baris, karakter, encoding (UTF-8, UTF-16, dll.), format baris baru (CRLF, LF, CR), dan waktu modifikasi.
   - Pembaruan otomatis saat perpindahan tab, penyimpanan berkas, atau perubahan nama.
 - **Mesin Pencarian Subsekuens Fuzzy Tanpa Backtracking**:
-  - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() mengubah query menjadi pola regex linier non-backtracking ([^char]*char...).
-  - Opsi pencarian fuzzy interaktif pada Dialog Cari & Ganti serta Quick Find Bar (~).
-  - Terintegrasi penuh ke dalam mesin pencarian Finder.
-- **Eksekusi Makro Batch Lintas Dokumen Terbuka**:
-  - Pemilih cakupan eksekusi di MacroRunDialog: "Current Document" atau "All Open Documents".
-  - Menjalankan makro berurutan ke semua tab dalam satu panggilan.
-- **Server MCP Loopback Lokal Berintegritas Tinggi**:
-  - LocalMcpServer port loopback 127.0.0.1 berbasis JSON-RPC dengan otentikasi Bearer Token kriptografis (list_open_tabs, read_active_tab).
-- **Salin Info Diagnostik Debug Satu Klik**:
-  - Menu Bantuan > Debug Info menyalin seluruh detail konfigurasi runtime, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt, dan platform OS ke clipboard.
-
-#### 🛡️ Pengerasan Keamanan (Mitigasi CVE 2025–2026)
-
-- **CVE-2026-20841 (Mitigasi Skema URI Berbahaya)**:
-  - NetworkSecurityPolicy::isSafeUriScheme() memblokir eksploitasi skema URI berbahaya (ms-office:, cmd:, powershell:) dan eksekusi biner langsung.
-- **CVE-2026-16762 (Mitigasi Kedalaman Nesting XML/JSON DoS)**:
-  - ConfigIntegrityGuard::isPayloadStructureSafe() membatasi kedalaman nesting XML hingga 32 level dan batas ukuran 10 MB untuk mencegah ekspansi entitas XML dan crash rekursi.
-- **CVE-2026-48778 & CVE-2026-48800 (Mitigasi Perusakan Perintah Tool Eksternal)**:
-  - ConfigIntegrityGuard::isExternalCommandSafe() memblokir eskalasi hak istimewa (sudo, pkexec, doas) dan chaining pipa shell.
-  - Penegakan izin berkas konfigurasi ketat 0600.
-
-#### 🌐 Lokalisasi
-
-- Pembaruan i18n/SparkNotePad_en.ts dan i18n/SparkNotePad_id.ts dengan 2.017 entri terjemahan (0 unfinished).
-
----
-
-## [1.3.9] - 2026-11-07
-
-### ⚡ Pembaruan Scintilla 5.6.9 & Lexilla 5.5.5, Pengaturan Bahasa Default, Kompatibilitas Qt 6.2 LTS & Penguatan 14 Pilar
-
-SparkNotePad v1.3.9 adalah rilis fondasional besar yang memperbarui subsistem penyuntingan inti ke Scintilla 5.6.9 dan Lexilla 5.5.5, memperbaiki bug regex infinite loop, menambahkan preferensi bahasa default, mendukung pewarnaan front-matter Markdown, dan memulihkan kompatibilitas Qt 6.2 LTS.
+  - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() yang mengubah input query menjadi regex linier deterministik tanpa backtracking.
+  - Kebal terhadap serangan ReDoS (Regular Expression Denial of Service).

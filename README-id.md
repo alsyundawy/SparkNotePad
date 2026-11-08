@@ -440,6 +440,23 @@ trunk check -n -j 2
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
 
+### [v1.4.5] — Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar (2026-11-08)
+
+- **Tumpukan Tab Tertutup & Buka Kembali Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
+  - Implementasi `ClosedTabsManager` yang mengelola antrean FIFO hingga 50 tab terakhir dengan pemulihan posisi kursor, rasio scroll, encoding, dan warna tab.
+- **Pemberian Tag & Pengelompokan Warna Tab**:
+  - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
+- **Manajer Autosave & Pemulihan Crash**:
+  - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
+- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
+  - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, dan gaya modern.
+- **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
+  - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
+- **Peralatan Pengembang & Utilitas**:
+  - Konverter timestamp, JSON prettify/minify, URL encode/decode, escape Unicode, UUID v4, parser `.editorconfig`, dan dock Riwayat Clipboard.
+- **Kepatuhan Kualitas 14 Pilar & Audit Statis SonarLint**:
+  - Penuntasan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy tanpa eror.
+
 ### [v1.4.0] — Spasi Baris Ekstra, Tooltip Tab Diperkaya, Pencarian Fuzzy Aman, Eksekusi Batch Makro, MCP Server & Mitigasi CVE 2025–2026 (2026-11-07)
 
 - **Pengaturan Spasi Baris Ekstra (Ascent & Descent)**:

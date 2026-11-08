@@ -50,11 +50,10 @@ public:
     void historyAdd(const QString &line);
     void historyEnd();
 
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
 public slots:
     void runCurrentCommand(void);
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
 
 private:
     Ui::LuaConsoleDock *ui;

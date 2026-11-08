@@ -18,7 +18,7 @@
 #include <cstdint>
 #include <QString>
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 class ScintillaNext;
 #endif
 
@@ -43,7 +43,7 @@ public:
 
     static QString convertText(const QString &text, CaseType caseType);
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
     static ConvertResult convertEditor(ScintillaNext *editor, CaseType caseType);
     static ConvertResult upperCase(ScintillaNext *editor);
     static ConvertResult lowerCase(ScintillaNext *editor);

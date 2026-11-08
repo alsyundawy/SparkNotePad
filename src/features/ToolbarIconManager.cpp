@@ -264,6 +264,166 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isBuiltIn = true,
         .isPngBased = false,
     });
+
+    // 23. Aksara Arch Linux
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-arch-linux"),
+        .displayName = tr("Aksara Arch Linux"),
+        .description = tr("Minimalist & sharp: Arch cyan, fine lines, terminal aesthetic"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-arch-linux"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 24. Aksara elementary OS
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-elementary-os"),
+        .displayName = tr("Aksara elementary OS"),
+        .description = tr("Vibrant colors, 1px fine outlines, distinctive silhouettes and translucent elements"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-elementary-os"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 25. Aksara Bold
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-icon-pack-bold"),
+        .displayName = tr("Aksara Bold"),
+        .description = tr("Bold strokes with rounded caps, maximum readability and contrast"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-bold"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 26. Aksara Duotone
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-icon-pack-duotone"),
+        .displayName = tr("Aksara Duotone"),
+        .description = tr("Dark gray contours with subtle translucent purple accent circular backing"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-duotone"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 27. Aksara Outline
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-icon-pack-outline"),
+        .displayName = tr("Aksara Outline"),
+        .description = tr("Clean line-art wireframe aesthetic with rounded terminators"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-outline"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 28. Aksara Rounded
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-icon-pack-rounded"),
+        .displayName = tr("Aksara Rounded"),
+        .description = tr("Smooth flowing curves and rounded geometric contours"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-rounded"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 29. Aksara Sharp
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-icon-pack-sharp"),
+        .displayName = tr("Aksara Sharp"),
+        .description = tr("Crisp sharp corners with technical precision styling"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-icon-pack-sharp"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 30. Aksara macOS Big Sur
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-macos-bigsur"),
+        .displayName = tr("Aksara macOS Big Sur"),
+        .description = tr("Apple macOS modern aesthetic: soft squircle geometry, refined gradients, subtle depth"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-macos-bigsur"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 31. Aksara NPP GNOME 5.1
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-npp-gnome51"),
+        .displayName = tr("Aksara NPP GNOME 5.1"),
+        .description = tr("GNOME Adwaita aesthetic: warm balanced contrast, smooth rounded corners, Linux desktop feel"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-npp-gnome51"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 32. Aksara NPP KDE 6
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-npp-kde6"),
+        .displayName = tr("Aksara NPP KDE 6"),
+        .description = tr("KDE Breeze 6 styling: electric cyan accents, sharp geometric edges, futuristic vibe"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-npp-kde6"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 33. Aksara NPP Windows Vista
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-npp-vista"),
+        .displayName = tr("Aksara NPP Windows Vista"),
+        .description = tr("Windows Vista Aero Glass: bright cyan gradients, translucent reflections, 2006 skeuomorphism"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-npp-vista"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 34. Aksara NPP Windows 10
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-npp-win10"),
+        .displayName = tr("Aksara NPP Windows 10"),
+        .description = tr("Segoe MDL2 Assets: flat, clean monochrome, consistent thin strokes, seamless background"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-npp-win10"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 35. Aksara NPP Windows 11
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-npp-win11"),
+        .displayName = tr("Aksara NPP Windows 11"),
+        .description = tr("Segoe Fluent Icons: soft rounded contours, gentle blue accents, modern Mica aesthetic"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-npp-win11"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 36. Aksara NPP Windows XP
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-npp-xp"),
+        .displayName = tr("Aksara NPP Windows XP"),
+        .description = tr("Windows XP Luna: soft nostalgic blue gradients, rounded corners, glossy glass shine"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-npp-xp"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 37. Aksara Ubuntu Yaru
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-ubuntu-yaru"),
+        .displayName = tr("Aksara Ubuntu Yaru"),
+        .description = tr("Ubuntu Yaru / Suru design: warm aubergine & orange accents, squircle framing, soft shadows"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-ubuntu-yaru"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
+
+    // 38. Aksara Vista Aero
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("aksara-vista-aero"),
+        .displayName = tr("Aksara Vista Aero"),
+        .description = tr("Glossy and reflective: azure gradients, bright specular highlights, Aero Glass rounded tiles"),
+        .basePath = QStringLiteral(":/icons/packs/aksara-vista-aero"),
+        .isBuiltIn = true,
+        .isPngBased = false,
+    });
 }
 
 void ToolbarIconManager::initialize(ApplicationSettings *settings) {
@@ -293,7 +453,33 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("fluentUi"), QStringLiteral("fluent_regular")},
         {QStringLiteral("filledFluentUi"), QStringLiteral("fluent_filled")},
         {QStringLiteral("seven_icons"), QStringLiteral("seven")},
-        {QStringLiteral("sevenIcons"), QStringLiteral("seven")}
+        {QStringLiteral("sevenIcons"), QStringLiteral("seven")},
+        {QStringLiteral("aksara_arch_linux"), QStringLiteral("aksara-arch-linux")},
+        {QStringLiteral("aksara_elementary_os"), QStringLiteral("aksara-elementary-os")},
+        {QStringLiteral("aksara_bold"), QStringLiteral("aksara-icon-pack-bold")},
+        {QStringLiteral("aksara-bold"), QStringLiteral("aksara-icon-pack-bold")},
+        {QStringLiteral("aksara_icon_pack_bold"), QStringLiteral("aksara-icon-pack-bold")},
+        {QStringLiteral("aksara_duotone"), QStringLiteral("aksara-icon-pack-duotone")},
+        {QStringLiteral("aksara-duotone"), QStringLiteral("aksara-icon-pack-duotone")},
+        {QStringLiteral("aksara_icon_pack_duotone"), QStringLiteral("aksara-icon-pack-duotone")},
+        {QStringLiteral("aksara_outline"), QStringLiteral("aksara-icon-pack-outline")},
+        {QStringLiteral("aksara-outline"), QStringLiteral("aksara-icon-pack-outline")},
+        {QStringLiteral("aksara_icon_pack_outline"), QStringLiteral("aksara-icon-pack-outline")},
+        {QStringLiteral("aksara_rounded"), QStringLiteral("aksara-icon-pack-rounded")},
+        {QStringLiteral("aksara-rounded"), QStringLiteral("aksara-icon-pack-rounded")},
+        {QStringLiteral("aksara_icon_pack_rounded"), QStringLiteral("aksara-icon-pack-rounded")},
+        {QStringLiteral("aksara_sharp"), QStringLiteral("aksara-icon-pack-sharp")},
+        {QStringLiteral("aksara-sharp"), QStringLiteral("aksara-icon-pack-sharp")},
+        {QStringLiteral("aksara_icon_pack_sharp"), QStringLiteral("aksara-icon-pack-sharp")},
+        {QStringLiteral("aksara_macos_bigsur"), QStringLiteral("aksara-macos-bigsur")},
+        {QStringLiteral("aksara_npp_gnome51"), QStringLiteral("aksara-npp-gnome51")},
+        {QStringLiteral("aksara_npp_kde6"), QStringLiteral("aksara-npp-kde6")},
+        {QStringLiteral("aksara_npp_vista"), QStringLiteral("aksara-npp-vista")},
+        {QStringLiteral("aksara_npp_win10"), QStringLiteral("aksara-npp-win10")},
+        {QStringLiteral("aksara_npp_win11"), QStringLiteral("aksara-npp-win11")},
+        {QStringLiteral("aksara_npp_xp"), QStringLiteral("aksara-npp-xp")},
+        {QStringLiteral("aksara_ubuntu_yaru"), QStringLiteral("aksara-ubuntu-yaru")},
+        {QStringLiteral("aksara_vista_aero"), QStringLiteral("aksara-vista-aero")}
     };
     return s_aliasMap.value(packId, packId);
 }

@@ -53,11 +53,11 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (22 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (38 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.3.9 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 22 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
+SparkNotePad v1.4.5 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 38 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
-### Paket Ikon Toolbar Bawaan (22 Paket)
+### Paket Ikon Toolbar Bawaan (38 Paket)
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue 3.5.6 otentik dengan skalabilitas multi-resolusi dan retina @2x.
@@ -81,6 +81,22 @@ SparkNotePad v1.3.9 menghadirkan arsitektur personalisasi toolbar lengkap terins
 20. **Mignon Icon Theme** (`mignon`): Ikon vektor modern dan elegan karya Igor F. Moraes.
 21. **Palette Icon Theme** (`palette`): Tema ikon vektor penuh warna karya mjkim0727.
 22. **Diagonal Icon Theme** (`diagonal`): Gaya vektor diagonal dinamis karya Tamás Csábi.
+23. **Aksara Icon Pack Bold** (`aksara-icon-pack-bold`): Ikon vektor tebal modern dengan garis kontras tinggi.
+24. **Aksara Icon Pack Duotone** (`aksara-icon-pack-duotone`): Rangkaian ikon dua warna harmonis untuk toolbar ekspresif.
+25. **Aksara Icon Pack Outline** (`aksara-icon-pack-outline`): Desain wireframe garis minimalis untuk antarmuka bersih.
+26. **Aksara Icon Pack Rounded** (`aksara-icon-pack-rounded`): Geometri membulat modern yang lembut dan elegan.
+27. **Aksara Icon Pack Sharp** (`aksara-icon-pack-sharp`): Ikonografi sudut tajam untuk ketegasan visual optimal.
+28. **Aksara macOS Big Sur** (`aksara-macos-bigsur`): Estetika squircle modern Apple macOS Big Sur & Monterey.
+29. **Aksara Windows XP** (`aksara-npp-xp`): Nostalgia ikonografi klasik Windows XP Luna.
+30. **Aksara Windows Vista** (`aksara-npp-vista`): Ikonografi glossy transparan Windows Vista.
+31. **Aksara Windows 10** (`aksara-npp-win10`): Ikonografi vektor monokromatik datar Windows 10.
+32. **Aksara Windows 11** (`aksara-npp-win11`): Ikonografi membulat Fluent 2 modern Windows 11.
+33. **Aksara Vista Aero** (`aksara-vista-aero`): Estetika kaca Aero Glass otentik Windows Vista.
+34. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ikonografi tema resmi Ubuntu Yaru Desktop.
+35. **Aksara GNOME 51** (`aksara-npp-gnome51`): Ikonografi modern Linux desktop GNOME Adwaita.
+36. **Aksara KDE 6** (`aksara-npp-kde6`): Rangkaian vektor modern KDE Plasma 6 Breeze.
+37. **Aksara Arch Linux** (`aksara-arch-linux`): Ikonografi minimalis biru sian khas Arch Linux.
+38. **Aksara Elementary OS** (`aksara-elementary-os`): Ikonografi humanis rapi khas Elementary OS.
 
 ### Kejelasan High-DPI & Layar Retina
 

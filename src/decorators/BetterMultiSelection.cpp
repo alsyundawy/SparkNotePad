@@ -47,15 +47,16 @@ It uniquify(It begin, It const end) {
     std::vector<It> v;
     v.reserve(static_cast<size_t>(std::distance(begin, end)));
 
-    for (It i = begin; i != end; ++i)
+    for (It i = begin; i != end; ++i) {
         v.push_back(i);
+    }
 
-    std::sort(v.begin(), v.end(), [](const auto &lhs, const auto &rhs) {
+    std::sort(v.begin(), v.end(), [](const It &lhs, const It &rhs) {
         return (*lhs).start() < (*rhs).start() || (!((*rhs).start() < (*lhs).start()) && (*lhs).end() < (*rhs).end());
     });
 
     v.erase(std::unique(v.begin(), v.end(),
-                        [](const auto &lhs, const auto &rhs) {
+                        [](const It &lhs, const It &rhs) {
                             return (*lhs).start() == (*rhs).start() && (*lhs).end() == (*rhs).end();
                         }),
             v.end());
@@ -87,77 +88,72 @@ bool BetterMultiSelection::eventFilter(QObject *obj, QEvent *event) {
     Q_UNUSED(obj)
 
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        bool isAltPresssed = (keyEvent->modifiers() & Qt::AltModifier);
-        bool isControlPresssed = (keyEvent->modifiers() & Qt::ControlModifier);
-        bool isShiftPressed = (keyEvent->modifiers() & Qt::ShiftModifier);
+        const auto *keyEvent = static_cast<const QKeyEvent *>(event);
+        const bool isAltPressed = (keyEvent->modifiers() & Qt::AltModifier);
+        const bool isControlPressed = (keyEvent->modifiers() & Qt::ControlModifier);
+        const bool isShiftPressed = (keyEvent->modifiers() & Qt::ShiftModifier);
 
-        if (isAltPresssed)
+        if (isAltPressed) {
             return false;
+        }
 
         if (editor->selections() > 1) {
-            if (isControlPresssed) {
-                if (keyEvent->key() == Qt::Key_Left) {
-                    EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDLEFTEXTEND : SCI_WORDLEFT));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Right) {
-                    EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDRIGHTENDEXTEND : SCI_WORDRIGHT));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Back) {
-                    EditSelections(SimpleEdit(SCI_DELWORDLEFT));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Delete) {
-                    EditSelections(SimpleEdit(SCI_DELWORDRIGHT));
-                    return true;
+            if (isControlPressed) {
+                switch (keyEvent->key()) {
+                    case Qt::Key_Left:
+                        EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDLEFTEXTEND : SCI_WORDLEFT));
+                        return true;
+                    case Qt::Key_Right:
+                        EditSelections(SimpleEdit(isShiftPressed ? SCI_WORDRIGHTENDEXTEND : SCI_WORDRIGHT));
+                        return true;
+                    case Qt::Key_Back:
+                        EditSelections(SimpleEdit(SCI_DELWORDLEFT));
+                        return true;
+                    case Qt::Key_Delete:
+                        EditSelections(SimpleEdit(SCI_DELWORDRIGHT));
+                        return true;
+                    default:
+                        break;
                 }
-                // else if (keyEvent->key() == Qt::Key_X || keyEvent->key() == Qt::Key_C) {
-                //     if (CopyToClipboard(editor)) {
-                //         if (keyEvent->key() == Qt::Key_X) {
-                //             EditSelections(SimpleEdit(SCI_DELETEBACK));
-                //         }
-                //         return true;
-                //     }
-                // }
-                // else if (keyEvent->key() == Qt::Key_V) {
-                //     if (Paste(editor)) {
-                //         return true;
-                //     }
-                // }
             } else {
-                if (keyEvent->key() == Qt::Key_Escape) {
-                    int caret = editor->selectionNCaret(editor->mainSelection());
-                    editor->setSelection(caret, caret);
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Left) {
-                    EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARLEFTEXTEND : SCI_CHARLEFT));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Right) {
-                    EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARRIGHTEXTEND : SCI_CHARRIGHT));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Home) {
-                    EditSelections(SimpleEdit(isShiftPressed ? SCI_VCHOMEWRAPEXTEND : SCI_VCHOMEWRAP));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_End) {
-                    EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEENDWRAPEXTEND : SCI_LINEENDWRAP));
-                    return true;
-                } else if (keyEvent->key() == Qt::Key_Return) {
-                    if (!editor->autoCActive()) {
-                        EditSelections(SimpleEdit(SCI_NEWLINE));
+                switch (keyEvent->key()) {
+                    case Qt::Key_Escape: {
+                        const auto caret = static_cast<int>(editor->selectionNCaret(editor->mainSelection()));
+                        editor->setSelection(caret, caret);
                         return true;
                     }
-                    // else just let Scintilla handle the insertion of autocompletion
-                } else if (keyEvent->key() == Qt::Key_Up) {
-                    if (!editor->autoCActive()) {
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEUPEXTEND : SCI_LINEUP));
+                    case Qt::Key_Left:
+                        EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARLEFTEXTEND : SCI_CHARLEFT));
                         return true;
-                    }
-                    // else just let Scintilla handle the navigation of autocompletion
-                } else if (keyEvent->key() == Qt::Key_Down) {
-                    if (!editor->autoCActive()) {
-                        EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEDOWNEXTEND : SCI_LINEDOWN));
+                    case Qt::Key_Right:
+                        EditSelections(SimpleEdit(isShiftPressed ? SCI_CHARRIGHTEXTEND : SCI_CHARRIGHT));
                         return true;
-                    }
-                    // else just let Scintilla handle the navigation of autocompletion
+                    case Qt::Key_Home:
+                        EditSelections(SimpleEdit(isShiftPressed ? SCI_VCHOMEWRAPEXTEND : SCI_VCHOMEWRAP));
+                        return true;
+                    case Qt::Key_End:
+                        EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEENDWRAPEXTEND : SCI_LINEENDWRAP));
+                        return true;
+                    case Qt::Key_Return:
+                        if (!editor->autoCActive()) {
+                            EditSelections(SimpleEdit(SCI_NEWLINE));
+                            return true;
+                        }
+                        break;
+                    case Qt::Key_Up:
+                        if (!editor->autoCActive()) {
+                            EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEUPEXTEND : SCI_LINEUP));
+                            return true;
+                        }
+                        break;
+                    case Qt::Key_Down:
+                        if (!editor->autoCActive()) {
+                            EditSelections(SimpleEdit(isShiftPressed ? SCI_LINEDOWNEXTEND : SCI_LINEDOWN));
+                            return true;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -173,10 +169,11 @@ void BetterMultiSelection::notify(const Scintilla::NotificationData *pscn) {
 QVector<Selection> BetterMultiSelection::GetSelections() {
     QVector<Selection> selections;
 
-    int num = editor->selections();
+    const auto num = static_cast<int>(editor->selections());
+    selections.reserve(num);
     for (int i = 0; i < num; ++i) {
-        int caret = editor->selectionNCaret(i);
-        int anchor = editor->selectionNAnchor(i);
+        const auto caret = static_cast<int>(editor->selectionNCaret(i));
+        const auto anchor = static_cast<int>(editor->selectionNAnchor(i));
         selections.append(Selection{caret, anchor});
     }
 
@@ -185,19 +182,20 @@ QVector<Selection> BetterMultiSelection::GetSelections() {
 
 void BetterMultiSelection::SetSelections(const QVector<Selection> &selections) {
     for (auto i = 0; i < selections.size(); ++i) {
-        if (i == 0)
+        if (i == 0) {
             editor->setSelection(selections[i].caret, selections[i].anchor);
-        else
+        } else {
             editor->addSelection(selections[i].caret, selections[i].anchor);
+        }
     }
 }
 
-void BetterMultiSelection::EditSelections(std::function<void(Selection &selection)> edit) {
+void BetterMultiSelection::EditSelections(const std::function<void(Selection &selection)> &edit) {
     auto selections = GetSelections();
 
     editor->clearSelections();
 
-    std::sort(selections.begin(), selections.end(), [](const auto &lhs, const auto &rhs) {
+    std::sort(selections.begin(), selections.end(), [](const Selection &lhs, const Selection &rhs) {
         return lhs.start() < rhs.start() || (!(rhs.start() < lhs.start()) && lhs.end() < rhs.end());
     });
 
@@ -206,11 +204,11 @@ void BetterMultiSelection::EditSelections(std::function<void(Selection &selectio
     int totalOffset = 0;
     for (auto &selection : selections) {
         selection.offset(totalOffset);
-        const int length = editor->length();
+        const auto length = static_cast<int>(editor->length());
 
         edit(selection);
 
-        totalOffset += editor->length() - length;
+        totalOffset += static_cast<int>(editor->length()) - length;
     }
 
     editor->endUndoAction();
@@ -225,7 +223,7 @@ std::function<void(Selection &selection)> BetterMultiSelection::SimpleEdit(int m
         editor->setSelection(selection.caret, selection.anchor);
         editor->send(message);
 
-        selection.caret = editor->selectionNCaret(0);
-        selection.anchor = editor->selectionNAnchor(0);
+        selection.caret = static_cast<int>(editor->selectionNCaret(0));
+        selection.anchor = static_cast<int>(editor->selectionNAnchor(0));
     };
 }

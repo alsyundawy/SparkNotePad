@@ -55,6 +55,18 @@ SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectur
   - Implemented Spotlight-style frameless `QuickSwitcherDialog` with subsequence fuzzy matching scoring open tabs and recent files.
   - Implemented `DocumentMinimapDock` providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
   - Added native macOS Dock recent documents integration via `MacServicesHandler::updateDockRecentMenu`.
+- **Aksara Toolbar Icon Pack Suite Integration (38 Packs Total)**:
+  - Integrated 16 new Aksara toolbar icon packs (544 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-bold`, `aksara-icon-pack-duotone`, `aksara-icon-pack-outline`, `aksara-icon-pack-rounded`, `aksara-icon-pack-sharp`, `aksara-macos-bigsur`, `aksara-npp-gnome51`, `aksara-npp-kde6`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
+  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, expanding the built-in toolbar icon collection to 38 packs with robust alias normalization and unit test coverage.
+
+#### 🛠️ Fixed & Hardened
+
+- **SonarLint & Clang-Tidy Static Analysis Resolution**:
+  - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).
+  - Fixed tweak AST diagnostics and control flow in `Finder.cpp` and `BetterMultiSelection.cpp`.
+- **14-Pillar Quality Verification Gate**:
+  - Verified 0 errors across `cppcheck`, `clangd --check`, `lint-check.sh`, and unit test suite `SparkNotePadTests`.
+  - Built strictly with standard CMake Unix Makefiles without Ninja.
 
 ---
 

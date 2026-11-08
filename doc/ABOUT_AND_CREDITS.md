@@ -6,7 +6,7 @@
 
 ---
 
-## 2. Upstream Credits & Attribution (v1.0.0 – v1.4.0)
+## 2. Upstream Credits & Attribution (v1.0.0 – v1.4.5)
 
 SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following projects, maintainers, communities, and tools:
 
@@ -57,6 +57,7 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 | :-------------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------- |
 | **Lon McGregor (NotepadPlusPlusIcons)** | Lon McGregor               | Open-source chameleon and editor artwork series, adapted for SparkNotePad official branding. |
 | **SparkNotePad Monoline Vector Suite**  | Harry D.S. Alsyundawy      | Retina UI vector icons customized for 75 themes, menus, and toolbars.                        |
+| **Aksara Icon Pack Suite**              | Aksara Design              | 16-suite toolbar icon pack library (544 SVGs & PNGs) for macOS, Windows, Linux, and Modern UI. |
 | **Fugue Icons Suite**                   | Yusuke Kamiyamane          | Renowned pixel-perfect Fugue 3.5.6 iconography (Creative Commons Attribution 3.0).           |
 | **Elegant Themes Icons**                | Nicholas Roach             | Authentic classic 48x48 Elegant Themes iconography (Dual-licensed MIT / GPL).                |
 | **Microsoft Fluent Design Icons**       | Microsoft / Directory Opus | Fluent vector and bitmap toolbar icon set.                                                   |

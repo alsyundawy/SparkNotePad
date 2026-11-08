@@ -37,8 +37,6 @@ class BetterMultiSelection : public EditorDecorator {
 
 public:
     explicit BetterMultiSelection(ScintillaNext *editor);
-
-protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 public slots:
@@ -47,7 +45,7 @@ public slots:
 private:
     QVector<Selection> GetSelections();
     void SetSelections(const QVector<Selection> &selections);
-    void EditSelections(std::function<void(Selection &selection)> edit);
+    void EditSelections(const std::function<void(Selection &selection)> &edit);
     std::function<void(Selection &selection)> SimpleEdit(int message);
 };
 

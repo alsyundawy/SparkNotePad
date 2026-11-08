@@ -1502,8 +1502,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     auto *const menuDevTools = menuTools->addMenu(tr("&Developer Tools"));
     menuDevTools->setIcon(QIcon(QStringLiteral(":/icons/wrench.svg")));
 
-    auto applyTextTransform = [this](const std::function<QString(const QString &, QString *)> &fn,
-                                     const QString &label) {
+    const auto applyTextTransform = [this](const std::function<QString(const QString &, QString *)> &fn,
+                                           const QString &label) {
         ScintillaNext *const editor = currentEditor();
         if (!editor) {
             ui->statusBar->showMessage(tr("No active editor"), 3000);
@@ -1531,50 +1531,43 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         ui->statusBar->showMessage(tr("%1 applied").arg(label), 3000);
     };
 
-    auto *const actJsonFormat = menuDevTools->addAction(tr("JSON Format / Prettify"));
-    connect(actJsonFormat, &QAction::triggered, this, [applyTextTransform] {
+    connect(menuDevTools->addAction(tr("JSON Format / Prettify")), &QAction::triggered, this, [applyTextTransform] {
         applyTextTransform([](const QString &in, QString *err) { return DeveloperToolsEngine::formatJson(in, 4, err); },
                            tr("JSON Prettify"));
     });
 
-    auto *const actJsonMinify = menuDevTools->addAction(tr("JSON Minify / Compact"));
-    connect(actJsonMinify, &QAction::triggered, this, [applyTextTransform] {
+    connect(menuDevTools->addAction(tr("JSON Minify / Compact")), &QAction::triggered, this, [applyTextTransform] {
         applyTextTransform([](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJson(in, err); },
                            tr("JSON Minify"));
     });
 
     menuDevTools->addSeparator();
 
-    auto *const actUrlEncode = menuDevTools->addAction(tr("URL Encode"));
-    connect(actUrlEncode, &QAction::triggered, this, [applyTextTransform] {
+    connect(menuDevTools->addAction(tr("URL Encode")), &QAction::triggered, this, [applyTextTransform] {
         applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlEncode(in); },
                            tr("URL Encode"));
     });
 
-    auto *const actUrlDecode = menuDevTools->addAction(tr("URL Decode"));
-    connect(actUrlDecode, &QAction::triggered, this, [applyTextTransform] {
+    connect(menuDevTools->addAction(tr("URL Decode")), &QAction::triggered, this, [applyTextTransform] {
         applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlDecode(in); },
                            tr("URL Decode"));
     });
 
     menuDevTools->addSeparator();
 
-    auto *const actUnicodeEscape = menuDevTools->addAction(tr("Unicode Escape (\\uXXXX)"));
-    connect(actUnicodeEscape, &QAction::triggered, this, [applyTextTransform] {
+    connect(menuDevTools->addAction(tr("Unicode Escape (\\uXXXX)")), &QAction::triggered, this, [applyTextTransform] {
         applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeEscape(in); },
                            tr("Unicode Escape"));
     });
 
-    auto *const actUnicodeUnescape = menuDevTools->addAction(tr("Unicode Unescape"));
-    connect(actUnicodeUnescape, &QAction::triggered, this, [applyTextTransform] {
+    connect(menuDevTools->addAction(tr("Unicode Unescape")), &QAction::triggered, this, [applyTextTransform] {
         applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeUnescape(in); },
                            tr("Unicode Unescape"));
     });
 
     menuDevTools->addSeparator();
 
-    auto *const actGenerateUuid = menuDevTools->addAction(tr("Generate UUID v4"));
-    connect(actGenerateUuid, &QAction::triggered, this, [this] {
+    connect(menuDevTools->addAction(tr("Generate UUID v4")), &QAction::triggered, this, [this] {
         ScintillaNext *const editor = currentEditor();
         if (!editor) {
             return;
@@ -1586,8 +1579,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         ui->statusBar->showMessage(tr("Generated UUID: %1").arg(uuid), 3000);
     });
 
-    auto *const actTimestampConverter = menuDevTools->addAction(tr("Timestamp Converter..."));
-    connect(actTimestampConverter, &QAction::triggered, this, [this] {
+    connect(menuDevTools->addAction(tr("Timestamp Converter...")), &QAction::triggered, this, [this] {
         TimestampConverterDialog dlg(this);
         dlg.exec();
     });
@@ -3086,7 +3078,7 @@ void MainWindow::reopenClosedTab() {
 }
 
 void MainWindow::switchCorrespondingFile() {
-    ScintillaNext *editor = currentEditor();
+    const ScintillaNext *const editor = currentEditor();
     if (!editor || editor->getFilePath().isEmpty()) {
         ui->statusBar->showMessage(tr("No saved file to switch"), 3000);
         return;
@@ -3101,7 +3093,7 @@ void MainWindow::switchCorrespondingFile() {
         return;
     }
 
-    ScintillaNext *existing = app->getEditorManager()->getEditorByFilePath(targetPath);
+    const ScintillaNext *const existing = app->getEditorManager()->getEditorByFilePath(targetPath);
     if (existing) {
         dockedEditor->switchToEditor(existing);
         ui->statusBar->showMessage(tr("Switched to %1").arg(QFileInfo(targetPath).fileName()), 3000);
@@ -4837,7 +4829,7 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
                 p.setPen(Qt::NoPen);
                 p.drawEllipse(1, 1, 12, 12);
             }
-            auto *colorAct = tabColorMenu->addAction(QIcon(px), preset.name);
+            const auto *const colorAct = tabColorMenu->addAction(QIcon(px), preset.name);
             connect(colorAct, &QAction::triggered, this, [this, editor, c = preset.color] {
                 if (editor) {
                     TabColorManager::instance()->setTabColor(editor->getFilePath(), c);
@@ -4846,7 +4838,7 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
             });
         }
         tabColorMenu->addSeparator();
-        auto *clearColorAct = tabColorMenu->addAction(tr("Clear Tab Color"));
+        const auto *const clearColorAct = tabColorMenu->addAction(tr("Clear Tab Color"));
         connect(clearColorAct, &QAction::triggered, this, [this, editor] {
             if (editor) {
                 TabColorManager::instance()->clearTabColor(editor->getFilePath());

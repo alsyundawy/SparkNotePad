@@ -29,11 +29,13 @@ public:
     explicit ThemeSwitcherDialog(MainWindow *mainWindow, QWidget *parent = nullptr);
     ~ThemeSwitcherDialog() override;
 
+public slots:
+    void reject() override;
+
 private slots:
     void filterThemes();
     void onThemeSelected(int row, int column);
     void applyAndClose();
-    void reject() override;
 
 private:
     void setupUi();

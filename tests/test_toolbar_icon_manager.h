@@ -34,8 +34,8 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 22 built-in packs
-        QCOMPARE(packs.size(), 22);
+        // 38 built-in packs (22 base + 16 Aksara suites)
+        QCOMPARE(packs.size(), 38);
 
         const QStringList expectedPackIds = {
             QString::fromLatin1("modernRibbon"),     QString::fromLatin1("fugue"),
@@ -49,6 +49,22 @@ private slots:
             QString::fromLatin1("monochrome"),       QString::fromLatin1("eleganticons"),
             QString::fromLatin1("seven"),            QString::fromLatin1("mignon"),
             QString::fromLatin1("palette"),          QString::fromLatin1("diagonal"),
+            QString::fromLatin1("aksara-arch-linux"),
+            QString::fromLatin1("aksara-elementary-os"),
+            QString::fromLatin1("aksara-icon-pack-bold"),
+            QString::fromLatin1("aksara-icon-pack-duotone"),
+            QString::fromLatin1("aksara-icon-pack-outline"),
+            QString::fromLatin1("aksara-icon-pack-rounded"),
+            QString::fromLatin1("aksara-icon-pack-sharp"),
+            QString::fromLatin1("aksara-macos-bigsur"),
+            QString::fromLatin1("aksara-npp-gnome51"),
+            QString::fromLatin1("aksara-npp-kde6"),
+            QString::fromLatin1("aksara-npp-vista"),
+            QString::fromLatin1("aksara-npp-win10"),
+            QString::fromLatin1("aksara-npp-win11"),
+            QString::fromLatin1("aksara-npp-xp"),
+            QString::fromLatin1("aksara-ubuntu-yaru"),
+            QString::fromLatin1("aksara-vista-aero"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -59,13 +75,16 @@ private slots:
             QVERIFY(pack->isBuiltIn);
         }
 
-        // Verify legacy aliases resolve smoothly
+        // Verify legacy and Aksara aliases resolve smoothly
         QVERIFY(manager->findPackById(QString::fromLatin1("fluentUi")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("windows11")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("windows7")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("seven_icons")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("notepadPlusPlus")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("filledFluentUi")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("aksara_bold")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("aksara-bold")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("aksara_npp_win11")) != nullptr);
     }
 
     // NOLINTNEXTLINE(readability-convert-member-functions-to-static)

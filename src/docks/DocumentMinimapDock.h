@@ -42,6 +42,6 @@ private:
     QPointer<ScintillaNext> m_currentEditor;
     QPlainTextEdit *m_minimapEdit{nullptr};
     QLabel *m_lblDisabledNotice{nullptr};
-    qint64 m_largeFileLimitBytes{50 * 1024 * 1024};  // 50 MB
+    qint64 m_largeFileLimitBytes{50LL * 1024 * 1024};  // 50 MB
     bool m_active{false};
 };

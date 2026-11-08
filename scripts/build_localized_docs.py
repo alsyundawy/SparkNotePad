@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate localized DOCNOTE and CHANGELOG files for SparkNotePad v1.4.0.
+Generate localized DOCNOTE and CHANGELOG files for SparkNotePad v1.4.5.
 Creates:
   - src/doc/DOCNOTE_id.txt (Bahasa Indonesia)
   - src/doc/DOCNOTE_en.txt (English)
@@ -10,16 +10,16 @@ Synchronizes:
   - doc/ and root directory copies.
 """
 
-DOCNOTE_ID = """# Catatan Rilis SparkNotePad — v1.4.0 (Bahasa Indonesia)
+DOCNOTE_ID = """# Catatan Rilis SparkNotePad — v1.4.5 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.0 (Spasi Baris Ekstra, Tooltip Tab Diperkaya, Pencarian Fuzzy Aman, Eksekusi Batch Makro, MCP Server & Mitigasi CVE 2025–2026)
-Tanggal Rilis        : 2026-11-07
+Versi Rilis          : 1.4.5 (Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar)
+Tanggal Rilis        : 2026-11-08
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
-Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Resmi)
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (129 Lexer Resmi)
 Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
 Kerangka Kerja GUI   : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
@@ -29,108 +29,142 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.0
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.5
 
-SparkNotePad v1.4.0 adalah rilis fitur dan keamanan besar yang terinspirasi dari hasil riset mendalam terhadap Nextpad++, Notepad--, dan editor teks modern lainnya. Rilis ini menambahkan fitur produktivitas tinggi serta mitigasi kerentanan keamanan 2025–2026:
+SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
 
-1. Pengaturan Spasi Baris Ekstra (Ascent & Descent):
-   - Konfigurasi penambahan tinggi baris atas (ascent) dan bawah (descent) 0–30 px pada Preferensi > Margins/Padding via API Scintilla SCI_SETEXTRAASCENT dan SCI_SETEXTRADESCENT.
-   - Terintegrasi langsung dengan ScintillaNext::setExtraLineSpacing() dan disinkronkan secara real-time ke seluruh tab editor yang terbuka melalui EditorManager.
+1. Tumpukan Tab Tertutup & Buka Kembali Tab (Ctrl+Shift+T / Cmd+Shift+T):
+   - ClosedTabsManager mengelola antrean FIFO 50 tab yang baru saja ditutup, mempertahankan posisi kursor, rasio gulir, encoding teks, mode EOL, sintaksis bahasa, dan tag warna tab.
+   - Aksi pemulihan instan tersedia pada menu konteks tab dan menu Berkas.
 
-2. Tooltip Tab Diperkaya dengan Inspeksi Metadata Dokumen:
-   - Implementasi DockedEditor::buildEnrichedToolTip() yang menyajikan path absolut, ukuran berkas di disk, jumlah baris, karakter, encoding teks (UTF-8, UTF-16, dll.), format baris baru (CRLF/LF/CR), serta timestamp modifikasi berkas.
-   - Pembaruan dinamis secara real-time saat tab berganti, dokumen disimpan, atau nama berkas diubah.
+2. Pemberian Tag & Pengelompokan Warna Tab:
+   - TabColorManager menyediakan 8 preset warna berstandar aksesibilitas tinggi (Merah, Oranye, Kuning, Hijau, Sian, Biru, Ungu, Magenta) dengan status persisten melalui ApplicationSettings.
 
-3. Mesin Pencarian Subsekuens Fuzzy Tanpa Backtracking:
-   - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() yang mengubah query pencarian menjadi ekspresi reguler linier deterministik ([^char]*char...).
-   - Opsi pencarian fuzzy interaktif pada Dialog Cari & Ganti serta Quick Find Bar (~).
-   - Kebal terhadap serangan ReDoS (Regular Expression Denial of Service).
+3. Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Ketat POSIX 0600):
+   - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256. Dialog interaktif CrashRecoveryDialog memungkinkan pemulihan selektif saat aplikasi dijalankan kembali.
 
-4. Eksekusi Makro Batch Lintas Dokumen Terbuka:
-   - Opsi cakupan eksekusi di MacroRunDialog: "Current Document" atau "All Open Documents".
-   - Eksekusi makro berurutan ke semua tab aktif dalam satu kali klik.
+4. Mesin Karakter Escape Pencarian Lanjutan (Extended Search):
+   - ExtendedSearchParser memproses \\xHH (byte heksadesimal), \\dDDD (byte desimal), \\0 (byte NUL), \\b (backspace), \\f (form-feed), dan \\v (tab vertikal) pada dialog Cari/Ganti dan Bilah Pencarian Cepat.
 
-5. Server MCP Loopback Lokal Berintegritas Tinggi:
-   - Server Model Context Protocol loopback lokal 127.0.0.1 berbasis JSON-RPC dengan otentikasi Bearer Token kriptografis untuk integrasi AI coding agent (list_open_tabs, read_active_tab).
+5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa):
+   - Menambahkan lexer native baru: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), dan JSON5 (.json5).
+   - Memodernisasi kata kunci bahasa: C23 (_BitInt, constexpr, nullptr), Rust 2024 (gen, async gen), Swift 6 (consuming, borrowing, sending), dan TypeScript 5.8.
 
-6. Pengerasan Keamanan CVE 2025–2026:
-   - CVE-2026-20841: Perlindungan skema URL/URI berbahaya (ms-office:, cmd:, powershell:) dan pemblokiran eksekusi biner langsung di NetworkSecurityPolicy.
-   - CVE-2026-16762: Pembatasan kedalaman nesting XML (maksimal 32 tingkat) dan batas ukuran berkas 10 MB di ConfigIntegrityGuard.
-   - CVE-2026-48778 & CVE-2026-48800: Pencegahan eskalasi hak istimewa (sudo, pkexec, doas) dan penegakan izin berkas konfigurasi ketat 0600.
+6. Alur Ekspor Native Markdown / HTML / PDF:
+   - Implementasi DocumentExportManager menggunakan QPrinter / Qt6::PrintSupport native dan fallback Pandoc.
+   - Dialog interaktif ExportOptionsDialog mendukung ukuran kertas kustom (A4, Letter, Legal), orientasi, margin, dan CSS tersemat.
 
-7. Salin Info Diagnostik Debug Satu Klik:
-   - Bantuan > Debug Info menyalin seluruh detail konfigurasi runtime, versi Scintilla/Lexilla/Lua, dan platform OS ke clipboard.
+7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX):
+   - MarkdownPreviewEnhancer merender flowchart Mermaid, diagram urutan, diagram kelas, dan state machine via kontainer web terisolasi.
+   - Dukungan penuh rumus matematika LaTeX ($$...$$ dan $...$) dengan proteksi simbol mata uang dollar.
+   - Fitur Two-Way SyncScroll yang menyelaraskan posisi gulir editor Scintilla dengan viewport pratinjau Markdown.
 
-8. Standar Kualitas 14 Pilar:
-   - 100% kelulusan unit test, 0 error linter, dan 0 pelanggaran SonarLint.
+8. Paket Peralatan Pengembang (Developer Tools):
+   - DeveloperToolsEngine pada menu Peralatan: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, serta generator UUID v4.
+   - Dialog interaktif TimestampConverterDialog untuk konversi epoch Unix ke format UTC dan ISO Lokal.
 
----
+9. Penanda Navigasi Bilah Gulir & Pengalih Header/Source (F4 / Alt+O):
+   - CorrespondingFileSwitcher mendukung peralihan cepat dua arah antara berkas header C/C++ (.h, .hpp, .hxx) dan sumber (.c, .cpp, .cxx), serta berkas kode dan tes TypeScript/JavaScript (.test.ts, .spec.ts).
+   - ScrollbarNavigationMarkers menampilkan bookmark dan sorotan hasil pencarian pada track bilah gulir.
 
-## 2. Ringkasan Rilis Sebelumnya: Rilis v1.3.9
+10. Parser & Penegakan Otomatis .editorconfig:
+    - EditorConfigParser mendukung aturan indent_style, indent_size, tab_width, end_of_line, dan penelusuran hierarki root = true secara otomatis saat berkas dibuka.
 
-SparkNotePad v1.3.9 adalah rilis peningkatan fondasional dan stabilitas besar yang merangkum seluruh evolusi teknis dari v1.3.8 ke v1.3.9. Rilis ini mencakup peningkatan mesin inti Scintilla dan Lexilla langsung dari upstream resmi, resolusi kerentanan regex loop, penambahan preferensi bahasa default, pewarnaan front-matter Markdown, restorasi penuh kompatibilitas Qt 6.2 LTS (macOS Catalina & Ubuntu 20.04), arsitektur rilis multi-arsitektur Linux ARM64 & x64 (50+ paket biner), perampingan dan penyempurnaan packaging DMG macOS, serta lolos audit kualitas 14 pilar tanpa kompromi.
+11. Dock Riwayat Clipboard & Info Karakter Unicode:
+    - Dock ClipboardHistoryDock mencatat 20 riwayat salinan terakhir, pencarian cepat, dan penyisipan satu klik ke editor.
+    - Dock CharacterInfoDock menyajikan pratinjau glyph Unicode real-time, kode U+XXXX, nama karakter, kategori, nilai heksadesimal UTF-8/16/32, dan entitas HTML.
+
+12. Pengalih Cepat Fuzzy (Cmd+P / Ctrl+P) & Dock Minimap Dokumen:
+    - Dialog frameless bergaya Spotlight QuickSwitcherDialog dengan pencocokan subsekuens fuzzy pada tab terbuka dan berkas terkini.
+    - DocumentMinimapDock menyediakan tinjauan dokumen ringan dengan pelacakan viewport dan batas aman berkas besar (>50 MB).
+    - Integrasi berkas terkini native macOS Dock via MacServicesHandler::updateDockRecentMenu.
+
+13. Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket):
+    - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME 51, KDE 6, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern.
+    - Terdaftar pada toolbar_icons.qrc dan ToolbarIconManager.cpp lengkap dengan normalisasi alias ID dan cakupan unit test.
+
+14. Penuntasan Analisis Statis SonarLint & Clang-Tidy (0 Masalah):
+    - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy pada direktori src/ (misc-const-correctness, misc-override-with-different-visibility, bugprone-implicit-widening-of-multiplication-result, readability-use-concise-preprocessor-directives, readability-braces-around-statements, readability-else-after-return, performance-unnecessary-value-param).
+    - Terverifikasi 0 diagnostik eror pada clangd --check, cppcheck, dan lulus 100% unit test.
 """
 
-DOCNOTE_EN = """# SparkNotePad Release DocNote — v1.4.0 (English)
+DOCNOTE_EN = """# SparkNotePad Release DocNote — v1.4.5 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version      : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & Security Hardening)
-Release Date         : 2026-11-07
-Lead Maintainer      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
-Organization         : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
-Repository           : https://github.com/alsyundawy/SparkNotePad
-Core Editing Engine  : Scintilla 5.6.9 & Lexilla 5.5.5 (Complete 125 Official Lexers)
-Embedded Lua Core    : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
-GUI Framework        : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
-Target Platforms     : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
-License              : GNU General Public License v3.0 (GPL-3.0-or-later)
+Release Version     : 1.4.5 (Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening)
+Release Date        : 2026-11-08
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine : Scintilla 5.6.9 & Lexilla 5.5.5 (129 Vendored Official Lexers)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Source)
+Scripting Runtime   : Python 3.13+ Engine Bridge
+GUI Framework       : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 ================================================================================
 --------------------------------------------------------------------------------
 
 ---
 
-## 1. Executive Summary (English): Release v1.4.0
+## 1. Executive Summary (English): Release v1.4.5
 
-SparkNotePad v1.4.0 delivers high-impact productivity enhancements inspired by deep analysis of Nextpad++, Notepad--, and contemporary text editors, combined with enterprise-grade 2025–2026 vulnerability mitigations and model context protocol connectivity:
+SparkNotePad v1.4.5 represents a major feature and stabilization milestone delivering 14 foundational architectural pillars designed for professional developers, system administrators, and power users:
 
-1. Configurable Extra Line Spacing (Ascent & Descent):
-   - Configurable from Preferences > Margins/Padding (0 to 30 px) via Scintilla's SCI_SETEXTRAASCENT and SCI_SETEXTRADESCENT APIs.
-   - Implemented in ScintillaNext::setExtraLineSpacing() and synchronized across all open editor tabs via EditorManager.
+1. Closed Tab Stack & Reopen Closed Tab (Ctrl+Shift+T / Cmd+Shift+T):
+   - ClosedTabsManager maintains a resilient 50-entry FIFO stack preserving caret position, line scroll ratio, encoding, EOL mode, language syntax styling, and tab color tags.
+   - Context menu and File menu actions for instant tab restoration.
 
-2. Enriched Document Tab Tooltips with Complete Metadata:
-   - Implemented DockedEditor::buildEnrichedToolTip() displaying canonical file path, byte/KB size, line count, character length, text encoding name, EOL format (CRLF, LF, CR), and file modification timestamp.
-   - Dynamic real-time updates triggered on tab selection, file save points, and renames.
+2. Tab Color Tagging & Grouping:
+   - TabColorManager provides 8 high-contrast, accessible color presets (Red, Orange, Yellow, Green, Cyan, Blue, Purple, Magenta) with persistent state across app restarts via ApplicationSettings.
 
-3. Non-Backtracking Fuzzy Subsequence Matching Engine:
-   - RegexSafetyEngine::buildFuzzySubsequencePattern() converts input tokens into deterministic linear regex patterns ([^char]*char...).
-   - Integrated into Find/Replace Dialog (checkBoxFuzzy) and Quick Find Bar (~).
-   - Fully immune to catastrophic backtracking and Regular Expression Denial of Service (ReDoS).
+3. Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions):
+   - AutosaveRecoveryManager writes background snapshots every 10 seconds for modified documents, enforced with POSIX 0600 permissions and SHA-256 integrity checksums. Interactive CrashRecoveryDialog allows selective recovery or discard on application relaunch.
 
-4. Batch Macro Execution Across All Open Documents:
-   - Extended MacroRunDialog with execution scope selection: "Current Document" or "All Open Documents".
-   - Automatically loops over all managed tabs sequentially with transparent execution progress.
+4. Comprehensive Extended Find/Replace Escape Engine:
+   - ExtendedSearchParser parses \\xHH (hexadecimal byte), \\dDDD (decimal byte), \\0 (NUL byte), \\b (backspace), \\f (form-feed), and \\v (vertical tab) across Find/Replace and Quick Find in Extended Search mode.
 
-5. High-Integrity Local Loopback MCP Server:
-   - High-integrity local server in src/features/LocalMcpServer listening strictly on 127.0.0.1 with cryptographically secure bearer token authentication.
-   - Exposes standardized AI coding tools (list_open_tabs, read_active_tab).
+5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages):
+   - Added new native lexers: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), and JSON5 (.json5).
+   - Modernized standard keyword sets: C23 (_BitInt, constexpr, nullptr), Rust 2024 (gen, async gen), Swift 6 (consuming, borrowing, sending), and TypeScript 5.8.
 
-6. Enterprise Security Hardening (2025–2026 CVE Mitigations):
-   - CVE-2026-20841: Dangerous URI scheme interception (NetworkSecurityPolicy::isSafeUriScheme()) prohibiting dangerous schemes (ms-office:, cmd:, powershell:) and binary execution.
-   - CVE-2026-16762: XML/JSON parser recursion limit (ConfigIntegrityGuard::isPayloadStructureSafe()) capping file size at 10 MB and recursion depth at 32 levels.
-   - CVE-2026-48778 / CVE-2026-48800: Command injection prevention in external tools and enforcement of strict 0600 file permissions.
+6. Native Markdown / HTML / PDF Export Pipeline:
+   - Implemented DocumentExportManager with native Qt 6 QPrinter / Qt6::PrintSupport and Pandoc fallback engine.
+   - Interactive ExportOptionsDialog supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.
 
-7. One-Click Diagnostic Reporting:
-   - Help > Debug Info copies system specs, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt version, and display metrics directly to the system clipboard.
+7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas):
+   - MarkdownPreviewEnhancer renders Mermaid flowcharts, sequence diagrams, class diagrams, and state machines via client containers.
+   - Full LaTeX math rendering support ($$...$$ block and $...$ inline math) with currency/escaped dollar preservation.
+   - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
 
-8. 14-Pillar Quality Gate:
-   - 100% unit test pass rate, 0 linter errors, and 0 SonarLint issues.
+8. Developer Tools Suite:
+   - DeveloperToolsEngine in Tools menu: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generator.
+   - Interactive TimestampConverterDialog converting Unix Epoch timestamps (seconds/milliseconds) to human-readable UTC and Local ISO formats with copy helpers.
 
----
+9. Scrollbar Navigation Markers & Corresponding Header/Source Switcher (F4 / Alt+O):
+   - CorrespondingFileSwitcher supporting instant bidirectional toggle between C/C++ header (.h, .hpp, .hxx) and source (.c, .cpp, .cxx), and TypeScript/JavaScript source and test files (.test.ts, .spec.ts).
+   - Added ScrollbarNavigationMarkers tracking bookmark lines and search match highlights on the scrollbar track.
 
-## 2. Previous Release Summary: Release v1.3.9
+10. Native .editorconfig Automatic Parser & Enforcement:
+    - EditorConfigParser supporting indent_style, indent_size, tab_width, end_of_line, and root = true parent directory traversal with automatic enforcement.
 
-SparkNotePad v1.3.9 is a major foundational engine upgrade and stability milestone encapsulating the complete architectural progression from v1.3.8 to v1.3.9. It delivers upstream core editing engine upgrades to Scintilla 5.6.9 and Lexilla 5.5.5, resolves algorithmic regex loop vulnerabilities, introduces user-configurable default language preferences, expands Markdown front-matter syntax styling, restores full Qt 6.2 LTS backward compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, prunes and refines macOS DMG distribution, and passes comprehensive 14-pillar code review.
+11. Clipboard History Dock & Character Info Dock:
+    - Dockable ClipboardHistoryDock tracking recent clipboard history (FIFO queue of 20 items), search filtering, and one-click editor insertion.
+    - Dockable CharacterInfoDock displaying real-time Unicode glyph preview, code point U+XXXX, Unicode character name, category, UTF-8/16/32 hex, and HTML entities.
+
+12. Fuzzy Quick Switcher (Cmd+P / Ctrl+P) & Document Minimap Dock:
+    - Spotlight-style frameless QuickSwitcherDialog with subsequence fuzzy matching scoring open tabs and recent files.
+    - DocumentMinimapDock providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
+    - Native macOS Dock recent documents integration via MacServicesHandler::updateDockRecentMenu.
+
+13. Aksara Toolbar Icon Pack Suite Integration (38 Packs Total):
+    - Integrated 16 new curated Aksara toolbar icon packs (544 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, GNOME 51, KDE 6, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles.
+    - Integrated into toolbar_icons.qrc and ToolbarIconManager.cpp with alias normalization and comprehensive unit test coverage.
+
+14. SonarLint & Clang-Tidy Static Analysis Eradication:
+    - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across src/ (misc-const-correctness, misc-override-with-different-visibility, bugprone-implicit-widening-of-multiplication-result, readability-use-concise-preprocessor-directives, readability-braces-around-statements, readability-else-after-return, performance-unnecessary-value-param).
+    - Verified 0 diagnostics and 0 errors across clangd --check, cppcheck, and unit tests.
 """
 
 CHANGELOG_ID = """# Catatan Perubahan (Changelog)
@@ -139,6 +173,36 @@ Semua perubahan penting pada **SparkNotePad** didokumentasikan di berkas ini.
 
 Format disusun berdasarkan panduan [Keep a Changelog](https://keepachangelog.com/id/1.1.0/),
 dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.4.5] - 2026-11-08
+
+### 🌟 Rilis Utama: Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Peralatan Pengembang, Pengalih Header/Source, EditorConfig, Riwayat Clipboard, Quick Switcher, Paket Ikon Aksara & Penguatan 14 Pilar
+
+SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
+
+#### 🆕 Ditambahkan
+
+- **Tumpukan Tab Tertutup & Buka Kembali Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
+  - Implementasi `ClosedTabsManager` yang mengelola antrean FIFO hingga 50 tab terakhir dengan pemulihan posisi kursor, rasio scroll, encoding, dan warna tab.
+- **Pemberian Tag & Pengelompokan Warna Tab**:
+  - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
+- **Manajer Autosave & Pemulihan Crash**:
+  - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
+- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
+  - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, dan gaya modern.
+- **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
+  - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
+- **Peralatan Pengembang & Utilitas**:
+  - Konverter timestamp, JSON prettify/minify, URL encode/decode, escape Unicode, UUID v4, parser `.editorconfig`, dan dock Riwayat Clipboard.
+
+#### 🛠️ Diperbaiki & Diperkuat
+
+- **Penuntasan Analisis Statis SonarLint & Clang-Tidy**:
+  - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy tanpa eror.
+- **Kepatuhan Kualitas 14 Pilar**:
+  - 100% lulus uji unit `SparkNotePadTests` dan kompilasi aman tanpa Ninja.
 
 ---
 
@@ -158,38 +222,8 @@ SparkNotePad v1.4.0 menghadirkan fitur produktivitas esensial yang terinspirasi 
   - Implementasi DockedEditor::buildEnrichedToolTip() menampilkan path absolut, ukuran di disk, jumlah baris, karakter, encoding (UTF-8, UTF-16, dll.), format baris baru (CRLF, LF, CR), dan waktu modifikasi.
   - Pembaruan otomatis saat perpindahan tab, penyimpanan berkas, atau perubahan nama.
 - **Mesin Pencarian Subsekuens Fuzzy Tanpa Backtracking**:
-  - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() mengubah query menjadi pola regex linier non-backtracking ([^char]*char...).
-  - Opsi pencarian fuzzy interaktif pada Dialog Cari & Ganti serta Quick Find Bar (~).
-  - Terintegrasi penuh ke dalam mesin pencarian Finder.
-- **Eksekusi Makro Batch Lintas Dokumen Terbuka**:
-  - Pemilih cakupan eksekusi di MacroRunDialog: "Current Document" atau "All Open Documents".
-  - Menjalankan makro berurutan ke semua tab dalam satu panggilan.
-- **Server MCP Loopback Lokal Berintegritas Tinggi**:
-  - LocalMcpServer port loopback 127.0.0.1 berbasis JSON-RPC dengan otentikasi Bearer Token kriptografis (list_open_tabs, read_active_tab).
-- **Salin Info Diagnostik Debug Satu Klik**:
-  - Menu Bantuan > Debug Info menyalin seluruh detail konfigurasi runtime, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt, dan platform OS ke clipboard.
-
-#### 🛡️ Pengerasan Keamanan (Mitigasi CVE 2025–2026)
-
-- **CVE-2026-20841 (Mitigasi Skema URI Berbahaya)**:
-  - NetworkSecurityPolicy::isSafeUriScheme() memblokir eksploitasi skema URI berbahaya (ms-office:, cmd:, powershell:) dan eksekusi biner langsung.
-- **CVE-2026-16762 (Mitigasi Kedalaman Nesting XML/JSON DoS)**:
-  - ConfigIntegrityGuard::isPayloadStructureSafe() membatasi kedalaman nesting XML hingga 32 level dan batas ukuran 10 MB untuk mencegah ekspansi entitas XML dan crash rekursi.
-- **CVE-2026-48778 & CVE-2026-48800 (Mitigasi Perusakan Perintah Tool Eksternal)**:
-  - ConfigIntegrityGuard::isExternalCommandSafe() memblokir eskalasi hak istimewa (sudo, pkexec, doas) dan chaining pipa shell.
-  - Penegakan izin berkas konfigurasi ketat 0600.
-
-#### 🌐 Lokalisasi
-
-- Pembaruan i18n/SparkNotePad_en.ts dan i18n/SparkNotePad_id.ts dengan 2.017 entri terjemahan (0 unfinished).
-
----
-
-## [1.3.9] - 2026-11-07
-
-### ⚡ Pembaruan Scintilla 5.6.9 & Lexilla 5.5.5, Pengaturan Bahasa Default, Kompatibilitas Qt 6.2 LTS & Penguatan 14 Pilar
-
-SparkNotePad v1.3.9 adalah rilis fondasional besar yang memperbarui subsistem penyuntingan inti ke Scintilla 5.6.9 dan Lexilla 5.5.5, memperbaiki bug regex infinite loop, menambahkan preferensi bahasa default, mendukung pewarnaan front-matter Markdown, dan memulihkan kompatibilitas Qt 6.2 LTS.
+  - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() yang mengubah input query menjadi regex linier deterministik tanpa backtracking.
+  - Kebal terhadap serangan ReDoS (Regular Expression Denial of Service).
 """
 
 CHANGELOG_EN = """# Changelog
@@ -198,6 +232,59 @@ All notable changes to **SparkNotePad** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.4.5] - 2026-11-08
+
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (38 Suites) & 14-Pillar Hardening
+
+SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectural pillars inspired by modern IDE standards and power-user workflows:
+
+#### 🆕 Added
+
+- **Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
+  - Implemented `ClosedTabsManager` maintaining a resilient FIFO stack of up to 50 recently closed document tabs.
+  - Automatically preserves and restores caret position, line scroll ratio, text encoding, EOL mode, language syntax styling, and tab color tags.
+- **Tab Color Tagging & Grouping**:
+  - Implemented `TabColorManager` providing 8 accessible color presets with high-contrast tab bar indicators.
+- **Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions)**:
+  - Implemented `AutosaveRecoveryManager` writing background snapshots every 10 seconds for modified documents.
+  - Protected with strict `0600` POSIX file permissions and SHA-256 integrity checksums.
+  - Interactive `CrashRecoveryDialog` enabling selective document restoration or discard on startup.
+- **Aksara Toolbar Icon Pack Suite Integration (38 Packs Total)**:
+  - Integrated 16 new Aksara toolbar icon packs (544 vector SVGs and 32-bit PNGs): `aksara-arch-linux`, `aksara-elementary-os`, `aksara-icon-pack-bold`, `aksara-icon-pack-duotone`, `aksara-icon-pack-outline`, `aksara-icon-pack-rounded`, `aksara-icon-pack-sharp`, `aksara-macos-bigsur`, `aksara-npp-gnome51`, `aksara-npp-kde6`, `aksara-npp-vista`, `aksara-npp-win10`, `aksara-npp-win11`, `aksara-npp-xp`, `aksara-ubuntu-yaru`, `aksara-vista-aero`.
+  - Registered packs in `toolbar_icons.qrc` and `ToolbarIconManager.cpp`, expanding the built-in toolbar icon collection to 38 packs with robust alias normalization and unit test coverage.
+- **Native Markdown / HTML / PDF Export Pipeline**:
+  - Implemented `DocumentExportManager` with native Qt 6 `QPrinter` / `Qt6::PrintSupport` and Pandoc fallback engine.
+  - Interactive `ExportOptionsDialog` supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.
+- **Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas)**:
+  - Implemented `MarkdownPreviewEnhancer` rendering Mermaid flowcharts, sequence diagrams, class diagrams, and state machines.
+  - Full LaTeX math rendering support (`$$...$$` block and `$...$` inline math) with currency/escaped dollar preservation.
+  - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
+- **Developer Tools Suite**:
+  - Implemented `DeveloperToolsEngine` in Tools menu: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generator.
+  - Interactive `TimestampConverterDialog` converting Unix Epoch timestamps to human-readable UTC and Local ISO formats with copy helpers.
+- **Scrollbar Navigation Markers & Corresponding Header/Source Switcher (`F4` / `Alt+O`)**:
+  - Implemented `CorrespondingFileSwitcher` supporting instant bidirectional toggle between C/C++ header and source, and TypeScript/JavaScript source and test files.
+  - Added `ScrollbarNavigationMarkers` tracking bookmark lines and search match highlights on the scrollbar track.
+- **Native `.editorconfig` Automatic Parser & Enforcement**:
+  - Implemented `EditorConfigParser` supporting `indent_style`, `indent_size`, `tab_width`, `end_of_line`, and `root = true` parent directory traversal.
+- **Clipboard History Dock & Character Info Dock**:
+  - Implemented dockable `ClipboardHistoryDock` tracking recent clipboard history (FIFO queue of 20 items), search filtering, and one-click editor insertion.
+  - Implemented dockable `CharacterInfoDock` displaying real-time Unicode glyph preview, code point `U+XXXX`, Unicode character name, category, UTF-8/16/32 hex, and HTML entities.
+- **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Document Minimap Dock**:
+  - Implemented Spotlight-style frameless `QuickSwitcherDialog` with subsequence fuzzy matching scoring open tabs and recent files.
+  - Implemented `DocumentMinimapDock` providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
+
+#### 🛠️ Fixed & Hardened
+
+- **SonarLint & Clang-Tidy Static Analysis Resolution**:
+  - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across `src/` (`misc-const-correctness`, `misc-override-with-different-visibility`, `bugprone-implicit-widening-of-multiplication-result`, `readability-use-concise-preprocessor-directives`, `readability-braces-around-statements`, `readability-else-after-return`, `performance-unnecessary-value-param`).
+  - Fixed tweak AST diagnostics and control flow in `Finder.cpp` and `BetterMultiSelection.cpp`.
+- **14-Pillar Quality Verification Gate**:
+  - Verified 0 errors across `cppcheck`, `clangd --check`, `lint-check.sh`, and unit test suite `SparkNotePadTests`.
+  - Built strictly with standard CMake Unix Makefiles without Ninja.
 
 ---
 
@@ -211,60 +298,6 @@ SparkNotePad v1.4.0 introduces essential productivity features inspired by Nextp
 
 - **Configurable Line Spacing (Extra Ascent & Descent)**:
   - Added user-customizable extra ascent and extra descent (0–30 px) under Preferences > Margins/Padding.
-  - Implemented `ScintillaNext::setExtraLineSpacing()` using Scintilla's `SCI_SETEXTRAASCENT` and `SCI_SETEXTRADESCENT`.
-  - Dynamic live propagation across all open editors via `EditorManager`.
-- **Enriched Tab Tooltips with Metadata Inspection**:
-  - Implemented `DockedEditor::buildEnrichedToolTip()` displaying full canonical file path, file size on disk, line count, character length, text encoding (`UTF-8`, `UTF-16`, etc.), EOL format (`CRLF`, `LF`, `CR`), and last modified timestamp.
-  - Live tooltip updates triggered on buffer modifications, save points, and file renames.
-- **Non-Backtracking Fuzzy Subsequence Search Engine**:
-  - Added `RegexSafetyEngine::buildFuzzySubsequencePattern()` converting loose search strings into linear, non-backtracking regex patterns (`[^char]*char...`).
-  - Added Fuzzy Match option in both Find & Replace Dialog (`checkBoxFuzzy`) and Quick Find Widget (`buttonFuzzy` `~`).
-  - Fully integrated into `Finder` search engine.
-- **Batch Macro Execution Across All Open Documents**:
-  - Added execution scope selector to Macro Run Dialog: "Current Document" or "All Open Documents".
-  - Executes recorded macros sequentially across all tabs in a single invocation.
-- **High-Integrity Local Loopback MCP Server**:
-  - Added `LocalMcpServer` exposing local loopback JSON-RPC Model Context Protocol tools (`list_open_tabs`, `read_active_tab`).
-  - Authenticated via secure cryptographically random bearer token.
-- **One-Click Debug Diagnostics Clipboard Copy**:
-  - Help > Debug Info (`actionDebugInfo`) copies full runtime configuration, Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1, Qt version, and OS details directly to the system clipboard.
-
-#### 🛡️ Security Hardening (2025–2026 CVE Mitigations)
-
-- **CVE-2026-20841 (Dangerous URI Protocol & Shell Hijacking Mitigation)**:
-  - `NetworkSecurityPolicy::isSafeUriScheme()` blocks exploitation via malicious URI schemes (`ms-office:`, `cmd:`, `powershell:`) and direct executable execution.
-- **CVE-2026-16762 (XML/JSON Nesting Depth & Parser Stack Overflow DoS Mitigation)**:
-  - `ConfigIntegrityGuard::isPayloadStructureSafe()` bounds XML element nesting depth to 32 levels and caps payload size at 10 MB to prevent XML entity expansion and parser recursion crashes.
-- **CVE-2026-48778 & CVE-2026-48800 (External Tool Command Tampering Mitigation)**:
-  - `ConfigIntegrityGuard::isExternalCommandSafe()` blocks unauthorized privilege escalation (`sudo`, `pkexec`, `doas`) and shell pipe chaining in external tool definitions.
-  - Enforces strict `0600` owner-only file permissions on session and configuration files.
-
-#### 🌐 Localization
-
-- Updated `i18n/SparkNotePad_en.ts` and `i18n/SparkNotePad_id.ts` with 2,017 translation entries (0 unfinished).
-
----
-
-## [1.3.9] - 2026-11-07
-
-### ⚡ Scintilla 5.6.9 & Lexilla 5.5.5 Engine Upgrade, Default Language Setting, Qt 6.2 LTS Compatibility, Linux ARM64 Matrix & 14-Pillar Hardening
-
-SparkNotePad v1.3.9 is a major foundational milestone consolidating all architectural evolutions from v1.3.8 to v1.3.9. It upgrades the core editing subsystem to Scintilla 5.6.9 and Lexilla 5.5.5, resolves algorithmic regular expression vulnerabilities, adds user-configurable default language preferences, expands Markdown front-matter syntax styling, restores complete Qt 6.2 LTS compatibility (macOS Catalina & Ubuntu 20.04), establishes a 50+ binary release matrix with native Linux ARM64 packaging, and passes rigorous 14-pillar static analysis and code review:
-
-#### 🆕 Added
-
-- **Official Scintilla 5.6.9 & Lexilla 5.5.5 Core Integration**:
-  - Upgraded embedded Scintilla engine from 5.6.7 to **5.6.9** (official upstream release from `scintilla.org`) in `thirdparty/scintilla` (160 files updated, 3,206 insertions).
-  - Upgraded embedded Lexilla lexer library from 5.5.4 to **5.5.5** (official upstream release from `scintilla.org`) in `thirdparty/lexilla`.
-  - Regenerated Qt wrapper interface (`ScintillaEdit.cpp` and `ScintillaEdit.h`) via upstream `WidgetGen.py`.
-  - Full Unicode 17 character category mapping and case conversions.
-  - Restored full-color rendering for XPM images.
-  - Accelerated line-start position queries by skipping unnecessary line layout calculations during rapid scrolling.
-  - Expanded cached lexeme buffer from 30 to 40 bytes for large identifiers and SQL query columns.
-- **Markdown Front-Matter Syntax Highlighting**:
-  - Implemented 3 new Lexilla 5.5.5 style definitions in `src/languages/markdown.lua` (YAML, TOML, JSON).
-- **Default Language Setting for New Documents**:
-  - Added `DefaultLanguage` configuration key in Preferences > Editor (`PreferencesDialog`).
 """
 
 

@@ -486,12 +486,16 @@ void AboutDialog::updateThemeColors() {
                 "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> %3 (<a style='color: %1;' "
                 "href='https://github.com/LonMcGregor/NotepadPlusPlusIcons'>github.com</a>)</li>"
                 "<li><b>SparkNotePad Monoline Vector Suite:</b> %4</li>"
+                "<li><b>Aksara Icon Pack Suite:</b> %5</li>"
                 "</ul>"
                 "</div>")
                 .arg(accentCol, tr("Visual Artwork & Design"),
                      tr("Designer of the open-source editor and chameleon artwork series, adapted for SparkNotePad "
                         "official branding."),
-                     tr("Modern high-DPI Retina vector icons customized for 75 themes, menus, and toolbars."));
+                     tr("Modern high-DPI Retina vector icons customized for 75 themes, menus, and toolbars."),
+                     tr("Comprehensive 16-suite toolbar icon pack library (544 scalable SVGs and PNGs) spanning macOS "
+                        "Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, Elementary OS, and modern "
+                        "minimalist styles."));
 
         m_creditsBrowser->setHtml(creditsHtml);
     }

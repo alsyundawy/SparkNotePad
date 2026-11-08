@@ -45,8 +45,9 @@ public:
 private:
     template <typename Func>
     static QString processByLine(const QString &input, Func &&func) {
-        if (input.isEmpty())
+        if (input.isEmpty()) {
             return {};
+        }
 
         const bool hasCrLf = input.contains(QLatin1String("\r\n"));
         const QString eol = hasCrLf ? QStringLiteral("\r\n") : QStringLiteral("\n");

@@ -17,7 +17,7 @@
 #include <QString>
 #include <QByteArray>
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 class ScintillaNext;
 #endif
 
@@ -30,7 +30,7 @@ public:
     };
 
     // Encodes selection if present, otherwise encodes the entire document.
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
     static Result encode(ScintillaNext *editor);
     static Result decode(ScintillaNext *editor);
 #endif

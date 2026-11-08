@@ -77,7 +77,7 @@
 
 ### 1.8 Toolbar Personalization, Icon Suites, In-Tab Preview & Lexilla Parity (v1.3.8)
 
-- **22 Built-In Toolbar Icon Packs**: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite - Authentic 3.5.6 by Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Notepad++ Classic (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Humanity GNOME, Elementary OS Flat, Breeze KDE Plasma, Papirus Rounded, macOS Cupertino Clean, and VS Code Codicons.
+- **38 Built-In Toolbar Icon Packs**: Modern Ribbon (Default Vector), Microsoft Fluent UI (Win 11), Windows 11 (Fluent 2), Windows 7 (Aero Glass), Windows XP (Luna Classic), Fugue Classic (Silk Suite - Authentic 3.5.6 by Yusuke Kamiyamane), Elegant Themes (Nicholas Roach), Notepad++ Classic (Nostalgia), NotepadNext Classic (Silk), Monochrome Outline (Minimalist), Vibrant DuoTone (Cyberpunk), Material Design (Sharp Vector), Pixel Design (Fugue-like), Monoline Minimal, Notepad++ (Modern Green), Notepad3 (Warm Amber), Seven Classic, Mignon, Palette, Diagonal, plus 16 Aksara Icon Packs (Bold, Duotone, Outline, Rounded, Sharp, macOS Big Sur, Windows XP/Vista/10/11, Vista Aero, Ubuntu Yaru, GNOME 51, KDE 6, Arch Linux, Elementary OS).
 - **Multi-DPI Retina Scaling (16–64px) & Dynamic Dark Mode Tone Mapping**: Native scalable SVG vectors without raster blur, multi-resolution PNGs with `@2x` Retina DPR (`setDevicePixelRatio(2.0)`), and intelligent HSL tone mapping for bright, vivid icons under both dark and light modes.
 - **Dynamic Menubar & Context Menu Synchronization**: Real-time whole-window icon propagation (`ToolbarIconManager::applyToWindow()` and `applyToMenu()`).
 - **Interactive Tab Bar Plus (+) Button**: Direct document creation via title bar button next to editor tabs.
@@ -116,7 +116,7 @@
 | **Qt 6.2 LTS Universal Compatibility**      |   ✅ Complete    | macOS Catalina 10.15 & Ubuntu 20.04 support                         |
 | **Multi-Arch Linux ARM64 & x64 Matrix**     |   ✅ Complete    | 50+ binary release packages across DEB, RPM, and DMG                |
 | **Lean macOS DMG Packaging (33 MB)**        |   ✅ Complete    | Bloatware Qt frameworks pruned, styled layout verified via hdiutil  |
-| **Toolbar Icon Packs Suite (22 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, Win7, Win11, etc.)     |
+| **Toolbar Icon Packs Suite (38 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, Win7, Win11, Aksara)   |
 | **Dynamic Menu & Context Menu Icon Sync**   |   ✅ Complete    | `ToolbarIconManager::applyToWindow()` & `applyToMenu()`             |
 | **Tab Bar Plus (+) Button**                 |   ✅ Complete    | `DockedEditorTitleBar` (`m_plusButton`)                             |
 | **In-Tab HTML & Markdown Preview**          |   ✅ Complete    | `PreviewTabWidget` + `ads::CenterDockWidgetArea`                    |

@@ -17,7 +17,7 @@
 #include <cstdint>
 #include <QString>
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 class ScintillaNext;
 #endif
 
@@ -36,7 +36,7 @@ public:
         QString errorMessage;
     };
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
     static Result evaluateInEditor(ScintillaNext *editor, Action action = AppendResult);
 #endif
 

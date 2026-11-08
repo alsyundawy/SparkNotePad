@@ -52,11 +52,11 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ---
 
-## 4. Toolbar Icon Packs Suite (22 Built-In Packs), Plus (+) Tab Button & Visual Customizer
+## 4. Toolbar Icon Packs Suite (38 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
-SparkNotePad v1.3.9 features a comprehensive toolbar theming and customization architecture with 22 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
+SparkNotePad v1.4.5 features a comprehensive toolbar theming and customization architecture with 38 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
 
-### Built-in Toolbar Icon Packs (22 Packs)
+### Built-in Toolbar Icon Packs (38 Packs)
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane across all 6 resolutions.
@@ -80,6 +80,22 @@ SparkNotePad v1.3.9 features a comprehensive toolbar theming and customization a
 20. **Mignon Icon Theme** (`mignon`): Modern, elegant vector icons by Igor F. Moraes.
 21. **Palette Icon Theme** (`palette`): Colorful vector icon theme by mjkim0727.
 22. **Diagonal Icon Theme** (`diagonal`): Dynamic diagonal vector styling by Tamás Csábi.
+23. **Aksara Icon Pack Bold** (`aksara-icon-pack-bold`): Bold modern vector icons with accentuated strokes and high-contrast fills.
+24. **Aksara Icon Pack Duotone** (`aksara-icon-pack-duotone`): Harmonious two-tone vector iconography for expressive toolbars.
+25. **Aksara Icon Pack Outline** (`aksara-icon-pack-outline`): Refined minimalist linear wireframes optimized for clean layouts.
+26. **Aksara Icon Pack Rounded** (`aksara-icon-pack-rounded`): Soft geometric rounded vector icons delivering modern desktop elegance.
+27. **Aksara Icon Pack Sharp** (`aksara-icon-pack-sharp`): Crisp angular vector iconography engineered for sharp readability.
+28. **Aksara macOS Big Sur** (`aksara-macos-bigsur`): Apple macOS Big Sur & Monterey squircle aesthetic with authentic gradients.
+29. **Aksara Windows XP** (`aksara-npp-xp`): Authentic Windows XP Luna nostalgic desktop toolbar suite.
+30. **Aksara Windows Vista** (`aksara-npp-vista`): Translucent glossy Vista glass iconography.
+31. **Aksara Windows 10** (`aksara-npp-win10`): Flat modern Windows 10 monochromatic vector iconography.
+32. **Aksara Windows 11** (`aksara-npp-win11`): Modern Windows 11 Fluent 2 rounded iconography.
+33. **Aksara Vista Aero** (`aksara-vista-aero`): Authentic Vista Aero Glass desktop styling.
+34. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ubuntu official Yaru desktop theme vector iconography.
+35. **Aksara GNOME 51** (`aksara-npp-gnome51`): GNOME Adwaita modern Linux desktop iconography.
+36. **Aksara KDE 6** (`aksara-npp-kde6`): KDE Plasma 6 Breeze modern vector suite.
+37. **Aksara Arch Linux** (`aksara-arch-linux`): Arch Linux cyan and dark blue minimalist iconography.
+38. **Aksara Elementary OS** (`aksara-elementary-os`): Elementary OS human-centered design vector iconography.
 
 ### High-DPI & Retina Clarity
 

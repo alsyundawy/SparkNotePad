@@ -16,7 +16,7 @@
 
 #include <QString>
 
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
 class ScintillaNext;
 #endif
 
@@ -32,7 +32,7 @@ public:
     };
 
     // Converts number at selection or cursor in active editor to the target base.
-#if !defined(UNIT_TESTING)
+#ifndef UNIT_TESTING
     static Result convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex = true,
                           bool addPrefix = true);
 #endif
