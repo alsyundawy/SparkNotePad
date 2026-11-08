@@ -1133,24 +1133,20 @@
 <context>
     <name>AuthenticateDialog</name>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Autentikasi</translation>
+        <translation type="vanished">Autentikasi</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="26"/>
         <source>Please provide the user name and password for the download location.</source>
-        <translation>Harap masukkan nama pengguna dan kata sandi untuk lokasi pengunduhan.</translation>
+        <translation type="vanished">Harap masukkan nama pengguna dan kata sandi untuk lokasi pengunduhan.</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="35"/>
         <source>&amp;User name:</source>
-        <translation>&amp;Nama pengguna:</translation>
+        <translation type="vanished">&amp;Nama pengguna:</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="48"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Kata sandi:</translation>
+        <translation type="vanished">&amp;Kata sandi:</translation>
     </message>
 </context>
 <context>
@@ -2347,167 +2343,128 @@ Atau URL daring cadangan:
 <context>
     <name>Downloader</name>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="23"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="311"/>
         <source>Updater</source>
-        <translation>Pembaruan Aplikasi</translation>
+        <translation type="vanished">Pembaruan Aplikasi</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="90"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="144"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="385"/>
         <source>Downloading updates</source>
-        <translation>Mengunduh pembaruan</translation>
+        <translation type="vanished">Mengunduh pembaruan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="113"/>
         <source>Time remaining: 0 minutes</source>
-        <translation>Sisa waktu: 0 menit</translation>
+        <translation type="vanished">Sisa waktu: 0 menit</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="154"/>
         <source>Open</source>
-        <translation>Buka</translation>
+        <translation type="vanished">Buka</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="161"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="143"/>
         <source>Stop</source>
-        <translation>Hentikan</translation>
+        <translation type="vanished">Hentikan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="145"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="483"/>
         <source>Time remaining</source>
-        <translation>Sisa waktu</translation>
+        <translation type="vanished">Sisa waktu</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="145"/>
         <source>unknown</source>
-        <translation>tidak diketahui</translation>
+        <translation type="vanished">tidak diketahui</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="251"/>
         <source>Error</source>
-        <translation>Kesalahan</translation>
+        <translation type="vanished">Kesalahan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="251"/>
         <source>Cannot find downloaded update!</source>
-        <translation>Tidak dapat menemukan pembaruan yang diunduh!</translation>
+        <translation type="vanished">Tidak dapat menemukan pembaruan yang diunduh!</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="267"/>
         <source>Close</source>
-        <translation>Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="268"/>
         <source>Download complete!</source>
-        <translation>Pengunduhan selesai!</translation>
+        <translation type="vanished">Pengunduhan selesai!</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="269"/>
         <source>The installer opens separately</source>
-        <translation>Pemasang terbuka secara terpisah</translation>
+        <translation type="vanished">Pemasang terbuka secara terpisah</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="276"/>
         <source>Click &quot;OK&quot; to begin installing the update</source>
-        <translation>Klik &quot;OK&quot; untuk mulai memasang pembaruan</translation>
+        <translation type="vanished">Klik &quot;OK&quot; untuk mulai memasang pembaruan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="278"/>
         <source>In order to install the update, you may need to quit the application.</source>
-        <translation>Untuk memasang pembaruan, Anda mungkin perlu keluar dari aplikasi.</translation>
+        <translation type="vanished">Untuk memasang pembaruan, Anda mungkin perlu keluar dari aplikasi.</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="282"/>
         <source>In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</source>
-        <translation>Untuk memasang pembaruan, Anda mungkin perlu keluar dari aplikasi. Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi.</translation>
+        <translation type="vanished">Untuk memasang pembaruan, Anda mungkin perlu keluar dari aplikasi. Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi.</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="298"/>
         <source>Click the &quot;Open&quot; button to apply the update</source>
-        <translation>Klik tombol &quot;Buka&quot; untuk menerapkan pembaruan</translation>
+        <translation type="vanished">Klik tombol &quot;Buka&quot; untuk menerapkan pembaruan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="315"/>
         <source>Are you sure you want to cancel the download?</source>
-        <translation>Apakah Anda yakin ingin membatalkan pengunduhan?</translation>
+        <translation type="vanished">Apakah Anda yakin ingin membatalkan pengunduhan?</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="317"/>
         <source>Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</source>
-        <translation>Apakah Anda yakin ingin membatalkan pengunduhan? Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi</translation>
+        <translation type="vanished">Apakah Anda yakin ingin membatalkan pengunduhan? Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="372"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="379"/>
         <source>%1 bytes</source>
-        <translation>%1 bita</translation>
+        <translation type="vanished">%1 bita</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="374"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="381"/>
         <source>%1 KB</source>
-        <translation>%1 KB</translation>
+        <translation type="vanished">%1 KB</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="376"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="383"/>
         <source>%1 MB</source>
-        <translation>%1 MB</translation>
+        <translation type="vanished">%1 MB</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="385"/>
         <source>of</source>
-        <translation>dari</translation>
+        <translation type="vanished">dari</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="430"/>
         <source>Downloading Updates</source>
-        <translation>Mengunduh Pembaruan</translation>
+        <translation type="vanished">Mengunduh Pembaruan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="431"/>
         <source>Time Remaining</source>
-        <translation>Sisa Waktu</translation>
+        <translation type="vanished">Sisa Waktu</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="431"/>
         <source>Unknown</source>
-        <translation>Tidak Diketahui</translation>
+        <translation type="vanished">Tidak Diketahui</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="459"/>
         <source>about %1 hours</source>
-        <translation>sekitar %1 jam</translation>
+        <translation type="vanished">sekitar %1 jam</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="461"/>
         <source>about one hour</source>
-        <translation>sekitar satu jam</translation>
+        <translation type="vanished">sekitar satu jam</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="469"/>
         <source>%1 minutes</source>
-        <translation>%1 menit</translation>
+        <translation type="vanished">%1 menit</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="471"/>
         <source>1 minute</source>
-        <translation>1 menit</translation>
+        <translation type="vanished">1 menit</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="478"/>
         <source>%1 seconds</source>
-        <translation>%1 detik</translation>
+        <translation type="vanished">%1 detik</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="480"/>
         <source>1 second</source>
-        <translation>1 detik</translation>
+        <translation type="vanished">1 detik</translation>
     </message>
 </context>
 <context>
@@ -9317,24 +9274,20 @@ Kunci: %2</translation>
         <translation>[Kesalahan: Data atau Bantalan Base64 Tidak Valid]</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="209"/>
         <source>List All Tabs</source>
-        <translation>Daftar Semua Tab</translation>
+        <translation type="vanished">Daftar Semua Tab</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="220"/>
         <source>Detach Group</source>
-        <translation>Lepaskan Grup</translation>
+        <translation type="vanished">Lepaskan Grup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="247"/>
         <source>Minimize</source>
-        <translation>Minimalkan</translation>
+        <translation type="vanished">Minimalkan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="274"/>
         <source>Close Tab</source>
-        <translation>Tutup Tab</translation>
+        <translation type="vanished">Tutup Tab</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="229"/>
@@ -10932,217 +10885,172 @@ Kunci: %2</translation>
 <context>
     <name>Updater</name>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="477"/>
         <source>Would you like to download the update now?</source>
-        <translation>Apakah Anda ingin mengunduh pembaruan sekarang?</translation>
+        <translation type="vanished">Apakah Anda ingin mengunduh pembaruan sekarang?</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="479"/>
         <source>Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</source>
-        <translation>Apakah Anda ingin mengunduh pembaruan sekarang?&lt;br /&gt;Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi.</translation>
+        <translation type="vanished">Apakah Anda ingin mengunduh pembaruan sekarang?&lt;br /&gt;Ini adalah pembaruan wajib, keluar sekarang akan menutup aplikasi.</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="485"/>
         <source>&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</source>
-        <translation>&lt;strong&gt;Catatan perubahan:&lt;/strong&gt;&lt;br/&gt;%1</translation>
+        <translation type="vanished">&lt;strong&gt;Catatan perubahan:&lt;/strong&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="488"/>
         <source>Version %1 of %2 has been released!</source>
-        <translation>Versi %1 dari %2 telah dirilis!</translation>
+        <translation type="vanished">Versi %1 dari %2 telah dirilis!</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="520"/>
         <source>No updates are available for the moment</source>
-        <translation>Tidak ada pembaruan yang tersedia saat ini</translation>
+        <translation type="vanished">Tidak ada pembaruan yang tersedia saat ini</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="522"/>
         <source>Congratulations! You are running the latest version of %1</source>
-        <translation>Selamat! Anda menjalankan versi terbaru dari %1</translation>
+        <translation type="vanished">Selamat! Anda menjalankan versi terbaru dari %1</translation>
     </message>
 </context>
 <context>
     <name>ads::CAutoHideTab</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="394"/>
         <source>Detach</source>
-        <translation>Lepaskan</translation>
+        <translation type="vanished">Lepaskan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="399"/>
         <source>Pin To...</source>
-        <translation>Sematkan Ke...</translation>
+        <translation type="vanished">Sematkan Ke...</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="401"/>
         <source>Top</source>
-        <translation>Atas</translation>
+        <translation type="vanished">Atas</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="402"/>
         <source>Left</source>
-        <translation>Kiri</translation>
+        <translation type="vanished">Kiri</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="403"/>
         <source>Right</source>
-        <translation>Kanan</translation>
+        <translation type="vanished">Kanan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="404"/>
         <source>Bottom</source>
-        <translation>Bawah</translation>
+        <translation type="vanished">Bawah</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="406"/>
         <source>Unpin (Dock)</source>
-        <translation>Lepas Sematan (Dok)</translation>
+        <translation type="vanished">Lepas Sematan (Dok)</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="408"/>
         <source>Close</source>
-        <translation>Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockAreaTitleBar</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="885"/>
         <source>Detach</source>
-        <translation>Lepaskan</translation>
+        <translation type="vanished">Lepaskan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="885"/>
         <source>Detach Group</source>
-        <translation>Lepaskan Grup</translation>
+        <translation type="vanished">Lepaskan Grup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="890"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="946"/>
         <source>Unpin (Dock)</source>
-        <translation>Lepas Sematan (Dok)</translation>
+        <translation type="vanished">Lepas Sematan (Dok)</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="890"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="951"/>
         <source>Pin Group</source>
-        <translation>Sematkan Grup</translation>
+        <translation type="vanished">Sematkan Grup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="896"/>
         <source>Pin Group To...</source>
-        <translation>Sematkan Grup Ke...</translation>
+        <translation type="vanished">Sematkan Grup Ke...</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="898"/>
         <source>Top</source>
-        <translation>Atas</translation>
+        <translation type="vanished">Atas</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="899"/>
         <source>Left</source>
-        <translation>Kiri</translation>
+        <translation type="vanished">Kiri</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="900"/>
         <source>Right</source>
-        <translation>Kanan</translation>
+        <translation type="vanished">Kanan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="901"/>
         <source>Bottom</source>
-        <translation>Bawah</translation>
+        <translation type="vanished">Bawah</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="909"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="963"/>
         <source>Minimize</source>
-        <translation>Minimalkan</translation>
+        <translation type="vanished">Minimalkan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="910"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="914"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="963"/>
         <source>Close</source>
-        <translation>Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="914"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="972"/>
         <source>Close Group</source>
-        <translation>Tutup Grup</translation>
+        <translation type="vanished">Tutup Grup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="920"/>
         <source>Close Other Groups</source>
-        <translation>Tutup Grup Lain</translation>
+        <translation type="vanished">Tutup Grup Lain</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="955"/>
         <source>Pin Active Tab (Press Ctrl to Pin Group)</source>
-        <translation>Sematkan Tab Aktif (Tekan Ctrl untuk Sematkan Grup)</translation>
+        <translation type="vanished">Sematkan Tab Aktif (Tekan Ctrl untuk Sematkan Grup)</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="968"/>
         <source>Close Active Tab</source>
-        <translation>Tutup Tab Aktif</translation>
+        <translation type="vanished">Tutup Tab Aktif</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockManager</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockManager.cpp" line="544"/>
         <source>Show View</source>
-        <translation>Tampilkan Panel</translation>
+        <translation type="vanished">Tampilkan Panel</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockWidgetTab</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="618"/>
         <source>Detach</source>
-        <translation>Lepaskan</translation>
+        <translation type="vanished">Lepaskan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="622"/>
         <source>Pin</source>
-        <translation>Sematkan</translation>
+        <translation type="vanished">Sematkan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="626"/>
         <source>Pin To...</source>
-        <translation>Sematkan Ke...</translation>
+        <translation type="vanished">Sematkan Ke...</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="628"/>
         <source>Top</source>
-        <translation>Atas</translation>
+        <translation type="vanished">Atas</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="629"/>
         <source>Left</source>
-        <translation>Kiri</translation>
+        <translation type="vanished">Kiri</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="630"/>
         <source>Right</source>
-        <translation>Kanan</translation>
+        <translation type="vanished">Kanan</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="631"/>
         <source>Bottom</source>
-        <translation>Bawah</translation>
+        <translation type="vanished">Bawah</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="636"/>
         <source>Close</source>
-        <translation>Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="640"/>
         <source>Close Others</source>
-        <translation>Tutup Lainnya</translation>
+        <translation type="vanished">Tutup Lainnya</translation>
     </message>
 </context>
 </TS>
