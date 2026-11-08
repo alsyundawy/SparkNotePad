@@ -967,8 +967,8 @@ QPushButton:disabled {
     border-color: %3;
 }
 
-/* Text Browser */
-QTextBrowser {
+/* Text Browser (Exclude isolated Markdown & HTML live preview) */
+QTextBrowser:not(#markdownPreviewBrowser):not(#previewBrowser) {
     background-color: %5;
     color: %2;
     border: 1px solid %3;

@@ -8,6 +8,13 @@ L.first_line = {
 
 L.extensions = {
 	"json",
+	"jsonl",
+	"ndjson",
+	"geojson",
+	"topojson",
+	"jsonld",
+	"webmanifest",
+	"map",
 }
 
 L.properties = {

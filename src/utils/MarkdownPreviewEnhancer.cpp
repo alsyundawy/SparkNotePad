@@ -220,13 +220,12 @@ QString MarkdownPreviewEnhancer::processTaskLists(const QString &content) {
         const QString mark = match.captured(2).trimmed().toLower();
         const bool isChecked = (mark == QStringLiteral("x"));
 
-        const QString replacement =
-            match.captured(0).startsWith(QLatin1Char('\n'))
-                ? (QStringLiteral("\n") + prefix +
-                   (isChecked ? QStringLiteral("<input type=\"checkbox\" checked disabled> ")
-                              : QStringLiteral("<input type=\"checkbox\" disabled> ")))
-                : (prefix + (isChecked ? QStringLiteral("<input type=\"checkbox\" checked disabled> ")
-                                       : QStringLiteral("<input type=\"checkbox\" disabled> ")));
+        const QString checkbox = isChecked ? QStringLiteral("<input type=\"checkbox\" checked disabled> ")
+                                           : QStringLiteral("<input type=\"checkbox\" disabled> ");
+        QString replacement = prefix + checkbox;
+        if (match.captured(0).startsWith(QLatin1Char('\n'))) {
+            replacement.prepend(QLatin1Char('\n'));
+        }
 
         const qsizetype start = match.capturedStart() + offset;
         const qsizetype length = match.capturedLength();
@@ -285,7 +284,7 @@ QString MarkdownPreviewEnhancer::processFootnotes(const QString &content) {
     }
 
     // Append footnotes section
-    QString footnotesHtml = QStringLiteral("\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n");
+    auto footnotesHtml = QStringLiteral("\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n");
     for (const auto &def : definitions) {
         footnotesHtml +=
             QStringLiteral("<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" class=\"footnote-backref\">↩</a></p></li>\n")

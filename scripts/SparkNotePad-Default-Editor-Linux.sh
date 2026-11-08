@@ -384,7 +384,7 @@ resolve_desktop_entry() {
 Categories=Qt;TextEditor;Utility;Development;
 Exec=${RESOLVED_BIN} %F
 Icon=SparkNotePad
-MimeType=text/plain;text/x-c;text/x-c++;text/x-python;text/x-shellscript;application/json;text/markdown;text/html;text/css;application/xml;text/x-lua;text/x-rust;text/x-go;text/x-php;text/x-java;text/x-sql;text/x-yaml;
+MimeType=text/plain;text/x-c;text/x-c++;text/x-python;text/x-shellscript;application/json;text/markdown;text/html;text/css;application/xml;text/x-lua;text/x-rust;text/x-go;text/x-php;text/x-java;text/x-sql;text/x-yaml;text/csv;text/tab-separated-values;application/toml;application/x-yaml;application/x-subrip;text/x-diff;text/x-patch;
 StartupNotify=true
 Type=Application
 Terminal=false

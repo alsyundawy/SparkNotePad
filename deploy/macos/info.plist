@@ -45,17 +45,46 @@
 				<string>conf</string>
 				<string>md</string>
 				<string>markdown</string>
+				<string>mdown</string>
+				<string>mkdn</string>
+				<string>mkd</string>
+				<string>mdwn</string>
+				<string>mdtxt</string>
+				<string>mdtext</string>
+				<string>csv</string>
+				<string>tsv</string>
 				<string>inf</string>
 				<string>manifest</string>
 				<string>nfo</string>
 				<string>props</string>
 				<string>vsprops</string>
+				<string>1st</string>
+				<string>ans</string>
+				<string>asc</string>
+				<string>ascii</string>
+				<string>diz</string>
+				<string>err</string>
+				<string>me</string>
+				<string>msg</string>
+				<string>readme</string>
+				<string>sub</string>
+				<string>srt</string>
+				<string>vtt</string>
+				<string>uris</string>
+				<string>uri</string>
+				<string>spec</string>
+				<string>rst</string>
+				<string>in</string>
+				<string>def</string>
 			</array>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.text</string>
 				<string>public.plain-text</string>
 				<string>public.utf8-plain-text</string>
+				<string>net.daringfireball.markdown</string>
+				<string>public.comma-separated-values-text</string>
+				<string>public.tab-separated-values-text</string>
 			</array>
 		</dict>
 		<dict>

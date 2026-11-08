@@ -32,6 +32,8 @@ L.extensions = {
 	"csxproj",
 	"vbproj",
 	"dbproj",
+	"rss",
+	"atom",
 }
 
 L.properties = {

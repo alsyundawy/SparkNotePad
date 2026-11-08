@@ -76,30 +76,29 @@ private slots:
     void onThemeComboChanged(int index);
 
 private:
+    struct ToolbarUi {
+        QComboBox *comboFormat = nullptr;
+        QComboBox *comboTheme = nullptr;
+        QLabel *lblFormatStatus = nullptr;
+        QLabel *lblStats = nullptr;
+        QPushButton *btnOpenBrowser = nullptr;
+        QPushButton *btnCopyHtml = nullptr;
+        QPushButton *btnExportHtml = nullptr;
+        QPushButton *btnExportPdf = nullptr;
+        QPushButton *btnRefresh = nullptr;
+        QPushButton *btnZoomIn = nullptr;
+        QPushButton *btnZoomOut = nullptr;
+        QPushButton *btnResetZoom = nullptr;
+    };
+
     void setupUi();
     void updateFormatLabel(PreviewFormat effectiveFormat);
-    void updateStatsLabel(const QString &text);
     void applyGitHubTheme();
-    [[nodiscard]] QString buildGitHubStyleSheet(bool isDark) const;
-    [[nodiscard]] QString generateFullHtmlDocument(const QString &bodyHtml, bool isDark) const;
-    [[nodiscard]] static QString enhanceCallouts(const QString &html, bool isDark);
 
+    ToolbarUi m_ui;
     QTextBrowser *browser = nullptr;
     QTimer *debounceTimer = nullptr;
     QPointer<ScintillaNext> currentEditor;
-
-    QComboBox *comboFormat = nullptr;
-    QComboBox *comboTheme = nullptr;
-    QLabel *lblFormatStatus = nullptr;
-    QLabel *lblStats = nullptr;
-    QPushButton *btnOpenBrowser = nullptr;
-    QPushButton *btnCopyHtml = nullptr;
-    QPushButton *btnExportHtml = nullptr;
-    QPushButton *btnExportPdf = nullptr;
-    QPushButton *btnRefresh = nullptr;
-    QPushButton *btnZoomIn = nullptr;
-    QPushButton *btnZoomOut = nullptr;
-    QPushButton *btnResetZoom = nullptr;
 
     PreviewFormat currentFormat = PreviewFormat::Auto;
     MarkdownThemeManager::ThemeId currentTheme = MarkdownThemeManager::ThemeId::GitHub;

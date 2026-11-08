@@ -119,14 +119,13 @@ constexpr std::array<ThemeColors, 30> s_themes = {{
 QStringList MarkdownThemeManager::themeNames() {
     QStringList names;
     names.reserve(static_cast<qsizetype>(s_themes.size()));
-    std::transform(s_themes.begin(), s_themes.end(), std::back_inserter(names),
-                   [](const ThemeColors &t) { return QString::fromLatin1(t.name); });
+    std::ranges::transform(s_themes, std::back_inserter(names),
+                           [](const ThemeColors &t) { return QString::fromLatin1(t.name); });
     return names;
 }
 
 QString MarkdownThemeManager::themeName(ThemeId id) {
-    const auto idx = static_cast<std::size_t>(id);
-    if (idx < s_themes.size()) {
+    if (const auto idx = static_cast<std::size_t>(id); idx < s_themes.size()) {
         return QString::fromLatin1(s_themes[idx].name);
     }
     return QStringLiteral("GITHUB");
@@ -143,16 +142,14 @@ ThemeId MarkdownThemeManager::themeFromName(const QString &name) {
 }
 
 bool MarkdownThemeManager::isThemeDark(ThemeId id) {
-    const auto idx = static_cast<std::size_t>(id);
-    if (idx < s_themes.size()) {
+    if (const auto idx = static_cast<std::size_t>(id); idx < s_themes.size()) {
         return s_themes[idx].isDark;
     }
     return false;
 }
 
 const ThemeColors &MarkdownThemeManager::themeColors(ThemeId id) {
-    const auto idx = static_cast<std::size_t>(id);
-    if (idx < s_themes.size()) {
+    if (const auto idx = static_cast<std::size_t>(id); idx < s_themes.size()) {
         return s_themes[idx];
     }
     return s_themes[0];

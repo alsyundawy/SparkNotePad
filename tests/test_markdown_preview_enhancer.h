@@ -16,8 +16,8 @@ class TestMarkdownPreviewEnhancer : public QObject {
 
 private slots:
     void testProcessMermaidBlocks() const {
-        const QString input = QStringLiteral("Intro\n```mermaid\ngraph TD\n    A-->B\n```\nOutro");
-        const QString result = MarkdownPreviewEnhancer::processMermaidBlocks(input, false);
+        const auto input = QStringLiteral("Intro\n```mermaid\ngraph TD\n    A-->B\n```\nOutro");
+        const auto result = MarkdownPreviewEnhancer::processMermaidBlocks(input, false);
 
         QVERIFY(result.contains(QStringLiteral("class=\"mermaid-diagram\"")) ||
                 result.contains(QStringLiteral("mermaid")));
@@ -26,24 +26,24 @@ private slots:
     }
 
     void testProcessBlockMath() const {
-        const QString input = QStringLiteral("Formula:\n$$\nE = mc^2\n$$\nDone");
-        const QString result = MarkdownPreviewEnhancer::processMathExpressions(input);
+        const auto input = QStringLiteral("Formula:\n$$\nE = mc^2\n$$\nDone");
+        const auto result = MarkdownPreviewEnhancer::processMathExpressions(input);
 
         QVERIFY(result.contains(QStringLiteral("class=\"math-block\"")));
         QVERIFY(result.contains(QStringLiteral("E = mc^2")));
     }
 
     void testProcessInlineMath() const {
-        const QString input = QStringLiteral("The equation is $f(x) = x^2$ in math.");
-        const QString result = MarkdownPreviewEnhancer::processMathExpressions(input);
+        const auto input = QStringLiteral("The equation is $f(x) = x^2$ in math.");
+        const auto result = MarkdownPreviewEnhancer::processMathExpressions(input);
 
         QVERIFY(result.contains(QStringLiteral("class=\"math-inline\"")));
         QVERIFY(result.contains(QStringLiteral("f(x) = x^2")));
     }
 
     void testPreserveCurrencyAndEscapedDollars() const {
-        const QString input = QStringLiteral("The price is $50 and another is $100. Escaped \\$variable.");
-        const QString result = MarkdownPreviewEnhancer::processMathExpressions(input);
+        const auto input = QStringLiteral("The price is $50 and another is $100. Escaped \\$variable.");
+        const auto result = MarkdownPreviewEnhancer::processMathExpressions(input);
 
         // Price should not be turned into inline math
         QVERIFY(!result.contains(QStringLiteral("class=\"math-inline\"")));
@@ -51,9 +51,9 @@ private slots:
     }
 
     void testXssSanitization() const {
-        const QString malicious =
+        const auto malicious =
             QStringLiteral("```mermaid\n<script>alert('xss')</script>\n```\n$$<img src=x onerror=alert(1)>$$");
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(malicious, false);
+        const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(malicious, false);
 
         QVERIFY(!enhanced.contains(QStringLiteral("<script>")));
         QVERIFY(!enhanced.contains(QStringLiteral("<img src=x")));
@@ -125,8 +125,8 @@ private slots:
     }
 
     void testMarkdownItExtensions() const {
-        const QString input = QStringLiteral("This is ~~deleted~~ and ==highlighted== and ++inserted++ and H~2~O and E=mc^2^.");
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
+        const auto input = QStringLiteral("This is ~~deleted~~ and ==highlighted== and ++inserted++ and H~2~O and E=mc^2^.");
+        const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
         QVERIFY(enhanced.contains(QStringLiteral("<del>deleted</del>")));
         QVERIFY(enhanced.contains(QStringLiteral("<mark>highlighted</mark>")));
@@ -136,16 +136,16 @@ private slots:
     }
 
     void testTaskLists() const {
-        const QString input = QStringLiteral("- [ ] Unfinished task\n- [x] Completed task\n* [X] Another completed");
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
+        const auto input = QStringLiteral("- [ ] Unfinished task\n- [x] Completed task\n* [X] Another completed");
+        const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
         QVERIFY(enhanced.contains(QStringLiteral("<input type=\"checkbox\" disabled>")));
         QVERIFY(enhanced.contains(QStringLiteral("<input type=\"checkbox\" checked disabled>")));
     }
 
     void testFootnotes() const {
-        const QString input = QStringLiteral("Here is a reference[^1] in text.\n\n[^1]: This is the footnote definition.");
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
+        const auto input = QStringLiteral("Here is a reference[^1] in text.\n\n[^1]: This is the footnote definition.");
+        const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
         QVERIFY(enhanced.contains(QStringLiteral("<sup class=\"footnote-ref\"><a href=\"#fn_1\" id=\"fnref_1\">[1]</a></sup>")));
         QVERIFY(enhanced.contains(QStringLiteral("class=\"footnotes\"")));
@@ -154,8 +154,8 @@ private slots:
     }
 
     void testCodeBlockProtection() const {
-        const QString input = QStringLiteral("```\n~~not strikethrough~~ and ==not mark==\n```\n`$not math$`");
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
+        const auto input = QStringLiteral("```\n~~not strikethrough~~ and ==not mark==\n```\n`$not math$`");
+        const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
         QVERIFY(!enhanced.contains(QStringLiteral("<del>")));
         QVERIFY(!enhanced.contains(QStringLiteral("<mark>")));

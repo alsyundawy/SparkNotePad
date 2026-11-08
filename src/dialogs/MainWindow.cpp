@@ -3870,8 +3870,8 @@ bool MainWindow::isMarkdown(const ScintillaNext *editor) {
     if (!editor) {
         return false;
     }
-    const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
-    if (MarkdownPreviewEnhancer::isMarkdownPath(target)) {
+    if (const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
+        MarkdownPreviewEnhancer::isMarkdownPath(target)) {
         return true;
     }
     return editor->languageName.contains(QStringLiteral("markdown"), Qt::CaseInsensitive);
@@ -3881,8 +3881,8 @@ bool MainWindow::isHtml(const ScintillaNext *editor) {
     if (!editor) {
         return false;
     }
-    const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
-    if (MarkdownPreviewEnhancer::isHtmlPath(target)) {
+    if (const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
+        MarkdownPreviewEnhancer::isHtmlPath(target)) {
         return true;
     }
     const QString lang = editor->languageName.toLower();

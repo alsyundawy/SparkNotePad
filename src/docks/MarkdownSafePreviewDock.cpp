@@ -12,8 +12,6 @@
  */
 
 #include "MarkdownSafePreviewDock.h"
-#include "ScintillaNext.h"
-#include "MainWindow.h"
 #include <QApplication>
 #include <QClipboard>
 #include <QComboBox>
@@ -22,14 +20,8 @@
 #include <QEvent>
 #include <QFile>
 #include <QFileDialog>
-#include "../features/DocumentExportManager.h"
-#include "../features/ThemeManager.h"
-#include "../features/ThemePaletteData.h"
-#include "../dialogs/ExportOptionsDialog.h"
-#include "../utils/MarkdownPreviewEnhancer.h"
-#include "../utils/MarkdownThemeManager.h"
-#include <QFileInfo>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
@@ -39,402 +31,16 @@
 #include <QTemporaryFile>
 #include <QTextDocument>
 #include <QVBoxLayout>
-
-MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
-    : QDockWidget(tr("HTML & Markdown Live Preview"), parent),
-      browser(new QTextBrowser(this)),
-      debounceTimer(new QTimer(this)),
-      comboFormat(new QComboBox(this)),
-      comboTheme(new QComboBox(this)),
-      lblFormatStatus(new QLabel(this)),
-      lblStats(new QLabel(this)),
-      btnOpenBrowser(new QPushButton(this)),
-      btnCopyHtml(new QPushButton(this)),
-      btnExportHtml(new QPushButton(this)),
-      btnExportPdf(new QPushButton(this)),
-      btnRefresh(new QPushButton(this)),
-      btnZoomIn(new QPushButton(this)),
-      btnZoomOut(new QPushButton(this)),
-      btnResetZoom(new QPushButton(QStringLiteral("100%"), this)) {
-    setObjectName(QStringLiteral("MarkdownSafePreviewDock"));
-
-    // Restore persistent settings
-    const QSettings settings;
-    autoShowEnabled = settings.value(QStringLiteral("Gui/AutoShowMarkdownHtmlPreview"), false).toBool();
-    if (const int savedFormat = settings.value(QStringLiteral("Gui/PreviewFormat"), 0).toInt();
-        savedFormat >= 0 && savedFormat <= 2) {
-        currentFormat = static_cast<PreviewFormat>(savedFormat);
-    }
-    const QString savedThemeName = settings.value(QStringLiteral("Gui/MarkdownPreviewTheme"), QString()).toString();
-    if (!savedThemeName.isEmpty()) {
-        currentTheme = MarkdownThemeManager::themeFromName(savedThemeName);
-        m_userExplicitTheme = true;
-    } else {
-        const bool isDark = ThemeManager::instance()->isDarkActive();
-        currentTheme = MarkdownThemeManager::defaultTheme(isDark);
-    }
-
-    setupUi();
-
-    debounceTimer->setSingleShot(true);
-    debounceTimer->setInterval(200);
-    connect(debounceTimer, &QTimer::timeout, this, &MarkdownSafePreviewDock::renderPreview);
-
-    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
-    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
-    applyGitHubTheme();
-}
-
-void MarkdownSafePreviewDock::setupUi() {
-    auto *container = new QWidget(this);
-    container->setObjectName(QStringLiteral("previewContainer"));
-    auto *mainLayout = new QVBoxLayout(container);
-    mainLayout->setContentsMargins(4, 4, 4, 4);
-    mainLayout->setSpacing(4);
-
-    // Header Toolbar
-    auto *topBar = new QWidget(container);
-    topBar->setObjectName(QStringLiteral("previewTopBar"));
-    auto *topLayout = new QHBoxLayout(topBar);
-    topLayout->setContentsMargins(6, 4, 6, 4);
-    topLayout->setSpacing(5);
-
-    comboFormat->addItem(tr("Auto"), static_cast<int>(PreviewFormat::Auto));
-    comboFormat->addItem(tr("Markdown"), static_cast<int>(PreviewFormat::Markdown));
-    comboFormat->addItem(tr("HTML"), static_cast<int>(PreviewFormat::Html));
-    comboFormat->setCurrentIndex(static_cast<int>(currentFormat));
-    comboFormat->setToolTip(tr("Select preview rendering format (Auto detects Markdown or HTML)"));
-    connect(comboFormat, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onFormatComboChanged);
-    topLayout->addWidget(comboFormat);
-
-    const QStringList themeList = MarkdownThemeManager::themeNames();
-    for (int i = 0; i < themeList.size(); ++i) {
-        comboTheme->addItem(themeList[i], i);
-    }
-    comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
-    comboTheme->setToolTip(tr("Select Markdown theme (30 cleanrmd / markdown-it themes)"));
-    connect(comboTheme, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onThemeComboChanged);
-    topLayout->addWidget(comboTheme);
-
-    lblFormatStatus->setObjectName(QStringLiteral("lblFormatStatus"));
-    lblFormatStatus->setText(tr("Auto"));
-    topLayout->addWidget(lblFormatStatus);
-
-    lblStats->setObjectName(QStringLiteral("lblPreviewStats"));
-    lblStats->setText(tr("0 words • 0 min read"));
-    topLayout->addWidget(lblStats);
-
-    topLayout->addStretch(1);
-
-    btnZoomOut->setIcon(QIcon(QStringLiteral(":/icons/zoomOut.svg")));
-    btnZoomOut->setIconSize(QSize(14, 14));
-    btnZoomOut->setToolTip(tr("Zoom Out"));
-    btnZoomOut->setFixedSize(28, 24);
-    btnZoomOut->setCursor(Qt::PointingHandCursor);
-    connect(btnZoomOut, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomOut);
-    topLayout->addWidget(btnZoomOut);
-
-    btnResetZoom->setText(QStringLiteral("100%"));
-    btnResetZoom->setToolTip(tr("Reset Zoom (100%)"));
-    btnResetZoom->setFixedHeight(24);
-    btnResetZoom->setMinimumWidth(48);
-    btnResetZoom->setCursor(Qt::PointingHandCursor);
-    connect(btnResetZoom, &QPushButton::clicked, this, &MarkdownSafePreviewDock::resetZoom);
-    topLayout->addWidget(btnResetZoom);
-
-    btnZoomIn->setIcon(QIcon(QStringLiteral(":/icons/zoomIn.svg")));
-    btnZoomIn->setIconSize(QSize(14, 14));
-    btnZoomIn->setToolTip(tr("Zoom In"));
-    btnZoomIn->setFixedSize(28, 24);
-    btnZoomIn->setCursor(Qt::PointingHandCursor);
-    connect(btnZoomIn, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomIn);
-    topLayout->addWidget(btnZoomIn);
-
-    btnRefresh->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
-    btnRefresh->setIconSize(QSize(14, 14));
-    btnRefresh->setToolTip(tr("Refresh Preview"));
-    btnRefresh->setFixedSize(28, 24);
-    btnRefresh->setCursor(Qt::PointingHandCursor);
-    connect(btnRefresh, &QPushButton::clicked, this, &MarkdownSafePreviewDock::renderPreview);
-    topLayout->addWidget(btnRefresh);
-
-    btnCopyHtml->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
-    btnCopyHtml->setIconSize(QSize(14, 14));
-    btnCopyHtml->setToolTip(tr("Copy Formatted HTML to Clipboard"));
-    btnCopyHtml->setFixedSize(28, 24);
-    btnCopyHtml->setCursor(Qt::PointingHandCursor);
-    connect(btnCopyHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::copyHtml);
-    topLayout->addWidget(btnCopyHtml);
-
-    btnExportHtml->setIcon(QIcon(QStringLiteral(":/icons/export.svg")));
-    btnExportHtml->setIconSize(QSize(14, 14));
-    btnExportHtml->setToolTip(tr("Export as Standalone HTML File..."));
-    btnExportHtml->setFixedSize(28, 24);
-    btnExportHtml->setCursor(Qt::PointingHandCursor);
-    connect(btnExportHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportHtml);
-    topLayout->addWidget(btnExportHtml);
-
-    btnExportPdf->setText(QStringLiteral("PDF"));
-    btnExportPdf->setToolTip(tr("Export Document to PDF..."));
-    btnExportPdf->setFixedHeight(24);
-    btnExportPdf->setCursor(Qt::PointingHandCursor);
-    connect(btnExportPdf, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportPdf);
-    topLayout->addWidget(btnExportPdf);
-
-    btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
-    btnOpenBrowser->setIconSize(QSize(14, 14));
-    btnOpenBrowser->setText(QStringLiteral("Browser"));
-    btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
-    btnOpenBrowser->setFixedHeight(24);
-    btnOpenBrowser->setCursor(Qt::PointingHandCursor);
-    connect(btnOpenBrowser, &QPushButton::clicked, this, &MarkdownSafePreviewDock::openInBrowser);
-    topLayout->addWidget(btnOpenBrowser);
-
-    mainLayout->addWidget(topBar);
-
-    // Hardened sandboxing: disable automatic link opening to intercept all navigation (CVE-2026-20841)
-    browser->setOpenExternalLinks(false);
-    browser->setOpenLinks(false);
-    connect(browser, &QTextBrowser::anchorClicked, this, &MarkdownSafePreviewDock::handleAnchorClicked);
-    connect(browser->verticalScrollBar(), &QScrollBar::valueChanged, this,
-            &MarkdownSafePreviewDock::syncScrollFromBrowser);
-
-    // Apply GitHub Markdown styling
-    applyGitHubTheme();
-
-    mainLayout->addWidget(browser);
-    setWidget(container);
-
-    baseFontSize = browser->font().pointSize();
-    if (baseFontSize <= 0) {
-        baseFontSize = 13;
-    }
-}
-
-void MarkdownSafePreviewDock::setActiveEditor(ScintillaNext *editor) {
-    if (currentEditor == editor) {
-        scheduleRender();
-        return;
-    }
-
-    if (currentEditor) {
-        disconnect(currentEditor, nullptr, this, nullptr);
-    }
-
-    currentEditor = editor;
-
-    if (currentEditor) {
-        connect(currentEditor, &ScintillaNext::notifyChange, this, &MarkdownSafePreviewDock::scheduleRender);
-        connect(currentEditor, &ScintillaNext::updateUi, this, &MarkdownSafePreviewDock::syncScrollFromEditor);
-    }
-
-    scheduleRender();
-}
-
-void MarkdownSafePreviewDock::scheduleRender() {
-    if (isVisible()) {
-        debounceTimer->start();
-    }
-}
-
-MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(const ScintillaNext *editor) {
-    using enum PreviewFormat;
-
-    if (!editor) {
-        return Markdown;
-    }
-
-    const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
-    if (MarkdownPreviewEnhancer::isHtmlPath(target)) {
-        return Html;
-    }
-    if (MarkdownPreviewEnhancer::isMarkdownPath(target)) {
-        return Markdown;
-    }
-
-    const QString lang = editor->languageName.toLower();
-    if (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml"))) {
-        return Html;
-    }
-    if (lang.contains(QStringLiteral("markdown"))) {
-        return Markdown;
-    }
-
-    // Heuristic scan of first 400 bytes
-    const QString snippet = QString::fromUtf8(editor->get_text_range(0, 400)).trimmed().toLower();
-    if (snippet.startsWith(QStringLiteral("<!doctype html")) || snippet.startsWith(QStringLiteral("<html")) ||
-        snippet.contains(QStringLiteral("<head>")) || snippet.contains(QStringLiteral("<body>")) ||
-        snippet.contains(QStringLiteral("</div>")) || snippet.contains(QStringLiteral("</p>"))) {
-        return Html;
-    }
-
-    return Markdown;
-}
-
-void MarkdownSafePreviewDock::changeEvent(QEvent *event) {
-    if (event->type() == QEvent::PaletteChange) {
-        applyGitHubTheme();
-        renderPreview();
-    }
-    QDockWidget::changeEvent(event);
-}
-
-void MarkdownSafePreviewDock::applyGitHubTheme() {
-    if (m_isUpdatingTheme) {
-        return;
-    }
-    m_isUpdatingTheme = true;
-
-    const bool isDark = ThemeManager::instance()->isDarkActive();
-    if (!m_userExplicitTheme) {
-        currentTheme = MarkdownThemeManager::defaultTheme(isDark);
-        if (comboTheme) {
-            comboTheme->blockSignals(true);
-            comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
-            comboTheme->blockSignals(false);
-        }
-    }
-
-    const ThemePalette *pal = ThemeManager::instance()->currentPalette();
-    const QString accent = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#0969da");
-    const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
-    const QString textPri = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
-    const QString textSec = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
-    const QString border = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
-    const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#f6f8fa");
-    const QString badgeBg =
-        isDark ? QStringLiteral("rgba(56, 139, 253, 0.15)") : QStringLiteral("rgba(9, 105, 218, 0.1)");
-    const QString selColor =
-        isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
-
-    const QColor themeBg = MarkdownThemeManager::themeBackgroundColor(currentTheme);
-    const QColor themeFg = MarkdownThemeManager::themeTextColor(currentTheme);
-
-    const QString dockStyle = QStringLiteral(
-                                  "QDockWidget {"
-                                  "  background-color: %1;"
-                                  "  color: %2;"
-                                  "}"
-                                  "QDockWidget::title {"
-                                  "  background-color: %1;"
-                                  "  color: %2;"
-                                  "  padding: 6px 10px;"
-                                  "  border-bottom: 2px solid %3;"
-                                  "  font-weight: 600;"
-                                  "  font-size: 11px;"
-                                  "}"
-                                  "QWidget#previewTopBar {"
-                                  "  background-color: %1;"
-                                  "  border: 1px solid %4;"
-                                  "  border-radius: 6px;"
-                                  "}"
-                                  "QWidget#previewTopBar QComboBox {"
-                                  "  background-color: %5;"
-                                  "  color: %2;"
-                                  "  border: 1px solid %4;"
-                                  "  border-radius: 4px;"
-                                  "  padding: 2px 6px;"
-                                  "  font-size: 11px;"
-                                  "}"
-                                  "QWidget#previewTopBar QComboBox:hover {"
-                                  "  border-color: %3;"
-                                  "}"
-                                  "QLabel#lblFormatStatus {"
-                                  "  font-size: 10px;"
-                                  "  font-weight: 600;"
-                                  "  padding: 2px 8px;"
-                                  "  border-radius: 10px;"
-                                  "  background-color: %6;"
-                                  "  color: %3;"
-                                  "  border: 1px solid %3;"
-                                  "}"
-                                  "QLabel#lblPreviewStats {"
-                                  "  font-size: 10px;"
-                                  "  color: %7;"
-                                  "  padding: 2px 6px;"
-                                  "}"
-                                  "QWidget#previewTopBar QPushButton {"
-                                  "  background-color: %8;"
-                                  "  color: %2;"
-                                  "  border: 1px solid %4;"
-                                  "  border-radius: 4px;"
-                                  "  font-size: 11px;"
-                                  "  padding: 2px 5px;"
-                                  "  min-height: 20px;"
-                                  "}"
-                                  "QWidget#previewTopBar QPushButton:hover {"
-                                  "  border-color: %3;"
-                                  "  color: %3;"
-                                  "}"
-                                  "QWidget#previewTopBar QPushButton:pressed {"
-                                  "  background-color: %3;"
-                                  "  color: #ffffff;"
-                                  "}")
-                                  .arg(dockBg, textPri, accent, border, themeBg.name(), badgeBg, textSec, btnBg);
-    setStyleSheet(dockStyle);
-
-    browser->setStyleSheet(
-        QStringLiteral(
-            "QTextBrowser { background-color: %1; color: %2; border: none; selection-background-color: %3; }")
-            .arg(themeBg.name(), themeFg.name(), selColor));
-
-    browser->document()->setDefaultStyleSheet(buildGitHubStyleSheet(isDark));
-    m_isUpdatingTheme = false;
-}
-
-QString MarkdownSafePreviewDock::buildGitHubStyleSheet(bool isDark) const {
-    (void)isDark;
-    return MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize);
-}
-
-void MarkdownSafePreviewDock::onThemeComboChanged(int index) {
-    if (index < 0 || index >= static_cast<int>(MarkdownThemeManager::themeNames().size())) {
-        return;
-    }
-    currentTheme = static_cast<MarkdownThemeManager::ThemeId>(index);
-    m_userExplicitTheme = true;
-    QSettings settings;
-    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
-    applyGitHubTheme();
-    renderPreview();
-}
-
-void MarkdownSafePreviewDock::setPreviewTheme(MarkdownThemeManager::ThemeId newTheme) {
-    currentTheme = newTheme;
-    m_userExplicitTheme = true;
-    if (comboTheme) {
-        comboTheme->blockSignals(true);
-        comboTheme->setCurrentIndex(static_cast<int>(newTheme));
-        comboTheme->blockSignals(false);
-    }
-    QSettings settings;
-    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
-    applyGitHubTheme();
-    renderPreview();
-}
-
-QString MarkdownSafePreviewDock::generateFullHtmlDocument(const QString &bodyHtml, bool isDark) const {
-    (void)isDark;
-    const QString css = MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize);
-    const QString title = currentEditor ? currentEditor->getFileInfo().fileName() : tr("SparkNotePad Preview");
-
-    return QStringLiteral(
-               "<!DOCTYPE html>\n"
-               "<html>\n"
-               "<head>\n"
-               "<meta charset=\"utf-8\">\n"
-               "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-               "<title>%1</title>\n"
-               "<style>\n"
-               "%2\n"
-               "</style>\n"
-               "</head>\n"
-               "<body>\n"
-               "%3\n"
-               "</body>\n"
-               "</html>\n")
-        .arg(title.toHtmlEscaped(), css, bodyHtml);
-}
+#include <algorithm>
+#include <array>
+#include "ScintillaNext.h"
+#include "MainWindow.h"
+#include "../dialogs/ExportOptionsDialog.h"
+#include "../features/DocumentExportManager.h"
+#include "../features/ThemeManager.h"
+#include "../features/ThemePaletteData.h"
+#include "../utils/MarkdownPreviewEnhancer.h"
+#include "../utils/MarkdownThemeManager.h"
 
 namespace {
 struct CalloutDef {
@@ -498,9 +104,8 @@ void replaceSingleDockCallout(QString &result, const CalloutDef &c, qsizetype &i
     result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
     idx = bqStart + replacement.length();
 }
-}  // namespace
 
-QString MarkdownSafePreviewDock::enhanceCallouts(const QString &html, bool isDark) {
+QString enhanceCallouts(const QString &html, bool isDark) {
     QString result = html;
     for (const auto &c : s_dockCallouts) {
         const QString marker = QString::fromUtf8(c.tag);
@@ -512,79 +117,494 @@ QString MarkdownSafePreviewDock::enhanceCallouts(const QString &html, bool isDar
     return result;
 }
 
+QString generateFullHtmlDocument(const QString &bodyHtml, const QString &title, MarkdownThemeManager::ThemeId theme,
+                                 int fontSize) {
+    const QString css = MarkdownThemeManager::generateThemeCss(theme, fontSize);
+    return QStringLiteral(
+               "<!DOCTYPE html>\n"
+               "<html>\n"
+               "<head>\n"
+               "<meta charset=\"utf-8\">\n"
+               "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+               "<title>%1</title>\n"
+               "<style>\n"
+               "%2\n"
+               "</style>\n"
+               "</head>\n"
+               "<body>\n"
+               "%3\n"
+               "</body>\n"
+               "</html>\n")
+        .arg(title.toHtmlEscaped(), css, bodyHtml);
+}
+}  // namespace
+
+MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
+    : QDockWidget(tr("HTML & Markdown Live Preview"), parent),
+      browser(new QTextBrowser(this)),
+      debounceTimer(new QTimer(this)) {
+    m_ui.comboFormat = new QComboBox(this);
+    m_ui.comboTheme = new QComboBox(this);
+    m_ui.lblFormatStatus = new QLabel(this);
+    m_ui.lblStats = new QLabel(this);
+    m_ui.btnOpenBrowser = new QPushButton(this);
+    m_ui.btnCopyHtml = new QPushButton(this);
+    m_ui.btnExportHtml = new QPushButton(this);
+    m_ui.btnExportPdf = new QPushButton(this);
+    m_ui.btnRefresh = new QPushButton(this);
+    m_ui.btnZoomIn = new QPushButton(this);
+    m_ui.btnZoomOut = new QPushButton(this);
+    m_ui.btnResetZoom = new QPushButton(QStringLiteral("100%"), this);
+
+    setObjectName(QStringLiteral("MarkdownSafePreviewDock"));
+    browser->setObjectName(QStringLiteral("markdownPreviewBrowser"));
+
+    // Restore persistent settings
+    const QSettings settings;
+    autoShowEnabled = settings.value(QStringLiteral("Gui/AutoShowMarkdownHtmlPreview"), false).toBool();
+    if (const int savedFormat = settings.value(QStringLiteral("Gui/PreviewFormat"), 0).toInt();
+        savedFormat >= 0 && savedFormat <= 2) {
+        currentFormat = static_cast<PreviewFormat>(savedFormat);
+    }
+    if (const QString savedThemeName = settings.value(QStringLiteral("Gui/MarkdownPreviewTheme"), QString()).toString();
+        !savedThemeName.isEmpty()) {
+        currentTheme = MarkdownThemeManager::themeFromName(savedThemeName);
+        m_userExplicitTheme = true;
+    } else {
+        const bool isDark = ThemeManager::instance()->isDarkActive();
+        currentTheme = MarkdownThemeManager::defaultTheme(isDark);
+    }
+
+    setupUi();
+
+    debounceTimer->setSingleShot(true);
+    debounceTimer->setInterval(200);
+    connect(debounceTimer, &QTimer::timeout, this, &MarkdownSafePreviewDock::renderPreview);
+
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
+    applyGitHubTheme();
+}
+
+void MarkdownSafePreviewDock::setupUi() {
+    auto *container = new QWidget(this);
+    container->setObjectName(QStringLiteral("previewContainer"));
+    auto *mainLayout = new QVBoxLayout(container);
+    mainLayout->setContentsMargins(4, 4, 4, 4);
+    mainLayout->setSpacing(4);
+
+    // Header Toolbar
+    auto *topBar = new QWidget(container);
+    topBar->setObjectName(QStringLiteral("previewTopBar"));
+    auto *topLayout = new QHBoxLayout(topBar);
+    topLayout->setContentsMargins(6, 4, 6, 4);
+    topLayout->setSpacing(5);
+
+    m_ui.comboFormat->addItem(tr("Auto"), static_cast<int>(PreviewFormat::Auto));
+    m_ui.comboFormat->addItem(tr("Markdown"), static_cast<int>(PreviewFormat::Markdown));
+    m_ui.comboFormat->addItem(tr("HTML"), static_cast<int>(PreviewFormat::Html));
+    m_ui.comboFormat->setCurrentIndex(static_cast<int>(currentFormat));
+    m_ui.comboFormat->setToolTip(tr("Select preview rendering format (Auto detects Markdown or HTML)"));
+    connect(m_ui.comboFormat, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onFormatComboChanged);
+    topLayout->addWidget(m_ui.comboFormat);
+
+    const QStringList themeList = MarkdownThemeManager::themeNames();
+    for (int i = 0; i < themeList.size(); ++i) {
+        m_ui.comboTheme->addItem(themeList[i], i);
+    }
+    m_ui.comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
+    m_ui.comboTheme->setToolTip(tr("Select Markdown theme (30 cleanrmd / markdown-it themes)"));
+    connect(m_ui.comboTheme, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onThemeComboChanged);
+    topLayout->addWidget(m_ui.comboTheme);
+
+    m_ui.lblFormatStatus->setObjectName(QStringLiteral("lblFormatStatus"));
+    m_ui.lblFormatStatus->setText(tr("Auto"));
+    topLayout->addWidget(m_ui.lblFormatStatus);
+
+    m_ui.lblStats->setObjectName(QStringLiteral("lblPreviewStats"));
+    m_ui.lblStats->setText(tr("0 words • 0 min read"));
+    topLayout->addWidget(m_ui.lblStats);
+
+    topLayout->addStretch(1);
+
+    m_ui.btnZoomOut->setIcon(QIcon(QStringLiteral(":/icons/zoomOut.svg")));
+    m_ui.btnZoomOut->setIconSize(QSize(14, 14));
+    m_ui.btnZoomOut->setToolTip(tr("Zoom Out"));
+    m_ui.btnZoomOut->setFixedSize(28, 24);
+    m_ui.btnZoomOut->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnZoomOut, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomOut);
+    topLayout->addWidget(m_ui.btnZoomOut);
+
+    m_ui.btnResetZoom->setText(QStringLiteral("100%"));
+    m_ui.btnResetZoom->setToolTip(tr("Reset Zoom (100%)"));
+    m_ui.btnResetZoom->setFixedHeight(24);
+    m_ui.btnResetZoom->setMinimumWidth(48);
+    m_ui.btnResetZoom->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnResetZoom, &QPushButton::clicked, this, &MarkdownSafePreviewDock::resetZoom);
+    topLayout->addWidget(m_ui.btnResetZoom);
+
+    m_ui.btnZoomIn->setIcon(QIcon(QStringLiteral(":/icons/zoomIn.svg")));
+    m_ui.btnZoomIn->setIconSize(QSize(14, 14));
+    m_ui.btnZoomIn->setToolTip(tr("Zoom In"));
+    m_ui.btnZoomIn->setFixedSize(28, 24);
+    m_ui.btnZoomIn->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnZoomIn, &QPushButton::clicked, this, &MarkdownSafePreviewDock::zoomIn);
+    topLayout->addWidget(m_ui.btnZoomIn);
+
+    m_ui.btnRefresh->setIcon(QIcon(QStringLiteral(":/icons/arrow_refresh.svg")));
+    m_ui.btnRefresh->setIconSize(QSize(14, 14));
+    m_ui.btnRefresh->setToolTip(tr("Refresh Preview"));
+    m_ui.btnRefresh->setFixedSize(28, 24);
+    m_ui.btnRefresh->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnRefresh, &QPushButton::clicked, this, &MarkdownSafePreviewDock::renderPreview);
+    topLayout->addWidget(m_ui.btnRefresh);
+
+    m_ui.btnCopyHtml->setIcon(QIcon(QStringLiteral(":/icons/copy.svg")));
+    m_ui.btnCopyHtml->setIconSize(QSize(14, 14));
+    m_ui.btnCopyHtml->setToolTip(tr("Copy Formatted HTML to Clipboard"));
+    m_ui.btnCopyHtml->setFixedSize(28, 24);
+    m_ui.btnCopyHtml->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnCopyHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::copyHtml);
+    topLayout->addWidget(m_ui.btnCopyHtml);
+
+    m_ui.btnExportHtml->setIcon(QIcon(QStringLiteral(":/icons/export.svg")));
+    m_ui.btnExportHtml->setIconSize(QSize(14, 14));
+    m_ui.btnExportHtml->setToolTip(tr("Export as Standalone HTML File..."));
+    m_ui.btnExportHtml->setFixedSize(28, 24);
+    m_ui.btnExportHtml->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnExportHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportHtml);
+    topLayout->addWidget(m_ui.btnExportHtml);
+
+    m_ui.btnExportPdf->setText(QStringLiteral("PDF"));
+    m_ui.btnExportPdf->setToolTip(tr("Export Document to PDF..."));
+    m_ui.btnExportPdf->setFixedHeight(24);
+    m_ui.btnExportPdf->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnExportPdf, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportPdf);
+    topLayout->addWidget(m_ui.btnExportPdf);
+
+    m_ui.btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
+    m_ui.btnOpenBrowser->setIconSize(QSize(14, 14));
+    m_ui.btnOpenBrowser->setText(QStringLiteral("Browser"));
+    m_ui.btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
+    m_ui.btnOpenBrowser->setFixedHeight(24);
+    m_ui.btnOpenBrowser->setCursor(Qt::PointingHandCursor);
+    connect(m_ui.btnOpenBrowser, &QPushButton::clicked, this, &MarkdownSafePreviewDock::openInBrowser);
+    topLayout->addWidget(m_ui.btnOpenBrowser);
+
+    mainLayout->addWidget(topBar);
+
+    // Hardened sandboxing: disable automatic link opening to intercept all navigation (CVE-2026-20841)
+    browser->setOpenExternalLinks(false);
+    browser->setOpenLinks(false);
+    connect(browser, &QTextBrowser::anchorClicked, this, &MarkdownSafePreviewDock::handleAnchorClicked);
+    connect(browser->verticalScrollBar(), &QScrollBar::valueChanged, this,
+            &MarkdownSafePreviewDock::syncScrollFromBrowser);
+
+    // Apply styling
+    applyGitHubTheme();
+
+    mainLayout->addWidget(browser);
+    setWidget(container);
+
+    baseFontSize = browser->font().pointSize();
+    if (baseFontSize <= 0) {
+        baseFontSize = 13;
+    }
+}
+
+void MarkdownSafePreviewDock::setActiveEditor(ScintillaNext *editor) {
+    if (currentEditor == editor) {
+        return;
+    }
+
+    if (currentEditor) {
+        disconnect(currentEditor, &ScintillaNext::notifyChange, this, &MarkdownSafePreviewDock::scheduleRender);
+        disconnect(currentEditor, &ScintillaNext::updateUi, this, &MarkdownSafePreviewDock::syncScrollFromEditor);
+    }
+
+    currentEditor = editor;
+
+    if (currentEditor) {
+        connect(currentEditor, &ScintillaNext::notifyChange, this, &MarkdownSafePreviewDock::scheduleRender);
+        connect(currentEditor, &ScintillaNext::updateUi, this, &MarkdownSafePreviewDock::syncScrollFromEditor);
+        renderPreview();
+    } else {
+        browser->clear();
+    }
+}
+
+void MarkdownSafePreviewDock::scheduleRender() {
+    if (isVisible() && currentEditor) {
+        debounceTimer->start();
+    }
+}
+
+MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(const ScintillaNext *editor) {
+    using enum PreviewFormat;
+    if (!editor) {
+        return Markdown;
+    }
+
+    const QString path = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
+    if (MarkdownPreviewEnhancer::isHtmlPath(path)) {
+        return Html;
+    }
+    if (MarkdownPreviewEnhancer::isMarkdownPath(path)) {
+        return Markdown;
+    }
+
+    const QString lang = editor->languageName.toLower();
+    if (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml"))) {
+        return Html;
+    }
+    if (lang.contains(QStringLiteral("markdown"))) {
+        return Markdown;
+    }
+
+    // Heuristic scan of first 400 bytes
+    if (const QString snippet = QString::fromUtf8(editor->get_text_range(0, 400)).trimmed().toLower();
+        snippet.startsWith(QStringLiteral("<!doctype html")) || snippet.startsWith(QStringLiteral("<html")) ||
+        snippet.contains(QStringLiteral("<head>")) || snippet.contains(QStringLiteral("<body>")) ||
+        snippet.contains(QStringLiteral("</div>")) || snippet.contains(QStringLiteral("</p>"))) {
+        return Html;
+    }
+
+    return Markdown;
+}
+
+void MarkdownSafePreviewDock::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::PaletteChange) {
+        applyGitHubTheme();
+        renderPreview();
+    }
+    QDockWidget::changeEvent(event);
+}
+
+void MarkdownSafePreviewDock::applyGitHubTheme() {
+    if (m_isUpdatingTheme) {
+        return;
+    }
+    m_isUpdatingTheme = true;
+
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    if (!m_userExplicitTheme) {
+        currentTheme = MarkdownThemeManager::defaultTheme(isDark);
+        if (m_ui.comboTheme) {
+            m_ui.comboTheme->blockSignals(true);
+            m_ui.comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
+            m_ui.comboTheme->blockSignals(false);
+        }
+    }
+
+    const ThemePalette *pal = ThemeManager::instance()->currentPalette();
+    QString accent;
+    QString dockBg;
+    QString topBarBg;
+    QString textPri;
+    QString textSec;
+    QString border;
+    QString btnBg;
+
+    if (pal) {
+        accent = QString::fromLatin1(pal->blue);
+        dockBg = QString::fromLatin1(pal->win);
+        topBarBg = QString::fromLatin1(pal->card);
+        textPri = QString::fromLatin1(pal->txtPri);
+        textSec = QString::fromLatin1(pal->txtSec);
+        border = QString::fromLatin1(pal->border);
+        btnBg = QString::fromLatin1(pal->card);
+    } else if (isDark) {
+        accent = QStringLiteral("#58a6ff");
+        dockBg = QStringLiteral("#161b22");
+        topBarBg = QStringLiteral("#21262d");
+        textPri = QStringLiteral("#e6edf3");
+        textSec = QStringLiteral("#8b949e");
+        border = QStringLiteral("#30363d");
+        btnBg = QStringLiteral("#21262d");
+    } else {
+        accent = QStringLiteral("#0969da");
+        dockBg = QStringLiteral("#f6f8fa");
+        topBarBg = QStringLiteral("#ffffff");
+        textPri = QStringLiteral("#1f2328");
+        textSec = QStringLiteral("#57606a");
+        border = QStringLiteral("#d0d7de");
+        btnBg = QStringLiteral("#f6f8fa");
+    }
+
+    const QString badgeBg = isDark ? QStringLiteral("rgba(56, 139, 253, 0.15)") : QStringLiteral("rgba(9, 105, 218, 0.1)");
+
+    const QColor themeBg = MarkdownThemeManager::themeBackgroundColor(currentTheme);
+    const QColor themeFg = MarkdownThemeManager::themeTextColor(currentTheme);
+    const QString selColor = isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
+
+    const QString dockStyle = QStringLiteral(
+                                  "QDockWidget {"
+                                  "  background-color: %1;"
+                                  "  color: %2;"
+                                  "}"
+                                  "QDockWidget::title {"
+                                  "  background-color: %1;"
+                                  "  color: %2;"
+                                  "  padding: 6px 10px;"
+                                  "  border-bottom: 2px solid %3;"
+                                  "  font-weight: 600;"
+                                  "  font-size: 11px;"
+                                  "}"
+                                  "QWidget#previewTopBar {"
+                                  "  background-color: %4;"
+                                  "  border: 1px solid %5;"
+                                  "  border-radius: 6px;"
+                                  "}"
+                                  "QWidget#previewTopBar QComboBox {"
+                                  "  background-color: %6;"
+                                  "  color: %2;"
+                                  "  border: 1px solid %5;"
+                                  "  border-radius: 4px;"
+                                  "  padding: 2px 6px;"
+                                  "  font-size: 11px;"
+                                  "}"
+                                  "QWidget#previewTopBar QComboBox:hover {"
+                                  "  border-color: %3;"
+                                  "}"
+                                  "QLabel#lblFormatStatus {"
+                                  "  font-size: 10px;"
+                                  "  font-weight: 600;"
+                                  "  padding: 2px 8px;"
+                                  "  border-radius: 10px;"
+                                  "  background-color: %7;"
+                                  "  color: %3;"
+                                  "  border: 1px solid %3;"
+                                  "}"
+                                  "QLabel#lblPreviewStats {"
+                                  "  font-size: 10px;"
+                                  "  color: %8;"
+                                  "  padding: 2px 6px;"
+                                  "}"
+                                  "QWidget#previewTopBar QPushButton {"
+                                  "  background-color: %6;"
+                                  "  color: %2;"
+                                  "  border: 1px solid %5;"
+                                  "  border-radius: 4px;"
+                                  "  font-size: 11px;"
+                                  "  padding: 2px 5px;"
+                                  "  min-height: 20px;"
+                                  "}"
+                                  "QWidget#previewTopBar QPushButton:hover {"
+                                  "  border-color: %3;"
+                                  "  color: %3;"
+                                  "}"
+                                  "QWidget#previewTopBar QPushButton:pressed {"
+                                  "  background-color: %3;"
+                                  "  color: #ffffff;"
+                                  "}")
+                                  .arg(dockBg, textPri, accent, topBarBg, border, btnBg, badgeBg, textSec);
+    setStyleSheet(dockStyle);
+
+    browser->setStyleSheet(
+        QStringLiteral(
+            "#markdownPreviewBrowser {"
+            "  background-color: %1;"
+            "  color: %2;"
+            "  border: none;"
+            "  selection-background-color: %3;"
+            "}")
+            .arg(themeBg.name(), themeFg.name(), selColor));
+
+    browser->document()->setDefaultStyleSheet(MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize));
+    m_isUpdatingTheme = false;
+}
+
+void MarkdownSafePreviewDock::onThemeComboChanged(int index) {
+    if (index < 0 || index >= static_cast<int>(MarkdownThemeManager::themeNames().size())) {
+        return;
+    }
+    currentTheme = static_cast<MarkdownThemeManager::ThemeId>(index);
+    m_userExplicitTheme = true;
+    QSettings settings;
+    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
+    applyGitHubTheme();
+    renderPreview();
+}
+
+void MarkdownSafePreviewDock::setPreviewTheme(MarkdownThemeManager::ThemeId newTheme) {
+    currentTheme = newTheme;
+    m_userExplicitTheme = true;
+    if (m_ui.comboTheme) {
+        m_ui.comboTheme->blockSignals(true);
+        m_ui.comboTheme->setCurrentIndex(static_cast<int>(newTheme));
+        m_ui.comboTheme->blockSignals(false);
+    }
+    QSettings settings;
+    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
+    applyGitHubTheme();
+    renderPreview();
+}
+
 void MarkdownSafePreviewDock::renderPreview() {
     if (!currentEditor) {
         browser->clear();
-        if (lblFormatStatus) {
-            lblFormatStatus->setText(tr("No Document"));
+        if (m_ui.lblFormatStatus) {
+            m_ui.lblFormatStatus->setText(tr("No Document"));
         }
-        if (lblStats) {
-            lblStats->setText(tr("0 words • 0 min read"));
+        if (m_ui.lblStats) {
+            m_ui.lblStats->setText(tr("0 words • 0 min read"));
         }
         return;
     }
 
-    applyGitHubTheme();
-
-    const QString content = QString::fromUtf8(currentEditor->getText());
     const PreviewFormat effectiveFormat =
         (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
-
     updateFormatLabel(effectiveFormat);
-    updateStatsLabel(content);
 
-    // Preserve scroll position ratio across incremental edits
-    auto *const scrollBar = browser->verticalScrollBar();
-    const double scrollRatio = (scrollBar && scrollBar->maximum() > 0)
-                                   ? static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum())
-                                   : 0.0;
+    const QString text = QString::fromUtf8(currentEditor->getText());
+    if (m_ui.lblStats) {
+        const QStringList words = text.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts);
+        const qsizetype wordCount = words.size();
+        const qsizetype minutes = std::max(static_cast<qsizetype>(1), (wordCount + 199) / 200);
+        m_ui.lblStats->setText(tr("%1 words • %2 min read").arg(wordCount).arg(minutes));
+    }
 
     const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
+
+    // Save scroll position ratio
+    double scrollRatio = 0.0;
+    const auto *scrollBar = browser->verticalScrollBar();
+    if (scrollBar && scrollBar->maximum() > 0) {
+        scrollRatio = static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum());
+    }
+
     if (effectiveFormat == PreviewFormat::Html) {
-        browser->setHtml(content);
+        browser->setHtml(text);
     } else {
-        const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(content, isDark);
+        const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(text, isDark);
         QTextDocument doc;
         doc.setMarkdown(enrichedMd);
         const QString enhanced = enhanceCallouts(doc.toHtml(), isDark);
         browser->setHtml(enhanced);
     }
 
-    if (scrollBar && scrollBar->maximum() > 0 && scrollRatio > 0.0) {
-        scrollBar->setValue(static_cast<int>(scrollRatio * scrollBar->maximum()));
+    if (auto *const bar = browser->verticalScrollBar(); bar && bar->maximum() > 0 && scrollRatio > 0.0) {
+        bar->setValue(static_cast<int>(scrollRatio * bar->maximum()));
     }
 }
 
 void MarkdownSafePreviewDock::updateFormatLabel(PreviewFormat effectiveFormat) {
-    if (!lblFormatStatus) {
+    if (!m_ui.lblFormatStatus) {
         return;
     }
 
-    if (currentFormat == PreviewFormat::Auto) {
-        if (effectiveFormat == PreviewFormat::Html) {
-            lblFormatStatus->setText(tr("Auto (HTML)"));
+    using enum PreviewFormat;
+    if (currentFormat == Auto) {
+        if (effectiveFormat == Html) {
+            m_ui.lblFormatStatus->setText(tr("Auto (HTML)"));
         } else {
-            lblFormatStatus->setText(tr("Auto (Markdown)"));
+            m_ui.lblFormatStatus->setText(tr("Auto (Markdown)"));
         }
-    } else if (currentFormat == PreviewFormat::Html) {
-        lblFormatStatus->setText(tr("HTML"));
+    } else if (currentFormat == Html) {
+        m_ui.lblFormatStatus->setText(tr("HTML"));
     } else {
-        lblFormatStatus->setText(tr("Markdown"));
+        m_ui.lblFormatStatus->setText(tr("Markdown"));
     }
-}
-
-void MarkdownSafePreviewDock::updateStatsLabel(const QString &text) {
-    if (!lblStats) {
-        return;
-    }
-    if (text.isEmpty()) {
-        lblStats->setText(tr("0 words • 0 min read"));
-        return;
-    }
-    const QStringList words = text.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts);
-    const qsizetype wordCount = words.size();
-    const qsizetype minutes = std::max(static_cast<qsizetype>(1), (wordCount + 199) / 200);
-    lblStats->setText(tr("%1 words • %2 min read").arg(wordCount).arg(minutes));
 }
 
 void MarkdownSafePreviewDock::setPreviewFormat(PreviewFormat newFormat) {
@@ -592,8 +612,8 @@ void MarkdownSafePreviewDock::setPreviewFormat(PreviewFormat newFormat) {
         return;
     }
     currentFormat = newFormat;
-    if (comboFormat && comboFormat->currentIndex() != static_cast<int>(newFormat)) {
-        comboFormat->setCurrentIndex(static_cast<int>(newFormat));
+    if (m_ui.comboFormat && m_ui.comboFormat->currentIndex() != static_cast<int>(newFormat)) {
+        m_ui.comboFormat->setCurrentIndex(static_cast<int>(newFormat));
     }
     QSettings settings;
     settings.setValue(QStringLiteral("Gui/PreviewFormat"), static_cast<int>(newFormat));
@@ -632,15 +652,16 @@ void MarkdownSafePreviewDock::copyHtml() {
         doc.setMarkdown(rawContent);
         bodyHtml = doc.toHtml();
     }
-    const bool isDark = ThemeManager::instance()->isDarkActive();
-    const QString fullHtml = generateFullHtmlDocument(bodyHtml, isDark);
+    const QString fileName = currentEditor->getFileInfo().fileName();
+    const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
+    const QString fullHtml = generateFullHtmlDocument(bodyHtml, title, currentTheme, baseFontSize);
     QApplication::clipboard()->setText(fullHtml);
-    if (lblFormatStatus) {
-        const QString orig = lblFormatStatus->text();
-        lblFormatStatus->setText(tr("HTML Copied!"));
+    if (m_ui.lblFormatStatus) {
+        const QString orig = m_ui.lblFormatStatus->text();
+        m_ui.lblFormatStatus->setText(tr("HTML Copied!"));
         QTimer::singleShot(2000, this, [this, orig] {
-            if (lblFormatStatus) {
-                lblFormatStatus->setText(orig);
+            if (m_ui.lblFormatStatus) {
+                m_ui.lblFormatStatus->setText(orig);
             }
         });
     }
@@ -734,8 +755,7 @@ void MarkdownSafePreviewDock::openInBrowser() {
         return;
     }
 
-    // Render full GitHub Markdown styled page
-    const bool isDark = palette().color(QPalette::Window).lightness() < 128;
+    // Render full styled page
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
     QString bodyHtml;
     if (effectiveFormat == PreviewFormat::Html) {
@@ -749,7 +769,9 @@ void MarkdownSafePreviewDock::openInBrowser() {
     QTemporaryFile tempFile(QDir::tempPath() + QStringLiteral("/SparkNotePad_preview_XXXXXX.html"));
     tempFile.setAutoRemove(false);
     if (tempFile.open()) {
-        const QString fullHtml = generateFullHtmlDocument(bodyHtml, isDark);
+        const QString fileName = currentEditor->getFileInfo().fileName();
+        const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
+        const QString fullHtml = generateFullHtmlDocument(bodyHtml, title, currentTheme, baseFontSize);
         tempFile.write(fullHtml.toUtf8());
         const QString tempPath = tempFile.fileName();
         tempFile.close();
@@ -815,7 +837,7 @@ void MarkdownSafePreviewDock::syncScrollFromBrowser() {
     if (m_syncingScroll || !currentEditor || !isVisible()) {
         return;
     }
-    const QScrollBar *const scrollBar = browser->verticalScrollBar();
+    const auto *scrollBar = browser->verticalScrollBar();
     if (!scrollBar || scrollBar->maximum() <= 0) {
         return;
     }
