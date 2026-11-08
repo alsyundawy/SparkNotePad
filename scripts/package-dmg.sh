@@ -77,6 +77,19 @@ trap 'rm -rf "${STAGE_DIR}"' EXIT
 echo "[*] Staging application bundle..."
 cp -R "${APP_DIR}" "${STAGE_DIR}/SparkNotePad.app"
 
+# Ensure SparkNotePad.icns exists in bundle Resources
+RESOURCES_DIR="${STAGE_DIR}/SparkNotePad.app/Contents/Resources"
+mkdir -p "${RESOURCES_DIR}"
+if [[ ! -f "${RESOURCES_DIR}/SparkNotePad.icns" ]]; then
+	if [[ -f "${VOL_ICON}" ]]; then
+		echo "[*] Injecting application icon into bundle Resources..."
+		cp "${VOL_ICON}" "${RESOURCES_DIR}/SparkNotePad.icns"
+	fi
+fi
+
+# Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
+touch "${STAGE_DIR}/SparkNotePad.app"
+
 # Attempt DMG creation using create-dmg if available
 CREATED=0
 if command -v create-dmg >/dev/null 2>&1; then

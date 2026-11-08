@@ -454,6 +454,14 @@ if(APPLE)
         features/MacServicesHandler.h
         features/MacServicesHandler.mm
     )
+    if(EXISTS "${CMAKE_SOURCE_DIR}/icon/SparkNotePad.icns")
+        add_custom_command(TARGET SparkNotePad POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:SparkNotePad>/../Resources
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/icon/SparkNotePad.icns" $<TARGET_FILE_DIR:SparkNotePad>/../Resources/SparkNotePad.icns
+            COMMAND touch $<TARGET_FILE_DIR:SparkNotePad>/../..
+            COMMENT "Copying SparkNotePad.icns to app bundle Resources"
+        )
+    endif()
 else()
     target_sources(SparkNotePad PRIVATE
         features/MacServicesHandler.h
