@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 -->
+<!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 MD060 -->
 
 <p align="center">
   <a href="https://github.com/alsyundawy/SparkNotePad">
@@ -24,11 +24,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.0"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.5-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.5"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
-  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.9%20%2B%20Lexilla%205.5.5-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (125 Lexers)"></a>
+  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.9%20%2B%20Lexilla%205.5.5-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (129 Lexers)"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
 </p>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.5-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.4.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.4.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -216,45 +216,58 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 
 ## Key Features & Capabilities Matrix
 
-| Feature                          | Capability Description                                                                                                               |            Shortcut             |
-| :------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
-| **Notepad++ Style Tools Menu**   | Top-level Tools menu: Hash (MD5/CRC32/XXHASH/SHA-1/256/384/512, SHA3-1/256/384/512), 16-Action MIME Tools, Converter (ASCII/Hex/Dec) |          `Tools >> *`           |
-| **16-Action Full MIME Tools**    | Base64 (Std/Padded/Unix EOL/By Line/Strict), Quoted-Printable, and URL (RFC1738/Extended/Full/Decode)                                |   `Tools >> MIME Tools >> *`    |
-| **Interactive Shortcut Mapper**  | Searchable GUI shortcut customizer with conflict detection, reset to defaults, and live application hot-reload                       | `Preferences >> Shortcuts Tab`  |
-| **Developer Help & Web Search**  | Instant documentation search: PHP Help (`Alt+F1`), Rust Docs (`Alt+F2`), Python Docs (`Alt+F3`), Wikipedia Search                    |          `Run >> Help`          |
-| **Rate-Limit Free Updater**      | Zero-burn GitHub releases checker using HTTP ETag (`If-None-Match`) and unmetered web redirect fallback on HTTP 403                  |        `Help >> Updates`        |
-| **AES-256 Encryption in Tools**  | High-assurance document encryption with PBKDF2 (100k rounds) & HMAC-SHA256, organized inside Tools menu                              |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
-| **Ergonomic Quick Open**         | Floating spotlight file opener positioned directly following Open in File menu                                                       |          `Ctrl+Alt+O`           |
-| **Compact Menubar Typography**   | Precision 3px 6px padding with 12px font size for tighter, distraction-free navigation bar spacing                                   |         Global Menubar          |
-| **Zero-Defect Linter Hardening** | 312-entry synchronized compilation database eradicating all 1,288 IDE diagnostics and 756 SonarQube errors                           |           All Sources           |
-| **Strict Lua Sandbox**           | Neutralizes dangerous OS/IO/debug execution primitives (CVE-2026-42214) with 100% automated regression tests                         |            Built-in             |
-| **Config & Session Guard**       | Intercepts shell interpreter hijacking (CVE-2026-48778); enforces owner-only (0600) permissions on sessions                          |            Built-in             |
-| **Scintilla ReDoS Safeguard**    | Detects catastrophic nested quantifiers before Scintilla regex execution; bounds interactive search runtime                          |            Built-in             |
-| **Safe Markdown Preview Dock**   | Sandboxed QTextBrowser dock with debounced sync and strict URI whitelisting (http/https/mailto)                                      |         `Ctrl+Shift+M`          |
-| **Streaming Cryptographic Hash** | Constant 64 KB buffer streaming for SHA-256/384/512 and SHA3-1/256/384/512 with real-time match verification badge                   |     Tools >> Hash Validator     |
-| **Strict TLS & Air-Gap Mode**    | Enforces global TLS 1.2+ baseline, disables CWD cert lookup (CVE-2025-14575), and provides 1-click air-gap                           |     Preferences >> General      |
-| **27 Monoline Vector Icons**     | Complete suite of 24x24 high-DPI monoline vector SVGs matching modern macOS Retina and Linux desktop styling                         |         Toolbar & Menus         |
-| **Unified QComboBox Ergonomics** | Polished dropdown styling across all dialogs with 4px rounded borders, vector arrows, and hover highlights                           |           All Dialogs           |
-| **Themes & Toolbar Tab**         | 23-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                        | Preferences >> Themes & Toolbar |
-| **Custom Toolbar Config Tab**    | Embedded GUI toolbar customizer with search filter, action reordering, separator insertion, and live hot-reload                      |  Preferences >> Custom Toolbar  |
-| **Desktop Editor Menus Format**  | Standard menu hierarchy: Hex/Binary below Compare, macOS app menu Restart above Quit, clean View menu                                |          Global Menus           |
-| **100% Bilingual i18n Catalogs** | Official standard Indonesian (EYD V) and English translations across 1,924 UI strings and dialogs (0 unfinished)                     |     Preferences >> Language     |
-| **Graceful App Restart**         | Flushes sessions, saves settings, and relaunches cleanly without single-instance conflicts                                           |          `Ctrl+Alt+R`           |
-| **Prominent Exit Action**        | Accessible toolbar and File menu termination with unsaved-document prompts and safe cleanup                                          |  Toolbar / `Cmd+Q` / `Alt+F4`   |
-| **About Dialog HiDPI Polish**    | Responsive `QScrollArea` wrapping, label word-wrap, and elision-free layout across Retina/4K                                         |         `Help >> About`         |
-| **2025–2026 Security Posture**   | Mitigates Lua injection (CVE-2026-42214), Qt HTTP/2 UAF (CVE-2026-95620), and dual crypto                                            |            Built-in             |
-| **Real-Time Log Monitoring**     | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                                         |          `Ctrl+Alt+Y`           |
-| **Complete Menu Icons Support**  | All menus and submenus show action icons natively via `setIconVisibleInMenu` across macOS and Linux                                  |            All Menus            |
-| **Ergonomic Dialog Spacing**     | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs                              |           All Dialogs           |
-| **JavaScript Evaluator**         | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation                              |         `Ctrl+Shift+J`          |
-| **Interactive Regex Tester**     | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes                          |       `Ctrl+Alt+Shift+R`        |
-| **Color Preview Call-Tips**      | Floating interactive color preview boxes supporting `#HEX`, `rgb()`, `rgba()`, and `hsl()` color formats                             |          Cursor Hover           |
-| **Window Opacity Control**       | Native window alpha-channel transparency adjustment (20%–100%) for back-referencing underlying documents                             |          `Ctrl+Alt+T`           |
-| **macOS System Services**        | Seamless AppKit context menu integration (`Open Selection / Path in SparkNotePad`)                                                   |        macOS Context M.         |
-| **Multi-Monitor Boundary Guard** | `ScreenDisplayManager` prevents off-screen window placement across multi-DPI and external monitor hotplugs                           |            Automatic            |
-| **Base64 & Format Converters**   | Encoding and decoding for Base64, binary/octal/decimal/hexadecimal radices, and casing mutations                                     |        `Edit >> Convert`        |
-| **Unicode Code Point Inspector** | Detailed Unicode code point analysis (`U+XXXX`), decimal value display, and Unicode category identification                          |           Status Bar            |
-| **Automatic Encoding Detector**  | Universal charset recognition powered by `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)                             |           Status Bar            |
+| Feature                           | Capability Description                                                                                                               |            Shortcut             |
+| :-------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Reopen Closed Tab Stack**       | 50-entry FIFO stack restoring caret position, line ratio, encoding, language lexer, and tab color tags                               | `Ctrl+Shift+T` / `Cmd+Shift+T`  |
+| **Tab Color Tagging & Grouping**  | 8 accessible high-contrast color presets with visual tab borders and persistent storage via QSettings                                |        Tab Context Menu         |
+| **Autosave & Crash Recovery**     | 10-second background snapshots with strict POSIX 0600 permissions, SHA-256 validation, and interactive restore dialog                |            Automatic            |
+| **Extended Search Escape Engine** | Hex `\xHH`, decimal `\dDDD`, NUL `\0`, `\b`, `\f`, and `\v` escape evaluation in Find/Replace and Quick Find                         |         Extended Search         |
+| **129 Syntax Lexers Expansion**   | Official Lexilla lexers plus Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), JSON5 (`.json5`); C23, Rust 2024, Swift 6, TS 5.8    |       Language Selection        |
+| **Native Markdown / PDF Export**  | Pure Qt 6 PrintSupport PDF rendering with custom margins and page sizes, plus Pandoc engine fallback                                 |     `File >> Export >> PDF`     |
+| **Mermaid & LaTeX Math Preview**  | Client-rendered Mermaid flowcharts/sequence diagrams, LaTeX formulas (`$$...$$`, `$...$`), and Two-Way SyncScroll                    |         `Ctrl+Shift+M`          |
+| **Developer Tools Suite**         | JSON Prettify & Minify, URL Encode/Decode, Unicode Escape/Unescape, UUID v4, and Unix Epoch Timestamp converter                      |      `Tools >> Developer`       |
+| **Header/Source File Switcher**   | Instant bidirectional toggle between C/C++ header/source and TS/JS implementation/test files with scrollbar markers                  |         `F4` / `Alt+O`          |
+| **Native .editorconfig Parser**   | Pure Qt glob parser enforcing `indent_style`, `indent_size`, `tab_width`, and `end_of_line` across project hierarchy                 |            Automatic            |
+| **Clipboard History Dock**        | Dockable FIFO queue of 20 recent clipboard captures with live search filtering and double-click editor insertion                     |     `View >> Dock Windows`      |
+| **Real-Time Character Info Dock** | Unicode code point (`U+XXXX`), character name, block, category, UTF-8/16/32 hex, decimal, and HTML entity inspector                  |     `View >> Dock Windows`      |
+| **Fuzzy Quick Switcher**          | Frameless Spotlight-style subsequence file & tab switcher (`Cmd+P` / `Ctrl+P`) and Scintilla Minimap dock (>50 MB safeguard)         |       `Ctrl+P` / `Cmd+P`        |
+| **Notepad++ Style Tools Menu**    | Top-level Tools menu: Hash (MD5/CRC32/XXHASH/SHA-1/256/384/512, SHA3-1/256/384/512), 16-Action MIME Tools, Converter (ASCII/Hex/Dec) |          `Tools >> *`           |
+| **16-Action Full MIME Tools**     | Base64 (Std/Padded/Unix EOL/By Line/Strict), Quoted-Printable, and URL (RFC1738/Extended/Full/Decode)                                |   `Tools >> MIME Tools >> *`    |
+| **Interactive Shortcut Mapper**   | Searchable GUI shortcut customizer with conflict detection, reset to defaults, and live application hot-reload                       | `Preferences >> Shortcuts Tab`  |
+| **Developer Help & Web Search**   | Instant documentation search: PHP Help (`Alt+F1`), Rust Docs (`Alt+F2`), Python Docs (`Alt+F3`), Wikipedia Search                    |          `Run >> Help`          |
+| **Rate-Limit Free Updater**       | Zero-burn GitHub releases checker using HTTP ETag (`If-None-Match`) and unmetered web redirect fallback on HTTP 403                  |        `Help >> Updates`        |
+| **AES-256 Encryption in Tools**   | High-assurance document encryption with PBKDF2 (100k rounds) & HMAC-SHA256, organized inside Tools menu                              |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
+| **Ergonomic Quick Open**          | Floating spotlight file opener positioned directly following Open in File menu                                                       |          `Ctrl+Alt+O`           |
+| **Compact Menubar Typography**    | Precision 3px 6px padding with 12px font size for tighter, distraction-free navigation bar spacing                                   |         Global Menubar          |
+| **Zero-Defect Linter Hardening**  | 312-entry synchronized compilation database eradicating all 1,288 IDE diagnostics and 756 SonarQube errors                           |           All Sources           |
+| **Strict Lua Sandbox**            | Neutralizes dangerous OS/IO/debug execution primitives (CVE-2026-42214) with 100% automated regression tests                         |            Built-in             |
+| **Config & Session Guard**        | Intercepts shell interpreter hijacking (CVE-2026-48778); enforces owner-only (0600) permissions on sessions                          |            Built-in             |
+| **Scintilla ReDoS Safeguard**     | Detects catastrophic nested quantifiers before Scintilla regex execution; bounds interactive search runtime                          |            Built-in             |
+| **Safe Markdown Preview Dock**    | Sandboxed QTextBrowser dock with debounced sync and strict URI whitelisting (http/https/mailto)                                      |         `Ctrl+Shift+M`          |
+| **Streaming Cryptographic Hash**  | Constant 64 KB buffer streaming for SHA-256/384/512 and SHA3-1/256/384/512 with real-time match verification badge                   |     Tools >> Hash Validator     |
+| **Strict TLS & Air-Gap Mode**     | Enforces global TLS 1.2+ baseline, disables CWD cert lookup (CVE-2025-14575), and provides 1-click air-gap                           |     Preferences >> General      |
+| **27 Monoline Vector Icons**      | Complete suite of 24x24 high-DPI monoline vector SVGs matching modern macOS Retina and Linux desktop styling                         |         Toolbar & Menus         |
+| **Unified QComboBox Ergonomics**  | Polished dropdown styling across all dialogs with 4px rounded borders, vector arrows, and hover highlights                           |           All Dialogs           |
+| **Themes & Toolbar Tab**          | 23-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                        | Preferences >> Themes & Toolbar |
+| **Custom Toolbar Config Tab**     | Embedded GUI toolbar customizer with search filter, action reordering, separator insertion, and live hot-reload                      |  Preferences >> Custom Toolbar  |
+| **Desktop Editor Menus Format**   | Standard menu hierarchy: Hex/Binary below Compare, macOS app menu Restart above Quit, clean View menu                                |          Global Menus           |
+| **100% Bilingual i18n Catalogs**  | Official standard Indonesian (EYD V) and English translations across 1,924 UI strings and dialogs (0 unfinished)                     |     Preferences >> Language     |
+| **Graceful App Restart**          | Flushes sessions, saves settings, and relaunches cleanly without single-instance conflicts                                           |          `Ctrl+Alt+R`           |
+| **Prominent Exit Action**         | Accessible toolbar and File menu termination with unsaved-document prompts and safe cleanup                                          |  Toolbar / `Cmd+Q` / `Alt+F4`   |
+| **About Dialog HiDPI Polish**     | Responsive `QScrollArea` wrapping, label word-wrap, and elision-free layout across Retina/4K                                         |         `Help >> About`         |
+| **2025–2026 Security Posture**    | Mitigates Lua injection (CVE-2026-42214), Qt HTTP/2 UAF (CVE-2026-95620), and dual crypto                                            |            Built-in             |
+| **Real-Time Log Monitoring**      | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                                         |          `Ctrl+Alt+Y`           |
+| **Complete Menu Icons Support**   | All menus and submenus show action icons natively via `setIconVisibleInMenu` across macOS and Linux                                  |            All Menus            |
+| **Ergonomic Dialog Spacing**      | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs                              |           All Dialogs           |
+| **JavaScript Evaluator**          | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation                              |         `Ctrl+Shift+J`          |
+| **Interactive Regex Tester**      | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes                          |       `Ctrl+Alt+Shift+R`        |
+| **Color Preview Call-Tips**       | Floating interactive color preview boxes supporting `#HEX`, `rgb()`, `rgba()`, and `hsl()` color formats                             |          Cursor Hover           |
+| **Window Opacity Control**        | Native window alpha-channel transparency adjustment (20%–100%) for back-referencing underlying documents                             |          `Ctrl+Alt+T`           |
+| **macOS System Services**         | Seamless AppKit context menu integration (`Open Selection / Path in SparkNotePad`)                                                   |        macOS Context M.         |
+| **Multi-Monitor Boundary Guard**  | `ScreenDisplayManager` prevents off-screen window placement across multi-DPI and external monitor hotplugs                           |            Automatic            |
+| **Base64 & Format Converters**    | Encoding and decoding for Base64, binary/octal/decimal/hexadecimal radices, and casing mutations                                     |        `Edit >> Convert`        |
+| **Unicode Code Point Inspector**  | Detailed Unicode code point analysis (`U+XXXX`), decimal value display, and Unicode category identification                          |           Status Bar            |
+| **Automatic Encoding Detector**   | Universal charset recognition powered by `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)                             |           Status Bar            |
 
 ---
 

@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 -->
+<!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 MD060 -->
 
 <p align="center">
   <a href="https://github.com/alsyundawy/SparkNotePad">
@@ -24,11 +24,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.0"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.5-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.5"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
-  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.9%20%2B%20Lexilla%205.5.5-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (125 Lexer)"></a>
+  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.9%20%2B%20Lexilla%205.5.5-8957e5?style=for-the-badge" alt="Scintilla + Lexilla (129 Lexer)"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
 </p>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.5-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Dokumentasi Resmi GitHub Wiki (Bilingual EN/ID)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Rilis Terbaru (v1.4.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Rilis Terbaru (v1.4.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Matriks Dukungan Platform (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -216,45 +216,58 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 
 ## Fitur Utama & Matriks Kapabilitas
 
-| Fitur                            | Deskripsi Kapabilitas                                                                                                             |       Pintasan (Shortcut)       |
-| :------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
-| **Menu Tools Gaya Notepad++**    | Menu tingkat atas: Hash (MD5/CRC32/XXHASH/SHA-1/256/384/512, SHA3-1/256/384/512), 16 Alat MIME Lengkap, Konverter (ASCII/Hex/Dec) |          `Tools >> *`           |
-| **16 Alat MIME Lengkap**         | Base64 (Standar/Padding/Unix EOL/Per Baris/Ketat), Quoted-Printable, dan URL (RFC1738/Extended/Full/Decode)                       |   `Tools >> MIME Tools >> *`    |
-| **Pemetaan Pintasan Interaktif** | Pengatur shortcut GUI dengan pencarian, deteksi konflik, reset default, dan pembaruan langsung tanpa restart                      | `Preferences >> Tab Shortcuts`  |
-| **Bantuan Dev & Web Search**     | Navigasi dokumentasi instan: PHP Help (`Alt+F1`), Rust Docs (`Alt+F2`), Python Docs (`Alt+F3`), Pencarian Wikipedia               |          `Run >> Help`          |
-| **Pembaruan Bebas Batas API**    | Pemeriksa rilis GitHub tanpa limit kuota menggunakan HTTP ETag (`If-None-Match`) & fallback redirect web pada HTTP 403            |        `Help >> Updates`        |
-| **Enkripsi AES-256 di Tools**    | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) & HMAC-SHA256, kini di dalam menu Tools                       |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
-| **Quick Open Lebih Ergonomis**   | Pembuka berkas spotlight mengambang ditempatkan tepat setelah Open pada menu Berkas (File)                                        |          `Ctrl+Alt+O`           |
-| **Tipografi Bilah Menu Kompak**  | Padding presisi 3px 6px dengan ukuran font 12px untuk navigasi lebih rapat dan bersih                                             |        Bilah Menu Global        |
-| **Hardening Linter Zero-Defect** | Sinkronisasi 312 entri basis data kompilasi menuntaskan 1.288 diagnostik IDE dan 756 peringatan SonarQube                         |          Semua Berkas           |
-| **Sandbox Lua Ketat**            | Menetralisasi primitif eksekusi OS/IO/debug berbahaya (CVE-2026-42214) dengan 100% tes regresi otomatis                           |             Bawaan              |
-| **Guard Konfigurasi & Sesi**     | Mencegat pembajakan shell interpreter (CVE-2026-48778); menegakkan izin berkas hanya pemilik (0600) pada sesi                     |             Bawaan              |
-| **Perlindungan ReDoS Scintilla** | Mendeteksi nested quantifiers berisiko sebelum regex dieksekusi; membatasi runtime pencarian interaktif                           |             Bawaan              |
-| **Pratinjau Markdown Aman**      | Dock QTextBrowser kotak pasir dengan sinkronisasi debounced dan whitelisting skema URI (http/https/mailto)                        |         `Ctrl+Shift+M`          |
-| **Streaming Hash Kriptografis**  | Buffer streaming konstan 64 KB untuk SHA-256/384/512 dan SHA3-1/256/384/512 dengan lencana verifikasi kesesuaian real-time        |  Menu Tools >> Validator Hash   |
-| **Baseline TLS & Mode Air-Gap**  | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik                 |  Preferensi >> Pengaturan Umum  |
-| **27 Ikon Bilah Alat Monoline**  | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                                  |        Bilah Alat & Menu        |
-| **Ergonomi QComboBox Terpadu**   | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema                         |         Seluruh Dialog          |
-| **Tab Themes & Toolbar**         | 21 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             | Preferensi >> Themes & Toolbar  |
-| **Tab Custom Toolbar Config**    | Penyesuai visual bilah alat lengkap dengan pencarian, pengurutan aksi, pemisah, dan hot-reload instan                             |  Preferensi >> Custom Toolbar   |
-| **Menu Editor Standar Desktop**  | Menu standar: Tampilan Hex/Biner di bawah Bandingkan, Restart di menu macOS di atas Quit, menu bersih                             |           Menu Global           |
-| **100% Katalog i18n Dwibahasa**  | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.924 teks (0 belum selesai)                         |   Preferensi >> Bahasa (Lang)   |
-| **Mulai Ulang Aplikasi Aman**    | Mengosongkan sesi, menyimpan pengaturan, dan meluncurkan ulang aplikasi tanpa konflik lock                                        |          `Ctrl+Alt+R`           |
-| **Tombol Keluar Terkemuka**      | Penghentian aplikasi yang mudah diakses di bilah alat dan menu dengan konfirmasi simpan                                           | Bilah Alat / `Cmd+Q` / `Alt+F4` |
-| **Penyempurnaan Dialog Tentang** | Tata letak responsif dengan `QScrollArea`, pelipatan teks, dan bebas pemotongan di Retina/4K                                      |      Menu `Help >> About`       |
-| **Keamanan Siber 2025–2026**     | Mitigasi injeksi Lua (CVE-2026-42214), mitigasi UAF Qt HTTP/2 (CVE-2026-95620), dual crypto                                       |             Bawaan              |
-| **Pemantauan Log Langsung**      | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll                       |          `Ctrl+Alt+Y`           |
-| **Dukungan Ikon Seluruh Menu**   | Seluruh menu dan submenu menampilkan ikon secara native via `setIconVisibleInMenu` di macOS dan Linux                             |          Seluruh Menu           |
-| **Ergonomi Spasi Dialog**        | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian                |         Seluruh Dialog          |
-| **Evaluator JavaScript**         | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks             |         `Ctrl+Shift+J`          |
-| **Pengujian Regex Interaktif**   | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                                           |       `Ctrl+Alt+Shift+R`        |
-| **Call-Tip Pratinjau Warna**     | Kotak pratinjau warna mengambang interaktif untuk kode format `#HEX`, `rgb()`, `rgba()`, dan `hsl()`                              |          Hover Kursor           |
-| **Transparansi Jendela**         | Pengatur opasitas jendela native (20%–100%) untuk referensi dokumen latar belakang                                                |          `Ctrl+Alt+T`           |
-| **Layanan Sistem macOS**         | Integrasi menu konteks AppKit (`Open Selection / Path in SparkNotePad`)                                                           |       Menu Konteks macOS        |
-| **Keamanan Multi-Monitor**       | `ScreenDisplayManager` mencegah jendela terbuka di luar bidang layar saat perpindahan monitor multi-DPI                           |            Otomatis             |
-| **Konverter Base64 & Format**    | Pengkodean dan penguraian Base64, angka biner/oktal/desimal/heksadesimal, serta transformasi casing                               |     Menu `Edit >> Convert`      |
-| **Inspektor Karakter Unicode**   | Analisis detail titik kode Unicode (`U+XXXX`), nilai desimal, dan kategori karakter                                               |          Bilah Status           |
-| **Deteksi Enkripsi Otomatis**    | Pengenalan encoding universal dengan `uchardet` serta konversi instan (UTF-8, UTF-16, ANSI, CJK)                                  |          Bilah Status           |
+| Fitur                             | Deskripsi Kapabilitas                                                                                                             |       Pintasan (Shortcut)       |
+| :-------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Tumpukan Tab Ditutup**          | Antrean FIFO 50 entri memulihkan posisi kursor, rasio scroll, encoding, lexer bahasa, dan tag warna tab                           | `Ctrl+Shift+T` / `Cmd+Shift+T`  |
+| **Penandaan Warna & Grup Tab**    | 8 preset warna kontras tinggi dengan garis visual tepi atas dan penyimpanan persisten via QSettings                               |        Menu Konteks Tab         |
+| **Autosave & Pemulihan Crash**    | Snapshot latar belakang 10 detik dengan izin strict POSIX 0600, checksum SHA-256, dan dialog pemulihan interaktif                 |            Otomatis             |
+| **Mesin Pencarian Extended**      | Evaluasi escape heksadesimal `\xHH`, desimal `\dDDD`, NUL `\0`, `\b`, `\f`, dan `\v` pada Find/Replace dan Quick Find             |       Pencarian Extended        |
+| **Ekspansi 129 Lexer Sintaks**    | Lexer resmi Lexilla plus Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), JSON5 (`.json5`); C23, Rust 2024, Swift 6, TS 5.8     |        Pemilihan Bahasa         |
+| **Ekspor Asli Markdown / PDF**    | Perenderan PDF via modul murni Qt 6 PrintSupport dengan margin kustom dan ukuran kertas fleksibel, plus fallback engine Pandoc    |     `File >> Export >> PDF`     |
+| **Pratinjau Mermaid & LaTeX**     | Diagram alur, sequence, class Mermaid interaktif, rumus matematika LaTeX (`$$...$$`, `$...$`), dan Two-Way SyncScroll             |         `Ctrl+Shift+M`          |
+| **Suite Alat Pengembang**         | Format & Minify JSON, Enkoding/Dekoding URL, Escape/Unescape Unicode, Generator UUID v4, dan Konverter Unix Epoch Timestamp       |      `Tools >> Developer`       |
+| **Pengalih Berkas Header/Source** | Navigasi dua arah instan berkas header/source C/C++ dan berkas kode/tes TS/JS dengan penanda scrollbar                            |         `F4` / `Alt+O`          |
+| **Parser .editorconfig Asli**     | Parser murni Qt menegakkan `indent_style`, `indent_size`, `tab_width`, dan `end_of_line` hierarki folder hingga `root = true`     |            Otomatis             |
+| **Panel Riwayat Clipboard**       | Dock riwayat clipboard FIFO 20 entri dengan filter pencarian dan penyisipan klik ganda ke editor                                  |     `View >> Dock Windows`      |
+| **Panel Inspektur Karakter**      | Inspeksi kode poin Unicode (`U+XXXX`), nama karakter, blok, kategori, UTF-8/16/32 hex, desimal, dan entitas HTML                  |     `View >> Dock Windows`      |
+| **Fuzzy Quick Switcher**          | Pengalih berkas dan tab spotlight tanpa bingkai (`Cmd+P` / `Ctrl+P`) dan dock minimap Scintilla (batas dokumen > 50 MB)           |       `Ctrl+P` / `Cmd+P`        |
+| **Menu Tools Gaya Notepad++**     | Menu tingkat atas: Hash (MD5/CRC32/XXHASH/SHA-1/256/384/512, SHA3-1/256/384/512), 16 Alat MIME Lengkap, Konverter (ASCII/Hex/Dec) |          `Tools >> *`           |
+| **16 Alat MIME Lengkap**          | Base64 (Standar/Padding/Unix EOL/Per Baris/Ketat), Quoted-Printable, dan URL (RFC1738/Extended/Full/Decode)                       |   `Tools >> MIME Tools >> *`    |
+| **Pemetaan Pintasan Interaktif**  | Pengatur shortcut GUI dengan pencarian, deteksi konflik, reset default, dan pembaruan langsung tanpa restart                      | `Preferences >> Tab Shortcuts`  |
+| **Bantuan Dev & Web Search**      | Navigasi dokumentasi instan: PHP Help (`Alt+F1`), Rust Docs (`Alt+F2`), Python Docs (`Alt+F3`), Pencarian Wikipedia               |          `Run >> Help`          |
+| **Pembaruan Bebas Batas API**     | Pemeriksa rilis GitHub tanpa limit kuota menggunakan HTTP ETag (`If-None-Match`) & fallback redirect web pada HTTP 403            |        `Help >> Updates`        |
+| **Enkripsi AES-256 di Tools**     | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) & HMAC-SHA256, kini di dalam menu Tools                       |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
+| **Quick Open Lebih Ergonomis**    | Pembuka berkas spotlight mengambang ditempatkan tepat setelah Open pada menu Berkas (File)                                        |          `Ctrl+Alt+O`           |
+| **Tipografi Bilah Menu Kompak**   | Padding presisi 3px 6px dengan ukuran font 12px untuk navigasi lebih rapat dan bersih                                             |        Bilah Menu Global        |
+| **Hardening Linter Zero-Defect**  | Sinkronisasi 312 entri basis data kompilasi menuntaskan 1.288 diagnostik IDE dan 756 peringatan SonarQube                         |          Semua Berkas           |
+| **Sandbox Lua Ketat**             | Menetralisasi primitif eksekusi OS/IO/debug berbahaya (CVE-2026-42214) dengan 100% tes regresi otomatis                           |             Bawaan              |
+| **Guard Konfigurasi & Sesi**      | Mencegat pembajakan shell interpreter (CVE-2026-48778); menegakkan izin berkas hanya pemilik (0600) pada sesi                     |             Bawaan              |
+| **Perlindungan ReDoS Scintilla**  | Mendeteksi nested quantifiers berisiko sebelum regex dieksekusi; membatasi runtime pencarian interaktif                           |             Bawaan              |
+| **Pratinjau Markdown Aman**       | Dock QTextBrowser kotak pasir dengan sinkronisasi debounced dan whitelisting skema URI (http/https/mailto)                        |         `Ctrl+Shift+M`          |
+| **Streaming Hash Kriptografis**   | Buffer streaming konstan 64 KB untuk SHA-256/384/512 dan SHA3-1/256/384/512 dengan lencana verifikasi kesesuaian real-time        |  Menu Tools >> Validator Hash   |
+| **Baseline TLS & Mode Air-Gap**   | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik                 |  Preferensi >> Pengaturan Umum  |
+| **27 Ikon Bilah Alat Monoline**   | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                                  |        Bilah Alat & Menu        |
+| **Ergonomi QComboBox Terpadu**    | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema                         |         Seluruh Dialog          |
+| **Tab Themes & Toolbar**          | 21 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             | Preferensi >> Themes & Toolbar  |
+| **Tab Custom Toolbar Config**     | Penyesuai visual bilah alat lengkap dengan pencarian, pengurutan aksi, pemisah, dan hot-reload instan                             |  Preferensi >> Custom Toolbar   |
+| **Menu Editor Standar Desktop**   | Menu standar: Tampilan Hex/Biner di bawah Bandingkan, Restart di menu macOS di atas Quit, menu bersih                             |           Menu Global           |
+| **100% Katalog i18n Dwibahasa**   | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.924 teks (0 belum selesai)                         |   Preferensi >> Bahasa (Lang)   |
+| **Mulai Ulang Aplikasi Aman**     | Mengosongkan sesi, menyimpan pengaturan, dan meluncurkan ulang aplikasi tanpa konflik lock                                        |          `Ctrl+Alt+R`           |
+| **Tombol Keluar Terkemuka**       | Penghentian aplikasi yang mudah diakses di bilah alat dan menu dengan konfirmasi simpan                                           | Bilah Alat / `Cmd+Q` / `Alt+F4` |
+| **Penyempurnaan Dialog Tentang**  | Tata letak responsif dengan `QScrollArea`, pelipatan teks, dan bebas pemotongan di Retina/4K                                      |      Menu `Help >> About`       |
+| **Keamanan Siber 2025–2026**      | Mitigasi injeksi Lua (CVE-2026-42214), mitigasi UAF Qt HTTP/2 (CVE-2026-95620), dual crypto                                       |             Bawaan              |
+| **Pemantauan Log Langsung**       | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll                       |          `Ctrl+Alt+Y`           |
+| **Dukungan Ikon Seluruh Menu**    | Seluruh menu dan submenu menampilkan ikon secara native via `setIconVisibleInMenu` di macOS dan Linux                             |          Seluruh Menu           |
+| **Ergonomi Spasi Dialog**         | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian                |         Seluruh Dialog          |
+| **Evaluator JavaScript**          | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks             |         `Ctrl+Shift+J`          |
+| **Pengujian Regex Interaktif**    | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                                           |       `Ctrl+Alt+Shift+R`        |
+| **Call-Tip Pratinjau Warna**      | Kotak pratinjau warna mengambang interaktif untuk kode format `#HEX`, `rgb()`, `rgba()`, dan `hsl()`                              |          Hover Kursor           |
+| **Transparansi Jendela**          | Pengatur opasitas jendela native (20%–100%) untuk referensi dokumen latar belakang                                                |          `Ctrl+Alt+T`           |
+| **Layanan Sistem macOS**          | Integrasi menu konteks AppKit (`Open Selection / Path in SparkNotePad`)                                                           |       Menu Konteks macOS        |
+| **Keamanan Multi-Monitor**        | `ScreenDisplayManager` mencegah jendela terbuka di luar bidang layar saat perpindahan monitor multi-DPI                           |            Otomatis             |
+| **Konverter Base64 & Format**     | Pengkodean dan penguraian Base64, angka biner/oktal/desimal/heksadesimal, serta transformasi casing                               |     Menu `Edit >> Convert`      |
+| **Inspektor Karakter Unicode**    | Analisis detail titik kode Unicode (`U+XXXX`), nilai desimal, dan kategori karakter                                               |          Bilah Status           |
+| **Deteksi Enkripsi Otomatis**     | Pengenalan encoding universal dengan `uchardet` serta konversi instan (UTF-8, UTF-16, ANSI, CJK)                                  |          Bilah Status           |
 
 ---
 

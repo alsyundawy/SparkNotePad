@@ -57,6 +57,7 @@ public:
 
     ads::CDockWidget *addTabWidget(QWidget *widget, const QString &title, const QIcon &icon = QIcon(),
                                    const QString &toolTip = QString());
+    void setEditorTabColor(ScintillaNext *editor, const QColor &color);
     [[nodiscard]] ads::CDockManager *getDockManager() const { return dockManager; }
 
 public slots:

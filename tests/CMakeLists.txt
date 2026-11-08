@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets PrintSupport)
 
 set(TEST_HEADERS
     test_base64.h
@@ -14,13 +14,40 @@ set(TEST_HEADERS
     TestLuaSandbox.h
     test_mime_tools.h
     test_toolbar_icon_manager.h
+    test_closed_tabs_manager.h
+    test_tab_color_manager.h
+    test_autosave_recovery_manager.h
+    test_extended_search_parser.h
+    test_language_lexer_coverage.h
+    test_document_export_manager.h
+    test_markdown_preview_enhancer.h
+    test_developer_tools_engine.h
+    test_corresponding_file_switcher.h
+    test_editorconfig_parser.h
+    test_clipboard_history_dock.h
+    test_quick_switcher.h
 )
 
 set(TEST_SOURCES
     test_main.cpp
     ${CMAKE_SOURCE_DIR}/src/resources.qrc
     ${CMAKE_SOURCE_DIR}/src/toolbar_icons.qrc
+    ${CMAKE_SOURCE_DIR}/src/scripts.qrc
     ${CMAKE_SOURCE_DIR}/src/features/ToolbarIconManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/ClosedTabsManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/TabColorManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/AutosaveRecoveryManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/DocumentExportManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/DeveloperToolsEngine.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/CorrespondingFileSwitcher.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/EditorConfigParser.cpp
+    ${CMAKE_SOURCE_DIR}/src/features/CharacterInfo.cpp
+    ${CMAKE_SOURCE_DIR}/src/docks/ClipboardHistoryDock.cpp
+    ${CMAKE_SOURCE_DIR}/src/docks/CharacterInfoDock.cpp
+    ${CMAKE_SOURCE_DIR}/src/docks/DocumentMinimapDock.cpp
+    ${CMAKE_SOURCE_DIR}/src/dialogs/QuickSwitcherDialog.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/ExtendedSearchParser.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/MarkdownPreviewEnhancer.cpp
     ${CMAKE_SOURCE_DIR}/src/ApplicationSettings.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Base64Utils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/MimeTools.cpp
@@ -49,6 +76,7 @@ target_link_libraries(SparkNotePadTests PRIVATE
     Qt6::Core
     Qt6::Test
     Qt6::Widgets
+    Qt6::PrintSupport
     lua
 )
 

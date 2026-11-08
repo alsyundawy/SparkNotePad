@@ -25,6 +25,7 @@
 #include "QuickFindWidget.h"
 #include "ScintillaNext.h"
 #include "FadingIndicator.h"
+#include "utils/ExtendedSearchParser.h"
 #include "ui_QuickFindWidget.h"
 
 #include <QKeyEvent>
@@ -271,7 +272,11 @@ void QuickFindWidget::initializeEditorIndicator() {
 }
 
 QString QuickFindWidget::searchText() const {
-    return ui->lineEdit->text();
+    const QString raw = ui->lineEdit->text();
+    if (!ui->buttonRegexp->isChecked() && raw.contains(QLatin1Char('\\'))) {
+        return ExtendedSearchParser::parse(raw);
+    }
+    return raw;
 }
 
 void QuickFindWidget::positionWidget() {

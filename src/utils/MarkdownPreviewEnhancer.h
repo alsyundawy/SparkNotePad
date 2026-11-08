@@ -1,0 +1,28 @@
+#pragma once
+/*
+ * This file is part of SparkNotePad.
+ *
+ * Copyright 2026 Harry Dertin Sutisna Alsyundawy <alsyundawy@gmail.com>
+ * https://github.com/alsyundawy/SparkNotePad
+ * ALSYUNDAWY IT SOLUTION <https://alsyundawy.com>
+ *
+ * SparkNotePad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+#include <QString>
+
+class MarkdownPreviewEnhancer {
+public:
+    static QString enhanceMarkdown(const QString &rawMd, bool isDark);
+
+    static QString processMermaidBlocks(const QString &content, bool isDark);
+
+    static QString processMathExpressions(const QString &content);
+
+    static QString sanitizeForPreview(const QString &text);
+
+    static QString mathAndMermaidCss(bool isDark);
+};

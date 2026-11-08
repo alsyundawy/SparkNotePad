@@ -125,4 +125,23 @@ SparkNotePad includes the full complement of 125 Lexilla lexers, covering modern
 
 ---
 
+## 12. Major v1.4.5 Enhancements & Productivity Suite
+
+SparkNotePad v1.4.5 introduces 12 major foundational features:
+
+- **Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**: Resilient 50-tab history stack restoring cursor positions, scroll ratios, text encoding, language, and tab colors.
+- **Tab Color Tagging & Grouping**: 8 accessible color presets with visual tab borders and persistent storage.
+- **Autosave & Crash Recovery (10s Interval, 0600 POSIX Permissions)**: Periodic snapshots with SHA-256 integrity and interactive recovery dialog.
+- **Extended Search Escape Sequence Engine**: Linear tokenization supporting `\xHH`, `\dDDD`, `\0`, `\b`, `\f`, and `\v` in Find/Replace and Quick Find.
+- **129 Syntax Lexers Expansion**: Added Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), and JSON5 (`.json5`); updated C23, Rust 2024, Swift 6, and TypeScript 5.8 standards.
+- **Native Markdown / HTML / PDF Export Pipeline**: Pure `Qt6::PrintSupport` and Pandoc fallback engine with custom page layout and typography options.
+- **Markdown Preview Enhancements**: Mermaid diagram rendering containers, LaTeX math formulas (`$$...$$` block and `$...$` inline), and Two-Way SyncScroll.
+- **Developer Tools Suite**: JSON Prettify/Minify, URL Encode/Decode, Unicode Escape/Unescape, UUID v4 generator, and Unix Epoch Timestamp converter.
+- **Corresponding Header/Source Switcher (`F4` / `Alt+O`)**: Bidirectional switching for C/C++ (`.h` <-> `.cpp`) and TS/JS (`.ts` <-> `.test.ts`) with scrollbar navigation markers.
+- **Native `.editorconfig` Automatic Parser & Enforcement**: Automatic indentation and newline enforcement traversing parent directories up to `root = true`.
+- **Clipboard History Dock & Real-Time Character Info Dock**: Dockable FIFO clipboard history queue (20 items) and live Unicode code point inspector (`U+XXXX`, UTF-8/16/32, HTML entity).
+- **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Document Minimap Dock**: Spotlight-style frameless subsequence file/tab finder, and lightweight Scintilla minimap dock with a >50 MB large file safeguard.
+
+---
+
 Next Chapter: **[[03. User Interface & Themes|03-User-Interface-and-Themes]]**

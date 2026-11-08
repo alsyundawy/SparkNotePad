@@ -18,6 +18,7 @@
 #include <QTimer>
 #include <QUrl>
 #include <cstdint>
+#include "ScintillaTypes.h"
 
 class ScintillaNext;
 class MainWindow;
@@ -52,9 +53,12 @@ public slots:
     void openInBrowser();
     void copyHtml();
     void exportHtml();
+    void exportPdf();
     void zoomIn();
     void zoomOut();
     void resetZoom();
+    void syncScrollFromEditor(Scintilla::Update updated);
+    void syncScrollFromBrowser();
 
 signals:
     void formatChanged(PreviewFormat newFormat);
@@ -86,6 +90,7 @@ private:
     QPushButton *btnOpenBrowser = nullptr;
     QPushButton *btnCopyHtml = nullptr;
     QPushButton *btnExportHtml = nullptr;
+    QPushButton *btnExportPdf = nullptr;
     QPushButton *btnRefresh = nullptr;
     QPushButton *btnZoomIn = nullptr;
     QPushButton *btnZoomOut = nullptr;
@@ -95,4 +100,5 @@ private:
     bool autoShowEnabled = false;
     int baseFontSize = 13;
     bool m_isUpdatingTheme{false};
+    bool m_syncingScroll{false};
 };

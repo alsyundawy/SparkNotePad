@@ -41,6 +41,10 @@ void MacServicesHandler::makeWidgetWindowTranslucent(const QWidget *w) {
     Q_UNUSED(w);
 }
 
+void MacServicesHandler::updateDockRecentMenu(const QStringList &recentFiles) {
+    Q_UNUSED(recentFiles);
+}
+
 void MacServicesHandler::handleOpenSelection(const QString &text) {
     emit openSelectionRequested(text);
 }

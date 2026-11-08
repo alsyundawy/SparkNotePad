@@ -20,19 +20,22 @@ SparkNotePad features a dual-mode quick palette architecture inspired by modern 
 
 ## 2. File & Document Management
 
-| Action                  | macOS Shortcut    | Linux / Windows Shortcut | Description                                             |
-| :---------------------- | :---------------- | :----------------------- | :------------------------------------------------------ |
-| **New Document**        | `Cmd+N`           | `Ctrl+N`                 | Create new untitled document in a new tab               |
-| **Open Document**       | `Cmd+O`           | `Ctrl+O`                 | Open file chooser dialog                                |
-| **Save Document**       | `Cmd+S`           | `Ctrl+S`                 | Atomic save document to disk                            |
-| **Save As**             | `Cmd+Shift+S`     | `Ctrl+Shift+S`           | Save copy with new path / encoding / permissions        |
-| **Save All Documents**  | `Cmd+Alt+S`       | `Ctrl+Alt+S`             | Save all modified tabs at once                          |
-| **Close Current Tab**   | `Cmd+W`           | `Ctrl+W`                 | Close active tab with dirty buffer warning              |
-| **Close All Tabs**      | `Cmd+Shift+W`     | `Ctrl+Shift+W`           | Close all tabs prompting for modified files             |
-| **Next Tab**            | `Ctrl+Tab`        | `Ctrl+Tab`               | Cycle forward through document tabs                     |
-| **Previous Tab**        | `Ctrl+Shift+Tab`  | `Ctrl+Shift+Tab`         | Cycle backward through document tabs                    |
-| **Print Document**      | `Cmd+Alt+Shift+P` | `Ctrl+Alt+Shift+P`       | Print document with custom margins and syntax rendering |
-| **Restart Application** | `Cmd+Alt+R`       | `Ctrl+Alt+R`             | Restart application safely preserving session state     |
+| Action                   | macOS Shortcut    | Linux / Windows Shortcut | Description                                             |
+| :----------------------- | :---------------- | :----------------------- | :------------------------------------------------------ |
+| **New Document**         | `Cmd+N`           | `Ctrl+N`                 | Create new untitled document in a new tab               |
+| **Open Document**        | `Cmd+O`           | `Ctrl+O`                 | Open file chooser dialog                                |
+| **Save Document**        | `Cmd+S`           | `Ctrl+S`                 | Atomic save document to disk                            |
+| **Save As**              | `Cmd+Shift+S`     | `Ctrl+Shift+S`           | Save copy with new path / encoding / permissions        |
+| **Save All Documents**   | `Cmd+Alt+S`       | `Ctrl+Alt+S`             | Save all modified tabs at once                          |
+| **Close Current Tab**    | `Cmd+W`           | `Ctrl+W`                 | Close active tab with dirty buffer warning              |
+| **Reopen Closed Tab**    | `Cmd+Shift+T`     | `Ctrl+Shift+T`           | Reopen last closed tab from 50-entry FIFO stack         |
+| **Close All Tabs**       | `Cmd+Shift+W`     | `Ctrl+Shift+W`           | Close all tabs prompting for modified files             |
+| **Quick Open File/Tab**  | `Cmd+P`           | `Ctrl+P`                 | Fuzzy spotlight file and open tab quick switcher        |
+| **Next Tab**             | `Ctrl+Tab`        | `Ctrl+Tab`               | Cycle forward through document tabs                     |
+| **Previous Tab**         | `Ctrl+Shift+Tab`  | `Ctrl+Shift+Tab`         | Cycle backward through document tabs                    |
+| **Switch Header/Source** | `F4` / `Alt+O`    | `F4` / `Alt+O`           | Bidirectional header/source or code/test file toggle    |
+| **Print Document**       | `Cmd+Alt+Shift+P` | `Ctrl+Alt+Shift+P`       | Print document with custom margins and syntax rendering |
+| **Restart Application**  | `Cmd+Alt+R`       | `Ctrl+Alt+R`             | Restart application safely preserving session state     |
 
 ---
 

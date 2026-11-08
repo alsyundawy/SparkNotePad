@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.5] - 2026-11-08
+
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher
+
+SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectural pillars:
+- Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`, 50-tab history).
+- Tab Color Tagging & Grouping (8 accessible color presets, visual borders, persistent state).
+- Autosave & Crash Recovery Manager (10s interval, strict 0600 POSIX permissions, SHA-256 integrity).
+- Extended Search Escape Sequence Engine (`\xHH`, `\dDDD`, `\0`, `\b`, `\f`, `\v`).
+- 100+ Lexers Audit & Modern Language Expansion (129 Total Languages: Crystal, Cangjie, LLVM IR, JSON5; C23, Rust 2024, Swift 6, TS 5.8).
+- Native Markdown / HTML / PDF Export Pipeline (pure Qt 6 PrintSupport + Pandoc engine fallback).
+- Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas + Two-Way SyncScroll).
+- Developer Tools Suite (JSON Prettify/Minify, URL, Unicode, UUID v4, Epoch Timestamp converter).
+- Scrollbar Navigation Markers & Corresponding Header/Source Switcher (`F4` / `Alt+O`).
+- Native `.editorconfig` Automatic Parser & Enforcement (`root = true` parent directory traversal).
+- Clipboard History Dock & Character Info Dock (FIFO 20-entry queue & real-time Unicode inspector).
+- Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Document Minimap Dock (>50 MB performance safeguard).
+
+---
+
 ## [1.4.0] - 2026-11-07
 
 ### 🚀 Line Spacing, Enriched Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & 2025–2026 Security Hardening

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(SparkNotePad
-    VERSION 1.4.0
+    VERSION 1.4.5
     DESCRIPTION "Lightweight Scintilla-based text and source code editor for macOS and Linux"
     LANGUAGES C CXX
 )
@@ -10,7 +10,7 @@ if(APPLE)
     enable_language(OBJCXX)
 endif()
 
-set(APP_VERSION "1.4.0")
+set(APP_VERSION "1.4.5")
 set(APP_DISTRIBUTION "" CACHE STRING "Distribution type")
 string(TIMESTAMP CURRENT_YEAR "%Y")
 set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey & SparkNotePad Contributors")

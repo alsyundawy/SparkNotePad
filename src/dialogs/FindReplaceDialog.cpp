@@ -39,15 +39,11 @@
 #include "MainWindow.h"
 #include "BookMarkDecorator.h"
 #include "utils/RegexSafetyEngine.h"
+#include "utils/ExtendedSearchParser.h"
 
 namespace {
 void convertToExtended(QString &str) {
-    str.replace(R"(\r)", "\r");
-    str.replace(R"(\n)", "\n");
-    str.replace(R"(\t)", "\t");
-    str.replace(R"(\0)", "\0");
-    str.replace(R"(\\)", R"(\)");
-    // Extended search escapes for CR, LF, TAB, NUL, and backslash
+    str = ExtendedSearchParser::parse(str);
 }
 }  // namespace
 

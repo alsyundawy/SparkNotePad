@@ -20,19 +20,22 @@ SparkNotePad memiliki arsitektur palet cepat dua mode yang terinspirasi oleh lin
 
 ## 2. Manajemen Berkas & Dokumen
 
-| Tindakan                     | macOS Shortcut    | Linux / Windows Shortcut | Deskripsi                                                      |
-| :--------------------------- | :---------------- | :----------------------- | :------------------------------------------------------------- |
-| **Dokumen Baru**             | `Cmd+N`           | `Ctrl+N`                 | Membuat dokumen kosong baru pada tab baru                      |
-| **Buka Dokumen**             | `Cmd+O`           | `Ctrl+O`                 | Membuka dialog pemilih berkas                                  |
-| **Simpan Dokumen**           | `Cmd+S`           | `Ctrl+S`                 | Menyimpan berkas secara aman ke disk                           |
-| **Simpan Sebagai (Save As)** | `Cmd+Shift+S`     | `Ctrl+Shift+S`           | Menyimpan salinan berkas dengan nama/lokasi baru               |
-| **Simpan Semua Dokumen**     | `Cmd+Alt+S`       | `Ctrl+Alt+S`             | Menyimpan seluruh tab dokumen yang termodifikasi               |
-| **Tutup Tab Aktif**          | `Cmd+W`           | `Ctrl+W`                 | Menutup tab aktif dengan peringatan simpan jika diubah         |
-| **Tutup Semua Tab**          | `Cmd+Shift+W`     | `Ctrl+Shift+W`           | Menutup semua tab terbuka secara bersamaan                     |
-| **Tab Berikutnya**           | `Ctrl+Tab`        | `Ctrl+Tab`               | Berpindah maju ke tab dokumen berikutnya                       |
-| **Tab Sebelumnya**           | `Ctrl+Shift+Tab`  | `Ctrl+Shift+Tab`         | Berpindah mundur ke tab dokumen sebelumnya                     |
-| **Cetak Dokumen**            | `Cmd+Alt+Shift+P` | `Ctrl+Alt+Shift+P`       | Mencetak dokumen dengan penyesuaian margin dan warna sintaksis |
-| **Mulai Ulang Aplikasi**     | `Cmd+Alt+R`       | `Ctrl+Alt+R`             | Me-restart aplikasi dengan aman mempertahankan sesi aktif      |
+| Tindakan                      | macOS Shortcut    | Linux / Windows Shortcut | Deskripsi                                                      |
+| :---------------------------- | :---------------- | :----------------------- | :------------------------------------------------------------- |
+| **Dokumen Baru**              | `Cmd+N`           | `Ctrl+N`                 | Membuat dokumen kosong baru pada tab baru                      |
+| **Buka Dokumen**              | `Cmd+O`           | `Ctrl+O`                 | Membuka dialog pemilih berkas                                  |
+| **Simpan Dokumen**            | `Cmd+S`           | `Ctrl+S`                 | Menyimpan berkas secara aman ke disk                           |
+| **Simpan Sebagai (Save As)**  | `Cmd+Shift+S`     | `Ctrl+Shift+S`           | Menyimpan salinan berkas dengan nama/lokasi baru               |
+| **Simpan Semua Dokumen**      | `Cmd+Alt+S`       | `Ctrl+Alt+S`             | Menyimpan seluruh tab dokumen yang termodifikasi               |
+| **Tutup Tab Aktif**           | `Cmd+W`           | `Ctrl+W`                 | Menutup tab aktif dengan peringatan simpan jika diubah         |
+| **Buka Kembali Tab Ditutup**  | `Cmd+Shift+T`     | `Ctrl+Shift+T`           | Membuka tab terakhir dari antrean riwayat 50 tab               |
+| **Tutup Semua Tab**           | `Cmd+Shift+W`     | `Ctrl+Shift+W`           | Menutup semua tab terbuka secara bersamaan                     |
+| **Quick Switcher Berkas/Tab** | `Cmd+P`           | `Ctrl+P`                 | Dialog cepat pencarian fuzzy berkas & tab terbuka              |
+| **Tab Berikutnya**            | `Ctrl+Tab`        | `Ctrl+Tab`               | Berpindah maju ke tab dokumen berikutnya                       |
+| **Tab Sebelumnya**            | `Ctrl+Shift+Tab`  | `Ctrl+Shift+Tab`         | Berpindah mundur ke tab dokumen sebelumnya                     |
+| **Beralih Header / Source**   | `F4` / `Alt+O`    | `F4` / `Alt+O`           | Navigasi dua arah berkas C/C++ header/source & TS/JS kode/tes  |
+| **Cetak Dokumen**             | `Cmd+Alt+Shift+P` | `Ctrl+Alt+Shift+P`       | Mencetak dokumen dengan penyesuaian margin dan warna sintaksis |
+| **Mulai Ulang Aplikasi**      | `Cmd+Alt+R`       | `Ctrl+Alt+R`             | Me-restart aplikasi dengan aman mempertahankan sesi aktif      |
 
 ---
 

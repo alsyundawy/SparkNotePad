@@ -9,8 +9,8 @@ L.extensions = {
 }
 
 L.keywords = {
-	[0] = "class deinit enum extension func import init internal let operator private protocol public static struct subscript typealias var keywordclass.swift.statements=break case continue default do else fallthrough for if in return switch where while",
-	[2] = "as dynamicType false is nil self Self super true __COLUMN__ __FILE__ __FUNCTION__ __LINE__",
+	[0] = "class deinit enum extension func import init internal let operator private protocol public static struct subscript typealias var break case continue default do else fallthrough for if in return switch where while actor async await isolated nonisolated consuming borrowing macro",
+	[2] = "as dynamicType false is nil self Self super true some any Sendable __COLUMN__ __FILE__ __FUNCTION__ __LINE__",
 	[3] = "associativity convenience dynamic didSet final get infix inout lazy left mutating none nonmutating optional override postfix precedence prefix Protocol required right set Type unowned weak willSet",
 }
 

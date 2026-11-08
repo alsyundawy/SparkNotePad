@@ -10,7 +10,9 @@
  */
 
 #include "CharacterInfo.h"
+#ifndef UNIT_TESTING
 #include "ScintillaNext.h"
+#endif
 
 #include <QChar>
 #include <QStringConverter>
@@ -1112,8 +1114,8 @@ CharacterInfo::Details CharacterInfo::getDetailsForCodePoint(uint32_t cp) {
         d.utf16Hex = QStringLiteral("0x%1").arg(cp, 4, 16, QChar('0')).toUpper();
         d.utf16Dec = QString::number(cp);
     } else {
-        uint16_t high = 0xD800 + ((cp - 0x10000) >> 10);
-        uint16_t low = 0xDC00 + ((cp - 0x10000) & 0x3FF);
+        const auto high = static_cast<uint16_t>(0xD800 + ((cp - 0x10000) >> 10));
+        const auto low = static_cast<uint16_t>(0xDC00 + ((cp - 0x10000) & 0x3FF));
         d.utf16Hex = QStringLiteral("0x%1 0x%2 (Surrogate Pair)")
                          .arg(high, 4, 16, QChar('0'))
                          .arg(low, 4, 16, QChar('0'))
@@ -1148,8 +1150,8 @@ CharacterInfo::Details CharacterInfo::getDetailsForCodePoint(uint32_t cp) {
     if (cp <= 0xFFFF) {
         d.jsonEscape = QStringLiteral("\\u%1").arg(cp, 4, 16, QChar('0')).toUpper();
     } else {
-        uint16_t high = 0xD800 + ((cp - 0x10000) >> 10);
-        uint16_t low = 0xDC00 + ((cp - 0x10000) & 0x3FF);
+        const auto high = static_cast<uint16_t>(0xD800 + ((cp - 0x10000) >> 10));
+        const auto low = static_cast<uint16_t>(0xDC00 + ((cp - 0x10000) & 0x3FF));
         d.jsonEscape = QStringLiteral("\\u%1\\u%2").arg(high, 4, 16, QChar('0')).arg(low, 4, 16, QChar('0')).toUpper();
     }
 
@@ -1160,19 +1162,24 @@ CharacterInfo::Details CharacterInfo::getDetailsForCodePoint(uint32_t cp) {
 }
 
 CharacterInfo::Details CharacterInfo::getDetailsAt(ScintillaNext *editor, int pos) {
+#ifdef UNIT_TESTING
+    Q_UNUSED(editor);
+    Q_UNUSED(pos);
+    return Details();
+#else
     if (!editor)
         return Details();
 
     if (pos < 0) {
         if (editor->selectionStart() != editor->selectionEnd()) {
-            pos = editor->selectionStart();
+            pos = static_cast<int>(editor->selectionStart());
         } else {
-            pos = editor->currentPos();
+            pos = static_cast<int>(editor->currentPos());
         }
     }
 
     if (pos >= editor->length()) {
-        pos = editor->length() - 1;
+        pos = static_cast<int>(editor->length() - 1);
     }
     if (pos < 0)
         return Details();
@@ -1194,7 +1201,7 @@ CharacterInfo::Details CharacterInfo::getDetailsAt(ScintillaNext *editor, int po
         seqLen = 4;
 
     if (pos + seqLen > editor->length()) {
-        seqLen = editor->length() - pos;
+        seqLen = static_cast<int>(editor->length() - pos);
     }
 
     const QByteArray rawBytes = editor->get_text_range(pos, pos + seqLen);
@@ -1207,6 +1214,7 @@ CharacterInfo::Details CharacterInfo::getDetailsAt(ScintillaNext *editor, int po
         return Details();
 
     return getDetailsForCodePoint(static_cast<uint32_t>(ucs4.first()));
+#endif
 }
 
 QString CharacterInfo::formatSummary(const Details &d) {

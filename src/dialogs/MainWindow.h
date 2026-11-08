@@ -64,6 +64,10 @@ class PerformanceDiagnosticsDialog;
 class MarkOccurrences;
 class FileBrowserDock;
 class MarkdownSafePreviewDock;
+class ClipboardHistoryDock;
+class CharacterInfoDock;
+class DocumentMinimapDock;
+class QuickSwitcherDialog;
 
 class MainWindow : public QMainWindow {  // NOSONAR(cpp:S1448, cpp:S1820)
     Q_OBJECT
@@ -98,6 +102,8 @@ public slots:
     void setFolderAsWorkspacePath(const QString &dir) const;
 
     void reloadFile();
+    void reopenClosedTab();
+    void switchCorrespondingFile();
 
     void closeCurrentFile();
     void closeFile(ScintillaNext *editor);
@@ -244,6 +250,11 @@ private:
     FileBrowserDock *fileBrowserDock = nullptr;
     FunctionListDock *functionListDock = nullptr;
     MarkdownSafePreviewDock *markdownSafePreviewDock = nullptr;
+    ClipboardHistoryDock *clipboardHistoryDock = nullptr;
+    CharacterInfoDock *characterInfoDock = nullptr;
+    DocumentMinimapDock *documentMinimapDock = nullptr;
+    QAction *actionQuickSwitcher = nullptr;
+    void openQuickSwitcher();
     static bool isMarkdownOrHtml(const ScintillaNext *editor);
 
     void setupRunMenu();

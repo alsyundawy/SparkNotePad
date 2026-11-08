@@ -7,6 +7,26 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ---
 
+## [1.4.5] - 2026-11-08
+
+### 🌟 Rilis Mayor: Tumpukan Tab Ditutup, Penandaan Warna Tab, Pemulihan Crash, Pencarian Extended, Ekspor PDF, Pratinjau Mermaid/LaTeX, Alat Pengembang, Pengalih Berkas Berpasangan, EditorConfig, Riwayat Clipboard & Quick Switcher
+
+SparkNotePad v1.4.5 adalah rilis fitur mayor yang menghadirkan 12 pilar arsitektur utama:
+- **Tumpukan Tab Ditutup & Buka Kembali Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**: Mengembalikan hingga 50 tab terakhir lengkap dengan posisi kursor, rasio scroll, encoding, bahasa, dan tag warna tab.
+- **Penandaan Warna & Pengelompokan Tab**: 8 preset warna kontras tinggi dengan garis visual tepi atas dan penyimpanan persisten via QSettings.
+- **Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Strict 0600)**: Snapshot latar belakang berkas yang dimodifikasi dengan checksum integritas SHA-256 dan dialog pemulihan interaktif saat startup.
+- **Mesin Escape Karakter Pencarian Diperluas**: Dukungan `\xHH` (heksadesimal), `\dDDD` (desimal), `\0` (NUL), `\b`, `\f`, dan `\v` pada Cari/Ganti dan Quick Find.
+- **Audit 100+ Lexer & Dukungan Bahasa Modern (Total 129 Bahasa)**: Lexer baru untuk Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), dan JSON5 (`.json5`); pembaruan standar C23, Rust 2024, Swift 6, dan TypeScript 5.8.
+- **Pipeline Ekspor Asli Markdown / HTML / PDF**: Integrasi modul murni `Qt6::PrintSupport` dan fallback Pandoc untuk konversi berkas siap cetak dengan ukuran kertas kustom.
+- **Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX)**: Rendering diagram alur, sekuens, state, dan rumus matematika LaTeX (`$$...$$` dan `$...$`) serta Two-Way SyncScroll sinkronisasi scroll dua arah editor dan pratinjau.
+- **Suite Alat Pengembang (Developer Tools Suite)**: Format & Minifikasi JSON, Enkoding/Dekoding URL, Escape/Unescape Unicode, Generator UUID v4, dan Dialog Konverter Unix Epoch Timestamp.
+- **Penanda Navigasi Scrollbar & Pengalih Header/Source Berpasangan (`F4` / `Alt+O`)**: Navigasi instan dua arah antara header (`.h`/`.hpp`) dan implementasi (`.cpp`/`.c`), serta berkas kode dan tes TypeScript/JavaScript (`.test.ts`).
+- **Parser & Penegakan Otomatis `.editorconfig` Asli**: Penegakan gaya indentasi (Tab/Spasi), lebar tab, dan format EOL dengan penelusuran hierarki direktori hingga `root = true`.
+- **Panel Riwayat Clipboard & Inspektur Karakter Unicode**: Panel dock riwayat clipboard FIFO 20 entri dengan filter pencarian dan panel inspektur Unicode real-time dengan rincian code point U+XXXX, UTF-8/16/32, dan entitas HTML.
+- **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Panel Minimap Dokumen**: Dialog frameless spotlight dengan skor subsekuens fuzzy untuk tab terbuka dan berkas terbaru, serta panel minimap Scintilla dengan batas pengaman dokumen besar (> 50 MB) dan integrasi macOS Dock recent documents.
+
+---
+
 ## [1.4.0] - 2026-11-07
 
 ### 🚀 Spasi Baris Ekstra, Tooltip Tab Diperkaya, Pencarian Fuzzy Aman, Eksekusi Batch Makro, MCP Server & Mitigasi CVE 2025–2026

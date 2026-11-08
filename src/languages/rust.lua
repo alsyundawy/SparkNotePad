@@ -9,7 +9,7 @@ L.extensions = {
 }
 
 L.keywords = {
-	[0] = "abstract as async await become box break const continue crate do dyn else enum extern false final fn for if impl in let loop macro macro_rules match mod move mut override priv pub ref return self static struct super trait true try type typeof unsafe unsized use virtual where while yield",
+	[0] = "abstract as async await become box break const continue crate do dyn else enum extern false final fn for gen if impl in let loop macro macro_rules match mod move mut override priv pub ref return self static struct super trait true try type typeof unsafe unsized use virtual where while yield",
 	[1] = "bool char f32 f64 i128 i16 i32 i64 i8 isize str u128 u16 u32 u64 u8 usize Option Result Some None Ok Err String Vec Box Rc Arc Pin Poll Cell RefCell Mutex RwLock NonZeroU8 NonZeroU16 NonZeroU32 NonZeroU64 NonZeroU128 NonZeroUsize",
 	[2] = "Self",
 	[3] = "None",

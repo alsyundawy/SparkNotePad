@@ -176,6 +176,28 @@ void MacServicesHandler::makeWidgetWindowTranslucent(const QWidget *w)
     }
 }
 
+void MacServicesHandler::updateDockRecentMenu(const QStringList &recentFiles)
+{
+    @autoreleasepool {
+        NSDocumentController *controller = [NSDocumentController sharedDocumentController];
+        if (!controller) {
+            return;
+        }
+        for (const QString &path : recentFiles) {
+            if (path.isEmpty()) {
+                continue;
+            }
+            NSString *nsPath = [NSString stringWithUTF8String:path.toUtf8().constData()];
+            if (nsPath) {
+                NSURL *url = [NSURL fileURLWithPath:nsPath];
+                if (url) {
+                    [controller noteNewRecentDocumentURL:url];
+                }
+            }
+        }
+    }
+}
+
 
 void MacServicesHandler::handleOpenSelection(const QString &text)
 {

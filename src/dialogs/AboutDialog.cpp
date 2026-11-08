@@ -387,7 +387,8 @@ void AboutDialog::updateThemeColors() {
                            "<p>%4</p>")
                            .arg(txtPri, accentCol, tr("Credits, Resources & Upstream Attribution"),
                                 tr("SparkNotePad stands on the shoulders of giants. We express our deepest gratitude "
-                                   "to the following projects, communities, and tools (v1.0.0 – v%1):").arg(APP_VERSION));
+                                   "to the following projects, communities, and tools (v1.0.0 – v%1):")
+                                    .arg(APP_VERSION));
 
         creditsHtml += QString(
                            "<h4 style='color: %1; margin: 12px 0 4px 0; font-size: 12px;'>🤖 %2</h4>"
@@ -512,6 +513,8 @@ void AboutDialog::updateThemeColors() {
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + F</td><td>%12</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + H</td><td>Toggle Hex / Binary "
                 "View</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>F4 / Alt + O</td><td>Switch Corresponding Header / "
+                "Source</td></tr>"
                 "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%13</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F1</td><td>%14</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Alt / Opt + F2</td><td>%15</td></tr>"

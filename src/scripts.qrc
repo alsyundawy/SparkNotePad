@@ -126,5 +126,9 @@
         <file>languages/stata.lua</file>
         <file>languages/systemverilog.lua</file>
         <file>languages/troff.lua</file>
+        <file>languages/crystal.lua</file>
+        <file>languages/cangjie.lua</file>
+        <file>languages/llvm.lua</file>
+        <file>languages/json5.lua</file>
 </qresource>
 </RCC>

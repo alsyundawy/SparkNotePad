@@ -1,76 +1,15 @@
-# Catatan Rilis SparkNotePad — v1.4.0 (Bahasa Indonesia)
+# SparkNotePad Release DocNote — v1.4.5 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.0 (Spasi Baris Ekstra, Tooltip Tab Diperkaya, Pencarian Fuzzy Aman, Eksekusi Batch Makro, MCP Server & Mitigasi CVE 2025–2026)
-Tanggal Rilis        : 2026-11-07
-Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
-Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
-Repositori           : https://github.com/alsyundawy/SparkNotePad
-Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (125 Lexer Resmi)
-Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
-Kerangka Kerja GUI   : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
-Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
-Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
-================================================================================
---------------------------------------------------------------------------------
-
----
-
-## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.0
-
-SparkNotePad v1.4.0 adalah rilis fitur dan keamanan besar yang terinspirasi dari hasil riset mendalam terhadap Nextpad++, Notepad--, dan editor teks modern lainnya. Rilis ini menambahkan fitur produktivitas tinggi serta mitigasi kerentanan keamanan 2025–2026:
-
-1. Pengaturan Spasi Baris Ekstra (Ascent & Descent):
-   - Konfigurasi penambahan tinggi baris atas (ascent) dan bawah (descent) 0–30 px pada Preferensi > Margins/Padding via API Scintilla SCI_SETEXTRAASCENT dan SCI_SETEXTRADESCENT.
-   - Terintegrasi langsung dengan ScintillaNext::setExtraLineSpacing() dan disinkronkan secara real-time ke seluruh tab editor yang terbuka melalui EditorManager.
-
-2. Tooltip Tab Diperkaya dengan Inspeksi Metadata Dokumen:
-   - Implementasi DockedEditor::buildEnrichedToolTip() yang menyajikan path absolut, ukuran berkas di disk, jumlah baris, karakter, encoding teks (UTF-8, UTF-16, dll.), format baris baru (CRLF/LF/CR), serta timestamp modifikasi berkas.
-   - Pembaruan dinamis secara real-time saat tab berganti, dokumen disimpan, atau nama berkas diubah.
-
-3. Mesin Pencarian Subsekuens Fuzzy Tanpa Backtracking:
-   - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() yang mengubah query pencarian menjadi ekspresi reguler linier deterministik ([^char]*char...).
-   - Opsi pencarian fuzzy interaktif pada Dialog Cari & Ganti serta Quick Find Bar (~).
-   - Kebal terhadap serangan ReDoS (Regular Expression Denial of Service).
-
-4. Eksekusi Makro Batch Lintas Dokumen Terbuka:
-   - Opsi cakupan eksekusi di MacroRunDialog: "Current Document" atau "All Open Documents".
-   - Eksekusi makro berurutan ke semua tab aktif dalam satu kali klik.
-
-5. Server MCP Loopback Lokal Berintegritas Tinggi:
-   - Server Model Context Protocol loopback lokal 127.0.0.1 berbasis JSON-RPC dengan otentikasi Bearer Token kriptografis untuk integrasi AI coding agent (list_open_tabs, read_active_tab).
-
-6. Pengerasan Keamanan CVE 2025–2026:
-   - CVE-2026-20841: Perlindungan skema URL/URI berbahaya (ms-office:, cmd:, powershell:) dan pemblokiran eksekusi biner langsung di NetworkSecurityPolicy.
-   - CVE-2026-16762: Pembatasan kedalaman nesting XML (maksimal 32 tingkat) dan batas ukuran berkas 10 MB di ConfigIntegrityGuard.
-   - CVE-2026-48778 & CVE-2026-48800: Pencegahan eskalasi hak istimewa (sudo, pkexec, doas) dan penegakan izin berkas konfigurasi ketat 0600.
-
-7. Salin Info Diagnostik Debug Satu Klik:
-   - Bantuan > Debug Info menyalin seluruh detail konfigurasi runtime, versi Scintilla/Lexilla/Lua, dan platform OS ke clipboard.
-
-8. Standar Kualitas 14 Pilar:
-   - 100% kelulusan unit test, 0 error linter, dan 0 pelanggaran SonarLint.
-
----
-
-## 2. Ringkasan Rilis Sebelumnya: Rilis v1.3.9
-
-SparkNotePad v1.3.9 adalah rilis peningkatan fondasional dan stabilitas besar yang merangkum seluruh evolusi teknis dari v1.3.8 ke v1.3.9. Rilis ini mencakup peningkatan mesin inti Scintilla dan Lexilla langsung dari upstream resmi, resolusi kerentanan regex loop, penambahan preferensi bahasa default, pewarnaan front-matter Markdown, restorasi penuh kompatibilitas Qt 6.2 LTS (macOS Catalina & Ubuntu 20.04), arsitektur rilis multi-arsitektur Linux ARM64 & x64 (50+ paket biner), perampingan dan penyempurnaan packaging DMG macOS, serta lolos audit kualitas 14 pilar tanpa kompromi.
-
-
----
-
-# SparkNotePad Release DocNote — v1.4.0 (English)
-
---------------------------------------------------------------------------------
-================================================================================
-Release Version      : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & Security Hardening)
-Release Date         : 2026-11-07
+Release Version      : 1.4.5 (Major Feature Release: Closed Tab Stack, Tab Color Tagging,
+                       Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX,
+                       Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher)
+Release Date         : 2026-11-08
 Lead Maintainer      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization         : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository           : https://github.com/alsyundawy/SparkNotePad
-Core Editing Engine  : Scintilla 5.6.9 & Lexilla 5.5.5 (Complete 125 Official Lexers)
+Core Editing Engine  : Scintilla 5.6.9 & Lexilla 5.5.5 (129 Total Lexers)
 Embedded Lua Core    : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
 GUI Framework        : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platforms     : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
@@ -80,7 +19,25 @@ License              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Executive Summary (English): Release v1.4.0
+## 1. Executive Summary (English): Release v1.4.5
+
+SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectural pillars:
+1. Closed Tab Stack & Reopen Closed Tab (Ctrl+Shift+T / Cmd+Shift+T, 50-tab history).
+2. Tab Color Tagging & Grouping (8 accessible color presets, visual borders, persistent state).
+3. Autosave & Crash Recovery Manager (10s interval, strict 0600 POSIX permissions, SHA-256 integrity).
+4. Extended Search Escape Sequence Engine (\xHH, \dDDD, \0, \b, \f, \v).
+5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages: Crystal, Cangjie, LLVM IR, JSON5; C23, Rust 2024, Swift 6, TS 5.8).
+6. Native Markdown / HTML / PDF Export Pipeline (pure Qt 6 PrintSupport + Pandoc engine fallback).
+7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas + Two-Way SyncScroll).
+8. Developer Tools Suite (JSON Prettify/Minify, URL, Unicode, UUID v4, Epoch Timestamp converter).
+9. Scrollbar Navigation Markers & Corresponding Header/Source Switcher (F4 / Alt+O).
+10. Native .editorconfig Automatic Parser & Enforcement (root = true parent directory traversal).
+11. Clipboard History Dock & Character Info Dock (FIFO 20-entry queue & real-time Unicode inspector).
+12. Fuzzy Quick Switcher (Cmd+P / Ctrl+P) & Document Minimap Dock (>50 MB performance safeguard).
+
+---
+
+## 2. Historical Summary (English): Release v1.4.0
 
 SparkNotePad v1.4.0 delivers high-impact productivity enhancements inspired by deep analysis of Nextpad++, Notepad--, and contemporary text editors, combined with enterprise-grade 2025–2026 vulnerability mitigations and model context protocol connectivity:
 

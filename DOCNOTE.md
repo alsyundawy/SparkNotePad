@@ -1,9 +1,11 @@
-# SparkNotePad Release DocNote — v1.4.0
+# SparkNotePad Release DocNote — v1.4.5
 
 ```text
 ================================================================================
-Release Version     : 1.4.0 (Line Spacing, Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & Security Hardening)
-Release Date        : 2026-11-07
+Release Version     : 1.4.5 (Major Feature Release: Closed Tab Stack, Tab Color Tagging,
+                      Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX,
+                      Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher)
+Release Date        : 2026-11-08
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -20,7 +22,46 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Release v1.4.0
+## 1. Executive Summary: Release v1.4.5
+
+SparkNotePad **v1.4.5** represents a major architectural milestone delivering 12 foundational feature pillars designed for professional developers, system administrators, and power users:
+
+1. **Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
+   - `ClosedTabsManager` maintains a 50-entry FIFO stack preserving caret position, line scroll ratio, encoding, EOL mode, language syntax styling, and tab color tags.
+2. **Tab Color Tagging & Grouping**:
+   - `TabColorManager` provides 8 high-contrast, accessible color presets (Red, Orange, Yellow, Green, Cyan, Blue, Purple, Magenta) with persistent state.
+3. **Autosave & Crash Recovery Manager (10s Interval, Strict 0600 Permissions)**:
+   - `AutosaveRecoveryManager` writes background snapshots every 10 seconds for modified documents, enforced with POSIX `0600` permissions and SHA-256 integrity checksums. Interactive `CrashRecoveryDialog` allows selective recovery or discard on application relaunch.
+4. **Comprehensive Extended Find/Replace Escape Engine**:
+   - `ExtendedSearchParser` parses `\xHH` (hexadecimal byte), `\dDDD` (decimal byte), `\0` (NUL byte), `\b` (backspace), `\f` (form-feed), and `\v` (vertical tab) across Find/Replace and Quick Find.
+5. **100+ Lexers Audit & Modern Language Expansion (129 Total Languages)**:
+   - Added new native lexers: Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), and JSON5 (`.json5`).
+   - Modernized standard keyword sets: C23 (`_BitInt`, `constexpr`, `nullptr`), Rust 2024 (`gen`, `async gen`), Swift 6 (`consuming`, `borrowing`, `sending`), and TypeScript 5.8.
+6. **Native Markdown / HTML / PDF Export Pipeline**:
+   - `DocumentExportManager` integrated with pure `Qt6::PrintSupport` and Pandoc fallback engine.
+   - Interactive `ExportOptionsDialog` supporting custom paper dimensions, orientation, margins, and CSS typography embedding.
+7. **Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas)**:
+   - `MarkdownPreviewEnhancer` renders Mermaid flowcharts, sequence diagrams, class diagrams, and state machines.
+   - LaTeX mathematical equations (`$$...$$` block and `$...$` inline math) with full preservation of currency values and escaped dollars.
+   - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
+8. **Developer Tools Suite**:
+   - `DeveloperToolsEngine` providing JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generation, and interactive `TimestampConverterDialog` (Epoch to UTC/Local).
+9. **Scrollbar Navigation Markers & Corresponding Header/Source Switcher (`F4` / `Alt+O`)**:
+   - `CorrespondingFileSwitcher` enables instant bidirectional switching between C/C++ headers and sources, and TypeScript/JavaScript source and test files.
+   - `ScrollbarNavigationMarkers` renders visual markers for bookmarks and search matches on the scrollbar track.
+10. **Native `.editorconfig` Automatic Parser & Enforcement**:
+    - `EditorConfigParser` parses and automatically applies `indent_style`, `indent_size`, `tab_width`, and `end_of_line` with parent directory traversal up to `root = true`.
+11. **Clipboard History Dock & Real-Time Character Info Dock**:
+    - `ClipboardHistoryDock` maintains a 20-entry FIFO history queue with search filtering and direct editor insertion.
+    - `CharacterInfoDock` displays real-time Unicode glyph preview, code point `U+XXXX`, Unicode character name, category, UTF-8/16/32 hex, and HTML entities.
+12. **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Document Minimap Dock**:
+    - `QuickSwitcherDialog` provides a spotlight-style frameless quick switcher with subsequence fuzzy matching scoring open tabs and recent files.
+    - `DocumentMinimapDock` delivers a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
+    - Native macOS Dock recent documents integration via `MacServicesHandler::updateDockRecentMenu`.
+
+---
+
+## 2. Historical Summary: Release v1.4.0
 
 SparkNotePad **v1.4.0** delivers high-impact productivity enhancements inspired by deep analysis of Nextpad++ and contemporary text editors, combined with enterprise-grade 2025–2026 vulnerability mitigations and model context protocol connectivity:
 

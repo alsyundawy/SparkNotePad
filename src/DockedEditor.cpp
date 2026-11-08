@@ -30,6 +30,7 @@
 #include "DockAreaTitleBar.h"
 
 #include "ScintillaNext.h"
+#include "features/TabColorManager.h"
 
 #include <QDateTime>
 #include <QFileInfo>
@@ -306,7 +307,28 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
 
     latestDockArea = dockManager->addDockWidget(ads::CenterDockWidgetArea, dockWidget, currentDockArea());
 
+    const QColor initialColor = TabColorManager::instance()->tabColor(editor->getFilePath());
+    if (initialColor.isValid()) {
+        setEditorTabColor(editor, initialColor);
+    }
+
     emit editorAdded(editor);
+}
+
+void DockedEditor::setEditorTabColor(ScintillaNext *editor, const QColor &color) {
+    if (!editor) {
+        return;
+    }
+    editor->setQtProperty("tabColor", color);
+    auto *dockWidget = qobject_cast<ads::CDockWidget *>(editor->parentWidget());
+    if (dockWidget && dockWidget->tabWidget()) {
+        if (color.isValid()) {
+            dockWidget->tabWidget()->setStyleSheet(
+                QStringLiteral("border-bottom: 3px solid %1;").arg(color.name(QColor::HexRgb)));
+        } else {
+            dockWidget->tabWidget()->setStyleSheet(QString());
+        }
+    }
 }
 
 void DockedEditor::editorRenamed(const ScintillaNext *editor) const {

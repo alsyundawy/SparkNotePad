@@ -38,6 +38,7 @@ public:
     static void postVoiceOverAnnouncement(const QString &text);
     static void activateApplication();
     static void makeWidgetWindowTranslucent(const QWidget *w);
+    static void updateDockRecentMenu(const QStringList &recentFiles);
 
     // Handling external actions
     void handleOpenSelection(const QString &text);

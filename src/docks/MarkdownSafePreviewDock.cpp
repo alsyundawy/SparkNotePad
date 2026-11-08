@@ -22,8 +22,11 @@
 #include <QEvent>
 #include <QFile>
 #include <QFileDialog>
+#include "../features/DocumentExportManager.h"
 #include "../features/ThemeManager.h"
 #include "../features/ThemePaletteData.h"
+#include "../dialogs/ExportOptionsDialog.h"
+#include "../utils/MarkdownPreviewEnhancer.h"
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -46,6 +49,7 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
       btnOpenBrowser(new QPushButton(this)),
       btnCopyHtml(new QPushButton(this)),
       btnExportHtml(new QPushButton(this)),
+      btnExportPdf(new QPushButton(this)),
       btnRefresh(new QPushButton(this)),
       btnZoomIn(new QPushButton(this)),
       btnZoomOut(new QPushButton(this)),
@@ -55,8 +59,8 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     // Restore persistent settings
     const QSettings settings;
     autoShowEnabled = settings.value(QStringLiteral("Gui/AutoShowMarkdownHtmlPreview"), false).toBool();
-    const int savedFormat = settings.value(QStringLiteral("Gui/PreviewFormat"), 0).toInt();
-    if (savedFormat >= 0 && savedFormat <= 2) {
+    if (const int savedFormat = settings.value(QStringLiteral("Gui/PreviewFormat"), 0).toInt();
+        savedFormat >= 0 && savedFormat <= 2) {
         currentFormat = static_cast<PreviewFormat>(savedFormat);
     }
 
@@ -151,6 +155,13 @@ void MarkdownSafePreviewDock::setupUi() {
     connect(btnExportHtml, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportHtml);
     topLayout->addWidget(btnExportHtml);
 
+    btnExportPdf->setText(QStringLiteral("PDF"));
+    btnExportPdf->setToolTip(tr("Export Document to PDF..."));
+    btnExportPdf->setFixedHeight(24);
+    btnExportPdf->setCursor(Qt::PointingHandCursor);
+    connect(btnExportPdf, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportPdf);
+    topLayout->addWidget(btnExportPdf);
+
     btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
     btnOpenBrowser->setIconSize(QSize(14, 14));
     btnOpenBrowser->setText(QStringLiteral("Browser"));
@@ -166,6 +177,8 @@ void MarkdownSafePreviewDock::setupUi() {
     browser->setOpenExternalLinks(false);
     browser->setOpenLinks(false);
     connect(browser, &QTextBrowser::anchorClicked, this, &MarkdownSafePreviewDock::handleAnchorClicked);
+    connect(browser->verticalScrollBar(), &QScrollBar::valueChanged, this,
+            &MarkdownSafePreviewDock::syncScrollFromBrowser);
 
     // Apply GitHub Markdown styling
     applyGitHubTheme();
@@ -193,6 +206,7 @@ void MarkdownSafePreviewDock::setActiveEditor(ScintillaNext *editor) {
 
     if (currentEditor) {
         connect(currentEditor, &ScintillaNext::notifyChange, this, &MarkdownSafePreviewDock::scheduleRender);
+        connect(currentEditor, &ScintillaNext::updateUi, this, &MarkdownSafePreviewDock::syncScrollFromEditor);
     }
 
     scheduleRender();
@@ -205,26 +219,28 @@ void MarkdownSafePreviewDock::scheduleRender() {
 }
 
 MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(const ScintillaNext *editor) {
+    using enum PreviewFormat;
+
     if (!editor) {
-        return PreviewFormat::Markdown;
+        return Markdown;
     }
 
     const QString lang = editor->languageName.toLower();
     if (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml"))) {
-        return PreviewFormat::Html;
+        return Html;
     }
     if (lang.contains(QStringLiteral("markdown"))) {
-        return PreviewFormat::Markdown;
+        return Markdown;
     }
 
     const QString ext = editor->getFileInfo().suffix().toLower();
     if (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml") ||
         ext == QStringLiteral("shtml")) {
-        return PreviewFormat::Html;
+        return Html;
     }
     if (ext == QStringLiteral("md") || ext == QStringLiteral("markdown") || ext == QStringLiteral("mdown") ||
         ext == QStringLiteral("mkd") || ext == QStringLiteral("mkdn")) {
-        return PreviewFormat::Markdown;
+        return Markdown;
     }
 
     // Heuristic scan of first 400 bytes
@@ -232,10 +248,10 @@ MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(con
     if (snippet.startsWith(QStringLiteral("<!doctype html")) || snippet.startsWith(QStringLiteral("<html")) ||
         snippet.contains(QStringLiteral("<head>")) || snippet.contains(QStringLiteral("<body>")) ||
         snippet.contains(QStringLiteral("</div>")) || snippet.contains(QStringLiteral("</p>"))) {
-        return PreviewFormat::Html;
+        return Html;
     }
 
-    return PreviewFormat::Markdown;
+    return Markdown;
 }
 
 void MarkdownSafePreviewDock::changeEvent(QEvent *event) {
@@ -391,8 +407,10 @@ QString MarkdownSafePreviewDock::buildGitHubStyleSheet(bool isDark) const {
                "  display: inline-block; padding: 3px 6px; font-size: 11px; line-height: 10px; color: %2; "
                "  background-color: %7; border: 1px solid %4; border-radius: 6px; box-shadow: inset 0 -1px 0 %4; "
                "} "
-               "img { max-width: 100%; height: auto; border-radius: 6px; }")
-        .arg(QString::number(baseFontSize), textColor, bgColor, borderColor, mutedColor, codeBg, blockBg, linkColor);
+               "img { max-width: 100%; height: auto; border-radius: 6px; }\n")
+               .arg(QString::number(baseFontSize), textColor, bgColor, borderColor, mutedColor, codeBg, blockBg,
+                    linkColor) +
+           MarkdownPreviewEnhancer::mathAndMermaidCss(isDark);
 }
 
 QString MarkdownSafePreviewDock::generateFullHtmlDocument(const QString &bodyHtml, bool isDark) const {
@@ -468,14 +486,13 @@ void replaceSingleDockCallout(QString &result, const CalloutDef &c, qsizetype &i
     const QString inner = cleanDockCalloutInner(result.mid(contentStart, bqEnd - contentStart));
     const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
     const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
-    const QString replacement =
-        QStringLiteral(
-            "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
-            "background-color: %2; border-radius: 4px;\">"
-            "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
-            "<div>%5</div></div>")
-            .arg(color, bg, QString::fromUtf8(c.icon), QCoreApplication::translate("MarkdownSafePreviewDock", c.title),
-                 inner);
+    const QString replacement = QStringLiteral(
+                                    "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
+                                    "background-color: %2; border-radius: 4px;\">"
+                                    "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
+                                    "<div>%5</div></div>")
+                                    .arg(color, bg, QString::fromUtf8(c.icon),
+                                         QCoreApplication::translate("MarkdownSafePreviewDock", c.title), inner);
 
     result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
     idx = bqStart + replacement.length();
@@ -525,8 +542,9 @@ void MarkdownSafePreviewDock::renderPreview() {
     if (effectiveFormat == PreviewFormat::Html) {
         browser->setHtml(content);
     } else {
+        const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(content, isDark);
         QTextDocument doc;
-        doc.setMarkdown(content);
+        doc.setMarkdown(enrichedMd);
         const QString enhanced = enhanceCallouts(doc.toHtml(), isDark);
         browser->setHtml(enhanced);
     }
@@ -641,6 +659,12 @@ void MarkdownSafePreviewDock::exportHtml() {
         }
         defaultName += QStringLiteral(".html");
     }
+
+    ExportOptionsDialog dlg(ExportOptionsDialog::TargetFormat::Html, defaultName, this);
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
     const QString savePath = QFileDialog::getSaveFileName(this, tr("Export HTML Document"), defaultName,
                                                           tr("HTML Documents (*.html *.htm);;All Files (*)"));
     if (savePath.isEmpty()) {
@@ -649,21 +673,50 @@ void MarkdownSafePreviewDock::exportHtml() {
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
     const PreviewFormat effectiveFormat =
         (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
-    QString bodyHtml;
+
     if (effectiveFormat == PreviewFormat::Html) {
-        bodyHtml = rawContent;
+        QFile file(savePath);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+            file.write(rawContent.toUtf8());
+            file.close();
+        }
     } else {
-        QTextDocument doc;
-        doc.setMarkdown(rawContent);
-        bodyHtml = doc.toHtml();
+        DocumentExportManager::exportMarkdownToHtml(rawContent, savePath, dlg.options());
     }
-    const bool isDark = ThemeManager::instance()->isDarkActive();
-    const QString fullHtml = generateFullHtmlDocument(bodyHtml, isDark);
-    QFile file(savePath);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-        file.write(fullHtml.toUtf8());
-        file.close();
+}
+
+void MarkdownSafePreviewDock::exportPdf() {
+    if (!currentEditor) {
+        return;
     }
+    QString defaultName = currentEditor->getName();
+    if (defaultName.isEmpty()) {
+        defaultName = tr("Untitled");
+    }
+    if (!defaultName.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive)) {
+        if (const auto dot = defaultName.lastIndexOf('.'); dot > 0) {
+            defaultName = defaultName.left(dot);
+        }
+        defaultName += QStringLiteral(".pdf");
+    }
+
+    ExportOptionsDialog dlg(ExportOptionsDialog::TargetFormat::Pdf, defaultName, this);
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    const QString savePath = QFileDialog::getSaveFileName(this, tr("Export PDF Document"), defaultName,
+                                                          tr("PDF Documents (*.pdf);;All Files (*)"));
+    if (savePath.isEmpty()) {
+        return;
+    }
+
+    const QString rawContent = QString::fromUtf8(currentEditor->getText());
+    const PreviewFormat effectiveFormat =
+        (currentFormat == PreviewFormat::Auto) ? detectFormat(currentEditor) : currentFormat;
+    const bool isMarkdown = (effectiveFormat != PreviewFormat::Html);
+
+    DocumentExportManager::exportToPdf(rawContent, isMarkdown, savePath, dlg.options());
 }
 
 void MarkdownSafePreviewDock::openInBrowser() {
@@ -733,4 +786,46 @@ void MarkdownSafePreviewDock::handleAnchorClicked(const QUrl &url) {
         tr("Navigation to link '%1' with scheme '%2' is blocked for security.\n\n"
            "Only http, https, and mailto URLs are permitted in HTML & Markdown Preview (mitigating CVE-2026-20841).")
             .arg(url.toString(), scheme));
+}
+
+void MarkdownSafePreviewDock::syncScrollFromEditor(Scintilla::Update updated) {
+    if (m_syncingScroll || !currentEditor || !isVisible()) {
+        return;
+    }
+    if (!FlagSet(updated, Scintilla::Update::VScroll) && !FlagSet(updated, Scintilla::Update::Content)) {
+        return;
+    }
+    const auto totalLines = static_cast<int>(currentEditor->lineCount());
+    const auto linesOnScreen = static_cast<int>(currentEditor->linesOnScreen());
+    const int maxScrollLine = std::max(1, totalLines - linesOnScreen);
+    const auto currentFirstLine = static_cast<int>(currentEditor->firstVisibleLine());
+    const double ratio =
+        std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);
+
+    auto *const scrollBar = browser->verticalScrollBar();
+    if (scrollBar && scrollBar->maximum() > 0) {
+        m_syncingScroll = true;
+        scrollBar->setValue(static_cast<int>(ratio * scrollBar->maximum()));
+        m_syncingScroll = false;
+    }
+}
+
+void MarkdownSafePreviewDock::syncScrollFromBrowser() {
+    if (m_syncingScroll || !currentEditor || !isVisible()) {
+        return;
+    }
+    QScrollBar *const scrollBar = browser->verticalScrollBar();
+    if (!scrollBar || scrollBar->maximum() <= 0) {
+        return;
+    }
+    const double ratio =
+        std::clamp(static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum()), 0.0, 1.0);
+    const auto totalLines = static_cast<int>(currentEditor->lineCount());
+    const auto linesOnScreen = static_cast<int>(currentEditor->linesOnScreen());
+    const int maxScrollLine = std::max(1, totalLines - linesOnScreen);
+    const auto targetLine = static_cast<int>(ratio * static_cast<double>(maxScrollLine));
+
+    m_syncingScroll = true;
+    currentEditor->setFirstVisibleLine(targetLine);
+    m_syncingScroll = false;
 }

@@ -139,8 +139,34 @@ qt_add_executable(SparkNotePad
 	features/CharacterInfo.cpp
 	features/LocalMcpServer.h
 	features/LocalMcpServer.cpp
+	features/ClosedTabsManager.h
+	features/ClosedTabsManager.cpp
+	features/TabColorManager.h
+	features/TabColorManager.cpp
+	features/AutosaveRecoveryManager.h
+	features/AutosaveRecoveryManager.cpp
+	features/DocumentExportManager.h
+	features/DocumentExportManager.cpp
+	features/DeveloperToolsEngine.h
+	features/DeveloperToolsEngine.cpp
+	features/CorrespondingFileSwitcher.h
+	features/CorrespondingFileSwitcher.cpp
+	features/ScrollbarNavigationMarkers.h
+	features/ScrollbarNavigationMarkers.cpp
+	features/EditorConfigParser.h
+	features/EditorConfigParser.cpp
+	dialogs/CrashRecoveryDialog.h
+	dialogs/CrashRecoveryDialog.cpp
+	dialogs/ExportOptionsDialog.h
+	dialogs/ExportOptionsDialog.cpp
+	dialogs/TimestampConverterDialog.h
+	dialogs/TimestampConverterDialog.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
+	utils/ExtendedSearchParser.h
+	utils/ExtendedSearchParser.cpp
+	utils/MarkdownPreviewEnhancer.h
+	utils/MarkdownPreviewEnhancer.cpp
 	utils/MimeTools.h
 	utils/MimeTools.cpp
 	utils/NumberConverter.h
@@ -298,6 +324,8 @@ qt_add_executable(SparkNotePad
 	dialogs/HashIntegrityDialog.cpp
 	dialogs/GenerateHashDigestDialog.h
 	dialogs/GenerateHashDigestDialog.cpp
+	dialogs/QuickSwitcherDialog.h
+	dialogs/QuickSwitcherDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
@@ -318,6 +346,12 @@ qt_add_executable(SparkNotePad
 	docks/FunctionListDock.ui
 	docks/MarkdownSafePreviewDock.h
 	docks/MarkdownSafePreviewDock.cpp
+	docks/ClipboardHistoryDock.h
+	docks/ClipboardHistoryDock.cpp
+	docks/CharacterInfoDock.h
+	docks/CharacterInfoDock.cpp
+	docks/DocumentMinimapDock.h
+	docks/DocumentMinimapDock.cpp
 
 
 

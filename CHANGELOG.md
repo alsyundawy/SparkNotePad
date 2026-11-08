@@ -7,6 +7,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.5] - 2026-11-08
+
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher
+
+SparkNotePad v1.4.5 is a major feature release delivering 12 primary architectural pillars inspired by modern IDE standards and power-user workflows:
+
+#### 🆕 Added
+
+- **Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
+  - Implemented `ClosedTabsManager` maintaining a resilient FIFO stack of up to 50 recently closed document tabs.
+  - Automatically preserves and restores caret position, line scroll ratio, text encoding, EOL mode, language syntax styling, and tab color tags.
+  - Context menu and File menu actions for instant tab restoration.
+- **Tab Color Tagging & Grouping**:
+  - Implemented `TabColorManager` providing 8 accessible color presets (Red, Orange, Yellow, Green, Cyan, Blue, Purple, Magenta) with high-contrast borders.
+  - Full tab bar visual indicator integration and persistent state across app restarts via `ApplicationSettings`.
+- **Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions)**:
+  - Implemented `AutosaveRecoveryManager` writing background snapshots every 10 seconds for modified documents.
+  - Protected with strict `0600` POSIX file permissions and SHA-256 integrity checksums.
+  - Interactive `CrashRecoveryDialog` enabling selective document restoration or discard on startup after unexpected shutdowns.
+- **Extended Search Escape Sequence Engine**:
+  - Implemented `ExtendedSearchParser` supporting `\xHH` (hexadecimal byte), `\dDDD` (decimal byte), `\0` (NUL byte), `\b` (backspace), `\f` (form-feed), and `\v` (vertical tab).
+  - Integrated into Find/Replace Dialog and Quick Find Widget in Extended Search mode.
+- **100+ Lexers Audit & Modern Language Expansion (129 Total Languages)**:
+  - Added new native Lua/Lexilla syntax lexers: Crystal (`.cr`), Cangjie (`.cj`), LLVM IR (`.ll`), JSON5 (`.json5`).
+  - Modernized keyword definitions for C23 (`_BitInt`, `constexpr`, `nullptr`), Rust 2024 (`gen`, `async gen`), Swift 6 (`consuming`, `borrowing`, `sending`), and TypeScript 5.8.
+- **Native Markdown / HTML / PDF Export Pipeline**:
+  - Implemented `DocumentExportManager` with native Qt 6 `QPrinter` / `Qt6::PrintSupport` and Pandoc fallback engine.
+  - Interactive `ExportOptionsDialog` supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.
+- **Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas)**:
+  - Implemented `MarkdownPreviewEnhancer` rendering Mermaid flowcharts, sequence diagrams, class diagrams, and state machines via client containers.
+  - Full LaTeX math rendering support (`$$...$$` block and `$...$` inline math) with currency/escaped dollar preservation.
+  - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
+- **Developer Tools Suite**:
+  - Implemented `DeveloperToolsEngine` in Tools menu: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generator.
+  - Interactive `TimestampConverterDialog` converting Unix Epoch timestamps (seconds/milliseconds) to human-readable UTC and Local ISO formats with copy helpers.
+- **Scrollbar Navigation Markers & Corresponding Header/Source Switcher (`F4` / `Alt+O`)**:
+  - Implemented `CorrespondingFileSwitcher` supporting instant bidirectional toggle between C/C++ header (`.h`, `.hpp`, `.hxx`) and source (`.c`, `.cpp`, `.cxx`), and TypeScript/JavaScript source and test files (`.test.ts`, `.spec.ts`).
+  - Added `ScrollbarNavigationMarkers` tracking bookmark lines and search match highlights on the scrollbar track.
+- **Native `.editorconfig` Automatic Parser & Enforcement**:
+  - Implemented `EditorConfigParser` supporting `indent_style`, `indent_size`, `tab_width`, `end_of_line`, and `root = true` parent directory traversal.
+  - Automatic indentation and newline enforcement when loading project files.
+- **Clipboard History Dock & Character Info Dock**:
+  - Implemented dockable `ClipboardHistoryDock` tracking recent clipboard history (FIFO queue of 20 items), search filtering, and one-click editor insertion.
+  - Implemented dockable `CharacterInfoDock` displaying real-time Unicode glyph preview, code point `U+XXXX`, Unicode character name, category, UTF-8/16/32 hex, and HTML entities.
+- **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Document Minimap Dock**:
+  - Implemented Spotlight-style frameless `QuickSwitcherDialog` with subsequence fuzzy matching scoring open tabs and recent files.
+  - Implemented `DocumentMinimapDock` providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
+  - Added native macOS Dock recent documents integration via `MacServicesHandler::updateDockRecentMenu`.
+
+---
+
 ## [1.4.0] - 2026-11-07
 
 ### 🚀 Line Spacing, Enriched Tab Tooltips, Fuzzy Search, Batch Macros, MCP Server & 2025–2026 Security Hardening

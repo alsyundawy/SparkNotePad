@@ -58,6 +58,21 @@
 #include "UndoAction.h"
 #include "ModernMessageBox.h"
 #include "docks/MarkdownSafePreviewDock.h"
+#include "docks/ClipboardHistoryDock.h"
+#include "docks/CharacterInfoDock.h"
+#include "docks/DocumentMinimapDock.h"
+#include "dialogs/QuickSwitcherDialog.h"
+#include "features/MacServicesHandler.h"
+#include "features/ClosedTabsManager.h"
+#include "features/TabColorManager.h"
+#include "features/AutosaveRecoveryManager.h"
+#include "features/DocumentExportManager.h"
+#include "features/DeveloperToolsEngine.h"
+#include "features/CorrespondingFileSwitcher.h"
+#include "dialogs/CrashRecoveryDialog.h"
+#include "dialogs/ExportOptionsDialog.h"
+#include "dialogs/TimestampConverterDialog.h"
+#include <QColor>
 #include "dialogs/HashIntegrityDialog.h"
 #include "dialogs/GenerateHashDigestDialog.h"
 #include "ui_MainWindow.h"
@@ -329,6 +344,20 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connect(ui->actionNewWindow, &QAction::triggered, this, &MainWindow::newWindow);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openFileDialog);
     connect(ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
+
+    auto *actionReopenClosedTab = new QAction(tr("Reopen Closed Tab"), this);
+    actionReopenClosedTab->setObjectName(QStringLiteral("actionReopenClosedTab"));
+    actionReopenClosedTab->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
+    connect(actionReopenClosedTab, &QAction::triggered, this, &MainWindow::reopenClosedTab);
+    ui->menuFile->insertAction(ui->actionClose, actionReopenClosedTab);
+
+    auto *actionSwitchCorresponding = new QAction(tr("Switch Header / Source"), this);
+    actionSwitchCorresponding->setObjectName(QStringLiteral("actionSwitchCorresponding"));
+    actionSwitchCorresponding->setShortcut(QKeySequence(Qt::Key_F4));
+    connect(actionSwitchCorresponding, &QAction::triggered, this, &MainWindow::switchCorrespondingFile);
+    addAction(actionSwitchCorresponding);
+    ui->menuView->addAction(actionSwitchCorresponding);
+
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closeCurrentFile);
     connect(ui->actionCloseAll, &QAction::triggered, this, &MainWindow::closeAllFiles);
     connect(ui->actionRestart, &QAction::triggered, this, [this] { restartApplication(false); });
@@ -381,8 +410,41 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connect(ui->actionRename, &QAction::triggered, this, &MainWindow::renameFile);
 
     connect(ui->actionExportHtml, &QAction::triggered, this, [this] {
-        HtmlConverter html(currentEditor());
-        exportAsFormat(&html, QStringLiteral("HTML files (*.html)"));
+        ScintillaNext *const editor = currentEditor();
+        if (!editor) {
+            return;
+        }
+        const QString filePath = editor->getFilePath();
+        const bool isMd = filePath.endsWith(QStringLiteral(".md"), Qt::CaseInsensitive) ||
+                          filePath.endsWith(QStringLiteral(".markdown"), Qt::CaseInsensitive);
+        if (isMd) {
+            QString defaultName = editor->getName();
+            if (const auto dot = static_cast<int>(defaultName.lastIndexOf('.')); dot > 0) {
+                defaultName = defaultName.left(dot);
+            }
+            defaultName += QStringLiteral(".html");
+
+            ExportOptionsDialog dlg(ExportOptionsDialog::TargetFormat::Html, defaultName, this);
+            if (dlg.exec() != QDialog::Accepted) {
+                return;
+            }
+
+            const QString savePath = QFileDialog::getSaveFileName(this, tr("Export HTML Document"), defaultName,
+                                                                  tr("HTML files (*.html);;All Files (*)"));
+            if (savePath.isEmpty()) {
+                return;
+            }
+
+            const QString rawContent = QString::fromUtf8(editor->getText());
+            if (DocumentExportManager::exportMarkdownToHtml(rawContent, savePath, dlg.options())) {
+                ui->statusBar->showMessage(tr("Successfully exported HTML to %1").arg(savePath), 4000);
+            } else {
+                ui->statusBar->showMessage(tr("Failed to export HTML"), 4000);
+            }
+        } else {
+            HtmlConverter html(editor);
+            exportAsFormat(&html, QStringLiteral("HTML files (*.html)"));
+        }
     });
 
     connect(ui->actionExportRtf, &QAction::triggered, this, [this] {
@@ -1062,6 +1124,38 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         }
     });
 
+    clipboardHistoryDock = new ClipboardHistoryDock(this);
+    clipboardHistoryDock->hide();
+    addDockWidget(Qt::RightDockWidgetArea, clipboardHistoryDock);
+    connect(clipboardHistoryDock, &ClipboardHistoryDock::clipSelected, this, [this](const QString &text) {
+        if (ScintillaNext *ed = currentEditor()) {
+            ed->replaceSel(text.toUtf8().constData());
+        }
+    });
+
+    characterInfoDock = new CharacterInfoDock(this);
+    characterInfoDock->hide();
+    addDockWidget(Qt::RightDockWidgetArea, characterInfoDock);
+    connect(characterInfoDock, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+        if (visible) {
+            characterInfoDock->updateFromEditor(currentEditor());
+        }
+    });
+
+    documentMinimapDock = new DocumentMinimapDock(this);
+    documentMinimapDock->hide();
+    addDockWidget(Qt::RightDockWidgetArea, documentMinimapDock);
+    connect(documentMinimapDock, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+        if (visible) {
+            documentMinimapDock->syncWithEditor(currentEditor());
+        }
+    });
+
+    actionQuickSwitcher = new QAction(tr("&Quick Open File or Tab..."), this);
+    actionQuickSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_P));
+    connect(actionQuickSwitcher, &QAction::triggered, this, &MainWindow::openQuickSwitcher);
+    addAction(actionQuickSwitcher);
+
     // --- Tools top-level menu (Notepad++ style) ---
     menuTools = new QMenu(tr("&Tools"), this);
 
@@ -1376,7 +1470,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     auto *actHexToDec = new QAction(tr("HEX to &Decimal"), this);
     connect(actHexToDec, &QAction::triggered, this, [this] {
-        ScintillaNext *editor = currentEditor();
+        ScintillaNext *const editor = currentEditor();
         if (!editor) {
             return;
         }
@@ -1401,6 +1495,102 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     // Encryption (AES-256) moved into Tools
     menuTools->addMenu(menuEncryption);
+
+    menuTools->addSeparator();
+
+    // Developer Tools submenu
+    auto *const menuDevTools = menuTools->addMenu(tr("&Developer Tools"));
+    menuDevTools->setIcon(QIcon(QStringLiteral(":/icons/wrench.svg")));
+
+    auto applyTextTransform = [this](const std::function<QString(const QString &, QString *)> &fn,
+                                     const QString &label) {
+        ScintillaNext *const editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        const bool hasSelection = (editor->selectionStart() != editor->selectionEnd());
+        const QString original =
+            hasSelection ? QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()),
+                                                                    static_cast<int>(editor->selectionEnd())))
+                         : QString::fromUtf8(editor->getText());
+        QString err;
+        const QString transformed = fn(original, &err);
+        if (!err.isEmpty()) {
+            ui->statusBar->showMessage(err, 4000);
+            return;
+        }
+        editor->beginUndoAction();
+        if (hasSelection) {
+            editor->replaceSel(transformed.toUtf8().constData());
+        } else {
+            editor->selectAll();
+            editor->replaceSel(transformed.toUtf8().constData());
+        }
+        editor->endUndoAction();
+        ui->statusBar->showMessage(tr("%1 applied").arg(label), 3000);
+    };
+
+    auto *const actJsonFormat = menuDevTools->addAction(tr("JSON Format / Prettify"));
+    connect(actJsonFormat, &QAction::triggered, this, [applyTextTransform] {
+        applyTextTransform([](const QString &in, QString *err) { return DeveloperToolsEngine::formatJson(in, 4, err); },
+                           tr("JSON Prettify"));
+    });
+
+    auto *const actJsonMinify = menuDevTools->addAction(tr("JSON Minify / Compact"));
+    connect(actJsonMinify, &QAction::triggered, this, [applyTextTransform] {
+        applyTextTransform([](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJson(in, err); },
+                           tr("JSON Minify"));
+    });
+
+    menuDevTools->addSeparator();
+
+    auto *const actUrlEncode = menuDevTools->addAction(tr("URL Encode"));
+    connect(actUrlEncode, &QAction::triggered, this, [applyTextTransform] {
+        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlEncode(in); },
+                           tr("URL Encode"));
+    });
+
+    auto *const actUrlDecode = menuDevTools->addAction(tr("URL Decode"));
+    connect(actUrlDecode, &QAction::triggered, this, [applyTextTransform] {
+        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::urlDecode(in); },
+                           tr("URL Decode"));
+    });
+
+    menuDevTools->addSeparator();
+
+    auto *const actUnicodeEscape = menuDevTools->addAction(tr("Unicode Escape (\\uXXXX)"));
+    connect(actUnicodeEscape, &QAction::triggered, this, [applyTextTransform] {
+        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeEscape(in); },
+                           tr("Unicode Escape"));
+    });
+
+    auto *const actUnicodeUnescape = menuDevTools->addAction(tr("Unicode Unescape"));
+    connect(actUnicodeUnescape, &QAction::triggered, this, [applyTextTransform] {
+        applyTextTransform([](const QString &in, QString *) { return DeveloperToolsEngine::unicodeUnescape(in); },
+                           tr("Unicode Unescape"));
+    });
+
+    menuDevTools->addSeparator();
+
+    auto *const actGenerateUuid = menuDevTools->addAction(tr("Generate UUID v4"));
+    connect(actGenerateUuid, &QAction::triggered, this, [this] {
+        ScintillaNext *const editor = currentEditor();
+        if (!editor) {
+            return;
+        }
+        const QString uuid = DeveloperToolsEngine::generateUuidV4(false, false, true);
+        editor->beginUndoAction();
+        editor->replaceSel(uuid.toUtf8().constData());
+        editor->endUndoAction();
+        ui->statusBar->showMessage(tr("Generated UUID: %1").arg(uuid), 3000);
+    });
+
+    auto *const actTimestampConverter = menuDevTools->addAction(tr("Timestamp Converter..."));
+    connect(actTimestampConverter, &QAction::triggered, this, [this] {
+        TimestampConverterDialog dlg(this);
+        dlg.exec();
+    });
 
     menuTools->addSeparator();
 
@@ -2471,6 +2661,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     ui->menuView->addAction(fawDock->toggleViewAction());
     ui->menuView->addAction(fileListDock->toggleViewAction());
     ui->menuView->addAction(toggleFunctionListAction);
+    ui->menuView->addAction(clipboardHistoryDock->toggleViewAction());
+    ui->menuView->addAction(characterInfoDock->toggleViewAction());
+    ui->menuView->addAction(documentMinimapDock->toggleViewAction());
 
     connect(app->getSettings(), &ApplicationSettings::showMenuBarChanged, this, [this](bool showMenuBar) {
         // Don't 'hide' it, else the actions won't be enabled
@@ -2505,6 +2698,58 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     restoreSettings();
 
     initUpdateCheck();
+
+    // Background Autosave & Crash Recovery (10s interval, 0600 permissions)
+    connect(AutosaveRecoveryManager::instance(), &AutosaveRecoveryManager::triggerAutosave, this, [this] {
+        for (auto *ed : editors()) {
+            if (!ed) {
+                continue;
+            }
+            if (ed->canSaveToDisk()) {
+                const QString text = QString::fromUtf8(ed->getText());
+                if (!text.isEmpty()) {
+                    AutosaveRecoveryManager::instance()->saveSnapshot(ed->isFile() ? ed->getFilePath() : QString(),
+                                                                      ed->getName(), text,
+                                                                      static_cast<qint64>(ed->currentPos()));
+                }
+            } else if (ed->isFile()) {
+                AutosaveRecoveryManager::instance()->removeSnapshot(ed->getFilePath());
+            }
+        }
+    });
+    AutosaveRecoveryManager::instance()->start();
+
+    // Check for crash recovery snapshots on startup
+    QTimer::singleShot(250, this, [this] {
+        const auto recoverable = AutosaveRecoveryManager::instance()->recoverableSnapshots();
+        if (!recoverable.isEmpty()) {
+            CrashRecoveryDialog dlg(recoverable, this);
+            if (dlg.exec() == QDialog::Accepted) {
+                if (dlg.discardRequested()) {
+                    AutosaveRecoveryManager::instance()->clearSnapshots();
+                } else {
+                    for (const auto &snap : dlg.selectedSnapshots()) {
+                        if (snap.isUntitled) {
+                            newFile();
+                            ScintillaNext *ed = currentEditor();
+                            if (ed) {
+                                ed->setText(snap.content.toUtf8().constData());
+                                ed->gotoPos(snap.cursorPosition);
+                            }
+                        } else {
+                            openFile(snap.originalPath);
+                            ScintillaNext *ed = currentEditor();
+                            if (ed) {
+                                ed->setText(snap.content.toUtf8().constData());
+                                ed->gotoPos(snap.cursorPosition);
+                            }
+                        }
+                    }
+                    AutosaveRecoveryManager::instance()->clearSnapshots();
+                }
+            }
+        }
+    });
 
     ensureMenuIconsVisible(this);
     for (auto *menu : ui->menuBar->findChildren<QMenu *>()) {
@@ -2813,6 +3058,59 @@ void MainWindow::closeCurrentFile() {
     closeFile(currentEditor());
 }
 
+void MainWindow::reopenClosedTab() {
+    const auto closed = ClosedTabsManager::instance()->popClosedTab();
+    if (!closed.has_value()) {
+        return;
+    }
+
+    if (closed->isUntitled) {
+        newFile();
+        ScintillaNext *ed = currentEditor();
+        if (ed) {
+            ed->setText(closed->untitledContent.toUtf8().constData());
+            ed->gotoPos(closed->cursorPosition);
+            ed->setFirstVisibleLine(closed->firstVisibleLine);
+        }
+    } else if (!closed->filePath.isEmpty()) {
+        openFile(closed->filePath);
+        ScintillaNext *ed = currentEditor();
+        if (ed) {
+            ed->gotoPos(closed->cursorPosition);
+            ed->setFirstVisibleLine(closed->firstVisibleLine);
+            if (closed->tabColor.isValid()) {
+                ed->setQtProperty("tabColor", closed->tabColor);
+            }
+        }
+    }
+}
+
+void MainWindow::switchCorrespondingFile() {
+    ScintillaNext *editor = currentEditor();
+    if (!editor || editor->getFilePath().isEmpty()) {
+        ui->statusBar->showMessage(tr("No saved file to switch"), 3000);
+        return;
+    }
+
+    const QString currentPath = editor->getFilePath();
+    const QString targetPath = CorrespondingFileSwitcher::findCorrespondingPath(currentPath);
+
+    if (targetPath.isEmpty()) {
+        ui->statusBar->showMessage(tr("No corresponding file found for: %1").arg(QFileInfo(currentPath).fileName()),
+                                   3000);
+        return;
+    }
+
+    ScintillaNext *existing = app->getEditorManager()->getEditorByFilePath(targetPath);
+    if (existing) {
+        dockedEditor->switchToEditor(existing);
+        ui->statusBar->showMessage(tr("Switched to %1").arg(QFileInfo(targetPath).fileName()), 3000);
+    } else {
+        openFile(targetPath);
+        ui->statusBar->showMessage(tr("Opened %1").arg(QFileInfo(targetPath).fileName()), 3000);
+    }
+}
+
 void MainWindow::closeFile(ScintillaNext *editor) {
     if (!editor) {
         return;
@@ -2832,6 +3130,26 @@ void MainWindow::closeFile(ScintillaNext *editor) {
     if (pEditor.isNull()) {
         return;
     }
+
+    // Record closed tab for Cmd+Shift+T reopening
+    ClosedTabInfo closedInfo;
+    closedInfo.filePath = pEditor->getFilePath();
+    closedInfo.cursorPosition = static_cast<qint64>(pEditor->currentPos());
+    closedInfo.firstVisibleLine = static_cast<qint64>(pEditor->firstVisibleLine());
+    closedInfo.tabColor = pEditor->qtProperty("tabColor").value<QColor>();
+    closedInfo.encoding = pEditor->qtProperty("encoding").toString();
+    closedInfo.eolMode = static_cast<int>(pEditor->eOLMode());
+    closedInfo.timestamp = QDateTime::currentSecsSinceEpoch();
+    if (closedInfo.filePath.isEmpty()) {
+        closedInfo.isUntitled = true;
+        closedInfo.untitledName = pEditor->getName();
+        closedInfo.untitledContent = QString::fromUtf8(pEditor->getText());
+    } else {
+        closedInfo.isUntitled = false;
+    }
+    ClosedTabsManager::instance()->pushClosedTab(closedInfo);
+    AutosaveRecoveryManager::instance()->removeSnapshot(closedInfo.filePath.isEmpty() ? closedInfo.untitledName
+                                                                                      : closedInfo.filePath);
 
     pEditor->close();
 
@@ -2979,6 +3297,7 @@ bool MainWindow::saveFile(ScintillaNext *editor) {
 
     const QFileDevice::FileError error = editor->save(preserve);
     if (error == QFileDevice::NoError) {
+        AutosaveRecoveryManager::instance()->removeSnapshot(editor->getFilePath());
         if (preserve) {
             ui->statusBar->showMessage(
                 tr("Saved \"%1\" with original modification time preserved (%2)")
@@ -3674,6 +3993,23 @@ void MainWindow::activateEditor(ScintillaNext *editor) {
         ui->statusBar->showMessage(tr(".LOG auto-timestamp appended to log file"), 3000);
     }
 
+    if (editor && characterInfoDock && characterInfoDock->isVisible()) {
+        characterInfoDock->updateFromEditor(editor);
+    }
+    if (editor && documentMinimapDock && documentMinimapDock->isVisible()) {
+        documentMinimapDock->syncWithEditor(editor);
+    }
+    if (editor) {
+        connect(
+            editor, &ScintillaNext::updateUi, this,
+            [this, editor] {
+                if (characterInfoDock && characterInfoDock->isVisible()) {
+                    characterInfoDock->updateFromEditor(editor);
+                }
+            },
+            Qt::UniqueConnection);
+    }
+
     emit editorActivated(editor);
 }
 
@@ -3893,6 +4229,11 @@ void MainWindow::exportPdf() {
         defaultName += QStringLiteral(".pdf");
     }
 
+    ExportOptionsDialog dlg(ExportOptionsDialog::TargetFormat::Pdf, defaultName, this);
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
     const QString savePath = QFileDialog::getSaveFileName(this, tr("Export to PDF"), defaultName,
                                                           tr("PDF Documents (*.pdf);;All Files (*)"));
 
@@ -3900,9 +4241,24 @@ void MainWindow::exportPdf() {
         return;
     }
 
+    const auto opt = dlg.options();
+    const QString filePath = editor->getFilePath();
+    const bool isMd = filePath.endsWith(QStringLiteral(".md"), Qt::CaseInsensitive) ||
+                      filePath.endsWith(QStringLiteral(".markdown"), Qt::CaseInsensitive);
+
+    if (isMd) {
+        const QString rawContent = QString::fromUtf8(editor->getText());
+        if (DocumentExportManager::exportToPdf(rawContent, true, savePath, opt)) {
+            FadingIndicator::showText(editor, tr("Exported to PDF: %1").arg(QFileInfo(savePath).fileName()));
+            ui->statusBar->showMessage(tr("Successfully exported Markdown PDF to %1").arg(savePath), 4000);
+            return;
+        }
+    }
+
     QPdfWriter pdfWriter(savePath);
-    pdfWriter.setPageSize(QPageSize(QPageSize::A4));
-    pdfWriter.setPageMargins(QMarginsF(15, 15, 15, 15), QPageLayout::Millimeter);
+    pdfWriter.setPageSize(QPageSize(opt.pageSize));
+    pdfWriter.setPageOrientation(opt.orientation);
+    pdfWriter.setPageMargins(opt.margins, QPageLayout::Millimeter);
     pdfWriter.setTitle(editor->getName());
     pdfWriter.setCreator(QStringLiteral("SparkNotePad v%1").arg(APP_VERSION));
 
@@ -4297,6 +4653,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
     emit aboutToClose();
 
+    AutosaveRecoveryManager::instance()->clearSnapshots();
+
     event->accept();
 
     QMainWindow::closeEvent(event);
@@ -4351,8 +4709,7 @@ void MainWindow::dropEvent(QDropEvent *event) {
     } else if (event->mimeData()->hasText()) {
         if (event->source()) {
             // if it is from an editor, remove the text
-            ScintillaNext *sn = qobject_cast<ScintillaNext *>(event->source());
-            if (sn) {
+            if (auto *const sn = qobject_cast<ScintillaNext *>(event->source()); sn) {
                 sn->replaceSel("");
             }
         }
@@ -4393,6 +4750,13 @@ QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
     ToolbarIconManager::instance()->applyToMenu(menu);
     ensureMenuIconsVisible(menu);
 
+    if (ClosedTabsManager::instance()->canReopen()) {
+        menu->addSeparator();
+        auto *actReopen = menu->addAction(tr("Reopen Closed Tab"));
+        actReopen->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
+        connect(actReopen, &QAction::triggered, this, &MainWindow::reopenClosedTab);
+    }
+
     return menu;
 }
 
@@ -4429,10 +4793,8 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
     auto *menu = buildMenu(actionNames);
 
     const QString ext = (editor && editor->isFile()) ? editor->getFileInfo().suffix().toLower() : QString();
-    const bool isMd = (ext == QStringLiteral("md") || ext == QStringLiteral("markdown"));
-
-    if (const bool isHtml =
-            (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml"));
+    if (const bool isMd = (ext == QStringLiteral("md") || ext == QStringLiteral("markdown")),
+        isHtml = (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml"));
         editor && (isMd || isHtml)) {
         menu->addSeparator();
         if (isMd) {
@@ -4459,6 +4821,38 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
         }
         ToolbarIconManager::instance()->applyToMenu(menu);
         ensureMenuIconsVisible(menu);
+    }
+
+    if (editor) {
+        menu->addSeparator();
+        auto *tabColorMenu = menu->addMenu(tr("Set Tab Color"));
+        const auto presets = TabColorManager::instance()->presets();
+        for (const auto &preset : presets) {
+            QPixmap px(14, 14);
+            px.fill(Qt::transparent);
+            {
+                QPainter p(&px);
+                p.setRenderHint(QPainter::Antialiasing);
+                p.setBrush(preset.color);
+                p.setPen(Qt::NoPen);
+                p.drawEllipse(1, 1, 12, 12);
+            }
+            auto *colorAct = tabColorMenu->addAction(QIcon(px), preset.name);
+            connect(colorAct, &QAction::triggered, this, [this, editor, c = preset.color] {
+                if (editor) {
+                    TabColorManager::instance()->setTabColor(editor->getFilePath(), c);
+                    dockedEditor->setEditorTabColor(editor, c);
+                }
+            });
+        }
+        tabColorMenu->addSeparator();
+        auto *clearColorAct = tabColorMenu->addAction(tr("Clear Tab Color"));
+        connect(clearColorAct, &QAction::triggered, this, [this, editor] {
+            if (editor) {
+                TabColorManager::instance()->clearTabColor(editor->getFilePath());
+                dockedEditor->setEditorTabColor(editor, QColor());
+            }
+        });
     }
 
     const auto contextMenuStyle = QStringLiteral(
@@ -5446,6 +5840,56 @@ void MainWindow::showCommandPalette(bool commandMode) {
     auto *palette = new CommandPaletteDialog(this, commandMode ? CommandPaletteDialog::InitialMode::Commands
                                                                : CommandPaletteDialog::InitialMode::FilesAndTabs);
     palette->show();
+}
+
+void MainWindow::openQuickSwitcher() {
+    QVector<QuickSwitcherDialog::Item> items;
+    QSet<QString> seenPaths;
+
+    // 1. All currently open editors/tabs
+    for (ScintillaNext *ed : editors()) {
+        if (!ed) {
+            continue;
+        }
+        QuickSwitcherDialog::Item item;
+        item.title = ed->getName();
+        item.detailPath = ed->getFilePath();
+        item.editor = ed;
+        items.append(item);
+        if (!item.detailPath.isEmpty()) {
+            seenPaths.insert(item.detailPath);
+        }
+    }
+
+    // 2. Recent files list
+    if (app && app->getRecentFilesListManager()) {
+        const QStringList recents = app->getRecentFilesListManager()->fileList();
+        MacServicesHandler::updateDockRecentMenu(recents);
+        for (const QString &path : recents) {
+            if (path.isEmpty() || seenPaths.contains(path)) {
+                continue;
+            }
+            QuickSwitcherDialog::Item item;
+            item.title = QFileInfo(path).fileName();
+            item.detailPath = path;
+            item.editor = nullptr;
+            items.append(item);
+            seenPaths.insert(path);
+        }
+    }
+
+    auto *dialog = new QuickSwitcherDialog(this);
+    connect(dialog, &QuickSwitcherDialog::itemSelected, this, [this](const QuickSwitcherDialog::Item &selected) {
+        if (selected.editor) {
+            dockedEditor->switchToEditor(selected.editor);
+        } else if (!selected.detailPath.isEmpty()) {
+            openFile(selected.detailPath);
+        }
+    });
+
+    dialog->populateItems(items);
+    dialog->exec();
+    dialog->deleteLater();
 }
 
 void MainWindow::showDocumentStatistics() {

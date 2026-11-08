@@ -86,3 +86,4 @@ build.ninja
 .cache/
 .clangd
 docs/
+.superpowers/

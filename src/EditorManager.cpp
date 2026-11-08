@@ -43,6 +43,7 @@
 #include "AutoClosePairs.h"
 #include "ColorPreviewCallTip.h"
 #include "URLFinder.h"
+#include "features/EditorConfigParser.h"
 #include "BookMarkDecorator.h"
 #include "ChangeHistoryDecorator.h"
 #include "HTMLAutoCompleteDecorator.h"
@@ -206,6 +207,7 @@ ScintillaNext *EditorManager::createEditorFromFile(const QString &filePath, bool
 
     if (editor) {
         manageEditor(editor);
+        EditorConfigParser::applyToEditor(editor, filePath);
     }
 
     return editor;
