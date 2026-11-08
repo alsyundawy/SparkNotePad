@@ -469,6 +469,8 @@ void AboutDialog::updateThemeColors() {
                 "<li><b>uchardet:</b> %8 (<a style='color: %1;' "
                 "href='https://www.freedesktop.org/wiki/Software/uchardet/'>freedesktop.org</a>)</li>"
                 "<li><b>OpenSSL:</b> %9 (<a style='color: %1;' href='https://www.openssl.org'>openssl.org</a>)</li>"
+                "<li><b>cleanrmd & markdown-viewer Themes:</b> %10 (<a style='color: %1;' "
+                "href='https://github.com/simov/markdown-viewer'>github.com</a>)</li>"
                 "</ul>")
                 .arg(accentCol, tr("Libraries & Frameworks"),
                      tr("Developed by The Qt Company and the Qt Open Source Community (Qt 6.5–6.12)."),
@@ -477,7 +479,8 @@ void AboutDialog::updateThemeColors() {
                      tr("Created by Itay Grudev. Secure single-instance process and IPC communication."),
                      tr("Created by Hong Xu. Universal .editorconfig format enforcement."),
                      tr("Maintained by Freedesktop. Enables fast universal character encoding detection."),
-                     tr("Standard open-source cryptography and TLS/SSL security library."));
+                     tr("Standard open-source cryptography and TLS/SSL security library."),
+                     tr("Curated classless CSS stylesheet collection and markdown-it formatting for live preview."));
 
         creditsHtml +=
             QString(

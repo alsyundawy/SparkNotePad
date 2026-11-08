@@ -31,9 +31,10 @@ SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectur
 - **Native Markdown / HTML / PDF Export Pipeline**:
   - Implemented `DocumentExportManager` with native Qt 6 `QPrinter` / `Qt6::PrintSupport` and Pandoc fallback engine.
   - Interactive `ExportOptionsDialog` supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.
-- **Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas)**:
-  - Implemented `MarkdownPreviewEnhancer` rendering Mermaid flowcharts, sequence diagrams, class diagrams, and state machines.
-  - Full LaTeX math rendering support (`$$...$$` block and `$...$` inline math) with currency/escaped dollar preservation.
+- **Markdown Preview Enhancements (30 Themes, markdown-it Formatting, Mermaid Diagrams & LaTeX Math Formulas)**:
+  - Integrated 30 classless CSS preview themes (`GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`) based on `cleanrmd` / `simov/markdown-viewer`.
+  - Comprehensive format detection regex: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$` for Markdown and `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$` for HTML.
+  - Complete `markdown-it` format support: GFM tables, interactive task lists (`- [ ]`, `- [x]`), strikethrough (`~~text~~`), highlight (`==text==`), subscript (`~text~`), superscript (`^text^`), insert (`++text++`), footnotes (`[^1]`), protected code blocks, Mermaid diagrams, and LaTeX math.
   - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
 - **Developer Tools Suite**:
   - Implemented `DeveloperToolsEngine` in Tools menu: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generator.

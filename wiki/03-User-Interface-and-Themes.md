@@ -152,4 +152,20 @@ SparkNotePad includes dedicated multi-monitor ergonomics:
 
 ---
 
+## 6. Markdown & HTML Live Preview with 30 Built-in Themes
+
+SparkNotePad features an interactive, sandboxed live preview dock (`Ctrl+Shift+M` / `Cmd+Shift+M`) and dedicated tab preview (`Ctrl+Shift+P` / `Cmd+Shift+P`):
+
+- **30 Curated Classless Themes**:
+  - `GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`.
+- **Extended Format Auto-Detection**:
+  - Markdown: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$`
+  - HTML: `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$`
+- **Complete markdown-it Formatting**:
+  - GFM tables, interactive task lists (`- [ ]`, `- [x]`), strikethrough (`~~text~~`), highlight (`==text==`), subscript (`~text~`), superscript (`^text^`), insert (`++text++`), footnotes (`[^1]`), Mermaid diagrams, and LaTeX math blocks (`$$...$$` and `$math$`).
+- **Synchronized Two-Way Scrolling**:
+  - Real-time scrollbar synchronization between the Scintilla text editor and the preview display.
+
+---
+
 Next Chapter: **[[04. Military-Grade Document Encryption|04-Military-Grade-Encryption]]**

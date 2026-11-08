@@ -40,9 +40,10 @@ SparkNotePad **v1.4.5** represents a major architectural milestone delivering 12
 6. **Native Markdown / HTML / PDF Export Pipeline**:
    - `DocumentExportManager` integrated with pure `Qt6::PrintSupport` and Pandoc fallback engine.
    - Interactive `ExportOptionsDialog` supporting custom paper dimensions, orientation, margins, and CSS typography embedding.
-7. **Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas)**:
-   - `MarkdownPreviewEnhancer` renders Mermaid flowcharts, sequence diagrams, class diagrams, and state machines.
-   - LaTeX mathematical equations (`$$...$$` block and `$...$` inline math) with full preservation of currency values and escaped dollars.
+7. **Markdown Preview Enhancements (30 Themes, markdown-it Formatting, Mermaid Diagrams & LaTeX Math Formulas)**:
+   - Integrated 30 classless CSS preview themes (`GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`) based on `cleanrmd` / `simov/markdown-viewer`.
+   - Comprehensive format detection regex: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$` for Markdown and `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$` for HTML.
+   - Complete `markdown-it` format support: GFM tables, interactive task lists (`- [ ]`, `- [x]`), strikethrough (`~~text~~`), highlight (`==text==`), subscript (`~text~`), superscript (`^text^`), insert (`++text++`), footnotes (`[^1]`), protected code blocks, Mermaid diagrams, and LaTeX math.
    - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
 8. **Developer Tools Suite**:
    - `DeveloperToolsEngine` providing JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generation, and interactive `TimestampConverterDialog` (Epoch to UTC/Local).

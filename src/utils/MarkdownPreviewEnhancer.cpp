@@ -13,9 +13,28 @@
 
 #include "MarkdownPreviewEnhancer.h"
 #include <QRegularExpression>
+#include <vector>
 
 QString MarkdownPreviewEnhancer::sanitizeForPreview(const QString &text) {
     return text.toHtmlEscaped();
+}
+
+bool MarkdownPreviewEnhancer::isMarkdownPath(const QString &path) {
+    static const QRegularExpression mdRegex(
+        QStringLiteral(R"(\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$)"),
+        QRegularExpression::CaseInsensitiveOption);
+    return mdRegex.match(path).hasMatch();
+}
+
+bool MarkdownPreviewEnhancer::isHtmlPath(const QString &path) {
+    static const QRegularExpression htmlRegex(
+        QStringLiteral(R"(\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$)"),
+        QRegularExpression::CaseInsensitiveOption);
+    return htmlRegex.match(path).hasMatch();
+}
+
+bool MarkdownPreviewEnhancer::isMarkdownOrHtmlPath(const QString &path) {
+    return isMarkdownPath(path) || isHtmlPath(path);
 }
 
 QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
@@ -38,7 +57,7 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
             ".mermaid-code {\n"
             "    background: transparent;\n"
             "    color: #e6edf3;\n"
-            "    font-family: SFMono-Regular, Consolas, Menlo, monospace;\n"
+            "    font-family: 'JetBrains Mono', SFMono-Regular, Consolas, Menlo, monospace;\n"
             "    font-size: 13px;\n"
             "    margin: 0;\n"
             "    padding: 0;\n"
@@ -50,7 +69,7 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
             "    padding: 12px 16px;\n"
             "    margin: 16px 0;\n"
             "    text-align: center;\n"
-            "    font-family: KaTeX_Math, \"Cambria Math\", STIXGeneral, serif;\n"
+            "    font-family: KaTeX_Math, 'Cambria Math', STIXGeneral, serif;\n"
             "    font-size: 15px;\n"
             "    color: #79c0ff;\n"
             "    overflow-x: auto;\n"
@@ -59,7 +78,7 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
             "    background-color: rgba(110, 118, 129, 0.2);\n"
             "    padding: 2px 6px;\n"
             "    border-radius: 4px;\n"
-            "    font-family: KaTeX_Math, \"Cambria Math\", STIXGeneral, serif;\n"
+            "    font-family: KaTeX_Math, 'Cambria Math', STIXGeneral, serif;\n"
             "    font-size: 13px;\n"
             "    color: #79c0ff;\n"
             "}\n");
@@ -83,7 +102,7 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
         ".mermaid-code {\n"
         "    background: transparent;\n"
         "    color: #1f2328;\n"
-        "    font-family: SFMono-Regular, Consolas, Menlo, monospace;\n"
+        "    font-family: 'JetBrains Mono', SFMono-Regular, Consolas, Menlo, monospace;\n"
         "    font-size: 13px;\n"
         "    margin: 0;\n"
         "    padding: 0;\n"
@@ -95,7 +114,7 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
         "    padding: 12px 16px;\n"
         "    margin: 16px 0;\n"
         "    text-align: center;\n"
-        "    font-family: KaTeX_Math, \"Cambria Math\", STIXGeneral, serif;\n"
+        "    font-family: KaTeX_Math, 'Cambria Math', STIXGeneral, serif;\n"
         "    font-size: 15px;\n"
         "    color: #0550ae;\n"
         "    overflow-x: auto;\n"
@@ -104,7 +123,7 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
         "    background-color: rgba(175, 184, 193, 0.2);\n"
         "    padding: 2px 6px;\n"
         "    border-radius: 4px;\n"
-        "    font-family: KaTeX_Math, \"Cambria Math\", STIXGeneral, serif;\n"
+        "    font-family: KaTeX_Math, 'Cambria Math', STIXGeneral, serif;\n"
         "    font-size: 13px;\n"
         "    color: #0550ae;\n"
         "}\n");
@@ -144,7 +163,7 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
     QString result = content;
 
     // 1. Process block math: $$ ... $$
-    static const QRegularExpression blockMathRegex(QStringLiteral("\\$\\$\\s*\\n?([\\s\\S]*?)\\n?\\s*\\$\\$"));
+    static const QRegularExpression blockMathRegex(QStringLiteral(R"(\$\$\s*\n?([\s\S]*?)\n?\s*\$\$)"));
 
     auto blockIt = blockMathRegex.globalMatch(result);
     qsizetype offset = 0;
@@ -164,7 +183,7 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
 
     // 2. Process inline math: $...$ (avoid escaped \$ and currency like $50 or $100)
     static const QRegularExpression inlineMathRegex(
-        QStringLiteral("(?<![\\\\a-zA-Z0-9])\\$(?![0-9\\s\\$])([^\\$\\n]+?)(?<![\\\\\\s])\\$(?![a-zA-Z0-9])"));
+        QStringLiteral(R"((?<![\\a-zA-Z0-9])\$(?![0-9\s\$])([^\$\n]+?)(?<![\\\s])\$(?![a-zA-Z0-9]))"));
 
     auto inlineIt = inlineMathRegex.globalMatch(result);
     offset = 0;
@@ -172,15 +191,42 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
         const QRegularExpressionMatch match = inlineIt.next();
         const QString mathSource = match.captured(1).trimmed();
 
-        // Do not convert if it looks like plain number or currency
         bool isNumber = false;
         (void)mathSource.toDouble(&isNumber);
-        if (isNumber) {
-            continue;
-        }
+        if (!isNumber) {
+            const QString escaped = sanitizeForPreview(mathSource);
+            const QString replacement = QStringLiteral("<span class=\"math-inline\">%1</span>").arg(escaped);
 
-        const QString escaped = sanitizeForPreview(mathSource);
-        const QString replacement = QStringLiteral("<span class=\"math-inline\">%1</span>").arg(escaped);
+            const qsizetype start = match.capturedStart() + offset;
+            const qsizetype length = match.capturedLength();
+            result.replace(start, length, replacement);
+            offset += replacement.length() - length;
+        }
+    }
+
+    return result;
+}
+
+QString MarkdownPreviewEnhancer::processTaskLists(const QString &content) {
+    static const QRegularExpression taskRegex(QStringLiteral(R"((?:^|\n)([ \t]*[-*+]\s+)\[([ xX])\]\s+)"));
+
+    QString result = content;
+    auto it = taskRegex.globalMatch(content);
+    qsizetype offset = 0;
+
+    while (it.hasNext()) {
+        const QRegularExpressionMatch match = it.next();
+        const QString prefix = match.captured(1);
+        const QString mark = match.captured(2).trimmed().toLower();
+        const bool isChecked = (mark == QStringLiteral("x"));
+
+        const QString replacement =
+            match.captured(0).startsWith(QLatin1Char('\n'))
+                ? (QStringLiteral("\n") + prefix +
+                   (isChecked ? QStringLiteral("<input type=\"checkbox\" checked disabled> ")
+                              : QStringLiteral("<input type=\"checkbox\" disabled> ")))
+                : (prefix + (isChecked ? QStringLiteral("<input type=\"checkbox\" checked disabled> ")
+                                       : QStringLiteral("<input type=\"checkbox\" disabled> ")));
 
         const qsizetype start = match.capturedStart() + offset;
         const qsizetype length = match.capturedLength();
@@ -191,8 +237,119 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
     return result;
 }
 
+QString MarkdownPreviewEnhancer::processFootnotes(const QString &content) {
+    struct FootnoteDef {
+        QString id;
+        QString text;
+    };
+    std::vector<FootnoteDef> definitions;
+
+    static const QRegularExpression fnDefRegex(
+        QStringLiteral(R"((?:^|\n)\[\^([^\]]+)\]:\s*([^\n]+(?:\n(?!\n|\[\^|\S).*)*))"));
+
+    QString body = content;
+    auto matchIt = fnDefRegex.globalMatch(body);
+    qsizetype offset = 0;
+
+    while (matchIt.hasNext()) {
+        const QRegularExpressionMatch match = matchIt.next();
+        FootnoteDef def;
+        def.id = match.captured(1).trimmed();
+        def.text = match.captured(2).trimmed();
+        definitions.push_back(def);
+
+        const qsizetype start = match.capturedStart() + offset;
+        const qsizetype length = match.capturedLength();
+        body.replace(start, length, QStringLiteral("\n"));
+        offset += 1 - length;
+    }
+
+    if (definitions.empty()) {
+        return body;
+    }
+
+    // Replace reference links: [^id]
+    static const QRegularExpression fnRefRegex(QStringLiteral(R"(\[\^([^\]]+)\])"));
+    matchIt = fnRefRegex.globalMatch(body);
+    offset = 0;
+    while (matchIt.hasNext()) {
+        const QRegularExpressionMatch match = matchIt.next();
+        const QString id = match.captured(1).trimmed();
+        const QString replacement =
+            QStringLiteral("<sup class=\"footnote-ref\"><a href=\"#fn_%1\" id=\"fnref_%1\">[%1]</a></sup>").arg(id);
+
+        const qsizetype start = match.capturedStart() + offset;
+        const qsizetype length = match.capturedLength();
+        body.replace(start, length, replacement);
+        offset += replacement.length() - length;
+    }
+
+    // Append footnotes section
+    QString footnotesHtml = QStringLiteral("\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n");
+    for (const auto &def : definitions) {
+        footnotesHtml +=
+            QStringLiteral("<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" class=\"footnote-backref\">↩</a></p></li>\n")
+                .arg(def.id, sanitizeForPreview(def.text));
+    }
+    footnotesHtml += QStringLiteral("</ol>\n</section>\n");
+
+    return body + footnotesHtml;
+}
+
+QString MarkdownPreviewEnhancer::processExtensions(const QString &content) {
+    // 1. Protect code fences and inline code with placeholders
+    static const QRegularExpression codeRegex(QStringLiteral(R"((```[\s\S]*?```|`[^`\n]+`))"));
+    std::vector<QString> codeSnippets;
+
+    QString masked = content;
+    auto codeIt = codeRegex.globalMatch(content);
+    qsizetype offset = 0;
+
+    while (codeIt.hasNext()) {
+        const QRegularExpressionMatch match = codeIt.next();
+        codeSnippets.push_back(match.captured(1));
+        const QString token = QStringLiteral("\x1DCODE_%1\x1D").arg(codeSnippets.size() - 1);
+
+        const qsizetype start = match.capturedStart() + offset;
+        const qsizetype length = match.capturedLength();
+        masked.replace(start, length, token);
+        offset += token.length() - length;
+    }
+
+    // 2. Strikethrough: ~~del~~
+    static const QRegularExpression strikeRegex(QStringLiteral(R"(~~(?=\S)(.+?)(?<=\S)~~)"));
+    masked.replace(strikeRegex, QStringLiteral("<del>\\1</del>"));
+
+    // 3. Mark / Highlight: ==mark==
+    static const QRegularExpression markRegex(QStringLiteral(R"(==(?=\S)(.+?)(?<=\S)==)"));
+    masked.replace(markRegex, QStringLiteral("<mark>\\1</mark>"));
+
+    // 4. Insert: ++ins++
+    static const QRegularExpression insRegex(QStringLiteral(R"(\+\+(?=\S)(.+?)(?<=\S)\+\+)"));
+    masked.replace(insRegex, QStringLiteral("<ins>\\1</ins>"));
+
+    // 5. Subscript: ~sub~ (single ~ not preceded or followed by ~)
+    static const QRegularExpression subRegex(QStringLiteral(R"((?<!~)~(?!~|\s)([^~\s\n]+?)(?<!\s)~(?!~))"));
+    masked.replace(subRegex, QStringLiteral("<sub>\\1</sub>"));
+
+    // 6. Superscript: ^sup^ (single ^ not preceded or followed by ^)
+    static const QRegularExpression supRegex(QStringLiteral(R"((?<!\^)\^(?!\^|\s)([^\^\s\n]+?)(?<!\s)\^(?!\^))"));
+    masked.replace(supRegex, QStringLiteral("<sup>\\1</sup>"));
+
+    // 7. Restore protected code blocks
+    for (std::size_t i = 0; i < codeSnippets.size(); ++i) {
+        const QString token = QStringLiteral("\x1DCODE_%1\x1D").arg(i);
+        masked.replace(token, codeSnippets[i]);
+    }
+
+    return masked;
+}
+
 QString MarkdownPreviewEnhancer::enhanceMarkdown(const QString &rawMd, bool isDark) {
     QString processed = processMermaidBlocks(rawMd, isDark);
     processed = processMathExpressions(processed);
+    processed = processTaskLists(processed);
+    processed = processExtensions(processed);
+    processed = processFootnotes(processed);
     return processed;
 }

@@ -152,4 +152,22 @@ Bagi pengguna yang bekerja dengan dua monitor atau lebih, SparkNotePad menyediak
 | **Pusatkan Jendela di Layar** | `Cmd+Alt+C`           | `Ctrl+Alt+C`             | Menengahkan jendela di area layar aktif                   |
 | **Diagnostik Tampilan Layar** | `Cmd+Alt+D`           | `Ctrl+Alt+D`             | Menampilkan informasi DPI, refresh rate, dan profil warna |
 
+---
+
+## 7. Pratinjau Langsung Markdown & HTML dengan 30 Tema Bawaan
+
+SparkNotePad menyediakan dock pratinjau langsung yang terisolasi dan aman (`Ctrl+Shift+M` / `Cmd+Shift+M`) serta tab pratinjau khusus (`Ctrl+Shift+P` / `Cmd+Shift+P`):
+
+- **30 Tema Classless Kurasi**:
+  - `GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`.
+- **Deteksi Format Otomatis Komprehensif**:
+  - Markdown: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$`
+  - HTML: `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$`
+- **Dukungan Format Lengkap markdown-it**:
+  - Tabel GFM, daftar tugas (`- [ ]`, `- [x]`), teks coret (`~~teks~~`), teks sorot (`==teks==`), subskrip (`~teks~`), superskrip (`^teks^`), teks sisipan (`++teks++`), catatan kaki (`[^1]`), diagram Mermaid, dan formula matematika LaTeX (`$$...$$` dan `$rumus$`).
+- **Sinkronisasi Scroll Dua Arah**:
+  - Sinkronisasi posisi bilah gulir (scrollbar) real-time antara editor teks Scintilla dan tampilan pratinjau.
+
+---
+
 Lanjutkan ke bab berikutnya: [[Enkripsi Dokumen Standar Militer AES-256|04-Enkripsi-Dokumen-AES-256]].

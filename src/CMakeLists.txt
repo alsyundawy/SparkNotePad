@@ -167,6 +167,8 @@ qt_add_executable(SparkNotePad
 	utils/ExtendedSearchParser.cpp
 	utils/MarkdownPreviewEnhancer.h
 	utils/MarkdownPreviewEnhancer.cpp
+	utils/MarkdownThemeManager.h
+	utils/MarkdownThemeManager.cpp
 	utils/MimeTools.h
 	utils/MimeTools.cpp
 	utils/NumberConverter.h

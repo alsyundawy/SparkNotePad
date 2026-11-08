@@ -48,6 +48,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/dialogs/QuickSwitcherDialog.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/ExtendedSearchParser.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/MarkdownPreviewEnhancer.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/MarkdownThemeManager.cpp
     ${CMAKE_SOURCE_DIR}/src/ApplicationSettings.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Base64Utils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/MimeTools.cpp

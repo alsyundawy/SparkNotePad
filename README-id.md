@@ -448,10 +448,14 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
   - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
 - **Manajer Autosave & Pemulihan Crash**:
   - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
-- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 38 Paket)**:
-  - Penambahan 16 paket ikon toolbar Aksara baru (544 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, GNOME, KDE, Ubuntu Yaru, Arch Linux, dan gaya modern.
-- **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
-  - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
+- **Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu**:
+  - Kurasi 10 paket ikon toolbar Aksara berkualitas tinggi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, dan gaya modern (total 28 paket bawaan).
+  - Penyederhanaan menu Themes & Tools: memindahkan Ukuran Ikon Toolbar ke atas Paket Ikon Toolbar di menu Themes, memindahkan Kustomisasi Toolbar ke menu Tools (`Tools > Kustomisasi Tombol Toolbar...`), dan menghapus opsi Buka Paket Ikon Kustom dari bilah menu.
+- **Pratinjau Langsung Markdown & HTML dengan 30 Tema & Format Kompiler markdown-it**:
+  - Integrasi 30 tema CSS classless (`GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`) berbasis `cleanrmd` / `simov/markdown-viewer`.
+  - Regex deteksi format berkas komprehensif: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$` untuk Markdown dan `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$` untuk HTML.
+  - Dukungan format standar `markdown-it`: tabel GFM, daftar tugas interaktif (`- [ ]`, `- [x]`), coret teks (`~~teks~~`), sorot teks (`==teks==`), subskrip (`~teks~`), superskrip (`^teks^`), sisip teks (`++teks++`), catatan kaki (`[^1]`), blok kode terlindungi, diagram Mermaid, dan formula matematika LaTeX.
+  - Ekspor PDF/HTML native via `QPrinter`, ekspor HTML mandiri dengan CSS tema tersemat, dan sinkronisasi scroll dua arah.
 - **Peralatan Pengembang & Utilitas**:
   - Konverter timestamp, JSON prettify/minify, URL encode/decode, escape Unicode, UUID v4, parser `.editorconfig`, dan dock Riwayat Clipboard.
 - **Kepatuhan Kualitas 14 Pilar & Audit Statis SonarLint**:

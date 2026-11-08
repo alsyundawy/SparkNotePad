@@ -58,6 +58,7 @@
 #include "UndoAction.h"
 #include "ModernMessageBox.h"
 #include "docks/MarkdownSafePreviewDock.h"
+#include "utils/MarkdownPreviewEnhancer.h"
 #include "docks/ClipboardHistoryDock.h"
 #include "docks/CharacterInfoDock.h"
 #include "docks/DocumentMinimapDock.h"
@@ -1542,7 +1543,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     actionOpenPreviewTab->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
     connect(actionOpenPreviewTab, &QAction::triggered, this, [this] {
         if (auto *ed = currentEditor()) {
-            openPreviewInNewTab(ed, isMarkdownOrHtml(ed));
+            openPreviewInNewTab(ed, isHtml(ed));
         }
     });
     menuPreview->addAction(actionOpenPreviewTab);
@@ -3865,19 +3866,31 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     }
 }
 
-bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) {
+bool MainWindow::isMarkdown(const ScintillaNext *editor) {
     if (!editor) {
         return false;
     }
-    if (const QString lang = editor->languageName.toLower(); lang.contains(QStringLiteral("markdown")) ||
-                                                             lang.contains(QStringLiteral("html")) ||
-                                                             lang.contains(QStringLiteral("xml"))) {
+    const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
+    if (MarkdownPreviewEnhancer::isMarkdownPath(target)) {
         return true;
     }
-    const QString ext = editor->getFileInfo().suffix().toLower();
-    return (ext == QStringLiteral("md") || ext == QStringLiteral("markdown") || ext == QStringLiteral("mdown") ||
-            ext == QStringLiteral("mkd") || ext == QStringLiteral("mkdn") || ext == QStringLiteral("html") ||
-            ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml") || ext == QStringLiteral("shtml"));
+    return editor->languageName.contains(QStringLiteral("markdown"), Qt::CaseInsensitive);
+}
+
+bool MainWindow::isHtml(const ScintillaNext *editor) {
+    if (!editor) {
+        return false;
+    }
+    const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
+    if (MarkdownPreviewEnhancer::isHtmlPath(target)) {
+        return true;
+    }
+    const QString lang = editor->languageName.toLower();
+    return (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml")));
+}
+
+bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) {
+    return isMarkdown(editor) || isHtml(editor);
 }
 
 void MainWindow::updateDocumentBasedUi(Scintilla::Update updated) {
@@ -4768,14 +4781,12 @@ QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
 }
 
 void MainWindow::populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor) {
-    if (!editor || !editor->isFile()) {
+    if (!editor) {
         return;
     }
-    const QString ext = editor->getFileInfo().suffix().toLower();
-    const bool isMd = (ext == QStringLiteral("md") || ext == QStringLiteral("markdown"));
-    const bool isHtml =
-        (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml"));
-    if (!isMd && !isHtml) {
+    const bool isMd = isMarkdown(editor);
+    const bool isH = isHtml(editor);
+    if (!isMd && !isH) {
         return;
     }
 
@@ -4785,7 +4796,7 @@ void MainWindow::populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor
             menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
         actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
         connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, false); });
-    } else if (isHtml) {
+    } else if (isH) {
         auto *actPreviewHtml =
             menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview HTML in New Tab"));
         actPreviewHtml->setObjectName(QStringLiteral("previewHtml"));
@@ -5636,14 +5647,14 @@ void MainWindow::onChangelogTriggered() {
     }
 }
 
-void MainWindow::openPreviewInNewTab(ScintillaNext *editor, bool isHtml) {
+void MainWindow::openPreviewInNewTab(ScintillaNext *editor, bool asHtml) {
     if (!editor) {
         return;
     }
 
-    auto *previewWidget = new PreviewTabWidget(editor, isHtml, this);
+    auto *previewWidget = new PreviewTabWidget(editor, asHtml, this);
     const QString title = previewWidget->documentTitle();
-    const auto icon = QIcon(isHtml ? QStringLiteral(":/icons/openFile.svg") : QStringLiteral(":/icons/find.svg"));
+    const auto icon = QIcon(asHtml ? QStringLiteral(":/icons/openFile.svg") : QStringLiteral(":/icons/find.svg"));
     const QString toolTip = editor->isFile() ? editor->getFilePath() : editor->getName();
 
     ads::CDockWidget *dockWidget = dockedEditor->addTabWidget(previewWidget, title, icon, toolTip);

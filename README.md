@@ -451,8 +451,11 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 - **Aksara Toolbar Icon Packs Suite (28 Packs Total) & Menu Ergonomics**:
   - Curated 10 high-fidelity Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, and modern styles (28 built-in packs total).
   - Streamlined Themes & Tools menus: relocated Toolbar Icon Size above Toolbar Icon Packs in Themes, moved Customize Toolbar into the Tools menu (`Tools > Customize Toolbar Buttons...`), and removed Open Custom Icon Pack from the menubar.
-- **Markdown / PDF Export & Enhanced Previews**:
-  - Native PDF/HTML export via `QPrinter`, Mermaid diagram container rendering, and full LaTeX math support.
+- **Markdown & HTML Live Preview with 30 Themes & markdown-it Compiler Formatting**:
+  - Integrated 30 classless CSS preview themes (`GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`) based on `cleanrmd` / `simov/markdown-viewer`.
+  - Comprehensive format detection regex: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$` for Markdown and `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$` for HTML.
+  - Complete `markdown-it` format support: GFM tables, interactive task lists (`- [ ]`, `- [x]`), strikethrough (`~~text~~`), highlight (`==text==`), subscript (`~text~`), superscript (`^text^`), insert (`++text++`), footnotes (`[^1]`), protected code blocks, Mermaid diagrams, and LaTeX math.
+  - Native PDF/HTML export via `QPrinter`, standalone HTML export with embedded theme CSS, and live dual-way scroll synchronization.
 - **Developer Tools & Utilities**:
   - Timestamp converter, JSON prettify/minify, URL encode/decode, Unicode escape, UUID v4, `.editorconfig` parser, and Clipboard History dock.
 - **14-Pillar Code Quality & SonarLint Static Review**:

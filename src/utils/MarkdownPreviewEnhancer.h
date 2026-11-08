@@ -22,7 +22,19 @@ public:
 
     static QString processMathExpressions(const QString &content);
 
+    static QString processFootnotes(const QString &content);
+
+    static QString processTaskLists(const QString &content);
+
+    static QString processExtensions(const QString &content);
+
     static QString sanitizeForPreview(const QString &text);
 
     static QString mathAndMermaidCss(bool isDark);
+
+    static bool isMarkdownPath(const QString &path);
+
+    static bool isHtmlPath(const QString &path);
+
+    static bool isMarkdownOrHtmlPath(const QString &path);
 };

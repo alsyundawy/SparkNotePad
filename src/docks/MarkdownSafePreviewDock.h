@@ -19,6 +19,7 @@
 #include <QUrl>
 #include <cstdint>
 #include "ScintillaTypes.h"
+#include "../utils/MarkdownThemeManager.h"
 
 class ScintillaNext;
 class MainWindow;
@@ -41,6 +42,7 @@ public:
     ~MarkdownSafePreviewDock() override = default;
 
     PreviewFormat format() const { return currentFormat; }
+    MarkdownThemeManager::ThemeId theme() const { return currentTheme; }
     static PreviewFormat detectFormat(const ScintillaNext *editor);
     bool isAutoShowEnabled() const { return autoShowEnabled; }
 
@@ -49,6 +51,7 @@ public slots:
     void scheduleRender();
     void renderPreview();
     void setPreviewFormat(PreviewFormat newFormat);
+    void setPreviewTheme(MarkdownThemeManager::ThemeId newTheme);
     void setAutoShowEnabled(bool enabled);
     void openInBrowser();
     void copyHtml();
@@ -70,6 +73,7 @@ protected:
 private slots:
     void handleAnchorClicked(const QUrl &url);
     void onFormatComboChanged(int index);
+    void onThemeComboChanged(int index);
 
 private:
     void setupUi();
@@ -85,6 +89,7 @@ private:
     QPointer<ScintillaNext> currentEditor;
 
     QComboBox *comboFormat = nullptr;
+    QComboBox *comboTheme = nullptr;
     QLabel *lblFormatStatus = nullptr;
     QLabel *lblStats = nullptr;
     QPushButton *btnOpenBrowser = nullptr;
@@ -97,6 +102,8 @@ private:
     QPushButton *btnResetZoom = nullptr;
 
     PreviewFormat currentFormat = PreviewFormat::Auto;
+    MarkdownThemeManager::ThemeId currentTheme = MarkdownThemeManager::ThemeId::GitHub;
+    bool m_userExplicitTheme = false;
     bool autoShowEnabled = false;
     int baseFontSize = 13;
     bool m_isUpdatingTheme{false};

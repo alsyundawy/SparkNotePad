@@ -30,10 +30,11 @@ SparkNotePad **v1.4.5** merupakan rilis fitur dan stabilitas besar yang menghadi
 6. **Alur Ekspor Native Markdown / HTML / PDF**:
    - Implementasi `DocumentExportManager` menggunakan `QPrinter` / `Qt6::PrintSupport` native dan fallback Pandoc.
    - Dialog interaktif `ExportOptionsDialog` mendukung ukuran kertas kustom (A4, Letter, Legal), orientasi, margin, dan CSS tersemat.
-7. **Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX)**:
-   - `MarkdownPreviewEnhancer` merender flowchart Mermaid, diagram urutan, diagram kelas, dan state machine via kontainer web terisolasi.
-   - Dukungan penuh rumus matematika LaTeX (`$$...$$` dan `$...$`) dengan proteksi simbol mata uang dollar.
-   - Fitur Two-Way SyncScroll yang menyelaraskan posisi gulir editor Scintilla dengan viewport pratinjau Markdown.
+7. **Peningkatan Pratinjau Markdown & HTML (30 Tema, Format Kompiler markdown-it, Diagram Mermaid & Rumus LaTeX)**:
+   - Integrasi 30 tema CSS classless (`GITHUB`, `GITHUB-DARK`, `ALMOND`, `AWSM`, `AXIST`, `BAMBOO`, `BULLFRAME`, `HOLIDAY`, `KACIT`, `LATEX`, `MARX`, `MINI`, `MODEST`, `NEW`, `NO-CLASS`, `PICO`, `RETRO`, `SAKURA`, `SAKURA-VADER`, `SEMANTIC`, `SIMPLE`, `STYLE-SANS`, `STYLE-SERIF`, `STYLIZE`, `SUPERSTYLIN`, `TACIT`, `VANILLA`, `WATER`, `WATER-DARK`, `WRIT`) berbasis `cleanrmd` / `simov/markdown-viewer`.
+   - Regex deteksi berkas komprehensif: `\.(?:markdown|mdown|mkdn|md|mkd|mdwn|mdtxt|mdtext|text)(?:#.*|\?.*)?$` untuk Markdown dan `\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$` untuk HTML.
+   - Dukungan format standar `markdown-it`: tabel GFM, daftar tugas interaktif (`- [ ]`, `- [x]`), coret teks (`~~teks~~`), sorot teks (`==teks==`), subskrip (`~teks~`), superskrip (`^teks^`), sisip teks (`++teks++`), catatan kaki (`[^1]`), blok kode terlindungi, diagram Mermaid, dan formula matematika LaTeX.
+   - Two-Way SyncScroll yang menyelaraskan posisi gulir editor Scintilla dengan viewport pratinjau.
 8. **Paket Peralatan Pengembang (Developer Tools)**:
    - `DeveloperToolsEngine` pada menu Peralatan: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, serta generator UUID v4.
    - Dialog interaktif `TimestampConverterDialog` untuk konversi epoch Unix ke format UTC dan ISO Lokal.

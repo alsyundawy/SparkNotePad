@@ -27,6 +27,7 @@
 #include "../features/ThemePaletteData.h"
 #include "../dialogs/ExportOptionsDialog.h"
 #include "../utils/MarkdownPreviewEnhancer.h"
+#include "../utils/MarkdownThemeManager.h"
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -44,6 +45,7 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
       browser(new QTextBrowser(this)),
       debounceTimer(new QTimer(this)),
       comboFormat(new QComboBox(this)),
+      comboTheme(new QComboBox(this)),
       lblFormatStatus(new QLabel(this)),
       lblStats(new QLabel(this)),
       btnOpenBrowser(new QPushButton(this)),
@@ -62,6 +64,14 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     if (const int savedFormat = settings.value(QStringLiteral("Gui/PreviewFormat"), 0).toInt();
         savedFormat >= 0 && savedFormat <= 2) {
         currentFormat = static_cast<PreviewFormat>(savedFormat);
+    }
+    const QString savedThemeName = settings.value(QStringLiteral("Gui/MarkdownPreviewTheme"), QString()).toString();
+    if (!savedThemeName.isEmpty()) {
+        currentTheme = MarkdownThemeManager::themeFromName(savedThemeName);
+        m_userExplicitTheme = true;
+    } else {
+        const bool isDark = ThemeManager::instance()->isDarkActive();
+        currentTheme = MarkdownThemeManager::defaultTheme(isDark);
     }
 
     setupUi();
@@ -96,6 +106,15 @@ void MarkdownSafePreviewDock::setupUi() {
     comboFormat->setToolTip(tr("Select preview rendering format (Auto detects Markdown or HTML)"));
     connect(comboFormat, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onFormatComboChanged);
     topLayout->addWidget(comboFormat);
+
+    const QStringList themeList = MarkdownThemeManager::themeNames();
+    for (int i = 0; i < themeList.size(); ++i) {
+        comboTheme->addItem(themeList[i], i);
+    }
+    comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
+    comboTheme->setToolTip(tr("Select Markdown theme (30 cleanrmd / markdown-it themes)"));
+    connect(comboTheme, &QComboBox::currentIndexChanged, this, &MarkdownSafePreviewDock::onThemeComboChanged);
+    topLayout->addWidget(comboTheme);
 
     lblFormatStatus->setObjectName(QStringLiteral("lblFormatStatus"));
     lblFormatStatus->setText(tr("Auto"));
@@ -225,21 +244,19 @@ MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(con
         return Markdown;
     }
 
+    const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
+    if (MarkdownPreviewEnhancer::isHtmlPath(target)) {
+        return Html;
+    }
+    if (MarkdownPreviewEnhancer::isMarkdownPath(target)) {
+        return Markdown;
+    }
+
     const QString lang = editor->languageName.toLower();
     if (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml"))) {
         return Html;
     }
     if (lang.contains(QStringLiteral("markdown"))) {
-        return Markdown;
-    }
-
-    const QString ext = editor->getFileInfo().suffix().toLower();
-    if (ext == QStringLiteral("html") || ext == QStringLiteral("htm") || ext == QStringLiteral("xhtml") ||
-        ext == QStringLiteral("shtml")) {
-        return Html;
-    }
-    if (ext == QStringLiteral("md") || ext == QStringLiteral("markdown") || ext == QStringLiteral("mdown") ||
-        ext == QStringLiteral("mkd") || ext == QStringLiteral("mkdn")) {
         return Markdown;
     }
 
@@ -269,18 +286,29 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
     m_isUpdatingTheme = true;
 
     const bool isDark = ThemeManager::instance()->isDarkActive();
+    if (!m_userExplicitTheme) {
+        currentTheme = MarkdownThemeManager::defaultTheme(isDark);
+        if (comboTheme) {
+            comboTheme->blockSignals(true);
+            comboTheme->setCurrentIndex(static_cast<int>(currentTheme));
+            comboTheme->blockSignals(false);
+        }
+    }
+
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     const QString accent = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#0969da");
     const QString dockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
     const QString textPri = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
     const QString textSec = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
-    const QString bgColor = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
     const QString border = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
     const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#f6f8fa");
     const QString badgeBg =
         isDark ? QStringLiteral("rgba(56, 139, 253, 0.15)") : QStringLiteral("rgba(9, 105, 218, 0.1)");
     const QString selColor =
         isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
+
+    const QColor themeBg = MarkdownThemeManager::themeBackgroundColor(currentTheme);
+    const QColor themeFg = MarkdownThemeManager::themeTextColor(currentTheme);
 
     const QString dockStyle = QStringLiteral(
                                   "QDockWidget {"
@@ -342,79 +370,52 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
                                   "  background-color: %3;"
                                   "  color: #ffffff;"
                                   "}")
-                                  .arg(dockBg, textPri, accent, border, bgColor, badgeBg, textSec, btnBg);
+                                  .arg(dockBg, textPri, accent, border, themeBg.name(), badgeBg, textSec, btnBg);
     setStyleSheet(dockStyle);
 
     browser->setStyleSheet(
         QStringLiteral(
             "QTextBrowser { background-color: %1; color: %2; border: none; selection-background-color: %3; }")
-            .arg(bgColor, textPri, selColor));
+            .arg(themeBg.name(), themeFg.name(), selColor));
 
     browser->document()->setDefaultStyleSheet(buildGitHubStyleSheet(isDark));
     m_isUpdatingTheme = false;
 }
 
 QString MarkdownSafePreviewDock::buildGitHubStyleSheet(bool isDark) const {
-    const QString textColor = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
-    const QString bgColor = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
-    const QString borderColor = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d8dee4");
-    const QString mutedColor = isDark ? QStringLiteral("#848d97") : QStringLiteral("#656d76");
-    const QString codeBg =
-        isDark ? QStringLiteral("rgba(110, 118, 129, 0.4)") : QStringLiteral("rgba(175, 184, 193, 0.2)");
-    const QString blockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
-    const QString linkColor = isDark ? QStringLiteral("#2f81f7") : QStringLiteral("#0969da");
+    (void)isDark;
+    return MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize);
+}
 
-    return QStringLiteral(
-               "body { "
-               "  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, "
-               "sans-serif; "
-               "  font-size: %1px; line-height: 1.6; color: %2; background-color: %3; margin: 0; padding: 18px 24px; "
-               "} "
-               "h1, h2, h3, h4, h5, h6 { "
-               "  font-weight: 600; line-height: 1.25; margin-top: 24px; margin-bottom: 16px; color: %2; "
-               "} "
-               "h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid %4; } "
-               "h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid %4; } "
-               "h3 { font-size: 1.25em; } "
-               "h4 { font-size: 1em; } "
-               "h5 { font-size: 0.875em; } "
-               "h6 { font-size: 0.85em; color: %5; } "
-               "p { margin-top: 0; margin-bottom: 16px; line-height: 1.6; } "
-               "blockquote { "
-               "  margin: 0 0 16px 0; padding: 6px 16px; color: %5; border-left: 4px solid %4; background-color: %7; "
-               "border-radius: 0 4px 4px 0; "
-               "} "
-               "ul, ol { margin-top: 0; margin-bottom: 16px; padding-left: 2em; } "
-               "li { margin-top: 0.3em; } "
-               "code { "
-               "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; "
-               "  font-size: 85%; padding: 0.2em 0.4em; background-color: %6; border-radius: 6px; "
-               "} "
-               "pre { "
-               "  margin-top: 0; margin-bottom: 16px; padding: 16px; line-height: 1.45; "
-               "  background-color: %7; border: 1px solid %4; border-radius: 8px; "
-               "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; "
-               "font-size: 85%; "
-               "} "
-               "table { border-collapse: collapse; border-spacing: 0; margin-top: 0; margin-bottom: 16px; width: 100%; "
-               "} "
-               "th, td { padding: 8px 14px; border: 1px solid %4; } "
-               "th { font-weight: 600; background-color: %7; } "
-               "tr:nth-child(2n) { background-color: %7; } "
-               "hr { height: 2px; padding: 0; margin: 24px 0; background-color: %4; border: 0; } "
-               "a { color: %8; text-decoration: none; font-weight: 500; } "
-               "kbd { "
-               "  display: inline-block; padding: 3px 6px; font-size: 11px; line-height: 10px; color: %2; "
-               "  background-color: %7; border: 1px solid %4; border-radius: 6px; box-shadow: inset 0 -1px 0 %4; "
-               "} "
-               "img { max-width: 100%; height: auto; border-radius: 6px; }\n")
-               .arg(QString::number(baseFontSize), textColor, bgColor, borderColor, mutedColor, codeBg, blockBg,
-                    linkColor) +
-           MarkdownPreviewEnhancer::mathAndMermaidCss(isDark);
+void MarkdownSafePreviewDock::onThemeComboChanged(int index) {
+    if (index < 0 || index >= static_cast<int>(MarkdownThemeManager::themeNames().size())) {
+        return;
+    }
+    currentTheme = static_cast<MarkdownThemeManager::ThemeId>(index);
+    m_userExplicitTheme = true;
+    QSettings settings;
+    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
+    applyGitHubTheme();
+    renderPreview();
+}
+
+void MarkdownSafePreviewDock::setPreviewTheme(MarkdownThemeManager::ThemeId newTheme) {
+    currentTheme = newTheme;
+    m_userExplicitTheme = true;
+    if (comboTheme) {
+        comboTheme->blockSignals(true);
+        comboTheme->setCurrentIndex(static_cast<int>(newTheme));
+        comboTheme->blockSignals(false);
+    }
+    QSettings settings;
+    settings.setValue(QStringLiteral("Gui/MarkdownPreviewTheme"), MarkdownThemeManager::themeName(currentTheme));
+    applyGitHubTheme();
+    renderPreview();
 }
 
 QString MarkdownSafePreviewDock::generateFullHtmlDocument(const QString &bodyHtml, bool isDark) const {
-    const QString css = buildGitHubStyleSheet(isDark);
+    (void)isDark;
+    const QString css = MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize);
     const QString title = currentEditor ? currentEditor->getFileInfo().fileName() : tr("SparkNotePad Preview");
 
     return QStringLiteral(
@@ -538,7 +539,7 @@ void MarkdownSafePreviewDock::renderPreview() {
                                    ? static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum())
                                    : 0.0;
 
-    const bool isDark = ThemeManager::instance()->isDarkActive();
+    const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
     if (effectiveFormat == PreviewFormat::Html) {
         browser->setHtml(content);
     } else {
@@ -814,7 +815,7 @@ void MarkdownSafePreviewDock::syncScrollFromBrowser() {
     if (m_syncingScroll || !currentEditor || !isVisible()) {
         return;
     }
-    QScrollBar *const scrollBar = browser->verticalScrollBar();
+    const QScrollBar *const scrollBar = browser->verticalScrollBar();
     if (!scrollBar || scrollBar->maximum() <= 0) {
         return;
     }

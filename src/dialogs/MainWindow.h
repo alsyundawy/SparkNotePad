@@ -255,6 +255,8 @@ private:
     DocumentMinimapDock *documentMinimapDock = nullptr;
     QAction *actionQuickSwitcher = nullptr;
     void openQuickSwitcher();
+    static bool isMarkdown(const ScintillaNext *editor);
+    static bool isHtml(const ScintillaNext *editor);
     static bool isMarkdownOrHtml(const ScintillaNext *editor);
 
     void exportHtmlDocument();
@@ -310,7 +312,7 @@ private:
     void onDocnoteTriggered();
     void onChangelogTriggered();
     void onGenerateCertTriggered();
-    void openPreviewInNewTab(ScintillaNext *editor, bool isHtml);
+    void openPreviewInNewTab(ScintillaNext *editor, bool asHtml);
     static void openInDefaultBrowser(const QString &filePath);
     void onToggleHexBinaryView(bool checked);
 

@@ -12,6 +12,8 @@
 #include "../ScintillaNext.h"
 #include "../features/ThemeManager.h"
 #include "../features/ThemePaletteData.h"
+#include "../utils/MarkdownPreviewEnhancer.h"
+#include "../utils/MarkdownThemeManager.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -287,59 +289,8 @@ void PreviewTabWidget::applyTheme() {
 }
 
 QString PreviewTabWidget::buildDevDocsStyleSheet(bool isDark) const {
-    const QString textColor = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
-    const QString bgColor = isDark ? QStringLiteral("#0d1117") : QStringLiteral("#ffffff");
-    const QString borderColor = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d8dee4");
-    const QString mutedColor = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
-    const QString codeBg =
-        isDark ? QStringLiteral("rgba(110, 118, 129, 0.4)") : QStringLiteral("rgba(175, 184, 193, 0.2)");
-    const QString blockBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
-    const QString linkColor = isDark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
-
-    return QStringLiteral(
-               "body { "
-               "  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; "
-               "  font-size: %1px; line-height: 1.6; color: %2; background-color: %3; margin: 0; padding: 18px 24px; "
-               "} "
-               "h1, h2, h3, h4, h5, h6 { "
-               "  font-weight: 600; line-height: 1.3; margin-top: 24px; margin-bottom: 14px; color: %2; "
-               "} "
-               "h1 { font-size: 2.1em; padding-bottom: 0.3em; border-bottom: 1px solid %4; } "
-               "h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid %4; } "
-               "h3 { font-size: 1.25em; } "
-               "h4 { font-size: 1.05em; } "
-               "h5 { font-size: 0.9em; } "
-               "h6 { font-size: 0.85em; color: %5; } "
-               "p { margin-top: 0; margin-bottom: 14px; line-height: 1.6; } "
-               "blockquote { "
-               "  margin: 0 0 16px 0; padding: 4px 14px; color: %5; border-left: 4px solid %4; background-color: %7; "
-               "border-radius: 0 4px 4px 0; "
-               "} "
-               "ul, ol { margin-top: 0; margin-bottom: 14px; padding-left: 24px; } "
-               "li { margin-top: 0.3em; } "
-               "code { "
-               "  font-family: 'SFMono-Regular', Menlo, Consolas, Monaco, 'Liberation Mono', monospace; "
-               "  font-size: 88%; padding: 2px 6px; background-color: %6; border-radius: 4px; "
-               "} "
-               "pre { "
-               "  margin-top: 0; margin-bottom: 16px; padding: 14px; line-height: 1.45; "
-               "  background-color: %7; border: 1px solid %4; border-radius: 6px; "
-               "  font-family: 'SFMono-Regular', Menlo, Consolas, Monaco, 'Liberation Mono', monospace; font-size: "
-               "88%; "
-               "} "
-               "table { border-collapse: collapse; border-spacing: 0; margin-top: 0; margin-bottom: 16px; width: 100%; "
-               "} "
-               "th, td { padding: 8px 12px; border: 1px solid %4; } "
-               "th { font-weight: 600; background-color: %7; text-align: left; } "
-               "tr:nth-child(2n) { background-color: %7; } "
-               "hr { height: 2px; padding: 0; margin: 22px 0; background-color: %4; border: 0; } "
-               "a { color: %8; text-decoration: none; font-weight: 500; } "
-               "kbd { "
-               "  display: inline-block; padding: 2px 6px; font-size: 11px; line-height: 12px; color: %2; "
-               "  background-color: %7; border: 1px solid %4; border-radius: 4px; box-shadow: inset 0 -1px 0 %4; "
-               "} "
-               "img { max-width: 100%; height: auto; border-radius: 4px; }")
-        .arg(QString::number(m_baseFontSize), textColor, bgColor, borderColor, mutedColor, codeBg, blockBg, linkColor);
+    const MarkdownThemeManager::ThemeId themeId = MarkdownThemeManager::defaultTheme(isDark);
+    return MarkdownThemeManager::generateThemeCss(themeId, m_baseFontSize);
 }
 
 void PreviewTabWidget::renderPreview() {
@@ -431,8 +382,9 @@ void PreviewTabWidget::copyHtml() {
     if (m_isHtml) {
         fullHtml = wrapHtmlDocument(rawContent, isDark);
     } else {
+        const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
         QTextDocument doc;
-        doc.setMarkdown(rawContent);
+        doc.setMarkdown(enriched);
         fullHtml = wrapHtmlDocument(enhanceCallouts(doc.toHtml(), isDark), isDark);
     }
     QApplication::clipboard()->setText(fullHtml);
@@ -472,8 +424,9 @@ void PreviewTabWidget::exportHtml() {
     if (m_isHtml) {
         fullHtml = wrapHtmlDocument(rawContent, isDark);
     } else {
+        const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
         QTextDocument doc;
-        doc.setMarkdown(rawContent);
+        doc.setMarkdown(enriched);
         fullHtml = wrapHtmlDocument(enhanceCallouts(doc.toHtml(), isDark), isDark);
     }
     QFile file(savePath);
