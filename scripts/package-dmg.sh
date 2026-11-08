@@ -87,8 +87,18 @@ if [[ ! -f "${RESOURCES_DIR}/SparkNotePad.icns" ]]; then
 	fi
 fi
 
-# Prune unneeded heavy plugins and unneeded debug symbols from staged bundle
-rm -f "${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
+# Prune unneeded heavy frameworks, plugins, and debug symbols from staged bundle
+rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlModels.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlWorkerScript.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQuick.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboard.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
@@ -97,6 +107,7 @@ rm -f "${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dyli
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
 strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
 # Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
 touch "${STAGE_DIR}/SparkNotePad.app"
