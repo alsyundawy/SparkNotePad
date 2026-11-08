@@ -41,16 +41,16 @@ SparkNotePad stands on the shoulders of giants. We express our deepest gratitude
 
 ### D. Third-Party Libraries & Frameworks
 
-| Library                                    | Author / Organization      | Role & Contribution                                                                        |
-| :----------------------------------------- | :------------------------- | :----------------------------------------------------------------------------------------- |
-| **The Qt Project (Qt 6.5–6.12)**           | The Qt Company & Community | Modern cross-platform C++ GUI framework (QtCore, QtGui, QtWidgets, QtPrintSupport, QtSvg). |
-| **Qt Advanced Docking System (ADS 5.1.1)** | Manuel Freiholz            | Professional dock widget management, movable tabs, and floating tool windows.              |
-| **QSimpleUpdater**                         | Alex Spataru               | Seamless multi-platform software update checking.                                          |
-| **SingleApplication (3.5.6)**              | Itay Grudev                | High-performance IPC and single-instance process management.                               |
+| Library                                    | Author / Organization                | Role & Contribution                                                                        |
+| :----------------------------------------- | :----------------------------------- | :----------------------------------------------------------------------------------------- |
+| **The Qt Project (Qt 6.5–6.12)**           | The Qt Company & Community           | Modern cross-platform C++ GUI framework (QtCore, QtGui, QtWidgets, QtPrintSupport, QtSvg). |
+| **Qt Advanced Docking System (ADS 5.1.1)** | Manuel Freiholz                      | Professional dock widget management, movable tabs, and floating tool windows.              |
+| **QSimpleUpdater**                         | Alex Spataru                         | Seamless multi-platform software update checking.                                          |
+| **SingleApplication (3.5.6)**              | Itay Grudev                          | High-performance IPC and single-instance process management.                               |
 | **EditorConfig Core Qt**                   | Hong Xu                              | Universal code style and `.editorconfig` specification enforcement.                        |
 | **uchardet**                               | Freedesktop / Mozilla                | Fast and universal character encoding auto-detection engine.                               |
 | **OpenSSL Project**                        | OpenSSL Software Services            | Industry-standard cryptography, TLS/SSL, and secure hash algorithms.                       |
-| **cleanrmd & markdown-viewer**              | Simeon Velichkov & Garrick Aden-Buie | 30 classless CSS themes and markdown-it formatting for live preview dock and tabs.         |
+| **cleanrmd & markdown-viewer**             | Simeon Velichkov & Garrick Aden-Buie | 30 classless CSS themes and markdown-it formatting for live preview dock and tabs.         |
 
 ### E. Visual Artwork & Typography
 
