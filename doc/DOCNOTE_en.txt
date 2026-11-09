@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.4.6 (11 New Curated Toolbar Icon Packs, Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression & Lightweight Release DMG)
+Release Version     : 1.4.6 (11 New Curated Toolbar Icon Packs [39 Total Suites], Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression, 14-Pillar Linter Hardening & Lightweight Release DMG)
 Release Date        : 2026-11-09
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -20,70 +20,41 @@ License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Executive Summary (English): Release v1.4.6
 
-SparkNotePad v1.4.6 expands toolbar customization with 11 new professionally curated icon packs, full shadow/halo elimination to match the clean Notepad++ Classic standard, lossless PNG asset compression, and strict lightweight DMG release packaging:
+SparkNotePad v1.4.6 expands toolbar visual customization and packaging standards with 11 new professionally curated toolbar icon packs, full shadow/halo elimination matching the pristine Notepad++ Classic clean standard, lossless PNG asset compression, zero-defect linter hardening with a 376-entry compilation database, and strict lightweight DMG release packaging:
 
-- **11 New Curated Toolbar Icon Packs (39 Built-in Suites Total)**: Added `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
-- **Pristine Icon Sanitization Matching Notepad++ (Classic)**: Stripped all floor drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs, guaranteeing pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`) with 18% breathing margins.
-- **Lossless PNG Asset Optimization**: Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
-- **Strict Bloatware-Free Lightweight DMG Standard**: Pruned unused `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability; packaged `SparkNotePad-v1.4.6-x64.dmg` strictly within the 30MB–34MB target (< 35MB ceiling).
+1. 11 New Curated Toolbar Icon Packs (39 Built-in Suites Total):
+   - Added royal_blue (Royal Blue Aero Glossy), notepad_pro (Notepad Pro Vista 7 Style), pastel (Pastel Modern), fluent_modern (Microsoft Fluent Modern), macos_bigsur_modern (macOS Big Sur Style), dark_neon_pro (Dark Neon Style), macos_glass (macOS Glassmorphism), modern_flat_colorful (Modern Flat & Colorful), glossy_3d_skeuomorphic (Glossy 3D Skeuomorphic), retro_8bit_pixel (Retro 8-Bit Pixel Art), sketchy_doodle (Sketchy Hand-Drawn Doodle).
+
+2. Pristine Notepad++ Classic Clean Standard (Zero Halos & Drop Shadows):
+   - Stripped all floor drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs.
+   - Pure isolated graphics floating cleanly on the permanent dark toolbar (#21252b) with 18% breathing margins to prevent edge clipping.
+
+3. Lossless PNG Asset Compression & Disk Footprint Reduction:
+   - Fast octree palette quantization and zlib level 9 compression applied to 1,736 PNG assets, reducing icon footprint by 2.17 MB (28.9% reduction).
+   - Enabled AUTORCC_OPTIONS "--compress;9;--threshold;0" in CMake for compile-time Qt resource compression.
+
+4. Strict Bloatware-Free Lightweight DMG Standard (~33MB, < 35MB Ceiling):
+   - Pruned unused frameworks (QtOpenGL, QtPdf, QtQml, QtQuick, QtVirtualKeyboard) while retaining required QtDBus for runtime stability.
+   - Packaged with scripts/package-dmg.sh, pre-baked .DS_Store (680x440), retina background, custom volume icon, and verified CRC32 checksum.
+
+5. Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate:
+   - 376-entry synchronized compilation database eliminating all include and symbol diagnostics across clangd, SonarLint, cppcheck, and IDE extensions.
+   - 100% clean passes on trunk check and ctest unit test runner.
 
 ---
 
-## 2. Archive Summary (English): Release v1.4.5
+## 2. Archive Summary: Release v1.4.5
 
 SparkNotePad v1.4.5 represents a major feature and stabilization milestone delivering 14 foundational architectural pillars designed for professional developers, system administrators, and power users:
 
 1. Closed Tab Stack & Reopen Closed Tab (Ctrl+Shift+T / Cmd+Shift+T):
    - ClosedTabsManager maintains a resilient 50-entry FIFO stack preserving caret position, line scroll ratio, encoding, EOL mode, language syntax styling, and tab color tags.
-   - Context menu and File menu actions for instant tab restoration.
-
 2. Tab Color Tagging & Grouping:
-   - TabColorManager provides 8 high-contrast, accessible color presets (Red, Orange, Yellow, Green, Cyan, Blue, Purple, Magenta) with persistent state across app restarts via ApplicationSettings.
-
+   - TabColorManager provides 8 high-contrast, accessible color presets with persistent state.
 3. Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions):
-   - AutosaveRecoveryManager writes background snapshots every 10 seconds for modified documents, enforced with POSIX 0600 permissions and SHA-256 integrity checksums. Interactive CrashRecoveryDialog allows selective recovery or discard on application relaunch.
-
+   - AutosaveRecoveryManager writes background snapshots every 10 seconds for modified documents.
 4. Comprehensive Extended Find/Replace Escape Engine:
-   - ExtendedSearchParser parses \xHH (hexadecimal byte), \dDDD (decimal byte), \0 (NUL byte), \b (backspace), \f (form-feed), and \v (vertical tab) across Find/Replace and Quick Find in Extended Search mode.
-
-5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages):
-   - Added new native lexers: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), and JSON5 (.json5).
-   - Modernized standard keyword sets: C23 (_BitInt, constexpr, nullptr), Rust 2024 (gen, async gen), Swift 6 (consuming, borrowing, sending), and TypeScript 5.8.
-
-6. Native Markdown / HTML / PDF Export Pipeline:
-   - Implemented DocumentExportManager with native Qt 6 QPrinter / Qt6::PrintSupport and Pandoc fallback engine.
-   - Interactive ExportOptionsDialog supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.
-
-7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas):
-   - MarkdownPreviewEnhancer renders Mermaid flowcharts, sequence diagrams, class diagrams, and state machines via client containers.
-   - Full LaTeX math rendering support ($$...$$ block and $...$ inline math) with currency/escaped dollar preservation.
-   - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
-
-8. Developer Tools Suite:
-   - DeveloperToolsEngine in Tools menu: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generator.
-   - Interactive TimestampConverterDialog converting Unix Epoch timestamps (seconds/milliseconds) to human-readable UTC and Local ISO formats with copy helpers.
-
-9. Scrollbar Navigation Markers & Corresponding Header/Source Switcher (F4 / Alt+O):
-   - CorrespondingFileSwitcher supporting instant bidirectional toggle between C/C++ header (.h, .hpp, .hxx) and source (.c, .cpp, .cxx), and TypeScript/JavaScript source and test files (.test.ts, .spec.ts).
-   - Added ScrollbarNavigationMarkers tracking bookmark lines and search match highlights on the scrollbar track.
-
-10. Native .editorconfig Automatic Parser & Enforcement:
-    - EditorConfigParser supporting indent_style, indent_size, tab_width, end_of_line, and root = true parent directory traversal with automatic enforcement.
-
-11. Clipboard History Dock & Character Info Dock:
-    - Dockable ClipboardHistoryDock tracking recent clipboard history (FIFO queue of 20 items), search filtering, and one-click editor insertion.
-    - Dockable CharacterInfoDock displaying real-time Unicode glyph preview, code point U+XXXX, Unicode character name, category, UTF-8/16/32 hex, and HTML entities.
-
-12. Fuzzy Quick Switcher (Cmd+P / Ctrl+P) & Document Minimap Dock:
-    - Spotlight-style frameless QuickSwitcherDialog with subsequence fuzzy matching scoring open tabs and recent files.
-    - DocumentMinimapDock providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
-    - Native macOS Dock recent documents integration via MacServicesHandler::updateDockRecentMenu.
-
-13. Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics:
-    - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles (28 built-in packs total).
-    - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu, and removed Open Custom Icon Pack from the menubar.
-    - Integrated into toolbar_icons.qrc and ToolbarIconManager.cpp with alias normalization and comprehensive unit test coverage.
-
-14. SonarLint & Clang-Tidy Static Analysis Eradication:
-    - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across src/ (misc-const-correctness, misc-override-with-different-visibility, bugprone-implicit-widening-of-multiplication-result, readability-use-concise-preprocessor-directives, readability-braces-around-statements, readability-else-after-return, performance-unnecessary-value-param).
-    - Verified 0 diagnostics and 0 errors across clangd --check, cppcheck, and unit tests.
+   - ExtendedSearchParser parses \xHH, \dDDD, \0, \b, \f, and \v across Find/Replace and Quick Find.
+5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages).
+6. Native Markdown / HTML / PDF Export Pipeline.
+7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas).

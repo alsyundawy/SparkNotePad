@@ -12,6 +12,7 @@ Extracts all 34 canonical icons across 6 multi-resolution folders:
 
 import os
 from collections import deque
+
 from PIL import Image, ImageDraw
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,8 +24,26 @@ SIZES = [16, 20, 24, 32, 48, 64]
 GRID = [
     ["newfile", "openFile", "saved", "saveAll", "closeFile", "closeAll", "cut", "copy"],
     ["paste", "undo", "redo", "find", "findReplace", "zoomIn", "zoomOut", "printer"],
-    ["settings", "exit", "select_all", "wrap", "text_indent", "text_indent_remove", "indentGuide", "invisibleChar"],
-    ["restart", "playRecord", "stopRecord", "startRecord", "readonly", "folder_go", "bin", "cog"],
+    [
+        "settings",
+        "exit",
+        "select_all",
+        "wrap",
+        "text_indent",
+        "text_indent_remove",
+        "indentGuide",
+        "invisibleChar",
+    ],
+    [
+        "restart",
+        "playRecord",
+        "stopRecord",
+        "startRecord",
+        "readonly",
+        "folder_go",
+        "bin",
+        "cog",
+    ],
 ]
 
 PACK_CONFIGS = [
@@ -61,6 +80,7 @@ PACK_CONFIGS = [
         "half_h": 18,
     },
 ]
+
 
 def remove_background(im, bg_color=(220, 225, 225), tol=22):
     """
@@ -108,10 +128,14 @@ def remove_background(im, bg_color=(220, 225, 225), tol=22):
         for y in range(h):
             r, g, b, a = pixels[x, y]
             if a > 0:
-                dist = max(abs(r - bg_color[0]), abs(g - bg_color[1]), abs(b - bg_color[2]))
+                dist = max(
+                    abs(r - bg_color[0]), abs(g - bg_color[1]), abs(b - bg_color[2])
+                )
                 if dist < tol + 18:
                     has_trans_neighbor = any(
-                        0 <= x + dx < w and 0 <= y + dy < h and pixels[x + dx, y + dy][3] == 0
+                        0 <= x + dx < w
+                        and 0 <= y + dy < h
+                        and pixels[x + dx, y + dy][3] == 0
                         for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1))
                     )
                     if has_trans_neighbor:
@@ -120,6 +144,7 @@ def remove_background(im, bg_color=(220, 225, 225), tol=22):
 
     return img
 
+
 def overlay_record_dot(base_img, sz):
     """Overlay standard red record indicator dot in the bottom-right quadrant."""
     res = base_img.copy()
@@ -127,8 +152,13 @@ def overlay_record_dot(base_img, sz):
     dot_r = max(2, int(sz * 0.16))
     cx = int(sz * 0.76)
     cy = int(sz * 0.76)
-    draw.ellipse((cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r), fill=(225, 25, 35, 255), outline=(255, 255, 255, 230))
+    draw.ellipse(
+        (cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r),
+        fill=(225, 25, 35, 255),
+        outline=(255, 255, 255, 230),
+    )
     return res
+
 
 def process_pack(cfg, src_img):
     pack_id = cfg["id"]
@@ -165,7 +195,10 @@ def process_pack(cfg, src_img):
         for name, tile in base_crops.items():
             # For retro pixel art, use nearest neighbor resampling if scaling up/down, or Lanczos
             if pack_id == "retro_8bit_pixel":
-                resized = tile.resize((sz, sz), Image.Resampling.NEAREST if sz <= 32 else Image.Resampling.LANCZOS)
+                resized = tile.resize(
+                    (sz, sz),
+                    Image.Resampling.NEAREST if sz <= 32 else Image.Resampling.LANCZOS,
+                )
             else:
                 resized = tile.resize((sz, sz), Image.Resampling.LANCZOS)
 
@@ -181,6 +214,7 @@ def process_pack(cfg, src_img):
     count = len(os.listdir(os.path.join(pack_dir, "24x24")))
     print(f"✔ Completed {pack_id}: {count} icons across all {len(SIZES)} resolutions.")
 
+
 def main():
     if not os.path.exists(SOURCE_IMAGE):
         raise FileNotFoundError(f"Source image not found: {SOURCE_IMAGE}")
@@ -190,6 +224,7 @@ def main():
         process_pack(cfg, src_img)
 
     print("All 4 packs (816 PNGs total) generated successfully!")
+
 
 if __name__ == "__main__":
     main()

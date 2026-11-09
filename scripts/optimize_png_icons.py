@@ -44,12 +44,12 @@ def optimize_icons():
                     if os.path.exists(tmp_p):
                         os.remove(tmp_p)
                     total_after += sz
-            except Exception as e:
+            except Exception:
                 total_after += sz
 
     saved = total_before - total_after
     pct = (saved / total_before * 100) if total_before > 0 else 0
-    print(f"[*] Optimization completed:")
+    print("[*] Optimization completed:")
     print(f"    Files optimized: {optimized_count}")
     print(
         f"    Original size:   {total_before:,} bytes ({total_before/1024/1024:.2f} MB)"

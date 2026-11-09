@@ -144,4 +144,15 @@ SparkNotePad v1.4.5 introduces 12 major foundational features:
 
 ---
 
+## 13. v1.4.6 Visual Polish, Iconography & Packaging Standard
+
+- **11 New Curated Toolbar Icon Packs (39 Built-in Suites Total)**: Added `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+- **Pristine Notepad++ Classic Clean Standard**: Eliminated drop shadows, ambient halos, gray background tiles, and edge clipping across all packs.
+- **Permanent Dark Toolbar Invariant**: Dark `#21252b` background enforced across all themes to preserve icon contrast.
+- **Lossless PNG Asset Optimization**: 28.9% footprint reduction across 1,736 PNG icons.
+- **Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate**: 376-entry compilation database synchronization, 0 clangd / SonarLint / Trunk diagnostic errors.
+- **Strict Bloatware-Free Lightweight DMG Standard**: Stabilized local DMG packaging strictly at ~33MB (< 35MB ceiling).
+
+---
+
 Next Chapter: **[[03. User Interface & Themes|03-User-Interface-and-Themes]]**

@@ -79,7 +79,7 @@ cp -R "${APP_DIR}" "${STAGE_DIR}/SparkNotePad.app"
 RESOURCES_DIR="${STAGE_DIR}/SparkNotePad.app/Contents/Resources"
 mkdir -p "${RESOURCES_DIR}"
 if [[ ! -f "${RESOURCES_DIR}/SparkNotePad.icns" ]]; then
-	if [[ -f "${VOL_ICON}" ]]; then
+	if [[ -f ${VOL_ICON} ]]; then
 		echo "[*] Injecting application icon into bundle Resources..."
 		cp "${VOL_ICON}" "${RESOURCES_DIR}/SparkNotePad.icns"
 	fi

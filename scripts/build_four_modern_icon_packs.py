@@ -11,6 +11,7 @@ Extracts all 34 canonical icons across 6 multi-resolution folders:
 """
 
 import os
+
 from PIL import Image, ImageDraw
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -92,6 +93,7 @@ PACK_CONFIGS = [
     },
 ]
 
+
 def make_mask(sz, shape):
     scale = 4
     high_sz = sz * scale
@@ -108,14 +110,20 @@ def make_mask(sz, shape):
         draw.ellipse((margin, margin, high_sz - margin, high_sz - margin), fill=255)
     return mask.resize((sz, sz), Image.Resampling.LANCZOS)
 
+
 def overlay_record_dot(base_img, sz):
     res = base_img.copy()
     draw = ImageDraw.Draw(res)
     dot_r = max(2, int(sz * 0.18))
     cx = int(sz * 0.76)
     cy = int(sz * 0.76)
-    draw.ellipse((cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r), fill=(220, 20, 30, 255), outline=(255, 255, 255, 230))
+    draw.ellipse(
+        (cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r),
+        fill=(220, 20, 30, 255),
+        outline=(255, 255, 255, 230),
+    )
     return res
+
 
 def process_pack(cfg):
     pack_id = cfg["id"]
@@ -164,10 +172,12 @@ def process_pack(cfg):
     count = len(os.listdir(os.path.join(pack_dir, "24x24")))
     print(f"✔ Completed {pack_id}: {count} icons across all {len(SIZES)} resolutions.")
 
+
 def main():
     for cfg in PACK_CONFIGS:
         process_pack(cfg)
     print("All 4 packs processed successfully!")
+
 
 if __name__ == "__main__":
     main()

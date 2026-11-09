@@ -131,4 +131,15 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
 
 ---
 
+## 13. Peningkatan Visual, Ikonografi & Standar Rilis v1.4.6
+
+- **11 Paket Ikon Toolbar Baru (Total 39 Koleksi Bawaan)**: Menambahkan `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+- **Standar Bersih Notepad++ Classic**: Menghapus seluruh bayangan jatuh lantai, halo sekitar, ubin abu-abu, dan garis timbul pada seluruh paket baru.
+- **Bilah Alat Gelap Permanen**: Latar belakang `#21252b` dipertahankan di seluruh tema untuk menjaga kontras ikon.
+- **Kompresi Aset PNG Lossless**: Pengurangan ukuran disk sebesar 28,9% pada 1.736 ikon PNG.
+- **Penguatan Linter & Peninjauan Kode 14 Pilar**: Basis data kompilasi 376-entri menyelaraskan clangd, SonarLint, cppcheck, dan ekstensi C++ tanpa eror diagnostik.
+- **Standar Pengemasan DMG Ringan Bebas Bloatware**: DMG lokal stabil strictly pada ~33MB (< 35MB).
+
+---
+
 Lanjutkan ke bab berikutnya: [[Antarmuka dan Koleksi Tema|03-Antarmuka-dan-Tema]].

@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.6 (11 Paket Icon Toolbar Baru, Standar Bersih Pristine Notepad++ Classic, Optimasi Kompresi Lossless & DMG Rilis Ringan)
+Versi Rilis          : 1.4.6 (11 Paket Ikon Toolbar Baru [Total 39 Koleksi], Standar Bersih Notepad++ Classic, Kompresi Aset Lossless, Penguatan Linter 14 Pilar & DMG Rilis Ringan)
 Tanggal Rilis        : 2026-11-09
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -19,70 +19,42 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.6
 
-SparkNotePad v1.4.6 memperluas kustomisasi visual dengan 11 paket icon toolbar baru, pembersihan artefak bayangan dan embos sesuai standar emas Notepad++ Classic, optimasi kompresi aset PNG, dan pengemasan DMG rilis yang ramping:
+SparkNotePad v1.4.6 memperluas kustomisasi visual bilah alat dan standar pengemasan rilis dengan 11 paket ikon baru hasil kurasi profesional, pembersihan total bayangan/halo untuk menyamai standar bersih Notepad++ Classic, kompresi aset PNG tanpa penurunan kualitas (lossless), penguatan linter nol-cacat dengan basis data kompilasi 376-entri, dan pengemasan DMG rilis lokal yang sangat ringan:
 
-- **11 Paket Icon Toolbar Baru (Total 39 Paket Bawaan)**: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
-- **Sanitasi Icon Bersih Pristine Menyamai Notepad++ (Classic)**: Menghapus seluruh bayangan lantai, halo ambient occlusion, ubin latar abu-abu, dan strok/embos pada seluruh 11 paket icon baru, menjamin tampilan icon mengambang bersih di toolbar gelap permanen (`#21252b`) dengan margin bernapas 18%.
-- **Optimasi Kompresi PNG Lossless**: Kuantisasi palet fast octree dan kompresi zlib level 9 pada 1.736 file aset PNG, memangkas 2,17 MB data icon (penurunan 28,9%).
-- **Pengemasan DMG Rilis Ringan (~33MB, Batas Maksimum < 35MB)**: Memangkas framework `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, dan plugin redundan namun mempertahankan `QtDBus.framework` yang dibutuhkan untuk kestabilan runtime QtGui; menghasilkan `SparkNotePad-v1.4.6-x64.dmg` di dalam rentang standar 30MB–34MB (< 35MB).
+1. 11 Paket Ikon Toolbar Baru (Total 39 Koleksi Bawaan):
+   - royal_blue (Royal Blue Aero Glossy), notepad_pro (Notepad Pro Vista 7 Style), pastel (Pastel Modern), fluent_modern (Microsoft Fluent Modern), macos_bigsur_modern (macOS Big Sur Style), dark_neon_pro (Dark Neon Style), macos_glass (macOS Glassmorphism), modern_flat_colorful (Modern Flat & Colorful), glossy_3d_skeuomorphic (Glossy 3D Skeuomorphic), retro_8bit_pixel (Retro 8-Bit Pixel Art), sketchy_doodle (Sketchy Hand-Drawn Doodle).
+
+2. Standar Bersih Notepad++ Classic (Bebas Halo & Bayangan Jatuh):
+   - Menghapus seluruh bayangan jatuh lantai, halo oklusi sekitar, ubin latar belakang abu-abu, dan artefak timbul/garis tepi di seluruh 11 paket baru.
+   - Ikon murni terisolasi mengambang bersih di atas bilah alat gelap permanen (#21252b) dengan margin pernapasan 18% untuk mencegah pemotongan tepi.
+
+3. Kompresi Aset PNG Lossless & Efisiensi Disk:
+   - Kuantisasi palet octree cepat dengan saluran alfa penuh dan kompresi zlib level 9 pada 1.736 aset ikon, mengurangi jejak disk sebesar 2,17 MB (pengurangan 28,9%).
+   - Mengaktifkan AUTORCC_OPTIONS "--compress;9;--threshold;0" pada CMake untuk kompresi maksimal bundle Qt.
+
+4. Pengemasan DMG Ringan Standar Ketat (~33MB, Batas Maksimal < 35MB):
+   - Pembersihan framework yang tidak terpakai (QtOpenGL, QtPdf, QtQml, QtQuick, QtVirtualKeyboard) dan plugin redundan namun mempertahankan QtDBus untuk stabilitas QtGui.
+   - Berkas DMG dikemas menggunakan scripts/package-dmg.sh dengan layout .DS_Store (680x440), latar belakang retina, ikon volume kustom, dan checksum CRC32 valid.
+
+5. Penguatan Linter & Peninjauan Kode 14 Pilar:
+   - Sinkronisasi basis data kompilasi 376-entri sehingga clangd, SonarLint, cppcheck, dan ekstensi C++ IDE berjalan dengan 0 eror.
+   - 100% kelulusan trunk check dan ctest.
 
 ---
 
-## 2. Arsip Ringkasan (Bahasa Indonesia): Rilis v1.4.5
+## 2. Arsip Ringkasan: Rilis v1.4.5
 
 SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
 
 1. Tumpukan Tab Tertutup & Buka Kembali Tab (Ctrl+Shift+T / Cmd+Shift+T):
    - ClosedTabsManager mengelola antrean FIFO 50 tab yang baru saja ditutup, mempertahankan posisi kursor, rasio gulir, encoding teks, mode EOL, sintaksis bahasa, dan tag warna tab.
-   - Aksi pemulihan instan tersedia pada menu konteks tab dan menu Berkas.
-
 2. Pemberian Tag & Pengelompokan Warna Tab:
    - TabColorManager menyediakan 8 preset warna berstandar aksesibilitas tinggi (Merah, Oranye, Kuning, Hijau, Sian, Biru, Ungu, Magenta) dengan status persisten melalui ApplicationSettings.
-
 3. Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Ketat POSIX 0600):
    - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256. Dialog interaktif CrashRecoveryDialog memungkinkan pemulihan selektif saat aplikasi dijalankan kembali.
-
 4. Mesin Karakter Escape Pencarian Lanjutan (Extended Search):
-   - ExtendedSearchParser memproses \xHH (byte heksadesimal), \dDDD (byte desimal), \0 (byte NUL), \b (backspace), \f (form-feed), dan \v (tab vertikal) pada dialog Cari/Ganti dan Bilah Pencarian Cepat.
-
+   - ExtendedSearchParser memproses \xHH, \dDDD, \0, \b, \f, dan \v pada dialog Cari/Ganti dan Bilah Pencarian Cepat.
 5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa):
    - Menambahkan lexer native baru: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), dan JSON5 (.json5).
-   - Memodernisasi kata kunci bahasa: C23 (_BitInt, constexpr, nullptr), Rust 2024 (gen, async gen), Swift 6 (consuming, borrowing, sending), dan TypeScript 5.8.
-
-6. Alur Ekspor Native Markdown / HTML / PDF:
-   - Implementasi DocumentExportManager menggunakan QPrinter / Qt6::PrintSupport native dan fallback Pandoc.
-   - Dialog interaktif ExportOptionsDialog mendukung ukuran kertas kustom (A4, Letter, Legal), orientasi, margin, dan CSS tersemat.
-
-7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX):
-   - MarkdownPreviewEnhancer merender flowchart Mermaid, diagram urutan, diagram kelas, dan state machine via kontainer web terisolasi.
-   - Dukungan penuh rumus matematika LaTeX ($$...$$ dan $...$) dengan proteksi simbol mata uang dollar.
-   - Fitur Two-Way SyncScroll yang menyelaraskan posisi gulir editor Scintilla dengan viewport pratinjau Markdown.
-
-8. Paket Peralatan Pengembang (Developer Tools):
-   - DeveloperToolsEngine pada menu Peralatan: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, serta generator UUID v4.
-   - Dialog interaktif TimestampConverterDialog untuk konversi epoch Unix ke format UTC dan ISO Lokal.
-
-9. Penanda Navigasi Bilah Gulir & Pengalih Header/Source (F4 / Alt+O):
-   - CorrespondingFileSwitcher mendukung peralihan cepat dua arah antara berkas header C/C++ (.h, .hpp, .hxx) dan sumber (.c, .cpp, .cxx), serta berkas kode dan tes TypeScript/JavaScript (.test.ts, .spec.ts).
-   - ScrollbarNavigationMarkers menampilkan bookmark dan sorotan hasil pencarian pada track bilah gulir.
-
-10. Parser & Penegakan Otomatis .editorconfig:
-    - EditorConfigParser mendukung aturan indent_style, indent_size, tab_width, end_of_line, dan penelusuran hierarki root = true secara otomatis saat berkas dibuka.
-
-11. Dock Riwayat Clipboard & Info Karakter Unicode:
-    - Dock ClipboardHistoryDock mencatat 20 riwayat salinan terakhir, pencarian cepat, dan penyisipan satu klik ke editor.
-    - Dock CharacterInfoDock menyajikan pratinjau glyph Unicode real-time, kode U+XXXX, nama karakter, kategori, nilai heksadesimal UTF-8/16/32, dan entitas HTML.
-
-12. Pengalih Cepat Fuzzy (Cmd+P / Ctrl+P) & Dock Minimap Dokumen:
-    - Dialog frameless bergaya Spotlight QuickSwitcherDialog dengan pencocokan subsekuens fuzzy pada tab terbuka dan berkas terkini.
-    - DocumentMinimapDock menyediakan tinjauan dokumen ringan dengan pelacakan viewport dan batas aman berkas besar (>50 MB).
-    - Integrasi berkas terkini native macOS Dock via MacServicesHandler::updateDockRecentMenu.
-
-13. Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu:
-    - Penataan 10 paket ikon toolbar Aksara kurasi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern (total 28 paket bawaan).
-    - Relokasi menu Themes: Toolbar Icon Size ditempatkan di atas Toolbar Icon Packs, memindahkan menu Kustomisasi Toolbar ke menu Tools, dan menghapus pintasan folder custom pack dari menubar.
-    - Terdaftar pada toolbar_icons.qrc dan ToolbarIconManager.cpp lengkap dengan normalisasi alias ID dan cakupan unit test.
-
-14. Penuntasan Analisis Statis SonarLint & Clang-Tidy (0 Masalah):
-    - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy pada direktori src/ (misc-const-correctness, misc-override-with-different-visibility, bugprone-implicit-widening-of-multiplication-result, readability-use-concise-preprocessor-directives, readability-braces-around-statements, readability-else-after-return, performance-unnecessary-value-param).
-    - Terverifikasi 0 diagnostik eror pada clangd --check, cppcheck, dan lulus 100% unit test.
+6. Alur Ekspor Native Markdown / HTML / PDF via QPrinter dan Pandoc.
+7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX).

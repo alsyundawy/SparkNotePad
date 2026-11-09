@@ -28,15 +28,15 @@
 #include <iterator>
 
 template <typename Iter>
-typename std::iterator_traits<Iter>::value_type const *binary_find(Iter begin, Iter end, const char *name) {
-    auto it =
-        std::lower_bound(begin, end, name, [](const auto &lhs, const char *rhs) { return strcmp(lhs.name, rhs) < 0; });
+std::iterator_traits<Iter>::value_type const *binary_find(Iter begin, Iter end, const char *name) {
+    using ValType = std::iterator_traits<Iter>::value_type;
+    Iter it = std::lower_bound(begin, end, name,
+                               [](const ValType &lhs, const char *rhs) { return strcmp(lhs.name, rhs) < 0; });
 
     if (it == end || strcmp(name, it->name) != 0) {
         return nullptr;
-    } else {
-        return &(*it);
     }
+    return &(*it);
 }
 
 const IFaceConstant *IFaceTable::FindConstant(const char *name) const {
@@ -69,8 +69,8 @@ const IFaceFunction *IFaceTable::FindFunctionByConstantName(const char *name) co
 }
 
 const IFaceFunction *IFaceTable::FindFunctionByValue(int value) const {
-    const auto it =
-        std::find_if(functions.cbegin(), functions.cend(), [value](const auto &func) { return func.value == value; });
+    const auto it = std::find_if(functions.cbegin(), functions.cend(),
+                                 [value](const IFaceFunction &func) { return func.value == value; });
     return (it != functions.cend()) ? &(*it) : nullptr;
 }
 
@@ -86,7 +86,7 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
     // Look in both the constants table and the functions table.  Start with functions.
     for (const auto &func : functions) {
         if (func.value == value) {
-            int len = static_cast<int>(strlen(func.name) + strlen(prefix));
+            const int len = static_cast<int>(strlen(func.name) + strlen(prefix));
             if (nameOut && (static_cast<int>(nameBufferLen) > len)) {
                 snprintf(nameOut, nameBufferLen, "%s%s", prefix, func.name);
                 // fix case
@@ -96,21 +96,19 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
                     }
                 }
                 return len;
-            } else {
-                return -1 - len;
             }
+            return -1 - len;
         }
     }
 
     for (const auto &con : constants) {
         if (con.value == value && (hint == nullptr || strncmp(hint, con.name, strlen(hint)) == 0)) {
-            int len = static_cast<int>(strlen(con.name));
+            const int len = static_cast<int>(strlen(con.name));
             if (nameOut && (static_cast<int>(nameBufferLen) > len)) {
                 snprintf(nameOut, nameBufferLen, "%s", con.name);
                 return len;
-            } else {
-                return -1 - len;
             }
+            return -1 - len;
         }
     }
 
@@ -119,7 +117,7 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
 
 const IFaceFunction *IFaceTable::GetFunctionByMessage(int message) const {
     const auto it = std::find_if(functions.cbegin(), functions.cend(),
-                                 [message](const auto &func) { return func.value == message; });
+                                 [message](const IFaceFunction &func) { return func.value == message; });
     return (it != functions.cend()) ? &(*it) : nullptr;
 }
 
@@ -127,7 +125,8 @@ IFaceFunction IFaceTable::GetPropertyFuncByMessage(int message) const {
     for (const auto &prop : properties) {
         if (prop.getter == message) {
             return prop.GetterFunction();
-        } else if (prop.setter == message) {
+        }
+        if (prop.setter == message) {
             return prop.SetterFunction();
         }
     }

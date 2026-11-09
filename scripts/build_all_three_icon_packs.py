@@ -10,7 +10,8 @@ Generates all 34 canonical icons across resolutions:
 """
 
 import os
-from PIL import Image, ImageDraw, ImageFilter, ImageOps
+
+from PIL import Image, ImageDraw, ImageOps
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PACKS_DIR = os.path.join(BASE_DIR, "src", "icons", "packs")
@@ -22,13 +23,42 @@ SRC_IMG_ROYAL_BLUE = "/Users/alsyundawy/.gemini/antigravity/brain/5503ca92-405b-
 SIZES = [16, 20, 24, 32, 48, 64]
 
 ALL_CANONICAL = [
-    "bin", "closeAll", "closeFile", "cog", "copy", "cut", "exit",
-    "find", "findReplace", "folder_go", "indentGuide", "invisibleChar",
-    "newfile", "openFile", "paste", "playRecord", "playRecord_m",
-    "printer", "readonly", "redo", "restart", "saveAll", "saved",
-    "saveRecord", "select_all", "settings", "startRecord", "stopRecord",
-    "text_indent", "text_indent_remove", "undo", "wrap", "zoomIn", "zoomOut"
+    "bin",
+    "closeAll",
+    "closeFile",
+    "cog",
+    "copy",
+    "cut",
+    "exit",
+    "find",
+    "findReplace",
+    "folder_go",
+    "indentGuide",
+    "invisibleChar",
+    "newfile",
+    "openFile",
+    "paste",
+    "playRecord",
+    "playRecord_m",
+    "printer",
+    "readonly",
+    "redo",
+    "restart",
+    "saveAll",
+    "saved",
+    "saveRecord",
+    "select_all",
+    "settings",
+    "startRecord",
+    "stopRecord",
+    "text_indent",
+    "text_indent_remove",
+    "undo",
+    "wrap",
+    "zoomIn",
+    "zoomOut",
 ]
+
 
 def make_transparent(im, bg_thresh=248):
     im = im.convert("RGBA")
@@ -46,6 +76,7 @@ def make_transparent(im, bg_thresh=248):
             new_data.append((r, g, b, 255))
     im.putdata(new_data)
     return im
+
 
 def crop_and_clean(im, bbox, max_y_in_cell=None):
     x1, y1, x2, y2 = bbox
@@ -67,12 +98,14 @@ def crop_and_clean(im, bbox, max_y_in_cell=None):
     sq.paste(cropped, ((side + 4 - cw) // 2, (side + 4 - ch) // 2), cropped)
     return sq
 
+
 def save_icon_sizes(icon_img, pack_dir, name):
     for sz in SIZES:
         sz_dir = os.path.join(pack_dir, f"{sz}x{sz}")
         os.makedirs(sz_dir, exist_ok=True)
         resized = icon_img.resize((sz, sz), Image.Resampling.LANCZOS)
         resized.save(os.path.join(sz_dir, f"{name}.png"), optimize=True)
+
 
 def process_royal_blue():
     print("=== Processing royal_blue Icon Pack ===")
@@ -90,7 +123,6 @@ def process_royal_blue():
         (0, 4): ("saveRecord", (613, 21, 708, 117)),
         (0, 5): ("closeFile", (762, 21, 838, 117)),
         (0, 6): ("closeAll", (895, 21, 982, 117)),
-
         (1, 0): ("exit", (38, 136, 124, 235)),
         (1, 1): ("copy", (186, 136, 269, 235)),
         (1, 2): ("cut", (329, 136, 417, 235)),
@@ -98,7 +130,6 @@ def process_royal_blue():
         (1, 4): ("undo", (617, 136, 697, 235)),
         (1, 5): ("redo", (758, 136, 838, 235)),
         (1, 6): ("select_all", (900, 136, 983, 235)),
-
         (2, 0): ("find", (44, 248, 130, 343)),
         (2, 1): ("findReplace", (193, 248, 292, 343)),
         (2, 2): ("wrap", (340, 248, 427, 343)),
@@ -106,7 +137,6 @@ def process_royal_blue():
         (2, 4): ("zoomOut", (620, 248, 705, 343)),
         (2, 5): ("indentGuide", (763, 248, 840, 343)),
         (2, 6): ("invisibleChar", (912, 248, 984, 343)),
-
         (3, 0): ("readonly", (47, 356, 123, 450)),
         (3, 1): ("playRecord", (187, 356, 273, 450)),
         (3, 2): ("startRecord", (340, 356, 419, 450)),
@@ -114,7 +144,6 @@ def process_royal_blue():
         (3, 4): ("stopRecord", (615, 356, 703, 450)),
         (3, 5): ("settings", (757, 356, 845, 450)),
         (3, 6): ("cog", (898, 356, 983, 450)),
-
         (4, 0): ("printer", (40, 465, 143, 560)),
         (4, 1): ("bin", (201, 465, 280, 560)),
         (4, 2): ("folder_go", (343, 465, 448, 560)),
@@ -124,11 +153,12 @@ def process_royal_blue():
     }
 
     count = 0
-    for key, (name, bbox) in grid.items():
+    for name, bbox in grid.values():
         icon = crop_and_clean(im, bbox)
         save_icon_sizes(icon, pack_dir, name)
         count += 1
     print(f"royal_blue generated {count} icons across all resolutions.")
+
 
 def process_notepad_pro():
     print("=== Processing notepad_pro Icon Pack ===")
@@ -145,7 +175,6 @@ def process_notepad_pro():
         (0, 3): ("cog", (557, 95, 640, 170)),
         (0, 4): ("copy", (720, 95, 815, 170)),
         (0, 5): ("cut", (881, 95, 969, 170)),
-
         # Row 1
         (1, 0): ("exit", (67, 178, 153, 268)),
         (1, 1): ("find", (223, 178, 313, 268)),
@@ -153,7 +182,6 @@ def process_notepad_pro():
         (1, 3): ("folder_go", (555, 178, 650, 268)),
         (1, 4): ("indentGuide", (732, 178, 802, 268)),
         (1, 5): ("invisibleChar", (883, 178, 970, 268)),
-
         # Row 2
         (2, 0): ("newfile", (57, 277, 148, 368)),
         (2, 1): ("openFile", (222, 277, 311, 368)),
@@ -161,7 +189,6 @@ def process_notepad_pro():
         (2, 3): ("playRecord_m", (553, 277, 637, 368)),
         (2, 4): ("playRecord", (722, 277, 803, 368)),
         (2, 5): ("printer", (880, 277, 971, 368)),
-
         # Row 3
         (3, 0): ("readonly", (61, 377, 154, 460)),
         (3, 1): ("redo", (228, 377, 306, 460)),
@@ -169,7 +196,6 @@ def process_notepad_pro():
         (3, 3): ("saveAll", (561, 377, 653, 460)),
         (3, 4): ("saved", (723, 377, 805, 460)),
         (3, 5): ("saveRecord", (882, 377, 967, 460)),
-
         # Row 4
         (4, 0): ("select_all", (58, 466, 151, 552)),
         (4, 1): ("settings", (230, 466, 311, 552)),
@@ -177,7 +203,6 @@ def process_notepad_pro():
         (4, 3): ("stopRecord", (557, 466, 639, 552)),
         (4, 4): ("text_indent_remove", (725, 466, 807, 552)),
         (4, 5): ("undo", (881, 466, 980, 552)),
-
         # Row 5
         (5, 0): ("wrap", (59, 561, 154, 650)),
         (5, 1): ("zoomIn", (230, 561, 311, 650)),
@@ -186,7 +211,7 @@ def process_notepad_pro():
 
     count = 0
     extracted = {}
-    for key, (name, bbox) in grid.items():
+    for name, bbox in grid.values():
         icon = crop_and_clean(im, bbox, max_y_in_cell=62)
         save_icon_sizes(icon, pack_dir, name)
         extracted[name] = icon
@@ -203,6 +228,7 @@ def process_notepad_pro():
 
     print(f"notepad_pro generated {count} icons across all resolutions.")
 
+
 def process_pastel():
     print("=== Processing pastel Icon Pack ===")
     pack_dir = os.path.join(PACKS_DIR, "pastel")
@@ -215,27 +241,24 @@ def process_pastel():
         "openFile": (155, 58, 245, 128),
         "saved": (275, 58, 365, 128),
         "printer": (395, 58, 485, 128),
-        "saveAll": (550, 58, 635, 128),     # doc with badge
-        "closeFile": (675, 58, 745, 128),   # X
-        "undo": (780, 58, 855, 128),        # arrow left
-        "redo": (885, 58, 975, 128),        # arrow right
-
-        "cut": (45, 184, 125, 254),         # scissors
-        "copy": (158, 184, 248, 254),       # two docs
-        "paste": (275, 184, 360, 254),      # clipboard
-        "find": (380, 184, 445, 254),       # magnifier
-        "findReplace": (425, 184, 490, 254),# magnifier with pencil
-        "text_indent": (510, 184, 620, 254),# arrow into pencil
-        "select_all": (645, 184, 735, 254), # dashed box
-        "bin": (765, 184, 850, 254),        # eraser
-        "readonly": (875, 184, 965, 254),   # book with checkmark
-
-        "zoomIn": (395, 317, 480, 384),     # A ^
-        "zoomOut": (520, 317, 600, 384),    # A v
-        "wrap": (880, 317, 965, 384),       # strike / wrap
-
-        "indentGuide": (260, 439, 360, 500),# column layout
-        "restart": (880, 439, 965, 500),    # sun/moon dual circle
+        "saveAll": (550, 58, 635, 128),  # doc with badge
+        "closeFile": (675, 58, 745, 128),  # X
+        "undo": (780, 58, 855, 128),  # arrow left
+        "redo": (885, 58, 975, 128),  # arrow right
+        "cut": (45, 184, 125, 254),  # scissors
+        "copy": (158, 184, 248, 254),  # two docs
+        "paste": (275, 184, 360, 254),  # clipboard
+        "find": (380, 184, 445, 254),  # magnifier
+        "findReplace": (425, 184, 490, 254),  # magnifier with pencil
+        "text_indent": (510, 184, 620, 254),  # arrow into pencil
+        "select_all": (645, 184, 735, 254),  # dashed box
+        "bin": (765, 184, 850, 254),  # eraser
+        "readonly": (875, 184, 965, 254),  # book with checkmark
+        "zoomIn": (395, 317, 480, 384),  # A ^
+        "zoomOut": (520, 317, 600, 384),  # A v
+        "wrap": (880, 317, 965, 384),  # strike / wrap
+        "indentGuide": (260, 439, 360, 500),  # column layout
+        "restart": (880, 439, 965, 500),  # sun/moon dual circle
     }
 
     count = 0
@@ -258,8 +281,12 @@ def process_pastel():
     if "copy" in extracted and "closeFile" in extracted:
         ca = extracted["copy"].copy()
         # paste closeFile X in bottom right
-        cf_small = extracted["closeFile"].resize((ca.width // 2, ca.height // 2), Image.Resampling.LANCZOS)
-        ca.paste(cf_small, (ca.width - cf_small.width, ca.height - cf_small.height), cf_small)
+        cf_small = extracted["closeFile"].resize(
+            (ca.width // 2, ca.height // 2), Image.Resampling.LANCZOS
+        )
+        ca.paste(
+            cf_small, (ca.width - cf_small.width, ca.height - cf_small.height), cf_small
+        )
         save_icon_sizes(ca, pack_dir, "closeAll")
         count += 1
 
@@ -269,7 +296,12 @@ def process_pastel():
         draw = ImageDraw.Draw(sr)
         r = sr.width // 6
         cx, cy = sr.width - r - 2, sr.height - r - 2
-        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(224, 108, 117, 255), outline=(118, 132, 162, 255), width=2)
+        draw.ellipse(
+            [cx - r, cy - r, cx + r, cy + r],
+            fill=(224, 108, 117, 255),
+            outline=(118, 132, 162, 255),
+            width=2,
+        )
         save_icon_sizes(sr, pack_dir, "saveRecord")
         count += 1
 
@@ -277,32 +309,68 @@ def process_pastel():
     sr_icon = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
     d = ImageDraw.Draw(sr_icon)
     # Play triangle
-    d.polygon([(24, 18), (24, 78), (76, 48)], fill=(168, 185, 215, 230), outline=(118, 132, 162, 255), width=3)
+    d.polygon(
+        [(24, 18), (24, 78), (76, 48)],
+        fill=(168, 185, 215, 230),
+        outline=(118, 132, 162, 255),
+        width=3,
+    )
     # Red dot
-    d.ellipse([64, 14, 88, 38], fill=(224, 108, 117, 255), outline=(118, 132, 162, 255), width=2)
+    d.ellipse(
+        [64, 14, 88, 38],
+        fill=(224, 108, 117, 255),
+        outline=(118, 132, 162, 255),
+        width=2,
+    )
     save_icon_sizes(sr_icon, pack_dir, "startRecord")
     count += 1
 
     # 4. playRecord (clean play triangle)
     pr_icon = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
     d = ImageDraw.Draw(pr_icon)
-    d.polygon([(24, 18), (24, 78), (76, 48)], fill=(139, 212, 155, 230), outline=(118, 132, 162, 255), width=3)
+    d.polygon(
+        [(24, 18), (24, 78), (76, 48)],
+        fill=(139, 212, 155, 230),
+        outline=(118, 132, 162, 255),
+        width=3,
+    )
     save_icon_sizes(pr_icon, pack_dir, "playRecord")
     count += 1
 
     # 5. playRecord_m (double play triangle)
     prm_icon = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
     d = ImageDraw.Draw(prm_icon)
-    d.polygon([(14, 24), (14, 72), (50, 48)], fill=(168, 185, 215, 220), outline=(118, 132, 162, 255), width=3)
-    d.polygon([(46, 24), (46, 72), (82, 48)], fill=(168, 185, 215, 220), outline=(118, 132, 162, 255), width=3)
+    d.polygon(
+        [(14, 24), (14, 72), (50, 48)],
+        fill=(168, 185, 215, 220),
+        outline=(118, 132, 162, 255),
+        width=3,
+    )
+    d.polygon(
+        [(46, 24), (46, 72), (82, 48)],
+        fill=(168, 185, 215, 220),
+        outline=(118, 132, 162, 255),
+        width=3,
+    )
     save_icon_sizes(prm_icon, pack_dir, "playRecord_m")
     count += 1
 
     # 6. stopRecord (pastel square in circle)
     st_icon = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
     d = ImageDraw.Draw(st_icon)
-    d.ellipse([12, 12, 84, 84], fill=(203, 213, 225, 180), outline=(118, 132, 162, 255), width=3)
-    d.rounded_rectangle([32, 32, 64, 64], radius=4, fill=(224, 108, 117, 240), outline=(118, 132, 162, 255), width=2)
+    d.ellipse(
+        [12, 12, 84, 84],
+        fill=(203, 213, 225, 180),
+        outline=(118, 132, 162, 255),
+        width=3,
+    )
+    d.rounded_rectangle(
+        [32, 32, 64, 64],
+        radius=4,
+        fill=(224, 108, 117, 240),
+        outline=(118, 132, 162, 255),
+        width=2,
+    )
     save_icon_sizes(st_icon, pack_dir, "stopRecord")
     count += 1
 
@@ -310,10 +378,17 @@ def process_pastel():
     set_icon = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
     d = ImageDraw.Draw(set_icon)
     # Circle with spokes
-    d.ellipse([20, 20, 76, 76], fill=(203, 213, 225, 200), outline=(118, 132, 162, 255), width=4)
-    d.ellipse([38, 38, 58, 58], fill=(0, 0, 0, 0), outline=(118, 132, 162, 255), width=3)
+    d.ellipse(
+        [20, 20, 76, 76],
+        fill=(203, 213, 225, 200),
+        outline=(118, 132, 162, 255),
+        width=4,
+    )
+    d.ellipse(
+        [38, 38, 58, 58], fill=(0, 0, 0, 0), outline=(118, 132, 162, 255), width=3
+    )
     # Spokes
-    for angle in [0, 45, 90, 135]:
+    for _ in [0, 45, 90, 135]:
         d.line([(48 - 36, 48), (48 - 26, 48)], fill=(118, 132, 162, 255), width=6)
         d.line([(48 + 26, 48), (48 + 36, 48)], fill=(118, 132, 162, 255), width=6)
         d.line([(48, 48 - 36), (48, 48 - 26)], fill=(118, 132, 162, 255), width=6)
@@ -329,8 +404,12 @@ def process_pastel():
         # Pilcrow ¶ in center
         cx, cy = inv.width // 2, inv.height // 2
         d.ellipse([cx - 8, cy - 10, cx + 2, cy], fill=(118, 132, 162, 240))
-        d.line([(cx + 2, cy - 10), (cx + 2, cy + 12)], fill=(118, 132, 162, 255), width=2)
-        d.line([(cx + 6, cy - 10), (cx + 6, cy + 12)], fill=(118, 132, 162, 255), width=2)
+        d.line(
+            [(cx + 2, cy - 10), (cx + 2, cy + 12)], fill=(118, 132, 162, 255), width=2
+        )
+        d.line(
+            [(cx + 6, cy - 10), (cx + 6, cy + 12)], fill=(118, 132, 162, 255), width=2
+        )
         save_icon_sizes(inv, pack_dir, "invisibleChar")
         count += 1
 
@@ -354,14 +433,25 @@ def process_pastel():
         fg = extracted["openFile"].copy()
         d = ImageDraw.Draw(fg)
         # Green arrow pointing right in bottom right
-        d.polygon([(fg.width - 24, fg.height - 18), (fg.width - 12, fg.height - 18),
-                   (fg.width - 12, fg.height - 24), (fg.width - 4, fg.height - 15),
-                   (fg.width - 12, fg.height - 6), (fg.width - 12, fg.height - 12),
-                   (fg.width - 24, fg.height - 12)], fill=(139, 212, 155, 255), outline=(118, 132, 162, 255), width=1)
+        d.polygon(
+            [
+                (fg.width - 24, fg.height - 18),
+                (fg.width - 12, fg.height - 18),
+                (fg.width - 12, fg.height - 24),
+                (fg.width - 4, fg.height - 15),
+                (fg.width - 12, fg.height - 6),
+                (fg.width - 12, fg.height - 12),
+                (fg.width - 24, fg.height - 12),
+            ],
+            fill=(139, 212, 155, 255),
+            outline=(118, 132, 162, 255),
+            width=1,
+        )
         save_icon_sizes(fg, pack_dir, "folder_go")
         count += 1
 
     print(f"pastel generated {count} icons across all resolutions.")
+
 
 if __name__ == "__main__":
     process_royal_blue()

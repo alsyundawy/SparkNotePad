@@ -29,6 +29,7 @@ SparkNotePad **v1.4.6** expands the editor's visual customization and packaging 
 - **Pristine Icon Sanitization Matching Notepad++ (Classic)**: Stripped all drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs, guaranteeing pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`) with 18% breathing margins.
 - **Lossless PNG Asset Optimization**: Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
 - **Strict Bloatware-Free Lightweight DMG Standard**: Pruned unused `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability; packaged `SparkNotePad-v1.4.6-x64.dmg` strictly within the 30MB–34MB target (< 35MB ceiling).
+- **Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate**: Synchronized 376-entry compilation database eradicating missing include and symbol diagnostics across clangd, SonarLint, and cppcheck; verified 100% clean passes on `trunk check`, `lint-check.sh`, and `ctest`.
 
 ---
 

@@ -53,11 +53,11 @@ SparkNotePad mengintegrasikan pustaka docking modern (ADS):
 
 ---
 
-## 5. Rangkaian Paket Ikon Toolbar (28 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
+## 5. Rangkaian Paket Ikon Toolbar (39 Paket Ikon Bawaan), Tombol Plus (+) Tab dan Kustomisasi Tombol
 
-SparkNotePad v1.4.5 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 28 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
+SparkNotePad v1.4.6 menghadirkan arsitektur personalisasi toolbar lengkap terinspirasi oleh Notepad++ dengan 39 paket ikon bawaan, dukungan High-DPI (2x Retina), dan adaptasi luminans cerdas untuk Tema Gelap:
 
-### Paket Ikon Toolbar Bawaan (28 Paket)
+### Paket Ikon Toolbar Bawaan (39 Paket)
 
 1. **Modern Ribbon (Standar)** (`modernRibbon`): Vektor SVG monoline 20x20 High-DPI dengan kontur halus (Standar).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Ikon klasik Yusuke Kamiyamane Fugue 3.5.6 otentik dengan skalabilitas multi-resolusi dan retina @2x.
@@ -87,6 +87,17 @@ SparkNotePad v1.4.5 menghadirkan arsitektur personalisasi toolbar lengkap terins
 26. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ikonografi tema resmi Ubuntu Yaru Desktop.
 27. **Aksara Arch Linux** (`aksara-arch-linux`): Ikonografi minimalis biru sian khas Arch Linux.
 28. **Aksara Elementary OS** (`aksara-elementary-os`): Ikonografi humanis rapi khas Elementary OS.
+29. **Royal Blue** (`royal_blue`): Ikonografi desktop kaca skeuomorfik biru royal aero glossy.
+30. **Notepad Pro** (`notepad_pro`): Ikonografi transparan aero bergaya Vista/7 modern dan elegan.
+31. **Pastel Modern** (`pastel`): Palet warna pastel minimalis yang hangat dan ramah.
+32. **Fluent Modern** (`fluent_modern`): Ikonografi berlapis 3D Microsoft Windows 11 Fluent.
+33. **macOS Big Sur Modern** (`macos_bigsur_modern`): Estetika squircle macOS elegan dengan aksen cerah.
+34. **Dark Neon Pro** (`dark_neon_pro`): Neon cyberpunk kontras tinggi yang menyala di palet gelap.
+35. **macOS Glass** (`macos_glass`): Estetika akrilik aero kaca buram tembus pandang.
+36. **Modern Flat & Colorful** (`modern_flat_colorful`): Gaya vektor datar bersih dengan warna cerah kontras tinggi.
+37. **Glossy 3D Skeuomorphic** (`glossy_3d_skeuomorphic`): Estetika 3D lempung mengkilap yang taktil dan bervolume.
+38. **Retro 8-Bit Pixel Art** (`retro_8bit_pixel`): Ikonografi game arkade retro berpiksel presisi.
+39. **Sketchy Hand-Drawn Doodle** (`sketchy_doodle`): Ikonografi doodle artistik goresan tangan yang ekspresif.
 
 ### Kejelasan High-DPI & Layar Retina
 

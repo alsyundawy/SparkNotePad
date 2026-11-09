@@ -52,11 +52,11 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ---
 
-## 4. Toolbar Icon Packs Suite (28 Built-In Packs), Plus (+) Tab Button & Visual Customizer
+## 4. Toolbar Icon Packs Suite (39 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
-SparkNotePad v1.4.5 features a comprehensive toolbar theming and customization architecture with 28 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
+SparkNotePad v1.4.6 features a comprehensive toolbar theming and customization architecture with 39 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
 
-### Built-in Toolbar Icon Packs (28 Packs)
+### Built-in Toolbar Icon Packs (39 Packs)
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane across all 6 resolutions.
@@ -86,6 +86,17 @@ SparkNotePad v1.4.5 features a comprehensive toolbar theming and customization a
 26. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ubuntu official Yaru desktop theme vector iconography.
 27. **Aksara Arch Linux** (`aksara-arch-linux`): Arch Linux cyan and dark blue minimalist iconography.
 28. **Aksara Elementary OS** (`aksara-elementary-os`): Elementary OS human-centered design vector iconography.
+29. **Royal Blue** (`royal_blue`): Royal Blue Aero Glossy skeuomorphic glass desktop iconography.
+30. **Notepad Pro** (`notepad_pro`): Modern elegant Vista/7 aero translucent iconography.
+31. **Pastel Modern** (`pastel`): Warm minimalist pastel color palette.
+32. **Fluent Modern** (`fluent_modern`): Windows 11 Fluent 3D layered iconography.
+33. **macOS Big Sur Modern** (`macos_bigsur_modern`): Sleek macOS squircle aesthetics with vibrant accents.
+34. **Dark Neon Pro** (`dark_neon_pro`): High-contrast cyberpunk neon glowing on dark palettes.
+35. **macOS Glass** (`macos_glass`): Translucent frosted glass aero acrylic aesthetic.
+36. **Modern Flat & Colorful** (`modern_flat_colorful`): Clean vector flat style with distinct high-contrast colors.
+37. **Glossy 3D Skeuomorphic** (`glossy_3d_skeuomorphic`): Tactile volumetric glossy 3D clay aesthetic.
+38. **Retro 8-Bit Pixel Art** (`retro_8bit_pixel`): Pixel-perfect retro arcade gaming iconography.
+39. **Sketchy Hand-Drawn Doodle** (`sketchy_doodle`): Expressive hand-drawn artistic doodle iconography.
 
 ### High-DPI & Retina Clarity
 
