@@ -34,8 +34,8 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 35 built-in packs (25 base + 10 Aksara suites)
-        QCOMPARE(packs.size(), 35);
+        // 39 built-in packs (25 base + 10 Aksara suites + 4 Sheet 4 packs)
+        QCOMPARE(packs.size(), 39);
 
         const QStringList expectedPackIds = {
             QString::fromLatin1("modernRibbon"),
@@ -73,6 +73,10 @@ private slots:
             QString::fromLatin1("macos_bigsur_modern"),
             QString::fromLatin1("dark_neon_pro"),
             QString::fromLatin1("macos_glass"),
+            QString::fromLatin1("modern_flat_colorful"),
+            QString::fromLatin1("glossy_3d_skeuomorphic"),
+            QString::fromLatin1("retro_8bit_pixel"),
+            QString::fromLatin1("sketchy_doodle"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -97,6 +101,10 @@ private slots:
         QVERIFY(manager->findPackById(QString::fromLatin1("fluentModern")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("darkNeonPro")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("macosGlass")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("modernFlatColorful")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("glossy3dSkeuomorphic")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("retro8bitPixel")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("sketchyDoodle")) != nullptr);
     }
 
     // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
@@ -174,7 +182,9 @@ private slots:
             QString::fromLatin1("pastel"),         QString::fromLatin1("notepad_pro"),
             QString::fromLatin1("royal_blue"),     QString::fromLatin1("fluent_modern"),
             QString::fromLatin1("macos_bigsur_modern"), QString::fromLatin1("dark_neon_pro"),
-            QString::fromLatin1("macos_glass"),
+            QString::fromLatin1("macos_glass"),    QString::fromLatin1("modern_flat_colorful"),
+            QString::fromLatin1("glossy_3d_skeuomorphic"), QString::fromLatin1("retro_8bit_pixel"),
+            QString::fromLatin1("sketchy_doodle"),
         };
 
         for (const QString &packId : packs) {

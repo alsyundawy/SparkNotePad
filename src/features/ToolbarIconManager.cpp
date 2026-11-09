@@ -396,6 +396,46 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isBuiltIn = true,
         .isPngBased = true,
     });
+
+    // 36. Modern Flat & Colorful
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("modern_flat_colorful"),
+        .displayName = tr("Modern Flat & Colorful"),
+        .description = tr("Clean modern flat vector-styled colorful iconography"),
+        .basePath = QStringLiteral(":/icons/packs/modern_flat_colorful"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 37. Glossy 3D Skeuomorphic
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("glossy_3d_skeuomorphic"),
+        .displayName = tr("Glossy 3D Skeuomorphic"),
+        .description = tr("Rich volumetric glossy 3D skeuomorphic iconography with lighting accents"),
+        .basePath = QStringLiteral(":/icons/packs/glossy_3d_skeuomorphic"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 38. Retro 8-Bit Pixel Art
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("retro_8bit_pixel"),
+        .displayName = tr("Retro 8-Bit Pixel Art"),
+        .description = tr("Authentic retro 8-bit pixel art iconography with crisp contours"),
+        .basePath = QStringLiteral(":/icons/packs/retro_8bit_pixel"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 39. Sketchy Hand-Drawn Doodle
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("sketchy_doodle"),
+        .displayName = tr("Sketchy Hand-Drawn Doodle"),
+        .description = tr("Artistic hand-drawn doodle iconography with sketchy organic strokes"),
+        .basePath = QStringLiteral(":/icons/packs/sketchy_doodle"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
 }
 
 void ToolbarIconManager::initialize(ApplicationSettings *settings) {
@@ -449,7 +489,15 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("darkNeonPro"), QStringLiteral("dark_neon_pro")},
         {QStringLiteral("dark-neon-pro"), QStringLiteral("dark_neon_pro")},
         {QStringLiteral("macosGlass"), QStringLiteral("macos_glass")},
-        {QStringLiteral("macos-glass"), QStringLiteral("macos_glass")}};
+        {QStringLiteral("macos-glass"), QStringLiteral("macos_glass")},
+        {QStringLiteral("modernFlatColorful"), QStringLiteral("modern_flat_colorful")},
+        {QStringLiteral("modern-flat-colorful"), QStringLiteral("modern_flat_colorful")},
+        {QStringLiteral("glossy3dSkeuomorphic"), QStringLiteral("glossy_3d_skeuomorphic")},
+        {QStringLiteral("glossy-3d-skeuomorphic"), QStringLiteral("glossy_3d_skeuomorphic")},
+        {QStringLiteral("retro8bitPixel"), QStringLiteral("retro_8bit_pixel")},
+        {QStringLiteral("retro-8bit-pixel"), QStringLiteral("retro_8bit_pixel")},
+        {QStringLiteral("sketchyDoodle"), QStringLiteral("sketchy_doodle")},
+        {QStringLiteral("sketchy-doodle"), QStringLiteral("sketchy_doodle")}};
     return s_aliasMap.value(packId, packId);
 }
 }  // namespace
