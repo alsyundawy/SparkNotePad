@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.4.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.4.6)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -321,19 +321,19 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Official production binary packages for SparkNotePad v1.4.0 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
+Official production binary packages for SparkNotePad v1.4.6 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
 | Platform                    | Target Architecture             | Package Format  | Download Link                                                                                                                                    |
 | :-------------------------- | :------------------------------ | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.4.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-v1.4.0-x64.dmg)                   |
-| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.4.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-v1.4.0-arm64.dmg)               |
-| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.4.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.0)                                                         |
-| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.4.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/sparknotepad_1.4.0_amd64.deb)                 |
-| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.4.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/sparknotepad-1.4.0-1.x86_64.rpm)           |
-| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.4.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.0)                                                         |
-| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SparkNotePad-Default-Editor.sh)             |
-| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.0/SHA256SUMS.txt)                                             |
+| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.4.6-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-v1.4.6-x64.dmg)                   |
+| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.4.6-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-v1.4.6-arm64.dmg)               |
+| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.4.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.6)                                                         |
+| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.4.6_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/sparknotepad_1.4.6_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.4.6-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/sparknotepad-1.4.6-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.4.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.6)                                                         |
+| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-Default-Editor.sh)             |
+| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SHA256SUMS.txt)                                             |
 | **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)      |  Source / Pkg   | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Linux Package Installation (Automated Dependencies)
@@ -342,7 +342,7 @@ Official production binary packages for SparkNotePad v1.4.0 are ready for immedi
   Install via `apt` with a leading `./` so all Qt 6 and desktop dependencies are automatically resolved and installed from official repositories:
 
   ```bash
-  sudo apt install ./sparknotepad_1.4.0_amd64.deb
+  sudo apt install ./sparknotepad_1.4.6_amd64.deb
   ```
 
   _(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md))._
