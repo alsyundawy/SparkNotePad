@@ -86,8 +86,8 @@ if [[ ! -f "${RESOURCES_DIR}/SparkNotePad.icns" ]]; then
 fi
 
 # Prune unneeded heavy frameworks, plugins, and debug symbols from staged bundle
+# NOTE: QtDBus.framework is strictly REQUIRED by QtGui.framework on macOS and must NOT be removed!
 rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtDBus.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework" \
@@ -106,6 +106,17 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
+
+# Thin all universal binaries to x86_64 to eliminate unneeded arm64 architecture slices
+while IFS= read -r -d '' bin; do
+	if file "${bin}" 2>/dev/null | grep -q "Mach-O universal binary"; then
+		if lipo -thin x86_64 "${bin}" -output "${bin}.thin" 2>/dev/null; then
+			mv "${bin}.thin" "${bin}"
+			strip -x "${bin}" 2>/dev/null || true
+		fi
+	fi
+done < <(find "${STAGE_DIR}/SparkNotePad.app" -type f \( -perm +111 -o -name "*.dylib" \) -print0)
+
 strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
 codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
@@ -180,6 +191,14 @@ if hdiutil attach "${DMG_OUTPUT}" -mountpoint "${VERIFY_MOUNT}" -nobrowse >/dev/
 		hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
 		rm -rf "${VERIFY_MOUNT}"
 		echo "[-] FATAL ERROR: Built DMG is missing .background/dmg-background.png!" >&2
+		exit 1
+	fi
+	# Strict runtime launch verification: binary must load all dyld frameworks cleanly
+	echo "[*] Testing binary launch from mounted DMG..."
+	if ! "${VERIFY_MOUNT}/SparkNotePad.app/Contents/MacOS/SparkNotePad" --version >/dev/null 2>&1; then
+		hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
+		rm -rf "${VERIFY_MOUNT}"
+		echo "[-] FATAL ERROR: SparkNotePad binary inside DMG failed dyld load or runtime launch!" >&2
 		exit 1
 	fi
 	hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true

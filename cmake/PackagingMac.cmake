@@ -76,7 +76,6 @@ add_custom_target(dmg
         ${INSTALL_DIR}/SparkNotePad.app
     COMMAND ${CMAKE_COMMAND} -E rm -rf
         ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtDBus.framework
         ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework
         ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework
         ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework
