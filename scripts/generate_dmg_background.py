@@ -15,7 +15,7 @@ def draw_bezier_curve(draw, p0, p1, p2, width, color, steps=100):
     points = []
     for i in range(steps + 1):
         t = i / float(steps)
-        # B(t) = (1-t)^2 * P0 + 2*(1-t)*t * P1 + t^2 * P2
+        # Quadratic Bezier formula: blending p0, p1, and p2 with parameter t
         x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + (t**2) * p2[0]
         y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + (t**2) * p2[1]
         points.append((x, y))
