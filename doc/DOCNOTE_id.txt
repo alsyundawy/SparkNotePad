@@ -1,9 +1,9 @@
-# Catatan Rilis SparkNotePad — v1.4.5 (Bahasa Indonesia)
+# Catatan Rilis SparkNotePad — v1.4.6 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.5 (Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (28 Koleksi) & Penguatan 14 Pilar)
-Tanggal Rilis        : 2026-11-08
+Versi Rilis          : 1.4.6 (11 Paket Icon Toolbar Baru, Standar Bersih Pristine Notepad++ Classic, Optimasi Kompresi Lossless & DMG Rilis Ringan)
+Tanggal Rilis        : 2026-11-09
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
@@ -17,7 +17,18 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.5
+## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.6
+
+SparkNotePad v1.4.6 memperluas kustomisasi visual dengan 11 paket icon toolbar baru, pembersihan artefak bayangan dan embos sesuai standar emas Notepad++ Classic, optimasi kompresi aset PNG, dan pengemasan DMG rilis yang ramping:
+
+- **11 Paket Icon Toolbar Baru (Total 39 Paket Bawaan)**: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+- **Sanitasi Icon Bersih Pristine Menyamai Notepad++ (Classic)**: Menghapus seluruh bayangan lantai, halo ambient occlusion, ubin latar abu-abu, dan strok/embos pada seluruh 11 paket icon baru, menjamin tampilan icon mengambang bersih di toolbar gelap permanen (`#21252b`) dengan margin bernapas 18%.
+- **Optimasi Kompresi PNG Lossless**: Kuantisasi palet fast octree dan kompresi zlib level 9 pada 1.736 file aset PNG, memangkas 2,17 MB data icon (penurunan 28,9%).
+- **Pengemasan DMG Rilis Ringan (~33MB, Batas Maksimum < 35MB)**: Memangkas framework `QtDBus.framework` dan `QtOpenGL.framework`; menghasilkan `SparkNotePad-v1.4.6-x64.dmg` berukuran tepat 35.004.366 bytes (~33,3 MB), berada di dalam rentang standar 30MB–34MB.
+
+---
+
+## 2. Arsip Ringkasan (Bahasa Indonesia): Rilis v1.4.5
 
 SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
 

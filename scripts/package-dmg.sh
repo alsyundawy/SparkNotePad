@@ -13,7 +13,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 # Input parameters
 APP_DIR="${1:-${REPO_ROOT}/build/install/SparkNotePad.app}"
-DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.4.0-x64.dmg}"
+DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.4.6-x64.dmg}"
 VOL_NAME="${3:-SparkNotePad}"
 
 # Ensure absolute paths
@@ -87,6 +87,7 @@ fi
 
 # Prune unneeded heavy frameworks, plugins, and debug symbols from staged bundle
 rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtDBus.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework" \

@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.6] - 2026-11-09
+
+### 🌟 Release: 11 New Curated Toolbar Icon Packs (39 Total), Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression & Lightweight Release DMG
+
+SparkNotePad v1.4.6 expands toolbar customization with 11 new professionally curated icon packs, full shadow/halo elimination to match the clean Notepad++ Classic standard, lossless PNG asset compression, and strict lightweight DMG release packaging:
+
+#### 🆕 Added
+
+- **11 New Curated Toolbar Icon Packs (39 Built-in Suites Total)**:
+  - Added `royal_blue` (Royal Blue Aero Glossy): rich skeuomorphic glass iconography.
+  - Added `notepad_pro` (Notepad Pro Vista 7 Style): modern elegant Vista/7 aero translucent iconography.
+  - Added `pastel` (Pastel Modern): friendly minimalist pastel color palette.
+  - Added `fluent_modern` (Microsoft Fluent Modern): Windows 11 Fluent 3D layered iconography.
+  - Added `macos_bigsur_modern` (macOS Big Sur Style): sleek macOS squircle aesthetics with vibrant accents.
+  - Added `dark_neon_pro` (Dark Neon Style): high-contrast cyberpunk neon glowing on dark palettes.
+  - Added `macos_glass` (macOS Glassmorphism): translucent frosted glass aero acrylic aesthetic.
+  - Added `modern_flat_colorful` (Modern Flat & Colorful): clean vector flat style with high-contrast distinct colors.
+  - Added `glossy_3d_skeuomorphic` (Glossy 3D Skeuomorphic): tactile volumetric glossy 3D clay aesthetic.
+  - Added `retro_8bit_pixel` (Retro 8-Bit Pixel Art): pixel-perfect retro arcade gaming iconography.
+  - Added `sketchy_doodle` (Sketchy Hand-Drawn Doodle): expressive hand-drawn artistic doodle iconography.
+
+#### 🔧 Changed & Improved
+
+- **Pristine Icon Sanitization Matching Notepad++ (Classic)**:
+  - Stripped all floor drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs.
+  - Pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`).
+  - Applied 18% breathing margins ensuring zero edge clipping and zero dirty perimeter pixels.
+- **Lossless PNG Asset Optimization**:
+  - Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
+  - Enabled compile-time resource compression `AUTORCC_OPTIONS "--compress;9;--threshold;0"` on `toolbar_icons.qrc` and `resources.qrc`.
+- **Lightweight Bloatware-Free DMG Release Packaging (~33MB, < 35MB Ceiling)**:
+  - Pruned unused `QtDBus.framework` and `QtOpenGL.framework` from staged macOS release bundle.
+  - Output DMG `SparkNotePad-v1.4.6-x64.dmg` packaged at exactly 35,004,366 bytes (~33.3 MB), strictly within the 30MB–34MB target.
+  - Verified valid CRC32 checksum, preserved custom volume icon, and 680x440 `.DS_Store` presentation.
+
+---
+
 ## [1.4.5] - 2026-11-08
 
 ### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher

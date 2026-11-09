@@ -1,11 +1,10 @@
-# SparkNotePad Release DocNote — v1.4.5
+# SparkNotePad Release DocNote — v1.4.6
 
 ```text
 ================================================================================
-Release Version     : 1.4.5 (Major Feature Release: Closed Tab Stack, Tab Color Tagging,
-                      Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX,
-                      Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher)
-Release Date        : 2026-11-08
+Release Version     : 1.4.6 (11 New Curated Toolbar Icon Packs, Pristine Notepad++ Classic Clean Standard,
+                      Lossless Asset Compression & Lightweight Release DMG)
+Release Date        : 2026-11-09
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -22,7 +21,18 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Release v1.4.5
+## 1. Executive Summary: Release v1.4.6
+
+SparkNotePad **v1.4.6** expands the editor's visual customization and packaging standards with 11 new professionally curated toolbar icon packs, comprehensive shadow/emboss eradication to match the pristine Notepad++ (Classic) gold standard, lossless PNG asset optimization, and strict bloatware-free DMG release packaging:
+
+- **11 New Professionally Curated Toolbar Icon Packs (39 Built-in Suites Total)**: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+- **Pristine Icon Sanitization Matching Notepad++ (Classic)**: Stripped all drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs, guaranteeing pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`) with 18% breathing margins.
+- **Lossless PNG Asset Optimization**: Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
+- **Strict Bloatware-Free Lightweight DMG Standard**: Pruned unused `QtDBus.framework` and `QtOpenGL.framework` from staged macOS release bundle; packaged `SparkNotePad-v1.4.6-x64.dmg` at exactly 35,004,366 bytes (~33.3 MB), strictly within the 30MB–34MB target.
+
+---
+
+## 2. Archive Summary: Release v1.4.5
 
 SparkNotePad **v1.4.5** represents a major architectural milestone delivering 12 foundational feature pillars designed for professional developers, system administrators, and power users:
 

@@ -13,6 +13,7 @@ Ensures:
 
 import os
 from collections import deque
+
 from PIL import Image, ImageDraw
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,15 +22,46 @@ PACKS_DIR = os.path.join(REPO_ROOT, "src", "icons", "packs")
 SIZES = [16, 20, 24, 32, 48, 64]
 
 ALL_CANONICAL = [
-    "bin", "closeAll", "closeFile", "cog", "copy", "cut", "exit",
-    "find", "findReplace", "folder_go", "indentGuide", "invisibleChar",
-    "newfile", "openFile", "paste", "playRecord", "playRecord_m",
-    "printer", "readonly", "redo", "restart", "saveAll", "saved",
-    "saveRecord", "select_all", "settings", "startRecord", "stopRecord",
-    "text_indent", "text_indent_remove", "undo", "wrap", "zoomIn", "zoomOut"
+    "bin",
+    "closeAll",
+    "closeFile",
+    "cog",
+    "copy",
+    "cut",
+    "exit",
+    "find",
+    "findReplace",
+    "folder_go",
+    "indentGuide",
+    "invisibleChar",
+    "newfile",
+    "openFile",
+    "paste",
+    "playRecord",
+    "playRecord_m",
+    "printer",
+    "readonly",
+    "redo",
+    "restart",
+    "saveAll",
+    "saved",
+    "saveRecord",
+    "select_all",
+    "settings",
+    "startRecord",
+    "stopRecord",
+    "text_indent",
+    "text_indent_remove",
+    "undo",
+    "wrap",
+    "zoomIn",
+    "zoomOut",
 ]
 
-def clean_outer_background_and_shadows(im, bg_thresh=230, shadow_max_sat=26, shadow_min_lum=80):
+
+def clean_outer_background_and_shadows(
+    im, bg_thresh=230, shadow_max_sat=26, shadow_min_lum=80
+):
     """
     Flood-fill all outer sheet background pixels, floor drop shadows,
     and cell divider lines to pure (0, 0, 0, 0).
@@ -93,6 +125,7 @@ def clean_outer_background_and_shadows(im, bg_thresh=230, shadow_max_sat=26, sha
     canvas.paste(img, ((canvas_side - iw) // 2, (canvas_side - ih) // 2), mask=img)
     return canvas
 
+
 def strip_outer_border_artifacts(icon_img):
     """
     Guarantees that the outer perimeter is 100% transparent:
@@ -107,7 +140,7 @@ def strip_outer_border_artifacts(icon_img):
             r, g, b, a = pixels[x, y]
             if a < 25:
                 pixels[x, y] = (0, 0, 0, 0)
-            elif (x == 0 or x == w - 1 or y == 0 or y == h - 1):
+            elif x == 0 or x == w - 1 or y == 0 or y == h - 1:
                 pixels[x, y] = (0, 0, 0, 0)
             elif (x == 1 or x == w - 2 or y == 1 or y == h - 2) and a < 100:
                 pixels[x, y] = (0, 0, 0, 0)
@@ -119,6 +152,7 @@ def strip_outer_border_artifacts(icon_img):
     pixels[w - 1, h - 1] = (0, 0, 0, 0)
     return img
 
+
 def overlay_record_dot(base_img, sz):
     """Standard crisp red record indicator dot in the bottom-right corner."""
     res = base_img.copy()
@@ -126,8 +160,13 @@ def overlay_record_dot(base_img, sz):
     dot_r = max(2, int(sz * 0.16))
     cx = int(sz * 0.76)
     cy = int(sz * 0.76)
-    draw.ellipse((cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r), fill=(225, 25, 35, 255), outline=(255, 255, 255, 230))
+    draw.ellipse(
+        (cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r),
+        fill=(225, 25, 35, 255),
+        outline=(255, 255, 255, 230),
+    )
     return res
+
 
 def save_clean_multi_res(icon_img, pack_dir, name):
     for sz in SIZES:
@@ -137,6 +176,7 @@ def save_clean_multi_res(icon_img, pack_dir, name):
         sanitized = strip_outer_border_artifacts(resized)
         out_path = os.path.join(sz_dir, f"{name}.png")
         sanitized.save(out_path, "PNG", optimize=True, compress_level=9)
+
 
 # -------------------------------------------------------------
 # 1. Royal Blue
@@ -191,6 +231,7 @@ def sanitize_royal_blue():
         cleaned = clean_outer_background_and_shadows(cell, bg_thresh=235)
         save_clean_multi_res(cleaned, pack_dir, name)
     print("✔ royal_blue sanitized.")
+
 
 # -------------------------------------------------------------
 # 2. Notepad Pro
@@ -248,9 +289,12 @@ def sanitize_notepad_pro():
 
     if "text_indent_remove" in extracted:
         # text_indent: mirror horizontally
-        indent = extracted["text_indent_remove"].transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+        indent = extracted["text_indent_remove"].transpose(
+            Image.Transpose.FLIP_LEFT_RIGHT
+        )
         save_clean_multi_res(indent, pack_dir, "text_indent")
     print("✔ notepad_pro sanitized.")
+
 
 # -------------------------------------------------------------
 # 3. Pastel
@@ -303,7 +347,11 @@ def sanitize_pastel():
     if "openFile" in extracted:
         save_clean_multi_res(extracted["openFile"], pack_dir, "folder_go")
     if "text_indent" in extracted:
-        save_clean_multi_res(extracted["text_indent"].transpose(Image.Transpose.FLIP_LEFT_RIGHT), pack_dir, "text_indent_remove")
+        save_clean_multi_res(
+            extracted["text_indent"].transpose(Image.Transpose.FLIP_LEFT_RIGHT),
+            pack_dir,
+            "text_indent_remove",
+        )
     if "newfile" in extracted:
         save_clean_multi_res(extracted["newfile"], pack_dir, "invisibleChar")
     if "readonly" in extracted:
@@ -317,6 +365,7 @@ def sanitize_pastel():
         save_clean_multi_res(extracted["restart"], pack_dir, "playRecord_m")
     print("✔ pastel sanitized.")
 
+
 # -------------------------------------------------------------
 # 4. Sheet 4 (Modern Flat, Glossy 3D, Retro Pixel, Sketchy Doodle)
 # -------------------------------------------------------------
@@ -324,14 +373,52 @@ def sanitize_sheet4_packs():
     src_path = "/Users/alsyundawy/.gemini/antigravity/brain/5503ca92-405b-46a8-a179-72d16fd57a6d/.user_uploaded/media_1794188018822_7f7bbe28.jpg"
     if not os.path.exists(src_path):
         return
-    print("[*] Sanitizing Sheet 4 icon packs (modern_flat_colorful, glossy_3d, retro_8bit, sketchy_doodle)...")
+    print(
+        "[*] Sanitizing Sheet 4 icon packs (modern_flat_colorful, glossy_3d, retro_8bit, sketchy_doodle)..."
+    )
     src_img = Image.open(src_path).convert("RGB")
 
     grid_names = [
-        ["newfile", "openFile", "saved", "saveAll", "closeFile", "closeAll", "cut", "copy"],
-        ["paste", "undo", "redo", "find", "findReplace", "zoomIn", "zoomOut", "printer"],
-        ["settings", "exit", "select_all", "wrap", "text_indent", "text_indent_remove", "indentGuide", "invisibleChar"],
-        ["restart", "playRecord", "stopRecord", "startRecord", "readonly", "folder_go", "bin", "cog"],
+        [
+            "newfile",
+            "openFile",
+            "saved",
+            "saveAll",
+            "closeFile",
+            "closeAll",
+            "cut",
+            "copy",
+        ],
+        [
+            "paste",
+            "undo",
+            "redo",
+            "find",
+            "findReplace",
+            "zoomIn",
+            "zoomOut",
+            "printer",
+        ],
+        [
+            "settings",
+            "exit",
+            "select_all",
+            "wrap",
+            "text_indent",
+            "text_indent_remove",
+            "indentGuide",
+            "invisibleChar",
+        ],
+        [
+            "restart",
+            "playRecord",
+            "stopRecord",
+            "startRecord",
+            "readonly",
+            "folder_go",
+            "bin",
+            "cog",
+        ],
     ]
 
     pack_cfgs = [
@@ -400,12 +487,20 @@ def sanitize_sheet4_packs():
                 sanitized.save(out_path, "PNG", optimize=True, compress_level=9)
         print(f"✔ {pid} sanitized.")
 
+
 # -------------------------------------------------------------
 # 5. Tile-Based Packs (fluent_modern, macos_bigsur_modern, dark_neon_pro, macos_glass)
 # -------------------------------------------------------------
 def sanitize_tile_packs():
-    print("[*] Sanitizing tile-based packs (fluent_modern, macos_bigsur, dark_neon, macos_glass)...")
-    tile_packs = ["fluent_modern", "macos_bigsur_modern", "dark_neon_pro", "macos_glass"]
+    print(
+        "[*] Sanitizing tile-based packs (fluent_modern, macos_bigsur, dark_neon, macos_glass)..."
+    )
+    tile_packs = [
+        "fluent_modern",
+        "macos_bigsur_modern",
+        "dark_neon_pro",
+        "macos_glass",
+    ]
 
     for pid in tile_packs:
         pack_dir = os.path.join(PACKS_DIR, pid)
@@ -426,6 +521,7 @@ def sanitize_tile_packs():
                 sanitized.save(file_path, "PNG", optimize=True, compress_level=9)
         print(f"✔ {pid} border halos and corner emboss stripped.")
 
+
 def main():
     print("=== STARTING MASTER ICON SANITIZATION PIPELINE ===")
     sanitize_royal_blue()
@@ -434,6 +530,7 @@ def main():
     sanitize_sheet4_packs()
     sanitize_tile_packs()
     print("=== ALL ICON PACKS SANITIZED SUCCESSFULLY ===")
+
 
 if __name__ == "__main__":
     main()

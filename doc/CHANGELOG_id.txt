@@ -7,6 +7,43 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ---
 
+## [1.4.6] - 2026-11-09
+
+### 🌟 Rilis: 11 Paket Icon Toolbar Baru (Total 39 Paket), Standar Bersih Pristine Notepad++ Classic, Optimasi Kompresi Lossless & DMG Rilis Ringan
+
+SparkNotePad v1.4.6 memperluas kustomisasi visual dengan 11 paket icon toolbar baru, pembersihan artefak bayangan dan embos sesuai standar emas Notepad++ Classic, optimasi kompresi aset PNG, dan pengemasan DMG rilis yang ramping:
+
+#### 🆕 Ditambahkan
+
+- **11 Paket Icon Toolbar Baru (Total 39 Paket Bawaan)**:
+  - `royal_blue` (Royal Blue Aero Glossy): desain kaca skeuomorphic desktop warna biru elegan.
+  - `notepad_pro` (Notepad Pro Vista 7 Style): desain transparan aero modern era Windows Vista/7.
+  - `pastel` (Pastel Modern): palet warna pastel minimalis yang hangat dan bersahabat.
+  - `fluent_modern` (Microsoft Fluent Modern): desain 3D berlapis modern Windows 11 Fluent.
+  - `macos_bigsur_modern` (macOS Big Sur Style): estetika squircle macOS dengan aksen warna cerah.
+  - `dark_neon_pro` (Dark Neon Style): kontras tinggi cyberpunk neon bercahaya di latar gelap.
+  - `macos_glass` (macOS Glassmorphism): estetika kaca buram transparan aero akrilik.
+  - `modern_flat_colorful` (Modern Flat & Colorful): desain vektor datar dengan warna-warna kontras tegas.
+  - `glossy_3d_skeuomorphic` (Glossy 3D Skeuomorphic): desain 3D clay bervolume taktil mengkilap.
+  - `retro_8bit_pixel` (Retro 8-Bit Pixel Art): seni pixel arcade retro klasik.
+  - `sketchy_doodle` (Sketchy Hand-Drawn Doodle): ilustrasi doodle artistik buatan tangan.
+
+#### 🔧 Diubah & Ditingkatkan
+
+- **Sanitasi Icon Bersih Pristine Menyamai Notepad++ (Classic)**:
+  - Menghapus seluruh bayangan lantai, halo ambient occlusion, ubin latar abu-abu, dan strok/embos pada seluruh 11 paket icon baru.
+  - Memastikan icon tampil murni mengambang secara bersih di atas toolbar gelap permanen (`#21252b`).
+  - Menerapkan margin bernapas 18% di seluruh resolusi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64) sehingga tidak ada icon yang terpotong di tepi.
+- **Optimasi Kompresi PNG Lossless**:
+  - Kuantisasi palet fast octree dan kompresi zlib level 9 pada 1.736 file aset PNG, memangkas 2,17 MB data icon (penurunan 28,9%).
+  - Mengaktifkan kompresi waktu kompilasi resource Qt `AUTORCC_OPTIONS "--compress;9;--threshold;0"`.
+- **Pengemasan DMG Rilis Ringan (~33MB, Batas Maksimum < 35MB)**:
+  - Memangkas framework yang tidak digunakan (`QtDBus.framework` dan `QtOpenGL.framework`).
+  - Menghasilkan DMG rilis resmi `SparkNotePad-v1.4.6-x64.dmg` berukuran tepat 35.004.366 bytes (~33,3 MB), berada di dalam rentang standar 30MB–34MB.
+  - Memverifikasi checksum CRC32 valid, background kustom utuh, dan layout window `.DS_Store` 680x440.
+
+---
+
 ## [1.4.5] - 2026-11-08
 
 ### 🌟 Rilis Utama: Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Peralatan Pengembang, Pengalih Header/Source, EditorConfig, Riwayat Clipboard, Quick Switcher, Paket Ikon Aksara & Penguatan 14 Pilar

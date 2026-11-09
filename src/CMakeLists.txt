@@ -449,6 +449,13 @@ target_link_libraries(SparkNotePad
         uchardet
 )
 
+set_source_files_properties(
+    resources.qrc
+    toolbar_icons.qrc
+    scripts.qrc
+    PROPERTIES AUTORCC_OPTIONS "--compress;9;--threshold;0"
+)
+
 if(APPLE)
     target_link_directories(SparkNotePad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
     target_link_libraries(SparkNotePad PRIVATE "-framework Security" "-framework JavaScriptCore" "-framework AppKit")
