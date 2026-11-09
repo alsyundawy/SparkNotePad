@@ -40,8 +40,8 @@ SparkNotePad **v1.4.6** expands the editor's visual customization and packaging 
 
 4. **Strict Bloatware-Free Lightweight DMG Standard (~33MB, < 35MB Ceiling)**:
    - Enforced permanent DMG size constraint strictly between 30MB and 34MB (hard ceiling 35MB / 36,700,160 bytes).
-   - Pruned unused heavy frameworks (`QtDBus.framework`, `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`) and redundant plugins.
-   - Packaged `SparkNotePad-v1.4.6-x64.dmg` at exactly **35,004,366 bytes (~33.3 MB)** with full presentation assets: pre-baked `.DS_Store` (680x440), `.background/dmg-background.png`, custom volume icon, and verified CRC32 checksum.
+   - Pruned unused heavy frameworks (`QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`) and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability.
+   - Packaged `SparkNotePad-v1.4.6-x64.dmg` strictly within the **30MB–34MB** target (< 35MB ceiling) with full presentation assets: pre-baked `.DS_Store` (680x440), `.background/dmg-background.png`, custom volume icon, and verified CRC32 checksum.
 
 5. **Static Analysis, MegaLinter & Code Quality Gates**:
    - `clangd --check` passing with 0 errors across codebase.

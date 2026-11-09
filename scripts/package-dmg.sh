@@ -104,20 +104,12 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqgif.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqjpeg.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
 
-# Thin all universal binaries to x86_64 to eliminate unneeded arm64 architecture slices
-while IFS= read -r -d '' bin; do
-	if file "${bin}" 2>/dev/null | grep -q "Mach-O universal binary"; then
-		if lipo -thin x86_64 "${bin}" -output "${bin}.thin" 2>/dev/null; then
-			mv "${bin}.thin" "${bin}"
-			strip -x "${bin}" 2>/dev/null || true
-		fi
-	fi
-done < <(find "${STAGE_DIR}/SparkNotePad.app" -type f \( -perm +111 -o -name "*.dylib" \) -print0)
-
-strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+strip "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
 codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
 # Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
@@ -169,11 +161,11 @@ echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
 # Strict size gate: must not exceed 35MB (36700160 bytes)
-DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c < "${DMG_OUTPUT}")"
+DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
 MAX_ALLOWED_BYTES=36700160 # 35 MB
 DMG_SIZE="$(du -h "${DMG_OUTPUT}" | cut -f1)"
 
-if (( DMG_SIZE_BYTES > MAX_ALLOWED_BYTES )); then
+if ((DMG_SIZE_BYTES > MAX_ALLOWED_BYTES)); then
 	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) exceeds the strict 35MB limit! Bloatware detected." >&2
 	exit 1
 fi

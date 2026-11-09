@@ -92,9 +92,11 @@ add_custom_target(dmg
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqgif.dylib
+        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqjpeg.dylib
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib
         ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib
-    COMMAND strip -x ${INSTALL_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad
+    COMMAND strip ${INSTALL_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad
     COMMAND codesign --force --deep -s - ${INSTALL_DIR}/SparkNotePad.app
     COMMAND ${BASH_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/package-dmg.sh ${INSTALL_DIR}/SparkNotePad.app ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME} SparkNotePad
     DEPENDS install_local

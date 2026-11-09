@@ -38,8 +38,8 @@ SparkNotePad v1.4.6 expands toolbar customization with 11 new professionally cur
   - Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
   - Enabled compile-time resource compression `AUTORCC_OPTIONS "--compress;9;--threshold;0"` on `toolbar_icons.qrc` and `resources.qrc`.
 - **Lightweight Bloatware-Free DMG Release Packaging (~33MB, < 35MB Ceiling)**:
-  - Pruned unused `QtDBus.framework` and `QtOpenGL.framework` from staged macOS release bundle.
-  - Output DMG `SparkNotePad-v1.4.6-x64.dmg` packaged at exactly 35,004,366 bytes (~33.3 MB), strictly within the 30MB–34MB target.
+  - Pruned unused `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability.
+  - Output DMG `SparkNotePad-v1.4.6-x64.dmg` packaged within the strict 30MB–34MB target (< 35MB ceiling).
   - Verified valid CRC32 checksum, preserved custom volume icon, and 680x440 `.DS_Store` presentation.
 
 ---

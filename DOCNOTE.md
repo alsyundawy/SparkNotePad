@@ -28,7 +28,7 @@ SparkNotePad **v1.4.6** expands the editor's visual customization and packaging 
 - **11 New Professionally Curated Toolbar Icon Packs (39 Built-in Suites Total)**: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
 - **Pristine Icon Sanitization Matching Notepad++ (Classic)**: Stripped all drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs, guaranteeing pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`) with 18% breathing margins.
 - **Lossless PNG Asset Optimization**: Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
-- **Strict Bloatware-Free Lightweight DMG Standard**: Pruned unused `QtDBus.framework` and `QtOpenGL.framework` from staged macOS release bundle; packaged `SparkNotePad-v1.4.6-x64.dmg` at exactly 35,004,366 bytes (~33.3 MB), strictly within the 30MB–34MB target.
+- **Strict Bloatware-Free Lightweight DMG Standard**: Pruned unused `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability; packaged `SparkNotePad-v1.4.6-x64.dmg` strictly within the 30MB–34MB target (< 35MB ceiling).
 
 ---
 

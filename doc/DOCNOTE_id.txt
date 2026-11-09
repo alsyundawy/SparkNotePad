@@ -24,7 +24,7 @@ SparkNotePad v1.4.6 memperluas kustomisasi visual dengan 11 paket icon toolbar b
 - **11 Paket Icon Toolbar Baru (Total 39 Paket Bawaan)**: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
 - **Sanitasi Icon Bersih Pristine Menyamai Notepad++ (Classic)**: Menghapus seluruh bayangan lantai, halo ambient occlusion, ubin latar abu-abu, dan strok/embos pada seluruh 11 paket icon baru, menjamin tampilan icon mengambang bersih di toolbar gelap permanen (`#21252b`) dengan margin bernapas 18%.
 - **Optimasi Kompresi PNG Lossless**: Kuantisasi palet fast octree dan kompresi zlib level 9 pada 1.736 file aset PNG, memangkas 2,17 MB data icon (penurunan 28,9%).
-- **Pengemasan DMG Rilis Ringan (~33MB, Batas Maksimum < 35MB)**: Memangkas framework `QtDBus.framework` dan `QtOpenGL.framework`; menghasilkan `SparkNotePad-v1.4.6-x64.dmg` berukuran tepat 35.004.366 bytes (~33,3 MB), berada di dalam rentang standar 30MB–34MB.
+- **Pengemasan DMG Rilis Ringan (~33MB, Batas Maksimum < 35MB)**: Memangkas framework `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, dan plugin redundan namun mempertahankan `QtDBus.framework` yang dibutuhkan untuk kestabilan runtime QtGui; menghasilkan `SparkNotePad-v1.4.6-x64.dmg` di dalam rentang standar 30MB–34MB (< 35MB).
 
 ---
 
