@@ -87,6 +87,7 @@ fi
 
 # Prune unneeded heavy frameworks, plugins, and debug symbols from staged bundle
 rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlModels.framework" \

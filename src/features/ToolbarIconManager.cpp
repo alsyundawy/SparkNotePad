@@ -356,6 +356,46 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isBuiltIn = true,
         .isPngBased = true,
     });
+
+    // 32. Fluent Modern Style
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("fluent_modern"),
+        .displayName = tr("Fluent Modern Style"),
+        .description = tr("Microsoft Fluent Design modern rounded squircle iconography"),
+        .basePath = QStringLiteral(":/icons/packs/fluent_modern"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 33. macOS Big Sur Style (Modern)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("macos_bigsur_modern"),
+        .displayName = tr("macOS Big Sur Style (Modern)"),
+        .description = tr("Apple macOS modern frosted glass squircle iconography"),
+        .basePath = QStringLiteral(":/icons/packs/macos_bigsur_modern"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 34. Dark Neon Pro
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("dark_neon_pro"),
+        .displayName = tr("Dark Neon Pro"),
+        .description = tr("Dark neumorphic squircle tiles with electric neon glowing accents"),
+        .basePath = QStringLiteral(":/icons/packs/dark_neon_pro"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 35. macOS Style (Glass Effect)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("macos_glass"),
+        .displayName = tr("macOS Style (Glass Effect)"),
+        .description = tr("Translucent glossy glass circular bubble iconography"),
+        .basePath = QStringLiteral(":/icons/packs/macos_glass"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
 }
 
 void ToolbarIconManager::initialize(ApplicationSettings *settings) {
@@ -401,7 +441,15 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("notepadPro"), QStringLiteral("notepad_pro")},
         {QStringLiteral("notepad-pro"), QStringLiteral("notepad_pro")},
         {QStringLiteral("royalBlue"), QStringLiteral("royal_blue")},
-        {QStringLiteral("royal-blue"), QStringLiteral("royal_blue")}};
+        {QStringLiteral("royal-blue"), QStringLiteral("royal_blue")},
+        {QStringLiteral("fluentModern"), QStringLiteral("fluent_modern")},
+        {QStringLiteral("fluent-modern"), QStringLiteral("fluent_modern")},
+        {QStringLiteral("macosBigSurModern"), QStringLiteral("macos_bigsur_modern")},
+        {QStringLiteral("macos-bigsur-modern"), QStringLiteral("macos_bigsur_modern")},
+        {QStringLiteral("darkNeonPro"), QStringLiteral("dark_neon_pro")},
+        {QStringLiteral("dark-neon-pro"), QStringLiteral("dark_neon_pro")},
+        {QStringLiteral("macosGlass"), QStringLiteral("macos_glass")},
+        {QStringLiteral("macos-glass"), QStringLiteral("macos_glass")}};
     return s_aliasMap.value(packId, packId);
 }
 }  // namespace
