@@ -3886,7 +3886,7 @@ bool MainWindow::isHtml(const ScintillaNext *editor) {
         return true;
     }
     const QString lang = editor->languageName.toLower();
-    return (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml")));
+    return lang.contains(QStringLiteral("html"));
 }
 
 bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) {
