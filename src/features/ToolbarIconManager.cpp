@@ -326,6 +326,36 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isBuiltIn = true,
         .isPngBased = false,
     });
+
+    // 29. Pastel Minimalist
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("pastel"),
+        .displayName = tr("Pastel Minimalist"),
+        .description = tr("Soft pastel palette with clean minimalist aesthetic"),
+        .basePath = QStringLiteral(":/icons/packs/pastel"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 30. Notepad Pro (Vista 7 Style)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("notepad_pro"),
+        .displayName = tr("Notepad Pro (Vista 7 Style)"),
+        .description = tr("Skeuomorphic glossy Vista 7 style iconography with modern elegance"),
+        .basePath = QStringLiteral(":/icons/packs/notepad_pro"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 31. Royal Blue (Aero Glossy)
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("royal_blue"),
+        .displayName = tr("Royal Blue (Aero Glossy)"),
+        .description = tr("Rich royal blue glossy skeuomorphic desktop iconography"),
+        .basePath = QStringLiteral(":/icons/packs/royal_blue"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
 }
 
 void ToolbarIconManager::initialize(ApplicationSettings *settings) {
@@ -367,7 +397,11 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("aksara_npp_win11"), QStringLiteral("aksara-npp-win11")},
         {QStringLiteral("aksara_npp_xp"), QStringLiteral("aksara-npp-xp")},
         {QStringLiteral("aksara_ubuntu_yaru"), QStringLiteral("aksara-ubuntu-yaru")},
-        {QStringLiteral("aksara_vista_aero"), QStringLiteral("aksara-vista-aero")}};
+        {QStringLiteral("aksara_vista_aero"), QStringLiteral("aksara-vista-aero")},
+        {QStringLiteral("notepadPro"), QStringLiteral("notepad_pro")},
+        {QStringLiteral("notepad-pro"), QStringLiteral("notepad_pro")},
+        {QStringLiteral("royalBlue"), QStringLiteral("royal_blue")},
+        {QStringLiteral("royal-blue"), QStringLiteral("royal_blue")}};
     return s_aliasMap.value(packId, packId);
 }
 }  // namespace

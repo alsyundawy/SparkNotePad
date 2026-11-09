@@ -34,8 +34,8 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 28 built-in packs (18 base + 10 Aksara suites)
-        QCOMPARE(packs.size(), 28);
+        // 31 built-in packs (21 base + 10 Aksara suites)
+        QCOMPARE(packs.size(), 31);
 
         const QStringList expectedPackIds = {
             QString::fromLatin1("modernRibbon"),
@@ -66,6 +66,9 @@ private slots:
             QString::fromLatin1("aksara-npp-xp"),
             QString::fromLatin1("aksara-ubuntu-yaru"),
             QString::fromLatin1("aksara-vista-aero"),
+            QString::fromLatin1("pastel"),
+            QString::fromLatin1("notepad_pro"),
+            QString::fromLatin1("royal_blue"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -85,6 +88,8 @@ private slots:
         QVERIFY(manager->findPackById(QString::fromLatin1("notepadPlusPlus")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("filledFluentUi")) != nullptr);
         QVERIFY(manager->findPackById(QString::fromLatin1("aksara_npp_win11")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("notepadPro")) != nullptr);
+        QVERIFY(manager->findPackById(QString::fromLatin1("royalBlue")) != nullptr);
     }
 
     // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
@@ -159,6 +164,8 @@ private slots:
             QString::fromLatin1("fluentUi"),       QString::fromLatin1("eleganticons"),
             QString::fromLatin1("seven"),          QString::fromLatin1("mignon"),
             QString::fromLatin1("palette"),        QString::fromLatin1("diagonal"),
+            QString::fromLatin1("pastel"),         QString::fromLatin1("notepad_pro"),
+            QString::fromLatin1("royal_blue"),
         };
 
         for (const QString &packId : packs) {
