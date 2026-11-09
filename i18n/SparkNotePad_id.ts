@@ -10327,112 +10327,112 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="333"/>
         <source>Pastel Minimalist</source>
-        <translation type="unfinished"></translation>
+        <translation>Pastel Minimalis</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="334"/>
         <source>Soft pastel palette with clean minimalist aesthetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Palet pastel lembut dengan estetika minimalis yang bersih</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="343"/>
         <source>Notepad Pro (Vista 7 Style)</source>
-        <translation type="unfinished"></translation>
+        <translation>Notepad Pro (Gaya Vista 7)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="344"/>
         <source>Skeuomorphic glossy Vista 7 style iconography with modern elegance</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi skeuomorfik berkilau gaya Vista 7 dengan keanggunan modern</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="353"/>
         <source>Royal Blue (Aero Glossy)</source>
-        <translation type="unfinished"></translation>
+        <translation>Biru Royal (Aero Berkilau)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="354"/>
         <source>Rich royal blue glossy skeuomorphic desktop iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi desktop skeuomorfik berkilau biru royal yang kaya</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="363"/>
         <source>Fluent Modern Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaya Modern Fluent</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="364"/>
         <source>Microsoft Fluent Design modern rounded squircle iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi squircle membulat modern Microsoft Fluent Design</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="373"/>
         <source>macOS Big Sur Style (Modern)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaya macOS Big Sur (Modern)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="374"/>
         <source>Apple macOS modern frosted glass squircle iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi squircle kaca buram modern Apple macOS</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="383"/>
         <source>Dark Neon Pro</source>
-        <translation type="unfinished"></translation>
+        <translation>Neon Gelap Pro</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="384"/>
         <source>Dark neumorphic squircle tiles with electric neon glowing accents</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubin squircle neumorfik gelap dengan aksen pendar neon listrik</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="393"/>
         <source>macOS Style (Glass Effect)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaya macOS (Efek Kaca)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="394"/>
         <source>Translucent glossy glass circular bubble iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi gelembung melingkar kaca berkilau tembus cahaya</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="403"/>
         <source>Modern Flat &amp; Colorful</source>
-        <translation type="unfinished"></translation>
+        <translation>Datar Modern &amp; Berwarna-warni</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="404"/>
         <source>Clean modern flat vector-styled colorful iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi warna-warni bergaya vektor datar modern yang bersih</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="413"/>
         <source>Glossy 3D Skeuomorphic</source>
-        <translation type="unfinished"></translation>
+        <translation>Skeuomorfik 3D Berkilau</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="414"/>
         <source>Rich volumetric glossy 3D skeuomorphic iconography with lighting accents</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi skeuomorfik 3D volumetrik berkilau yang kaya dengan aksen pencahayaan</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="423"/>
         <source>Retro 8-Bit Pixel Art</source>
-        <translation type="unfinished"></translation>
+        <translation>Seni Piksel 8-Bit Retro</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="424"/>
         <source>Authentic retro 8-bit pixel art iconography with crisp contours</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi seni piksel 8-bit retro autentik dengan kontur yang tegas</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="433"/>
         <source>Sketchy Hand-Drawn Doodle</source>
-        <translation type="unfinished"></translation>
+        <translation>Doodle Gambar Tangan Sketsa</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="434"/>
         <source>Artistic hand-drawn doodle iconography with sketchy organic strokes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikonografi doodle gambar tangan artistik dengan goresan organik bersketsa</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="582"/>

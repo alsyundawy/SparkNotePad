@@ -61,32 +61,26 @@ private slots:
     }
 
     void testMarkdownPathRegex() const {
-        const QStringList validMd = {
-            QStringLiteral("README.markdown"),
-            QStringLiteral("doc.mdown"),
-            QStringLiteral("guide.mkdn"),
-            QStringLiteral("notes.md"),
-            QStringLiteral("spec.mkd"),
-            QStringLiteral("draft.mdwn"),
-            QStringLiteral("log.mdtxt"),
-            QStringLiteral("memo.mdtext"),
-            QStringLiteral("readme.text"),
-            QStringLiteral("file.md#section-2"),
-            QStringLiteral("file.markdown?raw=true"),
-            QStringLiteral("/Users/test/PATH/UPPER.MD")
-        };
+        const QStringList validMd = {QStringLiteral("README.markdown"),
+                                     QStringLiteral("doc.mdown"),
+                                     QStringLiteral("guide.mkdn"),
+                                     QStringLiteral("notes.md"),
+                                     QStringLiteral("spec.mkd"),
+                                     QStringLiteral("draft.mdwn"),
+                                     QStringLiteral("log.mdtxt"),
+                                     QStringLiteral("memo.mdtext"),
+                                     QStringLiteral("readme.text"),
+                                     QStringLiteral("file.md#section-2"),
+                                     QStringLiteral("file.markdown?raw=true"),
+                                     QStringLiteral("/Users/test/PATH/UPPER.MD")};
 
         for (const QString &path : validMd) {
             QVERIFY2(MarkdownPreviewEnhancer::isMarkdownPath(path),
                      qPrintable(QStringLiteral("Should match markdown: %1").arg(path)));
         }
 
-        const QStringList invalidMd = {
-            QStringLiteral("script.cpp"),
-            QStringLiteral("index.html"),
-            QStringLiteral("image.png"),
-            QStringLiteral("archive.tar.gz")
-        };
+        const QStringList invalidMd = {QStringLiteral("script.cpp"), QStringLiteral("index.html"),
+                                       QStringLiteral("image.png"), QStringLiteral("archive.tar.gz")};
 
         for (const QString &path : invalidMd) {
             QVERIFY2(!MarkdownPreviewEnhancer::isMarkdownPath(path),
@@ -95,28 +89,19 @@ private slots:
     }
 
     void testHtmlPathRegex() const {
-        const QStringList validHtml = {
-            QStringLiteral("index.html"),
-            QStringLiteral("page.htm"),
-            QStringLiteral("server.shtml"),
-            QStringLiteral("doc.xhtml"),
-            QStringLiteral("test.xht"),
-            QStringLiteral("dynamic.dhtml"),
-            QStringLiteral("site.html#header"),
-            QStringLiteral("view.htm?param=1"),
-            QStringLiteral("/var/www/INDEX.HTML")
-        };
+        const QStringList validHtml = {QStringLiteral("index.html"),         QStringLiteral("page.htm"),
+                                       QStringLiteral("server.shtml"),       QStringLiteral("doc.xhtml"),
+                                       QStringLiteral("test.xht"),           QStringLiteral("dynamic.dhtml"),
+                                       QStringLiteral("site.html#header"),   QStringLiteral("view.htm?param=1"),
+                                       QStringLiteral("/var/www/INDEX.HTML")};
 
         for (const QString &path : validHtml) {
             QVERIFY2(MarkdownPreviewEnhancer::isHtmlPath(path),
                      qPrintable(QStringLiteral("Should match html: %1").arg(path)));
         }
 
-        const QStringList invalidHtml = {
-            QStringLiteral("doc.md"),
-            QStringLiteral("main.cpp"),
-            QStringLiteral("data.json")
-        };
+        const QStringList invalidHtml = {QStringLiteral("doc.md"), QStringLiteral("main.cpp"),
+                                         QStringLiteral("data.json")};
 
         for (const QString &path : invalidHtml) {
             QVERIFY2(!MarkdownPreviewEnhancer::isHtmlPath(path),
@@ -125,7 +110,8 @@ private slots:
     }
 
     void testMarkdownItExtensions() const {
-        const auto input = QStringLiteral("This is ~~deleted~~ and ==highlighted== and ++inserted++ and H~2~O and E=mc^2^.");
+        const auto input =
+            QStringLiteral("This is ~~deleted~~ and ==highlighted== and ++inserted++ and H~2~O and E=mc^2^.");
         const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
         QVERIFY(enhanced.contains(QStringLiteral("<del>deleted</del>")));
@@ -147,7 +133,8 @@ private slots:
         const auto input = QStringLiteral("Here is a reference[^1] in text.\n\n[^1]: This is the footnote definition.");
         const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
-        QVERIFY(enhanced.contains(QStringLiteral("<sup class=\"footnote-ref\"><a href=\"#fn_1\" id=\"fnref_1\">[1]</a></sup>")));
+        QVERIFY(enhanced.contains(
+            QStringLiteral("<sup class=\"footnote-ref\"><a href=\"#fn_1\" id=\"fnref_1\">[1]</a></sup>")));
         QVERIFY(enhanced.contains(QStringLiteral("class=\"footnotes\"")));
         QVERIFY(enhanced.contains(QStringLiteral("<li id=\"fn_1\"")));
         QVERIFY(enhanced.contains(QStringLiteral("This is the footnote definition.")));
@@ -172,9 +159,12 @@ private slots:
         QCOMPARE(themes[29], QStringLiteral("WRIT"));
 
         QCOMPARE(MarkdownThemeManager::themeName(MarkdownThemeManager::ThemeId::GitHub), QStringLiteral("GITHUB"));
-        QCOMPARE(MarkdownThemeManager::themeName(MarkdownThemeManager::ThemeId::GitHubDark), QStringLiteral("GITHUB-DARK"));
-        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("sakura-vader")), MarkdownThemeManager::ThemeId::SakuraVader);
-        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("water-dark")), MarkdownThemeManager::ThemeId::WaterDark);
+        QCOMPARE(MarkdownThemeManager::themeName(MarkdownThemeManager::ThemeId::GitHubDark),
+                 QStringLiteral("GITHUB-DARK"));
+        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("sakura-vader")),
+                 MarkdownThemeManager::ThemeId::SakuraVader);
+        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("water-dark")),
+                 MarkdownThemeManager::ThemeId::WaterDark);
 
         QVERIFY(MarkdownThemeManager::isThemeDark(MarkdownThemeManager::ThemeId::GitHubDark));
         QVERIFY(MarkdownThemeManager::isThemeDark(MarkdownThemeManager::ThemeId::Retro));

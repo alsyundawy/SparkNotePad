@@ -10326,117 +10326,117 @@ Key: %2</translation>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="324"/>
         <source>Glossy and reflective: azure gradients, bright specular highlights, Aero Glass rounded tiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Glossy and reflective: azure gradients, bright specular highlights, Aero Glass rounded tiles</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="333"/>
         <source>Pastel Minimalist</source>
-        <translation type="unfinished"></translation>
+        <translation>Pastel Minimalist</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="334"/>
         <source>Soft pastel palette with clean minimalist aesthetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Soft pastel palette with clean minimalist aesthetic</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="343"/>
         <source>Notepad Pro (Vista 7 Style)</source>
-        <translation type="unfinished"></translation>
+        <translation>Notepad Pro (Vista 7 Style)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="344"/>
         <source>Skeuomorphic glossy Vista 7 style iconography with modern elegance</source>
-        <translation type="unfinished"></translation>
+        <translation>Skeuomorphic glossy Vista 7 style iconography with modern elegance</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="353"/>
         <source>Royal Blue (Aero Glossy)</source>
-        <translation type="unfinished"></translation>
+        <translation>Royal Blue (Aero Glossy)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="354"/>
         <source>Rich royal blue glossy skeuomorphic desktop iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Rich royal blue glossy skeuomorphic desktop iconography</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="363"/>
         <source>Fluent Modern Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Fluent Modern Style</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="364"/>
         <source>Microsoft Fluent Design modern rounded squircle iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Microsoft Fluent Design modern rounded squircle iconography</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="373"/>
         <source>macOS Big Sur Style (Modern)</source>
-        <translation type="unfinished"></translation>
+        <translation>macOS Big Sur Style (Modern)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="374"/>
         <source>Apple macOS modern frosted glass squircle iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Apple macOS modern frosted glass squircle iconography</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="383"/>
         <source>Dark Neon Pro</source>
-        <translation type="unfinished"></translation>
+        <translation>Dark Neon Pro</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="384"/>
         <source>Dark neumorphic squircle tiles with electric neon glowing accents</source>
-        <translation type="unfinished"></translation>
+        <translation>Dark neumorphic squircle tiles with electric neon glowing accents</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="393"/>
         <source>macOS Style (Glass Effect)</source>
-        <translation type="unfinished"></translation>
+        <translation>macOS Style (Glass Effect)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="394"/>
         <source>Translucent glossy glass circular bubble iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Translucent glossy glass circular bubble iconography</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="403"/>
         <source>Modern Flat &amp; Colorful</source>
-        <translation type="unfinished"></translation>
+        <translation>Modern Flat &amp; Colorful</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="404"/>
         <source>Clean modern flat vector-styled colorful iconography</source>
-        <translation type="unfinished"></translation>
+        <translation>Clean modern flat vector-styled colorful iconography</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="413"/>
         <source>Glossy 3D Skeuomorphic</source>
-        <translation type="unfinished"></translation>
+        <translation>Glossy 3D Skeuomorphic</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="414"/>
         <source>Rich volumetric glossy 3D skeuomorphic iconography with lighting accents</source>
-        <translation type="unfinished"></translation>
+        <translation>Rich volumetric glossy 3D skeuomorphic iconography with lighting accents</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="423"/>
         <source>Retro 8-Bit Pixel Art</source>
-        <translation type="unfinished"></translation>
+        <translation>Retro 8-Bit Pixel Art</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="424"/>
         <source>Authentic retro 8-bit pixel art iconography with crisp contours</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentic retro 8-bit pixel art iconography with crisp contours</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="433"/>
         <source>Sketchy Hand-Drawn Doodle</source>
-        <translation type="unfinished"></translation>
+        <translation>Sketchy Hand-Drawn Doodle</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="434"/>
         <source>Artistic hand-drawn doodle iconography with sketchy organic strokes</source>
-        <translation type="unfinished"></translation>
+        <translation>Artistic hand-drawn doodle iconography with sketchy organic strokes</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="582"/>
