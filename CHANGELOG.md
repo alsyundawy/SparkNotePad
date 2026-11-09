@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### 🚧 Development & Integration (main branch)
+
+- Active development and integration branch targeting upcoming feature releases.
+- Automated multi-compiler validation and lightweight packaging enhancements.
+
+---
+
 ## [1.4.6] - 2026-11-09
 
 ### 🌟 Release: 11 New Curated Toolbar Icon Packs (39 Total), Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression & Lightweight Release DMG
