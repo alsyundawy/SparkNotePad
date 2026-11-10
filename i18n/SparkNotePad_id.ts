@@ -248,12 +248,12 @@
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="483"/>
         <source>Curated classless CSS stylesheet collection and markdown-it formatting for live preview.</source>
-        <translation type="unfinished"></translation>
+        <translation>Koleksi lembar gaya CSS classless terpilih dan pemformatan markdown-it untuk pratinjau langsung.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="499"/>
         <source>Comprehensive 10-suite toolbar icon pack library (340 scalable SVGs and PNGs) spanning macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern minimalist styles.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pustaka paket ikon bilah alat komprehensif 10 set (340 SVG dan PNG terukur) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya minimalis modern.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="550"/>
@@ -1367,108 +1367,108 @@
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="28"/>
         <source>Character Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Inspektur Karakter</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="61"/>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="128"/>
         <source>None</source>
-        <translation type="unfinished">Tidak ada</translation>
+        <translation>Tidak ada</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="76"/>
         <source>Property</source>
-        <translation type="unfinished">Properti</translation>
+        <translation>Properti</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="76"/>
         <source>Value</source>
-        <translation type="unfinished">Nilai</translation>
+        <translation>Nilai</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="86"/>
         <source>Copy Character</source>
-        <translation type="unfinished">Salin Karakter</translation>
+        <translation>Salin Karakter</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="87"/>
         <source>Copy Code Point</source>
-        <translation type="unfinished">Salin Titik Kode</translation>
+        <translation>Salin Titik Kode</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="88"/>
         <source>Copy UTF-8</source>
-        <translation type="unfinished">Salin UTF-8</translation>
+        <translation>Salin UTF-8</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="89"/>
         <source>Copy HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>Salin HTML</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="144"/>
         <source>Code Point</source>
-        <translation type="unfinished"></translation>
+        <translation>Titik Kode</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="145"/>
         <source>Decimal</source>
-        <translation type="unfinished"></translation>
+        <translation>Desimal</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="146"/>
         <source>Unicode Block</source>
-        <translation type="unfinished"></translation>
+        <translation>Blok Unicode</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="147"/>
         <source>Category</source>
-        <translation type="unfinished">Kategori</translation>
+        <translation>Kategori</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="148"/>
         <source>Script</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="149"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Arah</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="150"/>
         <source>UTF-8 Hex</source>
-        <translation type="unfinished"></translation>
+        <translation>Heksadesimal UTF-8</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="151"/>
         <source>UTF-16 Hex</source>
-        <translation type="unfinished"></translation>
+        <translation>Heksadesimal UTF-16</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="152"/>
         <source>UTF-32 Hex</source>
-        <translation type="unfinished"></translation>
+        <translation>Heksadesimal UTF-32</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="153"/>
         <source>HTML Entity</source>
-        <translation type="unfinished"></translation>
+        <translation>Entitas HTML</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="154"/>
         <source>C/C++ Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape C/C++</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="155"/>
         <source>JSON Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape JSON</translation>
     </message>
     <message>
         <location filename="../src/docks/CharacterInfoDock.cpp" line="156"/>
         <source>URL Percent</source>
-        <translation type="unfinished"></translation>
+        <translation>Persen URL</translation>
     </message>
 </context>
 <context>
@@ -1590,27 +1590,27 @@
     <message>
         <location filename="../src/docks/ClipboardHistoryDock.cpp" line="23"/>
         <source>Clipboard History</source>
-        <translation type="unfinished"></translation>
+        <translation>Riwayat Papan Klip</translation>
     </message>
     <message>
         <location filename="../src/docks/ClipboardHistoryDock.cpp" line="39"/>
         <source>Search clipboard history...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari riwayat papan klip...</translation>
     </message>
     <message>
         <location filename="../src/docks/ClipboardHistoryDock.cpp" line="50"/>
         <source>Insert</source>
-        <translation type="unfinished">Sisipkan</translation>
+        <translation>Sisipkan</translation>
     </message>
     <message>
         <location filename="../src/docks/ClipboardHistoryDock.cpp" line="51"/>
         <source>Copy</source>
-        <translation type="unfinished">Salin</translation>
+        <translation>Salin</translation>
     </message>
     <message>
         <location filename="../src/docks/ClipboardHistoryDock.cpp" line="52"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Bersihkan</translation>
     </message>
 </context>
 <context>
@@ -1735,58 +1735,59 @@
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="25"/>
         <source>Document Crash Recovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Pemulihan Dokumen Pasca Crash</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="33"/>
         <source>SparkNotePad detected unsaved draft documents from a previous session.
 Select which documents you would like to recover:</source>
-        <translation type="unfinished"></translation>
+        <translation>SparkNotePad mendeteksi draf dokumen yang belum tersimpan dari sesi sebelumnya.
+Pilih dokumen yang ingin Anda pulihkan:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="42"/>
         <source>Recover</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulihkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="42"/>
         <source>Document Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama Dokumen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="42"/>
         <source>Original Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Jalur Asli</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="42"/>
         <source>Auto-Saved Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Waktu Penyimpanan Otomatis</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="57"/>
         <source>Untitled</source>
-        <translation type="unfinished">Tanpa Judul</translation>
+        <translation>Tanpa Judul</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="60"/>
         <source>[Untitled Draft]</source>
-        <translation type="unfinished"></translation>
+        <translation>[Draf Tanpa Judul]</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="71"/>
         <source>Discard All Drafts</source>
-        <translation type="unfinished"></translation>
+        <translation>Buang Semua Draf</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="78"/>
         <source>Cancel</source>
-        <translation type="unfinished">Batal</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CrashRecoveryDialog.cpp" line="82"/>
         <source>Recover Selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulihkan yang Dipilih</translation>
     </message>
 </context>
 <context>
@@ -2082,12 +2083,12 @@ Select which documents you would like to recover:</source>
     <message>
         <location filename="../src/docks/DocumentMinimapDock.cpp" line="63"/>
         <source>Document Minimap</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimap Dokumen</translation>
     </message>
     <message>
         <location filename="../src/docks/DocumentMinimapDock.cpp" line="104"/>
         <source>Minimap disabled for large document (&gt; 50 MB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimap dinonaktifkan untuk dokumen besar (&gt; 50 MB)</translation>
     </message>
 </context>
 <context>
@@ -2255,7 +2256,7 @@ Atau URL daring cadangan:
     </message>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
     <message>
         <source>%1 bytes</source>
@@ -2811,117 +2812,117 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="27"/>
         <source>Export to PDF Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opsi Ekspor ke PDF</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="27"/>
         <source>Export to HTML Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opsi Ekspor ke HTML</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="38"/>
         <source>Document title</source>
-        <translation type="unfinished"></translation>
+        <translation>Judul dokumen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="39"/>
         <source>Document Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>Judul Dokumen:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="43"/>
         <source>Page Layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Tata Letak Halaman</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="47"/>
         <source>A4 (210 × 297 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>A4 (210 × 297 mm)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="48"/>
         <source>Letter (8.5 × 11 in)</source>
-        <translation type="unfinished"></translation>
+        <translation>Letter (8,5 × 11 inci)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="49"/>
         <source>Legal (8.5 × 14 in)</source>
-        <translation type="unfinished"></translation>
+        <translation>Legal (8,5 × 14 inci)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="50"/>
         <source>Tabloid (11 × 17 in)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabloid (11 × 17 inci)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="51"/>
         <source>Page Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukuran Halaman:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="54"/>
         <source>Portrait</source>
-        <translation type="unfinished"></translation>
+        <translation>Potret</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="55"/>
         <source>Landscape</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanskap</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="56"/>
         <source>Orientation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientasi:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="59"/>
         <source>Normal (15 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Normal (15 mm)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="60"/>
         <source>Narrow (10 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sempit (10 mm)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="61"/>
         <source>Wide (25 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lebar (25 mm)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="62"/>
         <source>Margins:</source>
-        <translation type="unfinished"></translation>
+        <translation>Margin:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="67"/>
         <source>Styling &amp; Engine</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaya &amp; Mesin</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="70"/>
         <source>Embed GitHub Markdown CSS Stylesheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Sematkan Lembar Gaya CSS GitHub Markdown</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="74"/>
         <source>Use Dark Mode Theme for Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan Tema Mode Gelap untuk Output</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="79"/>
         <source>Use Pandoc Engine (Advanced CLI Converter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan Mesin Pandoc (Konverter CLI Lanjutan)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="83"/>
         <source>Pandoc executable was not detected on PATH</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksekusi Pandoc tidak terdeteksi di PATH</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportOptionsDialog.cpp" line="90"/>
         <source>Export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspor...</translation>
     </message>
 </context>
 <context>
@@ -4035,7 +4036,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.ui" line="73"/>
         <source>Clear</source>
-        <translation>Hapus</translation>
+        <translation>Bersihkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.ui" line="93"/>
@@ -6228,32 +6229,32 @@ Atau URL daring cadangan:
         <location filename="../src/dialogs/MainWindow.cpp" line="349"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="4775"/>
         <source>Reopen Closed Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka Kembali Tab yang Ditutup</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="355"/>
         <source>Switch Header / Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Beralih Header / Sumber</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3503"/>
         <source>Export HTML Document</source>
-        <translation type="unfinished">Ekspor Dokumen HTML</translation>
+        <translation>Ekspor Dokumen HTML</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3504"/>
         <source>HTML files (*.html);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas HTML (*.html);;Semua Berkas (*)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3511"/>
         <source>Successfully exported HTML to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Berhasil mengekspor HTML ke %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3513"/>
         <source>Failed to export HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal mengekspor HTML</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="432"/>
@@ -6485,58 +6486,58 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1123"/>
         <source>&amp;Quick Open File or Tab...</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka Cepat Berkas atau Tab (&amp;Q)...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1471"/>
         <source>&amp;Developer Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Alat Pengembang (&amp;D)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3547"/>
         <source>%1 applied</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 diterapkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1474"/>
         <source>JSON Format / Prettify</source>
-        <translation type="unfinished"></translation>
+        <translation>Format JSON / Percantik</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1480"/>
         <source>JSON Minify / Compact</source>
-        <translation type="unfinished"></translation>
+        <translation>Minifikasi JSON / Padatkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1500"/>
         <source>Unicode Escape (\uXXXX)</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape Unicode (\uXXXX)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1502"/>
         <source>Unicode Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape Unicode</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1505"/>
         <location filename="../src/dialogs/MainWindow.cpp" line="1507"/>
         <source>Unicode Unescape</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus Escape Unicode</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1512"/>
         <source>Generate UUID v4</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat UUID v4</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1521"/>
         <source>Generated UUID: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>UUID yang Dibuat: %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1524"/>
         <source>Timestamp Converter...</source>
-        <translation type="unfinished"></translation>
+        <translation>Konverter Stempel Waktu...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="1630"/>
@@ -7385,27 +7386,27 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3004"/>
         <source>No saved file to switch</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada berkas tersimpan untuk dialihkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3012"/>
         <source>No corresponding file found for: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada berkas terkait yang ditemukan untuk: %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3020"/>
         <source>Switched to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Beralih ke %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3023"/>
         <source>Opened %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Membuka %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4273"/>
         <source>Successfully exported Markdown PDF to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Berhasil mengekspor Markdown PDF ke %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4796"/>
@@ -7425,12 +7426,12 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4825"/>
         <source>Set Tab Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Atur Warna Tab</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4846"/>
         <source>Clear Tab Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus Warna Tab</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4922"/>
@@ -7996,7 +7997,7 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="240"/>
         <source>Select Markdown theme (30 cleanrmd / markdown-it themes)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih tema Markdown (30 tema cleanrmd / markdown-it)</translation>
     </message>
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="253"/>
@@ -8037,7 +8038,7 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="311"/>
         <source>Export Document to PDF...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspor Dokumen ke PDF...</translation>
     </message>
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="320"/>
@@ -8094,12 +8095,12 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="729"/>
         <source>Export PDF Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspor Dokumen PDF</translation>
     </message>
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="730"/>
         <source>PDF Documents (*.pdf);;All Files (*)</source>
-        <translation type="unfinished">Dokumen PDF (*.pdf);;Semua Berkas (*)</translation>
+        <translation>Dokumen PDF (*.pdf);;Semua Berkas (*)</translation>
     </message>
     <message>
         <location filename="../src/docks/MarkdownSafePreviewDock.cpp" line="794"/>
@@ -9096,7 +9097,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/QuickSwitcherDialog.cpp" line="80"/>
         <source>Search files, tabs, or symbols... (Esc to close)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari berkas, tab, atau simbol... (Esc untuk menutup)</translation>
     </message>
 </context>
 <context>
@@ -9469,7 +9470,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/ShortcutCustomizerDialog.cpp" line="100"/>
         <source>Clear</source>
-        <translation>Kosongkan</translation>
+        <translation>Bersihkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ShortcutCustomizerDialog.cpp" line="105"/>
@@ -9658,42 +9659,42 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="29"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Merah</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="29"/>
         <source>Orange</source>
-        <translation type="unfinished"></translation>
+        <translation>Oranye</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="30"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuning</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="30"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Hijau</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="31"/>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Sian</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="31"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Biru</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="32"/>
         <source>Purple</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungu</translation>
     </message>
     <message>
         <location filename="../src/features/TabColorManager.cpp" line="32"/>
         <source>Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta</translation>
     </message>
 </context>
 <context>
@@ -9905,77 +9906,77 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="29"/>
         <source>Epoch &amp; ISO-8601 Timestamp Converter</source>
-        <translation type="unfinished"></translation>
+        <translation>Konverter Stempel Waktu Epoch &amp; ISO-8601</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="38"/>
         <source>Unix Epoch Timestamp</source>
-        <translation type="unfinished"></translation>
+        <translation>Stempel Waktu Unix Epoch</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="42"/>
         <source>e.g. 1767225600</source>
-        <translation type="unfinished"></translation>
+        <translation>mis. 1767225600</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="43"/>
         <source>Seconds (s):</source>
-        <translation type="unfinished"></translation>
+        <translation>Detik (dtk):</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="46"/>
         <source>e.g. 1767225600000</source>
-        <translation type="unfinished"></translation>
+        <translation>mis. 1767225600000</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="47"/>
         <source>Milliseconds (ms):</source>
-        <translation type="unfinished"></translation>
+        <translation>Milidetik (ms):</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="51"/>
         <source>Human &amp; ISO-8601 Formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Format Terbaca &amp; ISO-8601</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="55"/>
         <source>e.g. 2026-01-01T00:00:00Z</source>
-        <translation type="unfinished"></translation>
+        <translation>mis. 2026-01-01T00:00:00Z</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="56"/>
         <source>ISO-8601 UTC:</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO-8601 UTC:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="59"/>
         <source>ISO-8601 Local:</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO-8601 Lokal:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="63"/>
         <source>Formatted Date:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tanggal Terformat:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="68"/>
         <source>Set to Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Set ke Saat Ini</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="69"/>
         <source>Convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Konversi</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="70"/>
         <source>Copy ISO</source>
-        <translation type="unfinished"></translation>
+        <translation>Salin ISO</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TimestampConverterDialog.cpp" line="71"/>
         <source>Close</source>
-        <translation type="unfinished">Tutup</translation>
+        <translation>Tutup</translation>
     </message>
 </context>
 <context>
@@ -10227,102 +10228,102 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="231"/>
         <source>Aksara Arch Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara Arch Linux</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="232"/>
         <source>Minimalist &amp; sharp: Arch cyan, fine lines, terminal aesthetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimalis &amp; tajam: sian Arch, garis halus, estetika terminal</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="241"/>
         <source>Aksara elementary OS</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara elementary OS</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="242"/>
         <source>Vibrant colors, 1px fine outlines, distinctive silhouettes and translucent elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Warna cerah, garis luar halus 1px, siluet khas, dan elemen tembus pandang</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="251"/>
         <source>Aksara Rounded</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara Membulat</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="252"/>
         <source>Smooth flowing curves and rounded geometric contours</source>
-        <translation type="unfinished"></translation>
+        <translation>Lengkungan mulus mengalir dan kontur geometris membulat</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="261"/>
         <source>Aksara macOS Big Sur</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara macOS Big Sur</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="262"/>
         <source>Apple macOS modern aesthetic: soft squircle geometry, refined gradients, subtle depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Estetika modern Apple macOS: geometri squircle lembut, gradien halus, kedalaman visual subtil</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="271"/>
         <source>Aksara NPP Windows Vista</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara NPP Windows Vista</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="273"/>
         <source>Windows Vista Aero Glass: bright cyan gradients, translucent reflections, 2006 skeuomorphism</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows Vista Aero Glass: gradien sian cerah, pantulan tembus pandang, skeuomorfisme era 2006</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="282"/>
         <source>Aksara NPP Windows 10</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara NPP Windows 10</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="283"/>
         <source>Segoe MDL2 Assets: flat, clean monochrome, consistent thin strokes, seamless background</source>
-        <translation type="unfinished"></translation>
+        <translation>Aset Segoe MDL2: monokrom datar dan bersih, goresan tipis konsisten, latar belakang mulus</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="292"/>
         <source>Aksara NPP Windows 11</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara NPP Windows 11</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="293"/>
         <source>Segoe Fluent Icons: soft rounded contours, gentle blue accents, modern Mica aesthetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikon Segoe Fluent: kontur lembut membulat, aksen biru anggun, estetika modern Mica</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="302"/>
         <source>Aksara NPP Windows XP</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara NPP Windows XP</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="303"/>
         <source>Windows XP Luna: soft nostalgic blue gradients, rounded corners, glossy glass shine</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows XP Luna: gradien biru nostalgia yang lembut, sudut membulat, kilau kaca mengilap</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="312"/>
         <source>Aksara Ubuntu Yaru</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara Ubuntu Yaru</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="313"/>
         <source>Ubuntu Yaru / Suru design: warm aubergine &amp; orange accents, squircle framing, soft shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Desain Ubuntu Yaru / Suru: aksen terung hangat &amp; oranye, bingkai squircle, bayangan lembut</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="322"/>
         <source>Aksara Vista Aero</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara Vista Aero</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="324"/>
         <source>Glossy and reflective: azure gradients, bright specular highlights, Aero Glass rounded tiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengilap dan reflektif: gradien biru langit, sorotan spekular cerah, ubin membulat Aero Glass</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="333"/>
@@ -10611,21 +10612,21 @@ Kunci: %2</translation>
     <name>ads::CAutoHideTab</name>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockAreaTitleBar</name>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockWidgetTab</name>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Tutup</translation>
+        <translation type="vanished">Tutup</translation>
     </message>
 </context>
 </TS>
