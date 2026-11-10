@@ -353,7 +353,7 @@ Official production binary packages for SparkNotePad v1.4.6 are ready for immedi
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
 
   ```bash
-  sudo dnf install ./sparknotepad-1.4.0-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-1.4.6-1.x86_64.rpm
   ```
 
 ### FreeBSD Build & Desktop Installation (KDE Plasma 6 & XFCE)

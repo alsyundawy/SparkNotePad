@@ -36,9 +36,13 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
 
 #### 🔧 Changed & Improved
 
-- **Canonical 30MB–40MB macOS DMG Packaging**:
+- **Canonical 30MB–40MB macOS DMG Packaging & Qt 6.2 Hardening**:
   - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`).
   - Packaged via canonical native `hdiutil` with custom retina background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
+  - Implemented `scripts/deploy-mac-bundle.sh` with universal `otool` header filter resolving `macdeployqt` parsing errors on modern Xcode 15/16 macOS runners.
+  - Protected Qt plugins and frameworks from over-aggressive stripping, restricting symbol stripping to the main application executable only.
+  - Added early headless `--version` / `-v` interceptor in `src/main.cpp` guaranteeing clean execution without display server initialization.
+  - Fixed MOC preprocessor `#include <QObject>` in `src/widgets/FadingIndicator.cpp`.
 - **Context Menu Noise Reduction**:
   - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
 - **14-Pillar Code Quality & Static Analysis Gates**:
