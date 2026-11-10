@@ -21,6 +21,7 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <QtGlobal>
 #include <QDebug>
 #include <QSettings>
 #include <QSysInfo>
@@ -28,6 +29,7 @@
 #include <QFont>
 #include <QDataStream>
 #include <QDateTime>
+#include <iostream>
 #include <vector>
 #include <string_view>
 #include <algorithm>
@@ -46,6 +48,14 @@ int main(int argc, char *argv[]) {
             "%{message}");
 
         const std::vector<std::string_view> argList(argv + 1, argv + argc);
+        const bool isVersionCheck = std::ranges::any_of(argList, [](std::string_view arg) {
+            return arg == "--version" || arg == "-v";
+        });
+        if (isVersionCheck) {
+            std::cout << "SparkNotePad " << APP_VERSION << '\n';
+            return 0;
+        }
+
         const bool isMultiInstance = std::ranges::any_of(argList, [](std::string_view arg) {
             return arg == "--multi-instance" || arg == "--new-window" || arg == "-m";
         });
@@ -64,6 +74,10 @@ int main(int argc, char *argv[]) {
         // Ensure action icons are natively shown in all menus across macOS, Linux, and Windows
         QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
         QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+
+#ifndef QT_VERSION_CHECK
+#define QT_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
+#endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
