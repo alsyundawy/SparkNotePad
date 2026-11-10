@@ -9,35 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.6] - 2026-11-10
 
-### 🌟 Release: 30 New Modern Toolbar Icon Packs (69 Total Suites), Context Menu Ergonomics, General Preferences Options, WCAG 2.1 Syntax Highlighting Overhaul & Standard 30MB–40MB DMG Packaging
+### 🌟 Release: 41 New Modern Toolbar Icon Packs (69 Total Built-in Suites), Context Menu Ergonomics, General Preferences Options, WCAG 2.1 Syntax Highlighting Overhaul & Standard 30MB–40MB DMG Packaging
 
-SparkNotePad v1.4.6 delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
+SparkNotePad v1.4.6 delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging over version 1.4.5:
 
 #### 🆕 Added
 
-- **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**:
-  - Added 30 high-resolution multi-scale icon packs (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
-    `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+- **41 New Toolbar Icon Packs (69 Total Built-in Multi-Resolution Suites)**:
+  - Multiplied the icon library from 28 packs in v1.4.5 to 69 complete built-in suites (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+    - 11 Thematic Suites: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+    - 30 Modern Suites: `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+  - Pristine Notepad++ Classic clean standard: zero floor drop shadows, halos, gray background tiles, or embossed borders, with 18% breathing margins preventing clipping on Retina displays.
+  - Permanent Dark Toolbar Invariant (`#21252b`) locked across all themes and appearance modes to preserve icon contrast.
 - **Editor Context Menu Ergonomics**:
-  - Added **Paste & Match Style** (`pasteAndMatchStyle`) to strip formatting and match current editor indentation.
-  - Added **Search on Google** (`searchOnGoogle`) to query selected text or word under cursor in default browser.
+  - Added **Paste & Match Style** (`pasteAndMatchStyle`, `Cmd+Alt+Shift+V` / `Ctrl+Shift+V`) to strip external formatting and match current editor indentation.
+  - Added **Search on Google** (`searchOnGoogle`, `Cmd+Alt+G` / `Ctrl+Alt+G`) to query selected text or word under cursor in default system browser.
   - Streamlined case conversion to direct **UPPERCASE** and **lowercase** actions without multi-tier submenus.
 - **General Preferences Options**:
   - Added option to Enable / Disable Character Encoding Auto-detection (`enableEncodingAutoDetection`).
   - Added option to Enable / Disable Save All Confirmation dialog (`enableSaveAllConfirmation`).
 - **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**:
-  - Integrated WCAG 2.1 relative luminance and contrast calculations guaranteeing minimum 4.0:1 contrast ratio across all 70+ themes.
-  - Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE.
+  - Integrated WCAG 2.1 relative luminance and contrast calculations (0.2126*R + 0.7152*G + 0.0722*B) guaranteeing minimum 4.0:1 contrast ratio across all 70+ themes.
+  - High-visibility Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE.
   - Warm golden amber for string escape sequences (`\n`, `\t`, `\xHH`).
-  - Theme-synchronized rounded border box indicator for SmartHighlighter.
+  - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
 
 #### 🔧 Changed & Improved
 
 - **Canonical 30MB–40MB macOS DMG Packaging**:
-  - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins.
-  - Automated verification gate with valid CRC32 checksum and runtime launch test.
+  - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`).
+  - Packaged via canonical native `hdiutil` with custom retina background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
 - **Context Menu Noise Reduction**:
   - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
+- **14-Pillar Code Quality & Static Analysis Gates**:
+  - 100% clean passes on `cppcheck` (171 files, 0 errors, 0 warnings), `clangd`, `clang-tidy`, and `ctest`.
+  - SonarLint compliance: resolved parameter warnings and enforced const correctness.
 
 ---
 
