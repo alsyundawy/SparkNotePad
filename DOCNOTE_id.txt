@@ -2,8 +2,8 @@
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.6 (11 Paket Ikon Toolbar Baru [Total 39 Koleksi], Standar Bersih Notepad++ Classic, Kompresi Aset Lossless, Penguatan Linter 14 Pilar & DMG Rilis Ringan)
-Tanggal Rilis        : 2026-11-09
+Versi Rilis          : 1.4.6 (30 Paket Ikon Toolbar Baru [Total 69 Koleksi], Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & DMG Rilis 30MB–40MB)
+Tanggal Rilis        : 2026-11-10
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
@@ -19,26 +19,30 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.6
 
-SparkNotePad v1.4.6 memperluas kustomisasi visual bilah alat dan standar pengemasan rilis dengan 11 paket ikon baru hasil kurasi profesional, pembersihan total bayangan/halo untuk menyamai standar bersih Notepad++ Classic, kompresi aset PNG tanpa penurunan kualitas (lossless), penguatan linter nol-cacat dengan basis data kompilasi 376-entri, dan pengemasan DMG rilis lokal yang sangat ringan:
+SparkNotePad v1.4.6 menghadirkan peningkatan besar pada kustomisasi visual bilah alat, kenyamanan menu konteks editor, opsi preferensi umum, perombakan pewarnaan sintaksis berstandar WCAG 2.1, serta standardisasi pengemasan macOS DMG 30MB–40MB tanpa bloatware:
 
-1. 11 Paket Ikon Toolbar Baru (Total 39 Koleksi Bawaan):
-   - royal_blue (Royal Blue Aero Glossy), notepad_pro (Notepad Pro Vista 7 Style), pastel (Pastel Modern), fluent_modern (Microsoft Fluent Modern), macos_bigsur_modern (macOS Big Sur Style), dark_neon_pro (Dark Neon Style), macos_glass (macOS Glassmorphism), modern_flat_colorful (Modern Flat & Colorful), glossy_3d_skeuomorphic (Glossy 3D Skeuomorphic), retro_8bit_pixel (Retro 8-Bit Pixel Art), sketchy_doodle (Sketchy Hand-Drawn Doodle).
+1. 30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi Bawaan):
+   - Menambahkan 30 paket ikon modern beresolusi tinggi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64): 01-macos-big-sur, 02-windows-11-fluent, 03-arc-browser-glow, 04-nordic-frost-minimal, 05-dracula-cyber-neon, 06-catppuccin-macchiato, 07-tokyo-night-storm, 08-synthwave-80s, 09-monokai-pro-vivid, 10-solarized-accent, 11-retro-commodore-64, 12-retro-win95-classic, 13-matrix-phosphor-green, 14-gameboy-nostalgia, 15-pixel-dungeon-rpg, 16-claymorphism-3d, 17-skeuomorphic-leather-brass, 18-neu-brutalism-bold, 19-isometric-voxel-3d, 20-origami-paper-fold, 21-cyberpunk-2077-yellow, 22-lofi-aesthetic-grain, 23-vaporwave-pastel-sunset, 24-astronomy-deep-space, 25-botanical-nature-green, 26-blueprint-schematic, 27-chalkboard-handdrawn, 28-gouache-art-paint, 29-stained-glass-mosaic, 30-swiss-minimal-3d.
+   - Bersih dari bayangan lantai, halo abu-abu, dan artefak timbul, mengambang sempurna di atas toolbar gelap permanen (#21252b).
 
-2. Standar Bersih Notepad++ Classic (Bebas Halo & Bayangan Jatuh):
-   - Menghapus seluruh bayangan jatuh lantai, halo oklusi sekitar, ubin latar belakang abu-abu, dan artefak timbul/garis tepi di seluruh 11 paket baru.
-   - Ikon murni terisolasi mengambang bersih di atas bilah alat gelap permanen (#21252b) dengan margin pernapasan 18% untuk mencegah pemotongan tepi.
+2. Penyempurnaan Ergonomi Menu Konteks Klik Kanan:
+   - Menambahkan menu Tempel & Sesuaikan Gaya (Paste & Match Style) untuk menempel teks bersih tanpa format.
+   - Menambahkan menu Cari di Google (Search on Google) langsung dari teks yang diblok atau kata di bawah kursor.
+   - Menyederhanakan konversi huruf menjadi Huruf Besar (UPPERCASE) dan Huruf Kecil (lowercase) langsung tanpa submenu bertingkat, serta membersihkan opsi run/bash yang tidak relevan.
 
-3. Kompresi Aset PNG Lossless & Efisiensi Disk:
-   - Kuantisasi palet octree cepat dengan saluran alfa penuh dan kompresi zlib level 9 pada 1.736 aset ikon, mengurangi jejak disk sebesar 2,17 MB (pengurangan 28,9%).
-   - Mengaktifkan AUTORCC_OPTIONS "--compress;9;--threshold;0" pada CMake untuk kompresi maksimal bundle Qt.
+3. Opsi Baru pada Preferensi Umum:
+   - Pengaturan aktif/nonaktif Deteksi Encoding Otomatis (Auto-detection character encoding).
+   - Pengaturan aktif/nonaktif Konfirmasi Simpan Semua (Save All confirmation dialog).
 
-4. Pengemasan DMG Ringan Standar Ketat (~33MB, Batas Maksimal < 35MB):
-   - Pembersihan framework yang tidak terpakai (QtOpenGL, QtPdf, QtQml, QtQuick, QtVirtualKeyboard) dan plugin redundan namun mempertahankan QtDBus untuk stabilitas QtGui.
-   - Berkas DMG dikemas menggunakan scripts/package-dmg.sh dengan layout .DS_Store (680x440), latar belakang retina, ikon volume kustom, dan checksum CRC32 valid.
+4. Perombakan Mesin Syntax Highlighting & Tema (WCAG 2.1):
+   - Perhitungan luminansi relatif dan rasio kontras otomatis dengan jaminan kontras minimal 4.0:1 pada teks utama di seluruh 70+ tema editor.
+   - Pewarnaan semantik khusus keluarga bahasa (C/C++, Python, Web/HTML/JS/CSS, Markdown H1-H6, SQL, Shell, YAML, dll.).
+   - Lencana Emas Menarik (#FFD700) untuk penanda komentar penting (TODO, FIXME, BUG, HACK, NOTE).
+   - Warna amber hangat untuk urutan karakter escape (\n, \t, \xHH).
 
-5. Penguatan Linter & Peninjauan Kode 14 Pilar:
-   - Sinkronisasi basis data kompilasi 376-entri sehingga clangd, SonarLint, cppcheck, dan ekstensi C++ IDE berjalan dengan 0 eror.
-   - 100% kelulusan trunk check dan ctest.
+5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB):
+   - Mempertahankan integritas binary universal resmi Qt tanpa lipo -thin berlebih, mempertahankan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
+   - Menghasilkan DMG rilis 38MB–39MB dengan tata letak visual kustom .DS_Store, background retina, dan checksum CRC32 valid.
 
 ---
 
@@ -51,10 +55,9 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
 2. Pemberian Tag & Pengelompokan Warna Tab:
    - TabColorManager menyediakan 8 preset warna berstandar aksesibilitas tinggi (Merah, Oranye, Kuning, Hijau, Sian, Biru, Ungu, Magenta) dengan status persisten melalui ApplicationSettings.
 3. Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Ketat POSIX 0600):
-   - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256. Dialog interaktif CrashRecoveryDialog memungkinkan pemulihan selektif saat aplikasi dijalankan kembali.
+   - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256.
 4. Mesin Karakter Escape Pencarian Lanjutan (Extended Search):
    - ExtendedSearchParser memproses \xHH, \dDDD, \0, \b, \f, dan \v pada dialog Cari/Ganti dan Bilah Pencarian Cepat.
-5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa):
-   - Menambahkan lexer native baru: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), dan JSON5 (.json5).
+5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa).
 6. Alur Ekspor Native Markdown / HTML / PDF via QPrinter dan Pandoc.
 7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX).

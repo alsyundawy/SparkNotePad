@@ -220,7 +220,10 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: |
 | **Bilah Alat Gelap Permanen**      | `#mainToolBar` dikunci secara permanen pada latar gelap (`#21252b !important`) di semua tema dan mode tampilan OS                 |         Semua Mode & Tema          |
 | **Editor Default Tipe Media IANA** | Integrasi tipe media resmi IANA (`SparkNotePad-Default-Editor.sh`) mengasosiasikan 100+ ekstensi & MIME standar                   |          Integrasi Sistem          |
-| **Paket DMG Ringan Permanen**      | Paket DMG macOS native tanpa bloatware terjaga pada 30MB–34MB (< 35MB ceiling) dengan tata letak visual `.DS_Store` presisi       | `cmake --build build --target dmg` |
+| **Paket DMG Ringan Permanen**      | Paket DMG macOS native tanpa bloatware terjaga pada 30MB–40MB ceiling dengan tata letak visual `.DS_Store` presisi                | `cmake --build build --target dmg` |
+| **Koleksi 69 Paket Ikon Toolbar**  | 69 koleksi ikon multi-resolusi (16x16–64x64) mencakup gaya klasik desktop, macOS Big Sur, Windows 11, dan paket 3D modern       |   Preferensi >> Themes & Toolbar   |
+| **Ergonomi Menu Konteks Editor**   | Tempel & Cocokkan Format (`Cmd+Alt+Shift+V`), Cari di Google (`Cmd+Alt+G`), dan konversi langsung HURUF BESAR/kecil               |         Menu Konteks Editor        |
+| **Pewarnaan Sintaks Kontras WCAG** | Perhitungan luminansi matematis rasio 4,0:1, lencana emas TODO (`#FFD700`), dan kotak indikator tersinkronisasi                    |             Semua Tema             |
 | **Tumpukan Tab Ditutup**           | Antrean FIFO 50 entri memulihkan posisi kursor, rasio scroll, encoding, lexer bahasa, dan tag warna tab                           |   `Ctrl+Shift+T` / `Cmd+Shift+T`   |
 | **Penandaan Warna & Grup Tab**     | 8 preset warna kontras tinggi dengan garis visual tepi atas dan penyimpanan persisten via QSettings                               |          Menu Konteks Tab          |
 | **Autosave & Pemulihan Crash**     | Snapshot latar belakang 10 detik dengan izin strict POSIX 0600, checksum SHA-256, dan dialog pemulihan interaktif                 |              Otomatis              |
@@ -251,7 +254,7 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Baseline TLS & Mode Air-Gap**    | Menegakkan protokol minimum TLS 1.2+, menonaktifkan pencarian CA di CWD (CVE-2025-14575), dan mode offline 1-klik                 |   Preferensi >> Pengaturan Umum    |
 | **27 Ikon Bilah Alat Monoline**    | Seluruh rangkaian 27 ikon vektor SVG monoline 24x24 HiDPI standar Retina macOS dan desktop Linux                                  |         Bilah Alat & Menu          |
 | **Ergonomi QComboBox Terpadu**     | Standardisasi dropdown pada semua dialog dengan sudut membulat 4px, panah vektor, dan efek highlight tema                         |           Seluruh Dialog           |
-| **Tab Themes & Toolbar**           | 21 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             |   Preferensi >> Themes & Toolbar   |
+| **Tab Themes & Toolbar**           | 69 paket ikon, tata letak kartu dinamis, ukuran multi-DPI (16x16–64x64), dan bilah pratinjau langsung                             |   Preferensi >> Themes & Toolbar   |
 | **Tab Custom Toolbar Config**      | Penyesuai visual bilah alat lengkap dengan pencarian, pengurutan aksi, pemisah, dan hot-reload instan                             |    Preferensi >> Custom Toolbar    |
 | **Menu Editor Standar Desktop**    | Menu standar: Tampilan Hex/Biner di bawah Bandingkan, Restart di menu macOS di atas Quit, menu bersih                             |            Menu Global             |
 | **100% Katalog i18n Dwibahasa**    | Terjemahan standar Bahasa Indonesia (EYD V) dan Bahasa Inggris lengkap untuk 1.924 teks (0 belum selesai)                         |    Preferensi >> Bahasa (Lang)     |
@@ -442,6 +445,27 @@ trunk check -n -j 2
 ## Changelog
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.4.6] — 30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi), Ergonomi Menu Konteks, Tambahan Preferensi, Pewarnaan Sintaks WCAG 2.1 & Kalibrasi Pengemasan DMG 30MB–40MB (2026-11-10)
+
+- **30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi Bawaan)**:
+  - Kurasi 30 paket ikon modern multi-resolusi: `01-macos-big-sur`, `02-windows-11-fluent`, `03-fluent-glass`, `04-dark-neon-pro`, `05-modern-colorful`, `06-metallic-pro`, `07-material-design-3`, `08-neumorphism`, `09-claymorphism`, `10-aurora-gradient`, `11-bento-grid`, `12-cyber-y2k`, `13-glassmorphism-light`, `14-windows-xp`, `15-flat-20-squircle`, `16-techno-blueprint`, `17-pastel-dream`, `18-vaporwave`, `19-neo-brutalism`, `20-monochrome-steel`, `21-deep-space`, `22-liquid-glass`, `23-retro-mac-os-classic`, `24-holographic`, `25-earthy-organic`, `26-ai-generative`, `27-high-tech-carbon`, `28-synthwave-neon`, `29-fluent-acrylic`, `30-swiss-minimal-3d`.
+  - Memperluas pustaka ikon bawaan menjadi 69 paket di resolusi 16x16, 20x20, 24x24, 32x32, 48x48, dan 64x64.
+- **Ergonomi Menu Konteks Editor**:
+  - Menambahkan **Paste & Cocokkan Format** (`pasteAndMatchStyle`) untuk menempelkan teks tanpa format asing sesuai indentasi aktif (`Cmd+Alt+Shift+V` / `Ctrl+Shift+V`).
+  - Menambahkan **Cari di Google** (`searchOnGoogle`) untuk menelusuri teks terseleksi atau kata di kursor langsung ke peramban bawaan (`Cmd+Alt+G` / `Ctrl+Alt+G`).
+  - Menyederhanakan konversi huruf langsung menjadi **HURUF BESAR** dan **huruf kecil** tanpa submenu bertingkat.
+  - Menghapus menu usang Run dan Base64 Encode/Decode dari menu klik kanan editor.
+- **Opsi Baru Preferensi Umum**:
+  - Menambahkan kotak centang sakelar Deteksi Otomatis Enkoding Karakter (`enableEncodingAutoDetection`) di `Preferensi > Pengaturan Umum`.
+  - Menambahkan kotak centang sakelar Dialog Konfirmasi Simpan Semua (`enableSaveAllConfirmation`) di `Preferensi > Pengaturan Umum`.
+- **Peningkatan Pewarnaan Sintaks & Keselamatan Kontras WCAG 2.1**:
+  - Menghitung rasio kontras luminansi matematis minimal 4,0:1 di seluruh 70+ tema editor.
+  - Lencana Emas Visibilitas Tinggi (`#FFD700`) untuk penanda TODO/FIXME, urutan escape warna kuning amber hangat, dan kotak indikator tersinkronisasi tema.
+- **Standar Pengemasan DMG Ringan macOS Kanonikal (30MB–40MB)**:
+  - Pengemasan rilis DMG dikalibrasi presisi antara 30MB dan 40MB (38MB–39MB) dengan mempertahankan seluruh framework Qt dan plugin format gambar.
+- **Penguatan Kualitas Kode 14 Pilar & Audit Linter**:
+  - 100% lulus bersih pada pengujian `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, dan `ctest`.
 
 ### [v1.4.5] — Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar (2026-11-08)
 

@@ -2,9 +2,10 @@
 
 ```text
 ================================================================================
-Release Version     : 1.4.6 (11 New Curated Toolbar Icon Packs, Pristine Notepad++ Classic Clean Standard,
-                      Lossless Asset Compression & Lightweight Release DMG)
-Release Date        : 2026-11-09
+Release Version     : 1.4.6 (30 New Modern Toolbar Icon Packs [69 Total Suites],
+                      Context Menu Ergonomics, General Preferences, WCAG 2.1 Contrast Safety
+                      & Standard 30MB–40MB Lightweight DMG Packaging)
+Release Date        : 2026-11-10
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -23,13 +24,13 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ## 1. Executive Summary: Release v1.4.6
 
-SparkNotePad **v1.4.6** expands the editor's visual customization and packaging standards with 11 new professionally curated toolbar icon packs, comprehensive shadow/emboss eradication to match the pristine Notepad++ (Classic) gold standard, lossless PNG asset optimization, and strict bloatware-free DMG release packaging:
+SparkNotePad **v1.4.6** delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
 
-- **11 New Professionally Curated Toolbar Icon Packs (39 Built-in Suites Total)**: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
-- **Pristine Icon Sanitization Matching Notepad++ (Classic)**: Stripped all drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs, guaranteeing pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`) with 18% breathing margins.
-- **Lossless PNG Asset Optimization**: Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
-- **Strict Bloatware-Free Lightweight DMG Standard**: Pruned unused `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability; packaged `SparkNotePad-v1.4.6-x64.dmg` strictly within the 30MB–34MB target (< 35MB ceiling).
-- **Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate**: Synchronized 376-entry compilation database eradicating missing include and symbol diagnostics across clangd, SonarLint, and cppcheck; verified 100% clean passes on `trunk check`, `lint-check.sh`, and `ctest`.
+- **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**: Added 30 high-resolution multi-scale icon packs (16x16, 20x20, 24x24, 32x32, 48x48, 64x64): `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`. Floating cleanly on the permanent dark toolbar (`#21252b`).
+- **Editor Context Menu Ergonomics**: Added **Paste & Match Style** (`pasteAndMatchStyle`) to strip formatting and match editor indentation. Added **Search on Google** (`searchOnGoogle`) to query selected text in default browser. Streamlined case conversion to direct **UPPERCASE** and **lowercase** actions without multi-tier submenus.
+- **General Preferences Options**: Added option to Enable / Disable Character Encoding Auto-detection (`enableEncodingAutoDetection`) and Save All Confirmation dialog (`enableSaveAllConfirmation`).
+- **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**: Integrated WCAG 2.1 relative luminance and contrast calculations guaranteeing minimum 4.0:1 contrast ratio across all 70+ themes. Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE. Warm golden amber for string escape sequences (`\n`, `\t`, `\xHH`).
+- **Standard 30MB–40MB Lightweight macOS DMG Packaging**: Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`). Automated verification gate with valid CRC32 checksum and runtime launch test.
 
 ---
 

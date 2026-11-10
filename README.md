@@ -220,7 +220,10 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------: |
 | **Permanent Dark Mode Toolbar**     | `#mainToolBar` permanently locked to dark background (`#21252b !important`) across all themes and light/dark modes                    |         All Modes & Themes         |
 | **IANA Media Types Default Editor** | Official IANA Media Types integration (`SparkNotePad-Default-Editor.sh` & Linux scripts) associating 100+ standard extensions & MIMEs |         System Integration         |
-| **Lightweight DMG Packaging**       | Zero-bloat native macOS DMG packaging strictly maintained at 30MB–34MB (< 35MB ceiling) with pre-baked `.DS_Store` layout             | `cmake --build build --target dmg` |
+| **Lightweight DMG Packaging**       | Zero-bloat native macOS DMG packaging strictly maintained at 30MB–40MB ceiling with pre-baked `.DS_Store` layout                       | `cmake --build build --target dmg` |
+| **69 Toolbar Icon Packs Suite**     | 69 built-in multi-resolution icon packs (16x16–64x64) spanning classic desktop, macOS Big Sur, Windows 11, and modern 3D packs       |  Preferences >> Themes & Toolbar   |
+| **Editor Context Menu Ergonomics**  | Paste & Match Style (`Cmd+Alt+Shift+V`), Search on Google (`Cmd+Alt+G`), direct UPPER/lowercase conversions                           |         Editor Context M.          |
+| **WCAG 2.1 Contrast Highlighting**  | Mathematical luminance calculation guaranteeing 4.0:1 contrast, Gold Badges (`#FFD700`) for TODOs, and synchronized indicator box    |             All Themes             |
 | **Reopen Closed Tab Stack**         | 50-entry FIFO stack restoring caret position, line ratio, encoding, language lexer, and tab color tags                                |   `Ctrl+Shift+T` / `Cmd+Shift+T`   |
 | **Tab Color Tagging & Grouping**    | 8 accessible high-contrast color presets with visual tab borders and persistent storage via QSettings                                 |          Tab Context Menu          |
 | **Autosave & Crash Recovery**       | 10-second background snapshots with strict POSIX 0600 permissions, SHA-256 validation, and interactive restore dialog                 |             Automatic              |
@@ -251,7 +254,7 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | **Strict TLS & Air-Gap Mode**       | Enforces global TLS 1.2+ baseline, disables CWD cert lookup (CVE-2025-14575), and provides 1-click air-gap                            |       Preferences >> General       |
 | **27 Monoline Vector Icons**        | Complete suite of 24x24 high-DPI monoline vector SVGs matching modern macOS Retina and Linux desktop styling                          |          Toolbar & Menus           |
 | **Unified QComboBox Ergonomics**    | Polished dropdown styling across all dialogs with 4px rounded borders, vector arrows, and hover highlights                            |            All Dialogs             |
-| **Themes & Toolbar Tab**            | 23-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                         |  Preferences >> Themes & Toolbar   |
+| **Themes & Toolbar Tab**            | 69-pack icon suite, modern card layout, dynamic sizing (16x16–64x64), and live preview strip in dedicated tab                         |  Preferences >> Themes & Toolbar   |
 | **Custom Toolbar Config Tab**       | Embedded GUI toolbar customizer with search filter, action reordering, separator insertion, and live hot-reload                       |   Preferences >> Custom Toolbar    |
 | **Desktop Editor Menus Format**     | Standard menu hierarchy: Hex/Binary below Compare, macOS app menu Restart above Quit, clean View menu                                 |            Global Menus            |
 | **100% Bilingual i18n Catalogs**    | Official standard Indonesian (EYD V) and English translations across 1,924 UI strings and dialogs (0 unfinished)                      |      Preferences >> Language       |
@@ -442,6 +445,27 @@ trunk check -n -j 2
 ## Changelog
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.4.6] — 30 New Modern Toolbar Icon Packs (69 Total), Context Menu Ergonomics, Preferences Additions, WCAG 2.1 Syntax Highlighting & Calibrated 30MB–40MB DMG Packaging (2026-11-10)
+
+- **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**:
+  - Curated 30 high-fidelity modern multi-resolution icon packs: `01-macos-big-sur`, `02-windows-11-fluent`, `03-fluent-glass`, `04-dark-neon-pro`, `05-modern-colorful`, `06-metallic-pro`, `07-material-design-3`, `08-neumorphism`, `09-claymorphism`, `10-aurora-gradient`, `11-bento-grid`, `12-cyber-y2k`, `13-glassmorphism-light`, `14-windows-xp`, `15-flat-20-squircle`, `16-techno-blueprint`, `17-pastel-dream`, `18-vaporwave`, `19-neo-brutalism`, `20-monochrome-steel`, `21-deep-space`, `22-liquid-glass`, `23-retro-mac-os-classic`, `24-holographic`, `25-earthy-organic`, `26-ai-generative`, `27-high-tech-carbon`, `28-synthwave-neon`, `29-fluent-acrylic`, `30-swiss-minimal-3d`.
+  - Expanded built-in icon repository to 69 distinct packs across 16x16, 20x20, 24x24, 32x32, 48x48, and 64x64 resolutions.
+- **Editor Context Menu Ergonomics**:
+  - Added **Paste & Match Style** (`pasteAndMatchStyle`) to strip formatting and match current indentation level (`Cmd+Alt+Shift+V` / `Ctrl+Shift+V`).
+  - Added **Search on Google** (`searchOnGoogle`) to query selected text or word under cursor in system browser (`Cmd+Alt+G` / `Ctrl+Alt+G`).
+  - Streamlined case conversions directly to **UPPERCASE** and **lowercase**, eliminating nested menus.
+  - Purged obsolete legacy Run and Base64 Decode/Encode actions from editor right-click menu.
+- **General Preferences Additions**:
+  - Added toggle checkbox for Character Encoding Auto-detection (`enableEncodingAutoDetection`) in `Preferences > General`.
+  - Added toggle checkbox for Save All Confirmation dialog (`enableSaveAllConfirmation`) in `Preferences > General`.
+- **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**:
+  - Implemented mathematical luminance calculation guaranteeing 4.0:1 contrast ratio across all 70+ editor themes.
+  - High-visibility Gold Badges (`#FFD700`) for TODO/FIXME markers, warm golden amber escape sequences, and theme-synchronized indicator box.
+- **Canonical 30MB–40MB Lightweight macOS DMG Standard**:
+  - Calibrated DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving Qt frameworks, image plugins, and pre-baked `.DS_Store` layout.
+- **14-Pillar Code Quality & Linter Hardening**:
+  - 100% clean passes on `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, and `ctest`.
 
 ### [v1.4.5] — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening (2026-11-08)
 
