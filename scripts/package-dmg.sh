@@ -96,9 +96,12 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboard.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/networkinformation/libqapplenetworkinformation.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqjpeg.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqicns.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib" \
@@ -115,8 +118,11 @@ if [[ -d "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" 
 	fi
 fi
 
-# Strip local symbols from main executable only (per AGENTS.md Rule 3; never strip Qt plugins/frameworks)
+# Ensure @executable_path/../Frameworks LC_RPATH exists and strip main executable only (per AGENTS.md Rule 3)
 if [[ -f "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" ]]; then
+	if ! otool -l "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null | grep -q "@executable_path/../Frameworks"; then
+		install_name_tool -add_rpath "@executable_path/../Frameworks" "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+	fi
 	strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
 fi
 
@@ -170,7 +176,7 @@ fi
 echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
-# Strict size gate: must remain between 28MB and 40MB without bloatware
+# Strict size gate: must remain between 30MB and 40MB without bloatware
 DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
 MIN_ALLOWED_BYTES=31457280 # 30 MB (31,457,280 bytes) per AGENTS.md Rule 3 floor
 MAX_ALLOWED_BYTES=41943040 # 40 MB (41,943,040 bytes) per AGENTS.md Rule 3 ceiling

@@ -37,9 +37,10 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
 #### 🔧 Changed & Improved
 
 - **Canonical 30MB–40MB macOS DMG Packaging & Qt 6.2 Hardening**:
-  - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`).
+  - Calibrated release DMG packaging to 36MB–39MB across Qt 6.2–6.12 while retaining universal Qt libraries and core rendering plugins (`libqsvg`, `libqsvgicon`, `libqgif`, `libqico`).
   - Packaged via canonical native `hdiutil` with custom retina background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
-  - Implemented `scripts/deploy-mac-bundle.sh` with universal `otool` header filter resolving `macdeployqt` parsing errors on modern Xcode 15/16 macOS runners.
+  - Implemented `scripts/deploy-mac-bundle.sh` with architecture-aware `otool` header normalization and duplicate-slice deduplication resolving Qt 6.2 `macdeployqt` parsing errors on modern Xcode 15/16 macOS runners.
+  - Configured `INSTALL_RPATH "@executable_path/../Frameworks"` in `cmake/PackagingMac.cmake` and enforced `LC_RPATH` + `@rpath` linkage verification in `scripts/deploy-mac-bundle.sh`.
   - Protected Qt plugins and frameworks from over-aggressive stripping, restricting symbol stripping to the main application executable only.
   - Added early headless `--version` / `-v` interceptor in `src/main.cpp` guaranteeing clean execution without display server initialization.
   - Fixed MOC preprocessor `#include <QObject>` in `src/widgets/FadingIndicator.cpp`.
