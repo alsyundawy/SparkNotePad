@@ -109,7 +109,29 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
 
-strip "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+# Determine target architecture for Mach-O thinning
+TARGET_ARCH="x86_64"
+if [[ "${DMG_OUTPUT}" =~ (arm64|aarch64) ]]; then
+	TARGET_ARCH="arm64"
+elif [[ "${DMG_OUTPUT}" =~ (x64|x86_64) ]]; then
+	TARGET_ARCH="x86_64"
+elif [[ "$(uname -m)" == "arm64" ]]; then
+	TARGET_ARCH="arm64"
+fi
+
+# Thin universal Mach-O binaries to target architecture and strip local symbols
+while IFS= read -r -d '' bin_file; do
+	if [[ -f "${bin_file}" && ! -L "${bin_file}" ]]; then
+		file_desc="$(file "${bin_file}" 2>/dev/null || true)"
+		if [[ "${file_desc}" == *"Mach-O"* ]]; then
+			if [[ "${file_desc}" == *"x86_64"* && "${file_desc}" == *"arm64"* ]]; then
+				lipo -thin "${TARGET_ARCH}" "${bin_file}" -output "${bin_file}.thin" 2>/dev/null && mv "${bin_file}.thin" "${bin_file}" || true
+			fi
+			strip -x "${bin_file}" 2>/dev/null || true
+		fi
+	fi
+done < <(find "${STAGE_DIR}/SparkNotePad.app" -type f -print0)
+
 codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
 # Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
