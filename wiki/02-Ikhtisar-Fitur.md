@@ -131,14 +131,16 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
 
 ---
 
-## 13. Peningkatan Visual, Ikonografi & Standar Rilis v1.4.6
+## 13. Ikonografi Modern, Ergonomi Menu Konteks, Pewarnaan Sintaks & Standar Rilis v1.4.6
 
-- **11 Paket Ikon Toolbar Baru (Total 39 Koleksi Bawaan)**: Menambahkan `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
-- **Standar Bersih Notepad++ Classic**: Menghapus seluruh bayangan jatuh lantai, halo sekitar, ubin abu-abu, dan garis timbul pada seluruh paket baru.
-- **Bilah Alat Gelap Permanen**: Latar belakang `#21252b` dipertahankan di seluruh tema untuk menjaga kontras ikon.
-- **Kompresi Aset PNG Lossless**: Pengurangan ukuran disk sebesar 28,9% pada 1.736 ikon PNG.
-- **Penguatan Linter & Peninjauan Kode 14 Pilar**: Basis data kompilasi 376-entri menyelaraskan clangd, SonarLint, cppcheck, dan ekstensi C++ tanpa eror diagnostik.
-- **Standar Pengemasan DMG Ringan Bebas Bloatware**: DMG lokal stabil strictly pada ~33MB (< 35MB).
+- **30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi Bawaan)**: Menambahkan 30 koleksi ikon modern (16x16 hingga 64x64): `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+- **Ergonomi Menu Konteks Editor**: Menambahkan **Paste & Cocokkan Format** (`pasteAndMatchStyle`) dan **Cari di Google** (`searchOnGoogle`). Konversi huruf disederhanakan langsung menjadi **HURUF BESAR** dan **huruf kecil**.
+- **Opsi Baru Preferensi Umum**: Sakelar untuk Deteksi Otomatis Enkoding Karakter (`enableEncodingAutoDetection`) dan Dialog Konfirmasi Simpan Semua (`enableSaveAllConfirmation`).
+- **Peningkatan Pewarnaan Sintaks & Keselamatan Kontras WCAG 2.1**: Perhitungan luminansi matematis memastikan kontras teks minimal 4,0:1 di seluruh 70+ tema. Lencana Emas Visibilitas Tinggi (`#FFD700`) untuk penanda TODO/FIXME, urutan escape kuning amber hangat, dan indikator kotak batas melengkung tersinkronisasi tema.
+- **Standar DMG Ringan macOS Kanonikal (30MB–40MB)**: Pengemasan rilis DMG dikalibrasi presisi pada 38MB–39MB dengan mempertahankan pustaka universal Qt dan plugin format gambar standar.
+- **Standar Bersih Notepad++ Classic**: Menghapus seluruh bayangan jatuh, halo sekitar, ubin abu-abu, dan artefak tepian pada seluruh paket baru.
+- **Bilah Alat Gelap Permanen**: Latar belakang `#21252b` dipertahankan di seluruh mode dan tema untuk memastikan kontras ikon yang tajam.
+- **Penguatan Linter & Peninjauan Kode Bebas Defek (14 Pilar)**: 100% lulus bersih pada pengujian `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, dan `ctest`.
 
 ---
 

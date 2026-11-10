@@ -1,7 +1,7 @@
-# SparkNotePad v1.4.6 — 11 New Curated Toolbar Icon Packs (39 Total), Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression & Lightweight Release DMG
+# SparkNotePad v1.4.6 — 30 New Modern Toolbar Icon Packs (69 Total), Context Menu Ergonomics, General Preferences, WCAG 2.1 Contrast Safety & Standard 30MB–40MB DMG Packaging
 
 **Release Version:** `v1.4.6`<br/>
-**Release Date:** 2026-11-09<br/>
+**Release Date:** 2026-11-10<br/>
 **Maintainer:** [HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)](https://github.com/alsyundawy) — [ALSYUNDAWY IT SOLUTION](https://alsyundawy.com)<br/>
 **Core Editing Engine:** Scintilla 5.6.9 (Vendored Official) & Lexilla 5.5.5 (Vendored Official)<br/>
 **Embedded Lua Core:** Sandboxed Lua 5.5.1 (Official Source)<br/>
@@ -13,38 +13,35 @@
 
 ## ⚡ Executive Summary
 
-SparkNotePad **v1.4.6** expands the editor's visual customization and packaging standards with 11 new professionally curated toolbar icon packs, comprehensive shadow/emboss eradication to match the pristine Notepad++ (Classic) gold standard, lossless PNG asset optimization, and strict bloatware-free DMG release packaging:
+SparkNotePad **v1.4.6** delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
 
-1. **11 New Professionally Curated Toolbar Icon Packs (39 Built-in Suites Total)**:
-   - **`royal_blue` (Royal Blue Aero Glossy)**: Rich royal blue skeuomorphic glass desktop iconography.
-   - **`notepad_pro` (Notepad Pro Vista 7 Style)**: Modern elegant Vista/7 aero translucent iconography.
-   - **`pastel` (Pastel Modern)**: Friendly, warm minimalist pastel color palette.
-   - **`fluent_modern` (Microsoft Fluent Modern)**: Microsoft Windows 11 Fluent 3D layered iconography.
-   - **`macos_bigsur_modern` (macOS Big Sur Style)**: Sleek macOS squircle aesthetics with vibrant accents.
-   - **`dark_neon_pro` (Dark Neon Style)**: High-contrast cyberpunk neon glowing on dark palettes.
-   - **`macos_glass` (macOS Glassmorphism)**: Translucent frosted glass aero acrylic aesthetic.
-   - **`modern_flat_colorful` (Modern Flat & Colorful)**: Clean vector flat style with high-contrast distinct colors.
-   - **`glossy_3d_skeuomorphic` (Glossy 3D Skeuomorphic)**: Tactile tactile volumetric glossy 3D clay aesthetic.
-   - **`retro_8bit_pixel` (Retro 8-Bit Pixel Art)**: Pixel-perfect retro arcade gaming iconography.
-   - **`sketchy_doodle` (Sketchy Hand-Drawn Doodle)**: Expressive hand-drawn artistic doodle iconography.
+1. **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**:
+   - Added 30 high-resolution multi-scale icon packs (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+     `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+   - Guaranteed pure isolated icon graphics floating cleanly on the permanent dark toolbar (`#21252b`) with 18% breathing margins preventing edge clipping.
 
-2. **Pristine Icon Sanitization Matching Notepad++ (Classic)**:
-   - Systematically removed all floor drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs.
-   - Guaranteed pure isolated icon graphics floating cleanly on the permanent dark toolbar (`#21252b`).
-   - Applied an 18% breathing margin across all multi-resolution PNGs (16x16, 20x20, 24x24, 32x32, 48x48, 64x64) ensuring zero edge clipping and zero dirty perimeter pixels.
+2. **Editor Context Menu Ergonomics**:
+   - Added **Paste & Match Style** (`pasteAndMatchStyle`) to strip formatting and match current editor indentation.
+   - Added **Search on Google** (`searchOnGoogle`) to directly query selected text or word under cursor in default browser.
+   - Streamlined case conversion to direct **UPPERCASE** and **lowercase** actions without multi-tier submenus.
+   - Removed cluttered Run and Bash encode/decode actions from right-click context menu.
 
-3. **Lossless PNG Asset Optimization & Footprint Minimization**:
-   - Executed fast octree palette quantization with full alpha channel preservation and zlib level 9 compression across 1,736 PNG icon assets.
-   - Reduced icon pack disk footprint by 2.17 MB (28.9% reduction) with zero loss in visual fidelity.
-   - Enabled `AUTORCC_OPTIONS "--compress;9;--threshold;0"` in `src/CMakeLists.txt` for maximum compile-time compression of Qt resource bundles.
+3. **General Preferences Additions**:
+   - Added option to Enable / Disable Character Encoding Auto-detection (`enableEncodingAutoDetection`).
+   - Added option to Enable / Disable Save All Confirmation dialog (`enableSaveAllConfirmation`).
 
-4. **Strict Bloatware-Free Lightweight DMG Standard (~33MB, < 35MB Ceiling)**:
-   - Enforced permanent DMG size constraint strictly between 30MB and 34MB (hard ceiling 35MB / 36,700,160 bytes).
-   - Pruned unused heavy frameworks (`QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`) and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability.
-   - Packaged `SparkNotePad-v1.4.6-x64.dmg` strictly within the **30MB–34MB** target (< 35MB ceiling) with full presentation assets: pre-baked `.DS_Store` (680x440), `.background/dmg-background.png`, custom volume icon, and verified CRC32 checksum.
+4. **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**:
+   - Integrated WCAG 2.1 relative luminance and contrast calculations guaranteeing minimum 4.0:1 contrast ratio across all 70+ themes.
+   - Semantic styling tailored to language families (C/C++, Python, Web/HTML/JS/CSS, Markdown progressive H1-H6, SQL, Shell, YAML, etc.).
+   - Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE.
+   - Warm golden amber for string escape sequences (`\n`, `\t`, `\xHH`).
+   - Theme-synchronized rounded border box indicator for SmartHighlighter.
 
-5. **Static Analysis, MegaLinter & Code Quality Gates**:
-   - `clangd --check` passing with 0 errors across codebase.
-   - `actionlint` passing on all GitHub Actions workflows with zero warnings.
-   - `shellcheck` passing on all automation and packaging scripts under GNU Bash 5.3+ strict mode.
-   - 100% unit test pass rate across all 8 test suites (including `TestToolbarIconManager` verifying 39 icon packs).
+5. **Canonical 30MB–40MB macOS DMG Packaging**:
+   - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`).
+   - Automated verification gate with valid CRC32 checksum, custom retina background, layout preset `.DS_Store` (680x440), and runtime launch test.
+
+6. **Static Analysis & 14-Pillar Code Quality Gates**:
+   - `cppcheck`: 171/171 files checked across `src/*.cpp` and `src/*/*.cpp` with 0 errors and 0 warnings.
+   - `clangd --check` and `clang-tidy` passing cleanly with zero compiler diagnostics.
+   - 100% unit test pass rate (`SparkNotePadUnitTests`).

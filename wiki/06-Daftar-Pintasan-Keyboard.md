@@ -48,6 +48,8 @@ SparkNotePad memiliki arsitektur palet cepat dua mode yang terinspirasi oleh lin
 | **Potong (Cut)**                 | `Cmd+X`                 | `Ctrl+X`                  | Memotong teks yang dipilih ke papan klip (_clipboard_)  |
 | **Salin (Copy)**                 | `Cmd+C`                 | `Ctrl+C`                  | Menyalin teks yang dipilih ke papan klip                |
 | **Tempel (Paste)**               | `Cmd+V`                 | `Ctrl+V`                  | Menempelkan teks dari papan klip pada posisi kursor     |
+| **Tempel & Cocokkan Format**     | `Cmd+Alt+Shift+V`       | `Ctrl+Shift+V`            | Menempelkan teks tanpa format asing sesuai indentasi    |
+| **Cari di Google**               | `Cmd+Alt+G`             | `Ctrl+Alt+G`              | Mencari teks yang disorot atau di kursor pada Google    |
 | **Pilih Semua (Select All)**     | `Cmd+A`                 | `Ctrl+A`                  | Memilih seluruh teks di dalam dokumen                   |
 | **Duplikasi Baris / Seleksi**    | `Cmd+D`                 | `Ctrl+D`                  | Menduplikasi baris aktif atau teks yang disorot         |
 | **Hapus Baris**                  | `Cmd+Shift+K`           | `Ctrl+Shift+K`            | Menghapus baris aktif tanpa menyalin ke clipboard       |

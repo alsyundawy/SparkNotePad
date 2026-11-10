@@ -14,8 +14,8 @@ DOCNOTE_ID = """# Catatan Rilis SparkNotePad — v1.4.6 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.6 (11 Paket Ikon Toolbar Baru [Total 39 Koleksi], Standar Bersih Notepad++ Classic, Kompresi Aset Lossless, Penguatan Linter 14 Pilar & DMG Rilis Ringan)
-Tanggal Rilis        : 2026-11-09
+Versi Rilis          : 1.4.6 (30 Paket Ikon Toolbar Baru [Total 69 Koleksi], Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & DMG Rilis 30MB–40MB)
+Tanggal Rilis        : 2026-11-10
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
@@ -31,26 +31,30 @@ Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Ringkasan Eksekutif (Bahasa Indonesia): Rilis v1.4.6
 
-SparkNotePad v1.4.6 memperluas kustomisasi visual bilah alat dan standar pengemasan rilis dengan 11 paket ikon baru hasil kurasi profesional, pembersihan total bayangan/halo untuk menyamai standar bersih Notepad++ Classic, kompresi aset PNG tanpa penurunan kualitas (lossless), penguatan linter nol-cacat dengan basis data kompilasi 376-entri, dan pengemasan DMG rilis lokal yang sangat ringan:
+SparkNotePad v1.4.6 menghadirkan peningkatan besar pada kustomisasi visual bilah alat, kenyamanan menu konteks editor, opsi preferensi umum, perombakan pewarnaan sintaksis berstandar WCAG 2.1, serta standardisasi pengemasan macOS DMG 30MB–40MB tanpa bloatware:
 
-1. 11 Paket Ikon Toolbar Baru (Total 39 Koleksi Bawaan):
-   - royal_blue (Royal Blue Aero Glossy), notepad_pro (Notepad Pro Vista 7 Style), pastel (Pastel Modern), fluent_modern (Microsoft Fluent Modern), macos_bigsur_modern (macOS Big Sur Style), dark_neon_pro (Dark Neon Style), macos_glass (macOS Glassmorphism), modern_flat_colorful (Modern Flat & Colorful), glossy_3d_skeuomorphic (Glossy 3D Skeuomorphic), retro_8bit_pixel (Retro 8-Bit Pixel Art), sketchy_doodle (Sketchy Hand-Drawn Doodle).
+1. 30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi Bawaan):
+   - Menambahkan 30 paket ikon modern beresolusi tinggi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64): 01-macos-big-sur, 02-windows-11-fluent, 03-arc-browser-glow, 04-nordic-frost-minimal, 05-dracula-cyber-neon, 06-catppuccin-macchiato, 07-tokyo-night-storm, 08-synthwave-80s, 09-monokai-pro-vivid, 10-solarized-accent, 11-retro-commodore-64, 12-retro-win95-classic, 13-matrix-phosphor-green, 14-gameboy-nostalgia, 15-pixel-dungeon-rpg, 16-claymorphism-3d, 17-skeuomorphic-leather-brass, 18-neu-brutalism-bold, 19-isometric-voxel-3d, 20-origami-paper-fold, 21-cyberpunk-2077-yellow, 22-lofi-aesthetic-grain, 23-vaporwave-pastel-sunset, 24-astronomy-deep-space, 25-botanical-nature-green, 26-blueprint-schematic, 27-chalkboard-handdrawn, 28-gouache-art-paint, 29-stained-glass-mosaic, 30-swiss-minimal-3d.
+   - Bersih dari bayangan lantai, halo abu-abu, dan artefak timbul, mengambang sempurna di atas toolbar gelap permanen (#21252b).
 
-2. Standar Bersih Notepad++ Classic (Bebas Halo & Bayangan Jatuh):
-   - Menghapus seluruh bayangan jatuh lantai, halo oklusi sekitar, ubin latar belakang abu-abu, dan artefak timbul/garis tepi di seluruh 11 paket baru.
-   - Ikon murni terisolasi mengambang bersih di atas bilah alat gelap permanen (#21252b) dengan margin pernapasan 18% untuk mencegah pemotongan tepi.
+2. Penyempurnaan Ergonomi Menu Konteks Klik Kanan:
+   - Menambahkan menu Tempel & Sesuaikan Gaya (Paste & Match Style) untuk menempel teks bersih tanpa format.
+   - Menambahkan menu Cari di Google (Search on Google) langsung dari teks yang diblok atau kata di bawah kursor.
+   - Menyederhanakan konversi huruf menjadi Huruf Besar (UPPERCASE) dan Huruf Kecil (lowercase) langsung tanpa submenu bertingkat, serta membersihkan opsi run/bash yang tidak relevan.
 
-3. Kompresi Aset PNG Lossless & Efisiensi Disk:
-   - Kuantisasi palet octree cepat dengan saluran alfa penuh dan kompresi zlib level 9 pada 1.736 aset ikon, mengurangi jejak disk sebesar 2,17 MB (pengurangan 28,9%).
-   - Mengaktifkan AUTORCC_OPTIONS "--compress;9;--threshold;0" pada CMake untuk kompresi maksimal bundle Qt.
+3. Opsi Baru pada Preferensi Umum:
+   - Pengaturan aktif/nonaktif Deteksi Encoding Otomatis (Auto-detection character encoding).
+   - Pengaturan aktif/nonaktif Konfirmasi Simpan Semua (Save All confirmation dialog).
 
-4. Pengemasan DMG Ringan Standar Ketat (~33MB, Batas Maksimal < 35MB):
-   - Pembersihan framework yang tidak terpakai (QtOpenGL, QtPdf, QtQml, QtQuick, QtVirtualKeyboard) dan plugin redundan namun mempertahankan QtDBus untuk stabilitas QtGui.
-   - Berkas DMG dikemas menggunakan scripts/package-dmg.sh dengan layout .DS_Store (680x440), latar belakang retina, ikon volume kustom, dan checksum CRC32 valid.
+4. Perombakan Mesin Syntax Highlighting & Tema (WCAG 2.1):
+   - Perhitungan luminansi relatif dan rasio kontras otomatis dengan jaminan kontras minimal 4.0:1 pada teks utama di seluruh 70+ tema editor.
+   - Pewarnaan semantik khusus keluarga bahasa (C/C++, Python, Web/HTML/JS/CSS, Markdown H1-H6, SQL, Shell, YAML, dll.).
+   - Lencana Emas Menarik (#FFD700) untuk penanda komentar penting (TODO, FIXME, BUG, HACK, NOTE).
+   - Warna amber hangat untuk urutan karakter escape (\\n, \\t, \\xHH).
 
-5. Penguatan Linter & Peninjauan Kode 14 Pilar:
-   - Sinkronisasi basis data kompilasi 376-entri sehingga clangd, SonarLint, cppcheck, dan ekstensi C++ IDE berjalan dengan 0 eror.
-   - 100% kelulusan trunk check dan ctest.
+5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB):
+   - Mempertahankan integritas binary universal resmi Qt tanpa lipo -thin berlebih, mempertahankan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
+   - Menghasilkan DMG rilis 38MB–39MB dengan tata letak visual kustom .DS_Store, background retina, dan checksum CRC32 valid.
 
 ---
 
@@ -63,11 +67,10 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
 2. Pemberian Tag & Pengelompokan Warna Tab:
    - TabColorManager menyediakan 8 preset warna berstandar aksesibilitas tinggi (Merah, Oranye, Kuning, Hijau, Sian, Biru, Ungu, Magenta) dengan status persisten melalui ApplicationSettings.
 3. Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Ketat POSIX 0600):
-   - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256. Dialog interaktif CrashRecoveryDialog memungkinkan pemulihan selektif saat aplikasi dijalankan kembali.
+   - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256.
 4. Mesin Karakter Escape Pencarian Lanjutan (Extended Search):
    - ExtendedSearchParser memproses \\xHH, \\dDDD, \\0, \\b, \\f, dan \\v pada dialog Cari/Ganti dan Bilah Pencarian Cepat.
-5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa):
-   - Menambahkan lexer native baru: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), dan JSON5 (.json5).
+5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa).
 6. Alur Ekspor Native Markdown / HTML / PDF via QPrinter dan Pandoc.
 7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX).
 """
@@ -76,8 +79,8 @@ DOCNOTE_EN = """# SparkNotePad Release DocNote — v1.4.6 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.4.6 (11 New Curated Toolbar Icon Packs [39 Total Suites], Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression, 14-Pillar Linter Hardening & Lightweight Release DMG)
-Release Date        : 2026-11-09
+Release Version     : 1.4.6 (30 New Modern Toolbar Icon Packs [69 Total Suites], Context Menu Ergonomics, General Preferences, WCAG 2.1 Syntax Highlighting Overhaul & 30MB–40MB Standard DMG)
+Release Date        : 2026-11-10
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -94,26 +97,30 @@ License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ## 1. Executive Summary (English): Release v1.4.6
 
-SparkNotePad v1.4.6 expands toolbar visual customization and packaging standards with 11 new professionally curated toolbar icon packs, full shadow/halo elimination matching the pristine Notepad++ Classic clean standard, lossless PNG asset compression, zero-defect linter hardening with a 376-entry compilation database, and strict lightweight DMG release packaging:
+SparkNotePad v1.4.6 delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
 
-1. 11 New Curated Toolbar Icon Packs (39 Built-in Suites Total):
-   - Added royal_blue (Royal Blue Aero Glossy), notepad_pro (Notepad Pro Vista 7 Style), pastel (Pastel Modern), fluent_modern (Microsoft Fluent Modern), macos_bigsur_modern (macOS Big Sur Style), dark_neon_pro (Dark Neon Style), macos_glass (macOS Glassmorphism), modern_flat_colorful (Modern Flat & Colorful), glossy_3d_skeuomorphic (Glossy 3D Skeuomorphic), retro_8bit_pixel (Retro 8-Bit Pixel Art), sketchy_doodle (Sketchy Hand-Drawn Doodle).
+1. 30 New Modern Toolbar Icon Packs (69 Built-in Suites Total):
+   - Added 30 high-resolution curated modern icon packs (16x16, 20x20, 24x24, 32x32, 48x48, 64x64): 01-macos-big-sur, 02-windows-11-fluent, 03-arc-browser-glow, 04-nordic-frost-minimal, 05-dracula-cyber-neon, 06-catppuccin-macchiato, 07-tokyo-night-storm, 08-synthwave-80s, 09-monokai-pro-vivid, 10-solarized-accent, 11-retro-commodore-64, 12-retro-win95-classic, 13-matrix-phosphor-green, 14-gameboy-nostalgia, 15-pixel-dungeon-rpg, 16-claymorphism-3d, 17-skeuomorphic-leather-brass, 18-neu-brutalism-bold, 19-isometric-voxel-3d, 20-origami-paper-fold, 21-cyberpunk-2077-yellow, 22-lofi-aesthetic-grain, 23-vaporwave-pastel-sunset, 24-astronomy-deep-space, 25-botanical-nature-green, 26-blueprint-schematic, 27-chalkboard-handdrawn, 28-gouache-art-paint, 29-stained-glass-mosaic, 30-swiss-minimal-3d.
+   - Clean, isolated iconography floating on the permanent dark toolbar (#21252b) with 18% breathing margins preventing clipping.
 
-2. Pristine Notepad++ Classic Clean Standard (Zero Halos & Drop Shadows):
-   - Stripped all floor drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs.
-   - Pure isolated graphics floating cleanly on the permanent dark toolbar (#21252b) with 18% breathing margins to prevent edge clipping.
+2. Context Menu Ergonomics Overhaul:
+   - Added "Paste & Match Style" (pasteAndMatchStyle) to strip formatting and match current indentation.
+   - Added "Search on Google" (searchOnGoogle) to instantly query selected text or word under cursor in default browser.
+   - Streamlined case conversion to direct UPPERCASE and lowercase actions, eliminating cluttered run/bash options.
 
-3. Lossless PNG Asset Compression & Disk Footprint Reduction:
-   - Fast octree palette quantization and zlib level 9 compression applied to 1,736 PNG assets, reducing icon footprint by 2.17 MB (28.9% reduction).
-   - Enabled AUTORCC_OPTIONS "--compress;9;--threshold;0" in CMake for compile-time Qt resource compression.
+3. General Preferences Additions:
+   - Added option to Enable / Disable Character Encoding Auto-detection (enableEncodingAutoDetection).
+   - Added option to Enable / Disable Save All Confirmation dialog (enableSaveAllConfirmation).
 
-4. Strict Bloatware-Free Lightweight DMG Standard (~33MB, < 35MB Ceiling):
-   - Pruned unused frameworks (QtOpenGL, QtPdf, QtQml, QtQuick, QtVirtualKeyboard) while retaining required QtDBus for runtime stability.
-   - Packaged with scripts/package-dmg.sh, pre-baked .DS_Store (680x440), retina background, custom volume icon, and verified CRC32 checksum.
+4. Syntax Highlighting & Theme Engine Mathematical Overhaul:
+   - Integrated WCAG 2.1 relative luminance and contrast calculations guaranteeing minimum 4.0:1 contrast ratio across all 70+ themes.
+   - Semantic styling tailored to language families (C/C++, Python, Web/HTML/JS/CSS, Markdown progressive H1-H6, SQL, Shell, YAML, etc.).
+   - Gold Badges (#FFD700) for attention-grabbing comment markers (TODO, FIXME, BUG, HACK, NOTE).
+   - Warm golden amber for string escape sequences (\\n, \\t, \\xHH).
 
-5. Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate:
-   - 376-entry synchronized compilation database eliminating all include and symbol diagnostics across clangd, SonarLint, cppcheck, and IDE extensions.
-   - 100% clean passes on trunk check and ctest unit test runner.
+5. Standard Lightweight macOS DMG Packaging (30MB–40MB Standard):
+   - Preserved universal binary framework integrity without destructive lipo thinning, retaining standard image format decoders.
+   - Packaged 38MB–39MB DMG with custom retina background, layout preset .DS_Store (680x440), and verified CRC32 checksum.
 
 ---
 
@@ -143,83 +150,36 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ---
 
-## [1.4.6] - 2026-11-09
+## [1.4.6] - 2026-11-10
 
-### 🌟 Rilis: 11 Paket Ikon Toolbar Baru (Total 39 Koleksi), Standar Bersih Notepad++ Classic, Kompresi Aset Lossless, Penguatan Linter 14 Pilar & DMG Rilis Ringan
+### 🌟 Rilis: 30 Paket Ikon Toolbar Baru (Total 69 Koleksi), Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & DMG Rilis Standar 30MB–40MB
 
-SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat dan standar rilis berkualitas tinggi:
+SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningkatan kenyamanan editor, dan standar pengemasan berkualitas tinggi:
 
-#### 🆕 Ditambahkan
+#### 🆕 Ditambahkan (Added)
 
-- **11 Paket Ikon Toolbar Baru (Total 39 Koleksi Bawaan)**:
-  - Menambahkan `royal_blue` (Royal Blue Aero Glossy), `notepad_pro` (Notepad Pro Vista 7 Style), `pastel` (Pastel Modern), `fluent_modern` (Microsoft Fluent Modern), `macos_bigsur_modern` (macOS Big Sur Style), `dark_neon_pro` (Dark Neon Style), `macos_glass` (macOS Glassmorphism), `modern_flat_colorful` (Modern Flat & Colorful), `glossy_3d_skeuomorphic` (Glossy 3D Skeuomorphic), `retro_8bit_pixel` (Retro 8-Bit Pixel Art), `sketchy_doodle` (Sketchy Hand-Drawn Doodle).
+- **30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi Bawaan)**:
+  - Menambahkan 30 set ikon modern multi-resolusi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+    `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+- **Fitur Baru Menu Konteks Editor**:
+  - Menu **Tempel & Sesuaikan Gaya (Paste & Match Style)**: menempel teks tanpa format bawaan dan menyesuaikan indentasi editor.
+  - Menu **Cari di Google (Search on Google)**: membuka browser untuk mencari teks terpilih secara langsung.
+  - Menu konversi huruf langsung: **Huruf Besar (UPPERCASE)** dan **Huruf Kecil (lowercase)**.
+- **Opsi Baru Preferensi Umum (General Preferences)**:
+  - Opsi aktifkan / nonaktifkan deteksi encoding otomatis (`enableEncodingAutoDetection`).
+  - Opsi aktifkan / nonaktifkan konfirmasi simpan semua (`enableSaveAllConfirmation`).
+- **Perombakan Pewarnaan Sintaksis WCAG 2.1**:
+  - Garansi matematis kontras rasio minimal 4.0:1 pada seluruh 70+ tema editor.
+  - Lencana Emas (#FFD700) untuk TODO, FIXME, BUG, HACK, NOTE.
+  - Warna amber hangat untuk urutan karakter escape string (\\n, \\t, \\xHH).
 
-#### 🛠️ Diperbaiki & Diperkuat
+#### 🔧 Diubah & Ditingkatkan (Changed & Improved)
 
-- **Pembersihan Total Ikon Menyamai Notepad++ Classic**:
-  - Menghapus bayangan jatuh, halo sekitar, ubin abu-abu, dan garis timbul pada seluruh 11 paket baru, memastikan grafis terisolasi bersih mengambang di atas bilah alat gelap permanen (`#21252b`).
-- **Kompresi Aset PNG Lossless**:
-  - Kompresi 1.736 aset PNG dengan kuantisasi palet octree dan zlib 9, menghemat ukuran disk sebesar 2,17 MB (28,9%).
-- **Penguatan Linter & Peninjauan Kode 14 Pilar**:
-  - Basis data kompilasi 376-entri menyelaraskan clangd, SonarLint, cppcheck, dan ekstensi C++ tanpa eror diagnostik.
-- **Standar Pengemasan DMG Ringan Bebas Bloatware (~33MB, < 35MB)**:
-  - Memangkas framework yang tidak dibutuhkan (QtPdf, QtQml, QtQuick, QtVirtualKeyboard) dan mempertahankan QtDBus; memverifikasi peluncuran biner dari DMG terpasang.
-
----
-
-## [1.4.5] - 2026-11-08
-
-### 🌟 Rilis Utama: Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Peralatan Pengembang, Pengalih Header/Source, EditorConfig, Riwayat Clipboard, Quick Switcher, Paket Ikon Aksara & Penguatan 14 Pilar
-
-SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut.
-"""
-
-CHANGELOG_EN = """# Changelog
-
-All notable changes to **SparkNotePad** will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
----
-
-## [1.4.6] - 2026-11-09
-
-### 🌟 Release: 11 New Curated Toolbar Icon Packs (39 Total), Pristine Notepad++ Classic Clean Standard, Lossless Asset Compression, 14-Pillar Linter Hardening & Lightweight Release DMG
-
-SparkNotePad v1.4.6 expands toolbar customization with 11 new professionally curated icon packs, full shadow/halo elimination to match the clean Notepad++ Classic standard, lossless PNG asset compression, zero-defect linter hardening, and strict lightweight DMG release packaging:
-
-#### 🆕 Added
-
-- **11 New Curated Toolbar Icon Packs (39 Built-in Suites Total)**:
-  - Added `royal_blue` (Royal Blue Aero Glossy): rich skeuomorphic glass iconography.
-  - Added `notepad_pro` (Notepad Pro Vista 7 Style): modern elegant Vista/7 aero translucent iconography.
-  - Added `pastel` (Pastel Modern): friendly minimalist pastel color palette.
-  - Added `fluent_modern` (Microsoft Fluent Modern): Windows 11 Fluent 3D layered iconography.
-  - Added `macos_bigsur_modern` (macOS Big Sur Style): sleek macOS squircle aesthetics with vibrant accents.
-  - Added `dark_neon_pro` (Dark Neon Style): high-contrast cyberpunk neon glowing on dark palettes.
-  - Added `macos_glass` (macOS Glassmorphism): translucent frosted glass aero acrylic aesthetic.
-  - Added `modern_flat_colorful` (Modern Flat & Colorful): clean vector flat style with high-contrast distinct colors.
-  - Added `glossy_3d_skeuomorphic` (Glossy 3D Skeuomorphic): tactile volumetric glossy 3D clay aesthetic.
-  - Added `retro_8bit_pixel` (Retro 8-Bit Pixel Art): pixel-perfect retro arcade gaming iconography.
-  - Added `sketchy_doodle` (Sketchy Hand-Drawn Doodle): expressive hand-drawn artistic doodle iconography.
-
-#### 🔧 Changed & Improved
-
-- **Pristine Icon Sanitization Matching Notepad++ (Classic)**:
-  - Stripped all floor drop shadows, ambient occlusion halos, gray background tiles, and emboss/stroke artifacts across all 11 new packs.
-  - Pure isolated graphics floating cleanly on the permanent dark toolbar (`#21252b`).
-  - Applied 18% breathing margins ensuring zero edge clipping and zero dirty perimeter pixels.
-- **Lossless PNG Asset Optimization**:
-  - Quantized 1,736 PNG assets using fast octree palette quantization and zlib level 9 compression, reducing icon disk footprint by 2.17 MB (28.9% reduction).
-  - Enabled compile-time resource compression `AUTORCC_OPTIONS "--compress;9;--threshold;0"` on `toolbar_icons.qrc` and `resources.qrc`.
-- **Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate**:
-  - Synchronized 376-entry compilation database eradicating missing include and symbol diagnostics across clangd, SonarLint, and cppcheck.
-  - Passing 100% on `trunk check`, `lint-check.sh`, and `ctest` test execution.
-- **Lightweight Bloatware-Free DMG Release Packaging (~33MB, < 35MB Ceiling)**:
-  - Pruned unused `QtOpenGL.framework`, `QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, and redundant plugins while retaining required `QtDBus.framework` for QtGui runtime stability.
-  - Output DMG `SparkNotePad-v1.4.6-x64.dmg` packaged within the strict 30MB–34MB target (< 35MB ceiling).
-  - Verified valid CRC32 checksum, preserved custom volume icon, and 680x440 `.DS_Store` presentation.
+- **Standar Pengemasan macOS DMG 30MB–40MB**:
+  - Kalibrasi ukuran DMG rilis ke 38MB–39MB dengan mempertahankan pustaka universal Qt dan plugin format gambar standar.
+  - Pengujian integritas checksum CRC32 dan verifikasi peluncuran aplikasi otomatis.
+- **Pembersihan Menu Konteks**:
+  - Menghapus opsi Run dan Bash encode/decode dari menu klik kanan agar lebih ringkas dan fokus.
 
 ---
 
@@ -227,18 +187,57 @@ SparkNotePad v1.4.6 expands toolbar customization with 11 new professionally cur
 
 ### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening
 
-SparkNotePad v1.4.5 is a major feature release delivering 14 primary architectural pillars inspired by modern IDE standards and power-user workflows:
+SparkNotePad v1.4.5 adalah rilis fitur besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang untuk alur kerja pengguna tingkat lanjut.
+"""
+
+CHANGELOG_EN = """# Changelog
+
+All notable changes to **SparkNotePad** are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.4.6] - 2026-11-10
+
+### 🌟 Release: 30 New Modern Toolbar Icon Packs (69 Total Suites), Context Menu Ergonomics, General Preferences Options, WCAG 2.1 Syntax Highlighting Overhaul & Standard 30MB–40MB DMG Packaging
+
+SparkNotePad v1.4.6 delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
 
 #### 🆕 Added
 
-- **Closed Tab Stack & Reopen Closed Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
-  - Implemented `ClosedTabsManager` maintaining a resilient FIFO stack of up to 50 recently closed document tabs.
-- **Tab Color Tagging & Grouping**:
-  - Implemented `TabColorManager` providing 8 accessible color presets with high-contrast tab bar indicators.
-- **Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions)**:
-  - Implemented `AutosaveRecoveryManager` writing background snapshots every 10 seconds for modified documents.
-- **Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics**:
-  - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and PNGs).
+- **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**:
+  - Added 30 high-resolution multi-scale icon packs (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+    `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+- **Editor Context Menu Ergonomics**:
+  - Added **Paste & Match Style** (`pasteAndMatchStyle`) to strip formatting and match current editor indentation.
+  - Added **Search on Google** (`searchOnGoogle`) to query selected text or word under cursor in default browser.
+  - Streamlined case conversion to direct **UPPERCASE** and **lowercase** actions without multi-tier submenus.
+- **General Preferences Options**:
+  - Added option to Enable / Disable Character Encoding Auto-detection (`enableEncodingAutoDetection`).
+  - Added option to Enable / Disable Save All Confirmation dialog (`enableSaveAllConfirmation`).
+- **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**:
+  - Integrated WCAG 2.1 relative luminance and contrast calculations guaranteeing minimum 4.0:1 contrast ratio across all 70+ themes.
+  - Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE.
+  - Warm golden amber for string escape sequences (`\\n`, `\\t`, `\\xHH`).
+  - Theme-synchronized rounded border box indicator for SmartHighlighter.
+
+#### 🔧 Changed & Improved
+
+- **Canonical 30MB–40MB macOS DMG Packaging**:
+  - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins.
+  - Automated verification gate with valid CRC32 checksum and runtime launch test.
+- **Context Menu Noise Reduction**:
+  - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
+
+---
+
+## [1.4.5] - 2026-11-08
+
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening
+
+SparkNotePad v1.4.5 is a major feature release delivering 14 foundational architectural pillars designed for professional developers, system administrators, and power users.
 """
 
 
@@ -264,7 +263,7 @@ def main():
         print(f"Written: {path}")
 
     # Also update master DOCNOTE.txt and CHANGELOG.txt
-    master_docnote = DOCNOTE_ID + "\\n\\n---\\n\\n" + DOCNOTE_EN
+    master_docnote = DOCNOTE_ID + "\n\n---\n\n" + DOCNOTE_EN
     master_changelog = CHANGELOG_EN
 
     for p in ["src/doc/DOCNOTE.txt", "doc/DOCNOTE.txt", "DOCNOTE.txt"]:
