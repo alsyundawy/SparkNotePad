@@ -9,34 +9,41 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ## [1.4.6] - 2026-11-10
 
-### 🌟 Rilis: 30 Paket Ikon Toolbar Baru (Total 69 Koleksi), Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & DMG Rilis Standar 30MB–40MB
+### 🌟 Rilis: 41 Paket Ikon Toolbar Baru (Total 69 Koleksi Bawaan), Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & Standar DMG Rilis 30MB–40MB
 
-SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningkatan kenyamanan editor, dan standar pengemasan berkualitas tinggi:
+SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningkatan kenyamanan editor, dan standar pengemasan berkualitas tinggi dari versi 1.4.5:
 
 #### 🆕 Ditambahkan (Added)
 
-- **30 Paket Ikon Toolbar Modern Baru (Total 69 Koleksi Bawaan)**:
-  - Menambahkan 30 set ikon modern multi-resolusi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
-    `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+- **41 Paket Ikon Toolbar Baru (Total 69 Koleksi Bawaan Multi-Resolusi)**:
+  - Melipatgandakan koleksi ikon dari 28 paket di v1.4.5 menjadi 69 paket bawaan lengkap (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+    - 11 Paket Ikon Tematik: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+    - 30 Paket Ikon Modern: `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+  - Mengusung standar Notepad++ Classic: tanpa bayangan lantai, tanpa halo abu-abu, dan tanpa garis timbul kasar, dengan margin 18% agar tidak terpotong di layar Retina.
+  - Invarian Toolbar Gelap Permanen (`#21252b`) di seluruh mode dan tema.
 - **Fitur Baru Menu Konteks Editor**:
-  - Menu **Tempel & Sesuaikan Gaya (Paste & Match Style)**: menempel teks tanpa format bawaan dan menyesuaikan indentasi editor.
-  - Menu **Cari di Google (Search on Google)**: membuka browser untuk mencari teks terpilih secara langsung.
-  - Menu konversi huruf langsung: **Huruf Besar (UPPERCASE)** dan **Huruf Kecil (lowercase)**.
+  - Menu **Tempel & Cocokkan Format (Paste & Match Style)** (`Cmd+Alt+Shift+V` / `Ctrl+Shift+V`): menempel teks tanpa format bawaan dan menyesuaikan indentasi editor.
+  - Menu **Cari di Google (Search on Google)** (`Cmd+Alt+G` / `Ctrl+Alt+G`): membuka browser untuk mencari teks terpilih atau kata di kursor secara langsung.
+  - Menu konversi huruf langsung: **HURUF BESAR (UPPERCASE)** dan **huruf kecil (lowercase)** tanpa submenu bertingkat.
 - **Opsi Baru Preferensi Umum (General Preferences)**:
-  - Opsi aktifkan / nonaktifkan deteksi encoding otomatis (`enableEncodingAutoDetection`).
-  - Opsi aktifkan / nonaktifkan konfirmasi simpan semua (`enableSaveAllConfirmation`).
+  - Opsi sakelar Deteksi Otomatis Enkoding Karakter (`enableEncodingAutoDetection`).
+  - Opsi sakelar Dialog Konfirmasi Simpan Semua (`enableSaveAllConfirmation`).
 - **Perombakan Pewarnaan Sintaksis WCAG 2.1**:
   - Garansi matematis kontras rasio minimal 4.0:1 pada seluruh 70+ tema editor.
-  - Lencana Emas (#FFD700) untuk TODO, FIXME, BUG, HACK, NOTE.
-  - Warna amber hangat untuk urutan karakter escape string (\n, \t, \xHH).
+  - Lencana Emas (#FFD700) untuk penanda penting TODO, FIXME, BUG, HACK, NOTE.
+  - Warna kuning amber hangat untuk urutan karakter escape string (\n, \t, \xHH).
+  - Kotak indikator penanda kemunculan kata kunci tersinkronisasi dinamis dengan tema aktif.
 
 #### 🔧 Diubah & Ditingkatkan (Changed & Improved)
 
 - **Standar Pengemasan macOS DMG 30MB–40MB**:
-  - Kalibrasi ukuran DMG rilis ke 38MB–39MB dengan mempertahankan pustaka universal Qt dan plugin format gambar standar.
-  - Pengujian integritas checksum CRC32 dan verifikasi peluncuran aplikasi otomatis.
+  - Kalibrasi ukuran DMG rilis ke 38MB–39MB dengan mempertahankan pustaka universal Qt dan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
+  - Menggunakan format native hdiutil dengan preset tata letak .DS_Store (680x440), background retina, dan pengujian integritas checksum CRC32.
 - **Pembersihan Menu Konteks**:
-  - Menghapus opsi Run dan Bash encode/decode dari menu klik kanan agar lebih ringkas dan fokus.
+  - Menghapus opsi Run dan Bash encode/decode dari menu klik kanan editor agar lebih ringkas dan fokus.
+- **Audit Kualitas Kode 14 Pilar & Audit Linter**:
+  - 100% lulus bersih pada cppcheck (171 berkas, 0 kesalahan), clangd, clang-tidy, dan ctest.
+  - Penyesuaian aturan SonarLint pada parameter lambda dan pointer-to-const.
 
 ---
 
