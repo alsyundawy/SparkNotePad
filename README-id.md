@@ -353,7 +353,7 @@ Berkas biner resmi SparkNotePad v1.4.6 siap pakai dapat diunduh langsung melalui
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
 
   ```bash
-  sudo dnf install ./sparknotepad-1.4.0-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-1.4.6-1.x86_64.rpm
   ```
 
 ### Build Native & Pemasangan FreeBSD (KDE Plasma 6 & XFCE)

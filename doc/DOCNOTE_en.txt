@@ -45,9 +45,11 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
    - Warm golden amber for string escape sequences (\n, \t, \xHH).
    - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
 
-5. Standard Lightweight macOS DMG Packaging (30MB–40MB Standard):
+5. Standard Lightweight macOS DMG Packaging (30MB–40MB Standard) & Qt 6.2 Hardening:
    - Calibrated release DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving universal Qt libraries and standard image format plugins (libqjpeg, libqgif, libqwebp).
    - Packaged via canonical native hdiutil with custom retina background, layout preset .DS_Store (680x440), and verified CRC32 checksum.
+   - Implemented scripts/deploy-mac-bundle.sh with universal otool header filter resolving macdeployqt parsing errors on modern Xcode 15/16 macOS runners, protected Qt plugins from over-aggressive stripping, and added early headless CLI interceptor for clean verification.
+   - Fixed MOC preprocessor #include <QObject> in src/widgets/FadingIndicator.cpp.
 
 6. 14-Pillar Code Quality & Static Analysis Gates:
    - 100% clean passes on cppcheck (171 files, 0 errors, 0 warnings), clangd, clang-tidy, and trunk check.
