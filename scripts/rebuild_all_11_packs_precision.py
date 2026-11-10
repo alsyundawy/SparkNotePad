@@ -245,7 +245,7 @@ def save_pack_multi_res(pack_id, icon_dict):
                 # Fast Octree quantization for lossless size optimization
                 q = resized.quantize(colors=256, method=Image.Quantize.FASTOCTREE)
                 q.save(out_path, "PNG", optimize=True, compress_level=9)
-            except Exception:
+            except (OSError, ValueError):
                 resized.save(out_path, "PNG", optimize=True, compress_level=9)
 
     print(

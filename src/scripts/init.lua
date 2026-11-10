@@ -51,9 +51,6 @@ end
 function SetStyle(L)
     if L.styles then
         for _, style in pairs(L.styles) do
-            editor.StyleFore[style.id] = style.fgColor
-            editor.StyleBack[style.id] = style.bgColor
-
             if style.fontStyle then
                 editor.StyleBold[style.id] = (style.fontStyle & 1 == 1)
                 editor.StyleItalic[style.id] = (style.fontStyle & 2 == 2)

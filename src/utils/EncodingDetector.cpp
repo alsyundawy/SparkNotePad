@@ -24,7 +24,7 @@
 #define BOM_UTF16LE_BYTES QByteArrayLiteral("\xFF\xFE")
 #define BOM_UTF16BE_BYTES QByteArrayLiteral("\xFE\xFF")
 
-EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &data) {
+EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &data, bool autoDetect) {
     DetectionResult result;
     if (data.isEmpty()) {
         result.encoding = QStringLiteral("UTF-8");
@@ -39,6 +39,17 @@ EncodingDetector::DetectionResult EncodingDetector::detect(const QByteArray &dat
     // Stage 1: Explicit Byte Order Mark (BOM)
     if (detectBom(data, result)) {
         result.friendlyName = formatDisplayName(result.encoding, result.bomType);
+        return result;
+    }
+
+    // If auto-detection is disabled, default directly to UTF-8 without heuristic probing
+    if (!autoDetect) {
+        result.encoding = QStringLiteral("UTF-8");
+        result.friendlyName = QStringLiteral("UTF-8");
+        result.bomType = ScintillaNext::BomType::None;
+        result.bomLength = 0;
+        result.confidence = 100;
+        result.detectionMethod = QStringLiteral("Default UTF-8 (Auto-Detect Disabled)");
         return result;
     }
 

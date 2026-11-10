@@ -53,10 +53,10 @@ class PixelCanvas:
                 out_g = (g * sa + dg * da * (1.0 - sa)) / out_a
                 out_b = (b * sa + db * da * (1.0 - sa)) / out_a
                 self.pixels[y][x] = (
-                    min(255, max(0, int(round(out_r)))),
-                    min(255, max(0, int(round(out_g)))),
-                    min(255, max(0, int(round(out_b)))),
-                    min(255, max(0, int(round(out_a * 255.0)))),
+                    min(255, max(0, round(out_r))),
+                    min(255, max(0, round(out_g))),
+                    min(255, max(0, round(out_b))),
+                    min(255, max(0, round(out_a * 255.0))),
                 )
 
     def to_rgba(self):

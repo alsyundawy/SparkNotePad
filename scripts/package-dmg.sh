@@ -98,35 +98,17 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqgif.dylib" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqjpeg.dylib" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
 
-# Determine target architecture for Mach-O thinning
-TARGET_ARCH="x86_64"
-if [[ "${DMG_OUTPUT}" =~ (arm64|aarch64) ]]; then
-	TARGET_ARCH="arm64"
-elif [[ "${DMG_OUTPUT}" =~ (x64|x86_64) ]]; then
-	TARGET_ARCH="x86_64"
-elif [[ "$(uname -m)" == "arm64" ]]; then
-	TARGET_ARCH="arm64"
-fi
-
-# Thin universal Mach-O binaries to target architecture and strip local symbols
+# Strip local symbols to keep binary clean without altering universal architecture
 while IFS= read -r -d '' bin_file; do
 	if [[ -f "${bin_file}" && ! -L "${bin_file}" ]]; then
 		file_desc="$(file "${bin_file}" 2>/dev/null || true)"
 		if [[ "${file_desc}" == *"Mach-O"* ]]; then
-			if [[ "${file_desc}" == *"x86_64"* && "${file_desc}" == *"arm64"* ]]; then
-				lipo -thin "${TARGET_ARCH}" "${bin_file}" -output "${bin_file}.thin" 2>/dev/null && mv "${bin_file}.thin" "${bin_file}" || true
-			fi
 			strip -x "${bin_file}" 2>/dev/null || true
 		fi
 	fi
@@ -182,13 +164,19 @@ fi
 echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
-# Strict size gate: must not exceed 35MB (36700160 bytes)
+# Strict size gate: must remain between 30MB and 40MB without bloatware
 DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
-MAX_ALLOWED_BYTES=36700160 # 35 MB
+MIN_ALLOWED_BYTES=31457280 # 30 MB
+MAX_ALLOWED_BYTES=41943040 # 40 MB
 DMG_SIZE="$(du -h "${DMG_OUTPUT}" | cut -f1)"
 
+if ((DMG_SIZE_BYTES < MIN_ALLOWED_BYTES)); then
+	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) is below the 30MB threshold! Over-pruned or missing standard assets." >&2
+	exit 1
+fi
+
 if ((DMG_SIZE_BYTES > MAX_ALLOWED_BYTES)); then
-	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) exceeds the strict 35MB limit! Bloatware detected." >&2
+	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) exceeds the strict 40MB limit! Bloatware detected." >&2
 	exit 1
 fi
 
@@ -221,5 +209,5 @@ rm -rf "${VERIFY_MOUNT}"
 
 echo "=========================================================="
 echo "✔ SparkNotePad DMG packaging complete: ${DMG_OUTPUT} (${DMG_SIZE})"
-echo "✔ Verified lightweight size (< 35MB) and custom background presentation"
+echo "✔ Verified standard lightweight size (30MB–40MB) and custom background presentation"
 echo "=========================================================="

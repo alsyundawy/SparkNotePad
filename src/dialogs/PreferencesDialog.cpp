@@ -153,6 +153,12 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     MapSettingToCheckBox(ui->checkBoxExitOnLastTabClosed, &ApplicationSettings::exitOnLastTabClosed,
                          &ApplicationSettings::setExitOnLastTabClosed,
                          &ApplicationSettings::exitOnLastTabClosedChanged);
+    MapSettingToCheckBox(ui->checkBoxAutoDetectEncoding, &ApplicationSettings::autoDetectEncoding,
+                         &ApplicationSettings::setAutoDetectEncoding,
+                         &ApplicationSettings::autoDetectEncodingChanged);
+    MapSettingToCheckBox(ui->checkBoxConfirmSaveAll, &ApplicationSettings::confirmSaveAll,
+                         &ApplicationSettings::setConfirmSaveAll,
+                         &ApplicationSettings::confirmSaveAllChanged);
 
     ui->fcbDefaultFont->setView(new QListView(ui->fcbDefaultFont));
     ui->fcbDefaultFont->setCurrentFont(QFont(settings->fontName()));

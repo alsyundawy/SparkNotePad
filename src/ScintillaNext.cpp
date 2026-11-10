@@ -22,6 +22,7 @@
  */
 
 #include "ScintillaNext.h"
+#include "ApplicationSettings.h"
 #include "EncodingDetector.h"
 #include "FileTimeUtils.h"
 #include "Finder.h"
@@ -647,7 +648,9 @@ bool ScintillaNext::readFromDisk(QFile &file) {
 
     // Multi-stage encoding & BOM detection on initial sample
     const QByteArray initialSample = file.peek(65536);
-    const EncodingDetector::DetectionResult det = EncodingDetector::detect(initialSample);
+    const ApplicationSettings appSettings;
+    const EncodingDetector::DetectionResult det =
+        EncodingDetector::detect(initialSample, appSettings.autoDetectEncoding());
     bomType = det.bomType;
     fileEncoding = det.encoding;
 

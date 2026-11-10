@@ -125,4 +125,6 @@ public:
     DEFINE_SETTING(ExtraLineAscent, extraLineAscent, int)
     DEFINE_SETTING(ExtraLineDescent, extraLineDescent, int)
     DEFINE_SETTING(FuzzySearchEnabled, fuzzySearchEnabled, bool)
+    DEFINE_SETTING(AutoDetectEncoding, autoDetectEncoding, bool)
+    DEFINE_SETTING(ConfirmSaveAll, confirmSaveAll, bool)
 };
