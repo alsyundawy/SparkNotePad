@@ -72,32 +72,7 @@ endif()
 add_custom_target(dmg
     COMMAND ${CMAKE_COMMAND} -E rm -f ${INSTALL_DIR}/SparkNotePad.dmg ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
     COMMAND hdiutil detach /Volumes/SparkNotePad -force 2>/dev/null || true
-    COMMAND ${MACDEPLOYQT_EXECUTABLE}
-        ${INSTALL_DIR}/SparkNotePad.app
-    COMMAND ${CMAKE_COMMAND} -E rm -rf
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlModels.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlWorkerScript.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtQuick.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboard.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqgif.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqjpeg.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib
-        ${INSTALL_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib
-    COMMAND strip ${INSTALL_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad
-    COMMAND codesign --force --deep -s - ${INSTALL_DIR}/SparkNotePad.app
+    COMMAND ${BASH_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/deploy-mac-bundle.sh ${INSTALL_DIR}/SparkNotePad.app ${MACDEPLOYQT_EXECUTABLE}
     COMMAND ${BASH_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/package-dmg.sh ${INSTALL_DIR}/SparkNotePad.app ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME} SparkNotePad
     DEPENDS install_local
 )

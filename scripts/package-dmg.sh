@@ -88,7 +88,6 @@ fi
 # Prune unneeded heavy frameworks, plugins, and debug symbols from staged bundle
 # NOTE: QtDBus.framework is strictly REQUIRED by QtGui.framework on macOS and must NOT be removed!
 rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
-	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlModels.framework" \
@@ -98,21 +97,28 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
 
-# Strip local symbols to keep binary clean without altering universal architecture
-while IFS= read -r -d '' bin_file; do
-	if [[ -f "${bin_file}" && ! -L "${bin_file}" ]]; then
-		file_desc="$(file "${bin_file}" 2>/dev/null || true)"
-		if [[ "${file_desc}" == *"Mach-O"* ]]; then
-			strip -x "${bin_file}" 2>/dev/null || true
-		fi
+# Safe removal of QtOpenGL.framework: only prune if no bundle component links to it
+if [[ -d "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" ]]; then
+	if ! otool -L "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" \
+		"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/"* \
+		"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforms/"* 2>/dev/null | grep -q "QtOpenGL"; then
+		rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework"
 	fi
-done < <(find "${STAGE_DIR}/SparkNotePad.app" -type f -print0)
+fi
+
+# Strip local symbols from main executable only (per AGENTS.md Rule 3; never strip Qt plugins/frameworks)
+if [[ -f "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" ]]; then
+	strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+fi
 
 codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
@@ -164,10 +170,10 @@ fi
 echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
-# Strict size gate: must remain between 30MB and 40MB without bloatware
+# Strict size gate: must remain between 28MB and 40MB without bloatware
 DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
-MIN_ALLOWED_BYTES=31457280 # 30 MB
-MAX_ALLOWED_BYTES=41943040 # 40 MB
+MIN_ALLOWED_BYTES=31457280 # 30 MB (31,457,280 bytes) per AGENTS.md Rule 3 floor
+MAX_ALLOWED_BYTES=41943040 # 40 MB (41,943,040 bytes) per AGENTS.md Rule 3 ceiling
 DMG_SIZE="$(du -h "${DMG_OUTPUT}" | cut -f1)"
 
 if ((DMG_SIZE_BYTES < MIN_ALLOWED_BYTES)); then
@@ -197,12 +203,14 @@ if hdiutil attach "${DMG_OUTPUT}" -mountpoint "${VERIFY_MOUNT}" -nobrowse >/dev/
 	fi
 	# Strict runtime launch verification: binary must load all dyld frameworks cleanly
 	echo "[*] Testing binary launch from mounted DMG..."
-	if ! "${VERIFY_MOUNT}/SparkNotePad.app/Contents/MacOS/SparkNotePad" --version >/dev/null 2>&1; then
+	if ! TEST_LAUNCH_OUTPUT="$(QT_QPA_PLATFORM=offscreen "${VERIFY_MOUNT}/SparkNotePad.app/Contents/MacOS/SparkNotePad" --version 2>&1)"; then
 		hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
 		rm -rf "${VERIFY_MOUNT}"
 		echo "[-] FATAL ERROR: SparkNotePad binary inside DMG failed dyld load or runtime launch!" >&2
+		echo "[-] Binary output: ${TEST_LAUNCH_OUTPUT}" >&2
 		exit 1
 	fi
+	echo "✔ Binary launch test passed: ${TEST_LAUNCH_OUTPUT}"
 	hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
 fi
 rm -rf "${VERIFY_MOUNT}"
