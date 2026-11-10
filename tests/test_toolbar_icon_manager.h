@@ -34,8 +34,8 @@ private slots:
         const auto *manager = ToolbarIconManager::instance();
         const QList<ToolbarIconPack> packs = manager->availablePacks();
 
-        // 39 built-in packs (25 base + 10 Aksara suites + 4 Sheet 4 packs)
-        QCOMPARE(packs.size(), 39);
+        // 69 built-in packs (39 base + 30 modern packs from downloads)
+        QCOMPARE(packs.size(), 69);
 
         const QStringList expectedPackIds = {
             QString::fromLatin1("modernRibbon"),
@@ -77,6 +77,37 @@ private slots:
             QString::fromLatin1("glossy_3d_skeuomorphic"),
             QString::fromLatin1("retro_8bit_pixel"),
             QString::fromLatin1("sketchy_doodle"),
+            // 30 modern icon packs
+            QString::fromLatin1("01-macos-big-sur"),
+            QString::fromLatin1("02-windows-11-fluent"),
+            QString::fromLatin1("03-fluent-glass"),
+            QString::fromLatin1("04-dark-neon-pro"),
+            QString::fromLatin1("05-modern-colorful"),
+            QString::fromLatin1("06-metallic-pro"),
+            QString::fromLatin1("07-material-design-3"),
+            QString::fromLatin1("08-neumorphism"),
+            QString::fromLatin1("09-claymorphism"),
+            QString::fromLatin1("10-aurora-gradient"),
+            QString::fromLatin1("11-bento-grid"),
+            QString::fromLatin1("12-cyber-y2k"),
+            QString::fromLatin1("13-glassmorphism-light"),
+            QString::fromLatin1("14-windows-xp"),
+            QString::fromLatin1("15-flat-20-squircle"),
+            QString::fromLatin1("16-techno-blueprint"),
+            QString::fromLatin1("17-pastel-dream"),
+            QString::fromLatin1("18-vaporwave"),
+            QString::fromLatin1("19-neo-brutalism"),
+            QString::fromLatin1("20-monochrome-steel"),
+            QString::fromLatin1("21-deep-space"),
+            QString::fromLatin1("22-liquid-glass"),
+            QString::fromLatin1("23-retro-mac-os-classic"),
+            QString::fromLatin1("24-holographic"),
+            QString::fromLatin1("25-earthy-organic"),
+            QString::fromLatin1("26-ai-generative"),
+            QString::fromLatin1("27-high-tech-carbon"),
+            QString::fromLatin1("28-synthwave-neon"),
+            QString::fromLatin1("29-fluent-acrylic"),
+            QString::fromLatin1("30-swiss-minimal-3d"),
         };
 
         for (const QString &id : expectedPackIds) {
@@ -159,6 +190,7 @@ private slots:
             QString::fromLatin1("actionCut"),
             QString::fromLatin1("actionCopy"),
             QString::fromLatin1("actionPaste"),
+            QString::fromLatin1("actionPasteAndMatchStyle"),
             QString::fromLatin1("actionUndo"),
             QString::fromLatin1("actionRedo"),
             QString::fromLatin1("actionRestart"),
@@ -167,6 +199,7 @@ private slots:
             QString::fromLatin1("actionSelectAll"),
             QString::fromLatin1("actionIncreaseIndent"),
             QString::fromLatin1("actionDecreaseIndent"),
+            QString::fromLatin1("actionSearchGoogle"),
         };
 
         const QStringList packs = {
@@ -199,6 +232,12 @@ private slots:
             QString::fromLatin1("glossy_3d_skeuomorphic"),
             QString::fromLatin1("retro_8bit_pixel"),
             QString::fromLatin1("sketchy_doodle"),
+            QString::fromLatin1("01-macos-big-sur"),
+            QString::fromLatin1("02-windows-11-fluent"),
+            QString::fromLatin1("03-fluent-glass"),
+            QString::fromLatin1("04-dark-neon-pro"),
+            QString::fromLatin1("14-windows-xp"),
+            QString::fromLatin1("30-swiss-minimal-3d"),
         };
 
         for (const QString &packId : packs) {

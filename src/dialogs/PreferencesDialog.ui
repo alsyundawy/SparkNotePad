@@ -134,6 +134,26 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkBoxAutoDetectEncoding">
+         <property name="text">
+          <string>Enable auto detection encoding</string>
+         </property>
+         <property name="toolTip">
+          <string>Automatically detect file character encoding upon opening</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxConfirmSaveAll">
+         <property name="text">
+          <string>Enable Save All confirmation</string>
+         </property>
+         <property name="toolTip">
+          <string>Prompt for confirmation before saving all modified files</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QGroupBox" name="groupBox">

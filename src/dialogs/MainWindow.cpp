@@ -1001,6 +1001,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connectEditorAction(ui->actionCopy, &ScintillaNext::copyAllowLine);
     connectEditorAction(ui->actionDelete, &ScintillaNext::clear);
     connectEditorAction(ui->actionPaste, &ScintillaNext::paste);
+    connect(ui->actionPasteAndMatchStyle, &QAction::triggered, this, &MainWindow::onPasteAndMatchStyleTriggered);
+#ifdef Q_OS_MACOS
+    ui->actionPasteAndMatchStyle->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V));
+#else
+    ui->actionPasteAndMatchStyle->setShortcuts({QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_V),
+                                                QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V)});
+#endif
+    connect(ui->actionSearchGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
+    ui->actionSearchGoogle->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     connectEditorAction(ui->actionSelectAll, &ScintillaNext::selectAll);
     connect(ui->actionSelectNext, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
@@ -3456,6 +3465,20 @@ bool MainWindow::saveCopyAs(const QString &fileName) {
 }
 
 bool MainWindow::saveAll() {
+    const ApplicationSettings settings;
+    if (settings.confirmSaveAll()) {
+        const auto unsavedCount =
+            std::ranges::count_if(editors(), [](const auto *ed) { return ed && ed->modify(); });
+        if (unsavedCount > 0) {
+            const auto res = QMessageBox::question(
+                this, tr("Save All Confirmation"),
+                tr("Are you sure you want to save all %1 modified document(s)?").arg(unsavedCount),
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+            if (res != QMessageBox::Yes) {
+                return false;
+            }
+        }
+    }
     return saveAllEditors(editors());
 }
 
@@ -3917,6 +3940,7 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor) {
     const bool hasAnySelections = !editor->selectionEmpty();
 
     ui->actionPaste->setEnabled(editor->canPaste());
+    ui->actionPasteAndMatchStyle->setEnabled(editor->canPaste());
 
     const bool canConvert = (editor != nullptr && !editor->readOnly() && editor->textLength() > 0);
     ui->actionLowerCase->setEnabled(canConvert);
@@ -4481,31 +4505,29 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
                                             "Cut",
                                             "Copy",
                                             "Paste",
+                                            "PasteAndMatchStyle",
                                             "Delete",
                                             "",
                                             "SelectAll",
                                             "",
                                             "Find",
+                                            "SearchGoogle",
                                             "",
                                             "Open",
                                             "Save",
                                             "",
-                                            "ShowCharacterInfo",
-                                            "",
-                                            "Base64Encode",
-                                            "URLEncode",
-                                            "",
-                                            "Base64Decode",
-                                            "URLDecode"};
+                                            "ShowCharacterInfo"};
 
     QStringList actionNames = defaultActionNames;
 
     // If the entry exists in the settings, use that
     if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
         actionNames = settings->value("Gui/EditorContextMenu").toStringList();
-        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, and Find are always included
+        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle are present
         if (!actionNames.contains("Undo") || !actionNames.contains("Redo") || !actionNames.contains("Open") ||
-            !actionNames.contains("Save") || !actionNames.contains("Find")) {
+            !actionNames.contains("Save") || !actionNames.contains("Find") ||
+            !actionNames.contains("PasteAndMatchStyle") || !actionNames.contains("SearchGoogle") ||
+            actionNames.contains("Base64Encode") || actionNames.contains("URLEncode")) {
             actionNames = defaultActionNames;
         }
     }
@@ -4520,24 +4542,38 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
 
     auto *menu = buildMenu(actionNames);
 
-    // Relocate Convert Case directly below Select All
+    // Relocate UPPERCASE and lowercase directly below Select All (replacing convert case submenu)
     const auto actions = menu->actions();
     if (const auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll); selectAllIt != actions.end()) {
         const auto nextIt = std::next(selectAllIt);
         if (nextIt != actions.end()) {
-            menu->insertMenu(*nextIt, ui->menuConvertCase);
+            menu->insertAction(*nextIt, ui->actionUpperCase);
+            menu->insertAction(*nextIt, ui->actionLowerCase);
         } else {
-            menu->addMenu(ui->menuConvertCase);
+            menu->addAction(ui->actionUpperCase);
+            menu->addAction(ui->actionLowerCase);
         }
     } else {
-        menu->addMenu(ui->menuConvertCase);
+        menu->addAction(ui->actionUpperCase);
+        menu->addAction(ui->actionLowerCase);
     }
 
     menu->addSeparator();
     menu->addMenu(ui->menuMarkAllOccurrences);
     menu->addMenu(ui->menuClearMarks);
-    if (menuRun) {
-        menu->addMenu(menuRun);
+
+    // Contextual keyword adaptation for Google Search
+    const QString searchQuery = ExternalToolManager::getSelectedOrCurrentWord(editor);
+    if (!searchQuery.trimmed().isEmpty()) {
+        QString preview = searchQuery.trimmed();
+        if (preview.length() > 25) {
+            preview = preview.left(25) + QStringLiteral("...");
+        }
+        ui->actionSearchGoogle->setText(tr("Search on &Google for \"%1\"").arg(preview));
+        ui->actionSearchGoogle->setEnabled(true);
+    } else {
+        ui->actionSearchGoogle->setText(tr("Search on &Google"));
+        ui->actionSearchGoogle->setEnabled(false);
     }
 
     // Ensure all context menu actions and submenus display their icons matching the active icon pack
@@ -4574,29 +4610,17 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     menu->setFont(contextFont);
     menu->setStyleSheet(contextMenuStyle);
 
-    const QFont originalMenuFont = ui->menuConvertCase->font();
-    ui->menuConvertCase->setFont(contextFont);
-    ui->menuConvertCase->setStyleSheet(contextMenuStyle);
     ui->menuMarkAllOccurrences->setFont(contextFont);
     ui->menuMarkAllOccurrences->setStyleSheet(contextMenuStyle);
     ui->menuClearMarks->setFont(contextFont);
     ui->menuClearMarks->setStyleSheet(contextMenuStyle);
-    if (menuRun) {
-        menuRun->setFont(contextFont);
-        menuRun->setStyleSheet(contextMenuStyle);
-    }
 
-    connect(menu, &QMenu::aboutToHide, this, [this, originalMenuFont] {
-        ui->menuConvertCase->setStyleSheet(QString());
-        ui->menuConvertCase->setFont(originalMenuFont);
+    connect(menu, &QMenu::aboutToHide, this, [this] {
+        ui->actionSearchGoogle->setText(tr("Search on &Google"));
         ui->menuMarkAllOccurrences->setStyleSheet(QString());
-        ui->menuMarkAllOccurrences->setFont(originalMenuFont);
+        ui->menuMarkAllOccurrences->setFont(QFont());
         ui->menuClearMarks->setStyleSheet(QString());
-        ui->menuClearMarks->setFont(originalMenuFont);
-        if (menuRun) {
-            menuRun->setStyleSheet(QString());
-            menuRun->setFont(originalMenuFont);
-        }
+        ui->menuClearMarks->setFont(QFont());
     });
 
     menu->popup(QCursor::pos());
@@ -4616,7 +4640,7 @@ void MainWindow::checkForUpdatesFinished(const QString & /*url*/) {
 void MainWindow::initUpdateCheck() {
     ui->actionCheckForUpdates->setEnabled(true);
     ui->actionCheckForUpdates->setVisible(true);
-    ui->actionCheckForUpdates->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_U));
+    ui->actionCheckForUpdates->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_U));
     connect(ui->actionCheckForUpdates, &QAction::triggered, this, [this] { checkForUpdates(false); });
 
     // Check periodically in background
@@ -4966,9 +4990,7 @@ void MainWindow::setupRunMenu() {
     menuRun->addSeparator();
 
     // 6. Web Searches & Developer Help References
-    auto *actionGoogle = new QAction(tr("Search on &Google"), this);
-    connect(actionGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
-    menuRun->addAction(actionGoogle);
+    menuRun->addAction(ui->actionSearchGoogle);
 
     auto *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
     actionWiki->setShortcuts(
@@ -5071,6 +5093,24 @@ void MainWindow::onOpenInBrowserTriggered() const {
     if (currentEditor() && currentEditor()->isFile()) {
         ExternalToolManager::openInBrowser(currentEditor()->getFileInfo().absoluteFilePath());
     }
+}
+
+void MainWindow::onPasteAndMatchStyleTriggered() const {
+    auto *editor = currentEditor();
+    if (!editor) {
+        return;
+    }
+    const QClipboard *clipboard = QGuiApplication::clipboard();
+    if (!clipboard) {
+        return;
+    }
+    const QString text = clipboard->text(QClipboard::Clipboard);
+    if (text.isEmpty()) {
+        return;
+    }
+
+    const QByteArray utf8 = text.toUtf8();
+    editor->replaceSel(utf8.constData());
 }
 
 void MainWindow::onSearchGoogleTriggered() const {

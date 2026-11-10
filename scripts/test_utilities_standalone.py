@@ -40,7 +40,8 @@ print("[PASS] Radix & Number Conversions (Hex, Bin, Oct, Dec)")
 
 # 3. GUID / UUID v4 Regex
 uuid_pattern = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.I
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+    re.IGNORECASE,
 )
 
 sample_uuid = str(uuid.uuid4())

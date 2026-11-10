@@ -273,6 +273,7 @@ private:
     void onOpenTerminalHereTriggered() const;
     void onRevealInFileManagerTriggered() const;
     void onOpenInBrowserTriggered() const;
+    void onPasteAndMatchStyleTriggered() const;
     void onSearchGoogleTriggered() const;
     void onSearchWikipediaTriggered() const;
     void onSearchPhpTriggered() const;

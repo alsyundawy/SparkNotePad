@@ -44,7 +44,7 @@ def optimize_icons():
                     if os.path.exists(tmp_p):
                         os.remove(tmp_p)
                     total_after += sz
-            except Exception:
+            except (OSError, ValueError):
                 total_after += sz
 
     saved = total_before - total_after

@@ -65,7 +65,7 @@ def make_transparent(im, bg_thresh=248):
     datas = im.getdata()
     new_data = []
     for item in datas:
-        r, g, b, a = item
+        r, g, b, _ = item
         if r >= bg_thresh and g >= bg_thresh and b >= bg_thresh:
             new_data.append((r, g, b, 0))
         elif r > 218 and g > 218 and b > 218:

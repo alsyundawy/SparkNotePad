@@ -436,6 +436,306 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isBuiltIn = true,
         .isPngBased = true,
     });
+
+// 01-macos-big-sur
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("01-macos-big-sur"),
+        .displayName = tr("macOS Big Sur (2020)"),
+        .description = tr("Soft 3D, white/translucent squircle with vibrant skeuomorphic elements and subtle drop shadow."),
+        .basePath = QStringLiteral(":/icons/packs/01-macos-big-sur"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 02-windows-11-fluent
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("02-windows-11-fluent"),
+        .displayName = tr("Windows 11 Fluent (2021)"),
+        .description = tr("Dark acrylic squircle with deep glossy blue/cyan backlight and crisp reflections."),
+        .basePath = QStringLiteral(":/icons/packs/02-windows-11-fluent"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 03-fluent-glass
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("03-fluent-glass"),
+        .displayName = tr("Fluent Glass (2024)"),
+        .description = tr("Frosted glass squircle with heavy translucency, pastel gradients, and refractive edges."),
+        .basePath = QStringLiteral(":/icons/packs/03-fluent-glass"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 04-dark-neon-pro
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("04-dark-neon-pro"),
+        .displayName = tr("Dark Neon Pro (2020)"),
+        .description = tr("Dark obsidian background with intense glowing neon purple, pink, and cyan outlines."),
+        .basePath = QStringLiteral(":/icons/packs/04-dark-neon-pro"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 05-modern-colorful
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("05-modern-colorful"),
+        .displayName = tr("Modern Colorful (2020)"),
+        .description = tr("Bright soft 3D squircle with vibrant, saturated colors inspired by modern mobile OS."),
+        .basePath = QStringLiteral(":/icons/packs/05-modern-colorful"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 06-metallic-pro
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("06-metallic-pro"),
+        .displayName = tr("Metallic Pro (2023)"),
+        .description = tr("Brushed metal and chrome squircle with machined silver/grey 3D bevels."),
+        .basePath = QStringLiteral(":/icons/packs/06-metallic-pro"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 07-material-design-3
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("07-material-design-3"),
+        .displayName = tr("Material Design 3 (2023)"),
+        .description = tr("Dynamic color palettes with soft rounded 3D and tonal elevations."),
+        .basePath = QStringLiteral(":/icons/packs/07-material-design-3"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 08-neumorphism
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("08-neumorphism"),
+        .displayName = tr("Neumorphism (2019)"),
+        .description = tr("Soft UI with extruded plastic surfaces and dual light/dark soft shadows."),
+        .basePath = QStringLiteral(":/icons/packs/08-neumorphism"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 09-claymorphism
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("09-claymorphism"),
+        .displayName = tr("Claymorphism (2022)"),
+        .description = tr("Matte 3D clay with puffy, rounded soft geometry and playful tactile warmth."),
+        .basePath = QStringLiteral(":/icons/packs/09-claymorphism"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 10-aurora-gradient
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("10-aurora-gradient"),
+        .displayName = tr("Aurora Gradient (2021)"),
+        .description = tr("Glowing mesh gradients with smooth 3D blends of cyan, purple, and emerald."),
+        .basePath = QStringLiteral(":/icons/packs/10-aurora-gradient"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 11-bento-grid
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("11-bento-grid"),
+        .displayName = tr("Bento Grid (2023)"),
+        .description = tr("Modular, clean distinct colors with glossy card finishes and sharp micro-borders."),
+        .basePath = QStringLiteral(":/icons/packs/11-bento-grid"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 12-cyber-y2k
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("12-cyber-y2k"),
+        .displayName = tr("Cyber-Y2K (2024)"),
+        .description = tr("Metallic liquid silver with vibrant neon pink and cyan specular reflections."),
+        .basePath = QStringLiteral(":/icons/packs/12-cyber-y2k"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 13-glassmorphism-light
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("13-glassmorphism-light"),
+        .displayName = tr("Glassmorphism Light (2020)"),
+        .description = tr("Bright pristine frosted milk-glass with delicate 1px white border and backdrop blur."),
+        .basePath = QStringLiteral(":/icons/packs/13-glassmorphism-light"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 14-windows-xp
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("14-windows-xp"),
+        .displayName = tr("Windows XP (Retro) (2001)"),
+        .description = tr("Glossy Luna blue and meadow green skeuomorphism with thick beveled borders."),
+        .basePath = QStringLiteral(":/icons/packs/14-windows-xp"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 15-flat-20-squircle
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("15-flat-20-squircle"),
+        .displayName = tr("Flat 2.0 Squircle (2016)"),
+        .description = tr("Flat saturated colors elevated by strong, clean multi-tier drop shadows."),
+        .basePath = QStringLiteral(":/icons/packs/15-flat-20-squircle"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 16-techno-blueprint
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("16-techno-blueprint"),
+        .displayName = tr("Techno Blueprint (2018)"),
+        .description = tr("Midnight navy blue with glowing cyan technical CAD schematics and grid markings."),
+        .basePath = QStringLiteral(":/icons/packs/16-techno-blueprint"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 17-pastel-dream
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("17-pastel-dream"),
+        .displayName = tr("Pastel Dream (2022)"),
+        .description = tr("Ultra-soft 3D with muted lavender, mint, and peach pastel tones."),
+        .basePath = QStringLiteral(":/icons/packs/17-pastel-dream"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 18-vaporwave
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("18-vaporwave"),
+        .displayName = tr("Vaporwave (2016)"),
+        .description = tr("Retro neon pink/cyan sunset gradients with 80s aesthetic and grid motifs."),
+        .basePath = QStringLiteral(":/icons/packs/18-vaporwave"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 19-neo-brutalism
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("19-neo-brutalism"),
+        .displayName = tr("Neo-Brutalism (2024)"),
+        .description = tr("High-contrast, chunky 3D with thick solid black outlines (3px) and bold pop colors."),
+        .basePath = QStringLiteral(":/icons/packs/19-neo-brutalism"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 20-monochrome-steel
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("20-monochrome-steel"),
+        .displayName = tr("Monochrome Steel (2023)"),
+        .description = tr("Greyscale machined steel 3D palette with razor-sharp crimson red accents."),
+        .basePath = QStringLiteral(":/icons/packs/20-monochrome-steel"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 21-deep-space
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("21-deep-space"),
+        .displayName = tr("Deep Space (2025)"),
+        .description = tr("Cosmic obsidian with purple/indigo stellar nebula dust and star speculars."),
+        .basePath = QStringLiteral(":/icons/packs/21-deep-space"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 22-liquid-glass
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("22-liquid-glass"),
+        .displayName = tr("Liquid Glass (2024)"),
+        .description = tr("Apple Vision Pro spatial UI, fluid optical refraction, caustics, and watery depth."),
+        .basePath = QStringLiteral(":/icons/packs/22-liquid-glass"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 23-retro-mac-os-classic
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("23-retro-mac-os-classic"),
+        .displayName = tr("Retro Mac OS Classic (1991)"),
+        .description = tr("Platinum OS 9 / System 7 beveled 3D grey with subtle classic pixelated shading."),
+        .basePath = QStringLiteral(":/icons/packs/23-retro-mac-os-classic"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 24-holographic
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("24-holographic"),
+        .displayName = tr("Holographic (2022)"),
+        .description = tr("Iridescent pearl gradient with shifting rainbow spectra and lustrous sheen."),
+        .basePath = QStringLiteral(":/icons/packs/24-holographic"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 25-earthy-organic
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("25-earthy-organic"),
+        .displayName = tr("Earthy Organic (2024)"),
+        .description = tr("Matte natural ceramic 3D finish with deep sage greens, warm sandstone, and terracotta."),
+        .basePath = QStringLiteral(":/icons/packs/25-earthy-organic"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 26-ai-generative
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("26-ai-generative"),
+        .displayName = tr("AI Generative (2026)"),
+        .description = tr("Neural holographic depth, fluid morphic geometry, and glowing synaptic edges."),
+        .basePath = QStringLiteral(":/icons/packs/26-ai-generative"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 27-high-tech-carbon
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("27-high-tech-carbon"),
+        .displayName = tr("High-Tech Carbon (2019)"),
+        .description = tr("3D woven carbon fiber texture with racing red backlight and precision matte finish."),
+        .basePath = QStringLiteral(":/icons/packs/27-high-tech-carbon"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 28-synthwave-neon
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("28-synthwave-neon"),
+        .displayName = tr("Synthwave Neon (2018)"),
+        .description = tr("Outrun grid lines with intense magenta, purple, and sunset orange neon glow."),
+        .basePath = QStringLiteral(":/icons/packs/28-synthwave-neon"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 29-fluent-acrylic
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("29-fluent-acrylic"),
+        .displayName = tr("Fluent Acrylic (2022)"),
+        .description = tr("Windows acrylic blur effect with microscopic noise grain and deep translucency."),
+        .basePath = QStringLiteral(":/icons/packs/29-fluent-acrylic"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
+
+    // 30-swiss-minimal-3d
+    m_packs.append(ToolbarIconPack{
+        .id = QStringLiteral("30-swiss-minimal-3d"),
+        .displayName = tr("Swiss Minimal 3D (2015)"),
+        .description = tr("International Typographic Style in 3D: Vermilion red, black, and white geometric precision."),
+        .basePath = QStringLiteral(":/icons/packs/30-swiss-minimal-3d"),
+        .isBuiltIn = true,
+        .isPngBased = true,
+    });
 }
 
 void ToolbarIconManager::initialize(ApplicationSettings *settings) {
@@ -497,7 +797,127 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("retro8bitPixel"), QStringLiteral("retro_8bit_pixel")},
         {QStringLiteral("retro-8bit-pixel"), QStringLiteral("retro_8bit_pixel")},
         {QStringLiteral("sketchyDoodle"), QStringLiteral("sketchy_doodle")},
-        {QStringLiteral("sketchy-doodle"), QStringLiteral("sketchy_doodle")}};
+        {QStringLiteral("sketchy-doodle"), QStringLiteral("sketchy_doodle")},
+{QStringLiteral("macos-big-sur"), QStringLiteral("01-macos-big-sur")},
+        {QStringLiteral("macos_big_sur"), QStringLiteral("01-macos-big-sur")},
+        {QStringLiteral("macosBigSur"), QStringLiteral("01-macos-big-sur")},
+        {QStringLiteral("01_macos_big_sur"), QStringLiteral("01-macos-big-sur")},
+        {QStringLiteral("windows-11-fluent"), QStringLiteral("02-windows-11-fluent")},
+        {QStringLiteral("windows_11_fluent"), QStringLiteral("02-windows-11-fluent")},
+        {QStringLiteral("windows11Fluent"), QStringLiteral("02-windows-11-fluent")},
+        {QStringLiteral("02_windows_11_fluent"), QStringLiteral("02-windows-11-fluent")},
+        {QStringLiteral("fluent-glass"), QStringLiteral("03-fluent-glass")},
+        {QStringLiteral("fluent_glass"), QStringLiteral("03-fluent-glass")},
+        {QStringLiteral("fluentGlass"), QStringLiteral("03-fluent-glass")},
+        {QStringLiteral("03_fluent_glass"), QStringLiteral("03-fluent-glass")},
+        {QStringLiteral("dark-neon-pro"), QStringLiteral("04-dark-neon-pro")},
+        {QStringLiteral("dark_neon_pro"), QStringLiteral("04-dark-neon-pro")},
+        {QStringLiteral("darkNeonPro"), QStringLiteral("04-dark-neon-pro")},
+        {QStringLiteral("04_dark_neon_pro"), QStringLiteral("04-dark-neon-pro")},
+        {QStringLiteral("modern-colorful"), QStringLiteral("05-modern-colorful")},
+        {QStringLiteral("modern_colorful"), QStringLiteral("05-modern-colorful")},
+        {QStringLiteral("modernColorful"), QStringLiteral("05-modern-colorful")},
+        {QStringLiteral("05_modern_colorful"), QStringLiteral("05-modern-colorful")},
+        {QStringLiteral("metallic-pro"), QStringLiteral("06-metallic-pro")},
+        {QStringLiteral("metallic_pro"), QStringLiteral("06-metallic-pro")},
+        {QStringLiteral("metallicPro"), QStringLiteral("06-metallic-pro")},
+        {QStringLiteral("06_metallic_pro"), QStringLiteral("06-metallic-pro")},
+        {QStringLiteral("material-design-3"), QStringLiteral("07-material-design-3")},
+        {QStringLiteral("material_design_3"), QStringLiteral("07-material-design-3")},
+        {QStringLiteral("materialDesign3"), QStringLiteral("07-material-design-3")},
+        {QStringLiteral("07_material_design_3"), QStringLiteral("07-material-design-3")},
+        {QStringLiteral("neumorphism"), QStringLiteral("08-neumorphism")},
+        {QStringLiteral("neumorphism"), QStringLiteral("08-neumorphism")},
+        {QStringLiteral("neumorphism"), QStringLiteral("08-neumorphism")},
+        {QStringLiteral("08_neumorphism"), QStringLiteral("08-neumorphism")},
+        {QStringLiteral("claymorphism"), QStringLiteral("09-claymorphism")},
+        {QStringLiteral("claymorphism"), QStringLiteral("09-claymorphism")},
+        {QStringLiteral("claymorphism"), QStringLiteral("09-claymorphism")},
+        {QStringLiteral("09_claymorphism"), QStringLiteral("09-claymorphism")},
+        {QStringLiteral("aurora-gradient"), QStringLiteral("10-aurora-gradient")},
+        {QStringLiteral("aurora_gradient"), QStringLiteral("10-aurora-gradient")},
+        {QStringLiteral("auroraGradient"), QStringLiteral("10-aurora-gradient")},
+        {QStringLiteral("10_aurora_gradient"), QStringLiteral("10-aurora-gradient")},
+        {QStringLiteral("bento-grid"), QStringLiteral("11-bento-grid")},
+        {QStringLiteral("bento_grid"), QStringLiteral("11-bento-grid")},
+        {QStringLiteral("bentoGrid"), QStringLiteral("11-bento-grid")},
+        {QStringLiteral("11_bento_grid"), QStringLiteral("11-bento-grid")},
+        {QStringLiteral("cyber-y2k"), QStringLiteral("12-cyber-y2k")},
+        {QStringLiteral("cyber_y2k"), QStringLiteral("12-cyber-y2k")},
+        {QStringLiteral("cyberY2k"), QStringLiteral("12-cyber-y2k")},
+        {QStringLiteral("12_cyber_y2k"), QStringLiteral("12-cyber-y2k")},
+        {QStringLiteral("glassmorphism-light"), QStringLiteral("13-glassmorphism-light")},
+        {QStringLiteral("glassmorphism_light"), QStringLiteral("13-glassmorphism-light")},
+        {QStringLiteral("glassmorphismLight"), QStringLiteral("13-glassmorphism-light")},
+        {QStringLiteral("13_glassmorphism_light"), QStringLiteral("13-glassmorphism-light")},
+        {QStringLiteral("windows-xp"), QStringLiteral("14-windows-xp")},
+        {QStringLiteral("windows_xp"), QStringLiteral("14-windows-xp")},
+        {QStringLiteral("windowsXp"), QStringLiteral("14-windows-xp")},
+        {QStringLiteral("14_windows_xp"), QStringLiteral("14-windows-xp")},
+        {QStringLiteral("flat-20-squircle"), QStringLiteral("15-flat-20-squircle")},
+        {QStringLiteral("flat_20_squircle"), QStringLiteral("15-flat-20-squircle")},
+        {QStringLiteral("flat20Squircle"), QStringLiteral("15-flat-20-squircle")},
+        {QStringLiteral("15_flat_20_squircle"), QStringLiteral("15-flat-20-squircle")},
+        {QStringLiteral("techno-blueprint"), QStringLiteral("16-techno-blueprint")},
+        {QStringLiteral("techno_blueprint"), QStringLiteral("16-techno-blueprint")},
+        {QStringLiteral("technoBlueprint"), QStringLiteral("16-techno-blueprint")},
+        {QStringLiteral("16_techno_blueprint"), QStringLiteral("16-techno-blueprint")},
+        {QStringLiteral("pastel-dream"), QStringLiteral("17-pastel-dream")},
+        {QStringLiteral("pastel_dream"), QStringLiteral("17-pastel-dream")},
+        {QStringLiteral("pastelDream"), QStringLiteral("17-pastel-dream")},
+        {QStringLiteral("17_pastel_dream"), QStringLiteral("17-pastel-dream")},
+        {QStringLiteral("vaporwave"), QStringLiteral("18-vaporwave")},
+        {QStringLiteral("vaporwave"), QStringLiteral("18-vaporwave")},
+        {QStringLiteral("vaporwave"), QStringLiteral("18-vaporwave")},
+        {QStringLiteral("18_vaporwave"), QStringLiteral("18-vaporwave")},
+        {QStringLiteral("neo-brutalism"), QStringLiteral("19-neo-brutalism")},
+        {QStringLiteral("neo_brutalism"), QStringLiteral("19-neo-brutalism")},
+        {QStringLiteral("neoBrutalism"), QStringLiteral("19-neo-brutalism")},
+        {QStringLiteral("19_neo_brutalism"), QStringLiteral("19-neo-brutalism")},
+        {QStringLiteral("monochrome-steel"), QStringLiteral("20-monochrome-steel")},
+        {QStringLiteral("monochrome_steel"), QStringLiteral("20-monochrome-steel")},
+        {QStringLiteral("monochromeSteel"), QStringLiteral("20-monochrome-steel")},
+        {QStringLiteral("20_monochrome_steel"), QStringLiteral("20-monochrome-steel")},
+        {QStringLiteral("deep-space"), QStringLiteral("21-deep-space")},
+        {QStringLiteral("deep_space"), QStringLiteral("21-deep-space")},
+        {QStringLiteral("deepSpace"), QStringLiteral("21-deep-space")},
+        {QStringLiteral("21_deep_space"), QStringLiteral("21-deep-space")},
+        {QStringLiteral("liquid-glass"), QStringLiteral("22-liquid-glass")},
+        {QStringLiteral("liquid_glass"), QStringLiteral("22-liquid-glass")},
+        {QStringLiteral("liquidGlass"), QStringLiteral("22-liquid-glass")},
+        {QStringLiteral("22_liquid_glass"), QStringLiteral("22-liquid-glass")},
+        {QStringLiteral("retro-mac-os-classic"), QStringLiteral("23-retro-mac-os-classic")},
+        {QStringLiteral("retro_mac_os_classic"), QStringLiteral("23-retro-mac-os-classic")},
+        {QStringLiteral("retroMacOsClassic"), QStringLiteral("23-retro-mac-os-classic")},
+        {QStringLiteral("23_retro_mac_os_classic"), QStringLiteral("23-retro-mac-os-classic")},
+        {QStringLiteral("holographic"), QStringLiteral("24-holographic")},
+        {QStringLiteral("holographic"), QStringLiteral("24-holographic")},
+        {QStringLiteral("holographic"), QStringLiteral("24-holographic")},
+        {QStringLiteral("24_holographic"), QStringLiteral("24-holographic")},
+        {QStringLiteral("earthy-organic"), QStringLiteral("25-earthy-organic")},
+        {QStringLiteral("earthy_organic"), QStringLiteral("25-earthy-organic")},
+        {QStringLiteral("earthyOrganic"), QStringLiteral("25-earthy-organic")},
+        {QStringLiteral("25_earthy_organic"), QStringLiteral("25-earthy-organic")},
+        {QStringLiteral("ai-generative"), QStringLiteral("26-ai-generative")},
+        {QStringLiteral("ai_generative"), QStringLiteral("26-ai-generative")},
+        {QStringLiteral("aiGenerative"), QStringLiteral("26-ai-generative")},
+        {QStringLiteral("26_ai_generative"), QStringLiteral("26-ai-generative")},
+        {QStringLiteral("high-tech-carbon"), QStringLiteral("27-high-tech-carbon")},
+        {QStringLiteral("high_tech_carbon"), QStringLiteral("27-high-tech-carbon")},
+        {QStringLiteral("highTechCarbon"), QStringLiteral("27-high-tech-carbon")},
+        {QStringLiteral("27_high_tech_carbon"), QStringLiteral("27-high-tech-carbon")},
+        {QStringLiteral("synthwave-neon"), QStringLiteral("28-synthwave-neon")},
+        {QStringLiteral("synthwave_neon"), QStringLiteral("28-synthwave-neon")},
+        {QStringLiteral("synthwaveNeon"), QStringLiteral("28-synthwave-neon")},
+        {QStringLiteral("28_synthwave_neon"), QStringLiteral("28-synthwave-neon")},
+        {QStringLiteral("fluent-acrylic"), QStringLiteral("29-fluent-acrylic")},
+        {QStringLiteral("fluent_acrylic"), QStringLiteral("29-fluent-acrylic")},
+        {QStringLiteral("fluentAcrylic"), QStringLiteral("29-fluent-acrylic")},
+        {QStringLiteral("29_fluent_acrylic"), QStringLiteral("29-fluent-acrylic")},
+        {QStringLiteral("swiss-minimal-3d"), QStringLiteral("30-swiss-minimal-3d")},
+        {QStringLiteral("swiss_minimal_3d"), QStringLiteral("30-swiss-minimal-3d")},
+        {QStringLiteral("swissMinimal3d"), QStringLiteral("30-swiss-minimal-3d")},
+        {QStringLiteral("30_swiss_minimal_3d"), QStringLiteral("30-swiss-minimal-3d")},};
     return s_aliasMap.value(packId, packId);
 }
 }  // namespace
@@ -607,9 +1027,12 @@ QString ToolbarIconManager::canonicalNameForAction(const QString &actionName) {
         {QStringLiteral("copy"), QStringLiteral("copy")},
         {QStringLiteral("copyurl"), QStringLiteral("copy")},
         {QStringLiteral("paste"), QStringLiteral("paste")},
+        {QStringLiteral("pasteandmatchstyle"), QStringLiteral("paste")},
         {QStringLiteral("undo"), QStringLiteral("undo")},
         {QStringLiteral("redo"), QStringLiteral("redo")},
         {QStringLiteral("find"), QStringLiteral("find")},
+        {QStringLiteral("searchgoogle"), QStringLiteral("find")},
+        {QStringLiteral("google"), QStringLiteral("find")},
         {QStringLiteral("replace"), QStringLiteral("findReplace")},
         {QStringLiteral("zoomin"), QStringLiteral("zoomIn")},
         {QStringLiteral("zoomout"), QStringLiteral("zoomOut")},
@@ -661,7 +1084,11 @@ QString ToolbarIconManager::canonicalNameForAction(const QString &actionName) {
 QStringList ToolbarIconManager::aliasesForCanonical(const QString &canonical) {
     QStringList aliases;
     if (canonical == QStringLiteral("newfile")) {
-        aliases << QStringLiteral("new");
+        aliases << QStringLiteral("new") << QStringLiteral("new-file");
+    } else if (canonical == QStringLiteral("find")) {
+        aliases << QStringLiteral("zoom-reset") << QStringLiteral("search");
+    } else if (canonical == QStringLiteral("findReplace")) {
+        aliases << QStringLiteral("split-view") << QStringLiteral("replace");
     } else if (canonical == QStringLiteral("openFile")) {
         aliases << QStringLiteral("open");
     } else if (canonical == QStringLiteral("saved")) {

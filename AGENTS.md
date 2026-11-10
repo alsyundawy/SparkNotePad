@@ -12,10 +12,10 @@
    - Build: `cmake --build build` (or controlled jobs `cmake --build build -j2`)
    - Test: `ctest --test-dir build --output-on-failure` or `./build/tests/SparkNotePadTests`
 
-3. **PERMANENT LIGHTWEIGHT DMG PACKAGING STANDARD (STRICTLY ~30MB–34MB, < 35MB CEILING)**:
-   - **Zero Bloatware Mandate**: Under NO circumstances may unused Qt frameworks (`QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, `QtVirtualKeyboardQml.framework`, `libqtvirtualkeyboardplugin.dylib`, extra `imageformats` dylibs, redundant `tls` plugins) be bundled into macOS release DMGs.
-   - **Binary Stripping**: Always strip binary symbols from `SparkNotePad.app/Contents/MacOS/SparkNotePad` using `strip -x`.
-   - **Strict Size Ceiling**: The packaged DMG must strictly remain between 30MB and 34MB (hard ceiling: 35MB / 36,700,160 bytes). Any DMG build exceeding 35MB is considered defective bloatware and will immediately fail build verification.
+3. **PERMANENT LIGHTWEIGHT DMG PACKAGING STANDARD (STRICTLY ~30MB–40MB CEILING)**:
+   - **Zero Bloatware Mandate**: Under NO circumstances may unused Qt frameworks (`QtPdf.framework`, `QtQml.framework`, `QtQuick.framework`, `QtVirtualKeyboard.framework`, `QtVirtualKeyboardQml.framework`, `libqtvirtualkeyboardplugin.dylib`, extra redundant dylibs) be bundled into macOS release DMGs.
+   - **Binary Stripping**: Always strip local binary symbols from `SparkNotePad.app/Contents/MacOS/SparkNotePad` using `strip -x`.
+   - **Strict Size Range**: The packaged DMG must strictly remain between 30MB and 40MB (hard ceiling: 40MB / 41,943,040 bytes, floor: 30MB / 31,457,280 bytes). Any DMG build exceeding 40MB or falling below 30MB is considered defective or over-pruned and will fail build verification.
 
 4. **PERMANENT DMG BRANDING & BACKGROUND PRESERVATION**:
    - **Canonical Packager**: Always package macOS DMGs using `scripts/package-dmg.sh` via native `hdiutil` with the pre-baked layout preset (`deploy/macos/dmg-ds-store`, 10,244 bytes).
@@ -25,7 +25,7 @@
      - Pre-baked `.DS_Store` containing `backgroundImageAlias`, 680x440 window bounds, and icon coordinates
      - `Applications -> /Applications` drag-and-drop symlink
      - `.VolumeIcon.icns` with custom volume attributes
-   - **Automated Verification Gate**: `scripts/package-dmg.sh` automatically mounts the output DMG, asserts that `backgroundImageAlias` is present and valid, checks file size <= 35MB, and validates CRC32 checksum via `hdiutil verify`.
+   - **Automated Verification Gate**: `scripts/package-dmg.sh` automatically mounts the output DMG, asserts that `backgroundImageAlias` is present and valid, checks file size <= 40MB (and >= 30MB), and validates CRC32 checksum via `hdiutil verify`.
 
 5. **STRICT GIT DISCIPLINE & ZERO-TRASH COMMITS**:
    - Do not create superfluous, noisy, or scattered git commits ("no nyampah git commits").

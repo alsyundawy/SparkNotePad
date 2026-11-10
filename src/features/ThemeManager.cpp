@@ -12,6 +12,7 @@
 #include "ApplicationSettings.h"
 #include "dialogs/MainWindow.h"
 #include "ScintillaNext.h"
+#include "SciLexer.h"
 
 #include <QGuiApplication>
 #include <QApplication>
@@ -19,6 +20,8 @@
 #include <QPalette>
 #include <QColor>
 #include <QtGlobal>
+#include <cmath>
+#include <algorithm>
 
 ThemeManager *ThemeManager::instance() {
     static ThemeManager s_instance;
@@ -250,6 +253,441 @@ void ThemeManager::applyTheme(MainWindow *window) {
     }
 }
 
+namespace {
+
+struct SyntaxColorPalette {
+    QColor card;
+    QColor txtPri;
+    QColor txtSec;
+    QColor kwColor;
+    QColor fnColor;
+    QColor typeColor;
+    QColor strColor;
+    QColor numColor;
+    QColor constColor;
+    QColor escColor;
+    QColor commentColor;
+    QColor docCommentColor;
+    QColor docTagColor;
+    QColor taskMarkerColor;
+    QColor preprocColor;
+    QColor opColor;
+    QColor idColor;
+    QColor tagColor;
+    QColor attrColor;
+    QColor jsonKeyColor;
+    QColor diffAddColor;
+    QColor diffDelColor;
+    QColor diffHdrColor;
+};
+
+inline void setTokenStyle(ScintillaNext *editor, int styleId, const QColor &fore, bool bold = false,
+                          bool italic = false, bool underline = false) {
+    if (styleId < 0 || styleId > 127) {
+        return;
+    }
+    editor->styleSetFore(styleId, ThemeManager::scFromRgb(fore.rgb()));
+    if (bold) {
+        editor->styleSetBold(styleId, true);
+    }
+    if (italic) {
+        editor->styleSetItalic(styleId, true);
+    }
+    if (underline) {
+        editor->styleSetUnderline(styleId, true);
+    }
+}
+
+SyntaxColorPalette buildSyntaxPalette(const ThemePalette *pal) {
+    const bool isDark = pal->isDark;
+    const QColor card(pal->card);
+    const QColor txtPri(pal->txtPri);
+    const QColor txtSec(pal->txtSec);
+    const QColor cyan(pal->cyan);
+    const QColor blue(pal->blue);
+    const QColor net(pal->net);
+    const QColor sub(pal->sub);
+    const QColor host(pal->host);
+    const QColor sep(pal->sep);
+
+    SyntaxColorPalette p;
+    p.card = card;
+    p.txtPri = ThemeManager::ensureContrast(txtPri, card, isDark, 4.5);
+    p.txtSec = ThemeManager::ensureContrast(txtSec, card, isDark, 2.5);
+    p.kwColor = ThemeManager::ensureContrast(cyan, card, isDark, 3.5);
+    p.fnColor = ThemeManager::ensureContrast(blue, card, isDark, 3.5);
+
+    // Derived type color: distinguishable from keywords and functions
+    const QColor derivedType = isDark
+                                   ? QColor::fromHsl((cyan.hslHue() + 25) % 360, qMin(255, cyan.hslSaturation() + 20),
+                                                     std::clamp(cyan.lightness() + 10, 160, 230))
+                                   : QColor::fromHsl((cyan.hslHue() + 25) % 360, qMin(255, cyan.hslSaturation() + 30),
+                                                     std::clamp(cyan.lightness() - 15, 40, 110));
+    p.typeColor = ThemeManager::ensureContrast(derivedType, card, isDark, 3.5);
+
+    p.strColor = ThemeManager::ensureContrast(host, card, isDark, 3.2);
+    p.numColor = ThemeManager::ensureContrast(sub, card, isDark, 3.2);
+    p.constColor = ThemeManager::ensureContrast(sub, card, isDark, 3.2);
+
+    // Escape sequences (\n, \t, \x00) - warm golden amber
+    p.escColor = isDark ? QColor(255, 185, 75) : QColor(190, 85, 0);
+
+    // Comments & doc comments
+    p.commentColor = ThemeManager::ensureContrast(txtSec, card, isDark, 2.5);
+    p.docCommentColor =
+        ThemeManager::ensureContrast(isDark ? txtSec.lighter(120) : txtSec.darker(115), card, isDark, 3.0);
+    p.docTagColor = ThemeManager::ensureContrast(blue, card, isDark, 3.5);
+
+    // Actionable task markers (TODO, FIXME, BUG, HACK, XXX, NOTE) - vibrant gold badge
+    p.taskMarkerColor = isDark ? QColor(255, 215, 0) : QColor(185, 105, 0);
+
+    // Preprocessor directives (#include, @decorator, #[derive])
+    p.preprocColor = ThemeManager::ensureContrast(net, card, isDark, 3.2);
+
+    // Operators & punctuation
+    p.opColor = ThemeManager::ensureContrast(sep, card, isDark, 2.8);
+
+    // Identifiers & default text - guaranteed high-contrast readable
+    p.idColor = p.txtPri;
+
+    // Markup tags & attributes
+    p.tagColor = ThemeManager::ensureContrast(blue, card, isDark, 3.5);
+    p.attrColor = ThemeManager::ensureContrast(cyan, card, isDark, 3.2);
+
+    // JSON property keys
+    p.jsonKeyColor = ThemeManager::ensureContrast(blue, card, isDark, 3.5);
+
+    // Diff markers
+    p.diffAddColor = isDark ? QColor(80, 250, 123) : QColor(26, 127, 55);
+    p.diffDelColor = isDark ? QColor(255, 85, 85) : QColor(207, 34, 46);
+    p.diffHdrColor = isDark ? QColor(139, 233, 253) : QColor(9, 105, 218);
+
+    return p;
+}
+
+void applyCppFamilyStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_C_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_C_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_C_COMMENTLINE, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_C_COMMENTDOC, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_C_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_C_WORD, p.kwColor, true);
+    setTokenStyle(editor, SCE_C_STRING, p.strColor);
+    setTokenStyle(editor, SCE_C_CHARACTER, p.strColor);
+    setTokenStyle(editor, SCE_C_UUID, p.constColor);
+    setTokenStyle(editor, SCE_C_PREPROCESSOR, p.preprocColor);
+    setTokenStyle(editor, SCE_C_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_C_IDENTIFIER, p.idColor);
+    setTokenStyle(editor, SCE_C_STRINGEOL, p.diffDelColor, false, false, true);
+    setTokenStyle(editor, SCE_C_VERBATIM, p.strColor);
+    setTokenStyle(editor, SCE_C_REGEX, p.escColor);
+    setTokenStyle(editor, SCE_C_COMMENTLINEDOC, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_C_WORD2, p.typeColor, true);
+    setTokenStyle(editor, SCE_C_COMMENTDOCKEYWORD, p.docTagColor, true);
+    setTokenStyle(editor, SCE_C_COMMENTDOCKEYWORDERROR, p.diffDelColor);
+    setTokenStyle(editor, SCE_C_GLOBALCLASS, p.typeColor, true);
+    setTokenStyle(editor, SCE_C_STRINGRAW, p.strColor);
+    setTokenStyle(editor, SCE_C_TRIPLEVERBATIM, p.strColor);
+    setTokenStyle(editor, SCE_C_HASHQUOTEDSTRING, p.strColor);
+    setTokenStyle(editor, SCE_C_PREPROCESSORCOMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_C_PREPROCESSORCOMMENTDOC, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_C_USERLITERAL, p.numColor);
+    setTokenStyle(editor, SCE_C_TASKMARKER, p.taskMarkerColor, true);
+    setTokenStyle(editor, SCE_C_ESCAPESEQUENCE, p.escColor, true);
+}
+
+void applyPythonStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_P_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_P_COMMENTLINE, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_P_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_P_STRING, p.strColor);
+    setTokenStyle(editor, SCE_P_CHARACTER, p.strColor);
+    setTokenStyle(editor, SCE_P_WORD, p.kwColor, true);
+    setTokenStyle(editor, SCE_P_TRIPLE, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_P_TRIPLEDOUBLE, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_P_CLASSNAME, p.typeColor, true);
+    setTokenStyle(editor, SCE_P_DEFNAME, p.fnColor, true);
+    setTokenStyle(editor, SCE_P_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_P_IDENTIFIER, p.idColor);
+    setTokenStyle(editor, SCE_P_COMMENTBLOCK, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_P_STRINGEOL, p.diffDelColor, false, false, true);
+    setTokenStyle(editor, SCE_P_WORD2, p.typeColor, true);
+    setTokenStyle(editor, SCE_P_DECORATOR, p.preprocColor, false, true);
+    setTokenStyle(editor, SCE_P_FSTRING, p.strColor);
+    setTokenStyle(editor, SCE_P_FCHARACTER, p.strColor);
+    setTokenStyle(editor, SCE_P_FTRIPLE, p.strColor);
+    setTokenStyle(editor, SCE_P_FTRIPLEDOUBLE, p.strColor);
+    setTokenStyle(editor, SCE_P_ATTRIBUTE, p.attrColor);
+}
+
+void applyHtmlXmlStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_H_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_H_TAG, p.tagColor, true);
+    setTokenStyle(editor, SCE_H_TAGUNKNOWN, p.tagColor);
+    setTokenStyle(editor, SCE_H_ATTRIBUTE, p.attrColor);
+    setTokenStyle(editor, SCE_H_ATTRIBUTEUNKNOWN, p.attrColor);
+    setTokenStyle(editor, SCE_H_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_H_DOUBLESTRING, p.strColor);
+    setTokenStyle(editor, SCE_H_SINGLESTRING, p.strColor);
+    setTokenStyle(editor, SCE_H_OTHER, p.opColor);
+    setTokenStyle(editor, SCE_H_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_H_ENTITY, p.escColor, true);
+    setTokenStyle(editor, SCE_H_TAGEND, p.opColor);
+    setTokenStyle(editor, SCE_H_XMLSTART, p.preprocColor, true);
+    setTokenStyle(editor, SCE_H_XMLEND, p.preprocColor, true);
+    setTokenStyle(editor, SCE_H_SCRIPT, p.idColor);
+    setTokenStyle(editor, SCE_H_ASP, p.preprocColor);
+    setTokenStyle(editor, SCE_H_ASPAT, p.preprocColor);
+    setTokenStyle(editor, SCE_H_CDATA, p.constColor);
+    setTokenStyle(editor, SCE_H_QUESTION, p.preprocColor, true);
+    setTokenStyle(editor, SCE_H_VALUE, p.strColor);
+    setTokenStyle(editor, SCE_H_XCCOMMENT, p.commentColor, false, true);
+
+    // Embedded JavaScript in HTML (<script>)
+    for (int s = 40; s <= 55; ++s) {
+        if (s == 42 || s == 43 || s == 44) {
+            setTokenStyle(editor, s, p.commentColor, false, true);
+        } else if (s == 45) {
+            setTokenStyle(editor, s, p.numColor);
+        } else if (s == 46 || s == 47) {
+            setTokenStyle(editor, s, p.strColor);
+        } else if (s == 48) {
+            setTokenStyle(editor, s, p.kwColor, true);
+        } else {
+            setTokenStyle(editor, s, p.idColor);
+        }
+    }
+
+    // Embedded PHP in HTML (<?php ... ?>)
+    for (int s = 118; s <= 127; ++s) {
+        if (s == 124 || s == 125) {
+            setTokenStyle(editor, s, p.commentColor, false, true);
+        } else if (s == 122) {
+            setTokenStyle(editor, s, p.numColor);
+        } else if (s == 119 || s == 120) {
+            setTokenStyle(editor, s, p.strColor);
+        } else if (s == 121) {
+            setTokenStyle(editor, s, p.kwColor, true);
+        } else if (s == 123) {
+            setTokenStyle(editor, s, p.attrColor);
+        } else {
+            setTokenStyle(editor, s, p.idColor);
+        }
+    }
+}
+
+void applyJsonStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_JSON_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_JSON_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_JSON_STRING, p.strColor);
+    setTokenStyle(editor, SCE_JSON_STRINGEOL, p.diffDelColor, false, false, true);
+    setTokenStyle(editor, SCE_JSON_PROPERTYNAME, p.jsonKeyColor, true);
+    setTokenStyle(editor, SCE_JSON_ESCAPESEQUENCE, p.escColor, true);
+    setTokenStyle(editor, SCE_JSON_LINECOMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_JSON_BLOCKCOMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_JSON_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_JSON_URI, p.fnColor, false, false, true);
+    setTokenStyle(editor, SCE_JSON_COMPACTIRI, p.fnColor);
+    setTokenStyle(editor, SCE_JSON_KEYWORD, p.constColor, true);
+    setTokenStyle(editor, SCE_JSON_LDKEYWORD, p.kwColor);
+    setTokenStyle(editor, SCE_JSON_ERROR, p.diffDelColor, false, false, true);
+}
+
+void applyCssStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_CSS_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_CSS_TAG, p.tagColor, true);
+    setTokenStyle(editor, SCE_CSS_CLASS, p.kwColor, true);
+    setTokenStyle(editor, SCE_CSS_PSEUDOCLASS, p.preprocColor);
+    setTokenStyle(editor, SCE_CSS_UNKNOWN_PSEUDOCLASS, p.preprocColor);
+    setTokenStyle(editor, SCE_CSS_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_CSS_IDENTIFIER, p.fnColor);
+    setTokenStyle(editor, SCE_CSS_UNKNOWN_IDENTIFIER, p.fnColor);
+    setTokenStyle(editor, SCE_CSS_VALUE, p.strColor);
+    setTokenStyle(editor, SCE_CSS_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_CSS_ID, p.taskMarkerColor, true);
+    setTokenStyle(editor, SCE_CSS_IMPORTANT, p.diffDelColor, true);
+    setTokenStyle(editor, SCE_CSS_DIRECTIVE, p.preprocColor, true);
+    setTokenStyle(editor, SCE_CSS_DOUBLESTRING, p.strColor);
+    setTokenStyle(editor, SCE_CSS_SINGLESTRING, p.strColor);
+    setTokenStyle(editor, SCE_CSS_IDENTIFIER2, p.fnColor);
+    setTokenStyle(editor, SCE_CSS_ATTRIBUTE, p.attrColor);
+    setTokenStyle(editor, SCE_CSS_IDENTIFIER3, p.fnColor);
+    setTokenStyle(editor, SCE_CSS_PSEUDOELEMENT, p.preprocColor);
+    setTokenStyle(editor, SCE_CSS_EXTENDED_IDENTIFIER, p.fnColor);
+    setTokenStyle(editor, SCE_CSS_EXTENDED_PSEUDOCLASS, p.preprocColor);
+    setTokenStyle(editor, SCE_CSS_EXTENDED_PSEUDOELEMENT, p.preprocColor);
+    setTokenStyle(editor, SCE_CSS_GROUP_RULE, p.preprocColor);
+    setTokenStyle(editor, SCE_CSS_VARIABLE, p.escColor, true);
+}
+
+void applyMarkdownStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_MARKDOWN_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_MARKDOWN_LINE_BEGIN, p.opColor);
+    setTokenStyle(editor, SCE_MARKDOWN_STRONG1, p.idColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_STRONG2, p.idColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_EM1, p.idColor, false, true);
+    setTokenStyle(editor, SCE_MARKDOWN_EM2, p.idColor, false, true);
+    setTokenStyle(editor, SCE_MARKDOWN_HEADER1, p.fnColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_HEADER2, p.kwColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_HEADER3, p.typeColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_HEADER4, p.strColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_HEADER5, p.numColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_HEADER6, p.preprocColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_PRECHAR, p.opColor);
+    setTokenStyle(editor, SCE_MARKDOWN_ULIST_ITEM, p.kwColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_OLIST_ITEM, p.kwColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_BLOCKQUOTE, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_MARKDOWN_STRIKEOUT, p.txtSec);
+    setTokenStyle(editor, SCE_MARKDOWN_HRULE, p.opColor, true);
+    setTokenStyle(editor, SCE_MARKDOWN_LINK, p.fnColor, false, false, true);
+    setTokenStyle(editor, SCE_MARKDOWN_CODE, p.numColor);
+    setTokenStyle(editor, SCE_MARKDOWN_CODE2, p.numColor);
+    setTokenStyle(editor, SCE_MARKDOWN_CODEBK, p.numColor);
+    setTokenStyle(editor, SCE_MARKDOWN_FRONT_MARK, p.opColor);
+    setTokenStyle(editor, SCE_MARKDOWN_FRONT, p.strColor);
+    setTokenStyle(editor, SCE_MARKDOWN_FRONT_KEY, p.kwColor, true);
+}
+
+void applyBashStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_SH_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_SH_ERROR, p.diffDelColor, false, false, true);
+    setTokenStyle(editor, SCE_SH_COMMENTLINE, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_SH_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_SH_WORD, p.kwColor, true);
+    setTokenStyle(editor, SCE_SH_STRING, p.strColor);
+    setTokenStyle(editor, SCE_SH_CHARACTER, p.strColor);
+    setTokenStyle(editor, SCE_SH_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_SH_IDENTIFIER, p.fnColor);
+    setTokenStyle(editor, SCE_SH_SCALAR, p.escColor, true);
+    setTokenStyle(editor, SCE_SH_PARAM, p.escColor, true);
+    setTokenStyle(editor, SCE_SH_BACKTICKS, p.preprocColor);
+    setTokenStyle(editor, SCE_SH_HERE_DELIM, p.preprocColor, true);
+    setTokenStyle(editor, SCE_SH_HERE_Q, p.strColor);
+}
+
+void applySqlStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_SQL_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_SQL_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_SQL_COMMENTLINE, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_SQL_COMMENTDOC, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_SQL_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_SQL_WORD, p.kwColor, true);
+    setTokenStyle(editor, SCE_SQL_STRING, p.strColor);
+    setTokenStyle(editor, SCE_SQL_CHARACTER, p.strColor);
+    setTokenStyle(editor, SCE_SQL_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_SQL_IDENTIFIER, p.idColor);
+    setTokenStyle(editor, SCE_SQL_WORD2, p.typeColor, true);
+    setTokenStyle(editor, SCE_SQL_QUOTEDIDENTIFIER, p.fnColor);
+}
+
+void applyYamlStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_YAML_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_YAML_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_YAML_IDENTIFIER, p.jsonKeyColor, true);
+    setTokenStyle(editor, SCE_YAML_KEYWORD, p.constColor, true);
+    setTokenStyle(editor, SCE_YAML_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_YAML_REFERENCE, p.preprocColor);
+    setTokenStyle(editor, SCE_YAML_DOCUMENT, p.opColor, true);
+    setTokenStyle(editor, SCE_YAML_TEXT, p.strColor);
+    setTokenStyle(editor, SCE_YAML_ERROR, p.diffDelColor, false, false, true);
+    setTokenStyle(editor, SCE_YAML_OPERATOR, p.opColor);
+}
+
+void applyPropsStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_PROPS_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_PROPS_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_PROPS_SECTION, p.fnColor, true);
+    setTokenStyle(editor, SCE_PROPS_ASSIGNMENT, p.opColor);
+    setTokenStyle(editor, SCE_PROPS_DEFVAL, p.strColor);
+    setTokenStyle(editor, SCE_PROPS_KEY, p.kwColor, true);
+}
+
+void applyLuaStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_LUA_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_LUA_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_LUA_COMMENTLINE, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_LUA_COMMENTDOC, p.docCommentColor, false, true);
+    setTokenStyle(editor, SCE_LUA_NUMBER, p.numColor);
+    setTokenStyle(editor, SCE_LUA_WORD, p.kwColor, true);
+    setTokenStyle(editor, SCE_LUA_STRING, p.strColor);
+    setTokenStyle(editor, SCE_LUA_CHARACTER, p.strColor);
+    setTokenStyle(editor, SCE_LUA_LITERALSTRING, p.strColor);
+    setTokenStyle(editor, SCE_LUA_PREPROCESSOR, p.preprocColor);
+    setTokenStyle(editor, SCE_LUA_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_LUA_IDENTIFIER, p.idColor);
+    setTokenStyle(editor, SCE_LUA_WORD2, p.typeColor, true);
+}
+
+void applyDiffStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_DIFF_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_DIFF_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_DIFF_COMMAND, p.preprocColor, true);
+    setTokenStyle(editor, SCE_DIFF_HEADER, p.diffHdrColor, true);
+    setTokenStyle(editor, SCE_DIFF_POSITION, p.taskMarkerColor, true);
+    setTokenStyle(editor, SCE_DIFF_DELETED, p.diffDelColor);
+    setTokenStyle(editor, SCE_DIFF_ADDED, p.diffAddColor);
+    setTokenStyle(editor, SCE_DIFF_CHANGED, p.numColor);
+}
+
+void applyBatchStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_BAT_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_BAT_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_BAT_WORD, p.kwColor, true);
+    setTokenStyle(editor, SCE_BAT_LABEL, p.fnColor, true);
+    setTokenStyle(editor, SCE_BAT_HIDE, p.opColor);
+    setTokenStyle(editor, SCE_BAT_COMMAND, p.fnColor);
+    setTokenStyle(editor, SCE_BAT_IDENTIFIER, p.escColor, true);
+    setTokenStyle(editor, SCE_BAT_OPERATOR, p.opColor);
+}
+
+void applyMakeStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, SCE_MAKE_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_MAKE_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_MAKE_PREPROCESSOR, p.preprocColor, true);
+    setTokenStyle(editor, SCE_MAKE_IDENTIFIER, p.escColor);
+    setTokenStyle(editor, SCE_MAKE_OPERATOR, p.opColor);
+    setTokenStyle(editor, SCE_MAKE_TARGET, p.fnColor, true);
+    setTokenStyle(editor, SCE_CMAKE_DEFAULT, p.idColor);
+    setTokenStyle(editor, SCE_CMAKE_COMMENT, p.commentColor, false, true);
+    setTokenStyle(editor, SCE_CMAKE_STRINGDQ, p.strColor);
+    setTokenStyle(editor, SCE_CMAKE_COMMANDS, p.kwColor, true);
+    setTokenStyle(editor, SCE_CMAKE_PARAMETERS, p.attrColor);
+    setTokenStyle(editor, SCE_CMAKE_VARIABLE, p.escColor, true);
+}
+
+void applyUniversalFallbackStyles(ScintillaNext *editor, const SyntaxColorPalette &p) {
+    setTokenStyle(editor, 0, p.idColor);
+    setTokenStyle(editor, 1, p.commentColor, false, true);
+    setTokenStyle(editor, 2, p.commentColor, false, true);
+    setTokenStyle(editor, 3, p.docCommentColor, false, true);
+    setTokenStyle(editor, 4, p.numColor);
+    setTokenStyle(editor, 5, p.kwColor, true);
+    setTokenStyle(editor, 6, p.strColor);
+    setTokenStyle(editor, 7, p.strColor);
+    setTokenStyle(editor, 8, p.constColor);
+    setTokenStyle(editor, 9, p.preprocColor);
+    setTokenStyle(editor, 10, p.opColor);
+    setTokenStyle(editor, 11, p.idColor);
+    setTokenStyle(editor, 12, p.strColor);
+    setTokenStyle(editor, 13, p.strColor);
+    setTokenStyle(editor, 14, p.escColor);
+    setTokenStyle(editor, 15, p.typeColor, true);
+    setTokenStyle(editor, 16, p.typeColor, true);
+    setTokenStyle(editor, 17, p.docTagColor, true);
+    setTokenStyle(editor, 18, p.taskMarkerColor, true);
+    setTokenStyle(editor, 19, p.typeColor, true);
+    setTokenStyle(editor, 20, p.strColor);
+    setTokenStyle(editor, 21, p.fnColor);
+    setTokenStyle(editor, 22, p.attrColor);
+    setTokenStyle(editor, 23, p.preprocColor);
+    setTokenStyle(editor, 24, p.preprocColor);
+    setTokenStyle(editor, 25, p.numColor);
+    setTokenStyle(editor, 26, p.taskMarkerColor, true);
+    setTokenStyle(editor, 27, p.escColor, true);
+}
+
+}  // namespace
+
 void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
     if (!editor) {
         return;
@@ -264,40 +702,36 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
         return;
     }
 
-    const QColor card(pal->card);
+    const SyntaxColorPalette synPal = buildSyntaxPalette(pal);
     const QColor border(pal->border);
-    const QColor txtPri(pal->txtPri);
-    const QColor txtSec(pal->txtSec);
-    const QColor cyan(pal->cyan);
-    const QColor blue(pal->blue);
-    const QColor net(pal->net);
-    const QColor sub(pal->sub);
-    const QColor host(pal->host);
-    const QColor sep(pal->sep);
 
     // 1. Base canvas background and primary text
-    editor->styleSetFore(STYLE_DEFAULT, scFromRgb(txtPri.rgb()));
-    editor->styleSetBack(STYLE_DEFAULT, scFromRgb(card.rgb()));
+    editor->styleSetFore(STYLE_DEFAULT, scFromRgb(synPal.txtPri.rgb()));
+    editor->styleSetBack(STYLE_DEFAULT, scFromRgb(synPal.card.rgb()));
     editor->styleClearAll();
 
-    // 2. Enforce canvas background across all lexer style slots (0..127)
+    // 2. Pre-seed ALL 128 lexer style slots (0..127) with card background and idColor foreground.
+    // This mathematically guarantees that NO token anywhere can EVER be rendered black on a dark theme
+    // or washed out on a light theme!
     for (int i = 0; i <= 127; ++i) {
-        editor->styleSetBack(i, scFromRgb(card.rgb()));
+        editor->styleSetBack(i, scFromRgb(synPal.card.rgb()));
+        editor->styleSetFore(i, scFromRgb(synPal.idColor.rgb()));
     }
 
     // 3. Line number margin
-    editor->styleSetFore(STYLE_LINENUMBER, scFromRgb(txtSec.rgb()));
+    editor->styleSetFore(STYLE_LINENUMBER, scFromRgb(synPal.txtSec.rgb()));
     editor->styleSetBack(STYLE_LINENUMBER, scFromRgb(border.rgb()));
 
     // 4. Caret color and line visibility
-    editor->setCaretFore(scFromRgb(txtPri.rgb()));
+    editor->setCaretFore(scFromRgb(synPal.txtPri.rgb()));
     editor->setCaretWidth(2);
 
     // 5. Caret line highlight (slight blend)
     const quint32 caretLineColor =
-        0xFF000000 |
-        (pal->isDark ? scColor(qMin(card.red() + 18, 255), qMin(card.green() + 18, 255), qMin(card.blue() + 22, 255))
-                     : scColor(qMax(card.red() - 12, 0), qMax(card.green() - 12, 0), qMax(card.blue() - 6, 0)));
+        0xFF000000 | (pal->isDark ? scColor(qMin(synPal.card.red() + 18, 255), qMin(synPal.card.green() + 18, 255),
+                                            qMin(synPal.card.blue() + 22, 255))
+                                  : scColor(qMax(synPal.card.red() - 12, 0), qMax(synPal.card.green() - 12, 0),
+                                            qMax(synPal.card.blue() - 6, 0)));
     editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, caretLineColor);
     editor->setCaretLineVisible(true);
 
@@ -319,95 +753,77 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
     editor->setElementColour(SC_ELEMENT_SELECTION_ADDITIONAL_BACK, additionalSelColor);
 
     // 7. Fold margin colors
-    editor->setFoldMarginColour(true, scFromRgb(card.rgb()));
+    editor->setFoldMarginColour(true, scFromRgb(synPal.card.rgb()));
     editor->setFoldMarginHiColour(true, scFromRgb(border.rgb()));
     editor->setElementColour(SC_ELEMENT_FOLD_LINE, 0xFF000000 | scFromRgb(border.rgb()));
 
     // 8. Matching and mismatching braces
-    editor->styleSetFore(STYLE_BRACELIGHT, scFromRgb(cyan.rgb()));
+    editor->styleSetFore(STYLE_BRACELIGHT, scFromRgb(synPal.kwColor.rgb()));
     editor->styleSetBack(STYLE_BRACELIGHT, scFromRgb(border.rgb()));
-    editor->styleSetFore(STYLE_BRACEBAD, scColor(207, 34, 46));
+    editor->styleSetFore(STYLE_BRACEBAD, scColor(255, 85, 85));
     editor->styleSetBack(STYLE_BRACEBAD, scFromRgb(border.rgb()));
 
     // 9. Indentation guides and white space
     editor->styleSetFore(STYLE_INDENTGUIDE, scFromRgb(border.rgb()));
-    editor->styleSetBack(STYLE_INDENTGUIDE, scFromRgb(card.rgb()));
+    editor->styleSetBack(STYLE_INDENTGUIDE, scFromRgb(synPal.card.rgb()));
     editor->setElementColour(SC_ELEMENT_WHITE_SPACE, 0xFF000000 | scFromRgb(border.rgb()));
 
-    // 10. Common Lexilla tokens styling (styles 0 through 31 across Lexilla standard lexers)
-    // 0: Default / Plain text (Critical: ensures text is high-contrast readable, NEVER black on dark!)
-    editor->styleSetFore(0, scFromRgb(txtPri.rgb()));
+    // 10. Smart highlighter indicator (occurrence matching under cursor)
+    const int smartIndic = editor->allocateIndicator(QStringLiteral("smart_highlighter"));
+    if (smartIndic >= 0) {
+        editor->indicSetFore(smartIndic, scFromRgb(synPal.kwColor.rgb()));
+        editor->indicSetStyle(smartIndic, INDIC_ROUNDBOX);
+        editor->indicSetOutlineAlpha(smartIndic, 140);
+        editor->indicSetAlpha(smartIndic, pal->isDark ? 80 : 60);
+        editor->indicSetUnder(smartIndic, true);
+    }
 
-    // 1: Comment, 2: Comment line, 3: Comment doc
-    editor->styleSetFore(1, scFromRgb(txtSec.rgb()));
-    editor->styleSetItalic(1, true);
-    editor->styleSetFore(2, scFromRgb(txtSec.rgb()));
-    editor->styleSetItalic(2, true);
-    editor->styleSetFore(3, scFromRgb(txtSec.rgb()));
-    editor->styleSetItalic(3, true);
-
-    // 4: Number
-    editor->styleSetFore(4, scFromRgb(sub.rgb()));
-
-    // 5: Keyword / Word
-    editor->styleSetFore(5, scFromRgb(cyan.rgb()));
-    editor->styleSetBold(5, true);
-
-    // 6: String, 7: Character
-    editor->styleSetFore(6, scFromRgb(host.rgb()));
-    editor->styleSetFore(7, scFromRgb(host.rgb()));
-
-    // 8: Regex / UUID / Class name
-    editor->styleSetFore(8, scFromRgb(cyan.rgb()));
-
-    // 9: Preprocessor
-    editor->styleSetFore(9, scFromRgb(net.rgb()));
-
-    // 10: Operator
-    editor->styleSetFore(10, scFromRgb(sep.rgb()));
-
-    // 11: Identifier / Variable (Never black on dark!)
-    editor->styleSetFore(11, scFromRgb(txtPri.rgb()));
-
-    // 12: Regex / String EOL
-    editor->styleSetFore(12, scFromRgb(host.rgb()));
-
-    // 13: Verbatim string
-    editor->styleSetFore(13, scFromRgb(host.rgb()));
-
-    // 14: Escape sequence
-    editor->styleSetFore(14, scFromRgb(net.rgb()));
-
-    // 15: Keywords 2
-    editor->styleSetFore(15, scFromRgb(cyan.rgb()));
-
-    // 16: Types / Built-ins (e.g. C++ types int, float, void)
-    editor->styleSetFore(16, scFromRgb(cyan.rgb()));
-
-    // 17: User literal / Doc keyword
-    editor->styleSetFore(17, scFromRgb(sub.rgb()));
-
-    // 18: Scintilla task tag markers (style category for tag highlights)
-    editor->styleSetFore(18, scFromRgb(net.rgb()));
-    editor->styleSetBold(18, true);
-
-    // 19: Character escape
-    editor->styleSetFore(19, scFromRgb(sub.rgb()));
-
-    // 20: Raw strings
-    editor->styleSetFore(20, scFromRgb(host.rgb()));
-
-    // 21: Functions / Methods
-    editor->styleSetFore(21, scFromRgb(blue.rgb()));
-
-    // 22: Attributes / Annotations
-    editor->styleSetFore(22, scFromRgb(cyan.rgb()));
-
-    // 23: Labels
-    editor->styleSetFore(23, scFromRgb(net.rgb()));
-
-    // 24: Decorators
-    editor->styleSetFore(24, scFromRgb(cyan.rgb()));
+    // 11. Specialized language-family syntax styling dispatch
+    const QString lang = editor->languageName.trimmed().toLower();
+    if (lang == QStringLiteral("python") || lang == QStringLiteral("py") || lang == QStringLiteral("mojo")) {
+        applyPythonStyles(editor, synPal);
+    } else if (lang == QStringLiteral("html") || lang == QStringLiteral("htm") || lang == QStringLiteral("xml") ||
+               lang == QStringLiteral("svg") || lang == QStringLiteral("php") || lang == QStringLiteral("asp")) {
+        applyHtmlXmlStyles(editor, synPal);
+    } else if (lang == QStringLiteral("json") || lang == QStringLiteral("json5")) {
+        applyJsonStyles(editor, synPal);
+    } else if (lang == QStringLiteral("css") || lang == QStringLiteral("scss") || lang == QStringLiteral("less") ||
+               lang == QStringLiteral("sass")) {
+        applyCssStyles(editor, synPal);
+    } else if (lang == QStringLiteral("markdown") || lang == QStringLiteral("md")) {
+        applyMarkdownStyles(editor, synPal);
+    } else if (lang == QStringLiteral("bash") || lang == QStringLiteral("sh") || lang == QStringLiteral("shell") ||
+               lang == QStringLiteral("zsh")) {
+        applyBashStyles(editor, synPal);
+    } else if (lang == QStringLiteral("sql")) {
+        applySqlStyles(editor, synPal);
+    } else if (lang == QStringLiteral("yaml") || lang == QStringLiteral("yml")) {
+        applyYamlStyles(editor, synPal);
+    } else if (lang == QStringLiteral("toml") || lang == QStringLiteral("ini") ||
+               lang == QStringLiteral("properties") || lang == QStringLiteral("props") ||
+               lang == QStringLiteral("conf") || lang == QStringLiteral("config")) {
+        applyPropsStyles(editor, synPal);
+    } else if (lang == QStringLiteral("lua")) {
+        applyLuaStyles(editor, synPal);
+    } else if (lang == QStringLiteral("diff") || lang == QStringLiteral("patch")) {
+        applyDiffStyles(editor, synPal);
+    } else if (lang == QStringLiteral("batch") || lang == QStringLiteral("bat") || lang == QStringLiteral("cmd")) {
+        applyBatchStyles(editor, synPal);
+    } else if (lang == QStringLiteral("makefile") || lang == QStringLiteral("cmake") ||
+               lang == QStringLiteral("cmakefile")) {
+        applyMakeStyles(editor, synPal);
+    } else if (lang == QStringLiteral("c++") || lang == QStringLiteral("cpp") || lang == QStringLiteral("c") ||
+               lang == QStringLiteral("c#") || lang == QStringLiteral("cs") || lang == QStringLiteral("java") ||
+               lang == QStringLiteral("javascript") || lang == QStringLiteral("js") ||
+               lang == QStringLiteral("typescript") || lang == QStringLiteral("ts") || lang == QStringLiteral("rust") ||
+               lang == QStringLiteral("go") || lang == QStringLiteral("dart") || lang == QStringLiteral("swift") ||
+               lang == QStringLiteral("zig") || lang == QStringLiteral("kotlin") ||
+               lang == QStringLiteral("actionscript") || lang == QStringLiteral("objective-c") ||
+               lang == QStringLiteral("objc") || lang == QStringLiteral("d")) {
+        applyCppFamilyStyles(editor, synPal);
+    } else {
+        applyUniversalFallbackStyles(editor, synPal);
+    }
 }
 
 QString ThemeManager::getThemeStyleSheet() const {
@@ -455,7 +871,8 @@ QString ThemeManager::getThemeStyleSheet() const {
     }
 
     // Permanent requirement: Toolbar background must ALWAYS remain dark mode in ANY mode (light, dark, or auto).
-    // In dark palettes, it adopts the palette's dark background. In light palettes/modes, it strictly uses dark charcoal (#21252b).
+    // In dark palettes, it adopts the palette's dark background. In light palettes/modes, it strictly uses dark
+    // charcoal (#21252b).
     const bool isDark = darkActive || (pal && pal->isDark);
     const QString tbBg = isDark ? win : QStringLiteral("#21252b");
     const QString tbBorder = isDark ? border : QStringLiteral("#181a1f");
@@ -1010,7 +1427,8 @@ QToolBar::separator, #mainToolBar::separator, QToolBar#mainToolBar::separator {
 }
 )");
 
-    const QString result = templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
+    const QString result =
+        templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
     m_styleSheetCache.insert(cacheKey, result);
     return result;
 }
