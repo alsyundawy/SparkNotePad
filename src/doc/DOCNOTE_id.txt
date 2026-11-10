@@ -44,9 +44,11 @@ SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan
    - Warna kuning amber hangat untuk urutan karakter escape string (\n, \t, \xHH).
    - Kotak indikator penanda kemunculan kata kunci tersinkronisasi dinamis dengan tema aktif.
 
-5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB):
-   - Mengkalibrasi ukuran berkas rilis DMG berada dalam rentang ketat 30MB–40MB (38MB–39MB) dengan mempertahankan keutuhan pustaka universal Qt dan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
+5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB) & Penguatan Qt 6.2:
+   - Mengkalibrasi ukuran berkas rilis DMG berada dalam rentang ketat 30MB–40MB (36MB–39MB lintas Qt 6.2–6.12) dengan mempertahankan keutuhan pustaka universal Qt dan plugin rendering inti (libqsvg, libqsvgicon, libqgif, libqico).
    - Menggunakan format kanonikal native hdiutil dengan preset tata letak .DS_Store (680x440), latar retina .background/dmg-background@2x.png, dan verifikasi checksum CRC32.
+   - Mengimplementasikan skrip scripts/deploy-mac-bundle.sh dengan filter normalisasi & deduplikasi arsitektur otool guna menyelesaikan kendala parsing macdeployqt pada Xcode 15/16, menetapkan INSTALL_RPATH "@executable_path/../Frameworks" (LC_RPATH) untuk Qt 6.2, membatasi strip -x hanya pada biner utama, serta menambahkan pencegat CLI --version headless.
+   - Memperbaiki preprocessor MOC #include <QObject> pada src/widgets/FadingIndicator.cpp.
 
 6. Penguatan Kualitas Kode 14 Pilar & Audit Linter:
    - 100% lulus bersih pada pengujian cppcheck (171 berkas, 0 error), clangd, clang-tidy, dan trunk check.
