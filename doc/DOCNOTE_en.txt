@@ -63,6 +63,17 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
    - Integrated ReleaseManager with a 3-tier update check pipeline (unmetered updates.json with CPU architecture detection, official GitHub REST API with ETag caching, and HTTP redirect fallback).
    - Enhanced UpdateDialog with prominent red/amber mandatory update badge, direct platform package download links, and force update status messaging.
 
+8. Markdown Live Preview & Engine Architecture Overhaul:
+   - Researched and integrated modern best practices from markedjs, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+   - Consolidated and deduplicated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts, eliminating duplicate code across preview dock and tab widgets.
+   - Implemented GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+   - Added interactive Table of Contents generator ([TOC] / {:toc}) with hierarchical navigation and automatic heading slug anchors.
+   - Added automated heading slug generation (<h1 id="...">) to support deep linking and TOC navigation.
+   - Added emoji shortcodes expansion (e.g., :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, etc.) with code block protection.
+   - Added keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+   - Harmonized copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml to ensure exported HTML and clipboard contents contain full math, mermaid diagrams, task lists, footnotes, and callout enhancements.
+   - Fixed compilation database generation (compile_commands.json) with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
+
 8. Modern Split View Tab Coloring & Zero Theme Clash Architecture:
    - Eliminated legacy hardcoded peach/orange borders and unsightly dark metallic gradients in split mode by setting ads::CDockManager::DisableStylesheet, true and unifying all tab and dock area styling exclusively through ThemeManager.
    - Implemented modern, theme-adaptive dual-state visual hierarchy for split editor panes:

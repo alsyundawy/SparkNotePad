@@ -12,6 +12,7 @@
  */
 
 #include "DocumentExportManager.h"
+#include "../utils/MarkdownPreviewEnhancer.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QPrinter>
@@ -79,54 +80,55 @@ QString DocumentExportManager::generateCss(bool darkTheme) {
     }
 
     return QStringLiteral(
-        "body {\n"
-        "    background-color: #ffffff;\n"
-        "    color: #24292e;\n"
-        "    font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif;\n"
-        "    font-size: 14px;\n"
-        "    line-height: 1.6;\n"
-        "    padding: 24px;\n"
-        "    max-width: 900px;\n"
-        "    margin: 0 auto;\n"
-        "}\n"
-        "h1, h2, h3, h4, h5, h6 { color: #1f2328; margin-top: 24px; margin-bottom: 16px; font-weight: 600; }\n"
-        "h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 0.3em; }\n"
-        "h2 { border-bottom: 1px solid #d0d7de; padding-bottom: 0.3em; }\n"
-        "a { color: #0969da; text-decoration: none; }\n"
-        "a:hover { text-decoration: underline; }\n"
-        "pre, code {\n"
-        "    font-family: SFMono-Regular, Consolas, \"Liberation Mono\", Menlo, monospace;\n"
-        "    font-size: 85%;\n"
-        "}\n"
-        "code {\n"
-        "    background-color: rgba(175,184,193,0.2);\n"
-        "    padding: 0.2em 0.4em;\n"
-        "    border-radius: 6px;\n"
-        "}\n"
-        "pre {\n"
-        "    background-color: #f6f8fa;\n"
-        "    padding: 16px;\n"
-        "    border-radius: 6px;\n"
-        "    overflow: auto;\n"
-        "}\n"
-        "pre code { background: transparent; padding: 0; }\n"
-        "blockquote {\n"
-        "    border-left: 0.25em solid #d0d7de;\n"
-        "    color: #57606a;\n"
-        "    padding: 0 1em;\n"
-        "    margin: 0 0 16px 0;\n"
-        "}\n"
-        "table {\n"
-        "    border-collapse: collapse;\n"
-        "    width: 100%;\n"
-        "    margin-bottom: 16px;\n"
-        "}\n"
-        "th, td {\n"
-        "    border: 1px solid #d0d7de;\n"
-        "    padding: 6px 13px;\n"
-        "}\n"
-        "tr:nth-child(2n) { background-color: #f6f8fa; }\n"
-        "hr { height: 0.25em; padding: 0; margin: 24px 0; background-color: #d0d7de; border: 0; }\n");
+               "body {\n"
+               "    background-color: #ffffff;\n"
+               "    color: #24292e;\n"
+               "    font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif;\n"
+               "    font-size: 14px;\n"
+               "    line-height: 1.6;\n"
+               "    padding: 24px;\n"
+               "    max-width: 900px;\n"
+               "    margin: 0 auto;\n"
+               "}\n"
+               "h1, h2, h3, h4, h5, h6 { color: #1f2328; margin-top: 24px; margin-bottom: 16px; font-weight: 600; }\n"
+               "h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 0.3em; }\n"
+               "h2 { border-bottom: 1px solid #d0d7de; padding-bottom: 0.3em; }\n"
+               "a { color: #0969da; text-decoration: none; }\n"
+               "a:hover { text-decoration: underline; }\n"
+               "pre, code {\n"
+               "    font-family: SFMono-Regular, Consolas, \"Liberation Mono\", Menlo, monospace;\n"
+               "    font-size: 85%;\n"
+               "}\n"
+               "code {\n"
+               "    background-color: rgba(175,184,193,0.2);\n"
+               "    padding: 0.2em 0.4em;\n"
+               "    border-radius: 6px;\n"
+               "}\n"
+               "pre {\n"
+               "    background-color: #f6f8fa;\n"
+               "    padding: 16px;\n"
+               "    border-radius: 6px;\n"
+               "    overflow: auto;\n"
+               "}\n"
+               "pre code { background: transparent; padding: 0; }\n"
+               "blockquote {\n"
+               "    border-left: 0.25em solid #d0d7de;\n"
+               "    color: #57606a;\n"
+               "    padding: 0 1em;\n"
+               "    margin: 0 0 16px 0;\n"
+               "}\n"
+               "table {\n"
+               "    border-collapse: collapse;\n"
+               "    width: 100%;\n"
+               "    margin-bottom: 16px;\n"
+               "}\n"
+               "th, td {\n"
+               "    border: 1px solid #d0d7de;\n"
+               "    padding: 6px 13px;\n"
+               "}\n"
+               "tr:nth-child(2n) { background-color: #f6f8fa; }\n"
+               "hr { height: 0.25em; padding: 0; margin: 24px 0; background-color: #d0d7de; border: 0; }\n") +
+           MarkdownPreviewEnhancer::mathAndMermaidCss(darkTheme);
 }
 
 QString DocumentExportManager::defaultHtmlTemplate(const QString &title, const QString &bodyHtml, bool darkTheme) {
@@ -148,9 +150,11 @@ QString DocumentExportManager::defaultHtmlTemplate(const QString &title, const Q
 }
 
 QString DocumentExportManager::markdownToHtml(const QString &markdown, const ExportOptions &options) {
+    const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(markdown, options.darkTheme);
     QTextDocument doc;
-    doc.setMarkdown(markdown);
-    const QString bodyHtml = doc.toHtml();
+    doc.setMarkdown(enriched);
+    const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
+    QString bodyHtml = MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, options.darkTheme);
 
     if (!options.includeCss) {
         return bodyHtml;

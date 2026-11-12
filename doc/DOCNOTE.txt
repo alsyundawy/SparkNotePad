@@ -87,6 +87,17 @@ SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan
 12. Optimasi Kinerja & Eliminasi Beban Berat:
     - Mengoptimalkan HighlightedScrollBar dengan pra-kalkulasi geometri track di luar loop render dan mengganti pemecah kata regex dengan pencacah linier nol alokasi heap.
     - Menambahkan deteksi cepat di MarkdownPreviewEnhancer untuk melompati pemrosesan regex pada berkas teks polos.
+
+13. Penyempurnaan Total Engine & Live Preview Markdown:
+    - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
+    - Konsolidasi dan deduplikasi mesin render callout ke MarkdownPreviewEnhancer::enhanceCallouts, menyingkirkan kode ganda lintas dock dan tab.
+    - Implementasi Admonition / Callout resmi GitHub ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna.
+    - Penambahan generator Daftar Isi interaktif ([TOC] / {:toc}) berjenjang dengan penautan otomatis ke slug heading dokumen.
+    - Penambahan slug anchor otomatis pada tag heading (<h1 id="...">) untuk navigasi loncat dan tautan internal.
+    - Penambahan konversi emoji shortcode (seperti :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, dll.) dengan proteksi blok kode.
+    - Penambahan chip pintasan keyboard [[Key]] -> <kbd>Key</kbd>.
+    - Penyelarasan fungsi copyHtml(), openInBrowser(), dan DocumentExportManager::markdownToHtml agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas (task lists), catatan kaki (footnotes), dan callout secara utuh.
+    - Perbaikan database kompilasi (compile_commands.json) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
    - Mengaktifkan pembaruan wajib (force-update) untuk seluruh versi sebelumnya guna menjamin keamanan dan keandalan penuh.
    - Mengintegrasikan ReleaseManager dengan pipeline 3-tier (updates.json langsung tanpa limit GitHub API, GitHub REST API resmi, dan pengalihan lokasi HTTP).
    - Menambahkan badge Pembaruan Wajib dan tautan unduhan langsung biner platform pada UpdateDialog.
@@ -203,6 +214,17 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
     - Eliminated repetitive Scintilla IPC queries inside HighlightedScrollBar::paintEvent by precomputing track geometry outside rendering loops.
     - Replaced regular-expression word-splitting allocations in MarkdownSafePreviewDock with an ultra-fast linear zero-allocation word counter.
     - Added early fast-path detection in MarkdownPreviewEnhancer to skip regex pipelines for plain text without special tokens.
+
+13. Markdown Live Preview & Engine Architecture Overhaul:
+    - Researched and integrated modern best practices from markedjs, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+    - Consolidated and deduplicated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts, eliminating duplicate code across preview dock and tab widgets.
+    - Implemented GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+    - Added interactive Table of Contents generator ([TOC] / {:toc}) with hierarchical navigation and automatic heading slug anchors.
+    - Added automated heading slug generation (<h1 id="...">) to support deep linking and TOC navigation.
+    - Added emoji shortcodes expansion (e.g., :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, etc.) with code block protection.
+    - Added keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+    - Harmonized copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml to ensure exported HTML and clipboard contents contain full math, mermaid diagrams, task lists, footnotes, and callout enhancements.
+    - Fixed compilation database generation (compile_commands.json) with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
 
 ---
 

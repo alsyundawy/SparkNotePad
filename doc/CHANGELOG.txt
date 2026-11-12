@@ -33,6 +33,16 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
   - High-visibility Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE.
   - Warm golden amber for string escape sequences (`\n`, `\t`, `\xHH`).
   - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
+- **Markdown Live Preview & Engine Architecture Overhaul**:
+  - Deep research and integration of industry-standard patterns from markedjs, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+  - Consolidated and deduplicated callout rendering into `MarkdownPreviewEnhancer::enhanceCallouts`, eliminating duplicate implementations across docks and tabs.
+  - Implemented GitHub Alert Admonitions (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with high-contrast icons, tinted backgrounds, and accent borders.
+  - Added interactive Table of Contents generator (`[TOC]` / `{:toc}`) with hierarchical navigation and automatic heading slug anchors.
+  - Added automated heading slug generation (`<h1 id="...">`) to support deep linking and TOC navigation.
+  - Added emoji shortcodes expansion (e.g., `:rocket:`, `:sparkles:`, `:white_check_mark:`, `:fire:`, `:star:`, `:memo:`, `:100:`, etc.) with code block protection.
+  - Added keyboard shortcut chips `[[Key]]` -> `<kbd>Key</kbd>`.
+  - Harmonized `copyHtml()`, `openInBrowser()`, and `DocumentExportManager::markdownToHtml` to ensure exported HTML and clipboard contents contain full math, mermaid diagrams, task lists, footnotes, and callout enhancements.
+  - Fixed compilation database generation (`compile_commands.json`) with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
 
 #### 🔧 Changed & Improved
 

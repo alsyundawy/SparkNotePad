@@ -61,7 +61,6 @@ private:
     void applyTheme();
     [[nodiscard]] QString buildDevDocsStyleSheet(bool isDark) const;
     [[nodiscard]] QString wrapHtmlDocument(const QString &rawBody, bool isDark) const;
-    [[nodiscard]] static QString enhanceCallouts(const QString &html, bool isDark);
 
     QPointer<ScintillaNext> m_editor;
     bool m_isHtml{false};

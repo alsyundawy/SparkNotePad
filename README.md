@@ -470,6 +470,16 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 - **Comprehensive Multi-Build updates.json & Force-Update Delivery Engine**:
   - Upgraded `updates.json` to v1.4.6 with full build matrix coverage (macOS Apple Silicon & Intel, Linux DEB & RPM across architectures, scripts).
   - Activated mandatory force update policy (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`), integrated 3-tier fallback in `ReleaseManager`, and enhanced `UpdateDialog` with platform download targeting.
+- **Markdown Live Preview & Engine Architecture Overhaul**:
+  - Researched and integrated modern best practices from `markedjs/marked`, `markdown-it`, `stackedit`, `editor.md`, `milkdown`, and GitHub Flavored Markdown (GFM).
+  - Consolidated and deduplicated callout rendering into `MarkdownPreviewEnhancer::enhanceCallouts`, eliminating duplicate implementations across dock and tab widgets.
+  - Implemented GitHub Alert Admonitions (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with high-contrast icons, tinted backgrounds, and accent borders in both light and dark themes.
+  - Added interactive Table of Contents generator (`[TOC]` / `{:toc}`) with hierarchical navigation and automatic heading slug anchors.
+  - Added automated heading slug generation (`<h1 id="...">`) to support deep linking and TOC navigation.
+  - Added emoji shortcodes expansion (e.g., `:rocket:`, `:sparkles:`, `:white_check_mark:`, `:fire:`, `:star:`, `:memo:`, `:100:`, etc.) with code block protection.
+  - Added keyboard shortcut chips `[[Key]]` -> `<kbd>Key</kbd>`.
+  - Harmonized `copyHtml()`, `openInBrowser()`, and `DocumentExportManager::markdownToHtml` to ensure exported HTML and clipboard contents contain full math, mermaid diagrams, task lists, footnotes, and callout enhancements.
+  - Fixed compilation database generation (`compile_commands.json`) with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
 
 ### [v1.4.5] — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening (2026-11-08)
 

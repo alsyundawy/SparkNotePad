@@ -147,6 +147,19 @@ SparkNotePad v1.4.6 lolos seluruh 14 Pilar Rekayasa Perangkat Lunak:
   - Menambahkan lencana `WAJIB` (MANDATORY UPDATE) merah mencolok dan deskripsi pembaruan wajib.
   - Tombol unduh langsung mengarahkan ke berkas paket biner yang cocok dengan sistem operasi dan arsitektur CPU pengguna.
 
+### 10. Penyempurnaan Total Engine & Live Preview Markdown
+
+- **Pemrosesan Markdown Kelas Industri**:
+  - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
+  - Konsolidasi dan deduplikasi mesin render callout ke `MarkdownPreviewEnhancer::enhanceCallouts`, menyingkirkan kode ganda lintas dock dan tab.
+  - Implementasi Admonition / Callout resmi GitHub (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna.
+  - Penambahan generator Daftar Isi interaktif (`[TOC]` / `{:toc}`) berjenjang dengan penautan otomatis ke slug heading dokumen.
+  - Penambahan slug anchor otomatis pada tag heading (`<h1 id="...">`) untuk navigasi loncat dan tautan internal.
+  - Penambahan konversi emoji shortcode (seperti `:rocket:`, `:sparkles:`, `:white_check_mark:`, `:fire:`, `:star:`, `:memo:`, `:100:`, dll.) dengan proteksi blok kode.
+  - Penambahan chip pintasan keyboard `[[Key]]` -> `<kbd>Key</kbd>`.
+  - Penyelarasan fungsi `copyHtml()`, `openInBrowser()`, dan `DocumentExportManager::markdownToHtml` agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas (task lists), catatan kaki (footnotes), dan callout secara utuh.
+  - Perbaikan database kompilasi (`compile_commands.json`) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
+
 ---
 
 ## 📦 Berkas Biner & Aset Rilis Resmi

@@ -175,4 +175,64 @@ private slots:
         QVERIFY(css.contains(QStringLiteral("body")));
         QVERIFY(css.contains(QStringLiteral("h1")));
     }
+
+    void testProcessCallouts() const {
+        const auto input = QStringLiteral(
+            "<blockquote>\n[!NOTE]\nThis is a critical note\n</blockquote>\n"
+            "<blockquote>\n[!WARNING]\nTake caution!\n</blockquote>");
+        const auto result = MarkdownPreviewEnhancer::enhanceCallouts(input, false);
+
+        QVERIFY(result.contains(QStringLiteral("Note")));
+        QVERIFY(result.contains(QStringLiteral("Warning")));
+        QVERIFY(result.contains(QStringLiteral("This is a critical note")));
+        QVERIFY(result.contains(QStringLiteral("Take caution!")));
+    }
+
+    void testProcessTableOfContents() const {
+        const auto input = QStringLiteral(
+            "[TOC]\n\n# Introduction\nSome text\n## Getting Started\nMore text\n### Advanced Usage\nDetails");
+        const auto result = MarkdownPreviewEnhancer::processTableOfContents(input);
+
+        QVERIFY(result.contains(QStringLiteral("class=\"table-of-contents\"")));
+        QVERIFY(result.contains(QStringLiteral("Table of Contents")));
+        QVERIFY(result.contains(QStringLiteral("<a href=\"#introduction\">Introduction</a>")));
+        QVERIFY(result.contains(QStringLiteral("<a href=\"#getting-started\">Getting Started</a>")));
+        QVERIFY(result.contains(QStringLiteral("<a href=\"#advanced-usage\">Advanced Usage</a>")));
+    }
+
+    void testProcessHeadingsWithIds() const {
+        const auto html = QStringLiteral("<h1>My Header</h1>\n<h2>Sub Section & More</h2>");
+        const auto result = MarkdownPreviewEnhancer::processHeadingsWithIds(html);
+
+        QVERIFY(result.contains(QStringLiteral("<h1 id=\"my-header\">My Header</h1>")));
+        QVERIFY(result.contains(QStringLiteral("<h2 id=\"sub-section-more\">Sub Section & More</h2>")));
+    }
+
+    void testProcessEmoji() const {
+        const auto input =
+            QStringLiteral("Build with :rocket: and :sparkles: for :100: success! `:not_an_emoji:` in code");
+        const auto result = MarkdownPreviewEnhancer::processEmoji(input);
+
+        QVERIFY(result.contains(QString::fromUtf8("🚀")));
+        QVERIFY(result.contains(QString::fromUtf8("✨")));
+        QVERIFY(result.contains(QString::fromUtf8("💯")));
+        QVERIFY(result.contains(QStringLiteral("`:not_an_emoji:`")));
+    }
+
+    void testProcessKeyboardTags() const {
+        const auto input = QStringLiteral("Press [[Ctrl]] + [[Alt]] + [[Delete]] to lock.");
+        const auto result = MarkdownPreviewEnhancer::processExtensions(input);
+
+        QVERIFY(result.contains(QStringLiteral("<kbd>Ctrl</kbd>")));
+        QVERIFY(result.contains(QStringLiteral("<kbd>Alt</kbd>")));
+        QVERIFY(result.contains(QStringLiteral("<kbd>Delete</kbd>")));
+    }
+
+    void testSlugifyHeading() const {
+        QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("Hello World!")),
+                 QStringLiteral("hello-world"));
+        QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("---Section 1.2.3---")),
+                 QStringLiteral("section-1-2-3"));
+        QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("")), QStringLiteral("heading"));
+    }
 };
