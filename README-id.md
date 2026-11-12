@@ -470,6 +470,16 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 - **Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif**:
   - Memperbarui `updates.json` ke v1.4.6 dengan dukungan matriks rilis lengkap (macOS Apple Silicon & Intel, Linux DEB & RPM lintas arsitektur, skrip POSIX).
   - Mengaktifkan kebijakan pembaruan wajib (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`), fallback 3-tingkat di `ReleaseManager`, dan penyempurnaan `UpdateDialog` dengan pengarahan unduhan biner sesuai platform.
+- **Perombakan Total Engine & Live Preview Markdown**:
+  - Riset mendalam dan integrasi praktik terbaik dari `markedjs/marked`, `markdown-it`, `stackedit`, `editor.md`, `milkdown`, dan GitHub Flavored Markdown (GFM).
+  - Konsolidasi dan deduplikasi mesin render callout ke `MarkdownPreviewEnhancer::enhanceCallouts`, menyingkirkan kode ganda lintas dock dan tab.
+  - Implementasi Admonition / Callout resmi GitHub (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna pada mode terang dan gelap.
+  - Penambahan generator Daftar Isi interaktif (`[TOC]` / `{:toc}`) berjenjang dengan penautan otomatis ke slug heading dokumen.
+  - Penambahan slug anchor otomatis pada tag heading (`<h1 id="...">`) untuk navigasi loncat dan tautan internal.
+  - Penambahan konversi emoji shortcode (seperti `:rocket:`, `:sparkles:`, `:white_check_mark:`, `:fire:`, `:star:`, `:memo:`, `:100:`, dll.) dengan proteksi blok kode.
+  - Penambahan chip pintasan keyboard `[[Key]]` -> `<kbd>Key</kbd>`.
+  - Penyelarasan fungsi `copyHtml()`, `openInBrowser()`, dan `DocumentExportManager::markdownToHtml` agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas (task lists), catatan kaki (footnotes), dan callout secara utuh.
+  - Perbaikan database kompilasi (`compile_commands.json`) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
 
 ### [v1.4.5] — Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar (2026-11-08)
 

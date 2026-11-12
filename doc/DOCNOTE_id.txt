@@ -44,60 +44,43 @@ SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan
    - Warna kuning amber hangat untuk urutan karakter escape string (\n, \t, \xHH).
    - Kotak indikator penanda kemunculan kata kunci tersinkronisasi dinamis dengan tema aktif.
 
-5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB) & Penguatan Qt 6.2:
-   - Mengkalibrasi ukuran berkas rilis DMG berada dalam rentang ketat 30MB–40MB (36MB–39MB lintas Qt 6.2–6.12) dengan mempertahankan keutuhan pustaka universal Qt dan plugin rendering inti (libqsvg, libqsvgicon, libqgif, libqico).
+5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB):
+   - Mengkalibrasi ukuran berkas rilis DMG berada dalam rentang ketat 30MB–40MB (38MB–39MB) dengan mempertahankan keutuhan pustaka universal Qt dan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
    - Menggunakan format kanonikal native hdiutil dengan preset tata letak .DS_Store (680x440), latar retina .background/dmg-background@2x.png, dan verifikasi checksum CRC32.
-   - Mengimplementasikan skrip scripts/deploy-mac-bundle.sh dengan filter normalisasi & deduplikasi arsitektur otool guna menyelesaikan kendala parsing macdeployqt pada Xcode 15/16, menetapkan INSTALL_RPATH "@executable_path/../Frameworks" (LC_RPATH) untuk Qt 6.2, membatasi strip -x hanya pada biner utama, serta menambahkan pencegat CLI --version headless.
-   - Memperbaiki preprocessor MOC #include <QObject> pada src/widgets/FadingIndicator.cpp.
 
-6. Penguatan Kualitas Kode 14 Pilar & Audit Linter:
+6. Standardisasi Pewarnaan Tab Mode Split & Arsitektur Zero Theme Clash:
+   - Menghilangkan gradien gelap metalik dan batas jingga/peach peninggalan lawas dengan mengaktifkan cds::CDockManager::DisableStylesheet, true.
+   - Mengatur styling tab split yang sepenuhnya dinamis mengikuti palet tema aktif melalui ThemeManager.
+   - Hirarki visual status ganda yang adaptif: tab aktif pada split pane terfokus memiliki garis aksen atas tajam (2px solid %6), teks tebal (%2, weight 600), dan latar menyatu dengan kartu editor (%5). Tab aktif pada panel tidak terfokus memiliki garis aksen lembut (%12) dan teks terbaca jelas (%2, weight 500).
+
+7. Optimalisasi UX Auto-Completion, Harmonisasi Tema & Performa Rendering:
+   - Menonaktifkan auto-completion secara default (autoCompletion = false) untuk mencegah popup kandidat yang mengganggu saat mengetik normal.
+   - Menghapus pemicu autofill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat tanpa sengaja saat menekan spasi atau kurung.
+   - Mengganti penamaan tema bawaan menjadi sparkNotepad ("SparkNotepad Default") dengan kompatibilitas mundur otomatis untuk kunci pengaturan lama.
+   - Mengoptimalkan IPC Scintilla pada HighlightedScrollBar dengan pra-kalkulasi geometri di luar loop rendering tick marks.
+   - Mengganti alokasi pemecahan kata regex pada MarkdownSafePreviewDock dengan penghitung kata linier nol-alokasi berkecepatan tinggi.
+
+8. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif:
+   - Memperbarui updates.json ke v1.4.6 mencakup seluruh matriks rilis: macOS Apple Silicon (arm64) dan Intel (x86_64) lintas Qt 6.2–6.12, paket Linux Debian/Ubuntu (.deb) dan RedHat/Fedora (.rpm) untuk arsitektur x86_64 dan aarch64, serta skrip helper POSIX.
+   - Mengaktifkan kebijakan pembaruan wajib (force update) untuk semua versi sebelumnya guna menjamin keamanan, stabilitas, dan performa optimal.
+   - Engine ReleaseManager 3-tingkat tangguh (Tier 1 unmetered direct updates.json dengan deteksi arsitektur CPU; Tier 2 GitHub REST API dengan HTTP 304 ETag caching; Tier 3 HTTP Location fallback).
+
+9. Perombakan Total Engine & Live Preview Markdown:
+   - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
+   - Konsolidasi dan deduplikasi mesin render callout ke MarkdownPreviewEnhancer::enhanceCallouts, menyingkirkan kode ganda lintas dock dan tab.
+   - Implementasi Admonition / Callout resmi GitHub ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna pada mode terang dan gelap.
+   - Penambahan generator Daftar Isi interaktif ([TOC] / {:toc}) berjenjang dengan penautan otomatis ke slug heading dokumen.
+   - Penambahan slug anchor otomatis pada tag heading (<h1 id="...">) untuk navigasi loncat dan tautan internal.
+   - Penambahan konversi emoji shortcode (seperti :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, dll.) dengan proteksi blok kode.
+   - Penambahan chip pintasan keyboard [[Key]] -> <kbd>Key</kbd>.
+   - Penyelarasan fungsi copyHtml(), openInBrowser(), dan DocumentExportManager::markdownToHtml agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas, catatan kaki, dan callout secara utuh.
+   - Perbaikan database kompilasi (compile_commands.json) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
+
+10. Penguatan Kualitas Kode 14 Pilar & Audit Linter:
    - 100% lulus bersih pada pengujian cppcheck (171 berkas, 0 error), clangd, clang-tidy, dan trunk check.
    - Kepatuhan penuh SonarLint: pembersihan parameter lambda dan penegakan pointer-to-const correctness.
    - 100% lulus uji unit otomatis (ctest --test-dir build).
    - 100% paritas terjemahan antarmuka dwibahasa (Bahasa Inggris dan Bahasa Indonesia).
-
-7. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif:
-   - Memperbarui updates.json ke v1.4.6 mencakup seluruh matriks rilis (macOS Apple Silicon & Intel lintas Qt 6.2–6.12, paket Linux deb & rpm untuk x86_64 dan aarch64, serta skrip helper POSIX).
-   - Mengaktifkan pembaruan wajib (force-update) untuk seluruh versi sebelumnya guna menjamin keamanan dan keandalan penuh.
-   - Mengintegrasikan ReleaseManager dengan pipeline 3-tier (updates.json langsung tanpa limit GitHub API, GitHub REST API resmi, dan pengalihan lokasi HTTP).
-   - Menambahkan badge Pembaruan Wajib dan tautan unduhan langsung biner platform pada UpdateDialog.
-
-8. Arsitektur Pewarnaan Tab Mode Split Modern & Harmonisasi Tema:
-   - Menghilangkan warna gradien gelap metalik dan garis oranye/peach bawaan ADS pada mode split dengan menetapkan ads::CDockManager::DisableStylesheet, true serta menyatukan seluruh tata gaya tab dan dock manager secara eksklusif melalui ThemeManager.
-   - Mengimplementasikan hierarki visual ganda (dual-state) adaptif tema pada panel editor split:
-     * Tab Aktif pada Panel Split Terfokus: Latar belakang kartu editor (%5), garis aksen tema atas (%6, 2px), teks primer tebal (%2, weight 600), dan menyatu mulus ke kanvas editor.
-     * Tab Aktif pada Panel Split Tidak Terfokus: Latar belakang kartu editor (%5), garis indikator halus (%12, 2px), dan teks primer terbaca (%2, weight 500), menjamin 100% bebas bentrok tema dan kontras optimal pada seluruh palet terang, gelap, dan kustom.
-     * Tab Tidak Aktif: Latar belakang wadah harmonis (%1), teks sekunder (%4), serta efek hover halus (%3, teks %2).
-     * Bilah Pemisah Splitter (ads--CDockSplitter::handle): Garis batas tema 1px (%3) dengan iluminasi aksen interaktif (%6) saat disentuh kursor.
-     * Tombol Tutup Tab & Tombol Tambah Tab: Ikonografi SVG adaptif tema dengan efek sentuh koral lembut (rgba(235, 87, 87, 0.25)).
-
-9. Penyempurnaan Auto-Completion & Default Non-Intrusif:
-   - Auto-completion dinonaktifkan secara default (autoCompletion = false) di setelan aplikasi untuk mencegah gangguan popup saat mengetik.
-   - Menghapus pemicu auto-fill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.
-   - Menetapkan batas trigger minimal 3 karakter dengan perlindungan dokumen besar (>5MB).
-
-10. Harmonisasi Nama Tema & Brand SparkNotepad:
-    - Mengubah nama palet default terang menjadi sparkNotepad ("SparkNotepad Default") dengan pemetaan kompatibilitas mundur untuk setelan notepadNext.
-    - Memperbarui penamaan paket ikon toolbar dan aksi reset tema di antarmuka.
-
-11. Perbaikan Siklus Hidup Live Preview Markdown & HTML:
-    - Menyelaraskan visibilitas dock preview dengan editor aktif di MainWindow: menutup tab atau berpindah ke berkas non-Markdown/HTML otomatis menyembunyikan dock preview jika auto-show aktif.
-    - Otomatis menyembunyikan dock preview saat seluruh berkas ditutup (editor == nullptr).
-
-12. Optimasi Kinerja & Eliminasi Beban Berat:
-    - Mengoptimalkan HighlightedScrollBar dengan pra-kalkulasi geometri track di luar loop render dan mengganti pemecah kata regex dengan pencacah linier nol alokasi heap.
-    - Menambahkan deteksi cepat di MarkdownPreviewEnhancer untuk melompati pemrosesan regex pada berkas teks polos.
-
-13. Penyempurnaan Total Engine & Live Preview Markdown:
-    - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
-    - Konsolidasi dan deduplikasi mesin render callout ke MarkdownPreviewEnhancer::enhanceCallouts, menyingkirkan kode ganda lintas dock dan tab.
-    - Implementasi Admonition / Callout resmi GitHub ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna.
-    - Penambahan generator Daftar Isi interaktif ([TOC] / {:toc}) berjenjang dengan penautan otomatis ke slug heading dokumen.
-    - Penambahan slug anchor otomatis pada tag heading (<h1 id="...">) untuk navigasi loncat dan tautan internal.
-    - Penambahan konversi emoji shortcode (seperti :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, dll.) dengan proteksi blok kode.
-    - Penambahan chip pintasan keyboard [[Key]] -> <kbd>Key</kbd>.
-    - Penyelarasan fungsi copyHtml(), openInBrowser(), dan DocumentExportManager::markdownToHtml agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas (task lists), catatan kaki (footnotes), dan callout secara utuh.
-    - Perbaikan database kompilasi (compile_commands.json) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
 
 ---
 
@@ -116,10 +99,3 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
 5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa).
 6. Alur Ekspor Native Markdown / HTML / PDF via QPrinter dan Pandoc.
 7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX).
-8. Penyempurnaan Auto-Completion, Harmonisasi Tema SparkNotepad & Optimasi Sumber Daya:
-   - Auto-Completion dinonaktifkan secara default (autoCompletion = false) di setelan aplikasi.
-   - Menghapus pemicu auto-fill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.
-   - Mengalibrasi batas trigger minimal 3 karakter dengan proteksi dokumen besar (>5MB).
-   - Mengubah nama palet default terang menjadi sparkNotepad ("SparkNotepad Default") dengan pemetaan kompatibilitas mundur.
-   - Memperbaiki siklus hidup dock preview markdown: otomatis tersembunyi saat menutup tab atau berpindah ke berkas non-Markdown/HTML jika auto-show aktif.
-   - Mengoptimalkan HighlightedScrollBar dengan pra-kalkulasi geometri track di luar loop render dan mengganti pemecah kata regex dengan pencacah linier nol alokasi heap.

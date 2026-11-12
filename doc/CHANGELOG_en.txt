@@ -34,59 +34,33 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
   - Warm golden amber for string escape sequences (`\n`, `\t`, `\xHH`).
   - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
 - **Markdown Live Preview & Engine Architecture Overhaul**:
-  - Deep research and integration of industry-standard patterns from markedjs, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
-  - Consolidated and deduplicated callout rendering into `MarkdownPreviewEnhancer::enhanceCallouts`, eliminating duplicate implementations across docks and tabs.
-  - Implemented GitHub Alert Admonitions (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with high-contrast icons, tinted backgrounds, and accent borders.
-  - Added interactive Table of Contents generator (`[TOC]` / `{:toc}`) with hierarchical navigation and automatic heading slug anchors.
-  - Added automated heading slug generation (`<h1 id="...">`) to support deep linking and TOC navigation.
-  - Added emoji shortcodes expansion (e.g., `:rocket:`, `:sparkles:`, `:white_check_mark:`, `:fire:`, `:star:`, `:memo:`, `:100:`, etc.) with code block protection.
-  - Added keyboard shortcut chips `[[Key]]` -> `<kbd>Key</kbd>`.
-  - Harmonized `copyHtml()`, `openInBrowser()`, and `DocumentExportManager::markdownToHtml` to ensure exported HTML and clipboard contents contain full math, mermaid diagrams, task lists, footnotes, and callout enhancements.
-  - Fixed compilation database generation (`compile_commands.json`) with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
+  - Researched and integrated modern best practices from markedjs/marked, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+  - Consolidated and deduplicated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts across docks and tabs.
+  - Implemented GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+  - Added interactive Table of Contents generator ([TOC] / {:toc}) with hierarchical navigation and automatic heading slug anchors (<h1 id="...">).
+  - Added emoji shortcodes expansion (:rocket:, :sparkles:, etc.) with code block protection.
+  - Added keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+  - Unified copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml pipelines.
+  - Fixed compile_commands.json with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
 
 #### 🔧 Changed & Improved
 
-- **Canonical 30MB–40MB macOS DMG Packaging & Qt 6.2 Hardening**:
-  - Calibrated release DMG packaging to 36MB–39MB across Qt 6.2–6.12 while retaining universal Qt libraries and core rendering plugins (`libqsvg`, `libqsvgicon`, `libqgif`, `libqico`).
+- **Canonical 30MB–40MB macOS DMG Packaging**:
+  - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`).
   - Packaged via canonical native `hdiutil` with custom retina background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
-  - Implemented `scripts/deploy-mac-bundle.sh` with architecture-aware `otool` header normalization and duplicate-slice deduplication resolving Qt 6.2 `macdeployqt` parsing errors on modern Xcode 15/16 macOS runners.
-  - Configured `INSTALL_RPATH "@executable_path/../Frameworks"` in `cmake/PackagingMac.cmake` and enforced `LC_RPATH` + `@rpath` linkage verification in `scripts/deploy-mac-bundle.sh`.
-  - Protected Qt plugins and frameworks from over-aggressive stripping, restricting symbol stripping to the main application executable only.
-  - Added early headless `--version` / `-v` interceptor in `src/main.cpp` guaranteeing clean execution without display server initialization.
-  - Fixed MOC preprocessor `#include <QObject>` in `src/widgets/FadingIndicator.cpp`.
 - **Context Menu Noise Reduction**:
   - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
-- **Modern Split View Tab Coloring & Zero Theme Clash Architecture**:
-  - Eliminated legacy hardcoded peach/orange borders and unsightly dark metallic gradients in split mode by setting `ads::CDockManager::DisableStylesheet, true` and unifying all tab and dock area styling exclusively through `ThemeManager`.
-  - Implemented modern, theme-adaptive dual-state visual hierarchy for split editor panes:
-    - Active Tab in Focused Split Pane: Seamless editor card background, vibrant theme accent top border (`2px solid %6`), bold primary text, and seamless bottom merge into the editor viewport.
-    - Active Tab in Unfocused Split Pane: Matching editor card background, refined subtle indicator line, and legible primary text, guaranteeing zero theme clash and optimal contrast across all light, dark, and custom palettes.
-    - Inactive Tabs: Harmonized container background, secondary text, with smooth hover state.
-    - Splitter Separators: Clean 1px theme border with interactive accent hover illumination.
-    - Tab Close Button & Plus Button: Modernized SVG iconography matching theme modes with soft coral hover highlight.
-- **Auto-Completion UX & Non-Intrusive Defaults**:
-  - Auto-completion disabled by default (`autoCompletion = false`) in `ApplicationSettings.cpp` to prevent disruptive popups during normal typing.
-  - Cleared aggressive auto-fill triggers (`autoCSetFillUps("")`), preventing accidental candidate insertions when typing spaces or parentheses.
-  - Enforced `autoCSetChooseSingle(false)`, `autoCSetAutoHide(true)`, and calibrated word trigger threshold to 3 characters minimum with large-file protection guards.
-- **Theme Renaming & Brand Consistency ("NotepadNext" -> "SparkNotepad")**:
-  - Harmonized default light theme palette identifier and family to `sparkNotepad` ("SparkNotepad Default") with automatic backward compatibility for legacy `notepadNext` settings keys.
-  - Updated toolbar icon pack branding and reset actions across the user interface.
-- **Markdown & HTML Live Preview Lifecycle Hardening**:
-  - Synchronized dock visibility with active editor lifecycle in `MainWindow`: closing tabs or switching away from Markdown/HTML files automatically hides `markdownSafePreviewDock` when auto-show is enabled.
-  - Immediately hides the preview dock when all documents are closed (`editor == nullptr`).
-- **Rendering & Memory Performance Optimizations**:
-  - Eliminated repetitive Scintilla IPC queries inside `HighlightedScrollBar::paintEvent` by precomputing track geometry, arrow heights, and total line counts outside the tick mark rendering loops.
-  - Replaced regular-expression word-splitting allocations (`split(QRegularExpression)`) in `MarkdownSafePreviewDock` with an ultra-fast linear zero-allocation word counter.
-  - Added early fast-path detection in `MarkdownPreviewEnhancer` to skip markdown regex pipelines for plain text without special tokens, and guarded against large-file preview memory spikes.
-- **14-Pillar Code Quality & Multi-Linter Remediation**:
-  - 100% clean passes across `clangd`, `trunk check` (`cppcheck-qt`, `clang-format`, `ruff`, `shellcheck`), and `ctest`.
-  - Resolved dynamic linker dependencies (`libz3.5.3.dylib`), refreshed compilation database (`compile_commands.json`), and validated IDE diagnostics.
-  - SonarLint compliance: resolved parameter warnings and enforced const correctness.
+- **Split View Tab Modernization & Zero Theme Clash Architecture**:
+  - Eliminated legacy dark metallic gradients and orange/peach borders by setting ads::CDockManager::DisableStylesheet, true.
+  - Unified split view tab styling through ThemeManager with dynamic theme palette colors.
+- **Auto-Completion UX & Theme Harmonization**:
+  - Disabled auto-completion by default (autoCompletion = false) to prevent disruptive popups during normal typing.
+  - Harmonized default light theme palette identifier to sparkNotepad ("SparkNotepad Default") with backward compatibility.
 - **Comprehensive Multi-Build updates.json & Force-Update Delivery Engine**:
-  - Upgraded `updates.json` to v1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64 architectures, and POSIX default editor scripts.
-  - Activated mandatory force update (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`) across all builds to guarantee security, stability, and zero regressions for all previous versions.
-  - Upgraded `ReleaseManager` with a 3-tier update check pipeline (Tier 1: unmetered direct `updates.json` with hardware architecture awareness; Tier 2: official GitHub REST API with ETag caching; Tier 3: HTTP redirect location fallback).
-  - Enhanced `UpdateDialog` with prominent red/amber mandatory update badge, direct platform-specific package download link, and force update status messaging.
+  - Upgraded updates.json to v1.4.6 with full build matrix coverage and mandatory force-update policy.
+- **14-Pillar Code Quality & Static Analysis Gates**:
+  - 100% clean passes on `cppcheck` (171 files, 0 errors, 0 warnings), `clangd`, `clang-tidy`, and `ctest`.
+  - SonarLint compliance: resolved parameter warnings and enforced const correctness.
 
 ---
 

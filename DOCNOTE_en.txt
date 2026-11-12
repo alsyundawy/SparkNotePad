@@ -49,7 +49,33 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
    - Calibrated release DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving universal Qt libraries and standard image format plugins (libqjpeg, libqgif, libqwebp).
    - Packaged via canonical native hdiutil with custom retina background, layout preset .DS_Store (680x440), and verified CRC32 checksum.
 
-6. 14-Pillar Code Quality & Static Analysis Gates:
+6. Split View Tab Modernization & Zero Theme Clash Architecture:
+   - Eliminated legacy dark metallic gradients and orange/peach borders by setting ads::CDockManager::DisableStylesheet, true.
+   - Fully unified split view tab styling through ThemeManager with dynamic theme palette colors.
+   - Dual-state visual hierarchy: focused active tabs feature vibrant accent top border (2px solid %6) and bold text (%2, weight 600); unfocused active tabs feature refined subtle indicator line (%12) and readable text (%2, weight 500).
+
+7. Auto-Completion UX, Theme Harmonization & Rendering Performance:
+   - Disabled auto-completion by default (autoCompletion = false) to prevent disruptive popups during normal typing.
+   - Cleared aggressive auto-fill triggers (autoCSetFillUps("")), preventing accidental insertions when typing spaces or parentheses.
+   - Harmonized default light theme palette name to sparkNotepad ("SparkNotepad Default") with backward compatibility.
+   - Precomputed HighlightedScrollBar geometry outside rendering loops to reduce Scintilla IPC queries.
+   - Implemented ultra-fast linear zero-allocation word counter for Markdown preview statistics.
+
+8. Comprehensive Multi-Build updates.json & Force-Update Delivery Engine:
+   - Upgraded updates.json to v1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts.
+   - Activated mandatory force update policy across all builds with resilient 3-tier update check pipeline in ReleaseManager.
+
+9. Markdown Live Preview & Engine Architecture Overhaul:
+   - Researched and integrated modern best practices from markedjs/marked, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+   - Consolidated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts across docks and tabs.
+   - GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+   - Interactive Table of Contents generator ([TOC] / {:toc}) with automatic heading slug anchors (<h1 id="...">).
+   - Emoji shortcodes expansion (:rocket:, :sparkles:, etc.) with code block protection.
+   - Keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+   - Unified copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml pipelines.
+   - Fixed compile_commands.json with 685 synchronized header entries, resolving 945+ IDE linter errors.
+
+10. 14-Pillar Code Quality & Static Analysis Gates:
    - 100% clean passes on cppcheck (171 files, 0 errors, 0 warnings), clangd, clang-tidy, and trunk check.
    - SonarLint compliance: resolved parameter warnings and enforced const correctness.
    - 100% automated test suite pass rate (ctest).

@@ -33,19 +33,31 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
   - High-visibility Gold Badges (`#FFD700`, bold) for TODO, FIXME, BUG, HACK, NOTE.
   - Warm golden amber for string escape sequences (`\n`, `\t`, `\xHH`).
   - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
+- **Markdown Live Preview & Engine Architecture Overhaul**:
+  - Researched and integrated modern best practices from markedjs/marked, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+  - Consolidated and deduplicated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts across docks and tabs.
+  - Implemented GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+  - Added interactive Table of Contents generator ([TOC] / {:toc}) with hierarchical navigation and automatic heading slug anchors (<h1 id="...">).
+  - Added emoji shortcodes expansion (:rocket:, :sparkles:, etc.) with code block protection.
+  - Added keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+  - Unified copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml pipelines.
+  - Fixed compile_commands.json with 685 synchronized header entries, resolving 945+ IDE linter errors and SonarLint language server issues.
 
 #### 🔧 Changed & Improved
 
-- **Canonical 30MB–40MB macOS DMG Packaging & Qt 6.2 Hardening**:
-  - Calibrated release DMG packaging to 36MB–39MB across Qt 6.2–6.12 while retaining universal Qt libraries and core rendering plugins (`libqsvg`, `libqsvgicon`, `libqgif`, `libqico`).
+- **Canonical 30MB–40MB macOS DMG Packaging**:
+  - Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins (`libqjpeg`, `libqgif`, `libqwebp`).
   - Packaged via canonical native `hdiutil` with custom retina background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
-  - Implemented `scripts/deploy-mac-bundle.sh` with architecture-aware `otool` header normalization and duplicate-slice deduplication resolving Qt 6.2 `macdeployqt` parsing errors on modern Xcode 15/16 macOS runners.
-  - Configured `INSTALL_RPATH "@executable_path/../Frameworks"` in `cmake/PackagingMac.cmake` and enforced `LC_RPATH` + `@rpath` linkage verification in `scripts/deploy-mac-bundle.sh`.
-  - Protected Qt plugins and frameworks from over-aggressive stripping, restricting symbol stripping to the main application executable only.
-  - Added early headless `--version` / `-v` interceptor in `src/main.cpp` guaranteeing clean execution without display server initialization.
-  - Fixed MOC preprocessor `#include <QObject>` in `src/widgets/FadingIndicator.cpp`.
 - **Context Menu Noise Reduction**:
   - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
+- **Split View Tab Modernization & Zero Theme Clash Architecture**:
+  - Eliminated legacy dark metallic gradients and orange/peach borders by setting ads::CDockManager::DisableStylesheet, true.
+  - Unified split view tab styling through ThemeManager with dynamic theme palette colors.
+- **Auto-Completion UX & Theme Harmonization**:
+  - Disabled auto-completion by default (autoCompletion = false) to prevent disruptive popups during normal typing.
+  - Harmonized default light theme palette identifier to sparkNotepad ("SparkNotepad Default") with backward compatibility.
+- **Comprehensive Multi-Build updates.json & Force-Update Delivery Engine**:
+  - Upgraded updates.json to v1.4.6 with full build matrix coverage and mandatory force-update policy.
 - **14-Pillar Code Quality & Static Analysis Gates**:
   - 100% clean passes on `cppcheck` (171 files, 0 errors, 0 warnings), `clangd`, `clang-tidy`, and `ctest`.
   - SonarLint compliance: resolved parameter warnings and enforced const correctness.

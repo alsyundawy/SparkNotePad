@@ -48,7 +48,35 @@ SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan
    - Mengkalibrasi ukuran berkas rilis DMG berada dalam rentang ketat 30MB–40MB (38MB–39MB) dengan mempertahankan keutuhan pustaka universal Qt dan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
    - Menggunakan format kanonikal native hdiutil dengan preset tata letak .DS_Store (680x440), latar retina .background/dmg-background@2x.png, dan verifikasi checksum CRC32.
 
-6. Penguatan Kualitas Kode 14 Pilar & Audit Linter:
+6. Standardisasi Pewarnaan Tab Mode Split & Arsitektur Zero Theme Clash:
+   - Menghilangkan gradien gelap metalik dan batas jingga/peach peninggalan lawas dengan mengaktifkan cds::CDockManager::DisableStylesheet, true.
+   - Mengatur styling tab split yang sepenuhnya dinamis mengikuti palet tema aktif melalui ThemeManager.
+   - Hirarki visual status ganda yang adaptif: tab aktif pada split pane terfokus memiliki garis aksen atas tajam (2px solid %6), teks tebal (%2, weight 600), dan latar menyatu dengan kartu editor (%5). Tab aktif pada panel tidak terfokus memiliki garis aksen lembut (%12) dan teks terbaca jelas (%2, weight 500).
+
+7. Optimalisasi UX Auto-Completion, Harmonisasi Tema & Performa Rendering:
+   - Menonaktifkan auto-completion secara default (autoCompletion = false) untuk mencegah popup kandidat yang mengganggu saat mengetik normal.
+   - Menghapus pemicu autofill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat tanpa sengaja saat menekan spasi atau kurung.
+   - Mengganti penamaan tema bawaan menjadi sparkNotepad ("SparkNotepad Default") dengan kompatibilitas mundur otomatis untuk kunci pengaturan lama.
+   - Mengoptimalkan IPC Scintilla pada HighlightedScrollBar dengan pra-kalkulasi geometri di luar loop rendering tick marks.
+   - Mengganti alokasi pemecahan kata regex pada MarkdownSafePreviewDock dengan penghitung kata linier nol-alokasi berkecepatan tinggi.
+
+8. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif:
+   - Memperbarui updates.json ke v1.4.6 mencakup seluruh matriks rilis: macOS Apple Silicon (arm64) dan Intel (x86_64) lintas Qt 6.2–6.12, paket Linux Debian/Ubuntu (.deb) dan RedHat/Fedora (.rpm) untuk arsitektur x86_64 dan aarch64, serta skrip helper POSIX.
+   - Mengaktifkan kebijakan pembaruan wajib (force update) untuk semua versi sebelumnya guna menjamin keamanan, stabilitas, dan performa optimal.
+   - Engine ReleaseManager 3-tingkat tangguh (Tier 1 unmetered direct updates.json dengan deteksi arsitektur CPU; Tier 2 GitHub REST API dengan HTTP 304 ETag caching; Tier 3 HTTP Location fallback).
+
+9. Perombakan Total Engine & Live Preview Markdown:
+   - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
+   - Konsolidasi dan deduplikasi mesin render callout ke MarkdownPreviewEnhancer::enhanceCallouts, menyingkirkan kode ganda lintas dock dan tab.
+   - Implementasi Admonition / Callout resmi GitHub ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna pada mode terang dan gelap.
+   - Penambahan generator Daftar Isi interaktif ([TOC] / {:toc}) berjenjang dengan penautan otomatis ke slug heading dokumen.
+   - Penambahan slug anchor otomatis pada tag heading (<h1 id="...">) untuk navigasi loncat dan tautan internal.
+   - Penambahan konversi emoji shortcode (seperti :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, dll.) dengan proteksi blok kode.
+   - Penambahan chip pintasan keyboard [[Key]] -> <kbd>Key</kbd>.
+   - Penyelarasan fungsi copyHtml(), openInBrowser(), dan DocumentExportManager::markdownToHtml agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas, catatan kaki, dan callout secara utuh.
+   - Perbaikan database kompilasi (compile_commands.json) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
+
+10. Penguatan Kualitas Kode 14 Pilar & Audit Linter:
    - 100% lulus bersih pada pengujian cppcheck (171 berkas, 0 error), clangd, clang-tidy, dan trunk check.
    - Kepatuhan penuh SonarLint: pembersihan parameter lambda dan penegakan pointer-to-const correctness.
    - 100% lulus uji unit otomatis (ctest --test-dir build).
