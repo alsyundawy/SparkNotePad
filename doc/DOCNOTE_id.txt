@@ -56,6 +56,12 @@ SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan
    - 100% lulus uji unit otomatis (ctest --test-dir build).
    - 100% paritas terjemahan antarmuka dwibahasa (Bahasa Inggris dan Bahasa Indonesia).
 
+7. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif:
+   - Memperbarui updates.json ke v1.4.6 mencakup seluruh matriks rilis (macOS Apple Silicon & Intel lintas Qt 6.2–6.12, paket Linux deb & rpm untuk x86_64 dan aarch64, serta skrip helper POSIX).
+   - Mengaktifkan pembaruan wajib (force-update) untuk seluruh versi sebelumnya guna menjamin keamanan dan keandalan penuh.
+   - Mengintegrasikan ReleaseManager dengan pipeline 3-tier (updates.json langsung tanpa limit GitHub API, GitHub REST API resmi, dan pengalihan lokasi HTTP).
+   - Menambahkan badge Pembaruan Wajib dan tautan unduhan langsung biner platform pada UpdateDialog.
+
 ---
 
 ## 2. Arsip Ringkasan: Rilis v1.4.5

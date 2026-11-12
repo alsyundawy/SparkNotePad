@@ -63,6 +63,11 @@ SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningk
 - **Audit Kualitas Kode 14 Pilar & Kepatuhan Multi-Linter**:
   - 100% lulus bersih pada `clangd`, `trunk check` (`cppcheck-qt`, `clang-format`, `ruff`, `shellcheck`), dan `ctest`.
   - Memperbaiki dependensi tautan dinamis (`libz3.5.3.dylib`) dan memperbarui basis data kompilasi (`compile_commands.json`).
+- **Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif**:
+  - Memperbarui `updates.json` ke v1.4.6 mencakup seluruh matriks rilis: macOS Apple Silicon (arm64) dan Intel (x86_64) lintas Qt 6.2–6.12, paket Linux Debian/Ubuntu (.deb) dan RedHat/Fedora (.rpm) untuk arsitektur x86_64 dan aarch64, serta skrip default editor POSIX.
+  - Mengaktifkan pembaruan wajib (force update) untuk semua versi sebelumnya (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`) guna menjamin keamanan, stabilitas, dan performa optimal.
+  - Meningkatkan `ReleaseManager` dengan pipeline 3-tingkat (Tier 1: `updates.json` langsung tanpa limit kuota GitHub API dan peka arsitektur CPU; Tier 2: GitHub REST API resmi dengan ETag caching; Tier 3: pengalihan lokasi HTTP web fallback).
+  - Menyempurnakan `UpdateDialog` dengan badge merah mencolok Pembaruan Wajib, tautan unduhan langsung berkas paket sesuai sistem operasi, dan notifikasi force update yang jelas.
 
 ---
 

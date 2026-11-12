@@ -120,7 +120,20 @@ SparkNotePad v1.4.6 passes all 14 Pillars of Production Software Engineering:
 - **Zero Linter Errors**: Clean results across `clangd --check`, `cppcheck` (171 files in `src/`), `clang-tidy`, SonarLint (`sonarsource.sonarlint-vscode`), and Trunk linters.
 - **Default CMake Unix Makefiles**: Built using standard Unix Makefiles with controlled concurrency (Ninja permanently prohibited per `AGENTS.md`).
 - **100% Test Pass Rate**: All unit tests in `SparkNotePadUnitTests` passing with 0 failures.
-- **100% Bilingual Parity**: 2,077 translated entries synchronized with 0 unfinished entries across English and Indonesian catalogs.
+- **100% Bilingual Parity**: 2,085 translated entries synchronized with 0 unfinished entries across English and Indonesian catalogs.
+
+### 8. Comprehensive Multi-Build updates.json & Force-Update Delivery Engine
+
+- **Full Release Matrix updates.json Coverage**:
+  - Upgraded `updates.json` to version 1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts.
+  - Activated mandatory force update (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`) across all builds to guarantee security, stability, and zero regressions for all prior versions.
+- **Resilient 3-Tier ReleaseManager Engine**:
+  - Tier 1: Direct unmetered `updates.json` fetching via GitHub raw CDN with native CPU architecture detection (`QSysInfo::currentCpuArchitecture()`).
+  - Tier 2: Official GitHub REST API with HTTP 304 ETag caching to prevent rate-limit exhaustion.
+  - Tier 3: Unmetered web redirect HTTP Location header fallback.
+- **Enhanced UpdateDialog Presentation**:
+  - Added high-visibility red/amber `MANDATORY UPDATE` badge and security update subtitle.
+  - Direct download button routes directly to the platform package matching the host OS and CPU architecture.
 
 ---
 

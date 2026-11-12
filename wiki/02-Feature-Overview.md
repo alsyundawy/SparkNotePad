@@ -154,6 +154,7 @@ SparkNotePad v1.4.5 introduces 12 major foundational features:
 - **Pristine Notepad++ Classic Clean Standard**: Eliminated drop shadows, ambient halos, gray background tiles, and edge clipping across all packs.
 - **Permanent Dark Toolbar Invariant**: Dark `#21252b` background enforced across all themes to preserve icon contrast.
 - **Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate**: 100% clean passes on `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, and `ctest`.
+- **Comprehensive Multi-Build updates.json & Force-Update Delivery Engine**: Upgraded `updates.json` to v1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts. Enforces mandatory force-update across all builds, with an unmetered 3-tier update pipeline in `ReleaseManager` and direct platform package routing in `UpdateDialog`.
 
 ---
 

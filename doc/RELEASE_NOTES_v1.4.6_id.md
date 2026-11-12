@@ -120,7 +120,20 @@ SparkNotePad v1.4.6 lolos seluruh 14 Pilar Rekayasa Perangkat Lunak:
 - **Nol Peringatan Linter**: Hasil verifikasi bersih pada `clangd --check`, `cppcheck` (171 berkas di `src/`), `clang-tidy`, SonarLint (`sonarsource.sonarlint-vscode`), dan Trunk linter.
 - **Kompilasi Standar CMake Unix Makefiles**: Kompilasi ditegakkan menggunakan generator default Unix Makefiles dengan pembatasan konkurensi (Ninja dilarang permanen per `AGENTS.md`).
 - **100% Kelulusan Unit Test**: Seluruh pengujian unit pada `SparkNotePadUnitTests` lulus dengan 0 kegagalan.
-- **100% Paritas Dwibahasa**: 2.077 entri terjemahan tersinkronisasi dengan 0 entri tertunda pada katalog Bahasa Inggris dan Bahasa Indonesia.
+- **100% Paritas Dwibahasa**: 2.085 entri terjemahan tersinkronisasi dengan 0 entri tertunda pada katalog Bahasa Inggris dan Bahasa Indonesia.
+
+### 8. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif
+
+- **Cakupan Matriks Lengkap updates.json**:
+  - Memperbarui `updates.json` ke versi 1.4.6 mencakup seluruh matriks rilis: macOS Apple Silicon (arm64) dan Intel (x86_64) lintas Qt 6.2–6.12, paket Linux Debian/Ubuntu (.deb) dan RedHat/Fedora (.rpm) untuk arsitektur x86_64 dan aarch64, serta skrip helper POSIX.
+  - Mengaktifkan pembaruan wajib (force update) untuk semua versi sebelumnya guna menjamin keamanan, performa, dan keandalan penuh tanpa regresi.
+- **Engine ReleaseManager 3-Tingkat yang Tangguh**:
+  - Tier 1: Unduhan langsung `updates.json` melalui CDN raw GitHub tanpa batas kuota API dengan deteksi arsitektur CPU native (`QSysInfo::currentCpuArchitecture()`).
+  - Tier 2: GitHub REST API resmi dengan ETag caching (HTTP 304) untuk efisiensi kuota.
+  - Tier 3: Pengalihan lokasi HTTP Location header fallback.
+- **Penyempurnaan Tampilan UpdateDialog**:
+  - Menambahkan lencana `WAJIB` (MANDATORY UPDATE) merah mencolok dan deskripsi pembaruan wajib.
+  - Tombol unduh langsung mengarahkan ke berkas paket biner yang cocok dengan sistem operasi dan arsitektur CPU pengguna.
 
 ---
 

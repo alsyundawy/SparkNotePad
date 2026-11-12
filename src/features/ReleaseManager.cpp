@@ -22,8 +22,8 @@
 #include <QApplication>
 #include <QDebug>
 #include <QRegularExpression>
-
 #include <QSettings>
+#include <QSysInfo>
 
 ReleaseManager &ReleaseManager::instance() {
     static ReleaseManager inst;
@@ -34,7 +34,7 @@ ReleaseManager::ReleaseManager(QObject *parent) : QObject(parent) {
     m_netManager = new QNetworkAccessManager(this);
 }
 
-QString ReleaseManager::currentVersion() const {
+QString ReleaseManager::currentVersion() {
 #ifdef APP_VERSION
     return QString(APP_VERSION);
 #else
@@ -42,7 +42,7 @@ QString ReleaseManager::currentVersion() const {
 #endif
 }
 
-bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) const {
+bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) {
     // Clean versions: strip 'v' or 'V'
     QString l = latestVersion.trimmed();
     if (l.startsWith("v", Qt::CaseInsensitive)) {
@@ -64,16 +64,19 @@ bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString 
     for (int i = 0; i < maxLen; ++i) {
         int lNum = (i < lParts.size()) ? lParts[i].toInt() : 0;
         int cNum = (i < cParts.size()) ? cParts[i].toInt() : 0;
-        if (lNum > cNum)
+        if (lNum > cNum) {
             return true;
-        if (lNum < cNum)
+        }
+        if (lNum < cNum) {
             return false;
+        }
     }
 
     // If core numeric parts are equal, check pre-release tags
     bool lHasPre = l.contains('-');
-    if (const bool cHasPre = c.contains('-'); !lHasPre && cHasPre)
+    if (const bool cHasPre = c.contains('-'); !lHasPre && cHasPre) {
         return true;  // Full release is newer than pre-release
+    }
 
     return false;
 }
@@ -87,6 +90,118 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
         return;
     }
 
+    // Tier 1: Query unmetered updates.json containing full build matrix & force update policy
+    const QUrl updateJsonUrl(
+        QStringLiteral("https://raw.githubusercontent.com/alsyundawy/SparkNotePad/main/updates.json"));
+    QNetworkRequest request(updateJsonUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, QString("SparkNotePad-App/%1").arg(currentVersion()));
+    NetworkSecurityPolicy::applySecureTlsConfiguration(request);
+
+    qInfo() << "[ReleaseManager] Checking for updates via unmetered updates.json:" << updateJsonUrl.toString();
+    QNetworkReply *reply = m_netManager->get(request);
+    connect(reply, &QNetworkReply::finished, this, [this, reply] { onUpdatesJsonFinished(reply); });
+}
+
+void ReleaseManager::onUpdatesJsonFinished(QNetworkReply *reply) {
+    reply->deleteLater();
+
+    const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (reply->error() != QNetworkReply::NoError || statusCode < 200 || statusCode >= 300) {
+        qWarning() << "[ReleaseManager] Failed to fetch updates.json (HTTP" << statusCode << ":" << reply->errorString()
+                   << "). Falling back to Tier 2 (GitHub REST API)...";
+        queryGitHubApi();
+        return;
+    }
+
+    const QByteArray data = reply->readAll();
+    QJsonParseError parseErr;
+    const QJsonDocument doc = QJsonDocument::fromJson(data, &parseErr);
+    if (parseErr.error != QJsonParseError::NoError || !doc.isObject()) {
+        qWarning() << "[ReleaseManager] Failed to parse updates.json:" << parseErr.errorString()
+                   << ". Falling back to Tier 2 (GitHub REST API)...";
+        queryGitHubApi();
+        return;
+    }
+
+    const QJsonObject rootObj = doc.object();
+    const QJsonObject updatesObj = rootObj.value(QStringLiteral("updates")).toObject();
+
+    // Select optimal target build matching current OS and hardware architecture
+    QString targetKey;
+#ifdef Q_OS_MACOS
+    const QString arch = QSysInfo::currentCpuArchitecture().toLower();
+    if (arch.contains(QStringLiteral("arm")) || arch.contains(QStringLiteral("aarch64"))) {
+        targetKey = QStringLiteral("macos-arm64");
+    } else {
+        targetKey = QStringLiteral("macos-x64");
+    }
+#elif defined(Q_OS_LINUX)
+    const QString arch = QSysInfo::currentCpuArchitecture().toLower();
+    if (arch.contains(QStringLiteral("arm")) || arch.contains(QStringLiteral("aarch64"))) {
+        targetKey = QStringLiteral("linux-deb-arm64");
+    } else {
+        targetKey = QStringLiteral("linux-deb-x64");
+    }
+#else
+    targetKey = QStringLiteral("linux");
+#endif
+
+    QJsonObject platformObj = updatesObj.value(targetKey).toObject();
+    if (platformObj.isEmpty()) {
+#ifdef Q_OS_MACOS
+        platformObj = updatesObj.value(QStringLiteral("macos")).toObject();
+#else
+        platformObj = updatesObj.value(QStringLiteral("linux")).toObject();
+#endif
+    }
+
+    QString latestVer = platformObj.value(QStringLiteral("latest-version")).toString().trimmed();
+    if (latestVer.isEmpty()) {
+        latestVer = rootObj.value(QStringLiteral("latest-version")).toString().trimmed();
+    }
+
+    const bool forceGlobal = rootObj.value(QStringLiteral("force-update")).toBool() ||
+                             rootObj.value(QStringLiteral("mandatory")).toBool() ||
+                             rootObj.value(QStringLiteral("mandatory-update")).toBool();
+    const bool forcePlatform = platformObj.value(QStringLiteral("force-update")).toBool() ||
+                               platformObj.value(QStringLiteral("mandatory")).toBool() ||
+                               platformObj.value(QStringLiteral("mandatory-update")).toBool();
+    const bool isMandatory = forceGlobal || forcePlatform;
+
+    ReleaseInfo info;
+    info.versionTag =
+        latestVer.startsWith(QLatin1Char('v'), Qt::CaseInsensitive) ? latestVer : QStringLiteral("v%1").arg(latestVer);
+    info.releaseName = rootObj.value(QStringLiteral("title")).toString();
+    if (info.releaseName.isEmpty()) {
+        info.releaseName = QStringLiteral("SparkNotePad %1").arg(info.versionTag);
+    }
+    info.releaseNotes = rootObj.value(QStringLiteral("description")).toString();
+    info.htmlUrl = platformObj.value(QStringLiteral("open-url")).toString();
+    if (info.htmlUrl.isEmpty()) {
+        info.htmlUrl = rootObj.value(QStringLiteral("open-url")).toString();
+    }
+    info.downloadUrl = platformObj.value(QStringLiteral("download-url")).toString();
+    info.publishedAt = rootObj.value(QStringLiteral("release-date")).toString();
+    info.isPrerelease = false;
+    info.isMandatory = isMandatory;
+
+    const QString curVer = currentVersion();
+    const bool updateAvail = isNewerVersion(info.versionTag, curVer);
+
+    emit updateCheckFinished(updateAvail, info);
+
+    if (updateAvail) {
+        if (m_parentWidget) {
+            UpdateDialog::showUpdateAvailable(m_parentWidget, curVer, info);
+        }
+    } else {
+        if (!m_silent && m_parentWidget) {
+            UpdateDialog::showUpToDate(m_parentWidget, curVer);
+        }
+    }
+}
+
+void ReleaseManager::queryGitHubApi() {
     QUrl apiUrl("https://api.github.com/repos/alsyundawy/SparkNotePad/releases/latest");
     QNetworkRequest request(apiUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, QString("SparkNotePad-App/%1").arg(currentVersion()));
@@ -102,9 +217,9 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
     // Security: CVE-2026-95620 & CVE-2025-14575 mitigations
     NetworkSecurityPolicy::applySecureTlsConfiguration(request);
 
-    qInfo() << "[ReleaseManager] Checking for updates via:" << apiUrl.toString();
+    qInfo() << "[ReleaseManager] Checking for updates via Tier 2 (GitHub API):" << apiUrl.toString();
     QNetworkReply *reply = m_netManager->get(request);
-    connect(reply, &QNetworkReply::finished, this, [this, reply]() { onReplyFinished(reply); });
+    connect(reply, &QNetworkReply::finished, this, [this, reply] { onReplyFinished(reply); });
 }
 
 void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
@@ -181,7 +296,7 @@ void ReleaseManager::triggerWebFallback() {
     qInfo() << "[ReleaseManager] Triggering unmetered web redirect fallback via:" << webUrl.toString();
     QNetworkReply *fallbackReply = m_netManager->get(request);
     connect(fallbackReply, &QNetworkReply::finished, this,
-            [this, fallbackReply]() { onFallbackReplyFinished(fallbackReply); });
+            [this, fallbackReply] { onFallbackReplyFinished(fallbackReply); });
 }
 
 void ReleaseManager::onFallbackReplyFinished(QNetworkReply *reply) {

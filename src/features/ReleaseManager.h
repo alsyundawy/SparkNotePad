@@ -24,8 +24,10 @@ struct ReleaseInfo {
     QString releaseName;
     QString releaseNotes;
     QString htmlUrl;
+    QString downloadUrl;
     QString publishedAt;
     bool isPrerelease = false;
+    bool isMandatory = false;
 };
 
 class ReleaseManager : public QObject {
@@ -35,17 +37,19 @@ public:
     static ReleaseManager &instance();
 
     void checkForUpdates(QWidget *parent = nullptr, bool silent = false);
-    QString currentVersion() const;
-    bool isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) const;
+    static QString currentVersion();
+    static bool isNewerVersion(const QString &latestVersion, const QString &currentVersionStr);
 
 signals:
     void updateCheckFinished(bool updateAvailable, const ReleaseInfo &info);
 
 private slots:
+    void onUpdatesJsonFinished(QNetworkReply *reply);
     void onReplyFinished(QNetworkReply *reply);
     void onFallbackReplyFinished(QNetworkReply *reply);
 
 private:
+    void queryGitHubApi();
     void triggerWebFallback();
 
     explicit ReleaseManager(QObject *parent = nullptr);

@@ -221,9 +221,9 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Bilah Alat Gelap Permanen**      | `#mainToolBar` dikunci secara permanen pada latar gelap (`#21252b !important`) di semua tema dan mode tampilan OS                 |         Semua Mode & Tema          |
 | **Editor Default Tipe Media IANA** | Integrasi tipe media resmi IANA (`SparkNotePad-Default-Editor.sh`) mengasosiasikan 100+ ekstensi & MIME standar                   |          Integrasi Sistem          |
 | **Paket DMG Ringan Permanen**      | Paket DMG macOS native tanpa bloatware terjaga pada 30MB–40MB ceiling dengan tata letak visual `.DS_Store` presisi                | `cmake --build build --target dmg` |
-| **Koleksi 69 Paket Ikon Toolbar**  | 69 koleksi ikon multi-resolusi (16x16–64x64) mencakup gaya klasik desktop, macOS Big Sur, Windows 11, dan paket 3D modern       |   Preferensi >> Themes & Toolbar   |
-| **Ergonomi Menu Konteks Editor**   | Tempel & Cocokkan Format (`Cmd+Alt+Shift+V`), Cari di Google (`Cmd+Alt+G`), dan konversi langsung HURUF BESAR/kecil               |         Menu Konteks Editor        |
-| **Pewarnaan Sintaks Kontras WCAG** | Perhitungan luminansi matematis rasio 4,0:1, lencana emas TODO (`#FFD700`), dan kotak indikator tersinkronisasi                    |             Semua Tema             |
+| **Koleksi 69 Paket Ikon Toolbar**  | 69 koleksi ikon multi-resolusi (16x16–64x64) mencakup gaya klasik desktop, macOS Big Sur, Windows 11, dan paket 3D modern         |   Preferensi >> Themes & Toolbar   |
+| **Ergonomi Menu Konteks Editor**   | Tempel & Cocokkan Format (`Cmd+Alt+Shift+V`), Cari di Google (`Cmd+Alt+G`), dan konversi langsung HURUF BESAR/kecil               |        Menu Konteks Editor         |
+| **Pewarnaan Sintaks Kontras WCAG** | Perhitungan luminansi matematis rasio 4,0:1, lencana emas TODO (`#FFD700`), dan kotak indikator tersinkronisasi                   |             Semua Tema             |
 | **Tumpukan Tab Ditutup**           | Antrean FIFO 50 entri memulihkan posisi kursor, rasio scroll, encoding, lexer bahasa, dan tag warna tab                           |   `Ctrl+Shift+T` / `Cmd+Shift+T`   |
 | **Penandaan Warna & Grup Tab**     | 8 preset warna kontras tinggi dengan garis visual tepi atas dan penyimpanan persisten via QSettings                               |          Menu Konteks Tab          |
 | **Autosave & Pemulihan Crash**     | Snapshot latar belakang 10 detik dengan izin strict POSIX 0600, checksum SHA-256, dan dialog pemulihan interaktif                 |              Otomatis              |
@@ -466,6 +466,9 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
   - Pengemasan rilis DMG dikalibrasi presisi antara 30MB dan 40MB (38MB–39MB) dengan mempertahankan seluruh framework Qt dan plugin format gambar.
 - **Penguatan Kualitas Kode 14 Pilar & Audit Linter**:
   - 100% lulus bersih pada pengujian `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, dan `ctest`.
+- **Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif**:
+  - Memperbarui `updates.json` ke v1.4.6 dengan dukungan matriks rilis lengkap (macOS Apple Silicon & Intel, Linux DEB & RPM lintas arsitektur, skrip POSIX).
+  - Mengaktifkan kebijakan pembaruan wajib (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`), fallback 3-tingkat di `ReleaseManager`, dan penyempurnaan `UpdateDialog` dengan pengarahan unduhan biner sesuai platform.
 
 ### [v1.4.5] — Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Paket Ikon Aksara (38 Koleksi) & Penguatan 14 Pilar (2026-11-08)
 

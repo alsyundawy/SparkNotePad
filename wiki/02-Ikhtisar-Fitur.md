@@ -141,6 +141,7 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
 - **Standar Bersih Notepad++ Classic**: Menghapus seluruh bayangan jatuh, halo sekitar, ubin abu-abu, dan artefak tepian pada seluruh paket baru.
 - **Bilah Alat Gelap Permanen**: Latar belakang `#21252b` dipertahankan di seluruh mode dan tema untuk memastikan kontras ikon yang tajam.
 - **Penguatan Linter & Peninjauan Kode Bebas Defek (14 Pilar)**: 100% lulus bersih pada pengujian `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, dan `ctest`.
+- **Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif**: Memperbarui `updates.json` ke v1.4.6 mencakup seluruh matriks rilis (macOS Apple Silicon & Intel lintas Qt 6.2–6.12, paket Linux deb & rpm untuk x86_64 dan aarch64, serta skrip helper POSIX). Menerapkan pembaruan wajib (force-update) untuk seluruh versi sebelumnya, dengan pipeline 3-tier unmetered di `ReleaseManager` dan routing paket unduhan langsung di `UpdateDialog`.
 
 ---
 

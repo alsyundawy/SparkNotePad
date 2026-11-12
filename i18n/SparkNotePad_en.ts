@@ -7811,12 +7811,12 @@ Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you keep y
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5620"/>
         <source>Reset to Default (Light Mode - SparkNotepad)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset to Default (Light Mode - SparkNotepad)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5623"/>
         <source>Theme reset to default Light Mode (SparkNotepad)</source>
-        <translation type="unfinished"></translation>
+        <translation>Theme reset to default Light Mode (SparkNotepad)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5677"/>
@@ -9293,12 +9293,12 @@ Key: %2</translation>
 <context>
     <name>ReleaseManager</name>
     <message>
-        <location filename="../src/features/ReleaseManager.cpp" line="214"/>
+        <location filename="../src/features/ReleaseManager.cpp" line="329"/>
         <source>SparkNotePad %1 is available on GitHub.</source>
         <translation>SparkNotePad %1 is available on GitHub.</translation>
     </message>
     <message>
-        <location filename="../src/features/ReleaseManager.cpp" line="238"/>
+        <location filename="../src/features/ReleaseManager.cpp" line="353"/>
         <source>Unable to check for updates. GitHub rate limit exceeded and fallback redirect failed.</source>
         <translation>Unable to check for updates. GitHub rate limit exceeded and fallback redirect failed.</translation>
     </message>
@@ -10240,12 +10240,12 @@ Key: %2</translation>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="151"/>
         <source>SparkNotepad Classic (Silk)</source>
-        <translation type="unfinished"></translation>
+        <translation>SparkNotepad Classic (Silk)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="152"/>
         <source>Authentic 16x16 Silk bitmap icons from SparkNotepad</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentic 16x16 Silk bitmap icons from SparkNotepad</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="181"/>
@@ -10874,108 +10874,128 @@ Key: %2</translation>
         <translation>Performance enhancements, stability improvements, and bug fixes.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="283"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="284"/>
         <source>SparkNotePad Update Available</source>
         <translation>SparkNotePad Update Available</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="288"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="284"/>
+        <source>SparkNotePad Mandatory Update</source>
+        <translation>SparkNotePad Mandatory Update</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="290"/>
+        <source>A mandatory force update is required for all versions to ensure maximum security, performance, and stability.</source>
+        <translation>A mandatory force update is required for all versions to ensure maximum security, performance, and stability.</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="292"/>
         <source>A new version is available for download with performance, stability, and feature improvements.</source>
         <translation>A new version is available for download with performance, stability, and feature improvements.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="318"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="325"/>
         <source>Installed</source>
         <translation>Installed</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="330"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="337"/>
         <source>Latest</source>
         <translation>Latest</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="347"/>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="583"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="346"/>
+        <source>MANDATORY</source>
+        <translation>MANDATORY</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="364"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="607"/>
         <source>Release Notes</source>
         <translation>Release Notes</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="387"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="404"/>
         <source>View on GitHub ↗</source>
         <translation>View on GitHub ↗</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="409"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="428"/>
         <source>Remind Me Later</source>
         <translation>Remind Me Later</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="414"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="428"/>
+        <source>Remind Me Later (Mandatory)</source>
+        <translation>Remind Me Later (Mandatory)</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="433"/>
         <source>Download Update ⤓</source>
         <translation>Download Update ⤓</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="461"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="485"/>
         <source>✓ Up to Date</source>
         <translation>✓ Up to Date</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="476"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="500"/>
         <source>You Are Using the Latest Release!</source>
         <translation>You Are Using the Latest Release!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="489"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="513"/>
         <source>SparkNotePad is fully up to date with complete optimizations for %1.</source>
         <translation>SparkNotePad is fully up to date with complete optimizations for %1.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="553"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="577"/>
         <source>Current Version:</source>
         <translation>Current Version:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="569"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="593"/>
         <source>System Architecture:</source>
         <translation>System Architecture:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="572"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="596"/>
         <source>Release Channel:</source>
         <translation>Release Channel:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="572"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="596"/>
         <source>Official GitHub Stable Release (%1)</source>
         <translation>Official GitHub Stable Release (%1)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="575"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="599"/>
         <source>Last Checked:</source>
         <translation>Last Checked:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="607"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="631"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="662"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="686"/>
         <source>Update Check Failed</source>
         <translation>Update Check Failed</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="667"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="691"/>
         <source>Unable to connect to the GitHub update server. Please check your internet connection.</source>
         <translation>Unable to connect to the GitHub update server. Please check your internet connection.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="702"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="726"/>
         <source>Retry</source>
         <translation>Retry</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="710"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="734"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>

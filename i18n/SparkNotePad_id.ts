@@ -7807,12 +7807,12 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5620"/>
         <source>Reset to Default (Light Mode - SparkNotepad)</source>
-        <translation type="unfinished"></translation>
+        <translation>Atur Ulang ke Bawaan (Mode Terang - SparkNotepad)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5623"/>
         <source>Theme reset to default Light Mode (SparkNotepad)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema diatur ulang ke Mode Terang bawaan (SparkNotepad)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="5677"/>
@@ -9289,12 +9289,12 @@ Kunci: %2</translation>
 <context>
     <name>ReleaseManager</name>
     <message>
-        <location filename="../src/features/ReleaseManager.cpp" line="214"/>
+        <location filename="../src/features/ReleaseManager.cpp" line="329"/>
         <source>SparkNotePad %1 is available on GitHub.</source>
         <translation>SparkNotePad %1 telah tersedia di GitHub.</translation>
     </message>
     <message>
-        <location filename="../src/features/ReleaseManager.cpp" line="238"/>
+        <location filename="../src/features/ReleaseManager.cpp" line="353"/>
         <source>Unable to check for updates. GitHub rate limit exceeded and fallback redirect failed.</source>
         <translation>Tidak dapat memeriksa pembaruan. Batas tarif GitHub terlampaui dan pengalihan cadangan gagal.</translation>
     </message>
@@ -10236,12 +10236,12 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="151"/>
         <source>SparkNotepad Classic (Silk)</source>
-        <translation type="unfinished"></translation>
+        <translation>SparkNotepad Klasik (Silk)</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="152"/>
         <source>Authentic 16x16 Silk bitmap icons from SparkNotepad</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikon bitmap Silk 16x16 autentik dari SparkNotepad</translation>
     </message>
     <message>
         <location filename="../src/features/ToolbarIconManager.cpp" line="181"/>
@@ -10870,108 +10870,128 @@ Kunci: %2</translation>
         <translation>Peningkatan performa, perbaikan stabilitas, dan perbaikan bug.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="283"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="284"/>
         <source>SparkNotePad Update Available</source>
         <translation>Pembaruan SparkNotePad Tersedia</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="288"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="284"/>
+        <source>SparkNotePad Mandatory Update</source>
+        <translation>Pembaruan Wajib SparkNotePad</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="290"/>
+        <source>A mandatory force update is required for all versions to ensure maximum security, performance, and stability.</source>
+        <translation>Pembaruan wajib (force update) diperlukan untuk semua versi guna menjamin keamanan, performa, dan stabilitas maksimal.</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="292"/>
         <source>A new version is available for download with performance, stability, and feature improvements.</source>
         <translation>Versi baru siap diunduh untuk meningkatkan performa, stabilitas, dan fitur.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="318"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="325"/>
         <source>Installed</source>
         <translation>Terpasang</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="330"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="337"/>
         <source>Latest</source>
         <translation>Terbaru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="347"/>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="583"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="346"/>
+        <source>MANDATORY</source>
+        <translation>WAJIB</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="364"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="607"/>
         <source>Release Notes</source>
         <translation>Catatan Rilis</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="387"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="404"/>
         <source>View on GitHub ↗</source>
         <translation>Lihat di GitHub ↗</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="409"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="428"/>
         <source>Remind Me Later</source>
         <translation>Nanti Saja</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="414"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="428"/>
+        <source>Remind Me Later (Mandatory)</source>
+        <translation>Ingatkan Nanti (Wajib)</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="433"/>
         <source>Download Update ⤓</source>
         <translation>Unduh Pembaruan ⤓</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="461"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="485"/>
         <source>✓ Up to Date</source>
         <translation>✓ Sudah Terbaru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="476"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="500"/>
         <source>You Are Using the Latest Release!</source>
         <translation>Anda Menggunakan Rilis Terbaru!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="489"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="513"/>
         <source>SparkNotePad is fully up to date with complete optimizations for %1.</source>
         <translation>SparkNotePad sudah sepenuhnya menggunakan versi terbaru dengan optimasi penuh untuk %1.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="553"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="577"/>
         <source>Current Version:</source>
         <translation>Versi Saat Ini:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="569"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="593"/>
         <source>System Architecture:</source>
         <translation>Arsitektur Sistem:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="572"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="596"/>
         <source>Release Channel:</source>
         <translation>Saluran Rilis:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="572"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="596"/>
         <source>Official GitHub Stable Release (%1)</source>
         <translation>Rilis Stabil GitHub Resmi (%1)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="575"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="599"/>
         <source>Last Checked:</source>
         <translation>Terakhir Diperiksa:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="607"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="631"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="662"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="686"/>
         <source>Update Check Failed</source>
         <translation>Pemeriksaan Pembaruan Gagal</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="667"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="691"/>
         <source>Unable to connect to the GitHub update server. Please check your internet connection.</source>
         <translation>Tidak dapat terhubung ke server pembaruan GitHub. Silakan periksa koneksi internet Anda.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="702"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="726"/>
         <source>Retry</source>
         <translation>Coba Lagi</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/UpdateDialog.cpp" line="710"/>
+        <location filename="../src/dialogs/UpdateDialog.cpp" line="734"/>
         <source>Close</source>
         <translation>Tutup</translation>
     </message>

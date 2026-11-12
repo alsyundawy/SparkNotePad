@@ -220,10 +220,10 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------: |
 | **Permanent Dark Mode Toolbar**     | `#mainToolBar` permanently locked to dark background (`#21252b !important`) across all themes and light/dark modes                    |         All Modes & Themes         |
 | **IANA Media Types Default Editor** | Official IANA Media Types integration (`SparkNotePad-Default-Editor.sh` & Linux scripts) associating 100+ standard extensions & MIMEs |         System Integration         |
-| **Lightweight DMG Packaging**       | Zero-bloat native macOS DMG packaging strictly maintained at 30MB–40MB ceiling with pre-baked `.DS_Store` layout                       | `cmake --build build --target dmg` |
-| **69 Toolbar Icon Packs Suite**     | 69 built-in multi-resolution icon packs (16x16–64x64) spanning classic desktop, macOS Big Sur, Windows 11, and modern 3D packs       |  Preferences >> Themes & Toolbar   |
+| **Lightweight DMG Packaging**       | Zero-bloat native macOS DMG packaging strictly maintained at 30MB–40MB ceiling with pre-baked `.DS_Store` layout                      | `cmake --build build --target dmg` |
+| **69 Toolbar Icon Packs Suite**     | 69 built-in multi-resolution icon packs (16x16–64x64) spanning classic desktop, macOS Big Sur, Windows 11, and modern 3D packs        |  Preferences >> Themes & Toolbar   |
 | **Editor Context Menu Ergonomics**  | Paste & Match Style (`Cmd+Alt+Shift+V`), Search on Google (`Cmd+Alt+G`), direct UPPER/lowercase conversions                           |         Editor Context M.          |
-| **WCAG 2.1 Contrast Highlighting**  | Mathematical luminance calculation guaranteeing 4.0:1 contrast, Gold Badges (`#FFD700`) for TODOs, and synchronized indicator box    |             All Themes             |
+| **WCAG 2.1 Contrast Highlighting**  | Mathematical luminance calculation guaranteeing 4.0:1 contrast, Gold Badges (`#FFD700`) for TODOs, and synchronized indicator box     |             All Themes             |
 | **Reopen Closed Tab Stack**         | 50-entry FIFO stack restoring caret position, line ratio, encoding, language lexer, and tab color tags                                |   `Ctrl+Shift+T` / `Cmd+Shift+T`   |
 | **Tab Color Tagging & Grouping**    | 8 accessible high-contrast color presets with visual tab borders and persistent storage via QSettings                                 |          Tab Context Menu          |
 | **Autosave & Crash Recovery**       | 10-second background snapshots with strict POSIX 0600 permissions, SHA-256 validation, and interactive restore dialog                 |             Automatic              |
@@ -466,6 +466,9 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
   - Calibrated DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving Qt frameworks, image plugins, and pre-baked `.DS_Store` layout.
 - **14-Pillar Code Quality & Linter Hardening**:
   - 100% clean passes on `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, and `ctest`.
+- **Comprehensive Multi-Build updates.json & Force-Update Delivery Engine**:
+  - Upgraded `updates.json` to v1.4.6 with full build matrix coverage (macOS Apple Silicon & Intel, Linux DEB & RPM across architectures, scripts).
+  - Activated mandatory force update policy (`force-update: true`, `mandatory: true`, `minimum-supported-version: "1.4.6"`), integrated 3-tier fallback in `ReleaseManager`, and enhanced `UpdateDialog` with platform download targeting.
 
 ### [v1.4.5] — Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening (2026-11-08)
 
