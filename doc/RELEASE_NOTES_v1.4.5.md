@@ -170,46 +170,46 @@ SparkNotePad **v1.4.5** represents a major architectural milestone delivering 17
 
 ## 📦 Official Release Binaries & Assets
 
-| Asset Name                                     | Target Platform / Description                                        | Architecture  | Format                    |
-| :--------------------------------------------- | :------------------------------------------------------------------- | :------------ | :------------------------ |
-| **`SparkNotePad-v1.4.5-x64.dmg`**              | macOS Canonical Release (macOS 11.0+, Qt 6.5 LTS)                    | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-arm64.dmg`**            | macOS Canonical Release (macOS 11.0+, Qt 6.5 LTS)                    | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.2-x64.dmg`**        | macOS Catalina Legacy Release (macOS 10.15+, Qt 6.2 LTS)             | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.2-arm64.dmg`**      | macOS Legacy Release (macOS 11.0+, Qt 6.2 LTS)                       | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.5-x64.dmg`**        | macOS Standard Release (macOS 11.0+, Qt 6.5 LTS)                     | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.5-arm64.dmg`**      | macOS Standard Release (macOS 11.0+, Qt 6.5 LTS)                     | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.8-x64.dmg`**        | macOS Release (macOS 12.0+, Qt 6.8 LTS)                              | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.8-arm64.dmg`**      | macOS Release (macOS 12.0+, Qt 6.8 LTS)                              | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.10-x64.dmg`**       | macOS Release (macOS 13.0+, Qt 6.10)                                 | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.10-arm64.dmg`**     | macOS Release (macOS 14.0+, Qt 6.10)                                 | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.11-x64.dmg`**       | macOS Release (macOS 13.0+, Qt 6.11)                                 | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.11-arm64.dmg`**     | macOS Release (macOS 14.0+, Qt 6.11)                                 | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.12-x64.dmg`**       | macOS Cutting-Edge Release (macOS 13.0+, Qt 6.12)                    | Intel x86_64  | Apple Disk Image (`.dmg`) |
-| **`SparkNotePad-v1.4.5-qt6.12-arm64.dmg`**     | macOS Cutting-Edge Release (macOS 14.0+, Qt 6.12)                    | Apple Silicon | Apple Disk Image (`.dmg`) |
-| **`sparknotepad_1.4.5_amd64.deb`**             | Linux Debian / Ubuntu Canonical (`glibc 2.35+`, Qt 6.5 LTS)          | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.2_amd64.deb`**       | Linux Ubuntu 20.04 LTS Legacy (`glibc 2.31+`, Qt 6.2 LTS)            | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.5_amd64.deb`**       | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.5 LTS)                    | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.8_amd64.deb`**       | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.8 LTS)                    | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.8_arm64.deb`**       | Linux Debian / Ubuntu ARM64 (`glibc 2.35+`, Qt 6.8 LTS)              | aarch64       | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.10_amd64.deb`**      | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.10)                       | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.10_arm64.deb`**      | Linux Debian / Ubuntu ARM64 (`glibc 2.35+`, Qt 6.10)                 | aarch64       | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.11_amd64.deb`**      | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.11)                       | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.11_arm64.deb`**      | Linux Debian / Ubuntu ARM64 (`glibc 2.35+`, Qt 6.11)                 | aarch64       | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.12_amd64.deb`**      | Linux Debian / Ubuntu (`glibc 2.39+`, Qt 6.12)                       | x86_64        | Debian Package (`.deb`)   |
-| **`sparknotepad_1.4.5-qt6.12_arm64.deb`**      | Linux Debian / Ubuntu ARM64 (`glibc 2.39+`, Qt 6.12)                 | aarch64       | Debian Package (`.deb`)   |
-| **`sparknotepad-1.4.5-1.x86_64.rpm`**          | Linux Fedora / RHEL / openSUSE Canonical (`glibc 2.35+`, Qt 6.5 LTS) | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.2-1.x86_64.rpm`**    | Linux CentOS / RHEL Legacy (`glibc 2.31+`, Qt 6.2 LTS)               | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.5-1.x86_64.rpm`**    | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.5 LTS)                      | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.8-1.x86_64.rpm`**    | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.8 LTS)                      | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.8-1.aarch64.rpm`**   | Linux Fedora / RHEL ARM64 (`glibc 2.35+`, Qt 6.8 LTS)                | aarch64       | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.10-1.x86_64.rpm`**   | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.10)                         | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.10-1.aarch64.rpm`**  | Linux Fedora / RHEL ARM64 (`glibc 2.35+`, Qt 6.10)                   | aarch64       | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.11-1.x86_64.rpm`**   | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.11)                         | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.11-1.aarch64.rpm`**  | Linux Fedora / RHEL ARM64 (`glibc 2.35+`, Qt 6.11)                   | aarch64       | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.12-1.x86_64.rpm`**   | Linux Fedora / RHEL (`glibc 2.39+`, Qt 6.12)                         | x86_64        | RPM Package (`.rpm`)      |
-| **`sparknotepad-1.4.5-qt6.12-1.aarch64.rpm`**  | Linux Fedora / RHEL ARM64 (`glibc 2.39+`, Qt 6.12)                   | aarch64       | RPM Package (`.rpm`)      |
-| **`SparkNotePad-Default-Editor.sh`**           | macOS & Linux POSIX File Association Helper Script                   | Universal     | Bash Shell Script         |
-| **`SparkNotePad-Default-Editor-Linux.sh`**     | Linux Dedicated 5-Layer Default Editor Engine Script                 | Linux         | Bash Shell Script         |
+| Asset Name                                    | Target Platform / Description                                        | Architecture  | Format                    |
+| :-------------------------------------------- | :------------------------------------------------------------------- | :------------ | :------------------------ |
+| **`SparkNotePad-v1.4.5-x64.dmg`**             | macOS Canonical Release (macOS 11.0+, Qt 6.5 LTS)                    | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-arm64.dmg`**           | macOS Canonical Release (macOS 11.0+, Qt 6.5 LTS)                    | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.2-x64.dmg`**       | macOS Catalina Legacy Release (macOS 10.15+, Qt 6.2 LTS)             | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.2-arm64.dmg`**     | macOS Legacy Release (macOS 11.0+, Qt 6.2 LTS)                       | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.5-x64.dmg`**       | macOS Standard Release (macOS 11.0+, Qt 6.5 LTS)                     | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.5-arm64.dmg`**     | macOS Standard Release (macOS 11.0+, Qt 6.5 LTS)                     | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.8-x64.dmg`**       | macOS Release (macOS 12.0+, Qt 6.8 LTS)                              | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.8-arm64.dmg`**     | macOS Release (macOS 12.0+, Qt 6.8 LTS)                              | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.10-x64.dmg`**      | macOS Release (macOS 13.0+, Qt 6.10)                                 | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.10-arm64.dmg`**    | macOS Release (macOS 14.0+, Qt 6.10)                                 | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.11-x64.dmg`**      | macOS Release (macOS 13.0+, Qt 6.11)                                 | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.11-arm64.dmg`**    | macOS Release (macOS 14.0+, Qt 6.11)                                 | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.12-x64.dmg`**      | macOS Cutting-Edge Release (macOS 13.0+, Qt 6.12)                    | Intel x86_64  | Apple Disk Image (`.dmg`) |
+| **`SparkNotePad-v1.4.5-qt6.12-arm64.dmg`**    | macOS Cutting-Edge Release (macOS 14.0+, Qt 6.12)                    | Apple Silicon | Apple Disk Image (`.dmg`) |
+| **`sparknotepad_1.4.5_amd64.deb`**            | Linux Debian / Ubuntu Canonical (`glibc 2.35+`, Qt 6.5 LTS)          | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.2_amd64.deb`**      | Linux Ubuntu 20.04 LTS Legacy (`glibc 2.31+`, Qt 6.2 LTS)            | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.5_amd64.deb`**      | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.5 LTS)                    | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.8_amd64.deb`**      | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.8 LTS)                    | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.8_arm64.deb`**      | Linux Debian / Ubuntu ARM64 (`glibc 2.35+`, Qt 6.8 LTS)              | aarch64       | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.10_amd64.deb`**     | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.10)                       | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.10_arm64.deb`**     | Linux Debian / Ubuntu ARM64 (`glibc 2.35+`, Qt 6.10)                 | aarch64       | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.11_amd64.deb`**     | Linux Debian / Ubuntu (`glibc 2.35+`, Qt 6.11)                       | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.11_arm64.deb`**     | Linux Debian / Ubuntu ARM64 (`glibc 2.35+`, Qt 6.11)                 | aarch64       | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.12_amd64.deb`**     | Linux Debian / Ubuntu (`glibc 2.39+`, Qt 6.12)                       | x86_64        | Debian Package (`.deb`)   |
+| **`sparknotepad_1.4.5-qt6.12_arm64.deb`**     | Linux Debian / Ubuntu ARM64 (`glibc 2.39+`, Qt 6.12)                 | aarch64       | Debian Package (`.deb`)   |
+| **`sparknotepad-1.4.5-1.x86_64.rpm`**         | Linux Fedora / RHEL / openSUSE Canonical (`glibc 2.35+`, Qt 6.5 LTS) | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.2-1.x86_64.rpm`**   | Linux CentOS / RHEL Legacy (`glibc 2.31+`, Qt 6.2 LTS)               | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.5-1.x86_64.rpm`**   | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.5 LTS)                      | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.8-1.x86_64.rpm`**   | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.8 LTS)                      | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.8-1.aarch64.rpm`**  | Linux Fedora / RHEL ARM64 (`glibc 2.35+`, Qt 6.8 LTS)                | aarch64       | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.10-1.x86_64.rpm`**  | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.10)                         | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.10-1.aarch64.rpm`** | Linux Fedora / RHEL ARM64 (`glibc 2.35+`, Qt 6.10)                   | aarch64       | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.11-1.x86_64.rpm`**  | Linux Fedora / RHEL (`glibc 2.35+`, Qt 6.11)                         | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.11-1.aarch64.rpm`** | Linux Fedora / RHEL ARM64 (`glibc 2.35+`, Qt 6.11)                   | aarch64       | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.12-1.x86_64.rpm`**  | Linux Fedora / RHEL (`glibc 2.39+`, Qt 6.12)                         | x86_64        | RPM Package (`.rpm`)      |
+| **`sparknotepad-1.4.5-qt6.12-1.aarch64.rpm`** | Linux Fedora / RHEL ARM64 (`glibc 2.39+`, Qt 6.12)                   | aarch64       | RPM Package (`.rpm`)      |
+| **`SparkNotePad-Default-Editor.sh`**          | macOS & Linux POSIX File Association Helper Script                   | Universal     | Bash Shell Script         |
+| **`SparkNotePad-Default-Editor-Linux.sh`**    | Linux Dedicated 5-Layer Default Editor Engine Script                 | Linux         | Bash Shell Script         |
 
 ---
 
