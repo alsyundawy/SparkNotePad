@@ -56,7 +56,7 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
             m_currentPaletteId = std::move(savedPalette);
         } else {
             m_currentPaletteId =
-                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("notepadNext");
+                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("sparkNotepad");
         }
 
         emit themeChanged(isDarkActive());
@@ -89,13 +89,13 @@ const ThemePalette *ThemeManager::currentPalette() const {
                 return findThemePaletteById(QStringLiteral("dracula"));
             }
             if (m_themeMode == ThemeMode::Light && p->isDark) {
-                return findThemePaletteById(QStringLiteral("notepadNext"));
+                return findThemePaletteById(QStringLiteral("sparkNotepad"));
             }
             return p;
         }
     }
     return isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                          : findThemePaletteById(QStringLiteral("notepadNext"));
+                          : findThemePaletteById(QStringLiteral("sparkNotepad"));
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
@@ -111,7 +111,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
             m_currentPaletteId = QStringLiteral("dracula");
         }
     } else if (mode == ThemeMode::Light && (!cur || cur->isDark)) {
-        m_currentPaletteId = QStringLiteral("notepadNext");
+        m_currentPaletteId = QStringLiteral("sparkNotepad");
     }
 
     if (m_settings) {
@@ -188,7 +188,7 @@ void ThemeManager::applyTheme(MainWindow *window) {
     const bool dark = isDarkActive();
     if (!pal) {
         pal = dark ? findThemePaletteById(QStringLiteral("dracula"))
-                   : findThemePaletteById(QStringLiteral("notepadNext"));
+                   : findThemePaletteById(QStringLiteral("sparkNotepad"));
     }
 
     QString win;
@@ -696,7 +696,7 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                             : findThemePaletteById(QStringLiteral("notepadNext"));
+                             : findThemePaletteById(QStringLiteral("sparkNotepad"));
     }
     if (!pal) {
         return;
@@ -837,7 +837,7 @@ QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                             : findThemePaletteById(QStringLiteral("notepadNext"));
+                             : findThemePaletteById(QStringLiteral("sparkNotepad"));
     }
 
     QString win;

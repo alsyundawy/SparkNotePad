@@ -153,3 +153,10 @@ SparkNotePad v1.4.5 represents a major feature and stabilization milestone deliv
 5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages).
 6. Native Markdown / HTML / PDF Export Pipeline.
 7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas).
+8. Auto-Completion Refinements, SparkNotepad Theme Harmonization & Resource Optimization:
+   - Auto-completion disabled by default (autoCompletion = false) in application settings to prevent intrusive popups.
+   - Eliminated disruptive auto-fill triggers (autoCSetFillUps("")), preventing accidental insertions on space or parenthesis.
+   - Enforced 3-character minimum trigger with large file guards (>5MB).
+   - Harmonized default light theme palette identifier to sparkNotepad ("SparkNotepad Default") with backward-compatibility for legacy keys.
+   - Fixed Markdown Live Preview lifecycle: preview dock automatically hides upon closing tabs or switching away from Markdown/HTML files.
+   - Optimized HighlightedScrollBar rendering performance by eliminating repetitive Scintilla IPC queries, replaced regex word splitter with linear zero-allocation counter, and added fast-path markdown syntax checks.

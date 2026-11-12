@@ -48,9 +48,8 @@ int main(int argc, char *argv[]) {
             "%{message}");
 
         const std::vector<std::string_view> argList(argv + 1, argv + argc);
-        const bool isVersionCheck = std::ranges::any_of(argList, [](std::string_view arg) {
-            return arg == "--version" || arg == "-v";
-        });
+        const bool isVersionCheck =
+            std::ranges::any_of(argList, [](std::string_view arg) { return arg == "--version" || arg == "-v"; });
         if (isVersionCheck) {
             std::cout << "SparkNotePad " << APP_VERSION << '\n';
             return 0;

@@ -109,7 +109,7 @@ private:
     ~ThemeManager() override = default;
 
     ThemeMode m_themeMode = ThemeMode::Light;
-    QString m_currentPaletteId = QStringLiteral("notepadNext");
+    QString m_currentPaletteId = QStringLiteral("sparkNotepad");
     ApplicationSettings *m_settings = nullptr;
     QPointer<MainWindow> m_activeWindow;
     mutable QHash<QString, QString> m_styleSheetCache;

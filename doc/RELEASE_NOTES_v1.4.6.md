@@ -96,14 +96,31 @@ SparkNotePad **v1.4.6** delivers high-impact visual customization, editor contex
   - Implemented `scripts/deploy-mac-bundle.sh` with architecture-aware `otool` header normalization, `LC_RPATH` `@executable_path/../Frameworks` enforcement, single-binary stripping, and headless CLI `--version` launch verification.
   - Packaged via native `hdiutil` preserving pre-baked `.DS_Store` layout preset (680x440), Retina background graphics (`dmg-background@2x.png`), custom volume icons (`.VolumeIcon.icns`), and automated CRC32 verification.
 
-### 6. 14-Pillar Code Quality & Verification Suite
+### 6. Auto-Completion, Theme Harmonization & Resource Performance Overhaul
+
+- **Auto-Completion UX & Non-Intrusive Defaults**:
+  - Auto-completion is now disabled by default (`autoCompletion = false`) in `ApplicationSettings.cpp` to prevent disruptive candidate popups during regular typing.
+  - Eliminated disruptive auto-fill triggers (`autoCSetFillUps("")`), preventing accidental candidate insertions when typing spaces or parentheses.
+  - Enforced `autoCSetChooseSingle(false)`, `autoCSetAutoHide(true)`, and calibrated word trigger threshold to 3 characters minimum with large-file protection guards.
+- **Theme Renaming & Brand Consistency ("NotepadNext" -> "SparkNotepad")**:
+  - Harmonized default light theme palette identifier and family to `sparkNotepad` ("SparkNotepad Default") with automatic backward compatibility for legacy `notepadNext` settings keys.
+  - Updated toolbar icon pack branding and reset actions across the user interface.
+- **Markdown & HTML Live Preview Lifecycle Hardening**:
+  - Synchronized dock visibility with active editor lifecycle in `MainWindow`: closing tabs or switching away from Markdown/HTML files automatically hides `markdownSafePreviewDock` when auto-show is enabled.
+  - Immediately hides the preview dock when all documents are closed (`editor == nullptr`).
+- **Rendering & Memory Performance Optimizations**:
+  - Eliminated repetitive Scintilla IPC queries inside `HighlightedScrollBar::paintEvent` by precomputing track geometry, arrow heights, and total line counts outside the tick mark rendering loops.
+  - Replaced regular-expression word-splitting allocations (`split(QRegularExpression)`) in `MarkdownSafePreviewDock` with an ultra-fast linear zero-allocation word counter.
+  - Added early fast-path detection in `MarkdownPreviewEnhancer` to skip markdown regex pipelines for plain text without special tokens, and guarded against large-file preview memory spikes.
+
+### 7. 14-Pillar Code Quality & Verification Suite
 
 SparkNotePad v1.4.6 passes all 14 Pillars of Production Software Engineering:
 
 - **Zero Linter Errors**: Clean results across `clangd --check`, `cppcheck` (171 files in `src/`), `clang-tidy`, SonarLint (`sonarsource.sonarlint-vscode`), and Trunk linters.
 - **Default CMake Unix Makefiles**: Built using standard Unix Makefiles with controlled concurrency (Ninja permanently prohibited per `AGENTS.md`).
 - **100% Test Pass Rate**: All unit tests in `SparkNotePadUnitTests` passing with 0 failures.
-- **100% Bilingual Parity**: 1,850 translated entries synchronized with 0 unfinished entries across English and Indonesian catalogs.
+- **100% Bilingual Parity**: 2,077 translated entries synchronized with 0 unfinished entries across English and Indonesian catalogs.
 
 ---
 

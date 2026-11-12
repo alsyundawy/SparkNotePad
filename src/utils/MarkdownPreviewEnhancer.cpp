@@ -27,9 +27,8 @@ bool MarkdownPreviewEnhancer::isMarkdownPath(const QString &path) {
 }
 
 bool MarkdownPreviewEnhancer::isHtmlPath(const QString &path) {
-    static const QRegularExpression htmlRegex(
-        QStringLiteral(R"(\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$)"),
-        QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression htmlRegex(QStringLiteral(R"(\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$)"),
+                                              QRegularExpression::CaseInsensitiveOption);
     return htmlRegex.match(path).hasMatch();
 }
 
@@ -284,11 +283,13 @@ QString MarkdownPreviewEnhancer::processFootnotes(const QString &content) {
     }
 
     // Append footnotes section
-    auto footnotesHtml = QStringLiteral("\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n");
+    auto footnotesHtml = QStringLiteral(
+        "\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n");
     for (const auto &def : definitions) {
-        footnotesHtml +=
-            QStringLiteral("<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" class=\"footnote-backref\">↩</a></p></li>\n")
-                .arg(def.id, sanitizeForPreview(def.text));
+        footnotesHtml += QStringLiteral(
+                             "<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" "
+                             "class=\"footnote-backref\">↩</a></p></li>\n")
+                             .arg(def.id, sanitizeForPreview(def.text));
     }
     footnotesHtml += QStringLiteral("</ol>\n</section>\n");
 
@@ -345,6 +346,15 @@ QString MarkdownPreviewEnhancer::processExtensions(const QString &content) {
 }
 
 QString MarkdownPreviewEnhancer::enhanceMarkdown(const QString &rawMd, bool isDark) {
+    if (rawMd.isEmpty()) {
+        return rawMd;
+    }
+    // Fast path: if no markdown special syntax tokens exist, skip heavy regex pipeline
+    if (!rawMd.contains(QLatin1Char('`')) && !rawMd.contains(QLatin1Char('$')) && !rawMd.contains(QLatin1Char('[')) &&
+        !rawMd.contains(QLatin1Char('^'))) {
+        return rawMd;
+    }
+
     QString processed = processMermaidBlocks(rawMd, isDark);
     processed = processMathExpressions(processed);
     processed = processTaskLists(processed);

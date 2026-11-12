@@ -26,7 +26,10 @@ AutoCompletion::AutoCompletion(ScintillaNext *editor) : EditorDecorator(editor) 
     editor->autoCSetOrder(SC_ORDER_PERFORMSORT);
     editor->autoCSetMaxHeight(10);
     editor->autoCSetIgnoreCase(true);
-    editor->autoCSetFillUps(" (");
+    editor->autoCSetFillUps("");
+    editor->autoCSetChooseSingle(false);
+    editor->autoCSetAutoHide(true);
+    editor->autoCSetDropRestOfWord(true);
 
     connect(editor, &ScintillaNext::lexerChanged, this, [this]() {
         const auto *app = qobject_cast<const SparkNotePadApplication *>(qApp);
@@ -38,8 +41,9 @@ AutoCompletion::AutoCompletion(ScintillaNext *editor) : EditorDecorator(editor) 
 
 void AutoCompletion::notify(const NotificationData *pscn) {
     if (pscn->nmhdr.code == Notification::CharAdded && isEnabled()) {
-        if (editor->autoCActive())
+        if (!editor || editor->readOnly() || editor->autoCActive() || editor->length() > 5L * 1024L * 1024L) {
             return;
+        }
 
         showAutoCompletion();
     }
@@ -54,8 +58,8 @@ void AutoCompletion::showAutoCompletion() {
     const auto startPos = static_cast<int>(editor->wordStartPosition(curPos, true));
     const auto endPos = static_cast<int>(editor->wordEndPosition(curPos, true));
 
-    // Trigger with 2 or more characters for rapid response
-    if ((curPos - startPos) < 2) {
+    // Trigger with 3 or more characters for non-disruptive, precise context completions
+    if ((curPos - startPos) < 3) {
         return;
     }
 
@@ -78,7 +82,7 @@ void AutoCompletion::showAutoCompletion() {
     // For large files (> 1MB or > 5,000 lines), constrain search to viewport +/- 200 lines
     Sci_PositionCR searchStart = 0;
     auto searchEnd = static_cast<Sci_PositionCR>(editor->length());
-    if (editor->length() > 1024 * 1024 || editor->lineCount() > 5000) {
+    if (editor->length() > 1024L * 1024L || editor->lineCount() > 5000) {
         const int firstLine = qMax(0, static_cast<int>(editor->firstVisibleLine()) - 200);
         const int lastLine = qMin(static_cast<int>(editor->lineCount()),
                                   static_cast<int>(editor->firstVisibleLine() + editor->linesOnScreen() + 200));

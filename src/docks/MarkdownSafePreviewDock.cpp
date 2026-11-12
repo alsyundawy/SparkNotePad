@@ -198,7 +198,7 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     setupUi();
 
     debounceTimer->setSingleShot(true);
-    debounceTimer->setInterval(200);
+    debounceTimer->setInterval(350);
     connect(debounceTimer, &QTimer::timeout, this, &MarkdownSafePreviewDock::renderPreview);
 
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &MarkdownSafePreviewDock::applyGitHubTheme);
@@ -463,11 +463,13 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
         btnBg = QStringLiteral("#f6f8fa");
     }
 
-    const QString badgeBg = isDark ? QStringLiteral("rgba(56, 139, 253, 0.15)") : QStringLiteral("rgba(9, 105, 218, 0.1)");
+    const QString badgeBg =
+        isDark ? QStringLiteral("rgba(56, 139, 253, 0.15)") : QStringLiteral("rgba(9, 105, 218, 0.1)");
 
     const QColor themeBg = MarkdownThemeManager::themeBackgroundColor(currentTheme);
     const QColor themeFg = MarkdownThemeManager::themeTextColor(currentTheme);
-    const QString selColor = isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
+    const QString selColor =
+        isDark ? QStringLiteral("rgba(56, 139, 253, 0.4)") : QStringLiteral("rgba(9, 105, 218, 0.25)");
 
     const QString dockStyle = QStringLiteral(
                                   "QDockWidget {"
@@ -532,15 +534,13 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
                                   .arg(dockBg, textPri, accent, topBarBg, border, btnBg, badgeBg, textSec);
     setStyleSheet(dockStyle);
 
-    browser->setStyleSheet(
-        QStringLiteral(
-            "#markdownPreviewBrowser {"
-            "  background-color: %1;"
-            "  color: %2;"
-            "  border: none;"
-            "  selection-background-color: %3;"
-            "}")
-            .arg(themeBg.name(), themeFg.name(), selColor));
+    browser->setStyleSheet(QStringLiteral("#markdownPreviewBrowser {"
+                                          "  background-color: %1;"
+                                          "  color: %2;"
+                                          "  border: none;"
+                                          "  selection-background-color: %3;"
+                                          "}")
+                               .arg(themeBg.name(), themeFg.name(), selColor));
 
     browser->document()->setDefaultStyleSheet(MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize));
     m_isUpdatingTheme = false;
@@ -573,14 +573,21 @@ void MarkdownSafePreviewDock::renderPreview() {
         return;
     }
 
-    const PreviewFormat effectiveFormat =
-        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
+    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
     updateFormatLabel(m_ui.lblFormatStatus, currentFormat, effectiveFormat);
 
     const QString text = QString::fromUtf8(currentEditor->getText());
     if (m_ui.lblStats) {
-        const QStringList words = text.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts);
-        const qsizetype wordCount = words.size();
+        qsizetype wordCount = 0;
+        bool inWord = false;
+        for (const QChar ch : text) {
+            if (ch.isSpace()) {
+                inWord = false;
+            } else if (!inWord) {
+                inWord = true;
+                ++wordCount;
+            }
+        }
         const qsizetype minutes = std::max(static_cast<qsizetype>(1), (wordCount + 199) / 200);
         m_ui.lblStats->setText(tr("%1 words • %2 min read").arg(wordCount).arg(minutes));
     }
@@ -596,6 +603,8 @@ void MarkdownSafePreviewDock::renderPreview() {
 
     if (effectiveFormat == Html) {
         browser->setHtml(text);
+    } else if (text.size() > 2LL * 1024LL * 1024LL) {
+        browser->setPlainText(text);
     } else {
         const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(text, isDark);
         QTextDocument doc;
@@ -639,8 +648,7 @@ void MarkdownSafePreviewDock::copyHtml() {
         return;
     }
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const PreviewFormat effectiveFormat =
-        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
+    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
     QString bodyHtml;
     if (effectiveFormat == Html) {
         bodyHtml = rawContent;
@@ -691,8 +699,7 @@ void MarkdownSafePreviewDock::exportHtml() {
         return;
     }
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const PreviewFormat effectiveFormat =
-        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
+    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
 
     if (effectiveFormat == Html) {
         QFile file(savePath);
@@ -733,8 +740,7 @@ void MarkdownSafePreviewDock::exportPdf() {
     }
 
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const PreviewFormat effectiveFormat =
-        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
+    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
     const bool isMarkdown = (effectiveFormat != Html);
 
     DocumentExportManager::exportToPdf(rawContent, isMarkdown, savePath, dlg.options());
@@ -746,8 +752,7 @@ void MarkdownSafePreviewDock::openInBrowser() {
         return;
     }
 
-    const PreviewFormat effectiveFormat =
-        (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
+    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
 
     if (effectiveFormat == Html && currentEditor->isFile() && currentEditor->getFileInfo().exists()) {
         const QString path = currentEditor->getFileInfo().absoluteFilePath();

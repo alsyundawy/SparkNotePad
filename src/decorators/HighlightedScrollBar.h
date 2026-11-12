@@ -56,15 +56,15 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    void drawMarker(QPainter &p, int marker) const;
-    void drawIndicator(QPainter &p, int indicator) const;
-    void drawCursors(QPainter &p) const;
+    void drawMarker(QPainter &p, int marker, sptr_t totalLines, int trackH, int arrowH) const;
+    void drawIndicator(QPainter &p, int indicator, sptr_t totalLines, int trackH, int arrowH) const;
+    void drawCursors(QPainter &p, sptr_t totalLines, int trackH, int arrowH) const;
 
-    void drawTickMark(QPainter &p, int y, int height, const QColor &color) const;
+    void drawTickMark(QPainter &p, int y, int height, const QColor &color, int arrowH) const;
 
-    int posToScrollBarY(sptr_t pos) const;
-    int lineToScrollBarY(sptr_t line) const;
-    int scrollbarArrowHeight() const;
+    [[nodiscard]] int posToScrollBarY(sptr_t pos, sptr_t totalLines, int trackH) const;
+    [[nodiscard]] static int lineToScrollBarY(sptr_t line, sptr_t totalLines, int trackH);
+    [[nodiscard]] int scrollbarArrowHeight() const;
 
     ScintillaNext *editor;
     int smartHighlighterIndicator;

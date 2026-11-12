@@ -46,8 +46,23 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
   - Fixed MOC preprocessor `#include <QObject>` in `src/widgets/FadingIndicator.cpp`.
 - **Context Menu Noise Reduction**:
   - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
-- **14-Pillar Code Quality & Static Analysis Gates**:
-  - 100% clean passes on `cppcheck` (171 files, 0 errors, 0 warnings), `clangd`, `clang-tidy`, and `ctest`.
+- **Auto-Completion UX & Non-Intrusive Defaults**:
+  - Auto-completion disabled by default (`autoCompletion = false`) in `ApplicationSettings.cpp` to prevent disruptive popups during normal typing.
+  - Cleared aggressive auto-fill triggers (`autoCSetFillUps("")`), preventing accidental candidate insertions when typing spaces or parentheses.
+  - Enforced `autoCSetChooseSingle(false)`, `autoCSetAutoHide(true)`, and calibrated word trigger threshold to 3 characters minimum with large-file protection guards.
+- **Theme Renaming & Brand Consistency ("NotepadNext" -> "SparkNotepad")**:
+  - Harmonized default light theme palette identifier and family to `sparkNotepad` ("SparkNotepad Default") with automatic backward compatibility for legacy `notepadNext` settings keys.
+  - Updated toolbar icon pack branding and reset actions across the user interface.
+- **Markdown & HTML Live Preview Lifecycle Hardening**:
+  - Synchronized dock visibility with active editor lifecycle in `MainWindow`: closing tabs or switching away from Markdown/HTML files automatically hides `markdownSafePreviewDock` when auto-show is enabled.
+  - Immediately hides the preview dock when all documents are closed (`editor == nullptr`).
+- **Rendering & Memory Performance Optimizations**:
+  - Eliminated repetitive Scintilla IPC queries inside `HighlightedScrollBar::paintEvent` by precomputing track geometry, arrow heights, and total line counts outside the tick mark rendering loops.
+  - Replaced regular-expression word-splitting allocations (`split(QRegularExpression)`) in `MarkdownSafePreviewDock` with an ultra-fast linear zero-allocation word counter.
+  - Added early fast-path detection in `MarkdownPreviewEnhancer` to skip markdown regex pipelines for plain text without special tokens, and guarded against large-file preview memory spikes.
+- **14-Pillar Code Quality & Multi-Linter Remediation**:
+  - 100% clean passes across `clangd`, `trunk check` (`cppcheck-qt`, `clang-format`, `ruff`, `shellcheck`), and `ctest`.
+  - Resolved dynamic linker dependencies (`libz3.5.3.dylib`), refreshed compilation database (`compile_commands.json`), and validated IDE diagnostics.
   - SonarLint compliance: resolved parameter warnings and enforced const correctness.
 
 ---

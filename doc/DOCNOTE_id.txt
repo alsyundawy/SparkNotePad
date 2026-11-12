@@ -73,3 +73,10 @@ SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14
 5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa).
 6. Alur Ekspor Native Markdown / HTML / PDF via QPrinter dan Pandoc.
 7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX).
+8. Penyempurnaan Auto-Completion, Harmonisasi Tema SparkNotepad & Optimasi Sumber Daya:
+   - Auto-Completion dinonaktifkan secara default (autoCompletion = false) di setelan aplikasi.
+   - Menghapus pemicu auto-fill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.
+   - Mengalibrasi batas trigger minimal 3 karakter dengan proteksi dokumen besar (>5MB).
+   - Mengubah nama palet default terang menjadi sparkNotepad ("SparkNotepad Default") dengan pemetaan kompatibilitas mundur.
+   - Memperbaiki siklus hidup dock preview markdown: otomatis tersembunyi saat menutup tab atau berpindah ke berkas non-Markdown/HTML jika auto-show aktif.
+   - Mengoptimalkan HighlightedScrollBar dengan pra-kalkulasi geometri track di luar loop render dan mengganti pemecah kata regex dengan pencacah linier nol alokasi heap.

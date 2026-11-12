@@ -69,7 +69,7 @@ SparkNotePad v1.4.6 menghadirkan arsitektur personalisasi toolbar lengkap terins
 8. **Notepad++ Klasik** (`notepadPlusPlus`): Rekreasi vektor High-DPI ikonografi klasik Notepad++.
 9. **Glossy Orange** (`glossy_orange`): Ikon vektor oranye mengkilap skeuomorfik yang cerah.
 10. **Windows XP (Luna Classic)** (`windowsXp`): Nostalgia skeuomorfik 3D Windows XP Luna otentik (master 64×64 PNG).
-11. **NotepadNext Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari NotepadNext.
+11. **SparkNotepad Klasik (Silk)** (`notepadNext`): Ikon bitmap Silk 16x16 autentik dari SparkNotepad.
 12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): Kontras dua warna sian elektrik luminansi tinggi & magenta bercahaya.
 13. **Monochrome Outline (Minimalis)** (`monochrome`): Wireframe monoline 1.8px bersih dirancang untuk tema gelap dan terang.
 14. **Elegant Themes** (`eleganticons`): Ikonografi klasik otentik 48x48 karya Nicholas Roach di semua skala resolusi.

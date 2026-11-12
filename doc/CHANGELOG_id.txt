@@ -46,9 +46,23 @@ SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningk
   - Memperbaiki preprocessor MOC `#include <QObject>` pada `src/widgets/FadingIndicator.cpp`.
 - **Pembersihan Menu Konteks**:
   - Menghapus opsi Run dan Bash encode/decode dari menu klik kanan editor agar lebih ringkas dan fokus.
-- **Audit Kualitas Kode 14 Pilar & Audit Linter**:
-  - 100% lulus bersih pada cppcheck (171 berkas, 0 kesalahan), clangd, clang-tidy, dan ctest.
-  - Penyesuaian aturan SonarLint pada parameter lambda dan pointer-to-const.
+- **Penyempurnaan Auto-Completion & Default Non-Intrusif**:
+  - Auto-completion dinonaktifkan secara default (`autoCompletion = false`) di `ApplicationSettings.cpp` untuk kenyamanan penulisan kode tanpa gangguan popup otomatis.
+  - Menghapus pemicu auto-fill agresif (`autoCSetFillUps("")`), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.
+  - Menetapkan batas trigger minimal 3 karakter dengan perlindungan dokumen besar (>5MB).
+- **Harmonisasi Nama Tema & Brand SparkNotepad**:
+  - Mengubah nama palet default terang menjadi `sparkNotepad` ("SparkNotepad Default") dengan pemetaan kompatibilitas mundur untuk setelan `notepadNext`.
+  - Memperbarui penamaan paket ikon toolbar dan aksi reset tema di antarmuka.
+- **Perbaikan Siklus Hidup Live Preview Markdown & HTML**:
+  - Menyelaraskan visibilitas dock preview dengan editor aktif di `MainWindow`: menutup tab atau berpindah ke berkas non-Markdown/HTML otomatis menyembunyikan dock preview jika auto-show aktif.
+  - Otomatis menyembunyikan dock preview saat seluruh berkas ditutup (`editor == nullptr`).
+- **Optimasi Performa Rendering & Memori**:
+  - Menghapus ribuan kueri Scintilla IPC berulang di `HighlightedScrollBar::paintEvent` dengan pra-kalkulasi geometri di luar loop rendering tick marks.
+  - Mengganti alokasi regex pemecah kata di `MarkdownSafePreviewDock` dengan pencacah linier nol alokasi heap.
+  - Menambahkan deteksi cepat di `MarkdownPreviewEnhancer` untuk melompati pipeline regex markdown pada berkas teks polos.
+- **Audit Kualitas Kode 14 Pilar & Kepatuhan Multi-Linter**:
+  - 100% lulus bersih pada `clangd`, `trunk check` (`cppcheck-qt`, `clang-format`, `ruff`, `shellcheck`), dan `ctest`.
+  - Memperbaiki dependensi tautan dinamis (`libz3.5.3.dylib`) dan memperbarui basis data kompilasi (`compile_commands.json`).
 
 ---
 

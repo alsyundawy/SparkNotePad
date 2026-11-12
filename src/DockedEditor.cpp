@@ -299,6 +299,8 @@ void DockedEditor::addEditor(ScintillaNext *editor) {
             if (!edList.isEmpty()) {
                 currentEditor = edList.first();
                 emit editorActivated(currentEditor.data());
+            } else {
+                emit editorActivated(nullptr);
             }
         }
     });

@@ -145,11 +145,11 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-    // 15. NotepadNext Classic (Silk)
+    // 15. SparkNotepad Classic (Silk)
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("notepadNext"),
-        .displayName = tr("NotepadNext Classic (Silk)"),
-        .description = tr("Authentic 16x16 Silk bitmap icons from NotepadNext"),
+        .displayName = tr("SparkNotepad Classic (Silk)"),
+        .description = tr("Authentic 16x16 Silk bitmap icons from SparkNotepad"),
         .basePath = QStringLiteral(":/icons/packs/notepadNext"),
         .isBuiltIn = true,
         .isPngBased = true,
@@ -437,11 +437,12 @@ void ToolbarIconManager::registerBuiltInPacks() {
         .isPngBased = true,
     });
 
-// 01-macos-big-sur
+    // 01-macos-big-sur
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("01-macos-big-sur"),
         .displayName = tr("macOS Big Sur (2020)"),
-        .description = tr("Soft 3D, white/translucent squircle with vibrant skeuomorphic elements and subtle drop shadow."),
+        .description =
+            tr("Soft 3D, white/translucent squircle with vibrant skeuomorphic elements and subtle drop shadow."),
         .basePath = QStringLiteral(":/icons/packs/01-macos-big-sur"),
         .isBuiltIn = true,
         .isPngBased = true,
@@ -731,7 +732,8 @@ void ToolbarIconManager::registerBuiltInPacks() {
     m_packs.append(ToolbarIconPack{
         .id = QStringLiteral("30-swiss-minimal-3d"),
         .displayName = tr("Swiss Minimal 3D (2015)"),
-        .description = tr("International Typographic Style in 3D: Vermilion red, black, and white geometric precision."),
+        .description =
+            tr("International Typographic Style in 3D: Vermilion red, black, and white geometric precision."),
         .basePath = QStringLiteral(":/icons/packs/30-swiss-minimal-3d"),
         .isBuiltIn = true,
         .isPngBased = true,
@@ -798,7 +800,7 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("retro-8bit-pixel"), QStringLiteral("retro_8bit_pixel")},
         {QStringLiteral("sketchyDoodle"), QStringLiteral("sketchy_doodle")},
         {QStringLiteral("sketchy-doodle"), QStringLiteral("sketchy_doodle")},
-{QStringLiteral("macos-big-sur"), QStringLiteral("01-macos-big-sur")},
+        {QStringLiteral("macos-big-sur"), QStringLiteral("01-macos-big-sur")},
         {QStringLiteral("macos_big_sur"), QStringLiteral("01-macos-big-sur")},
         {QStringLiteral("macosBigSur"), QStringLiteral("01-macos-big-sur")},
         {QStringLiteral("01_macos_big_sur"), QStringLiteral("01-macos-big-sur")},
@@ -917,7 +919,8 @@ QString normalizePackId(const QString &packId) {
         {QStringLiteral("swiss-minimal-3d"), QStringLiteral("30-swiss-minimal-3d")},
         {QStringLiteral("swiss_minimal_3d"), QStringLiteral("30-swiss-minimal-3d")},
         {QStringLiteral("swissMinimal3d"), QStringLiteral("30-swiss-minimal-3d")},
-        {QStringLiteral("30_swiss_minimal_3d"), QStringLiteral("30-swiss-minimal-3d")},};
+        {QStringLiteral("30_swiss_minimal_3d"), QStringLiteral("30-swiss-minimal-3d")},
+    };
     return s_aliasMap.value(packId, packId);
 }
 }  // namespace

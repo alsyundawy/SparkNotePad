@@ -96,14 +96,31 @@ SparkNotePad **v1.4.6** menghadirkan peningkatan besar pada kustomisasi visual b
   - Mengimplementasikan `scripts/deploy-mac-bundle.sh` dengan normalisasi header `otool` multi-arsitektur, penegakan `LC_RPATH` `@executable_path/../Frameworks`, stripping biner utama saja, serta verifikasi launch CLI `--version` headless.
   - Dikemas menggunakan `hdiutil` native dengan mempertahankan preset tata letak `.DS_Store` (680x440), grafis latar belakang Retina (`dmg-background@2x.png`), ikon volume kustom (`.VolumeIcon.icns`), dan verifikasi CRC32 otomatis.
 
-### 6. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
+### 6. Penyempurnaan Auto-Completion, Harmonisasi Tema & Optimasi Sumber Daya
+
+- **Penyempurnaan Auto-Completion & Default Non-Intrusif**:
+  - Auto-completion dinonaktifkan secara default (`autoCompletion = false`) di `ApplicationSettings.cpp` untuk kenyamanan penulisan kode tanpa gangguan popup otomatis.
+  - Menghapus pemicu auto-fill agresif (`autoCSetFillUps("")`), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.
+  - Menetapkan batas trigger minimal 3 karakter dengan perlindungan dokumen besar (>5MB).
+- **Harmonisasi Nama Tema & Brand SparkNotepad**:
+  - Mengubah nama palet default terang menjadi `sparkNotepad` ("SparkNotepad Default") dengan pemetaan kompatibilitas mundur untuk setelan `notepadNext`.
+  - Memperbarui penamaan paket ikon toolbar dan aksi reset tema di antarmuka.
+- **Perbaikan Siklus Hidup Live Preview Markdown & HTML**:
+  - Menyelaraskan visibilitas dock preview dengan editor aktif di `MainWindow`: menutup tab atau berpindah ke berkas non-Markdown/HTML otomatis menyembunyikan dock preview jika auto-show aktif.
+  - Otomatis menyembunyikan dock preview saat seluruh berkas ditutup (`editor == nullptr`).
+- **Optimasi Performa Rendering & Memori**:
+  - Menghapus ribuan kueri Scintilla IPC berulang di `HighlightedScrollBar::paintEvent` dengan pra-kalkulasi geometri di luar loop rendering tick marks.
+  - Mengganti alokasi regex pemecah kata di `MarkdownSafePreviewDock` dengan pencacah linier nol alokasi heap.
+  - Menambahkan deteksi cepat di `MarkdownPreviewEnhancer` untuk melompati pipeline regex markdown pada berkas teks polos.
+
+### 7. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
 
 SparkNotePad v1.4.6 lolos seluruh 14 Pilar Rekayasa Perangkat Lunak:
 
 - **Nol Peringatan Linter**: Hasil verifikasi bersih pada `clangd --check`, `cppcheck` (171 berkas di `src/`), `clang-tidy`, SonarLint (`sonarsource.sonarlint-vscode`), dan Trunk linter.
 - **Kompilasi Standar CMake Unix Makefiles**: Kompilasi ditegakkan menggunakan generator default Unix Makefiles dengan pembatasan konkurensi (Ninja dilarang permanen per `AGENTS.md`).
 - **100% Kelulusan Unit Test**: Seluruh pengujian unit pada `SparkNotePadUnitTests` lulus dengan 0 kegagalan.
-- **100% Paritas Dwibahasa**: 1.850 entri terjemahan tersinkronisasi dengan 0 entri tertunda pada katalog Bahasa Inggris dan Bahasa Indonesia.
+- **100% Paritas Dwibahasa**: 2.077 entri terjemahan tersinkronisasi dengan 0 entri tertunda pada katalog Bahasa Inggris dan Bahasa Indonesia.
 
 ---
 

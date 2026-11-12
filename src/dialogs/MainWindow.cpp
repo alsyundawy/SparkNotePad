@@ -330,6 +330,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     dockedEditor = new DockedEditor(this);
     connect(dockedEditor, &DockedEditor::editorCloseRequested, this, &MainWindow::closeFile);
     connect(dockedEditor, &DockedEditor::editorActivated, this, &MainWindow::activateEditor);
+    connect(dockedEditor, &DockedEditor::editorClosed, this, [this](ScintillaNext *) {
+        if (markdownSafePreviewDock && markdownSafePreviewDock->isAutoShowEnabled()) {
+            const ScintillaNext *ed = currentEditor();
+            if (!ed || !isMarkdownOrHtml(ed)) {
+                markdownSafePreviewDock->hide();
+            }
+        }
+    });
     connect(dockedEditor, &DockedEditor::contextMenuRequestedForEditor, this, &MainWindow::tabBarRightClicked);
     connect(dockedEditor, &DockedEditor::titleBarDoubleClicked, this, &MainWindow::newFile);
     connect(dockedEditor, &DockedEditor::newFileRequested, this, &MainWindow::newFile);
@@ -1005,8 +1013,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 #ifdef Q_OS_MACOS
     ui->actionPasteAndMatchStyle->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V));
 #else
-    ui->actionPasteAndMatchStyle->setShortcuts({QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_V),
-                                                QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V)});
+    ui->actionPasteAndMatchStyle->setShortcuts(
+        {QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_V), QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V)});
 #endif
     connect(ui->actionSearchGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
     ui->actionSearchGoogle->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
@@ -3467,8 +3475,7 @@ bool MainWindow::saveCopyAs(const QString &fileName) {
 bool MainWindow::saveAll() {
     const ApplicationSettings settings;
     if (settings.confirmSaveAll()) {
-        const auto unsavedCount =
-            std::ranges::count_if(editors(), [](const auto *ed) { return ed && ed->modify(); });
+        const auto unsavedCount = std::ranges::count_if(editors(), [](const auto *ed) { return ed && ed->modify(); });
         if (unsavedCount > 0) {
             const auto res = QMessageBox::question(
                 this, tr("Save All Confirmation"),
@@ -3867,6 +3874,10 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     if (!editor) {
+        if (markdownSafePreviewDock && markdownSafePreviewDock->isVisible() &&
+            markdownSafePreviewDock->isAutoShowEnabled()) {
+            markdownSafePreviewDock->hide();
+        }
         return;
     }
 
@@ -3879,11 +3890,16 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     updateLanguageBasedUi(editor);
 
     if (markdownSafePreviewDock) {
-        if (markdownSafePreviewDock->isAutoShowEnabled() && isMarkdownOrHtml(editor) &&
-            !markdownSafePreviewDock->isVisible()) {
-            markdownSafePreviewDock->show();
-        }
-        if (markdownSafePreviewDock->isVisible()) {
+        if (markdownSafePreviewDock->isAutoShowEnabled()) {
+            if (isMarkdownOrHtml(editor)) {
+                if (!markdownSafePreviewDock->isVisible()) {
+                    markdownSafePreviewDock->show();
+                }
+                markdownSafePreviewDock->setActiveEditor(editor);
+            } else if (markdownSafePreviewDock->isVisible()) {
+                markdownSafePreviewDock->hide();
+            }
+        } else if (markdownSafePreviewDock->isVisible()) {
             markdownSafePreviewDock->setActiveEditor(editor);
         }
     }
@@ -4499,31 +4515,17 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
         editor->setEmptySelection(contextMenuPos);
     }
 
-    const QStringList defaultActionNames = {"Undo",
-                                            "Redo",
-                                            "",
-                                            "Cut",
-                                            "Copy",
-                                            "Paste",
-                                            "PasteAndMatchStyle",
-                                            "Delete",
-                                            "",
-                                            "SelectAll",
-                                            "",
-                                            "Find",
-                                            "SearchGoogle",
-                                            "",
-                                            "Open",
-                                            "Save",
-                                            "",
-                                            "ShowCharacterInfo"};
+    const QStringList defaultActionNames = {
+        "Undo", "Redo",         "", "Cut",  "Copy", "Paste", "PasteAndMatchStyle", "Delete", "", "SelectAll", "",
+        "Find", "SearchGoogle", "", "Open", "Save", "",      "ShowCharacterInfo"};
 
     QStringList actionNames = defaultActionNames;
 
     // If the entry exists in the settings, use that
     if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
         actionNames = settings->value("Gui/EditorContextMenu").toStringList();
-        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle are present
+        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle are
+        // present
         if (!actionNames.contains("Undo") || !actionNames.contains("Redo") || !actionNames.contains("Open") ||
             !actionNames.contains("Save") || !actionNames.contains("Find") ||
             !actionNames.contains("PasteAndMatchStyle") || !actionNames.contains("SearchGoogle") ||
@@ -5615,10 +5617,10 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addSeparator();
 
     // 6. Reset and Mode Toggles
-    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - NotepadNext)"), this);
+    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - SparkNotepad)"), this);
     connect(actionThemeLight, &QAction::triggered, this, [this] {
-        ThemeManager::instance()->setPalette(QStringLiteral("notepadNext"), this);
-        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (NotepadNext)"), 3000);
+        ThemeManager::instance()->setPalette(QStringLiteral("sparkNotepad"), this);
+        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (SparkNotepad)"), 3000);
     });
     menuTheme->addAction(actionThemeLight);
 

@@ -68,7 +68,7 @@ SparkNotePad v1.4.6 features a comprehensive toolbar theming and customization a
 8. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
 9. **Glossy Orange** (`glossy_orange`): Vibrant skeuomorphic orange vector icons.
 10. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-11. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
+11. **SparkNotepad Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from SparkNotepad.
 12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
 13. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
 14. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
