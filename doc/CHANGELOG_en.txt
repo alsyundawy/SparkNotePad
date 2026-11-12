@@ -46,6 +46,14 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
   - Fixed MOC preprocessor `#include <QObject>` in `src/widgets/FadingIndicator.cpp`.
 - **Context Menu Noise Reduction**:
   - Removed Run and Bash encode/decode actions from right-click context menu for cleaner ergonomics.
+- **Modern Split View Tab Coloring & Zero Theme Clash Architecture**:
+  - Eliminated legacy hardcoded peach/orange borders and unsightly dark metallic gradients in split mode by setting `ads::CDockManager::DisableStylesheet, true` and unifying all tab and dock area styling exclusively through `ThemeManager`.
+  - Implemented modern, theme-adaptive dual-state visual hierarchy for split editor panes:
+    - Active Tab in Focused Split Pane: Seamless editor card background, vibrant theme accent top border (`2px solid %6`), bold primary text, and seamless bottom merge into the editor viewport.
+    - Active Tab in Unfocused Split Pane: Matching editor card background, refined subtle indicator line, and legible primary text, guaranteeing zero theme clash and optimal contrast across all light, dark, and custom palettes.
+    - Inactive Tabs: Harmonized container background, secondary text, with smooth hover state.
+    - Splitter Separators: Clean 1px theme border with interactive accent hover illumination.
+    - Tab Close Button & Plus Button: Modernized SVG iconography matching theme modes with soft coral hover highlight.
 - **Auto-Completion UX & Non-Intrusive Defaults**:
   - Auto-completion disabled by default (`autoCompletion = false`) in `ApplicationSettings.cpp` to prevent disruptive popups during normal typing.
   - Cleared aggressive auto-fill triggers (`autoCSetFillUps("")`), preventing accidental candidate insertions when typing spaces or parentheses.

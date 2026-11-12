@@ -44,22 +44,6 @@ public:
         m_plusButton->setFocusPolicy(Qt::NoFocus);
         m_plusButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         m_plusButton->setFixedSize(22, 22);
-        m_plusButton->setStyleSheet(
-            QStringLiteral("QToolButton#tabBarPlusButton {"
-                           "  font-size: 15px;"
-                           "  font-weight: bold;"
-                           "  padding: 0px;"
-                           "  margin: 1px 2px;"
-                           "  border: 1px solid transparent;"
-                           "  border-radius: 3px;"
-                           "}"
-                           "QToolButton#tabBarPlusButton:hover {"
-                           "  background-color: rgba(128, 128, 128, 0.25);"
-                           "  border-color: rgba(128, 128, 128, 0.4);"
-                           "}"
-                           "QToolButton#tabBarPlusButton:pressed {"
-                           "  background-color: rgba(128, 128, 128, 0.4);"
-                           "}"));
         connect(m_plusButton, &QToolButton::clicked, this, &DockedEditorTitleBar::plusButtonClicked);
 
         const int tabIndex = indexOf(tabBar());

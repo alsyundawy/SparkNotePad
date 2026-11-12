@@ -46,6 +46,14 @@ SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningk
   - Memperbaiki preprocessor MOC `#include <QObject>` pada `src/widgets/FadingIndicator.cpp`.
 - **Pembersihan Menu Konteks**:
   - Menghapus opsi Run dan Bash encode/decode dari menu klik kanan editor agar lebih ringkas dan fokus.
+- **Arsitektur Pewarnaan Tab Mode Split Modern & Bebas Bentrok Tema**:
+  - Menghilangkan garis batas usang persik/oranye dan gradien abu-abu metalik gelap pada mode split dengan mengaktifkan `ads::CDockManager::DisableStylesheet, true` dan memusatkan seluruh styling tab dan dock secara eksklusif via `ThemeManager`.
+  - Menerapkan hierarki visual ganda modern yang adaptif terhadap seluruh tema:
+    - Tab Aktif pada Panel Split Terfokus: Latar belakang kartu editor (`%5`), garis aksen atas dinamis (`2px solid %6`), teks utama tebal (`%2`), menyatu mulus dengan area editor.
+    - Tab Aktif pada Panel Split Tidak Terfokus: Latar belakang kartu editor (`%5`), garis indikator halus (`2px solid %12`), teks utama berbobot medium (`%2`) yang 100% terbaca jelas tanpa bentrok dengan tema apapun.
+    - Tab Tidak Aktif: Latar belakang harmonis (`%1`), teks sekunder (`%4`), serta efek sorot lembut saat hover.
+    - Garis Pemisah Splitter (`ads--CDockSplitter::handle`): Garis pembatas rapi (`%3`) dengan sorot aksen interaktif saat kursor berada di atasnya (`%6`).
+    - Tombol Tutup Tab & Tombol Tambah Tab: Ikonografi SVG modern yang selaras dengan mode gelap/terang serta sorot merah lembut (`rgba(235, 87, 87, 0.25)`).
 - **Penyempurnaan Auto-Completion & Default Non-Intrusif**:
   - Auto-completion dinonaktifkan secara default (`autoCompletion = false`) di `ApplicationSettings.cpp` untuk kenyamanan penulisan kode tanpa gangguan popup otomatis.
   - Menghapus pemicu auto-fill agresif (`autoCSetFillUps("")`), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.

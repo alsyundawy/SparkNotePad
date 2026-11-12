@@ -96,7 +96,19 @@ SparkNotePad **v1.4.6** menghadirkan peningkatan besar pada kustomisasi visual b
   - Mengimplementasikan `scripts/deploy-mac-bundle.sh` dengan normalisasi header `otool` multi-arsitektur, penegakan `LC_RPATH` `@executable_path/../Frameworks`, stripping biner utama saja, serta verifikasi launch CLI `--version` headless.
   - Dikemas menggunakan `hdiutil` native dengan mempertahankan preset tata letak `.DS_Store` (680x440), grafis latar belakang Retina (`dmg-background@2x.png`), ikon volume kustom (`.VolumeIcon.icns`), dan verifikasi CRC32 otomatis.
 
-### 6. Penyempurnaan Auto-Completion, Harmonisasi Tema & Optimasi Sumber Daya
+### 6. Arsitektur Pewarnaan Tab Mode Split Modern & Harmonisasi Tema
+
+- **Pembersihan Gradien Gelap & Garis Oranye Kuno**:
+  - Menghilangkan injeksi stylesheet internal bergradien metalik gelap bawaan ADS dengan menetapkan `ads::CDockManager::setConfigFlag(ads::CDockManager::DisableStylesheet, true)`.
+  - Mengganti garis batas oranye dan warna peach (`rgb(255, 202, 176)`) dengan warna aksen tema yang dikalkulasi secara dinamis sesuai palet.
+- **Hierarki Visual Ganda (Dual-State) Adaptif Tema**:
+  - **Tab Aktif pada Panel Split Terfokus**: Latar belakang kartu editor (`%5`), garis aksen tema atas (`2px solid %6`), teks primer tebal (`%2`, weight 600), dan menyatu mulus ke kanvas editor.
+  - **Tab Aktif pada Panel Split Tidak Terfokus**: Latar belakang kartu editor (`%5`), garis indikator halus (`2px solid %12`), dan teks primer terbaca (`%2`, weight 500), menjamin 100% bebas bentrok tema pada seluruh palet terang, gelap, dan kustom.
+  - **Tab Tidak Aktif**: Latar belakang wadah harmonis (`%1`), teks sekunder (`%4`), serta efek hover halus (`%3`, teks `%2`).
+  - **Bilah Pemisah Splitter (`ads--CDockSplitter::handle`)**: Garis batas tema 1px (`%3`) dengan iluminasi aksen interaktif (`%6`) saat disentuh kursor.
+  - **Tombol Tutup Tab & Tombol Tambah Tab**: Ikonografi SVG adaptif tema dengan efek sentuh koral lembut (`rgba(235, 87, 87, 0.25)`).
+
+### 7. Penyempurnaan Auto-Completion, Harmonisasi Tema & Optimasi Sumber Daya
 
 - **Penyempurnaan Auto-Completion & Default Non-Intrusif**:
   - Auto-completion dinonaktifkan secara default (`autoCompletion = false`) di `ApplicationSettings.cpp` untuk kenyamanan penulisan kode tanpa gangguan popup otomatis.
@@ -113,7 +125,7 @@ SparkNotePad **v1.4.6** menghadirkan peningkatan besar pada kustomisasi visual b
   - Mengganti alokasi regex pemecah kata di `MarkdownSafePreviewDock` dengan pencacah linier nol alokasi heap.
   - Menambahkan deteksi cepat di `MarkdownPreviewEnhancer` untuk melompati pipeline regex markdown pada berkas teks polos.
 
-### 7. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
+### 8. Rangkaian Kualitas Kode & Verifikasi 14 Pilar
 
 SparkNotePad v1.4.6 lolos seluruh 14 Pilar Rekayasa Perangkat Lunak:
 
@@ -122,7 +134,7 @@ SparkNotePad v1.4.6 lolos seluruh 14 Pilar Rekayasa Perangkat Lunak:
 - **100% Kelulusan Unit Test**: Seluruh pengujian unit pada `SparkNotePadUnitTests` lulus dengan 0 kegagalan.
 - **100% Paritas Dwibahasa**: 2.085 entri terjemahan tersinkronisasi dengan 0 entri tertunda pada katalog Bahasa Inggris dan Bahasa Indonesia.
 
-### 8. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif
+### 9. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif
 
 - **Cakupan Matriks Lengkap updates.json**:
   - Memperbarui `updates.json` ke versi 1.4.6 mencakup seluruh matriks rilis: macOS Apple Silicon (arm64) dan Intel (x86_64) lintas Qt 6.2–6.12, paket Linux Debian/Ubuntu (.deb) dan RedHat/Fedora (.rpm) untuk arsitektur x86_64 dan aarch64, serta skrip helper POSIX.

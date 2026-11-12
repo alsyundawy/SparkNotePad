@@ -219,6 +219,7 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | Fitur                              | Deskripsi Kapabilitas                                                                                                             |        Pintasan (Shortcut)         |
 | :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: |
 | **Bilah Alat Gelap Permanen**      | `#mainToolBar` dikunci secara permanen pada latar gelap (`#21252b !important`) di semua tema dan mode tampilan OS                 |         Semua Mode & Tema          |
+| **Pewarnaan Tab Mode Split**       | Hierarki visual dual-state untuk panel split (aktif terfokus vs aktif tidak terfokus) tanpa bentrok tema dan indikator elegan     |          Mode Split View           |
 | **Editor Default Tipe Media IANA** | Integrasi tipe media resmi IANA (`SparkNotePad-Default-Editor.sh`) mengasosiasikan 100+ ekstensi & MIME standar                   |          Integrasi Sistem          |
 | **Paket DMG Ringan Permanen**      | Paket DMG macOS native tanpa bloatware terjaga pada 30MB–40MB ceiling dengan tata letak visual `.DS_Store` presisi                | `cmake --build build --target dmg` |
 | **Koleksi 69 Paket Ikon Toolbar**  | 69 koleksi ikon multi-resolusi (16x16–64x64) mencakup gaya klasik desktop, macOS Big Sur, Windows 11, dan paket 3D modern         |   Preferensi >> Themes & Toolbar   |

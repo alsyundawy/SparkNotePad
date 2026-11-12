@@ -96,7 +96,19 @@ SparkNotePad **v1.4.6** delivers high-impact visual customization, editor contex
   - Implemented `scripts/deploy-mac-bundle.sh` with architecture-aware `otool` header normalization, `LC_RPATH` `@executable_path/../Frameworks` enforcement, single-binary stripping, and headless CLI `--version` launch verification.
   - Packaged via native `hdiutil` preserving pre-baked `.DS_Store` layout preset (680x440), Retina background graphics (`dmg-background@2x.png`), custom volume icons (`.VolumeIcon.icns`), and automated CRC32 verification.
 
-### 6. Auto-Completion, Theme Harmonization & Resource Performance Overhaul
+### 6. Modern Split View Tab Coloring & Zero Theme Clash Architecture
+
+- **Elimination of Legacy Gradients & Orange Borders**:
+  - Permanently suppressed ADS internal metallic gradient stylesheet injection by enforcing `ads::CDockManager::setConfigFlag(ads::CDockManager::DisableStylesheet, true)`.
+  - Replaced legacy hardcoded peach (`rgb(255, 202, 176)`) and orange top borders with dynamically computed, palette-aware theme colors.
+- **Theme-Adaptive Dual-State Visual Hierarchy**:
+  - **Active Tab in Focused Split Pane**: Clean editor card background (`%5`), vibrant theme accent top line (`2px solid %6`), bold primary text (`%2`, weight 600), and seamless bottom merge into the editor canvas.
+  - **Active Tab in Unfocused Split Pane**: Matching editor card background (`%5`), refined subtle indicator line (`2px solid %12`), and legible text (`%2`, weight 500), guaranteeing zero theme clash across all light, dark, and custom palettes.
+  - **Inactive Tabs**: Harmonized container background (`%1`), secondary text (`%4`), with smooth hover state (`%3`, text `%2`).
+  - **Splitter Separators (`ads--CDockSplitter::handle`)**: Clean 1px theme border (`%3`) with interactive accent hover illumination (`%6`).
+  - **Tab Close Button & Plus Button**: Modernized SVG iconography matching theme modes with soft coral hover highlight (`rgba(235, 87, 87, 0.25)`).
+
+### 7. Auto-Completion, Theme Harmonization & Resource Performance Overhaul
 
 - **Auto-Completion UX & Non-Intrusive Defaults**:
   - Auto-completion is now disabled by default (`autoCompletion = false`) in `ApplicationSettings.cpp` to prevent disruptive candidate popups during regular typing.
@@ -113,7 +125,7 @@ SparkNotePad **v1.4.6** delivers high-impact visual customization, editor contex
   - Replaced regular-expression word-splitting allocations (`split(QRegularExpression)`) in `MarkdownSafePreviewDock` with an ultra-fast linear zero-allocation word counter.
   - Added early fast-path detection in `MarkdownPreviewEnhancer` to skip markdown regex pipelines for plain text without special tokens, and guarded against large-file preview memory spikes.
 
-### 7. 14-Pillar Code Quality & Verification Suite
+### 8. 14-Pillar Code Quality & Verification Suite
 
 SparkNotePad v1.4.6 passes all 14 Pillars of Production Software Engineering:
 
@@ -122,7 +134,7 @@ SparkNotePad v1.4.6 passes all 14 Pillars of Production Software Engineering:
 - **100% Test Pass Rate**: All unit tests in `SparkNotePadUnitTests` passing with 0 failures.
 - **100% Bilingual Parity**: 2,085 translated entries synchronized with 0 unfinished entries across English and Indonesian catalogs.
 
-### 8. Comprehensive Multi-Build updates.json & Force-Update Delivery Engine
+### 9. Comprehensive Multi-Build updates.json & Force-Update Delivery Engine
 
 - **Full Release Matrix updates.json Coverage**:
   - Upgraded `updates.json` to version 1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts.

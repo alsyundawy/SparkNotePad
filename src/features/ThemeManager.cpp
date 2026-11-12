@@ -1220,62 +1220,149 @@ QStatusBar::item {
     border: none;
 }
 
-/* Dock Manager Tabs */
-ads--CDockWidgetTab ads--CElidingLabel {
-    color: %4;
-}
-ads--CDockWidgetTab {
+/* Dock Container, Splitters & Dock Area Styling (Modern Split View Architecture) */
+ads--CDockContainerWidget {
     background: %1;
-    margin-top: 2px;
-    border-left: 1px solid %3;
-    border-top: 2px solid %3;
-    border-right: 1px solid %3;
-    padding: 3px 6px 1px 6px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
 }
-ads--CDockWidgetTab:hover[activeTab="false"] {
-    background: %3;
-    color: %2;
+ads--CDockSplitter {
+    background: %1;
 }
-ads--CDockWidgetTab[activeTab="true"] {
-    background: %5;
-    border-left: 1px solid %3;
-    border-right: 1px solid %3;
-    border-top: 4px solid rgb(255, 202, 176);
-    padding-bottom: 3px;
-    margin-top: 0px;
+ads--CDockSplitter::handle {
+    background-color: %3;
 }
-ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
-    color: %2;
-    font-weight: bold;
+ads--CDockSplitter::handle:hover {
+    background-color: %6;
 }
-ads--CDockWidgetTab[focused="true"] {
-    background: %5;
-    border-left: 1px solid %3;
-    border-right: 1px solid %3;
-    border-top: 4px solid orange;
+ads--CDockAreaWidget {
+    background: %1;
+    border: none;
 }
 ads--CDockAreaTitleBar {
     background: %1;
     border-bottom: 1px solid %3;
     padding-bottom: 0px;
 }
+ads--CDockAreaTabBar {
+    background: transparent;
+}
+
+/* Dock Manager Tabs - Universal Split & Single Mode */
+ads--CDockWidgetTab ads--CElidingLabel,
+ads--CDockWidgetTab QLabel {
+    color: %4;
+    font-weight: 500;
+}
+ads--CDockWidgetTab {
+    background: %1;
+    margin-top: 2px;
+    margin-right: 2px;
+    border: 1px solid transparent;
+    border-top: 2px solid transparent;
+    border-bottom: 1px solid %3;
+    padding: 4px 12px 3px 12px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+ads--CDockWidgetTab:hover[activeTab="false"] {
+    background: %3;
+    border: 1px solid %3;
+    border-bottom: 1px solid %3;
+}
+ads--CDockWidgetTab:hover[activeTab="false"] ads--CElidingLabel,
+ads--CDockWidgetTab:hover[activeTab="false"] QLabel {
+    color: %2;
+}
+
+/* Active Tab in Inactive / Unfocused Split Area */
+ads--CDockWidgetTab[activeTab="true"] {
+    background: %5;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 2px solid %12;
+    border-bottom: 1px solid %5;
+    padding-bottom: 5px;
+    margin-top: 0px;
+}
+ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel,
+ads--CDockWidgetTab[activeTab="true"] QLabel {
+    color: %2;
+    font-weight: 500;
+}
+
+/* Active Tab in Focused Split Area */
+ads--CDockWidgetTab[activeTab="true"][focused="true"],
+ads--CDockWidgetTab[focused="true"] {
+    background: %5;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 2px solid %6;
+    border-bottom: 1px solid %5;
+    padding-bottom: 5px;
+    margin-top: 0px;
+}
+ads--CDockWidgetTab[activeTab="true"][focused="true"] ads--CElidingLabel,
+ads--CDockWidgetTab[activeTab="true"][focused="true"] QLabel,
+ads--CDockWidgetTab[focused="true"] ads--CElidingLabel,
+ads--CDockWidgetTab[focused="true"] QLabel {
+    color: %2;
+    font-weight: 600;
+}
+
+/* Tab Close Button */
 #tabCloseButton {
     background: transparent;
     margin-bottom: 1px;
-    margin-left: 4px;
+    margin-left: 6px;
+    margin-right: 0px;
     border: none;
-    padding: 0px 0px;
-    border-radius: 3px;
+    padding: 1px;
+    border-radius: 4px;
+    qproperty-icon: url(:/ads/images/close-button%11);
+    qproperty-iconSize: 14px;
 }
 #tabCloseButton:hover {
-    background-color: rgba(235, 87, 87, 0.35);
-    color: #eb5757;
+    background-color: rgba(235, 87, 87, 0.25);
 }
 #tabCloseButton:pressed {
-    background-color: #eb5757;
-    color: #ffffff;
+    background-color: rgba(235, 87, 87, 0.50);
+}
+
+/* Title Bar Buttons & Plus Button */
+QToolButton#tabBarPlusButton {
+    font-size: 15px;
+    font-weight: bold;
+    color: %4;
+    background: transparent;
+    padding: 0px;
+    margin: 1px 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+QToolButton#tabBarPlusButton:hover {
+    background-color: rgba(128, 128, 128, 0.20);
+    color: %2;
+    border-color: %3;
+}
+QToolButton#tabBarPlusButton:pressed {
+    background-color: rgba(128, 128, 128, 0.35);
+    color: %2;
+}
+ads--CTitleBarButton {
+    padding: 0px;
+    background: transparent;
+    border: none;
+}
+#tabsMenuButton {
+    qproperty-icon: url(:/ads/images/tabs-menu-button%11);
+    qproperty-iconSize: 16px;
+}
+#dockAreaCloseButton {
+    qproperty-icon: url(:/ads/images/close-button%11);
+    qproperty-iconSize: 16px;
+}
+#detachGroupButton {
+    qproperty-icon: url(:/ads/images/detach-button%11);
+    qproperty-iconSize: 16px;
 }
 #QuickFindWidget {
     border-left: 1px solid %3;
@@ -1348,7 +1435,7 @@ QTabBar::tab:selected {
     background-color: %5;
     color: %2;
     font-weight: bold;
-    border-top: 2px solid rgb(255, 202, 176);
+    border-top: 2px solid %6;
 }
 QTabBar::tab:hover:!selected {
     background-color: %3;
@@ -1427,8 +1514,12 @@ QToolBar::separator, #mainToolBar::separator, QToolBar#mainToolBar::separator {
 }
 )");
 
-    const QString result =
-        templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
+    const QString iconSuffix = darkActive ? QStringLiteral("_dark.svg") : QStringLiteral(".svg");
+    const QString unfocusedTabTop =
+        darkActive ? QStringLiteral("rgba(88, 166, 255, 0.45)") : QStringLiteral("rgba(9, 105, 218, 0.40)");
+
+    const QString result = templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText)
+                               .arg(tbHover, iconSuffix, unfocusedTabTop);
     m_styleSheetCache.insert(cacheKey, result);
     return result;
 }

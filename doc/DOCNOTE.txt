@@ -62,6 +62,35 @@ SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan
    - Mengintegrasikan ReleaseManager dengan pipeline 3-tier (updates.json langsung tanpa limit GitHub API, GitHub REST API resmi, dan pengalihan lokasi HTTP).
    - Menambahkan badge Pembaruan Wajib dan tautan unduhan langsung biner platform pada UpdateDialog.
 
+8. Arsitektur Pewarnaan Tab Mode Split Modern & Harmonisasi Tema:
+   - Menghilangkan warna gradien gelap metalik dan garis oranye/peach bawaan ADS pada mode split dengan menetapkan ads::CDockManager::DisableStylesheet, true serta menyatukan seluruh tata gaya tab dan dock manager secara eksklusif melalui ThemeManager.
+   - Mengimplementasikan hierarki visual ganda (dual-state) adaptif tema pada panel editor split:
+     * Tab Aktif pada Panel Split Terfokus: Latar belakang kartu editor (%5), garis aksen tema atas (%6, 2px), teks primer tebal (%2, weight 600), dan menyatu mulus ke kanvas editor.
+     * Tab Aktif pada Panel Split Tidak Terfokus: Latar belakang kartu editor (%5), garis indikator halus (%12, 2px), dan teks primer terbaca (%2, weight 500), menjamin 100% bebas bentrok tema dan kontras optimal pada seluruh palet terang, gelap, dan kustom.
+     * Tab Tidak Aktif: Latar belakang wadah harmonis (%1), teks sekunder (%4), serta efek hover halus (%3, teks %2).
+     * Bilah Pemisah Splitter (ads--CDockSplitter::handle): Garis batas tema 1px (%3) dengan iluminasi aksen interaktif (%6) saat disentuh kursor.
+     * Tombol Tutup Tab & Tombol Tambah Tab: Ikonografi SVG adaptif tema dengan efek sentuh koral lembut (rgba(235, 87, 87, 0.25)).
+
+9. Penyempurnaan Auto-Completion & Default Non-Intrusif:
+   - Auto-completion dinonaktifkan secara default (autoCompletion = false) di setelan aplikasi untuk mencegah gangguan popup saat mengetik.
+   - Menghapus pemicu auto-fill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat saat menekan spasi atau kurung buka.
+   - Menetapkan batas trigger minimal 3 karakter dengan perlindungan dokumen besar (>5MB).
+
+10. Harmonisasi Nama Tema & Brand SparkNotepad:
+    - Mengubah nama palet default terang menjadi sparkNotepad ("SparkNotepad Default") dengan pemetaan kompatibilitas mundur untuk setelan notepadNext.
+    - Memperbarui penamaan paket ikon toolbar dan aksi reset tema di antarmuka.
+
+11. Perbaikan Siklus Hidup Live Preview Markdown & HTML:
+    - Menyelaraskan visibilitas dock preview dengan editor aktif di MainWindow: menutup tab atau berpindah ke berkas non-Markdown/HTML otomatis menyembunyikan dock preview jika auto-show aktif.
+    - Otomatis menyembunyikan dock preview saat seluruh berkas ditutup (editor == nullptr).
+
+12. Optimasi Kinerja & Eliminasi Beban Berat:
+    - Mengoptimalkan HighlightedScrollBar dengan pra-kalkulasi geometri track di luar loop render dan mengganti pemecah kata regex dengan pencacah linier nol alokasi heap.
+    - Menambahkan deteksi cepat di MarkdownPreviewEnhancer untuk melompati pemrosesan regex pada berkas teks polos.
+   - Mengaktifkan pembaruan wajib (force-update) untuk seluruh versi sebelumnya guna menjamin keamanan dan keandalan penuh.
+   - Mengintegrasikan ReleaseManager dengan pipeline 3-tier (updates.json langsung tanpa limit GitHub API, GitHub REST API resmi, dan pengalihan lokasi HTTP).
+   - Menambahkan badge Pembaruan Wajib dan tautan unduhan langsung biner platform pada UpdateDialog.
+
 ---
 
 ## 2. Arsip Ringkasan: Rilis v1.4.5
@@ -141,6 +170,39 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
    - SonarLint compliance: resolved parameter warnings and enforced const correctness.
    - 100% automated test suite pass rate (ctest).
    - 100% bilingual translation coverage (English and Bahasa Indonesia).
+
+7. Multi-Build updates.json Engine & Comprehensive Force-Update:
+   - Upgraded updates.json to v1.4.6 covering the full build matrix (macOS Apple Silicon & Intel across Qt 6.2–6.12, Linux deb & rpm packages for x86_64 and aarch64, and POSIX helper scripts).
+   - Activated mandatory force update across all prior versions to ensure security, stability, and zero regressions.
+   - Resilient 3-tier update pipeline in ReleaseManager (unmetered GitHub CDN raw updates.json, GitHub REST API, and HTTP location redirect fallback).
+   - Enhanced UpdateDialog with high-visibility MANDATORY UPDATE badge and direct platform package download routing.
+
+8. Modern Split View Tab Coloring & Zero Theme Clash Architecture:
+   - Eliminated legacy hardcoded peach/orange borders and unsightly dark metallic gradients in split mode by setting ads::CDockManager::DisableStylesheet, true and unifying all tab and dock area styling exclusively through ThemeManager.
+   - Implemented modern, theme-adaptive dual-state visual hierarchy for split editor panes:
+     * Active Tab in Focused Split Pane: Seamless editor card background (%5), vibrant theme accent top border (2px solid %6), bold primary text (%2, weight 600), and seamless bottom merge into the editor viewport.
+     * Active Tab in Unfocused Split Pane: Matching editor card background (%5), refined subtle indicator line (2px solid %12), and legible primary text (%2, weight 500), guaranteeing zero theme clash and optimal contrast across all light, dark, and custom palettes.
+     * Inactive Tabs: Harmonized container background (%1), secondary text (%4), with smooth hover state (%3, text %2).
+     * Splitter Separators (ads--CDockSplitter::handle): Clean 1px theme border (%3) with interactive accent hover illumination (%6).
+     * Tab Close Button & Tab Bar Plus Button: Modernized SVG iconography matching theme modes with soft coral hover highlight (rgba(235, 87, 87, 0.25)).
+
+9. Auto-Completion UX & Non-Intrusive Defaults:
+   - Auto-completion disabled by default (autoCompletion = false) in ApplicationSettings.cpp to prevent disruptive popups during normal typing.
+   - Cleared aggressive auto-fill triggers (autoCSetFillUps("")), preventing accidental candidate insertions when typing spaces or parentheses.
+   - Enforced autoCSetChooseSingle(false), autoCSetAutoHide(true), and calibrated word trigger threshold to 3 characters minimum with large-file protection guards.
+
+10. Theme Renaming & Brand Consistency ("NotepadNext" -> "SparkNotepad"):
+    - Harmonized default light theme palette identifier and family to sparkNotepad ("SparkNotepad Default") with automatic backward compatibility for legacy notepadNext settings keys.
+    - Updated toolbar icon pack branding and reset actions across the user interface.
+
+11. Markdown & HTML Live Preview Lifecycle Hardening:
+    - Synchronized dock visibility with active editor lifecycle in MainWindow: closing tabs or switching away from Markdown/HTML files automatically hides markdownSafePreviewDock when auto-show is enabled.
+    - Immediately hides the preview dock when all documents are closed (editor == nullptr).
+
+12. Rendering & Memory Performance Optimizations:
+    - Eliminated repetitive Scintilla IPC queries inside HighlightedScrollBar::paintEvent by precomputing track geometry outside rendering loops.
+    - Replaced regular-expression word-splitting allocations in MarkdownSafePreviewDock with an ultra-fast linear zero-allocation word counter.
+    - Added early fast-path detection in MarkdownPreviewEnhancer to skip regex pipelines for plain text without special tokens.
 
 ---
 

@@ -219,6 +219,7 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | Feature                             | Capability Description                                                                                                                |              Shortcut              |
 | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------: |
 | **Permanent Dark Mode Toolbar**     | `#mainToolBar` permanently locked to dark background (`#21252b !important`) across all themes and light/dark modes                    |         All Modes & Themes         |
+| **Modern Split View Tab Colors**    | Dual-state visual hierarchy for split panes (active focused vs active unfocused) with zero theme clash and refined indicators         |          Split View Modes          |
 | **IANA Media Types Default Editor** | Official IANA Media Types integration (`SparkNotePad-Default-Editor.sh` & Linux scripts) associating 100+ standard extensions & MIMEs |         System Integration         |
 | **Lightweight DMG Packaging**       | Zero-bloat native macOS DMG packaging strictly maintained at 30MB–40MB ceiling with pre-baked `.DS_Store` layout                      | `cmake --build build --target dmg` |
 | **69 Toolbar Icon Packs Suite**     | 69 built-in multi-resolution icon packs (16x16–64x64) spanning classic desktop, macOS Big Sur, Windows 11, and modern 3D packs        |  Preferences >> Themes & Toolbar   |

@@ -31,6 +31,7 @@
 
 #include "ScintillaNext.h"
 #include "features/TabColorManager.h"
+#include "features/ThemeManager.h"
 
 #include <QDateTime>
 #include <QFileInfo>
@@ -100,9 +101,16 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
     ads::CDockManager::setConfigFlag(ads::CDockManager::EqualSplitOnInsertion, true);
     ads::CDockManager::setConfigFlag(ads::CDockManager::MiddleMouseButtonClosesTab, true);
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasTabsMenuButton, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::DisableStylesheet, true);
 
     dockManager = new ads::CDockManager(parent);
-    dockManager->setStyleSheet("");
+    dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
+
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this,
+            [this](bool /*isDark*/) { dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet()); });
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, [this](const QString & /*palId*/) {
+        dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
+    });
 
     connect(dockManager, &ads::CDockManager::focusedDockWidgetChanged, this,
             [this](const ads::CDockWidget * /*old*/, const ads::CDockWidget *now) {
