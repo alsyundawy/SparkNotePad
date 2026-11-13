@@ -1125,29 +1125,6 @@
     </message>
 </context>
 <context>
-    <name>AuthenticateDialog</name>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="26"/>
-        <source>Please provide the user name and password for the download location.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="35"/>
-        <source>&amp;User name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/AuthenticateDialog.ui" line="48"/>
-        <source>&amp;Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CaseConverter</name>
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="121"/>
@@ -2274,167 +2251,20 @@ Or fallback online URL:
 <context>
     <name>Downloader</name>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="145"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="483"/>
-        <source>Time remaining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="145"/>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="251"/>
         <source>Error</source>
-        <translation type="unfinished">Error</translation>
+        <translation type="obsolete">Error</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="251"/>
-        <source>Cannot find downloaded update!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="267"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation type="obsolete">Close</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="268"/>
-        <source>Download complete!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="269"/>
-        <source>The installer opens separately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="276"/>
-        <source>Click &quot;OK&quot; to begin installing the update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="278"/>
-        <source>In order to install the update, you may need to quit the application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="282"/>
-        <source>In order to install the update, you may need to quit the application. This is a mandatory update, exiting now will close the application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="298"/>
-        <source>Click the &quot;Open&quot; button to apply the update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="315"/>
-        <source>Are you sure you want to cancel the download?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="317"/>
-        <source>Are you sure you want to cancel the download? This is a mandatory update, exiting now will close the application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="372"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="379"/>
         <source>%1 bytes</source>
-        <translation type="unfinished">%1 bytes</translation>
+        <translation type="obsolete">%1 bytes</translation>
     </message>
     <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="374"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="381"/>
-        <source>%1 KB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="376"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="383"/>
-        <source>%1 MB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="385"/>
-        <source>of</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="430"/>
-        <source>Downloading Updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="431"/>
         <source>Unknown</source>
-        <translation type="unfinished">Unknown</translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="431"/>
-        <source>Time Remaining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="459"/>
-        <source>about %1 hours</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="461"/>
-        <source>about one hour</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="469"/>
-        <source>%1 minutes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="471"/>
-        <source>1 minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="478"/>
-        <source>%1 seconds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="480"/>
-        <source>1 second</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="23"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="311"/>
-        <source>Updater</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="90"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="144"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="385"/>
-        <source>Downloading updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="113"/>
-        <source>Time remaining: 0 minutes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="154"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.ui" line="161"/>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Downloader.cpp" line="143"/>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Unknown</translation>
     </message>
 </context>
 <context>
@@ -9267,26 +9097,6 @@ Key: %2</translation>
         <source>Invalid regular expression: %1</source>
         <translation>Invalid regular expression: %1</translation>
     </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="209"/>
-        <source>List All Tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="220"/>
-        <source>Detach Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="247"/>
-        <source>Minimize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="274"/>
-        <source>Close Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QuickFindWidget</name>
@@ -11191,219 +11001,24 @@ Key: %2</translation>
     </message>
 </context>
 <context>
-    <name>Updater</name>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="477"/>
-        <source>Would you like to download the update now?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="479"/>
-        <source>Would you like to download the update now?&lt;br /&gt;This is a mandatory update, exiting now will close the application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="485"/>
-        <source>&lt;strong&gt;Change log:&lt;/strong&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="488"/>
-        <source>Version %1 of %2 has been released!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="520"/>
-        <source>No updates are available for the moment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/qsimpleupdater/531e/src/Updater.cpp" line="522"/>
-        <source>Congratulations! You are running the latest version of %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ads::CAutoHideTab</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="394"/>
-        <source>Detach</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="399"/>
-        <source>Pin To...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="401"/>
-        <source>Top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="402"/>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="403"/>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="404"/>
-        <source>Bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="406"/>
-        <source>Unpin (Dock)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/AutoHideTab.cpp" line="408"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation type="obsolete">Close</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockAreaTitleBar</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="885"/>
-        <source>Detach</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="885"/>
-        <source>Detach Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="890"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="946"/>
-        <source>Unpin (Dock)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="890"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="951"/>
-        <source>Pin Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="896"/>
-        <source>Pin Group To...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="898"/>
-        <source>Top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="899"/>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="900"/>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="901"/>
-        <source>Bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="909"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="963"/>
-        <source>Minimize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="910"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="914"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="963"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="914"/>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="972"/>
-        <source>Close Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="920"/>
-        <source>Close Other Groups</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="955"/>
-        <source>Pin Active Tab (Press Ctrl to Pin Group)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockAreaTitleBar.cpp" line="968"/>
-        <source>Close Active Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ads::CDockManager</name>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockManager.cpp" line="544"/>
-        <source>Show View</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Close</translation>
     </message>
 </context>
 <context>
     <name>ads::CDockWidgetTab</name>
     <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="618"/>
-        <source>Detach</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="622"/>
-        <source>Pin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="626"/>
-        <source>Pin To...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="628"/>
-        <source>Top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="629"/>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="630"/>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="631"/>
-        <source>Bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="636"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
-    </message>
-    <message>
-        <location filename="../.cpm-cache/ads/fb9d/src/DockWidgetTab.cpp" line="640"/>
-        <source>Close Others</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Close</translation>
     </message>
 </context>
 </TS>
