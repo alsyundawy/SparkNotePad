@@ -449,7 +449,6 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
                           "    text-align: center;\n"
                           "    font-family: KaTeX_Math, 'Cambria Math', STIXGeneral, serif;\n"
                           "    font-size: 15px;\n"
-                          "    color: #0550ae;\n"
                           "    overflow-x: auto;\n"
                           "}\n"
                           ".math-inline {\n"
@@ -458,7 +457,6 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
                           "    border-radius: 4px;\n"
                           "    font-family: KaTeX_Math, 'Cambria Math', STIXGeneral, serif;\n"
                           "    font-size: 13px;\n"
-                          "    color: #0550ae;\n"
                           "}\n");
 }
 
