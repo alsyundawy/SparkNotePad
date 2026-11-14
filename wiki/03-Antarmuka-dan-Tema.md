@@ -203,7 +203,7 @@ Bagi pengguna yang bekerja dengan dua monitor atau lebih, SparkNotePad menyediak
 
 ---
 
-## 7. Pratinjau Langsung Markdown & HTML dengan 30 Tema Bawaan
+## 7. Pratinjau Langsung Markdown dengan 30 Tema Bawaan
 
 SparkNotePad menyediakan dock pratinjau langsung yang terisolasi dan aman (`Ctrl+Shift+M` / `Cmd+Shift+M`) serta tab pratinjau khusus (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 

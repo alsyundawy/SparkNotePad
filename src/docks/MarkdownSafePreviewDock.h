@@ -35,7 +35,6 @@ public:
     enum class PreviewFormat : std::uint8_t {
         Auto = 0,
         Markdown = 1,
-        Html = 2,
     };
     Q_ENUM(PreviewFormat)
 

@@ -336,7 +336,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connect(dockedEditor, &DockedEditor::editorClosed, this, [this](ScintillaNext *) {
         if (markdownSafePreviewDock && markdownSafePreviewDock->isAutoShowEnabled()) {
             const ScintillaNext *ed = currentEditor();
-            if (!ed || !isMarkdownOrHtml(ed)) {
+            if (!ed || !isMarkdown(ed)) {
                 markdownSafePreviewDock->hide();
             }
         }
@@ -1585,12 +1585,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     menuTools->addSeparator();
 
-    // HTML & Markdown Live Preview submenu
-    auto *menuPreview = menuTools->addMenu(tr("&HTML && Markdown Preview"));
+    // Markdown Live Preview submenu
+    auto *menuPreview = menuTools->addMenu(tr("&Markdown Preview"));
     menuPreview->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
 
     auto *togglePreviewAction = markdownSafePreviewDock->toggleViewAction();
-    togglePreviewAction->setText(tr("&Live Preview (Markdown / HTML)"));
+    togglePreviewAction->setText(tr("&Live Preview (Markdown)"));
     togglePreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
     togglePreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
     menuPreview->addAction(togglePreviewAction);
@@ -1600,7 +1600,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     actionOpenPreviewTab->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
     connect(actionOpenPreviewTab, &QAction::triggered, this, [this] {
         if (auto *ed = currentEditor()) {
-            openPreviewInNewTab(ed, isHtml(ed));
+            openPreviewInNewTab(ed);
         }
     });
     menuPreview->addAction(actionOpenPreviewTab);
@@ -1612,49 +1612,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             &MarkdownSafePreviewDock::openInBrowser);
     menuPreview->addAction(actionPreviewInBrowser);
 
-    auto *actionAutoShowPreview = new QAction(tr("&Auto-Show Preview on Markdown / HTML Tabs"), this);
+    auto *actionAutoShowPreview = new QAction(tr("&Auto-Show Preview on Markdown Tabs"), this);
     actionAutoShowPreview->setCheckable(true);
     actionAutoShowPreview->setChecked(markdownSafePreviewDock->isAutoShowEnabled());
     connect(actionAutoShowPreview, &QAction::toggled, markdownSafePreviewDock,
             &MarkdownSafePreviewDock::setAutoShowEnabled);
     menuPreview->addAction(actionAutoShowPreview);
-
-    menuPreview->addSeparator();
-
-    auto *actModeAuto = new QAction(tr("Format: &Auto-Detect"), this);
-    actModeAuto->setCheckable(true);
-    auto *actModeMd = new QAction(tr("Format: Force &Markdown"), this);
-    actModeMd->setCheckable(true);
-    auto *actModeHtml = new QAction(tr("Format: Force &HTML"), this);
-    actModeHtml->setCheckable(true);
-
-    auto *previewModeGroup = new QActionGroup(this);
-    previewModeGroup->addAction(actModeAuto);
-    previewModeGroup->addAction(actModeMd);
-    previewModeGroup->addAction(actModeHtml);
-
-    switch (markdownSafePreviewDock->format()) {
-        case MarkdownSafePreviewDock::PreviewFormat::Html:
-            actModeHtml->setChecked(true);
-            break;
-        case MarkdownSafePreviewDock::PreviewFormat::Markdown:
-            actModeMd->setChecked(true);
-            break;
-        default:
-            actModeAuto->setChecked(true);
-            break;
-    }
-
-    connect(actModeAuto, &QAction::triggered, this,
-            [this] { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Auto); });
-    connect(actModeMd, &QAction::triggered, this,
-            [this] { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Markdown); });
-    connect(actModeHtml, &QAction::triggered, this,
-            [this] { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Html); });
-
-    menuPreview->addAction(actModeAuto);
-    menuPreview->addAction(actModeMd);
-    menuPreview->addAction(actModeHtml);
 
     menuPreview->addSeparator();
 
@@ -1669,7 +1632,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             &MarkdownSafePreviewDock::exportHtml);
     menuPreview->addAction(actionExportPreviewHtml);
 
-    // Also place HTML & Markdown Preview prominently in the View menu
+    // Also place Markdown Preview prominently in the View menu
     ui->menuView->addSeparator();
     ui->menuView->addMenu(menuPreview);
 
@@ -3928,7 +3891,7 @@ void MainWindow::updateGui(ScintillaNext *editor) {
         return;
     }
 
-    if (isMarkdownOrHtml(editor)) {
+    if (isMarkdown(editor)) {
         if (!markdownSafePreviewDock->isVisible()) {
             markdownSafePreviewDock->show();
         }
@@ -3947,22 +3910,6 @@ bool MainWindow::isMarkdown(const ScintillaNext *editor) {
         return true;
     }
     return editor->languageName.contains(QStringLiteral("markdown"), Qt::CaseInsensitive);
-}
-
-bool MainWindow::isHtml(const ScintillaNext *editor) {
-    if (!editor) {
-        return false;
-    }
-    if (const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
-        MarkdownPreviewEnhancer::isHtmlPath(target)) {
-        return true;
-    }
-    const QString lang = editor->languageName.toLower();
-    return lang.contains(QStringLiteral("html"));
-}
-
-bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) {
-    return isMarkdown(editor) || isHtml(editor);
 }
 
 void MainWindow::updateDocumentBasedUi(Scintilla::Update updated) {
@@ -4843,35 +4790,15 @@ void MainWindow::populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor
     if (!editor) {
         return;
     }
-    const bool isMd = isMarkdown(editor);
-    const bool isH = isHtml(editor);
-    if (!isMd && !isH) {
+    if (!isMarkdown(editor)) {
         return;
     }
 
     menu->addSeparator();
-    if (isMd) {
-        auto *actPreviewMd =
-            menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
-        actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
-        connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, false); });
-    } else if (isH) {
-        auto *actPreviewHtml =
-            menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview HTML in New Tab"));
-        actPreviewHtml->setObjectName(QStringLiteral("previewHtml"));
-        connect(actPreviewHtml, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, true); });
+    auto *actPreviewMd = menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
+    actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
+    connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor); });
 
-        auto *actPreviewBrowser =
-            menu->addAction(QIcon(QStringLiteral(":/icons/openFile.svg")), tr("Preview in Default Browser"));
-        actPreviewBrowser->setObjectName(QStringLiteral("previewHtmlInBrowser"));
-        connect(actPreviewBrowser, &QAction::triggered, this, [this, editor] {
-            if (editor->isFile() && editor->getFileInfo().exists()) {
-                openInDefaultBrowser(editor->getFileInfo().absoluteFilePath());
-            } else {
-                openPreviewInNewTab(editor, true);
-            }
-        });
-    }
     ToolbarIconManager::instance()->applyToMenu(menu);
     ensureMenuIconsVisible(menu);
 }
@@ -5722,14 +5649,14 @@ void MainWindow::onChangelogTriggered() {
     }
 }
 
-void MainWindow::openPreviewInNewTab(ScintillaNext *editor, bool asHtml) {
+void MainWindow::openPreviewInNewTab(ScintillaNext *editor) {
     if (!editor) {
         return;
     }
 
-    auto *previewWidget = new PreviewTabWidget(editor, asHtml, this);
+    auto *previewWidget = new PreviewTabWidget(editor, this);
     const QString title = previewWidget->documentTitle();
-    const auto icon = QIcon(asHtml ? QStringLiteral(":/icons/openFile.svg") : QStringLiteral(":/icons/find.svg"));
+    const auto icon = QIcon(QStringLiteral(":/icons/find.svg"));
     const QString toolTip = editor->isFile() ? editor->getFilePath() : editor->getName();
 
     ads::CDockWidget *dockWidget = dockedEditor->addTabWidget(previewWidget, title, icon, toolTip);

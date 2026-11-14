@@ -471,6 +471,10 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 - **Penguatan Keamanan Komprehensif CVE 2025–2026**:
   - Kekebalan 100% dan pengujian otomatis terhadap `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, dan `CVE-2026-20841`.
   - Penambahan berkas uji `tests/test_v147_features.h` dengan 9 uji coba unit otomatis.
+- **Mesin Khusus Pratinjau Markdown Langsung & Penghapusan Penampil HTML**:
+  - Menghapus secara menyeluruh fungsionalitas penampil HTML dan peralihan format; SparkNotePad kini secara eksklusif menggunakan mesin pratinjau Markdown langsung yang ringan dan berkinerja tinggi.
+  - Mengimplementasikan antrean unduhan asinkron (`QQueue<QUrl> m_downloadQueue`, cache gambar 256 entri, 16 pekerja jaringan konkuren) yang menjamin seluruh aset Markdown daring (lencana Shields.io, SVG, diagram dokumentasi) ter-render secara utuh saat terhubung ke internet.
+  - Menambahkan penandaan kotor tata letak dokumen secara reaktif (`markContentsDirty`) sehingga gambar yang baru selesai diunduh langsung memicu penghitungan ulang geometri dan penggambaran ulang viewport secara mulus tanpa memerlukan interaksi scroll manual.
 - **Pemolesan Visual Dialog Tentang & Pratinjau Markdown**:
   - Memperbaiki bug indeks placeholder `%2` pada tab Kredit `AboutDialog` yang merender teks mentah `#0550ae` sebagai judul heading.
   - Menghapus warna heksadesimal statis `#0550ae` pada formula matematika Markdown preview agar mewarisi warna teks tema alami.

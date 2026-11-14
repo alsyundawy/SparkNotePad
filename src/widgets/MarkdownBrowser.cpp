@@ -47,6 +47,7 @@ void MarkdownBrowser::clearImageCache() {
     m_imageCache.clear();
     m_pendingUrls.clear();
     m_failedUrls.clear();
+    m_downloadQueue.clear();
 }
 
 QImage MarkdownBrowser::renderSvgToImage(const QByteArray &data, qreal devicePixelRatio) {
@@ -103,6 +104,9 @@ void MarkdownBrowser::fetchRemoteImage(const QUrl &url) {
     }
 
     if (m_pendingUrls.size() >= s_maxConcurrentDownloads) {
+        if (!m_downloadQueue.contains(url)) {
+            m_downloadQueue.enqueue(url);
+        }
         return;
     }
 
@@ -117,12 +121,22 @@ void MarkdownBrowser::fetchRemoteImage(const QUrl &url) {
     connect(reply, &QNetworkReply::finished, this, [this, reply, url] { handleImageReply(reply, url); });
 }
 
+void MarkdownBrowser::processDownloadQueue() {
+    while (!m_downloadQueue.isEmpty() && m_pendingUrls.size() < s_maxConcurrentDownloads) {
+        const QUrl nextUrl = m_downloadQueue.dequeue();
+        if (!m_imageCache.contains(nextUrl) && !m_failedUrls.contains(nextUrl) && !m_pendingUrls.contains(nextUrl)) {
+            fetchRemoteImage(nextUrl);
+        }
+    }
+}
+
 void MarkdownBrowser::handleImageReply(QNetworkReply *reply, const QUrl &url) {
     m_pendingUrls.remove(url);
 
     if (reply->error() != QNetworkReply::NoError) {
         m_failedUrls.insert(url);
         reply->deleteLater();
+        processDownloadQueue();
         return;
     }
 
@@ -131,6 +145,7 @@ void MarkdownBrowser::handleImageReply(QNetworkReply *reply, const QUrl &url) {
 
     if (data.isEmpty()) {
         m_failedUrls.insert(url);
+        processDownloadQueue();
         return;
     }
 
@@ -152,6 +167,7 @@ void MarkdownBrowser::handleImageReply(QNetworkReply *reply, const QUrl &url) {
 
     if (image.isNull()) {
         m_failedUrls.insert(url);
+        processDownloadQueue();
         return;
     }
 
@@ -161,8 +177,11 @@ void MarkdownBrowser::handleImageReply(QNetworkReply *reply, const QUrl &url) {
     m_imageCache.insert(url, image);
 
     document()->addResource(QTextDocument::ImageResource, url, image);
+    document()->markContentsDirty(0, document()->characterCount());
     emit remoteImageLoaded(url);
     viewport()->update();
+
+    processDownloadQueue();
 }
 
 QVariant MarkdownBrowser::loadResource(int type, const QUrl &name) {

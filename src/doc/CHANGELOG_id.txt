@@ -7,52 +7,6 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ---
 
-## [1.4.7] - 2026-11-14
-
-### 🌟 Rilis: Pembaruan Inti Mesin (Scintilla 5.6.9, Lexilla 5.5.5, Patch Lua 5.5.1), Transfer Sistem (.sparkbundle), Inspektur Berkas POSIX, Deteksi Enkodik 3-Titik & Audit Keamanan CVE 2025–2026
-
-SparkNotePad v1.4.7 menghadirkan pembaruan mesin inti, mobilitas ruang kerja lintas platform, diagnostik skrip POSIX, keandalan deteksi enkodik berkas besar, peningkatan ergonomi navigasi, serta penguatan keamanan menyeluruh terhadap CVE 2025–2026:
-
-#### 🆕 Ditambahkan (Added)
-
-- **Pembaruan Mesin Inti ke Scintilla 5.6.9 & Lexilla 5.5.5**:
-  - Sinkronisasi Scintilla ke **v5.6.9** (kategori karakter Unicode 17, tembolok leksem 40-byte, optimasi layout awal baris yang mempercepat rendering, perbaikan crash riwayat undo, dan pemulihan warna autokompleksi XPM).
-  - Sinkronisasi Lexilla ke **v5.5.5** (pewarnaan front-matter Markdown YAML/TOML/JSON [#59], nested template literal HTML/JS [#290], regex `/` dalam karakter kelas [#377], identifier JS non-ASCII [#371], pewarnaan `$$variabel` PHP [#2208], akselerasi SQL q-string [#378], dan 12 perbaikan keamanan memori/OOB [#388]).
-  - Penerapan 4 patch resmi Lua 5.5.1 (`luaO_applyparam` proteksi pergeseran negatif, `lvm.c` perbaikan for-loop NaN, `lcode.c` pencegahan folding -0.0, dan `lcorolib.c` preservasi pesan error unwind).
-- **Transfer Sistem & Berkas Bundel Ruang Kerja Portabel (`SparkTransferManager` & `TransferBundleDialog`)**:
-  - Fitur **Berkas → Transfer Sistem → Ekspor / Impor Bundel Ruang Kerja (`.sparkbundle`)** untuk migrasi preferensi, tema kustom (QSS), makro, sesi, dan skrip Lua/Python antar-macOS, FreeBSD, dan Linux.
-  - Dilindungi pertahanan Zip-Slip (`CVE-2026-57233`), penolakan path traversal (`CVE-2026-52886`), verifikasi integritas in-memory HMAC SHA-256 (`CVE-2026-52885`), dan enkripsi opsional AES-256-CBC.
-- **Inspektur Shell POSIX & Utilitas Touch (`PosixFileInspector`)**:
-  - Deteksi dialek shebang: Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, dan skrip `rc.d` FreeBSD.
-  - Format izin oktal (`0755`/`0600`) dan simbolik (`rwxr-xr-x`/`rw-------`).
-  - Badge `FieldPosixPerms` pada `EditorInfoStatusBar` dengan tombol toggle executable (`chmod +x`) sekali klik.
-  - Submenu Izin Berkas pada menu Berkas: **Beralih Bit Eksekutabel (chmod +x)** dan **Terapkan Mode Pribadi Pemilik Saja (chmod 0600)**.
-  - Utilitas touch berkas presisi tinggi via POSIX `utimes`.
-- **Detektor Enkodik 3-Titik Tanpa State & Proteksi Penyimpanan Berkas Besar Atomik**:
-  - Pengambilan sampel 3 titik (header 16KB, tengah 16KB, akhir 16KB) untuk keandalan deteksi charset berkas besar via `uchardet`.
-  - Dukungan eksplisit BOM UTF-32 LE/BE (`\xFF\xFE\x00\x00` dan `\x00\x00\xFE\xFF`).
-  - Pengerasan `ScintillaNext::writeToDisk` dengan penyimpanan atomik menggunakan berkas temporer privat sibling (`.filename.sparktmp`), izin `0600`, `fsync()`, preservasi mode izin asli, dan operasi POSIX `rename()` atomik.
-- **Dialog Go To Multi-Mode & Pratinjau Ganti Nama Aman Pohon Proyek**:
-  - Menggantikan input modal lama dengan `GotoDialog` multi-mode yang mendukung Baris:Kolom Visual, Offset Karakter (`Line:-Col`), dan Offset Byte Dokumen secara real-time.
-  - Dialog ganti nama aman di `FolderAsWorkspaceDock` dengan mitigasi path traversal, deteksi tabrakan nama, dan simulasi dry-run sebelum berkas diubah di disk.
-- **Perbaikan Visual & Warna Teks Kredit**:
-  - Memperbaiki bug indeks placeholder `%2` pada tab Kredit `AboutDialog` yang sebelumnya merender teks heksadesimal mentah `#0550ae` sebagai judul heading.
-  - Menghapus warna heksadesimal statis `#0550ae` pada formula math Markdown Preview Enhancer agar mewarisi warna teks tema alami.
-- **Sinkronisasi Terjemahan & Lokalisasi**:
-  - Sinkronisasi penuh katalog terjemahan bahasa Inggris (`i18n/SparkNotePad_en.ts`) dan bahasa Indonesia (`i18n/SparkNotePad_id.ts`) dengan 2.247 entri, kelengkapan 100%, dan standar EYD V / PASTI.
-
-#### 🛡️ Penguatan Keamanan (Audit CVE 2025–2026)
-
-- **Kekebalan CVE-2026-42214**: Mengeliminasi injeksi kode Lua arbitrer lewat ekstensi berkas dengan melewatkan seluruh parameter melalui Lua C stack (`lua_pushlstring`) serta menonaktifkan paket sistem yang tidak aman.
-- **Kekebalan CVE-2026-48778, CVE-2026-48800, CVE-2026-52885**: Penegakan validasi integritas in-memory HMAC SHA-256 dan penulisan berkas disk atomik berizin `0600`.
-- **Kekebalan CVE-2026-52886 & CVE-2026-57233**: Kanonikalisasi ketat pada seluruh path arsip dan sesi melalui `weakly_canonical` / `canonicalFilePath` dengan penolakan traversal Zip-Slip.
-- **Kekebalan CVE-2026-54758, CVE-2026-85279, CVE-2026-86054, CVE-2026-5525**: Nol buffer stack berukuran tetap pada codebase inti; seluruh parsing string menggunakan `QString` dan `std::string` yang dibatasi.
-- **Kekebalan CVE-2026-77605 & CVE-2026-25926 / CVE-2026-38972**: Resolusi path absolut untuk utilitas sistem eksternal (`/usr/bin/open`, `/usr/bin/xdg-open`), melarang eksekusi skrip sibling di direktori kerja.
-- **Kekebalan CVE-2025-14575 & CVE-2026-20841**: Penegakan protokol TLS 1.2+ minimum dan whitelist ketat skema URI pratinjau Markdown.
-- **Suite Pengujian Regresi Otomatis**: Menambahkan `tests/test_v147_features.h` berisi 9 kasus uji komprehensif untuk memverifikasi seluruh fitur baru dan regresi CVE.
-
----
-
 ## [1.4.6] - 2026-11-10
 
 ### 🌟 Rilis: 41 Paket Ikon Toolbar Baru (Total 69 Koleksi Bawaan), Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & Standar DMG Rilis 30MB–40MB

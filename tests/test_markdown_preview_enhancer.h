@@ -88,24 +88,21 @@ private slots:
         }
     }
 
-    void testHtmlPathRegex() const {
-        const QStringList validHtml = {QStringLiteral("index.html"),         QStringLiteral("page.htm"),
-                                       QStringLiteral("server.shtml"),       QStringLiteral("doc.xhtml"),
-                                       QStringLiteral("test.xht"),           QStringLiteral("dynamic.dhtml"),
-                                       QStringLiteral("site.html#header"),   QStringLiteral("view.htm?param=1"),
-                                       QStringLiteral("/var/www/INDEX.HTML")};
+    void testMarkdownOnlyPathRegex() const {
+        const QStringList validMd = {QStringLiteral("README.md"), QStringLiteral("doc.markdown"),
+                                     QStringLiteral("notes.mdown"), QStringLiteral("file.mkdn")};
 
-        for (const QString &path : validHtml) {
-            QVERIFY2(MarkdownPreviewEnhancer::isHtmlPath(path),
-                     qPrintable(QStringLiteral("Should match html: %1").arg(path)));
+        for (const QString &path : validMd) {
+            QVERIFY2(MarkdownPreviewEnhancer::isMarkdownPath(path),
+                     qPrintable(QStringLiteral("Should match markdown: %1").arg(path)));
         }
 
-        const QStringList invalidHtml = {QStringLiteral("doc.md"), QStringLiteral("main.cpp"),
-                                         QStringLiteral("data.json")};
+        const QStringList nonMarkdown = {QStringLiteral("index.html"), QStringLiteral("page.htm"),
+                                         QStringLiteral("main.cpp"), QStringLiteral("data.json")};
 
-        for (const QString &path : invalidHtml) {
-            QVERIFY2(!MarkdownPreviewEnhancer::isHtmlPath(path),
-                     qPrintable(QStringLiteral("Should NOT match html: %1").arg(path)));
+        for (const QString &path : nonMarkdown) {
+            QVERIFY2(!MarkdownPreviewEnhancer::isMarkdownPath(path),
+                     qPrintable(QStringLiteral("Should NOT match markdown: %1").arg(path)));
         }
     }
 

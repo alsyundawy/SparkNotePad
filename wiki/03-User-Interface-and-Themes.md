@@ -201,7 +201,7 @@ SparkNotePad includes dedicated multi-monitor ergonomics:
 
 ---
 
-## 6. Markdown & HTML Live Preview with 30 Built-in Themes
+## 6. Markdown Live Preview with 30 Built-in Themes
 
 SparkNotePad features an interactive, sandboxed live preview dock (`Ctrl+Shift+M` / `Cmd+Shift+M`) and dedicated tab preview (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 

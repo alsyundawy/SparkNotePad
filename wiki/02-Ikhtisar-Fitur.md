@@ -75,7 +75,7 @@ SparkNotePad v1.3.9 menyatukan utilitas pengembang tingkat lanjut ke dalam menu 
 ## 8. Tombol Plus (+) pada Tab & Pratinjau dalam Tab (v1.3.9)
 
 - **Tombol Plus Bilah Tab**: Tombol `+` terintegrasi di samping bilah tab untuk membuka dokumen baru secara instan dengan satu klik.
-- **Pratinjau Markdown & HTML dalam Tab**: Klik kanan tab `.md` atau `.html` menyediakan opsi pratinjau langsung di dalam tab editor dengan gaya resmi GitHub tanpa harus membuka jendela luar. Khusus berkas HTML, tersedia juga opsi buka di peramban standar.
+- **Pratinjau Markdown dalam Tab**: Klik kanan tab `.md` menyediakan opsi pratinjau langsung di dalam tab editor dengan gaya resmi GitHub tanpa harus membuka jendela luar. Dilengkapi antrean unduhan asinkron sehingga lencana daring dan gambar remote ditampilkan secara utuh saat terhubung ke internet.
 - **Penjelajah Berkas File Commander**: Panel explorer ditingkatkan dengan ergonomi komandan dua panel, rekam jejak breadcrumb, bookmark cepat, dan bilah status metrik.
 - **Toggle Tampilan Hex / Binary**: Beralih seketika antara teks biasa dan tampilan dump heksadesimal melalui `Tools > Toggle Hex / Binary View` (diposisikan tepat di bawah Bandingkan / Compare, `Ctrl+Alt+H` / `Cmd+Alt+H`).
 

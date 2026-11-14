@@ -1,14 +1,14 @@
-# SparkNotePad Release DocNote — v1.4.7 (English)
+# SparkNotePad Release DocNote — v1.4.6 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.4.7 (Core Engine Upgrade [Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1], System Transfer [.sparkbundle], POSIX File Inspector, 3-Point Encoding Detection, Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
-Release Date        : 2026-11-14
+Release Version     : 1.4.6 (41 New Modern Toolbar Icon Packs [69 Built-in Suites Total], Context Menu Ergonomics, General Preferences, WCAG 2.1 Syntax Highlighting Overhaul & 30MB–40MB Standard DMG)
+Release Date        : 2026-11-10
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine : Scintilla 5.6.9 & Lexilla 5.5.5 (129 Vendored Official Lexers)
-Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Patched Source 1-4)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Source)
 Scripting Runtime   : Python 3.13+ Engine Bridge
 GUI Framework       : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
@@ -18,56 +18,14 @@ License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Executive Summary: Changes in v1.4.7
-
-SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobility, POSIX script diagnostics, large-file encoding resilience, enhanced navigation ergonomics, and comprehensive 2025–2026 CVE security hardening:
-
-1. Core Engine Upgrade to Scintilla 5.6.9 & Lexilla 5.5.5:
-   - Synchronized Scintilla to v5.6.9 (Unicode 17 character categories, 40-byte lexeme cache, line-start layout bypass accelerating rendering, change history undo crash fix, and restored XPM autocompletion/marker colors).
-   - Synchronized Lexilla to v5.5.5 (Markdown YAML/TOML/JSON front-matter styling [#59], HTML/JS nested template literals [#290], regex '/' in character classes [#377], non-ASCII JS identifiers [#371], PHP $$variable styling [#2208], and all 12 memory safety/OOB/hang fixes [#388]).
-   - Applied the 4 official post-5.5.1 bug-fix patches to embedded Lua 5.5.1 (luaO_applyparam negative shift guard, lvm.c NaN for-loop fix, lcode.c -0.0 - 0 folding prevention, and lcorolib.c error message preservation during unwind).
-
-2. System Transfer & Portable Workspace Bundle (SparkTransferManager & TransferBundleDialog):
-   - Implemented File -> System Transfer -> Export / Import Workspace Bundle (.sparkbundle) enabling seamless migration of preferences, custom themes (QSS), macros, sessions, and Lua/Python user scripts across macOS, FreeBSD, and Linux.
-   - Hardened with Zip-Slip path sanitization (CVE-2026-57233), path traversal rejection (CVE-2026-52886), in-memory SHA-256 HMAC integrity verification (CVE-2026-52885), and optional AES-256-CBC encryption.
-
-3. POSIX Shell Inspector & Touch Utility (PosixFileInspector):
-   - Added shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD rc.d scripts.
-   - Added octal (0755/0600) and symbolic (rwxr-xr-x/rw-------) permission formatters.
-   - Integrated FieldPosixPerms badge in EditorInfoStatusBar with one-click executable bit toggle (chmod +x).
-   - Added File Permissions submenu in MainWindow with "Toggle Executable Bit (chmod +x)" and "Enforce Owner-Only Private Mode (chmod 0600)".
-   - Added precision file touch utility using POSIX utimes.
-
-4. Stateless 3-Point EncodingDetector & Atomic Large-File Save Guard:
-   - Implemented 3-point sampling (header 16KB, midpoint 16KB, tail 16KB) for robust large-file character set detection via uchardet.
-   - Added explicit UTF-32 LE/BE BOM support (\xFF\xFE\x00\x00 and \x00\x00\xFE\xFF).
-   - Hardened ScintillaNext::writeToDisk with atomic saving via private sibling temporary files (.filename.sparktmp), 0600 permissions, fsync(), original permission mode preservation, and atomic POSIX rename().
-
-5. Multi-Mode GotoDialog & Project Tree Safe Rename Preview:
-   - Replaced legacy modal input with multi-mode GotoDialog supporting Visual Line:Column, Character Offset (Line:-Col), and Document Byte Offset with real-time target position calculation.
-   - Implemented safe rename dialog in FolderAsWorkspaceDock with path traversal defense, collision detection, and dry-run preview before disk modification.
-
-6. Comprehensive 2025–2026 CVE Security Hardening:
-   - Automated test verification against CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, and CVE-2026-77605.
-
-7. About Dialog Credits & Markdown Preview Color Polish:
-   - Resolved %2 placeholder index bug in AboutDialog Credits tab that erroneously rendered raw color hex #0550ae as a heading title instead of applying it as CSS color to <h3>.
-   - Removed hardcoded #0550ae on inline/block math equations to naturally inherit active theme text color.
-
-8. 14-Pillar Code Quality & SonarLint/Clang-Tidy Remediation:
-   - Resolved clang-tidy braces around statements, virtual override visibility, and move semantics across EditorInfoStatusBar, QuickFindWidget, StatusLabel, and FocusWatcher with 0 linter errors.
-
-9. Standard Lightweight macOS DMG Packaging (30MB–40MB Standard):
-   - Packaged and verified build/SparkNotePad-v1.4.7-x64.dmg (40M, 40,652,861 bytes) with custom background, layout preset .DS_Store (680x440), and verified CRC32 checksum.
-
----
-
-## 2. Archive Summary: Release v1.4.6
+## 1. Executive Summary: Changes from v1.4.5 to v1.4.6
 
 SparkNotePad v1.4.6 delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
 
 1. Toolbar Icon Packs Expansion (69 Built-in Suites Total):
-   - Expanded from the 28 icon packs in v1.4.5 by adding 41 new multi-resolution icon suites across all resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+   - Expanded from the 28 icon packs in v1.4.5 by adding 41 new multi-resolution icon suites across all resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+     * 11 Thematic Packs: royal_blue, notepad_pro, pastel, fluent_modern, macos_bigsur_modern, dark_neon_pro, macos_glass, modern_flat_colorful, glossy_3d_skeuomorphic, retro_8bit_pixel, sketchy_doodle.
+     * 30 Modern Packs: 01-macos-big-sur, 02-windows-11-fluent, 03-arc-browser-glow, 04-nordic-frost-minimal, 05-dracula-cyber-neon, 06-catppuccin-macchiato, 07-tokyo-night-storm, 08-synthwave-80s, 09-monokai-pro-vivid, 10-solarized-accent, 11-retro-commodore-64, 12-retro-win95-classic, 13-matrix-phosphor-green, 14-gameboy-nostalgia, 15-pixel-dungeon-rpg, 16-claymorphism-3d, 17-skeuomorphic-leather-brass, 18-neu-brutalism-bold, 19-isometric-voxel-3d, 20-origami-paper-fold, 21-cyberpunk-2077-yellow, 22-lofi-aesthetic-grain, 23-vaporwave-pastel-sunset, 24-astronomy-deep-space, 25-botanical-nature-green, 26-blueprint-schematic, 27-chalkboard-handdrawn, 28-gouache-art-paint, 29-stained-glass-mosaic, 30-swiss-minimal-3d.
    - Clean Notepad++ Classic standard: completely eradicated floor drop shadows, halos, gray background tiles, and edge clipping across all packs, with 18% breathing margins preventing clipping on Retina displays.
    - Permanent Dark Toolbar Invariant: `#mainToolBar` permanently locked to `#21252b` across all themes and appearance modes to guarantee icon contrast.
 
@@ -88,4 +46,55 @@ SparkNotePad v1.4.6 delivers major enhancements across visual customization, edi
    - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
 
 5. Standard Lightweight macOS DMG Packaging (30MB–40MB Standard):
-   - Calibrated release DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving universal Qt libraries and standard image format plugins.
+   - Calibrated release DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving universal Qt libraries and standard image format plugins (libqjpeg, libqgif, libqwebp).
+   - Packaged via canonical native hdiutil with custom retina background, layout preset .DS_Store (680x440), and verified CRC32 checksum.
+
+6. Split View Tab Modernization & Zero Theme Clash Architecture:
+   - Eliminated legacy dark metallic gradients and orange/peach borders by setting ads::CDockManager::DisableStylesheet, true.
+   - Fully unified split view tab styling through ThemeManager with dynamic theme palette colors.
+   - Dual-state visual hierarchy: focused active tabs feature vibrant accent top border (2px solid %6) and bold text (%2, weight 600); unfocused active tabs feature refined subtle indicator line (%12) and readable text (%2, weight 500).
+
+7. Auto-Completion UX, Theme Harmonization & Rendering Performance:
+   - Disabled auto-completion by default (autoCompletion = false) to prevent disruptive popups during normal typing.
+   - Cleared aggressive auto-fill triggers (autoCSetFillUps("")), preventing accidental insertions when typing spaces or parentheses.
+   - Harmonized default light theme palette name to sparkNotepad ("SparkNotepad Default") with backward compatibility.
+   - Precomputed HighlightedScrollBar geometry outside rendering loops to reduce Scintilla IPC queries.
+   - Implemented ultra-fast linear zero-allocation word counter for Markdown preview statistics.
+
+8. Comprehensive Multi-Build updates.json & Force-Update Delivery Engine:
+   - Upgraded updates.json to v1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts.
+   - Activated mandatory force update policy across all builds with resilient 3-tier update check pipeline in ReleaseManager.
+
+9. Markdown Live Preview & Engine Architecture Overhaul:
+   - Researched and integrated modern best practices from markedjs/marked, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+   - Consolidated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts across docks and tabs.
+   - GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+   - Interactive Table of Contents generator ([TOC] / {:toc}) with automatic heading slug anchors (<h1 id="...">).
+   - Emoji shortcodes expansion (:rocket:, :sparkles:, etc.) with code block protection.
+   - Keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+   - Unified copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml pipelines.
+   - Fixed compile_commands.json with 685 synchronized header entries, resolving 945+ IDE linter errors.
+
+10. 14-Pillar Code Quality & Static Analysis Gates:
+   - 100% clean passes on cppcheck (171 files, 0 errors, 0 warnings), clangd, clang-tidy, and trunk check.
+   - SonarLint compliance: resolved parameter warnings and enforced const correctness.
+   - 100% automated test suite pass rate (ctest).
+   - 100% bilingual translation coverage (English and Bahasa Indonesia).
+
+---
+
+## 2. Archive Summary: Release v1.4.5
+
+SparkNotePad v1.4.5 represents a major feature and stabilization milestone delivering 14 foundational architectural pillars designed for professional developers, system administrators, and power users:
+
+1. Closed Tab Stack & Reopen Closed Tab (Ctrl+Shift+T / Cmd+Shift+T):
+   - ClosedTabsManager maintains a resilient 50-entry FIFO stack preserving caret position, line scroll ratio, encoding, EOL mode, language syntax styling, and tab color tags.
+2. Tab Color Tagging & Grouping:
+   - TabColorManager provides 8 high-contrast, accessible color presets with persistent state.
+3. Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions):
+   - AutosaveRecoveryManager writes background snapshots every 10 seconds for modified documents.
+4. Comprehensive Extended Find/Replace Escape Engine:
+   - ExtendedSearchParser parses \xHH, \dDDD, \0, \b, \f, and \v across Find/Replace and Quick Find.
+5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages).
+6. Native Markdown / HTML / PDF Export Pipeline.
+7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas).

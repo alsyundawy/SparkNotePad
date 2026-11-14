@@ -36,8 +36,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-PreviewTabWidget::PreviewTabWidget(ScintillaNext *editor, bool isHtml, QWidget *parent)
-    : QWidget(parent), m_editor(editor), m_isHtml(isHtml) {
+PreviewTabWidget::PreviewTabWidget(ScintillaNext *editor, QWidget *parent) : QWidget(parent), m_editor(editor) {
     setupUi();
 
     m_debounceTimer = new QTimer(this);
@@ -61,9 +60,9 @@ PreviewTabWidget::PreviewTabWidget(ScintillaNext *editor, bool isHtml, QWidget *
 QString PreviewTabWidget::documentTitle() const {
     if (m_editor) {
         const QString name = m_editor->getName();
-        return m_isHtml ? tr("Preview HTML - %1").arg(name) : tr("Preview Markdown - %1").arg(name);
+        return tr("Preview Markdown - %1").arg(name);
     }
-    return m_isHtml ? tr("Preview HTML") : tr("Preview Markdown");
+    return tr("Preview Markdown");
 }
 
 void PreviewTabWidget::setupUi() {
@@ -81,7 +80,7 @@ void PreviewTabWidget::setupUi() {
     // Format badge
     m_badgeLabel = new QLabel(headerWidget);
     m_badgeLabel->setObjectName(QStringLiteral("previewBadge"));
-    m_badgeLabel->setText(m_isHtml ? QStringLiteral("HTML") : QStringLiteral("MARKDOWN"));
+    m_badgeLabel->setText(QStringLiteral("MARKDOWN"));
     headerLayout->addWidget(m_badgeLabel);
 
     // Document title
@@ -177,6 +176,10 @@ void PreviewTabWidget::setupUi() {
     m_browser->setOpenExternalLinks(false);
     m_browser->setOpenLinks(false);
     connect(m_browser, &QTextBrowser::anchorClicked, this, &PreviewTabWidget::handleAnchorClicked);
+    connect(m_browser, &MarkdownBrowser::remoteImageLoaded, this, [this](const QUrl &) {
+        m_browser->document()->markContentsDirty(0, m_browser->document()->characterCount());
+        m_browser->viewport()->update();
+    });
 
     mainLayout->addWidget(m_browser, 1);
 
@@ -214,15 +217,8 @@ void PreviewTabWidget::applyTheme() {
     const QString btnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
     const QString btnBorder = isDark ? QStringLiteral("#363b42") : QStringLiteral("#d0d7de");
 
-    QString badgeBg;
-    QString badgeFg;
-    if (m_isHtml) {
-        badgeBg = isDark ? QStringLiteral("#1f4037") : QStringLiteral("#ddf4ff");
-        badgeFg = isDark ? QStringLiteral("#56d364") : QStringLiteral("#0969da");
-    } else {
-        badgeBg = isDark ? QStringLiteral("#2e1f47") : QStringLiteral("#fbefff");
-        badgeFg = isDark ? QStringLiteral("#d2a8ff") : QStringLiteral("#8250df");
-    }
+    const QString badgeBg = isDark ? QStringLiteral("#2e1f47") : QStringLiteral("#fbefff");
+    const QString badgeFg = isDark ? QStringLiteral("#d2a8ff") : QStringLiteral("#8250df");
 
     const QString textSec = isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a");
 
@@ -334,12 +330,8 @@ void PreviewTabWidget::renderPreview() {
                                    : 0.0;
 
     const bool isDark = ThemeManager::instance()->isDarkActive();
-    if (m_isHtml) {
-        m_browser->setHtml(rawContent);
-    } else {
-        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-        m_browser->setHtml(enhanced);
-    }
+    const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
+    m_browser->setHtml(enhanced);
 
     if (scrollBar && scrollBar->maximum() > 0 && scrollRatio > 0.0) {
         scrollBar->setValue(static_cast<int>(scrollRatio * scrollBar->maximum()));
@@ -376,13 +368,8 @@ void PreviewTabWidget::copyHtml() {
     }
     const QString rawContent = QString::fromUtf8(m_editor->getText());
     const bool isDark = ThemeManager::instance()->isDarkActive();
-    QString fullHtml;
-    if (m_isHtml) {
-        fullHtml = wrapHtmlDocument(rawContent, isDark);
-    } else {
-        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-        fullHtml = wrapHtmlDocument(enhanced, isDark);
-    }
+    const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
+    const QString fullHtml = wrapHtmlDocument(enhanced, isDark);
     QApplication::clipboard()->setText(fullHtml);
     if (m_badgeLabel) {
         const QString orig = m_badgeLabel->text();
@@ -416,13 +403,8 @@ void PreviewTabWidget::exportHtml() {
     }
     const QString rawContent = QString::fromUtf8(m_editor->getText());
     const bool isDark = ThemeManager::instance()->isDarkActive();
-    QString fullHtml;
-    if (m_isHtml) {
-        fullHtml = wrapHtmlDocument(rawContent, isDark);
-    } else {
-        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-        fullHtml = wrapHtmlDocument(enhanced, isDark);
-    }
+    const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
+    const QString fullHtml = wrapHtmlDocument(enhanced, isDark);
     QFile file(savePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
         file.write(fullHtml.toUtf8());
@@ -435,25 +417,14 @@ void PreviewTabWidget::openInBrowser() {
         return;
     }
 
-    if (m_isHtml && m_editor->isFile() && m_editor->getFileInfo().exists()) {
-        const QString path = m_editor->getFileInfo().absoluteFilePath();
-        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
-        return;
-    }
-
-    // Otherwise write out to a temporary file with DevDocs styling and open in default browser
+    // Write out to a temporary file with DevDocs styling and open in default browser
     const bool isDark = ThemeManager::instance()->isDarkActive();
     const QString content = QString::fromUtf8(m_editor->getText());
 
     auto *tempFile = new QTemporaryFile(QDir::tempPath() + QStringLiteral("/sparkpreview_XXXXXX.html"), this);
     if (tempFile->open()) {
-        QString fullHtml;
-        if (m_isHtml) {
-            fullHtml = wrapHtmlDocument(content, isDark);
-        } else {
-            const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(content, isDark);
-            fullHtml = wrapHtmlDocument(enhanced, isDark);
-        }
+        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(content, isDark);
+        const QString fullHtml = wrapHtmlDocument(enhanced, isDark);
         tempFile->write(fullHtml.toUtf8());
         tempFile->flush();
         const QString tempPath = tempFile->fileName();

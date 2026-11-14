@@ -35,6 +35,10 @@ SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobi
 - **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
   - Replaced legacy modal input with multi-mode `GotoDialog` supporting Visual Line:Column, Character Offset (`Line:-Col`), and Document Byte Offset with real-time target position calculation.
   - Implemented safe rename dialog in `FolderAsWorkspaceDock` with path traversal defense, collision detection, and dry-run preview before disk modification.
+- **Markdown Live Preview Dedicated Engine & HTML Viewer Deprecation**:
+  - Completely removed legacy HTML preview functionality and format toggles; SparkNotePad exclusively standardizes on a dedicated, lightweight, high-performance Markdown live preview engine.
+  - Implemented queued asynchronous downloading (`QQueue<QUrl> m_downloadQueue`, 256-entry image cache, 16 concurrent network workers) guaranteeing that all remote online Markdown assets (Shields.io badges, SVGs, documentation diagrams) render completely whenever connected to the internet.
+  - Added reactive document layout dirty tracking (`markContentsDirty`) ensuring newly retrieved remote images dynamically trigger geometry recalculation and viewport repaint without requiring manual scroll interaction.
 - **Visual Polish & Credits Color Fix**:
   - Resolved `%2` placeholder index bug in `AboutDialog` Credits tab where raw color code `#0550ae` erroneously showed up as the section title.
   - Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.

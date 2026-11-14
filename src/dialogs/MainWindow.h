@@ -256,8 +256,6 @@ private:
     QAction *actionQuickSwitcher = nullptr;
     void openQuickSwitcher();
     static bool isMarkdown(const ScintillaNext *editor);
-    static bool isHtml(const ScintillaNext *editor);
-    static bool isMarkdownOrHtml(const ScintillaNext *editor);
 
     void exportHtmlDocument();
     template <typename TransformFn>
@@ -313,7 +311,7 @@ private:
     void onDocnoteTriggered();
     void onChangelogTriggered();
     void onGenerateCertTriggered();
-    void openPreviewInNewTab(ScintillaNext *editor, bool asHtml);
+    void openPreviewInNewTab(ScintillaNext *editor);
     static void openInDefaultBrowser(const QString &filePath);
     void onToggleHexBinaryView(bool checked);
 

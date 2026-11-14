@@ -46,7 +46,5 @@ public:
 
     static bool isMarkdownPath(const QString &path);
 
-    static bool isHtmlPath(const QString &path);
-
     static bool isMarkdownOrHtmlPath(const QString &path);
 };

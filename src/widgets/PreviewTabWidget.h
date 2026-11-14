@@ -26,10 +26,9 @@ class PreviewTabWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit PreviewTabWidget(ScintillaNext *editor, bool isHtml, QWidget *parent = nullptr);
+    explicit PreviewTabWidget(ScintillaNext *editor, QWidget *parent = nullptr);
     ~PreviewTabWidget() override = default;
 
-    [[nodiscard]] bool isHtml() const { return m_isHtml; }
     [[nodiscard]] ScintillaNext *sourceEditor() const { return m_editor.data(); }
     [[nodiscard]] QString documentTitle() const;
 
@@ -63,7 +62,6 @@ private:
     [[nodiscard]] QString wrapHtmlDocument(const QString &rawBody, bool isDark) const;
 
     QPointer<ScintillaNext> m_editor;
-    bool m_isHtml{false};
     int m_baseFontSize{13};
 
     MarkdownBrowser *m_browser{nullptr};

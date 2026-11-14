@@ -114,14 +114,8 @@ bool MarkdownPreviewEnhancer::isMarkdownPath(const QString &path) {
     return mdRegex.match(path).hasMatch();
 }
 
-bool MarkdownPreviewEnhancer::isHtmlPath(const QString &path) {
-    static const QRegularExpression htmlRegex(QStringLiteral(R"(\.(?:html|htm|shtml|xhtml|xht|dhtml)(?:#.*|\?.*)?$)"),
-                                              QRegularExpression::CaseInsensitiveOption);
-    return htmlRegex.match(path).hasMatch();
-}
-
 bool MarkdownPreviewEnhancer::isMarkdownOrHtmlPath(const QString &path) {
-    return isMarkdownPath(path) || isHtmlPath(path);
+    return isMarkdownPath(path);
 }
 
 QString MarkdownPreviewEnhancer::slugifyHeading(const QString &text) {

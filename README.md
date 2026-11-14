@@ -471,6 +471,10 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 - **Comprehensive 2025–2026 CVE Security Hardening**:
   - 100% immunity and automated test coverage across `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, and `CVE-2026-20841`.
   - Added `tests/test_v147_features.h` with 9 automated unit tests verifying all new security and architectural invariants.
+- **Markdown Live Preview Dedicated Engine & HTML Viewer Deprecation**:
+  - Completely removed legacy HTML preview functionality and format toggles; SparkNotePad exclusively standardizes on a dedicated, lightweight, high-performance Markdown live preview engine.
+  - Implemented queued asynchronous downloading (`QQueue<QUrl> m_downloadQueue`, 256-entry image cache, 16 concurrent network workers) guaranteeing that all remote online Markdown assets (Shields.io badges, SVGs, documentation diagrams) render completely whenever connected to the internet.
+  - Added reactive document layout dirty tracking (`markContentsDirty`) ensuring newly retrieved remote images dynamically trigger geometry recalculation and viewport repaint without requiring manual scroll interaction.
 - **Credits & Markdown Preview Polish**:
   - Resolved `%2` placeholder index bug in `AboutDialog` Credits tab that rendered raw `#0550ae` hex as a heading title.
   - Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.

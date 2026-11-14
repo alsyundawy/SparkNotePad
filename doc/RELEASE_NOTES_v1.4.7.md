@@ -100,8 +100,9 @@ SparkNotePad **v1.4.7** introduces significant advancements across the core edit
 - Modal `GotoDialog` supporting Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with real-time target calculations.
 - Safe rename in `FolderAsWorkspaceDock` with live path traversal check, collision detection, and dry-run preview.
 
-### 6. Visual Polish, Credits Color Fix & 14-Pillar Code Quality
+### 6. Visual Polish, Markdown Live Preview Dedicated Engine & 14-Pillar Code Quality
 
+- **Markdown Live Preview Dedicated Engine & Full HTML Viewer Deprecation**: Completely stripped legacy HTML preview functionality and format toggles; SparkNotePad exclusively standardizes on a dedicated, lightweight, high-performance Markdown live preview engine with queued asynchronous downloading (`QQueue<QUrl> m_downloadQueue`, 256-entry LRU cache, 16 concurrent workers) and reactive document layout dirty tracking (`markContentsDirty`) ensuring all remote online assets (Shields.io badges, SVGs, documentation diagrams) render completely whenever connected to the internet without manual scrolling.
 - **Credits Placeholder Fix**: Resolved `%2` placeholder index bug in `AboutDialog` Credits tab where raw color code `#0550ae` erroneously showed up as the section title.
 - **Markdown Preview Math Inheritance**: Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.
 - **14-Pillar Linter Remediation**: Resolved clang-tidy braces around statements, virtual override visibility, and move semantics across `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, and `FocusWatcher` with 0 linter errors.

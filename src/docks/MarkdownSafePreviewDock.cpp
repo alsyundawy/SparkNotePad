@@ -68,27 +68,17 @@ QString generateFullHtmlDocument(const QString &bodyHtml, const QString &title, 
 
 void updateFormatLabel(QLabel *lblFormatStatus, MarkdownSafePreviewDock::PreviewFormat currentFormat,
                        MarkdownSafePreviewDock::PreviewFormat effectiveFormat) {
+    Q_UNUSED(currentFormat);
+    Q_UNUSED(effectiveFormat);
     if (!lblFormatStatus) {
         return;
     }
-
-    using enum MarkdownSafePreviewDock::PreviewFormat;
-    if (currentFormat == Auto) {
-        if (effectiveFormat == Html) {
-            lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Auto (HTML)"));
-        } else {
-            lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Auto (Markdown)"));
-        }
-    } else if (currentFormat == Html) {
-        lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "HTML"));
-    } else {
-        lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Markdown"));
-    }
+    lblFormatStatus->setText(QCoreApplication::translate("MarkdownSafePreviewDock", "Markdown"));
 }
 }  // namespace
 
 MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
-    : QDockWidget(tr("HTML & Markdown Live Preview"), parent),
+    : QDockWidget(tr("Markdown Live Preview"), parent),
       browser(new MarkdownBrowser(this)),
       debounceTimer(new QTimer(this)) {
     m_ui.comboFormat = new QComboBox(this);
@@ -107,11 +97,18 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     setObjectName(QStringLiteral("MarkdownSafePreviewDock"));
     browser->setObjectName(QStringLiteral("markdownPreviewBrowser"));
 
+    connect(browser, &MarkdownBrowser::remoteImageLoaded, this, [this](const QUrl &) {
+        if (browser && browser->document()) {
+            browser->document()->markContentsDirty(0, browser->document()->characterCount());
+            browser->viewport()->update();
+        }
+    });
+
     // Restore persistent settings
     const QSettings settings;
     autoShowEnabled = settings.value(QStringLiteral("Gui/AutoShowMarkdownHtmlPreview"), false).toBool();
     if (const int savedFormat = settings.value(QStringLiteral("Gui/PreviewFormat"), 0).toInt();
-        savedFormat >= 0 && savedFormat <= 2) {
+        savedFormat >= 0 && savedFormat <= 1) {
         currentFormat = static_cast<PreviewFormat>(savedFormat);
     }
     if (const QString savedThemeName = settings.value(QStringLiteral("Gui/MarkdownPreviewTheme"), QString()).toString();
@@ -150,11 +147,10 @@ void MarkdownSafePreviewDock::setupUi() {
 
     m_ui.comboFormat->addItem(tr("Auto"), static_cast<int>(PreviewFormat::Auto));
     m_ui.comboFormat->addItem(tr("Markdown"), static_cast<int>(PreviewFormat::Markdown));
-    m_ui.comboFormat->addItem(tr("HTML"), static_cast<int>(PreviewFormat::Html));
     m_ui.comboFormat->setCurrentIndex(static_cast<int>(currentFormat));
-    m_ui.comboFormat->setToolTip(tr("Select preview rendering format (Auto detects Markdown or HTML)"));
+    m_ui.comboFormat->setToolTip(tr("Select preview rendering format (Markdown)"));
     connect(m_ui.comboFormat, &QComboBox::currentIndexChanged, this, [this](int index) {
-        if (index >= 0 && index <= 2) {
+        if (index >= 0 && index <= 1) {
             setPreviewFormat(static_cast<PreviewFormat>(index));
         }
     });
@@ -300,36 +296,8 @@ void MarkdownSafePreviewDock::scheduleRender() {
 }
 
 MarkdownSafePreviewDock::PreviewFormat MarkdownSafePreviewDock::detectFormat(const ScintillaNext *editor) {
-    using enum PreviewFormat;
-    if (!editor) {
-        return Markdown;
-    }
-
-    const QString path = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
-    if (MarkdownPreviewEnhancer::isHtmlPath(path)) {
-        return Html;
-    }
-    if (MarkdownPreviewEnhancer::isMarkdownPath(path)) {
-        return Markdown;
-    }
-
-    const QString lang = editor->languageName.toLower();
-    if (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml"))) {
-        return Html;
-    }
-    if (lang.contains(QStringLiteral("markdown"))) {
-        return Markdown;
-    }
-
-    // Heuristic scan of first 400 bytes
-    if (const QString snippet = QString::fromUtf8(editor->get_text_range(0, 400)).trimmed().toLower();
-        snippet.startsWith(QStringLiteral("<!doctype html")) || snippet.startsWith(QStringLiteral("<html")) ||
-        snippet.contains(QStringLiteral("<head>")) || snippet.contains(QStringLiteral("<body>")) ||
-        snippet.contains(QStringLiteral("</div>")) || snippet.contains(QStringLiteral("</p>"))) {
-        return Html;
-    }
-
-    return Markdown;
+    Q_UNUSED(editor);
+    return PreviewFormat::Markdown;
 }
 
 void MarkdownSafePreviewDock::changeEvent(QEvent *event) {
@@ -533,9 +501,7 @@ void MarkdownSafePreviewDock::renderPreview() {
     const QString filePath = currentEditor->isFile() ? currentEditor->getFileInfo().filePath() : QString();
     browser->setDocumentSourcePath(filePath);
 
-    if (effectiveFormat == Html) {
-        browser->setHtml(text);
-    } else if (text.size() > 2LL * 1024LL * 1024LL) {
+    if (text.size() > 2LL * 1024LL * 1024LL) {
         browser->setPlainText(text);
     } else {
         const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(text, isDark);
@@ -572,19 +538,12 @@ void MarkdownSafePreviewDock::setAutoShowEnabled(bool enabled) {
 }
 
 void MarkdownSafePreviewDock::copyHtml() {
-    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
-    QString bodyHtml;
-    if (effectiveFormat == Html) {
-        bodyHtml = rawContent;
-    } else {
-        const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
-        bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-    }
+    const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
+    const QString bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
     const QString fileName = currentEditor->getFileInfo().fileName();
     const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
     const QString fullHtml = generateFullHtmlDocument(bodyHtml, title, currentTheme, baseFontSize);
@@ -601,7 +560,6 @@ void MarkdownSafePreviewDock::copyHtml() {
 }
 
 void MarkdownSafePreviewDock::exportHtml() {
-    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
@@ -627,21 +585,10 @@ void MarkdownSafePreviewDock::exportHtml() {
         return;
     }
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
-
-    if (effectiveFormat == Html) {
-        QFile file(savePath);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-            file.write(rawContent.toUtf8());
-            file.close();
-        }
-    } else {
-        DocumentExportManager::exportMarkdownToHtml(rawContent, savePath, dlg.options());
-    }
+    DocumentExportManager::exportMarkdownToHtml(rawContent, savePath, dlg.options());
 }
 
 void MarkdownSafePreviewDock::exportPdf() {
-    using enum PreviewFormat;
     if (!currentEditor) {
         return;
     }
@@ -668,35 +615,18 @@ void MarkdownSafePreviewDock::exportPdf() {
     }
 
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
-    const bool isMarkdown = (effectiveFormat != Html);
-
-    DocumentExportManager::exportToPdf(rawContent, isMarkdown, savePath, dlg.options());
+    DocumentExportManager::exportToPdf(rawContent, true, savePath, dlg.options());
 }
 
 void MarkdownSafePreviewDock::openInBrowser() {
-    using enum PreviewFormat;
     if (!currentEditor) {
-        return;
-    }
-
-    const PreviewFormat effectiveFormat = (currentFormat == Auto) ? detectFormat(currentEditor) : currentFormat;
-
-    if (effectiveFormat == Html && currentEditor->isFile() && currentEditor->getFileInfo().exists()) {
-        const QString path = currentEditor->getFileInfo().absoluteFilePath();
-        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
         return;
     }
 
     // Render full styled page
     const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    QString bodyHtml;
-    if (effectiveFormat == Html) {
-        bodyHtml = rawContent;
-    } else {
-        const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
-        bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-    }
+    const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
+    const QString bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
 
     QTemporaryFile tempFile(QDir::tempPath() + QStringLiteral("/SparkNotePad_preview_XXXXXX.html"));
     tempFile.setAutoRemove(false);

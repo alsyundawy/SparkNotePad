@@ -15,6 +15,7 @@
 #include <QHash>
 #include <QImage>
 #include <QPointer>
+#include <QQueue>
 #include <QSet>
 #include <QTextBrowser>
 #include <QUrl>
@@ -42,6 +43,7 @@ private slots:
 
 private:
     void fetchRemoteImage(const QUrl &url);
+    void processDownloadQueue();
     [[nodiscard]] static QImage renderSvgToImage(const QByteArray &data, qreal devicePixelRatio);
     [[nodiscard]] static QImage renderSvgFileToImage(const QString &filePath, qreal devicePixelRatio);
 
@@ -49,7 +51,8 @@ private:
     QHash<QUrl, QImage> m_imageCache;
     QSet<QUrl> m_pendingUrls;
     QSet<QUrl> m_failedUrls;
+    QQueue<QUrl> m_downloadQueue;
 
-    static constexpr int s_maxCacheEntries = 64;
-    static constexpr int s_maxConcurrentDownloads = 8;
+    static constexpr int s_maxCacheEntries = 256;
+    static constexpr int s_maxConcurrentDownloads = 16;
 };
