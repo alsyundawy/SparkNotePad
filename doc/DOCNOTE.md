@@ -1,28 +1,44 @@
-# SparkNotePad Release DocNote — v1.4.6
+# SparkNotePad Release DocNote — v1.4.7
 
 ```text
 ================================================================================
-Release Version     : 1.4.6 (30 New Modern Toolbar Icon Packs [69 Total Suites],
-                      Context Menu Ergonomics, General Preferences, WCAG 2.1 Contrast Safety
-                      & Standard 30MB–40MB Lightweight DMG Packaging)
-Release Date        : 2026-11-10
+Release Version     : 1.4.7 (Core Engine Upgrade [Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1],
+                      System Transfer [.sparkbundle], POSIX File Inspector, 3-Point Encoding Detection,
+                      Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
+Release Date        : 2026-11-14
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine : Scintilla 5.6.9 (Vendored) & Lexilla 5.5.5 (Vendored)
-Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Source)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Patched Source 1-4)
 Scripting Runtime   : Python 3.13+ Engine Bridge
 GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
 License             : GNU General Public License v3.0 (GPL-3.0-or-later)
-Architecture        : 100% Additive Safe Enhancements Inspired by Nextpad++, Notepad--, Notepad3 & Notepad++
+Architecture        : 100% Additive Safe Enhancements Grounded in Primary Sources & 14 Review Pillars
 CI/CD Status        : 100% Passing across all release matrices, MegaLinter & CodeQL
 ================================================================================
 ```
 
 ---
 
-## 1. Executive Summary: Changes from v1.4.5 to v1.4.6
+## 1. Executive Summary: Changes in v1.4.7
+
+SparkNotePad **v1.4.7** introduces major architectural advancements across the core editing engines, portable workspace mobility, POSIX file permissions and script analysis, robust character encoding detection, enhanced navigation dialogs, and comprehensive 2025–2026 CVE security hardening:
+
+1. **Scintilla 5.6.9 & Lexilla 5.5.5 Upgrades**: Upgrades the core text engine with Unicode 17 character categories, 40-byte lexeme cache, line-start layout bypass, change history undo crash fix, restored XPM image colors, and 12 upstream Lexilla memory safety and OOB fixes.
+2. **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**: Enables seamless export and import of user preferences, themes, macros, sessions, and scripts via `.sparkbundle` archives with Zip-Slip defense and in-memory HMAC validation.
+3. **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**: Real-time shebang dialect detection, octal and symbolic permission formatters, status bar executable bit toggle badge (`FieldPosixPerms`), and precision file touch utility.
+4. **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**: 3-point sampling across header, midpoint, and tail for robust encoding detection, UTF-32 LE/BE BOM support, and atomic saving via private sibling temporary files (`0600` permissions).
+5. **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**: Direct navigation by Line:Col, Character Offset, or Document Byte Offset, alongside interactive folder/file rename with dry-run collision detection.
+6. **Comprehensive 2025–2026 CVE Security Hardening**: Automated test verification against CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, and CVE-2026-77605.
+7. **About Dialog Credits & Markdown Preview Color Polish**: Resolved `%2` placeholder index bug in `AboutDialog` Credits tab and removed hardcoded `#0550ae` on inline/block math equations to naturally inherit active theme text color.
+8. **14-Pillar Code Quality & SonarLint/Clang-Tidy Remediation**: Cleaned clang-tidy braces around statements, virtual override visibility, and move semantics across `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, and `FocusWatcher`.
+9. **macOS Lightweight DMG Packaging Standard**: Verified canonical ~38.8 MB DMG ceiling (< 40MB) with pre-baked `.DS_Store` and custom background presentation assets.
+
+---
+
+## 2. Archive Summary: Release v1.4.6
 
 SparkNotePad **v1.4.6** delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging over version 1.4.5:
 

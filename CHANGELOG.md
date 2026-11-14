@@ -35,6 +35,13 @@ SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobi
 - **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
   - Replaced legacy modal input with multi-mode `GotoDialog` supporting Visual Line:Column, Character Offset (`Line:-Col`), and Document Byte Offset with real-time target position calculation.
   - Implemented safe rename dialog in `FolderAsWorkspaceDock` with path traversal defense, collision detection, and dry-run preview before disk modification.
+- **Visual Polish & Credits Color Fix**:
+  - Resolved `%2` placeholder index bug in `AboutDialog` Credits tab where raw color code `#0550ae` erroneously showed up as the section title.
+  - Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.
+- **14-Pillar Code Quality & SonarLint/Clang-Tidy Remediation**:
+  - Resolved clang-tidy braces around statements, virtual override visibility, and move semantics across `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, and `FocusWatcher` with 0 linter errors.
+- **macOS Lightweight DMG Packaging Standard**:
+  - Packaged and verified build/SparkNotePad-v1.4.7-x64.dmg (40M, 40,652,861 bytes) with custom background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
 - **Localization & Translation Synchronization**:
   - Fully synchronized English (`i18n/SparkNotePad_en.ts`) and Indonesian (`i18n/SparkNotePad_id.ts`) translation catalogs with 2,247 strings, 100% completion, and strict EYD V / PASTI compliance.
 

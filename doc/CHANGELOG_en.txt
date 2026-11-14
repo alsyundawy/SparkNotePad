@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.7] - 2026-11-14
+
+### 🌟 Release: Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening
+
+SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobility, POSIX script diagnostics, large-file encoding resilience, enhanced navigation ergonomics, and comprehensive 2025–2026 CVE security hardening:
+
+#### 🆕 Added
+
+- **Core Engine Upgrade to Scintilla 5.6.9 & Lexilla 5.5.5**:
+  - Synchronized Scintilla to **v5.6.9** (Unicode 17 character categories, 40-byte lexeme cache, line-start layout calculation bypass accelerating rendering, change history undo crash fix, and restored XPM autocompletion/marker colors).
+  - Synchronized Lexilla to **v5.5.5** (Markdown YAML/TOML/JSON front-matter recognition at file start [#59], HTML/JS nested template literals [#290], regex `/` in `[]` character classes [#377], `$`/`#`/non-ASCII JS identifiers [#371], PHP `$$variable` styling [#2208], SQL `q-string` acceleration [#378], and all 12 memory safety/OOB/hang fixes [#388]).
+  - Applied the 4 official post-5.5.1 bug-fix patches to embedded Lua 5.5.1 (`luaO_applyparam` negative shift guard, `lvm.c` NaN `for` loop fix, `lcode.c` `-0.0 - 0` folding prevention, and `lcorolib.c` error message preservation during unwind).
+- **System Transfer & Portable Workspace Bundle (`SparkTransferManager` & `TransferBundleDialog`)**:
+  - Implemented **File → System Transfer → Export / Import Workspace Bundle (`.sparkbundle`)** enabling seamless migration of preferences, custom themes (QSS), macros, sessions, and Lua/Python user scripts across macOS, FreeBSD, and Linux.
+  - Hardened with Zip-Slip path sanitization (`CVE-2026-57233`), path traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC integrity verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.
+- **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**:
+  - Added shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d` scripts.
+  - Added octal (`0755`/`0600`) and symbolic (`rwxr-xr-x`/`rw-------`) permission formatters.
+  - Integrated `FieldPosixPerms` badge in `EditorInfoStatusBar` with one-click executable bit toggle (`chmod +x`).
+  - Added File Permissions submenu in MainWindow with **Toggle Executable Bit (chmod +x)** and **Enforce Owner-Only Private Mode (chmod 0600)**.
+  - Added precision file touch utility using POSIX `utimes`.
+- **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**:
+  - Implemented 3-point sampling (header 16KB, midpoint 16KB, tail 16KB) for robust large-file character set detection via `uchardet`.
+  - Added explicit UTF-32 LE/BE BOM support (`\xFF\xFE\x00\x00` and `\x00\x00\xFE\xFF`).
+  - Hardened `ScintillaNext::writeToDisk` with atomic saving via private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, original permission mode preservation, and atomic POSIX `rename()`.
+- **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
+  - Replaced legacy modal input with multi-mode `GotoDialog` supporting Visual Line:Column, Character Offset (`Line:-Col`), and Document Byte Offset with real-time target position calculation.
+  - Implemented safe rename dialog in `FolderAsWorkspaceDock` with path traversal defense, collision detection, and dry-run preview before disk modification.
+- **Visual Polish & Credits Color Fix**:
+  - Resolved `%2` placeholder index bug in `AboutDialog` Credits tab where raw color code `#0550ae` erroneously showed up as the section title.
+  - Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.
+- **Localization & Translation Synchronization**:
+  - Fully synchronized English (`i18n/SparkNotePad_en.ts`) and Indonesian (`i18n/SparkNotePad_id.ts`) translation catalogs with 2,247 strings, 100% completion, and strict EYD V / PASTI compliance.
+
+#### 🛡️ Security Hardening (2025–2026 CVE Audit)
+
+- **CVE-2026-42214 Immunity**: Eliminated arbitrary Lua code injection via filename extensions by passing all parameters through the Lua C stack (`lua_pushlstring`) and keeping unsafe system/OS/IO packages stripped.
+- **CVE-2026-48778, CVE-2026-48800, CVE-2026-52885 Immunity**: Enforced in-memory SHA-256 HMAC integrity validation and atomic disk writes with `0600` permissions.
+- **CVE-2026-52886 & CVE-2026-57233 Immunity**: Strict canonicalization of all archive and session paths via `weakly_canonical` / `canonicalFilePath` with Zip-Slip traversal rejection.
+- **CVE-2026-54758, CVE-2026-85279, CVE-2026-86054, CVE-2026-5525 Immunity**: Zero fixed-size stack buffers in core codebase; all string parsing uses bounded `QString` and `std::string`.
+- **CVE-2026-77605 & CVE-2026-25926 / CVE-2026-38972 Immunity**: Absolute path resolution for external system utilities (`/usr/bin/open`, `/usr/bin/xdg-open`), strictly prohibiting execution of sibling scripts from project trees or dynamic library loading from CWD.
+- **CVE-2025-14575 & CVE-2026-20841 Immunity**: Minimum TLS 1.2+ enforcement and strict Markdown preview URI scheme whitelisting.
+- **Automated Regression Test Suite**: Added `tests/test_v147_features.h` containing 9 comprehensive test cases verifying all new features and CVE regressions.
+
+---
+
 ## [1.4.6] - 2026-11-10
 
 ### 🌟 Release: 41 New Modern Toolbar Icon Packs (69 Total Built-in Suites), Context Menu Ergonomics, General Preferences Options, WCAG 2.1 Syntax Highlighting Overhaul & Standard 30MB–40MB DMG Packaging

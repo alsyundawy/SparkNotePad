@@ -1,9 +1,9 @@
-# Catatan Rilis SparkNotePad — v1.4.6 (Bahasa Indonesia)
+# Catatan Rilis SparkNotePad — v1.4.7 (Bahasa Indonesia)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Versi Rilis          : 1.4.6 (Ekspansi 41 Paket Ikon Toolbar Baru [Total 69 Koleksi Bawaan], Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & Standar DMG Rilis 30MB–40MB)
-Tanggal Rilis        : 2026-11-10
+Versi Rilis          : 1.4.7 (Pembaruan Inti Mesin [Scintilla 5.6.9, Lexilla 5.5.5, Patch Lua 5.5.1], Transfer Sistem [.sparkbundle], Inspektur Berkas POSIX, Deteksi Enkodik 3-Titik, Dialog Go To Multi-Mode & Audit Keamanan CVE 2025–2026)
+Tanggal Rilis        : 2026-11-14
 Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repositori           : https://github.com/alsyundawy/SparkNotePad
@@ -12,90 +12,69 @@ Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
 Kerangka Kerja GUI   : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
 Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
-===============================================================================
+================================================================================
 --------------------------------------------------------------------------------
 
 ---
 
-## 1. Ringkasan Eksekutif: Perubahan dari v1.4.5 ke v1.4.6
+## 1. Ringkasan Eksekutif: Perubahan pada v1.4.7
 
-SparkNotePad v1.4.6 merupakan pembaruan fitur, ergonomi antarmuka, dan pemolesan visual komprehensif yang menyempurnakan rilis v1.4.5 melalui lima pilar rekayasa utama:
+SparkNotePad v1.4.7 menghadirkan pembaruan mesin inti, mobilitas ruang kerja lintas platform, diagnostik skrip POSIX, keandalan deteksi enkodik berkas besar, peningkatan ergonomi navigasi, serta penguatan keamanan menyeluruh terhadap CVE 2025–2026:
 
-1. Ekspansi Paket Ikon Toolbar (Total 69 Koleksi Bawaan):
-   - Dari basis 28 paket di v1.4.5, ditambahkan 41 paket ikon baru multi-resolusi beresolusi tinggi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
-     * 11 Paket Ikon Tematik: royal_blue, notepad_pro, pastel, fluent_modern, macos_bigsur_modern, dark_neon_pro, macos_glass, modern_flat_colorful, glossy_3d_skeuomorphic, retro_8bit_pixel, sketchy_doodle.
-     * 30 Paket Ikon Modern: 01-macos-big-sur, 02-windows-11-fluent, 03-arc-browser-glow, 04-nordic-frost-minimal, 05-dracula-cyber-neon, 06-catppuccin-macchiato, 07-tokyo-night-storm, 08-synthwave-80s, 09-monokai-pro-vivid, 10-solarized-accent, 11-retro-commodore-64, 12-retro-win95-classic, 13-matrix-phosphor-green, 14-gameboy-nostalgia, 15-pixel-dungeon-rpg, 16-claymorphism-3d, 17-skeuomorphic-leather-brass, 18-neu-brutalism-bold, 19-isometric-voxel-3d, 20-origami-paper-fold, 21-cyberpunk-2077-yellow, 22-lofi-aesthetic-grain, 23-vaporwave-pastel-sunset, 24-astronomy-deep-space, 25-botanical-nature-green, 26-blueprint-schematic, 27-chalkboard-handdrawn, 28-gouache-art-paint, 29-stained-glass-mosaic, 30-swiss-minimal-3d.
-   - Mengusung standar Notepad++ Classic yang bersih: tanpa bayangan lantai (drop shadows), tanpa halo abu-abu, dan tanpa garis timbul kasar, dengan margin nafas 18% agar ikon tidak terpotong pada layar Retina.
-   - Invarian Toolbar Gelap Permanen: Latar toolbar utama dikunci pada warna gelap (#21252b) di seluruh mode tampilan dan tema untuk menjaga kontras ikon.
+1. Pembaruan Mesin Inti ke Scintilla 5.6.9 & Lexilla 5.5.5:
+   - Sinkronisasi Scintilla ke v5.6.9 (kategori karakter Unicode 17, tembolok leksem 40-byte, optimasi layout awal baris yang mempercepat rendering, perbaikan crash riwayat undo, dan pemulihan warna autokompleksi XPM).
+   - Sinkronisasi Lexilla ke v5.5.5 (pewarnaan front-matter Markdown YAML/TOML/JSON [#59], nested template literal HTML/JS [#290], regex '/' dalam karakter kelas [#377], identifier JS non-ASCII [#371], pewarnaan $$variabel PHP [#2208], dan 12 perbaikan keamanan memori/OOB [#388]).
+   - Penerapan 4 patch resmi Lua 5.5.1 (proteksi pergeseran negatif luaO_applyparam, perbaikan for-loop NaN lvm.c, pencegahan folding -0.0 lcode.c, dan preservasi pesan error unwind lcorolib.c).
 
-2. Peningkatan Ergonomi Menu Konteks Editor:
-   - Tempel & Cocokkan Format (Paste & Match Style, Cmd+Alt+Shift+V / Ctrl+Shift+V): menempel teks dari clipboard dengan menghapus format asing serta menyesuaikan tingkat indentasi buffer editor saat ini.
-   - Cari di Google (Search on Google, Cmd+Alt+G / Ctrl+Alt+G): menelusuri teks yang disorot atau kata di bawah kursor langsung ke peramban bawaan sistem.
-   - Konversi Huruf Langsung: opsi HURUF BESAR (UPPERCASE) dan huruf kecil (lowercase) kini langsung dapat diakses pada menu konteks tanpa submenu bertingkat.
-   - Pembersihan Menu: menghapus opsi usang Run dan Base64 Encode/Decode dari menu klik kanan agar alur kerja penulisan lebih bersih.
+2. Transfer Sistem & Berkas Bundel Ruang Kerja Portabel (SparkTransferManager & TransferBundleDialog):
+   - Fitur Berkas -> Transfer Sistem -> Ekspor / Impor Bundel Ruang Kerja (.sparkbundle) untuk migrasi preferensi, tema kustom (QSS), makro, sesi, dan skrip Lua/Python antar-macOS, FreeBSD, dan Linux.
+   - Dilindungi pertahanan Zip-Slip (CVE-2026-57233), penolakan path traversal (CVE-2026-52886), verifikasi integritas in-memory HMAC SHA-256 (CVE-2026-52885), dan enkripsi opsional AES-256-CBC.
 
-3. Penambahan Opsi Preferensi Umum (General Preferences):
-   - Opsi sakelar Deteksi Otomatis Enkoding Karakter (enableEncodingAutoDetection) pada tab Pengaturan Umum.
-   - Opsi sakelar Dialog Konfirmasi Simpan Semua (enableSaveAllConfirmation) pada tab Pengaturan Umum.
+3. Inspektur Shell POSIX & Utilitas Touch (PosixFileInspector):
+   - Deteksi dialek shebang: Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, dan skrip rc.d FreeBSD.
+   - Format izin oktal (0755/0600) dan simbolik (rwxr-xr-x/rw-------).
+   - Badge FieldPosixPerms pada EditorInfoStatusBar dengan tombol toggle executable (chmod +x) sekali klik.
+   - Submenu Izin Berkas pada menu Berkas: "Beralih Bit Eksekutabel (chmod +x)" dan "Terapkan Mode Pribadi Pemilik Saja (chmod 0600)".
+   - Utilitas touch berkas presisi tinggi via POSIX utimes.
 
-4. Perombakan Total Syntax Highlighting & Keselamatan Kontras WCAG 2.1:
-   - Kalkulasi rasio kontras matematis berdasarkan luminansi relatif (0.2126*R + 0.7152*G + 0.0722*B), menjamin rasio kontras teks utama minimal 4.0:1 pada seluruh 70+ tema editor.
-   - Lencana Emas Visibilitas Tinggi (#FFD700) untuk penanda penting: TODO, FIXME, BUG, HACK, NOTE.
-   - Warna kuning amber hangat untuk urutan karakter escape string (\n, \t, \xHH).
-   - Kotak indikator penanda kemunculan kata kunci tersinkronisasi dinamis dengan tema aktif.
+4. Detektor Enkodik 3-Titik Tanpa State & Proteksi Penyimpanan Berkas Besar Atomik:
+   - Pengambilan sampel 3 titik (header 16KB, tengah 16KB, akhir 16KB) untuk keandalan deteksi charset berkas besar via uchardet.
+   - Dukungan eksplisit BOM UTF-32 LE/BE (\xFF\xFE\x00\x00 dan \x00\x00\xFE\xFF).
+   - Pengerasan ScintillaNext::writeToDisk dengan penyimpanan atomik menggunakan berkas temporer privat sibling (.filename.sparktmp), izin 0600, fsync(), preservasi mode izin asli, dan operasi POSIX rename() atomik.
 
-5. Standardisasi Pengemasan macOS DMG Ringan (30MB–40MB):
-   - Mengkalibrasi ukuran berkas rilis DMG berada dalam rentang ketat 30MB–40MB (38MB–39MB) dengan mempertahankan keutuhan pustaka universal Qt dan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
-   - Menggunakan format kanonikal native hdiutil dengan preset tata letak .DS_Store (680x440), latar retina .background/dmg-background@2x.png, dan verifikasi checksum CRC32.
+5. Dialog Go To Multi-Mode & Pratinjau Ganti Nama Aman Pohon Proyek:
+   - Menggantikan input modal lama dengan GotoDialog multi-mode yang mendukung Baris:Kolom Visual, Offset Karakter (Line:-Col), dan Offset Byte Dokumen secara real-time.
+   - Dialog ganti nama aman di FolderAsWorkspaceDock dengan mitigasi path traversal, deteksi tabrakan nama, dan simulasi dry-run sebelum berkas diubah di disk.
 
-6. Standardisasi Pewarnaan Tab Mode Split & Arsitektur Zero Theme Clash:
-   - Menghilangkan gradien gelap metalik dan batas jingga/peach peninggalan lawas dengan mengaktifkan cds::CDockManager::DisableStylesheet, true.
-   - Mengatur styling tab split yang sepenuhnya dinamis mengikuti palet tema aktif melalui ThemeManager.
-   - Hirarki visual status ganda yang adaptif: tab aktif pada split pane terfokus memiliki garis aksen atas tajam (2px solid %6), teks tebal (%2, weight 600), dan latar menyatu dengan kartu editor (%5). Tab aktif pada panel tidak terfokus memiliki garis aksen lembut (%12) dan teks terbaca jelas (%2, weight 500).
+6. Penguatan Keamanan Menyeluruh CVE 2025–2026:
+   - Verifikasi pengujian otomatis terhadap CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, dan CVE-2026-77605.
 
-7. Optimalisasi UX Auto-Completion, Harmonisasi Tema & Performa Rendering:
-   - Menonaktifkan auto-completion secara default (autoCompletion = false) untuk mencegah popup kandidat yang mengganggu saat mengetik normal.
-   - Menghapus pemicu autofill agresif (autoCSetFillUps("")), mencegah penyisipan kandidat tanpa sengaja saat menekan spasi atau kurung.
-   - Mengganti penamaan tema bawaan menjadi sparkNotepad ("SparkNotepad Default") dengan kompatibilitas mundur otomatis untuk kunci pengaturan lama.
-   - Mengoptimalkan IPC Scintilla pada HighlightedScrollBar dengan pra-kalkulasi geometri di luar loop rendering tick marks.
-   - Mengganti alokasi pemecahan kata regex pada MarkdownSafePreviewDock dengan penghitung kata linier nol-alokasi berkecepatan tinggi.
+7. Perbaikan Warna Teks Dialog Tentang & Pratinjau Markdown:
+   - Memperbaiki bug indeks placeholder %2 pada tab Kredit AboutDialog yang sebelumnya merender teks mentah #0550ae sebagai judul heading.
+   - Menghapus warna heksadesimal statis #0550ae pada formula math Markdown Preview Enhancer agar mewarisi warna teks tema alami.
 
-8. Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif:
-   - Memperbarui updates.json ke v1.4.6 mencakup seluruh matriks rilis: macOS Apple Silicon (arm64) dan Intel (x86_64) lintas Qt 6.2–6.12, paket Linux Debian/Ubuntu (.deb) dan RedHat/Fedora (.rpm) untuk arsitektur x86_64 dan aarch64, serta skrip helper POSIX.
-   - Mengaktifkan kebijakan pembaruan wajib (force update) untuk semua versi sebelumnya guna menjamin keamanan, stabilitas, dan performa optimal.
-   - Engine ReleaseManager 3-tingkat tangguh (Tier 1 unmetered direct updates.json dengan deteksi arsitektur CPU; Tier 2 GitHub REST API dengan HTTP 304 ETag caching; Tier 3 HTTP Location fallback).
+8. Remediasi Kualitas Kode 14 Pilar & Kepatuhan SonarLint/Clang-Tidy:
+   - Memperbaiki kurung kurawal statement tunggal, visibilitas virtual override, dan semantik pemindahan (move semantics) di EditorInfoStatusBar, QuickFindWidget, StatusLabel, dan FocusWatcher (0 linter errors).
 
-9. Perombakan Total Engine & Live Preview Markdown:
-   - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
-   - Konsolidasi dan deduplikasi mesin render callout ke MarkdownPreviewEnhancer::enhanceCallouts, menyingkirkan kode ganda lintas dock dan tab.
-   - Implementasi Admonition / Callout resmi GitHub ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna pada mode terang dan gelap.
-   - Penambahan generator Daftar Isi interaktif ([TOC] / {:toc}) berjenjang dengan penautan otomatis ke slug heading dokumen.
-   - Penambahan slug anchor otomatis pada tag heading (<h1 id="...">) untuk navigasi loncat dan tautan internal.
-   - Penambahan konversi emoji shortcode (seperti :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, dll.) dengan proteksi blok kode.
-   - Penambahan chip pintasan keyboard [[Key]] -> <kbd>Key</kbd>.
-   - Penyelarasan fungsi copyHtml(), openInBrowser(), dan DocumentExportManager::markdownToHtml agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas, catatan kaki, dan callout secara utuh.
-   - Perbaikan database kompilasi (compile_commands.json) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
-
-10. Penguatan Kualitas Kode 14 Pilar & Audit Linter:
-   - 100% lulus bersih pada pengujian cppcheck (171 berkas, 0 error), clangd, clang-tidy, dan trunk check.
-   - Kepatuhan penuh SonarLint: pembersihan parameter lambda dan penegakan pointer-to-const correctness.
-   - 100% lulus uji unit otomatis (ctest --test-dir build).
-   - 100% paritas terjemahan antarmuka dwibahasa (Bahasa Inggris dan Bahasa Indonesia).
+9. Standar Pengemasan DMG macOS Ringan (Standar 30MB–40MB):
+   - Mengemas dan memverifikasi build/SparkNotePad-v1.4.7-x64.dmg (40M, 40,652,861 bytes) dengan gambar latar custom, preset layout .DS_Store (680x440), dan checksum CRC32 tervalidasi.
 
 ---
 
-## 2. Arsip Ringkasan: Rilis v1.4.5
+## 2. Ringkasan Arsip: Rilis v1.4.6
 
-SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
+SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningkatan kenyamanan editor, dan standar pengemasan berkualitas tinggi dari versi 1.4.5:
 
-1. Tumpukan Tab Tertutup & Buka Kembali Tab (Ctrl+Shift+T / Cmd+Shift+T):
-   - ClosedTabsManager mengelola antrean FIFO 50 tab yang baru saja ditutup, mempertahankan posisi kursor, rasio gulir, encoding teks, mode EOL, sintaksis bahasa, dan tag warna tab.
-2. Pemberian Tag & Pengelompokan Warna Tab:
-   - TabColorManager menyediakan 8 preset warna berstandar aksesibilitas tinggi (Merah, Oranye, Kuning, Hijau, Sian, Biru, Ungu, Magenta) dengan status persisten melalui ApplicationSettings.
-3. Manajer Autosave & Pemulihan Crash (Interval 10 Detik, Izin Ketat POSIX 0600):
-   - AutosaveRecoveryManager menyimpan cadangan latar belakang setiap 10 detik untuk dokumen yang dimodifikasi, diamankan dengan izin POSIX 0600 dan checksum integritas SHA-256.
-4. Mesin Karakter Escape Pencarian Lanjutan (Extended Search):
-   - ExtendedSearchParser memproses \xHH, \dDDD, \0, \b, \f, dan \v pada dialog Cari/Ganti dan Bilah Pencarian Cepat.
-5. Audit 100+ Lexer & Ekspansi Bahasa Modern (Total 129 Bahasa).
-6. Alur Ekspor Native Markdown / HTML / PDF via QPrinter dan Pandoc.
-7. Peningkatan Pratinjau Markdown (Diagram Mermaid & Rumus Matematika LaTeX).
+1. Ekspansi Paket Ikon Toolbar (Total 69 Koleksi Bawaan):
+   - Ditambahkan 41 paket ikon baru multi-resolusi (16x16, 20x20, 24x24, 32x32, 48x48, 64x64).
+   - Invarian Toolbar Gelap Permanen (`#21252b`) di seluruh mode dan tema.
+
+2. Fitur Baru Menu Konteks Editor:
+   - Menu "Tempel & Cocokkan Format" (Paste & Match Style) dan "Cari di Google".
+   - Perampingan konversi huruf kapital/kecil langsung.
+
+3. Penambahan Opsi Preferensi Umum:
+   - Opsi Aktifkan / Nonaktifkan Deteksi Enkodik Otomatis dan Konfirmasi Simpan Semua.
+
+4. Standar Pengemasan DMG macOS Ringan:
+   - Pengemasan DMG presisi 30MB–40MB dengan aset presentasi lengkap.

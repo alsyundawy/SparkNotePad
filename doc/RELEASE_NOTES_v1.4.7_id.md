@@ -56,6 +56,9 @@ SparkNotePad **v1.4.7** menghadirkan pembaruan substansial pada engine inti peng
 4. **Deteksi Enkoding 3-Titik & Proteksi Simpan Berkas Besar Atomik**: Pengambilan sampel 3-titik (kepala 16KB, tengah 16KB, ekor 16KB) untuk keandalan deteksi set karakter dokumen besar, dukungan BOM UTF-32 LE/BE, dan penyimpanan atomik via berkas sementara privat (`0600`).
 5. **Dialog Navigasi Multi-Mode & Pratinjau Ganti Nama Aman**: Navigasi presisi berdasarkan Baris:Kolom, Ofset Karakter, atau Ofset Bita, serta penggantian nama aman pada pohon folder dengan pratinjau uji coba (dry-run).
 6. **Penguatan Keamanan Komprehensif CVE 2025–2026**: Kekebalan penuh dan verifikasi otomatis terhadap celah keamanan CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, dan CVE-2026-77605.
+7. **Pemolesan Visual Dialog Tentang & Pratinjau Markdown**: Memperbaiki bug placeholder `%2` pada tab Kredit `AboutDialog` dan menghapus warna heksadesimal statis `#0550ae` pada formula matematika Markdown agar mewarisi warna teks tema alami.
+8. **Remediasi Kualitas Kode 14 Pilar & Kepatuhan SonarLint/Clang-Tidy**: Memperbaiki kurung kurawal statement tunggal, visibilitas virtual override, dan move semantics di `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, dan `FocusWatcher` (0 linter errors).
+9. **Standar Pengemasan DMG macOS Ringan (Standar 30MB–40MB)**: Mengemas dan memverifikasi `build/SparkNotePad-v1.4.7-x64.dmg` (40M, 40,652,861 bytes) dengan gambar latar custom, preset layout `.DS_Store` (680x440), dan checksum CRC32 tervalidasi.
 
 ---
 

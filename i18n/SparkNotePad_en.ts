@@ -2364,80 +2364,80 @@ Or fallback online URL:
         <translation>Occ: 0</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="285"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="288"/>
         <source>Length: %L1    Lines: %L2</source>
         <translation>Length: %L1    Lines: %L2</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="295"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="299"/>
         <source>    [%1 Cursors]</source>
         <translation>    [%1 Cursors]</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="309"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="313"/>
         <source>Sel: %L1 | %L2</source>
         <translation>Sel: %L1 | %L2</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="315"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="319"/>
         <source>Ln: %L1    Col: %L2    </source>
         <translation>Ln: %L1    Col: %L2    </translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="326"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="331"/>
         <source>
 (Click for full details)</source>
         <translation>
 (Click for full details)</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="329"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="334"/>
         <source>No character at cursor</source>
         <translation>No character at cursor</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="344"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="351"/>
         <source>Macintosh (CR)</source>
         <translation>Macintosh (CR)</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="347"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="354"/>
         <source>Windows (CR LF)</source>
         <translation>Windows (CR LF)</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="350"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="357"/>
         <source>Unix (LF)</source>
         <translation>Unix (LF)</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="353"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="360"/>
         <source>Unknown</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="368"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="377"/>
         <source>OVR</source>
         <translation>OVR</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="370"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="379"/>
         <source>INS</source>
         <translation>INS</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="378"/>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="392"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="388"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="402"/>
         <source>---</source>
         <translation>---</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="379"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="389"/>
         <source>New file (unsaved)</source>
         <translation>New file (unsaved)</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="387"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="397"/>
         <source>Path: %1
 Permissions: %2 (%3)
 Script Dialect: %4
@@ -2452,22 +2452,22 @@ Modified: %6
 (Click to toggle +x)</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="389"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="399"/>
         <source>None</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="390"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="400"/>
         <source>Yes</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="390"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="400"/>
         <source>No</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="393"/>
+        <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="403"/>
         <source>File permissions unavailable</source>
         <translation>File permissions unavailable</translation>
     </message>

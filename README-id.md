@@ -471,6 +471,13 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 - **Penguatan Keamanan Komprehensif CVE 2025–2026**:
   - Kekebalan 100% dan pengujian otomatis terhadap `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, dan `CVE-2026-20841`.
   - Penambahan berkas uji `tests/test_v147_features.h` dengan 9 uji coba unit otomatis.
+- **Pemolesan Visual Dialog Tentang & Pratinjau Markdown**:
+  - Memperbaiki bug indeks placeholder `%2` pada tab Kredit `AboutDialog` yang merender teks mentah `#0550ae` sebagai judul heading.
+  - Menghapus warna heksadesimal statis `#0550ae` pada formula matematika Markdown preview agar mewarisi warna teks tema alami.
+- **Remediasi Kualitas Kode 14 Pilar & SonarLint/Clang-Tidy**:
+  - Memperbaiki kurung kurawal statement tunggal, visibilitas virtual override, dan move semantics di `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, dan `FocusWatcher` (0 linter errors).
+- **Standar Pengemasan DMG macOS Ringan**:
+  - Mengemas dan memverifikasi DMG kanonikal ~38.8 MB (< 40MB) dengan pre-baked `.DS_Store`, gambar latar kustom, dan verifikasi CRC32.
 - **Sinkronisasi Katalog Terjemahan**:
   - Pembaruan katalog bahasa Inggris (`i18n/SparkNotePad_en.ts`) dan bahasa Indonesia (`i18n/SparkNotePad_id.ts`) mencapai 2.247 entri, cakupan 100%, 0 entri tertunda, dengan standar ketat EYD V / PASTI.
 

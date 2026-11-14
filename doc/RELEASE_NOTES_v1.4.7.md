@@ -100,6 +100,13 @@ SparkNotePad **v1.4.7** introduces significant advancements across the core edit
 - Modal `GotoDialog` supporting Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with real-time target calculations.
 - Safe rename in `FolderAsWorkspaceDock` with live path traversal check, collision detection, and dry-run preview.
 
+### 6. Visual Polish, Credits Color Fix & 14-Pillar Code Quality
+
+- **Credits Placeholder Fix**: Resolved `%2` placeholder index bug in `AboutDialog` Credits tab where raw color code `#0550ae` erroneously showed up as the section title.
+- **Markdown Preview Math Inheritance**: Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.
+- **14-Pillar Linter Remediation**: Resolved clang-tidy braces around statements, virtual override visibility, and move semantics across `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, and `FocusWatcher` with 0 linter errors.
+- **Standard 30MB–40MB Lightweight macOS DMG Packaging**: Packaged and verified `build/SparkNotePad-v1.4.7-x64.dmg` (40M, 40,652,861 bytes) with custom background, layout preset `.DS_Store` (680x440), and verified CRC32 checksum.
+
 ---
 
 ## 🛡️ 2025–2026 CVE Security Hardening Matrix

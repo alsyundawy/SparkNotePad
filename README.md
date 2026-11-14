@@ -471,6 +471,13 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
 - **Comprehensive 2025–2026 CVE Security Hardening**:
   - 100% immunity and automated test coverage across `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, and `CVE-2026-20841`.
   - Added `tests/test_v147_features.h` with 9 automated unit tests verifying all new security and architectural invariants.
+- **Credits & Markdown Preview Polish**:
+  - Resolved `%2` placeholder index bug in `AboutDialog` Credits tab that rendered raw `#0550ae` hex as a heading title.
+  - Stripped hardcoded `#0550ae` on inline/block math equations in Markdown preview so equations dynamically adapt to active light/dark themes.
+- **14-Pillar Code Quality & SonarLint/Clang-Tidy Remediation**:
+  - Cleaned clang-tidy braces around statements, virtual override visibility, and move semantics across `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, and `FocusWatcher` with 0 linter errors.
+- **macOS Lightweight DMG Packaging Standard**:
+  - Packaged and verified canonical ~38.8 MB DMG ceiling (< 40MB) with pre-baked `.DS_Store`, custom background, and CRC32 verification.
 - **Localization Synchronization**:
   - Updated English (`i18n/SparkNotePad_en.ts`) and Indonesian (`i18n/SparkNotePad_id.ts`) translation catalogs with 2,247 strings, 100% completion, and strict EYD V / PASTI compliance.
 
