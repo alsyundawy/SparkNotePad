@@ -285,7 +285,7 @@ void QuickFindWidget::initializeEditorIndicator() {
 }
 
 QString QuickFindWidget::searchText() const {
-    const QString raw = ui->lineEdit->text();
+    QString raw = ui->lineEdit->text();
     if (!ui->buttonRegexp->isChecked() && raw.contains(QLatin1Char('\\'))) {
         return ExtendedSearchParser::parse(raw);
     }

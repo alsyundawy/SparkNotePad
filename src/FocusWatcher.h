@@ -33,11 +33,11 @@ class FocusWatcher : public QObject {
 
 public:
     explicit FocusWatcher(QObject *parent = nullptr) : QObject(parent) {
-        if (parent)
+        if (parent) {
             parent->installEventFilter(this);
+        }
     }
 
-protected:
     bool eventFilter(QObject *obj, QEvent *event) override {
         Q_UNUSED(obj)
 

@@ -40,7 +40,7 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     unicodeChar = new StatusLabel(90, this);  // NOSONAR
     addPermanentWidget(unicodeChar, 0);
     unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor (Click for full details)"));
-    connect(qobject_cast<StatusLabel *>(unicodeChar), &StatusLabel::clicked, this, [this]() {
+    connect(qobject_cast<StatusLabel *>(unicodeChar), &StatusLabel::clicked, this, [this] {
         if (const auto *mw = qobject_cast<const MainWindow *>(this->window())) {
             if (auto *act = mw->findChild<QAction *>("actionShowCharacterInfo")) {
                 act->trigger();
@@ -63,7 +63,7 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     unicodeType = new StatusLabel(110, this);  // NOSONAR
     addPermanentWidget(unicodeType, 0);
     unicodeType->setToolTip(tr("Encoding / BOM (Click to view or convert)"));
-    connect(qobject_cast<StatusLabel *>(unicodeType), &StatusLabel::clicked, this, [this]() {
+    connect(qobject_cast<StatusLabel *>(unicodeType), &StatusLabel::clicked, this, [this] {
         if (const auto *mw = qobject_cast<const MainWindow *>(this->window())) {
             if (auto *act = mw->findChild<QAction *>("actionShowEncodingInfo")) {
                 act->trigger();
@@ -90,7 +90,7 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
         }
     });
 
-    connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [this, w]() {
+    connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [this, w] {
         if (auto *editor = w->currentEditor()) {
             editor->editToggleOvertype();
             updateOverType(editor);
@@ -194,7 +194,7 @@ void EditorInfoStatusBar::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
     menu.setTitle(tr("Status Bar Fields"));
 
-    auto addFieldAction = [&](Field field, const QString &text) {
+    const auto addFieldAction = [&](Field field, const QString &text) {
         QAction *action = menu.addAction(text);
         action->setCheckable(true);
         action->setChecked(isFieldVisible(field));
@@ -253,20 +253,22 @@ void EditorInfoStatusBar::connectToEditor(ScintillaNext *editor) {
     disconnect(editorUiUpdated);
     disconnect(documentLexerChanged);
 
-    if (!editor)
+    if (!editor) {
         return;
+    }
 
     editorUiUpdated = connect(editor, &ScintillaNext::updateUi, this, &EditorInfoStatusBar::editorUpdated);
     documentLexerChanged =
-        connect(editor, &ScintillaNext::lexerChanged, this, [this, editor]() { updateLanguage(editor); });
+        connect(editor, &ScintillaNext::lexerChanged, this, [this, editor] { updateLanguage(editor); });
 
     refresh(editor);
 }
 
 void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated) {
     auto *editor = qobject_cast<ScintillaNext *>(sender());
-    if (!editor)
+    if (!editor) {
         return;
+    }
 
     using enum Scintilla::Update;
     if (Scintilla::FlagSet(updated, Text)) {
@@ -280,15 +282,17 @@ void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated) {
 }
 
 void EditorInfoStatusBar::updateDocumentSize(const ScintillaNext *editor) {
-    if (!editor || !docSize)
+    if (!editor || !docSize) {
         return;
+    }
     const QString sizeText = tr("Length: %L1    Lines: %L2").arg(editor->length()).arg(editor->lineCount());
     docSize->setText(sizeText);
 }
 
 void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
-    if (!editor || !docPos)
+    if (!editor || !docPos) {
         return;
+    }
     QString selectionText;
 
     if (editor->selections() > 1) {
@@ -317,10 +321,11 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
-    if (!editor || !unicodeChar || !isFieldVisible(FieldUnicodeChar))
+    if (!editor || !unicodeChar || !isFieldVisible(FieldUnicodeChar)) {
         return;
+    }
 
-    CharacterInfo::Details d = CharacterInfo::getDetailsAt(editor);
+    const CharacterInfo::Details d = CharacterInfo::getDetailsAt(editor);
     if (d.isValid) {
         unicodeChar->setText(CharacterInfo::formatCodePoint(d.codePoint));
         unicodeChar->setToolTip(CharacterInfo::formatSummary(d) + tr("\n(Click for full details)"));
@@ -331,14 +336,16 @@ void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updateLanguage(const ScintillaNext *editor) {
-    if (!editor || !docType)
+    if (!editor || !docType) {
         return;
+    }
     docType->setText(editor->languageName);
 }
 
 void EditorInfoStatusBar::updateEol(const ScintillaNext *editor) {
-    if (!editor || !eolFormat)
+    if (!editor || !eolFormat) {
         return;
+    }
     switch (editor->eOLMode()) {
         case SC_EOL_CR:
             eolFormat->setText(tr("Macintosh (CR)"));
@@ -356,14 +363,16 @@ void EditorInfoStatusBar::updateEol(const ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updateEncoding(const ScintillaNext *editor) {
-    if (!editor || !unicodeType)
+    if (!editor || !unicodeType) {
         return;
+    }
     unicodeType->setText(EncodingDetector::formatDisplayName(editor->encodingName(), editor->bom()));
 }
 
 void EditorInfoStatusBar::updateOverType(const ScintillaNext *editor) {
-    if (!editor || !overType)
+    if (!editor || !overType) {
         return;
+    }
     if (editor->overtype()) {
         overType->setText(tr("OVR"));
     } else {
@@ -372,8 +381,9 @@ void EditorInfoStatusBar::updateOverType(const ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updatePosixPermissions(const ScintillaNext *editor) {
-    if (!posixPerms || !isFieldVisible(FieldPosixPerms))
+    if (!posixPerms || !isFieldVisible(FieldPosixPerms)) {
         return;
+    }
     if (!editor || !editor->isFile()) {
         posixPerms->setText(tr("---"));
         posixPerms->setToolTip(tr("New file (unsaved)"));

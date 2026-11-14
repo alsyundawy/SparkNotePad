@@ -59,7 +59,6 @@ public:
         setTextFormat(Qt::PlainText);
     }
 
-protected:
     QSize sizeHint() const override {
         QSize size = ClickableLabel::sizeHint();
         size.setWidth(preferredSize);
