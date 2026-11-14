@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.7] - 2026-11-14
 
-### 🌟 Release: Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, Markdown Live Preview Overhaul, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening
+### 🌟 Release: Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening
 
-SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobility, POSIX script diagnostics, high-fidelity Markdown live preview with async remote image loading and SVG rasterization, large-file encoding resilience, enhanced navigation ergonomics, and comprehensive 2025–2026 CVE security hardening:
+SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobility, POSIX script diagnostics, large-file encoding resilience, enhanced navigation ergonomics, and comprehensive 2025–2026 CVE security hardening:
 
 #### 🆕 Added
 
@@ -19,14 +19,6 @@ SparkNotePad v1.4.7 delivers core engine upgrades, cross-platform workspace mobi
   - Synchronized Scintilla to **v5.6.9** (Unicode 17 character categories, 40-byte lexeme cache, line-start layout calculation bypass accelerating rendering, change history undo crash fix, and restored XPM autocompletion/marker colors).
   - Synchronized Lexilla to **v5.5.5** (Markdown YAML/TOML/JSON front-matter recognition at file start [#59], HTML/JS nested template literals [#290], regex `/` in `[]` character classes [#377], `$`/`#`/non-ASCII JS identifiers [#371], PHP `$$variable` styling [#2208], SQL `q-string` acceleration [#378], and all 12 memory safety/OOB/hang fixes [#388]).
   - Applied the 4 official post-5.5.1 bug-fix patches to embedded Lua 5.5.1 (`luaO_applyparam` negative shift guard, `lvm.c` NaN `for` loop fix, `lcode.c` `-0.0 - 0` folding prevention, and `lcorolib.c` error message preservation during unwind).
-- **Markdown Live Preview & Network Image Engine Overhaul (`MarkdownBrowser` & `MarkdownPreviewEnhancer`)**:
-  - Engineered custom `MarkdownBrowser` subclassing `QTextBrowser` with encapsulated asynchronous `QNetworkAccessManager` to download and display remote `http`/`https` images non-blockingly.
-  - Implemented in-memory LRU image cache (`QHash<QUrl, QImage>`) capped at 64 entries with fast memory reclamation.
-  - Added high-DPI vector SVG rendering via `QSvgRenderer` rasterized onto device-pixel-ratio-scaled transparent canvases, rendering shields.io vector badges and local SVGs crystal-clear on Retina and 4K displays.
-  - Implemented `MarkdownPreviewEnhancer::renderMarkdownToHtml` preserving raw HTML blocks (`<p align="...">`, `<div>`, `<h1>`-`<h6>`, `<table>`, `<center>`, `<figure>`, `<details>`, `<!-- ... -->`) preventing Qt's MD4C/`QXmlStreamReader` parser from corrupting or dropping blocks.
-  - Sanitized void elements (`<br>` -> `<br />`), entities (`&nbsp;` -> `&#160;`), and normalized `width="100%"` attributes preventing Qt negative pixel size bugs.
-  - Set document base URL dynamically from editor file directory for seamless relative asset resolution (e.g. `assets/` and `logo.png`).
-  - Integrated across both dock preview (`MarkdownSafePreviewDock`), tab preview (`PreviewTabWidget`), and HTML document export (`DocumentExportManager`).
 - **System Transfer & Portable Workspace Bundle (`SparkTransferManager` & `TransferBundleDialog`)**:
   - Implemented **File → System Transfer → Export / Import Workspace Bundle (`.sparkbundle`)** enabling seamless migration of preferences, custom themes (QSS), macros, sessions, and Lua/Python user scripts across macOS, FreeBSD, and Linux.
   - Hardened with Zip-Slip path sanitization (`CVE-2026-57233`), path traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC integrity verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.

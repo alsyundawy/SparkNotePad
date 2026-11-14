@@ -1,4 +1,4 @@
-# Catatan Rilis SparkNotePad v1.4.7 — Peningkatan Engine Inti (Scintilla 5.6.9, Lexilla 5.5.5, Patch Lua 5.5.1), Transfer Sistem (.sparkbundle), Inspektur Berkas POSIX, Pratinjau Markdown Asinkron, Deteksi Enkoding 3-Titik & Penguatan Keamanan CVE 2025–2026
+# Catatan Rilis SparkNotePad v1.4.7 — Peningkatan Engine Inti (Scintilla 5.6.9, Lexilla 5.5.5, Patch Lua 5.5.1), Transfer Sistem (.sparkbundle), Inspektur Berkas POSIX, Deteksi Enkoding 3-Titik & Penguatan Keamanan CVE 2025–2026
 
 **Versi Rilis:** `v1.4.7`<br/>
 **Tanggal Rilis:** 2026-11-14<br/>
@@ -51,12 +51,11 @@
 SparkNotePad **v1.4.7** menghadirkan pembaruan substansial pada engine inti pengeditan teks, mobilitas konfigurasi ruang kerja lintas platform, inspeksi izin berkas POSIX dan dialek skrip, keandalan deteksi pengodean karakter dokumen besar, dialog navigasi baru, serta penguatan keamanan menyeluruh terhadap kerentanan CVE 2025–2026:
 
 1. **Peningkatan Scintilla 5.6.9 & Lexilla 5.5.5**: Integrasi tabel karakter Unicode 17, peningkatan tembolok leksem menjadi 40 bita, akselerasi tata letak awal baris, perbaikan crash undo riwayat perubahan, pemulihan warna penanda/pelengkapan otomatis XPM, dan 12 perbaikan keamanan memori upstream Lexilla.
-2. **Peningkatan Menyeluruh Pratinjau Markdown & Engine Gambar Jaringan (`MarkdownBrowser`)**: Pratinjau Markdown berakurasi tinggi dengan pengunduhan gambar remote `http`/`https` asinkron tanpa memblokir GUI, rasterisasi vektor SVG beresolusi tinggi untuk layar Retina/4K, proteksi blok HTML mentah agar tidak terpotong parser Qt, dan resolusi aset relatif dinamis.
-3. **Transfer Sistem & Bundel Ruang Kerja Portabel (`SparkTransferManager`)**: Ekspor dan impor konfigurasi pengguna (preferensi, tema QSS, makro, sesi, dan skrip) via arsip `.sparkbundle` dengan proteksi Zip-Slip dan verifikasi HMAC dalam memori.
-4. **Inspektur Skrip POSIX & Utilitas Touch (`PosixFileInspector`)**: Deteksi dialek shebang real-time, pemformat izin oktal dan simbolik, lencana izin bilah status dengan satu-klik beralih izin eksekusi (`chmod +x`), serta utilitas penyesuaian waktu berkas (touch).
-5. **Deteksi Enkoding 3-Titik & Proteksi Simpan Berkas Besar Atomik**: Pengambilan sampel 3-titik (kepala 16KB, tengah 16KB, ekor 16KB) untuk keandalan deteksi set karakter dokumen besar, dukungan BOM UTF-32 LE/BE, dan penyimpanan atomik via berkas sementara privat (`0600`).
-6. **Dialog Navigasi Multi-Mode & Pratinjau Ganti Nama Aman**: Navigasi presisi berdasarkan Baris:Kolom, Ofset Karakter, atau Ofset Bita, serta penggantian nama aman pada pohon folder dengan pratinjau uji coba (dry-run).
-7. **Penguatan Keamanan Komprehensif CVE 2025–2026**: Kekebalan penuh dan verifikasi otomatis terhadap celah keamanan CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, dan CVE-2026-77605.
+2. **Transfer Sistem & Bundel Ruang Kerja Portabel (`SparkTransferManager`)**: Ekspor dan impor konfigurasi pengguna (preferensi, tema QSS, makro, sesi, dan skrip) via arsip `.sparkbundle` dengan proteksi Zip-Slip dan verifikasi HMAC dalam memori.
+3. **Inspektur Skrip POSIX & Utilitas Touch (`PosixFileInspector`)**: Deteksi dialek shebang real-time, pemformat izin oktal dan simbolik, lencana izin bilah status dengan satu-klik beralih izin eksekusi (`chmod +x`), serta utilitas penyesuaian waktu berkas (touch).
+4. **Deteksi Enkoding 3-Titik & Proteksi Simpan Berkas Besar Atomik**: Pengambilan sampel 3-titik (kepala 16KB, tengah 16KB, ekor 16KB) untuk keandalan deteksi set karakter dokumen besar, dukungan BOM UTF-32 LE/BE, dan penyimpanan atomik via berkas sementara privat (`0600`).
+5. **Dialog Navigasi Multi-Mode & Pratinjau Ganti Nama Aman**: Navigasi presisi berdasarkan Baris:Kolom, Ofset Karakter, atau Ofset Bita, serta penggantian nama aman pada pohon folder dengan pratinjau uji coba (dry-run).
+6. **Penguatan Keamanan Komprehensif CVE 2025–2026**: Kekebalan penuh dan verifikasi otomatis terhadap celah keamanan CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, dan CVE-2026-77605.
 
 ---
 
