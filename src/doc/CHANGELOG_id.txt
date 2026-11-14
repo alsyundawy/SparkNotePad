@@ -7,52 +7,66 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ---
 
-## [1.4.5] - 2026-11-08
+## [1.4.6] - 2026-11-10
 
-### 🌟 Rilis Utama: Tumpukan Tab Tertutup, Tag Warna Tab, Pemulihan Crash, Pencarian Lanjutan, Ekspor PDF, Pratinjau Mermaid/LaTeX, Peralatan Pengembang, Pengalih Header/Source, EditorConfig, Riwayat Clipboard, Quick Switcher, Paket Ikon Aksara & Penguatan 14 Pilar
+### 🌟 Rilis: 41 Paket Ikon Toolbar Baru (Total 69 Koleksi Bawaan), Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & Standar DMG Rilis 30MB–40MB
 
-SparkNotePad v1.4.5 adalah rilis fitur dan stabilitas besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang khusus untuk para pengembang profesional, administrator sistem, dan pengguna tingkat lanjut:
+SparkNotePad v1.4.6 menghadirkan ekspansi kustomisasi visual bilah alat, peningkatan kenyamanan editor, dan standar pengemasan berkualitas tinggi dari versi 1.4.5:
 
-#### 🆕 Ditambahkan
+#### 🆕 Ditambahkan (Added)
 
-- **Tumpukan Tab Tertutup & Buka Kembali Tab (`Ctrl+Shift+T` / `Cmd+Shift+T`)**:
-  - Implementasi `ClosedTabsManager` yang mengelola antrean FIFO hingga 50 tab terakhir dengan pemulihan posisi kursor, rasio scroll, encoding, dan warna tab.
-- **Pemberian Tag & Pengelompokan Warna Tab**:
-  - Implementasi `TabColorManager` dengan 8 preset warna aksesibel dan indikator visual kontras tinggi pada tab bar.
-- **Manajer Autosave & Pemulihan Crash**:
-  - Implementasi `AutosaveRecoveryManager` yang menyimpan snapshot latar belakang setiap 10 detik dengan izin POSIX 0600 dan checksum integritas SHA-256.
-- **Integrasi Rangkaian Paket Ikon Toolbar Aksara (Total 28 Paket) & Ergonomi Menu**:
-  - Penataan 10 paket ikon toolbar Aksara kurasi (340 file SVG dan PNG vektor) mencakup macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, dan gaya modern (total 28 paket bawaan).
-  - Relokasi menu Themes: Toolbar Icon Size ditempatkan di atas Toolbar Icon Packs, memindahkan menu Kustomisasi Toolbar ke menu Tools, dan menghapus Open Custom Icon Pack dari menubar.
-- **Ekspor Dokumen Markdown / PDF & Peningkatan Pratinjau**:
-  - Ekspor PDF/HTML native via `QPrinter`, rendering diagram Mermaid, dan dukungan rumus matematika LaTeX penuh.
-- **Peralatan Pengembang & Utilitas**:
-  - Konverter timestamp, JSON prettify/minify, URL encode/decode, escape Unicode, UUID v4, parser `.editorconfig`, dan dock Riwayat Clipboard.
+- **41 Paket Ikon Toolbar Baru (Total 69 Koleksi Bawaan Multi-Resolusi)**:
+  - Melipatgandakan koleksi ikon dari 28 paket di v1.4.5 menjadi 69 paket bawaan lengkap (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+    - 11 Paket Ikon Tematik: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
+    - 30 Paket Ikon Modern: `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+  - Mengusung standar Notepad++ Classic: tanpa bayangan lantai, tanpa halo abu-abu, dan tanpa garis timbul kasar, dengan margin 18% agar tidak terpotong di layar Retina.
+  - Invarian Toolbar Gelap Permanen (`#21252b`) di seluruh mode dan tema.
+- **Fitur Baru Menu Konteks Editor**:
+  - Menu **Tempel & Cocokkan Format (Paste & Match Style)** (`Cmd+Alt+Shift+V` / `Ctrl+Shift+V`): menempel teks tanpa format bawaan dan menyesuaikan indentasi editor.
+  - Menu **Cari di Google (Search on Google)** (`Cmd+Alt+G` / `Ctrl+Alt+G`): membuka browser untuk mencari teks terpilih atau kata di kursor secara langsung.
+  - Menu konversi huruf langsung: **HURUF BESAR (UPPERCASE)** dan **huruf kecil (lowercase)** tanpa submenu bertingkat.
+- **Opsi Baru Preferensi Umum (General Preferences)**:
+  - Opsi sakelar Deteksi Otomatis Enkoding Karakter (`enableEncodingAutoDetection`).
+  - Opsi sakelar Dialog Konfirmasi Simpan Semua (`enableSaveAllConfirmation`).
+- **Perombakan Pewarnaan Sintaksis WCAG 2.1**:
+  - Garansi matematis kontras rasio minimal 4.0:1 pada seluruh 70+ tema editor.
+  - Lencana Emas (#FFD700) untuk penanda penting TODO, FIXME, BUG, HACK, NOTE.
+  - Warna kuning amber hangat untuk urutan karakter escape string (\n, \t, \xHH).
+  - Kotak indikator penanda kemunculan kata kunci tersinkronisasi dinamis dengan tema aktif.
+- **Perombakan Total Engine & Live Preview Markdown**:
+  - Riset mendalam dan integrasi praktik terbaik dari markedjs, markdown-it, stackedit, editor.md, milkdown, dan GitHub Flavored Markdown (GFM).
+  - Konsolidasi dan deduplikasi mesin render callout ke MarkdownPreviewEnhancer::enhanceCallouts, menyingkirkan kode ganda lintas dock dan tab.
+  - Implementasi Admonition / Callout resmi GitHub ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) dengan ikon visual kontras tinggi, latar bernuansa lembut, dan batas aksen warna pada mode terang dan gelap.
+  - Penambahan generator Daftar Isi interaktif ([TOC] / {:toc}) berjenjang dengan penautan otomatis ke slug heading dokumen.
+  - Penambahan slug anchor otomatis pada tag heading (<h1 id="...">) untuk navigasi loncat dan tautan internal.
+  - Penambahan konversi emoji shortcode (seperti :rocket:, :sparkles:, :white_check_mark:, :fire:, :star:, :memo:, :100:, dll.) dengan proteksi blok kode.
+  - Penambahan chip pintasan keyboard [[Key]] -> <kbd>Key</kbd>.
+  - Penyelarasan fungsi copyHtml(), openInBrowser(), dan DocumentExportManager::markdownToHtml agar hasil ekspor dan salinan HTML memuat seluruh rumus math, diagram mermaid, daftar tugas, catatan kaki, dan callout secara utuh.
+  - Perbaikan database kompilasi (compile_commands.json) dengan sinkronisasi 685 header, menuntaskan 945+ pesan error IDE linter dan peringatan SonarLint.
 
-#### 🛠️ Diperbaiki & Diperkuat
+#### 🔧 Diubah & Ditingkatkan (Changed & Improved)
 
-- **Penuntasan Analisis Statis SonarLint & Clang-Tidy**:
-  - Menuntaskan seluruh 25 peringatan analisis statis SonarLint/SonarQube dan clang-tidy tanpa eror.
-- **Kepatuhan Kualitas 14 Pilar**:
-  - 100% lulus uji unit `SparkNotePadTests` dan kompilasi aman tanpa Ninja.
+- **Standar Pengemasan macOS DMG 30MB–40MB**:
+  - Kalibrasi ukuran DMG rilis ke 38MB–39MB dengan mempertahankan pustaka universal Qt dan plugin format gambar standar (libqjpeg, libqgif, libqwebp).
+  - Menggunakan format native hdiutil dengan preset tata letak .DS_Store (680x440), background retina, dan pengujian integritas checksum CRC32.
+- **Pembersihan Menu Konteks**:
+  - Menghapus opsi Run dan Bash encode/decode dari menu klik kanan editor agar lebih ringkas dan fokus.
+- **Modernisasi Tampilan Tab Split & Arsitektur Zero Theme Clash**:
+  - Menghilangkan gradien gelap metalik dan batas jingga/peach peninggalan lawas dengan mengaktifkan cds::CDockManager::DisableStylesheet, true.
+  - Styling tab split sepenuhnya dinamis mengikuti palet tema aktif melalui ThemeManager.
+- **UX Auto-Completion & Harmonisasi Tema**:
+  - Menonaktifkan auto-completion secara default (autoCompletion = false) untuk mencegah popup kandidat yang mengganggu.
+  - Mengganti penamaan tema bawaan menjadi sparkNotepad ("SparkNotepad Default") dengan kompatibilitas mundur.
+- **Engine Pembaruan Multi-Build updates.json & Force-Update Komprehensif**:
+  - Memperbarui updates.json ke v1.4.6 dengan dukungan matriks rilis lengkap dan kebijakan pembaruan wajib.
+- **Audit Kualitas Kode 14 Pilar & Audit Linter**:
+  - 100% lulus bersih pada cppcheck (171 berkas, 0 kesalahan), clangd, clang-tidy, dan ctest.
+  - Penyesuaian aturan SonarLint pada parameter lambda dan pointer-to-const.
 
 ---
 
-## [1.4.0] - 2026-11-07
+## [1.4.5] - 2026-11-08
 
-### 🚀 Spasi Baris Ekstra, Tooltip Tab Diperkaya, Pencarian Fuzzy Aman, Eksekusi Batch Makro, MCP Server & Mitigasi CVE 2025–2026
+### 🌟 Major Release: Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX Preview, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening
 
-SparkNotePad v1.4.0 menghadirkan fitur produktivitas esensial yang terinspirasi dari riset Nextpad++ dan kemampuan editor modern, sekaligus memperkuat sistem terhadap kerentanan 2025–2026:
-
-#### 🆕 Ditambahkan
-
-- **Pengaturan Spasi Baris Ekstra (Ascent & Descent)**:
-  - Penambahan tinggi baris atas (ascent) dan bawah (descent) 0–30 px pada Preferensi > Margins/Padding.
-  - Implementasi ScintillaNext::setExtraLineSpacing() menggunakan SCI_SETEXTRAASCENT dan SCI_SETEXTRADESCENT.
-  - Propagasi langsung ke seluruh tab terbuka via EditorManager.
-- **Tooltip Tab Diperkaya dengan Inspeksi Metadata Dokumen**:
-  - Implementasi DockedEditor::buildEnrichedToolTip() menampilkan path absolut, ukuran di disk, jumlah baris, karakter, encoding (UTF-8, UTF-16, dll.), format baris baru (CRLF, LF, CR), dan waktu modifikasi.
-  - Pembaruan otomatis saat perpindahan tab, penyimpanan berkas, atau perubahan nama.
-- **Mesin Pencarian Subsekuens Fuzzy Tanpa Backtracking**:
-  - Algoritma RegexSafetyEngine::buildFuzzySubsequencePattern() yang mengubah input query menjadi regex linier deterministik tanpa backtracking.
-  - Kebal terhadap serangan ReDoS (Regular Expression Denial of Service).
+SparkNotePad v1.4.5 adalah rilis fitur besar yang menghadirkan 14 pilar arsitektur fundamental yang dirancang untuk alur kerja pengguna tingkat lanjut.

@@ -40,7 +40,10 @@ public:
     };
 
     // Detects encoding and BOM from raw data sample
-    static DetectionResult detect(const QByteArray &data);
+    static DetectionResult detect(const QByteArray &data, bool autoDetect = true);
+
+    // Stateless 3-point sampling (Head 16KB, Mid 16KB, Tail 16KB) for large files
+    static DetectionResult detect3PointSample(class QFile &file, bool autoDetect = true);
 
     // Decodes raw data from given encoding into UTF-8 suitable for Scintilla
     static QByteArray decodeToUtf8(const QByteArray &data, const QString &encodingName, ScintillaNext::BomType bom,

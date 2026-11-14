@@ -11,6 +11,7 @@
  */
 
 #include "EditorInfoStatusBar.h"
+#include "PosixFileInspector.h"
 #include "EncodingDetector.h"
 #include "CharacterInfo.h"
 #include "MainWindow.h"
@@ -39,7 +40,7 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     unicodeChar = new StatusLabel(90, this);  // NOSONAR
     addPermanentWidget(unicodeChar, 0);
     unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor (Click for full details)"));
-    connect(qobject_cast<StatusLabel *>(unicodeChar), &StatusLabel::clicked, this, [this]() {
+    connect(qobject_cast<StatusLabel *>(unicodeChar), &StatusLabel::clicked, this, [this] {
         if (const auto *mw = qobject_cast<const MainWindow *>(this->window())) {
             if (auto *act = mw->findChild<QAction *>("actionShowCharacterInfo")) {
                 act->trigger();
@@ -62,7 +63,7 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     unicodeType = new StatusLabel(110, this);  // NOSONAR
     addPermanentWidget(unicodeType, 0);
     unicodeType->setToolTip(tr("Encoding / BOM (Click to view or convert)"));
-    connect(qobject_cast<StatusLabel *>(unicodeType), &StatusLabel::clicked, this, [this]() {
+    connect(qobject_cast<StatusLabel *>(unicodeType), &StatusLabel::clicked, this, [this] {
         if (const auto *mw = qobject_cast<const MainWindow *>(this->window())) {
             if (auto *act = mw->findChild<QAction *>("actionShowEncodingInfo")) {
                 act->trigger();
@@ -74,10 +75,22 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     addPermanentWidget(overType, 0);
     overType->setToolTip(tr("Typing Mode: Insert (INS) / Overtype (OVR)"));
 
+    posixPerms = new StatusLabel(110, this);  // NOSONAR
+    addPermanentWidget(posixPerms, 0);
+    posixPerms->setToolTip(tr("POSIX File Permissions & Script Dialect (Click to toggle +x)"));
+
     const auto *w = qobject_cast<const MainWindow *>(window);
     connect(w, &MainWindow::editorActivated, this, &EditorInfoStatusBar::connectToEditor);
 
-    connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [this, w]() {
+    connect(qobject_cast<StatusLabel *>(posixPerms), &StatusLabel::clicked, w, [this, w] {
+        if (const auto *editor = w->currentEditor(); editor && editor->isFile()) {
+            QString err;
+            PosixFileInspector::toggleExecutable(editor->getFilePath(), &err);
+            updatePosixPermissions(editor);
+        }
+    });
+
+    connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [this, w] {
         if (auto *editor = w->currentEditor()) {
             editor->editToggleOvertype();
             updateOverType(editor);
@@ -105,6 +118,8 @@ QLabel *EditorInfoStatusBar::labelForField(Field field) const {
             return unicodeType;
         case FieldOverType:
             return overType;
+        case FieldPosixPerms:
+            return posixPerms;
         default:
             return nullptr;
     }
@@ -121,6 +136,7 @@ void EditorInfoStatusBar::loadSettings() {
     m_fieldVisibility[FieldEol] = settings.value(QStringLiteral("Eol"), true).toBool();
     m_fieldVisibility[FieldEncoding] = settings.value(QStringLiteral("Encoding"), true).toBool();
     m_fieldVisibility[FieldOverType] = settings.value(QStringLiteral("OverType"), true).toBool();
+    m_fieldVisibility[FieldPosixPerms] = settings.value(QStringLiteral("PosixPerms"), true).toBool();
     settings.endGroup();
 
     for (int i = 0; i < static_cast<int>(FieldCount); ++i) {
@@ -142,6 +158,7 @@ void EditorInfoStatusBar::saveSettings() const {
     settings.setValue(QStringLiteral("Eol"), m_fieldVisibility.value(FieldEol, true));
     settings.setValue(QStringLiteral("Encoding"), m_fieldVisibility.value(FieldEncoding, true));
     settings.setValue(QStringLiteral("OverType"), m_fieldVisibility.value(FieldOverType, true));
+    settings.setValue(QStringLiteral("PosixPerms"), m_fieldVisibility.value(FieldPosixPerms, true));
     settings.endGroup();
 }
 
@@ -177,7 +194,7 @@ void EditorInfoStatusBar::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
     menu.setTitle(tr("Status Bar Fields"));
 
-    auto addFieldAction = [&](Field field, const QString &text) {
+    const auto addFieldAction = [&](Field field, const QString &text) {
         QAction *action = menu.addAction(text);
         action->setCheckable(true);
         action->setChecked(isFieldVisible(field));
@@ -192,6 +209,7 @@ void EditorInfoStatusBar::contextMenuEvent(QContextMenuEvent *event) {
     addFieldAction(FieldEol, tr("End-of-Line Format"));
     addFieldAction(FieldEncoding, tr("File Encoding"));
     addFieldAction(FieldOverType, tr("Insert / Overtype Mode"));
+    addFieldAction(FieldPosixPerms, tr("POSIX Permissions & Dialect"));
 
     menu.addSeparator();
 
@@ -228,26 +246,29 @@ void EditorInfoStatusBar::refresh(ScintillaNext *editor) {
     updateEol(editor);
     updateEncoding(editor);
     updateOverType(editor);
+    updatePosixPermissions(editor);
 }
 
 void EditorInfoStatusBar::connectToEditor(ScintillaNext *editor) {
     disconnect(editorUiUpdated);
     disconnect(documentLexerChanged);
 
-    if (!editor)
+    if (!editor) {
         return;
+    }
 
     editorUiUpdated = connect(editor, &ScintillaNext::updateUi, this, &EditorInfoStatusBar::editorUpdated);
     documentLexerChanged =
-        connect(editor, &ScintillaNext::lexerChanged, this, [this, editor]() { updateLanguage(editor); });
+        connect(editor, &ScintillaNext::lexerChanged, this, [this, editor] { updateLanguage(editor); });
 
     refresh(editor);
 }
 
 void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated) {
     auto *editor = qobject_cast<ScintillaNext *>(sender());
-    if (!editor)
+    if (!editor) {
         return;
+    }
 
     using enum Scintilla::Update;
     if (Scintilla::FlagSet(updated, Text)) {
@@ -261,15 +282,17 @@ void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated) {
 }
 
 void EditorInfoStatusBar::updateDocumentSize(const ScintillaNext *editor) {
-    if (!editor || !docSize)
+    if (!editor || !docSize) {
         return;
+    }
     const QString sizeText = tr("Length: %L1    Lines: %L2").arg(editor->length()).arg(editor->lineCount());
     docSize->setText(sizeText);
 }
 
 void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
-    if (!editor || !docPos)
+    if (!editor || !docPos) {
         return;
+    }
     QString selectionText;
 
     if (editor->selections() > 1) {
@@ -298,10 +321,11 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
-    if (!editor || !unicodeChar || !isFieldVisible(FieldUnicodeChar))
+    if (!editor || !unicodeChar || !isFieldVisible(FieldUnicodeChar)) {
         return;
+    }
 
-    CharacterInfo::Details d = CharacterInfo::getDetailsAt(editor);
+    const CharacterInfo::Details d = CharacterInfo::getDetailsAt(editor);
     if (d.isValid) {
         unicodeChar->setText(CharacterInfo::formatCodePoint(d.codePoint));
         unicodeChar->setToolTip(CharacterInfo::formatSummary(d) + tr("\n(Click for full details)"));
@@ -312,14 +336,16 @@ void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updateLanguage(const ScintillaNext *editor) {
-    if (!editor || !docType)
+    if (!editor || !docType) {
         return;
+    }
     docType->setText(editor->languageName);
 }
 
 void EditorInfoStatusBar::updateEol(const ScintillaNext *editor) {
-    if (!editor || !eolFormat)
+    if (!editor || !eolFormat) {
         return;
+    }
     switch (editor->eOLMode()) {
         case SC_EOL_CR:
             eolFormat->setText(tr("Macintosh (CR)"));
@@ -337,17 +363,43 @@ void EditorInfoStatusBar::updateEol(const ScintillaNext *editor) {
 }
 
 void EditorInfoStatusBar::updateEncoding(const ScintillaNext *editor) {
-    if (!editor || !unicodeType)
+    if (!editor || !unicodeType) {
         return;
+    }
     unicodeType->setText(EncodingDetector::formatDisplayName(editor->encodingName(), editor->bom()));
 }
 
 void EditorInfoStatusBar::updateOverType(const ScintillaNext *editor) {
-    if (!editor || !overType)
+    if (!editor || !overType) {
         return;
+    }
     if (editor->overtype()) {
         overType->setText(tr("OVR"));
     } else {
         overType->setText(tr("INS"));
+    }
+}
+
+void EditorInfoStatusBar::updatePosixPermissions(const ScintillaNext *editor) {
+    if (!posixPerms || !isFieldVisible(FieldPosixPerms)) {
+        return;
+    }
+    if (!editor || !editor->isFile()) {
+        posixPerms->setText(tr("---"));
+        posixPerms->setToolTip(tr("New file (unsaved)"));
+        return;
+    }
+
+    const PosixFileInspector::InspectionResult info = PosixFileInspector::inspect(editor->getFilePath());
+    if (info.isValidFile) {
+        posixPerms->setText(PosixFileInspector::formatPermissionBadge(info));
+        posixPerms->setToolTip(
+            tr("Path: %1\nPermissions: %2 (%3)\nScript Dialect: %4\nExecutable: %5\nModified: %6\n(Click to toggle +x)")
+                .arg(editor->getFilePath(), info.octalString, info.symbolicString,
+                     info.shellDialect.isEmpty() ? tr("None") : info.shellDialect,
+                     info.isExecutable ? tr("Yes") : tr("No"), info.lastModified.toString(Qt::ISODate)));
+    } else {
+        posixPerms->setText(tr("---"));
+        posixPerms->setToolTip(tr("File permissions unavailable"));
     }
 }

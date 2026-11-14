@@ -35,8 +35,8 @@ struct ThemePalette {
 };
 
 inline const auto kAllThemePalettes = std::to_array<ThemePalette>({
-    {"notepadNext", "NotepadNext Default", "NotepadNext", false, "#f0f2f5", "#fafbfc", "#e1e4e8", "#24292f", "#57606a",
-     "#0969da", "#0550ae", "#cf222e", "#0550ae", "#1a7f37", "#24292f"},
+    {"sparkNotepad", "SparkNotepad Default", "SparkNotepad", false, "#f0f2f5", "#fafbfc", "#e1e4e8", "#24292f",
+     "#57606a", "#0969da", "#0550ae", "#cf222e", "#0550ae", "#1a7f37", "#24292f"},
     {"catppuccinMocha", "Catppuccin Mocha", "Catppuccin", true, "#11111b", "#1e1e2e", "#313244", "#cdd6f4", "#a6adc8",
      "#74c7ec", "#89b4fa", "#74c7ec", "#cba6f7", "#a6e3a1", "#6c7086"},
     {"catppuccinMacchiato", "Catppuccin Macchiato", "Catppuccin", true, "#181926", "#24273a", "#363a4f", "#cad3f5",
@@ -196,8 +196,9 @@ inline const ThemePalette *findThemePaletteById(const QString &id) {
         return nullptr;
     }
     QString targetId = id;
-    if (id.compare(QLatin1String("defaultLight"), Qt::CaseInsensitive) == 0) {
-        targetId = QStringLiteral("notepadNext");
+    if (id.compare(QLatin1String("defaultLight"), Qt::CaseInsensitive) == 0 ||
+        id.compare(QLatin1String("notepadNext"), Qt::CaseInsensitive) == 0) {
+        targetId = QStringLiteral("sparkNotepad");
     } else if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
         targetId = QStringLiteral("dracula");
     }

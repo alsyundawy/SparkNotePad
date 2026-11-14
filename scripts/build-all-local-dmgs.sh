@@ -25,63 +25,63 @@ echo "Destination     : ${DIST_DIR}"
 echo "=========================================================="
 
 for ver in "${VERSIONS[@]}"; do
-  TAG_NAME="v${ver}"
-  TARGET_DMG="${DIST_DIR}/SparkNotePad-v${ver}-x64.dmg"
+	TAG_NAME="v${ver}"
+	TARGET_DMG="${DIST_DIR}/SparkNotePad-v${ver}-x64.dmg"
 
-  if [[ -f "${TARGET_DMG}" ]]; then
-    echo "[*] Version ${ver} DMG already exists at ${TARGET_DMG}. Verifying..."
-    if hdiutil verify "${TARGET_DMG}" >/dev/null 2>&1; then
-      echo "[✔] Existing DMG for v${ver} is valid. Skipping build."
-      continue
-    else
-      echo "[!] Existing DMG is corrupted. Rebuilding..."
-      rm -f "${TARGET_DMG}"
-    fi
-  fi
+	if [[ -f ${TARGET_DMG} ]]; then
+		echo "[*] Version ${ver} DMG already exists at ${TARGET_DMG}. Verifying..."
+		if hdiutil verify "${TARGET_DMG}" >/dev/null 2>&1; then
+			echo "[✔] Existing DMG for v${ver} is valid. Skipping build."
+			continue
+		else
+			echo "[!] Existing DMG is corrupted. Rebuilding..."
+			rm -f "${TARGET_DMG}"
+		fi
+	fi
 
-  echo "----------------------------------------------------------"
-  echo ">>> Building local DMG for version: ${ver} (Tag: ${TAG_NAME})"
-  echo "----------------------------------------------------------"
+	echo "----------------------------------------------------------"
+	echo ">>> Building local DMG for version: ${ver} (Tag: ${TAG_NAME})"
+	echo "----------------------------------------------------------"
 
-  WT_DIR="/tmp/sparknotepad-wt-${ver}"
-  rm -rf "${WT_DIR}"
-  git worktree prune || true
+	WT_DIR="/tmp/sparknotepad-wt-${ver}"
+	rm -rf "${WT_DIR}"
+	git worktree prune || true
 
-  echo "[*] Creating isolated worktree at ${WT_DIR} for tag ${TAG_NAME}..."
-  git worktree add "${WT_DIR}" "${TAG_NAME}"
+	echo "[*] Creating isolated worktree at ${WT_DIR} for tag ${TAG_NAME}..."
+	git worktree add "${WT_DIR}" "${TAG_NAME}"
 
-  pushd "${WT_DIR}" >/dev/null
+	pushd "${WT_DIR}" >/dev/null
 
-  echo "[*] Configuring CMake (Unix Makefiles, No Ninja, Release)..."
-  cmake -S . -B build \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCPM_SOURCE_CACHE="${CACHE_DIR}" \
-    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	echo "[*] Configuring CMake (Unix Makefiles, No Ninja, Release)..."
+	cmake -S . -B build \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCPM_SOURCE_CACHE="${CACHE_DIR}" \
+		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-  echo "[*] Compiling application and building DMG target (-j2)..."
-  cmake --build build --target dmg -j2
+	echo "[*] Compiling application and building DMG target (-j2)..."
+	cmake --build build --target dmg -j2
 
-  # Locate output DMG
-  BUILT_DMG="$(find build -maxdepth 2 -name "SparkNotePad*.dmg" -not -name "rw.*" | head -n 1 || true)"
-  if [[ -z "${BUILT_DMG}" || ! -f "${BUILT_DMG}" ]]; then
-    echo "[-] Error: Failed to find built DMG for version ${ver}" >&2
-    popd >/dev/null
-    git worktree remove --force "${WT_DIR}" || true
-    continue
-  fi
+	# Locate output DMG
+	BUILT_DMG="$(find build -maxdepth 2 -name "SparkNotePad*.dmg" -not -name "rw.*" | head -n 1 || true)"
+	if [[ -z ${BUILT_DMG} || ! -f ${BUILT_DMG} ]]; then
+		echo "[-] Error: Failed to find built DMG for version ${ver}" >&2
+		popd >/dev/null
+		git worktree remove --force "${WT_DIR}" || true
+		continue
+	fi
 
-  echo "[*] Verifying built DMG: ${BUILT_DMG}..."
-  hdiutil verify "${BUILT_DMG}"
+	echo "[*] Verifying built DMG: ${BUILT_DMG}..."
+	hdiutil verify "${BUILT_DMG}"
 
-  echo "[*] Copying verified DMG to ${TARGET_DMG}..."
-  cp -v "${BUILT_DMG}" "${TARGET_DMG}"
+	echo "[*] Copying verified DMG to ${TARGET_DMG}..."
+	cp -v "${BUILT_DMG}" "${TARGET_DMG}"
 
-  popd >/dev/null
+	popd >/dev/null
 
-  echo "[*] Cleaning up worktree ${WT_DIR}..."
-  git worktree remove --force "${WT_DIR}" || true
+	echo "[*] Cleaning up worktree ${WT_DIR}..."
+	git worktree remove --force "${WT_DIR}" || true
 
-  echo "[✔] Version ${ver} DMG build and verification complete!"
+	echo "[✔] Version ${ver} DMG build and verification complete!"
 done
 
 echo "=========================================================="

@@ -30,6 +30,7 @@
 #include "test_editorconfig_parser.h"          // Native .editorconfig parser & enforcement suite
 #include "test_clipboard_history_dock.h"       // Clipboard History Dock & Character Info Dock suite
 #include "test_quick_switcher.h"               // Quick Switcher fuzzy matcher suite
+#include "test_v147_features.h"                // v1.4.7 features & 2025-2026 CVE security matrix
 #include <QApplication>
 
 int runAllTests(int argc, char *argv[]) {
@@ -124,6 +125,10 @@ int runAllTests(int argc, char *argv[]) {
     }
     {
         TestQuickSwitcher t;  // Unit tests for Quick Switcher fuzzy matcher
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestV147Features t;  // Unit & regression tests for v1.4.7 features and 2026 CVEs
         status |= QTest::qExec(&t, argc, argv);
     }
     return status;

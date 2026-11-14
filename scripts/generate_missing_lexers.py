@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 import os
-from typing import Dict, List, TypedDict
+from typing import TypedDict
 
 
 class LanguageDef(TypedDict):
     lexer: str
     comment: str
-    extensions: List[str]
-    keywords: Dict[int, str]
+    extensions: list[str]
+    keywords: dict[int, str]
 
 
-languages: Dict[str, LanguageDef] = {
+languages: dict[str, LanguageDef] = {
     "asciidoc": {
         "lexer": "asciidoc",
         "comment": "// ",

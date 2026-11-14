@@ -88,7 +88,7 @@ SparkNotePad v1.3.9 organizes power developer utilities under a top-level **Tool
 ## 7. Tab Bar Plus (+) Button & In-Tab Previews (v1.3.9)
 
 - **Tab Bar Plus Button**: An integrated `+` button positioned at the end of the tab strip allows spawning new editor documents with one click.
-- **In-Tab Markdown & HTML Preview**: Right-clicking `.md` or `.html` tabs provides an in-tab preview pane rendered with GitHub styling, keeping workflows clean without opening external windows. For HTML files, a "Preview in Default Browser" action is also provided.
+- **In-Tab Markdown Preview**: Right-clicking `.md` tabs provides an in-tab preview pane rendered with GitHub styling, keeping workflows clean without opening external windows.
 - **File Commander Explorer**: Upgraded explorer dock featuring two-pane ergonomics, quick bookmark paths, breadcrumb navigation, and metrics bars.
 - **Hex/Binary View Toggle**: Switch instantly between normal text and hex memory dumps via `Tools > Toggle Hex / Binary View` (positioned directly beneath Compare, `Ctrl+Alt+H` / `Cmd+Alt+H`).
 
@@ -141,6 +141,58 @@ SparkNotePad v1.4.5 introduces 12 major foundational features:
 - **Native `.editorconfig` Automatic Parser & Enforcement**: Automatic indentation and newline enforcement traversing parent directories up to `root = true`.
 - **Clipboard History Dock & Real-Time Character Info Dock**: Dockable FIFO clipboard history queue (20 items) and live Unicode code point inspector (`U+XXXX`, UTF-8/16/32, HTML entity).
 - **Fuzzy Quick Switcher (`Cmd+P` / `Ctrl+P`) & Document Minimap Dock**: Spotlight-style frameless subsequence file/tab finder, and lightweight Scintilla minimap dock with a >50 MB large file safeguard.
+
+---
+
+## 13. v1.4.6 Iconography, Context Menu Ergonomics, Syntax Highlighting & Packaging Standard
+
+- **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**: Added 30 modern icon packs (16x16 to 64x64): `01-macos-big-sur`, `02-windows-11-fluent`, `03-arc-browser-glow`, `04-nordic-frost-minimal`, `05-dracula-cyber-neon`, `06-catppuccin-macchiato`, `07-tokyo-night-storm`, `08-synthwave-80s`, `09-monokai-pro-vivid`, `10-solarized-accent`, `11-retro-commodore-64`, `12-retro-win95-classic`, `13-matrix-phosphor-green`, `14-gameboy-nostalgia`, `15-pixel-dungeon-rpg`, `16-claymorphism-3d`, `17-skeuomorphic-leather-brass`, `18-neu-brutalism-bold`, `19-isometric-voxel-3d`, `20-origami-paper-fold`, `21-cyberpunk-2077-yellow`, `22-lofi-aesthetic-grain`, `23-vaporwave-pastel-sunset`, `24-astronomy-deep-space`, `25-botanical-nature-green`, `26-blueprint-schematic`, `27-chalkboard-handdrawn`, `28-gouache-art-paint`, `29-stained-glass-mosaic`, `30-swiss-minimal-3d`.
+- **Editor Context Menu Ergonomics**: Added **Paste & Match Style** (`pasteAndMatchStyle`) and **Search on Google** (`searchOnGoogle`). Streamlined case conversions directly to **UPPERCASE** and **lowercase**.
+- **General Preferences Additions**: Toggles for Character Encoding Auto-detection (`enableEncodingAutoDetection`) and Save All Confirmation dialog (`enableSaveAllConfirmation`).
+- **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**: Mathematical luminance calculations guaranteeing 4.0:1 primary text contrast across all 70+ themes. High-visibility Gold Badges (`#FFD700`) for TODO/FIXME markers, warm golden amber escape sequences, and theme-synchronized rounded border box indicator.
+- **Canonical 30MB–40MB Lightweight macOS DMG Standard**: Calibrated release DMG packaging to 38MB–39MB while retaining universal Qt libraries and standard image format plugins.
+- **Pristine Notepad++ Classic Clean Standard**: Eliminated drop shadows, ambient halos, gray background tiles, and edge clipping across all packs.
+- **Permanent Dark Toolbar Invariant**: Dark `#21252b` background enforced across all themes to preserve icon contrast.
+- **Zero-Defect Linter Hardening & 14-Pillar Code Quality Gate**: 100% clean passes on `cppcheck`, `clangd`, `clang-tidy`, `trunk check`, `lint-check.sh`, and `ctest`.
+- **Modern Split View Tab Coloring & Zero Theme Clash Architecture**: Eliminated legacy hardcoded peach/orange borders and unsightly dark metallic gradients in split mode by setting `ads::CDockManager::DisableStylesheet, true` and unifying all tab and dock area styling exclusively through `ThemeManager`. Implemented modern, theme-adaptive dual-state visual hierarchy for split editor panes:
+  - **Active Tab in Focused Split Pane**: Seamless editor card background (`%5`), vibrant theme accent top border (`2px solid %6`), bold primary text (`%2`, weight 600), and seamless bottom merge into the editor viewport.
+  - **Active Tab in Unfocused Split Pane**: Matching editor card background (`%5`), refined subtle indicator line (`2px solid %12`), and legible primary text (`%2`, weight 500), guaranteeing zero theme clash and optimal contrast across all light, dark, and custom palettes.
+  - **Inactive Tabs**: Harmonized container background (`%1`), secondary text (`%4`), with smooth hover state (`%3`, text `%2`).
+  - **Splitter Separators (`ads--CDockSplitter::handle`)**: Clean 1px theme border (`%3`) with interactive accent hover illumination (`%6`).
+  - **Tab Close Button & Plus Button**: Modernized SVG iconography matching theme modes with soft coral hover highlight (`rgba(235, 87, 87, 0.25)`).
+- **Auto-Completion UX & Non-Intrusive Defaults**: Auto-completion disabled by default (`autoCompletion = false`) in `ApplicationSettings.cpp` to prevent disruptive popups during normal typing. Cleared aggressive auto-fill triggers (`autoCSetFillUps("")`), preventing accidental candidate insertions when typing spaces or parentheses. Enforced `autoCSetChooseSingle(false)`, `autoCSetAutoHide(true)`, and calibrated word trigger threshold to 3 characters minimum with large-file protection guards.
+- **Theme Renaming & Brand Consistency ("NotepadNext" -> "SparkNotepad")**: Harmonized default light theme palette identifier and family to `sparkNotepad` ("SparkNotepad Default") with automatic backward compatibility for legacy `notepadNext` settings keys.
+- **Markdown Live Preview Dedicated Engine & Lifecycle Hardening**: Synchronized dock visibility with active editor lifecycle in `MainWindow`. Integrated GitHub Alert Admonitions (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`), automated Table of Contents generator (`[TOC]` / `{:toc}`), heading slug IDs (`<h1 id="...">`), emoji shortcodes (`:rocket:`, `:sparkles:`, etc.), keyboard shortcut chips (`[[Key]]`), and unified HTML/PDF export pipeline. Dedicated Markdown rendering with asynchronous image queuing ensures online badges and SVGs load seamlessly.
+- **Rendering & Memory Performance Optimizations**: Eliminated repetitive Scintilla IPC queries inside `HighlightedScrollBar::paintEvent` by precomputing track geometry outside rendering loops. Replaced regex word-splitting allocations in `MarkdownSafePreviewDock` with an ultra-fast linear zero-allocation counter.
+- **Comprehensive Multi-Build updates.json & Force-Update Delivery Engine**: Upgraded `updates.json` to v1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts. Enforces mandatory force-update across all builds, with an unmetered 3-tier update pipeline in `ReleaseManager` and direct platform package routing in `UpdateDialog`.
+
+---
+
+## 14. v1.4.7 Core Engine Upgrade, System Transfer, POSIX Inspector & 2026 CVE Security Hardening
+
+- **Core Engine Upgrade to Scintilla 5.6.9 & Lexilla 5.5.5**:
+  - Scintilla 5.6.9 brings Unicode 17 character categories, 40-byte lexeme caching, line-start layout bypass accelerating rendering, change history undo crash resolution, and restored XPM autocompletion/marker colors.
+  - Lexilla 5.5.5 adds Markdown YAML/TOML/JSON front-matter styling, nested HTML/JS template literals, regex slash within character classes, PHP `$$variable` styling, SQL `q-string` speedups, and 12 upstream memory safety/OOB fixes (#388).
+  - Applied the 4 official Lua 5.5.1 bug-fix patches.
+- **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**:
+  - Cross-platform export/import of preferences, custom themes (QSS), macros, sessions, and user scripts as `.sparkbundle` packages.
+  - Hardened with Zip-Slip defense (`CVE-2026-57233`), traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.
+- **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**:
+  - Real-time shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d` scripts.
+  - Interactive status bar permission badge (`FieldPosixPerms`) with one-click `chmod +x` toggle.
+  - Menu actions for toggling executable permissions and enforcing owner-only private mode (`chmod 0600`).
+  - Precision file touch utility via POSIX `utimes`.
+- **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**:
+  - 3-point sampling (header 16KB, midpoint 16KB, tail 16KB) for robust large-file character set detection via `uchardet`.
+  - UTF-32 LE/BE BOM support.
+  - Atomic file saving in `ScintillaNext::writeToDisk` using private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, and atomic POSIX `rename()`.
+- **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
+  - Multi-mode navigation supporting Visual Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with live target calculation.
+  - Interactive safe rename dialog in `FolderAsWorkspaceDock` with traversal validation, collision checks, and dry-run preview.
+- **Comprehensive 2025–2026 CVE Security Hardening**:
+  - Automated regression test suite `tests/test_v147_features.h` verifying immunity against `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, and `CVE-2026-77605`.
+- **Complete Localization Synchronization**:
+  - Updated translation catalogs `SparkNotePad_en.ts` and `SparkNotePad_id.ts` with 2,247 strings, 100% completion, 0 unfinished entries, and strict EYD V / PASTI compliance.
 
 ---
 

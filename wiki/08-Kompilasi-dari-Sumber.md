@@ -159,15 +159,15 @@ cmake --build build --target rpm
 
 Berkas paket hasil kompilasi akan diletakkan di dalam folder `build/`:
 
-- `build/sparknotepad_1.4.0_amd64.deb`
-- `build/sparknotepad-1.4.0-1.x86_64.rpm`
+- `build/sparknotepad_1.4.7_amd64.deb`
+- `build/sparknotepad-1.4.7-1.x86_64.rpm`
 
 Pasang dengan resolusi dependensi otomatis:
 
 ```bash
 # Ubuntu / Debian
-sudo apt install ./build/sparknotepad_1.4.0_amd64.deb
+sudo apt install ./build/sparknotepad_1.4.7_amd64.deb
 
 # Fedora / RHEL
-sudo dnf install ./build/sparknotepad-1.4.0-1.x86_64.rpm
+sudo dnf install ./build/sparknotepad-1.4.7-1.x86_64.rpm
 ```

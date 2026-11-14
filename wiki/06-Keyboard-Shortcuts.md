@@ -48,6 +48,8 @@ SparkNotePad features a dual-mode quick palette architecture inspired by modern 
 | **Cut**                        | `Cmd+X`                 | `Ctrl+X`                  | Cut selection to system clipboard                        |
 | **Copy**                       | `Cmd+C`                 | `Ctrl+C`                  | Copy selection to system clipboard                       |
 | **Paste**                      | `Cmd+V`                 | `Ctrl+V`                  | Paste clipboard content at caret                         |
+| **Paste & Match Style**        | `Cmd+Alt+Shift+V`       | `Ctrl+Shift+V`            | Paste text stripping foreign formatting to match indent  |
+| **Search on Google**           | `Cmd+Alt+G`             | `Ctrl+Alt+G`              | Query selected text or word under caret on Google Search |
 | **Select All**                 | `Cmd+A`                 | `Ctrl+A`                  | Select entire document buffer                            |
 | **Duplicate Line / Selection** | `Cmd+D`                 | `Ctrl+D`                  | Duplicate current line or active selection               |
 | **Delete Line**                | `Cmd+Shift+K`           | `Ctrl+Shift+K`            | Delete current line without copying to clipboard         |

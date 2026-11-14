@@ -50,6 +50,10 @@ qt_add_executable(SparkNotePad
 	TranslationManager.h
 	UndoAction.h
 	ZoomEventWatcher.h
+	SparkTransferManager.h
+	SparkTransferManager.cpp
+	PosixFileInspector.h
+	PosixFileInspector.cpp
 	resources.qrc
 	toolbar_icons.qrc
 	scripts.qrc
@@ -328,6 +332,10 @@ qt_add_executable(SparkNotePad
 	dialogs/GenerateHashDigestDialog.cpp
 	dialogs/QuickSwitcherDialog.h
 	dialogs/QuickSwitcherDialog.cpp
+	dialogs/TransferBundleDialog.h
+	dialogs/TransferBundleDialog.cpp
+	dialogs/GotoDialog.h
+	dialogs/GotoDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
@@ -381,6 +389,8 @@ qt_add_executable(SparkNotePad
 	widgets/TabsQuickActionsBar.h
 	widgets/PreviewTabWidget.cpp
 	widgets/PreviewTabWidget.h
+	widgets/MarkdownBrowser.cpp
+	widgets/MarkdownBrowser.h
 	ShiftMiddleClickBlocker.h ShiftMiddleClickBlocker.cpp
 	ShiftWheelToHorizontalScrollFilter.h ShiftWheelToHorizontalScrollFilter.cpp
 
@@ -439,6 +449,7 @@ target_link_libraries(SparkNotePad
         Qt6::Network
         Qt6::PrintSupport
         Qt6::Core5Compat
+        Qt6::Svg
         qtadvanceddocking-qt6
         QSimpleUpdater
         SingleApplication::SingleApplication
@@ -447,6 +458,13 @@ target_link_libraries(SparkNotePad
         lexilla
         scintilla
         uchardet
+)
+
+set_source_files_properties(
+    resources.qrc
+    toolbar_icons.qrc
+    scripts.qrc
+    PROPERTIES AUTORCC_OPTIONS "--compress;9;--threshold;0"
 )
 
 if(APPLE)

@@ -46,6 +46,9 @@ lint:
         - deploy/windows/**
         - .trunk/**
         - src/languages/**
+        - src/icons/**
+        - assets/**
+        - icon/**
     - linters: [checkov]
       paths:
         - .github/workflows/**

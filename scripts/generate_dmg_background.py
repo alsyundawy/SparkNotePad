@@ -6,6 +6,7 @@ Creates both standard (680x440) and Retina @2x (1360x880) PNG assets.
 
 import math
 import os
+
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -14,7 +15,7 @@ def draw_bezier_curve(draw, p0, p1, p2, width, color, steps=100):
     points = []
     for i in range(steps + 1):
         t = i / float(steps)
-        # B(t) = (1-t)^2 * P0 + 2*(1-t)*t * P1 + t^2 * P2
+        # Quadratic Bezier formula: blending p0, p1, and p2 with parameter t
         x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + (t**2) * p2[0]
         y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + (t**2) * p2[1]
         points.append((x, y))
@@ -40,7 +41,11 @@ def get_system_font(size, bold=False):
     """Locate appropriate system font."""
     font_candidates = [
         "/System/Library/Fonts/SFPro.ttf",
-        "/System/Library/Fonts/SFProDisplay-Bold.otf" if bold else "/System/Library/Fonts/SFProDisplay-Regular.otf",
+        (
+            "/System/Library/Fonts/SFProDisplay-Bold.otf"
+            if bold
+            else "/System/Library/Fonts/SFProDisplay-Regular.otf"
+        ),
         "/System/Library/Fonts/HelveticaNeue.ttc",
         "/System/Library/Fonts/Helvetica.ttc",
         "/Library/Fonts/Arial.ttf",
@@ -51,8 +56,8 @@ def get_system_font(size, bold=False):
                 # index 1 in HelveticaNeue is Bold
                 idx = 1 if (bold and "Helvetica" in path) else 0
                 return ImageFont.truetype(path, size, index=idx)
-            except Exception:
-                continue
+            except (OSError, ValueError, TypeError):
+                pass
     return ImageFont.load_default()
 
 
@@ -130,14 +135,14 @@ def create_dmg_background(scale=2, output_path="deploy/macos/dmg-background@2x.p
 
     # Tagline: "Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."
     tagline_font = get_system_font(int(11.5 * scale), bold=False)
-    tagline_text = (
-        "Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."
-    )
+    tagline_text = "Lightweight, blazing-fast native Scintilla & Qt text and source code editor for Linux, FreeBSD and macOS."
     tagline_bbox = draw.textbbox((0, 0), tagline_text, font=tagline_font)
     tagline_w = tagline_bbox[2] - tagline_bbox[0]
     tagline_x = int(base_w * scale / 2 - tagline_w / 2)
     tagline_y = int(66 * scale)
-    draw.text((tagline_x, tagline_y), tagline_text, fill=(71, 85, 105, 235), font=tagline_font)
+    draw.text(
+        (tagline_x, tagline_y), tagline_text, fill=(71, 85, 105, 235), font=tagline_font
+    )
 
     # Subtle horizontal divider line
     div_y = int(92 * scale)

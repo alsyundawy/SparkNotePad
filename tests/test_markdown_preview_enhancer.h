@@ -61,32 +61,26 @@ private slots:
     }
 
     void testMarkdownPathRegex() const {
-        const QStringList validMd = {
-            QStringLiteral("README.markdown"),
-            QStringLiteral("doc.mdown"),
-            QStringLiteral("guide.mkdn"),
-            QStringLiteral("notes.md"),
-            QStringLiteral("spec.mkd"),
-            QStringLiteral("draft.mdwn"),
-            QStringLiteral("log.mdtxt"),
-            QStringLiteral("memo.mdtext"),
-            QStringLiteral("readme.text"),
-            QStringLiteral("file.md#section-2"),
-            QStringLiteral("file.markdown?raw=true"),
-            QStringLiteral("/Users/test/PATH/UPPER.MD")
-        };
+        const QStringList validMd = {QStringLiteral("README.markdown"),
+                                     QStringLiteral("doc.mdown"),
+                                     QStringLiteral("guide.mkdn"),
+                                     QStringLiteral("notes.md"),
+                                     QStringLiteral("spec.mkd"),
+                                     QStringLiteral("draft.mdwn"),
+                                     QStringLiteral("log.mdtxt"),
+                                     QStringLiteral("memo.mdtext"),
+                                     QStringLiteral("readme.text"),
+                                     QStringLiteral("file.md#section-2"),
+                                     QStringLiteral("file.markdown?raw=true"),
+                                     QStringLiteral("/Users/test/PATH/UPPER.MD")};
 
         for (const QString &path : validMd) {
             QVERIFY2(MarkdownPreviewEnhancer::isMarkdownPath(path),
                      qPrintable(QStringLiteral("Should match markdown: %1").arg(path)));
         }
 
-        const QStringList invalidMd = {
-            QStringLiteral("script.cpp"),
-            QStringLiteral("index.html"),
-            QStringLiteral("image.png"),
-            QStringLiteral("archive.tar.gz")
-        };
+        const QStringList invalidMd = {QStringLiteral("script.cpp"), QStringLiteral("index.html"),
+                                       QStringLiteral("image.png"), QStringLiteral("archive.tar.gz")};
 
         for (const QString &path : invalidMd) {
             QVERIFY2(!MarkdownPreviewEnhancer::isMarkdownPath(path),
@@ -94,38 +88,27 @@ private slots:
         }
     }
 
-    void testHtmlPathRegex() const {
-        const QStringList validHtml = {
-            QStringLiteral("index.html"),
-            QStringLiteral("page.htm"),
-            QStringLiteral("server.shtml"),
-            QStringLiteral("doc.xhtml"),
-            QStringLiteral("test.xht"),
-            QStringLiteral("dynamic.dhtml"),
-            QStringLiteral("site.html#header"),
-            QStringLiteral("view.htm?param=1"),
-            QStringLiteral("/var/www/INDEX.HTML")
-        };
+    void testMarkdownOnlyPathRegex() const {
+        const QStringList validMd = {QStringLiteral("README.md"), QStringLiteral("doc.markdown"),
+                                     QStringLiteral("notes.mdown"), QStringLiteral("file.mkdn")};
 
-        for (const QString &path : validHtml) {
-            QVERIFY2(MarkdownPreviewEnhancer::isHtmlPath(path),
-                     qPrintable(QStringLiteral("Should match html: %1").arg(path)));
+        for (const QString &path : validMd) {
+            QVERIFY2(MarkdownPreviewEnhancer::isMarkdownPath(path),
+                     qPrintable(QStringLiteral("Should match markdown: %1").arg(path)));
         }
 
-        const QStringList invalidHtml = {
-            QStringLiteral("doc.md"),
-            QStringLiteral("main.cpp"),
-            QStringLiteral("data.json")
-        };
+        const QStringList nonMarkdown = {QStringLiteral("index.html"), QStringLiteral("page.htm"),
+                                         QStringLiteral("main.cpp"), QStringLiteral("data.json")};
 
-        for (const QString &path : invalidHtml) {
-            QVERIFY2(!MarkdownPreviewEnhancer::isHtmlPath(path),
-                     qPrintable(QStringLiteral("Should NOT match html: %1").arg(path)));
+        for (const QString &path : nonMarkdown) {
+            QVERIFY2(!MarkdownPreviewEnhancer::isMarkdownPath(path),
+                     qPrintable(QStringLiteral("Should NOT match markdown: %1").arg(path)));
         }
     }
 
     void testMarkdownItExtensions() const {
-        const auto input = QStringLiteral("This is ~~deleted~~ and ==highlighted== and ++inserted++ and H~2~O and E=mc^2^.");
+        const auto input =
+            QStringLiteral("This is ~~deleted~~ and ==highlighted== and ++inserted++ and H~2~O and E=mc^2^.");
         const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
         QVERIFY(enhanced.contains(QStringLiteral("<del>deleted</del>")));
@@ -147,7 +130,8 @@ private slots:
         const auto input = QStringLiteral("Here is a reference[^1] in text.\n\n[^1]: This is the footnote definition.");
         const auto enhanced = MarkdownPreviewEnhancer::enhanceMarkdown(input, false);
 
-        QVERIFY(enhanced.contains(QStringLiteral("<sup class=\"footnote-ref\"><a href=\"#fn_1\" id=\"fnref_1\">[1]</a></sup>")));
+        QVERIFY(enhanced.contains(
+            QStringLiteral("<sup class=\"footnote-ref\"><a href=\"#fn_1\" id=\"fnref_1\">[1]</a></sup>")));
         QVERIFY(enhanced.contains(QStringLiteral("class=\"footnotes\"")));
         QVERIFY(enhanced.contains(QStringLiteral("<li id=\"fn_1\"")));
         QVERIFY(enhanced.contains(QStringLiteral("This is the footnote definition.")));
@@ -172,9 +156,12 @@ private slots:
         QCOMPARE(themes[29], QStringLiteral("WRIT"));
 
         QCOMPARE(MarkdownThemeManager::themeName(MarkdownThemeManager::ThemeId::GitHub), QStringLiteral("GITHUB"));
-        QCOMPARE(MarkdownThemeManager::themeName(MarkdownThemeManager::ThemeId::GitHubDark), QStringLiteral("GITHUB-DARK"));
-        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("sakura-vader")), MarkdownThemeManager::ThemeId::SakuraVader);
-        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("water-dark")), MarkdownThemeManager::ThemeId::WaterDark);
+        QCOMPARE(MarkdownThemeManager::themeName(MarkdownThemeManager::ThemeId::GitHubDark),
+                 QStringLiteral("GITHUB-DARK"));
+        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("sakura-vader")),
+                 MarkdownThemeManager::ThemeId::SakuraVader);
+        QCOMPARE(MarkdownThemeManager::themeFromName(QStringLiteral("water-dark")),
+                 MarkdownThemeManager::ThemeId::WaterDark);
 
         QVERIFY(MarkdownThemeManager::isThemeDark(MarkdownThemeManager::ThemeId::GitHubDark));
         QVERIFY(MarkdownThemeManager::isThemeDark(MarkdownThemeManager::ThemeId::Retro));
@@ -184,5 +171,87 @@ private slots:
         QVERIFY(css.contains(QStringLiteral("14px")));
         QVERIFY(css.contains(QStringLiteral("body")));
         QVERIFY(css.contains(QStringLiteral("h1")));
+    }
+
+    void testProcessCallouts() const {
+        const auto input = QStringLiteral(
+            "<blockquote>\n[!NOTE]\nThis is a critical note\n</blockquote>\n"
+            "<blockquote>\n[!WARNING]\nTake caution!\n</blockquote>");
+        const auto result = MarkdownPreviewEnhancer::enhanceCallouts(input, false);
+
+        QVERIFY(result.contains(QStringLiteral("Note")));
+        QVERIFY(result.contains(QStringLiteral("Warning")));
+        QVERIFY(result.contains(QStringLiteral("This is a critical note")));
+        QVERIFY(result.contains(QStringLiteral("Take caution!")));
+    }
+
+    void testProcessTableOfContents() const {
+        const auto input = QStringLiteral(
+            "[TOC]\n\n# Introduction\nSome text\n## Getting Started\nMore text\n### Advanced Usage\nDetails");
+        const auto result = MarkdownPreviewEnhancer::processTableOfContents(input);
+
+        QVERIFY(result.contains(QStringLiteral("class=\"table-of-contents\"")));
+        QVERIFY(result.contains(QStringLiteral("Table of Contents")));
+        QVERIFY(result.contains(QStringLiteral("<a href=\"#introduction\">Introduction</a>")));
+        QVERIFY(result.contains(QStringLiteral("<a href=\"#getting-started\">Getting Started</a>")));
+        QVERIFY(result.contains(QStringLiteral("<a href=\"#advanced-usage\">Advanced Usage</a>")));
+    }
+
+    void testProcessHeadingsWithIds() const {
+        const auto html = QStringLiteral("<h1>My Header</h1>\n<h2>Sub Section & More</h2>");
+        const auto result = MarkdownPreviewEnhancer::processHeadingsWithIds(html);
+
+        QVERIFY(result.contains(QStringLiteral("<h1 id=\"my-header\">My Header</h1>")));
+        QVERIFY(result.contains(QStringLiteral("<h2 id=\"sub-section-more\">Sub Section & More</h2>")));
+    }
+
+    void testProcessEmoji() const {
+        const auto input =
+            QStringLiteral("Build with :rocket: and :sparkles: for :100: success! `:not_an_emoji:` in code");
+        const auto result = MarkdownPreviewEnhancer::processEmoji(input);
+
+        QVERIFY(result.contains(QString::fromUtf8("🚀")));
+        QVERIFY(result.contains(QString::fromUtf8("✨")));
+        QVERIFY(result.contains(QString::fromUtf8("💯")));
+        QVERIFY(result.contains(QStringLiteral("`:not_an_emoji:`")));
+    }
+
+    void testProcessKeyboardTags() const {
+        const auto input = QStringLiteral("Press [[Ctrl]] + [[Alt]] + [[Delete]] to lock.");
+        const auto result = MarkdownPreviewEnhancer::processExtensions(input);
+
+        QVERIFY(result.contains(QStringLiteral("<kbd>Ctrl</kbd>")));
+        QVERIFY(result.contains(QStringLiteral("<kbd>Alt</kbd>")));
+        QVERIFY(result.contains(QStringLiteral("<kbd>Delete</kbd>")));
+    }
+
+    void testSlugifyHeading() const {
+        QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("Hello World!")),
+                 QStringLiteral("hello-world"));
+        QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("---Section 1.2.3---")),
+                 QStringLiteral("section-1-2-3"));
+        QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("")), QStringLiteral("heading"));
+    }
+
+    void testRenderMarkdownToHtmlPreservesHtmlBlocks() const {
+        const auto input = QStringLiteral(
+            "<p align=\"center\">\n"
+            "  <a href=\"https://example.com\"><img src=\"banner.png\" width=\"100%\" alt=\"Banner\" /></a>\n"
+            "</p>\n\n"
+            "<h1 align=\"center\">Title</h1>\n\n"
+            "<p align=\"center\"><b>Subtitle</b><br>details &nbsp; more</p>\n\n"
+            "> [!NOTE]\n"
+            "> Important note here\n\n"
+            "| Col1 | Col2 |\n"
+            "|:---|:---|\n"
+            "| A | B |\n");
+
+        const auto html = MarkdownPreviewEnhancer::renderMarkdownToHtml(input, false);
+        QVERIFY(html.contains(QStringLiteral("align=\"center\"")));
+        QVERIFY(html.contains(QStringLiteral("banner.png")));
+        QVERIFY(html.contains(QStringLiteral("Title")));
+        QVERIFY(html.contains(QStringLiteral("Subtitle")));
+        QVERIFY(html.contains(QStringLiteral("<table")));
+        QVERIFY(html.contains(QStringLiteral("Important note here")));
     }
 };

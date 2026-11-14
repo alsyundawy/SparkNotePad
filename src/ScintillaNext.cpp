@@ -22,6 +22,7 @@
  */
 
 #include "ScintillaNext.h"
+#include "ApplicationSettings.h"
 #include "EncodingDetector.h"
 #include "FileTimeUtils.h"
 #include "Finder.h"
@@ -36,6 +37,11 @@
 #include <QSaveFile>
 #include <QTextCodec>
 
+#if defined(Q_OS_UNIX)
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
 const int CHUNK_SIZE = 1024 * 1024 * 4;  // Not sure what is best
 
 namespace {
@@ -43,19 +49,67 @@ QFileDevice::FileError writeToDisk(const QByteArray &data, const QString &path, 
                                    const QString &encoding) {
     qInfo(Q_FUNC_INFO);
 
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qWarning("writeToDisk() failed to open file %s: %s", qPrintable(path), qPrintable(file.errorString()));
-        return file.error();
+    const QFileInfo targetInfo(path);
+    const QString dirPath = targetInfo.dir().absolutePath();
+    const QString fileName = targetInfo.fileName();
+    const QString tempPath = QDir(dirPath).filePath(QStringLiteral(".%1.sparktmp").arg(fileName));
+
+    const QByteArray encodedData = EncodingDetector::encodeFromUtf8(data, encoding, bom);
+
+#if defined(Q_OS_UNIX)
+    struct stat origStat{};
+    const bool origExists = (::stat(QFile::encodeName(path).constData(), &origStat) == 0);
+#endif
+
+    QFile tempFile(tempPath);
+    if (!tempFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        qWarning("writeToDisk() failed to open temp file %s: %s", qPrintable(tempPath),
+                 qPrintable(tempFile.errorString()));
+        return tempFile.error();
     }
 
-    if (const QByteArray encodedData = EncodingDetector::encodeFromUtf8(data, encoding, bom);
-        file.write(encodedData) == -1) {
-        qWarning("writeToDisk() failed writing to file %s: %s", qPrintable(path), qPrintable(file.errorString()));
-        return file.error();
+#if defined(Q_OS_UNIX)
+    // Enforce 0600 owner-only permissions on temporary file
+    fchmod(tempFile.handle(), S_IRUSR | S_IWUSR);
+#endif
+
+    if (tempFile.write(encodedData) == -1) {
+        qWarning("writeToDisk() failed writing to temp file %s: %s", qPrintable(tempPath),
+                 qPrintable(tempFile.errorString()));
+        const QFileDevice::FileError err = tempFile.error();
+        tempFile.close();
+        QFile::remove(tempPath);
+        return err;
     }
 
-    return file.error();
+    tempFile.flush();
+#if defined(Q_OS_UNIX)
+    ::fsync(tempFile.handle());
+#endif
+    tempFile.close();
+
+#if defined(Q_OS_UNIX)
+    if (origExists) {
+        ::chmod(QFile::encodeName(tempPath).constData(), origStat.st_mode & 07777);
+    }
+    if (::rename(QFile::encodeName(tempPath).constData(), QFile::encodeName(path).constData()) != 0) {
+        QFile::remove(path);
+        if (!QFile::rename(tempPath, path)) {
+            qWarning("writeToDisk() atomic rename failed for %s", qPrintable(path));
+            QFile::remove(tempPath);
+            return QFileDevice::WriteError;
+        }
+    }
+#else
+    QFile::remove(path);
+    if (!tempFile.rename(path)) {
+        qWarning("writeToDisk() failed to rename %s to %s", qPrintable(tempPath), qPrintable(path));
+        QFile::remove(tempPath);
+        return QFileDevice::WriteError;
+    }
+#endif
+
+    return QFileDevice::NoError;
 }
 
 bool isNewlineCharacter(char c) {
@@ -72,6 +126,7 @@ ScintillaNext::ScintillaNext(QString initialName, QWidget *parent)
     // Linux high-DPI / fractional scaling, 1366x768 / 1080p, and 2K/4K/5K/6K external monitors
     setFontQuality(SC_EFF_QUALITY_LCD_OPTIMIZED);
     setBufferedDraw(true);
+    setScaleTechnique(SCALE_TECHNIQUE_PIXEL_ALIGNED);
 
     // Per the scintilla documentation, some parts of the range are not generally available
     indicatorResources.disableRange(0, 7);
@@ -645,9 +700,10 @@ bool ScintillaNext::readFromDisk(QFile &file) {
     blockSignals(true);
     // Note: notifications suppressed during bulk file load
 
-    // Multi-stage encoding & BOM detection on initial sample
-    const QByteArray initialSample = file.peek(65536);
-    const EncodingDetector::DetectionResult det = EncodingDetector::detect(initialSample);
+    // Multi-stage 3-point encoding & BOM detection (Head/Mid/Tail)
+    const ApplicationSettings appSettings;
+    const EncodingDetector::DetectionResult det =
+        EncodingDetector::detect3PointSample(file, appSettings.autoDetectEncoding());
     bomType = det.bomType;
     fileEncoding = det.encoding;
 

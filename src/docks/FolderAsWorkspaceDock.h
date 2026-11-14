@@ -50,6 +50,7 @@ private slots:
     void onRefreshClicked();
     void onCollapseAllClicked();
     void onCustomContextMenu(const QPoint &pos);
+    void renameItemWithPreview(const QString &filePath);
     void updateTheme();
 
 protected:

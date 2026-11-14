@@ -17,7 +17,7 @@
 #include <QUrl>
 
 #include "ScintillaNext.h"
-class QTextBrowser;
+class MarkdownBrowser;
 class QLabel;
 class QPushButton;
 class QTimer;
@@ -26,10 +26,9 @@ class PreviewTabWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit PreviewTabWidget(ScintillaNext *editor, bool isHtml, QWidget *parent = nullptr);
+    explicit PreviewTabWidget(ScintillaNext *editor, QWidget *parent = nullptr);
     ~PreviewTabWidget() override = default;
 
-    [[nodiscard]] bool isHtml() const { return m_isHtml; }
     [[nodiscard]] ScintillaNext *sourceEditor() const { return m_editor.data(); }
     [[nodiscard]] QString documentTitle() const;
 
@@ -61,13 +60,11 @@ private:
     void applyTheme();
     [[nodiscard]] QString buildDevDocsStyleSheet(bool isDark) const;
     [[nodiscard]] QString wrapHtmlDocument(const QString &rawBody, bool isDark) const;
-    [[nodiscard]] static QString enhanceCallouts(const QString &html, bool isDark);
 
     QPointer<ScintillaNext> m_editor;
-    bool m_isHtml{false};
     int m_baseFontSize{13};
 
-    QTextBrowser *m_browser{nullptr};
+    MarkdownBrowser *m_browser{nullptr};
     QTimer *m_debounceTimer{nullptr};
 
     QLabel *m_badgeLabel{nullptr};

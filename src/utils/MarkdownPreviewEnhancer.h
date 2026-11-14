@@ -18,6 +18,10 @@ class MarkdownPreviewEnhancer {
 public:
     static QString enhanceMarkdown(const QString &rawMd, bool isDark);
 
+    static QString renderMarkdownToHtml(const QString &rawMd, bool isDark);
+
+    static QString enhanceCallouts(const QString &html, bool isDark);
+
     static QString processMermaidBlocks(const QString &content, bool isDark);
 
     static QString processMathExpressions(const QString &content);
@@ -28,13 +32,19 @@ public:
 
     static QString processExtensions(const QString &content);
 
+    static QString processTableOfContents(const QString &content);
+
+    static QString processEmoji(const QString &content);
+
+    static QString processHeadingsWithIds(const QString &html);
+
+    static QString slugifyHeading(const QString &text);
+
     static QString sanitizeForPreview(const QString &text);
 
     static QString mathAndMermaidCss(bool isDark);
 
     static bool isMarkdownPath(const QString &path);
-
-    static bool isHtmlPath(const QString &path);
 
     static bool isMarkdownOrHtmlPath(const QString &path);
 };

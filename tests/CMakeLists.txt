@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets PrintSupport)
+find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets PrintSupport Network Svg)
 
 set(TEST_HEADERS
     test_base64.h
@@ -26,6 +26,7 @@ set(TEST_HEADERS
     test_editorconfig_parser.h
     test_clipboard_history_dock.h
     test_quick_switcher.h
+    test_v147_features.h
 )
 
 set(TEST_SOURCES
@@ -58,6 +59,9 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/MathEvaluator.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/CryptoManager.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/CodeCompressPretty.cpp
+    ${CMAKE_SOURCE_DIR}/src/SparkTransferManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/PosixFileInspector.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/EncodingDetector.cpp
     ${CMAKE_SOURCE_DIR}/src/LuaState.cpp
     TestLuaSandbox.cpp
 )
@@ -70,6 +74,11 @@ target_include_directories(SparkNotePadTests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/utils
     ${CMAKE_SOURCE_DIR}/thirdparty/lua/src
+    ${CMAKE_SOURCE_DIR}/thirdparty/uchardet/src
+    ${CMAKE_SOURCE_DIR}/thirdparty/scintilla/include
+    ${CMAKE_SOURCE_DIR}/thirdparty/scintilla/qt/ScintillaEdit
+    ${CMAKE_SOURCE_DIR}/thirdparty/scintilla/qt/ScintillaEditBase
+    ${CMAKE_SOURCE_DIR}/thirdparty/lexilla/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -78,7 +87,12 @@ target_link_libraries(SparkNotePadTests PRIVATE
     Qt6::Test
     Qt6::Widgets
     Qt6::PrintSupport
+    Qt6::Network
+    Qt6::Svg
     lua
+    uchardet
+    scintilla
+    lexilla
 )
 
 if(APPLE)

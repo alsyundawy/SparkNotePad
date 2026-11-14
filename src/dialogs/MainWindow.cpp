@@ -28,6 +28,9 @@
 #define APP_VERSION "1.3.9"
 #endif
 #include "CommandPaletteDialog.h"
+#include "GotoDialog.h"
+#include "TransferBundleDialog.h"
+#include "PosixFileInspector.h"
 #include "DocumentStatisticsDialog.h"
 #include "FileDiffDialog.h"
 #include "TokenForensicUtils.h"
@@ -330,6 +333,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     dockedEditor = new DockedEditor(this);
     connect(dockedEditor, &DockedEditor::editorCloseRequested, this, &MainWindow::closeFile);
     connect(dockedEditor, &DockedEditor::editorActivated, this, &MainWindow::activateEditor);
+    connect(dockedEditor, &DockedEditor::editorClosed, this, [this](ScintillaNext *) {
+        if (markdownSafePreviewDock && markdownSafePreviewDock->isAutoShowEnabled()) {
+            const ScintillaNext *ed = currentEditor();
+            if (!ed || !isMarkdown(ed)) {
+                markdownSafePreviewDock->hide();
+            }
+        }
+    });
     connect(dockedEditor, &DockedEditor::contextMenuRequestedForEditor, this, &MainWindow::tabBarRightClicked);
     connect(dockedEditor, &DockedEditor::titleBarDoubleClicked, this, &MainWindow::newFile);
     connect(dockedEditor, &DockedEditor::newFileRequested, this, &MainWindow::newFile);
@@ -418,6 +429,43 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
 
     connect(ui->actionExportPdf, &QAction::triggered, this, &MainWindow::exportPdf);
+
+    // System Transfer: Export / Import Workspace Bundle (.sparkbundle)
+    auto *menuSystemTransfer = new QMenu(tr("System Transfer"), this);
+    const auto *actTransferBundle =
+        menuSystemTransfer->addAction(tr("Export / Import Workspace Bundle (.sparkbundle)..."));
+    connect(actTransferBundle, &QAction::triggered, this, [this] {
+        TransferBundleDialog dlg(this);
+        dlg.exec();
+    });
+    ui->menuFile->insertMenu(ui->actionPrint, menuSystemTransfer);
+
+    // File Permissions: chmod +x, chmod 0600
+    auto *menuPermissions = new QMenu(tr("File Permissions"), this);
+    const auto *actToggleExec = menuPermissions->addAction(tr("Toggle Executable Bit (chmod +x)"));
+    connect(actToggleExec, &QAction::triggered, this, [this] {
+        if (const auto *editor = currentEditor(); editor && editor->isFile()) {
+            QString err;
+            if (PosixFileInspector::toggleExecutable(editor->getFilePath(), &err)) {
+                ui->statusBar->showMessage(tr("Updated executable bit for \"%1\"").arg(editor->getName()), 3000);
+            } else {
+                ui->statusBar->showMessage(tr("Failed to update executable bit: %1").arg(err), 4000);
+            }
+        }
+    });
+    const auto *actSetOwnerOnly = menuPermissions->addAction(tr("Enforce Owner-Only Private Mode (chmod 0600)"));
+    connect(actSetOwnerOnly, &QAction::triggered, this, [this] {
+        if (const auto *editor = currentEditor(); editor && editor->isFile()) {
+            QString err;
+            if (PosixFileInspector::setOwnerOnly(editor->getFilePath(), &err)) {
+                ui->statusBar->showMessage(tr("Enforced owner-only 0600 permissions for \"%1\"").arg(editor->getName()),
+                                           3000);
+            } else {
+                ui->statusBar->showMessage(tr("Failed to set 0600 permissions: %1").arg(err), 4000);
+            }
+        }
+    });
+    ui->menuFile->insertMenu(ui->actionPrint, menuPermissions);
 
     connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::print);
 
@@ -1001,6 +1049,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     connectEditorAction(ui->actionCopy, &ScintillaNext::copyAllowLine);
     connectEditorAction(ui->actionDelete, &ScintillaNext::clear);
     connectEditorAction(ui->actionPaste, &ScintillaNext::paste);
+    connect(ui->actionPasteAndMatchStyle, &QAction::triggered, this, &MainWindow::onPasteAndMatchStyleTriggered);
+#ifdef Q_OS_MACOS
+    ui->actionPasteAndMatchStyle->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V));
+#else
+    ui->actionPasteAndMatchStyle->setShortcuts(
+        {QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_V), QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V)});
+#endif
+    connect(ui->actionSearchGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
+    ui->actionSearchGoogle->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     connectEditorAction(ui->actionSelectAll, &ScintillaNext::selectAll);
     connect(ui->actionSelectNext, &QAction::triggered, this, [this] {
         ScintillaNext *editor = currentEditor();
@@ -1528,12 +1585,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     menuTools->addSeparator();
 
-    // HTML & Markdown Live Preview submenu
-    auto *menuPreview = menuTools->addMenu(tr("&HTML && Markdown Preview"));
+    // Markdown Live Preview submenu
+    auto *menuPreview = menuTools->addMenu(tr("&Markdown Preview"));
     menuPreview->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
 
     auto *togglePreviewAction = markdownSafePreviewDock->toggleViewAction();
-    togglePreviewAction->setText(tr("&Live Preview (Markdown / HTML)"));
+    togglePreviewAction->setText(tr("&Live Preview (Markdown)"));
     togglePreviewAction->setIcon(QIcon(QStringLiteral(":/icons/view.svg")));
     togglePreviewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
     menuPreview->addAction(togglePreviewAction);
@@ -1543,7 +1600,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     actionOpenPreviewTab->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
     connect(actionOpenPreviewTab, &QAction::triggered, this, [this] {
         if (auto *ed = currentEditor()) {
-            openPreviewInNewTab(ed, isHtml(ed));
+            openPreviewInNewTab(ed);
         }
     });
     menuPreview->addAction(actionOpenPreviewTab);
@@ -1555,49 +1612,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             &MarkdownSafePreviewDock::openInBrowser);
     menuPreview->addAction(actionPreviewInBrowser);
 
-    auto *actionAutoShowPreview = new QAction(tr("&Auto-Show Preview on Markdown / HTML Tabs"), this);
+    auto *actionAutoShowPreview = new QAction(tr("&Auto-Show Preview on Markdown Tabs"), this);
     actionAutoShowPreview->setCheckable(true);
     actionAutoShowPreview->setChecked(markdownSafePreviewDock->isAutoShowEnabled());
     connect(actionAutoShowPreview, &QAction::toggled, markdownSafePreviewDock,
             &MarkdownSafePreviewDock::setAutoShowEnabled);
     menuPreview->addAction(actionAutoShowPreview);
-
-    menuPreview->addSeparator();
-
-    auto *actModeAuto = new QAction(tr("Format: &Auto-Detect"), this);
-    actModeAuto->setCheckable(true);
-    auto *actModeMd = new QAction(tr("Format: Force &Markdown"), this);
-    actModeMd->setCheckable(true);
-    auto *actModeHtml = new QAction(tr("Format: Force &HTML"), this);
-    actModeHtml->setCheckable(true);
-
-    auto *previewModeGroup = new QActionGroup(this);
-    previewModeGroup->addAction(actModeAuto);
-    previewModeGroup->addAction(actModeMd);
-    previewModeGroup->addAction(actModeHtml);
-
-    switch (markdownSafePreviewDock->format()) {
-        case MarkdownSafePreviewDock::PreviewFormat::Html:
-            actModeHtml->setChecked(true);
-            break;
-        case MarkdownSafePreviewDock::PreviewFormat::Markdown:
-            actModeMd->setChecked(true);
-            break;
-        default:
-            actModeAuto->setChecked(true);
-            break;
-    }
-
-    connect(actModeAuto, &QAction::triggered, this,
-            [this] { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Auto); });
-    connect(actModeMd, &QAction::triggered, this,
-            [this] { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Markdown); });
-    connect(actModeHtml, &QAction::triggered, this,
-            [this] { markdownSafePreviewDock->setPreviewFormat(MarkdownSafePreviewDock::PreviewFormat::Html); });
-
-    menuPreview->addAction(actModeAuto);
-    menuPreview->addAction(actModeMd);
-    menuPreview->addAction(actModeHtml);
 
     menuPreview->addSeparator();
 
@@ -1612,7 +1632,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             &MarkdownSafePreviewDock::exportHtml);
     menuPreview->addAction(actionExportPreviewHtml);
 
-    // Also place HTML & Markdown Preview prominently in the View menu
+    // Also place Markdown Preview prominently in the View menu
     ui->menuView->addSeparator();
     ui->menuView->addMenu(menuPreview);
 
@@ -1828,20 +1848,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             [this] { showFindReplaceDialog(FindReplaceDialog::MARK_TAB); });
 
     connect(ui->actionGoToLine, &QAction::triggered, this, [this] {
-        ScintillaNext *editor = currentEditor();
-        const int currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos())) + 1;
-        const auto maxLine = static_cast<int>(editor->lineCount());
-        bool ok;
-
-        const auto d = QInputDialog(this);
-        const Qt::WindowFlags flags = d.windowFlags() & ~Qt::WindowContextHelpButtonHint;
-        const int lineToGoTo = QInputDialog::getInt(this, tr("Go to line"), tr("Line Number (1 - %1)").arg(maxLine),
-                                                    currentLine, 1, maxLine, 1, &ok, flags);
-
-        if (ok) {
-            editor->ensureVisible(lineToGoTo - 1);
-            editor->gotoLine(lineToGoTo - 1);
-            editor->verticalCentreCaret();
+        if (ScintillaNext *editor = currentEditor()) {
+            GotoDialog dlg(editor, this);
+            dlg.exec();
         }
     });
 
@@ -3456,6 +3465,18 @@ bool MainWindow::saveCopyAs(const QString &fileName) {
 }
 
 bool MainWindow::saveAll() {
+    if (const ApplicationSettings settings; settings.confirmSaveAll()) {
+        const auto unsavedCount = std::ranges::count_if(editors(), [](const auto *ed) { return ed && ed->modify(); });
+        if (unsavedCount > 0) {
+            const auto res = QMessageBox::question(
+                this, tr("Save All Confirmation"),
+                tr("Are you sure you want to save all %1 modified document(s)?").arg(unsavedCount),
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+            if (res != QMessageBox::Yes) {
+                return false;
+            }
+        }
+    }
     return saveAllEditors(editors());
 }
 
@@ -3844,6 +3865,10 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     if (!editor) {
+        if (markdownSafePreviewDock && markdownSafePreviewDock->isVisible() &&
+            markdownSafePreviewDock->isAutoShowEnabled()) {
+            markdownSafePreviewDock->hide();
+        }
         return;
     }
 
@@ -3855,14 +3880,24 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     updateContentBasedUi(editor);
     updateLanguageBasedUi(editor);
 
-    if (markdownSafePreviewDock) {
-        if (markdownSafePreviewDock->isAutoShowEnabled() && isMarkdownOrHtml(editor) &&
-            !markdownSafePreviewDock->isVisible()) {
-            markdownSafePreviewDock->show();
-        }
+    if (!markdownSafePreviewDock) {
+        return;
+    }
+
+    if (!markdownSafePreviewDock->isAutoShowEnabled()) {
         if (markdownSafePreviewDock->isVisible()) {
             markdownSafePreviewDock->setActiveEditor(editor);
         }
+        return;
+    }
+
+    if (isMarkdown(editor)) {
+        if (!markdownSafePreviewDock->isVisible()) {
+            markdownSafePreviewDock->show();
+        }
+        markdownSafePreviewDock->setActiveEditor(editor);
+    } else if (markdownSafePreviewDock->isVisible()) {
+        markdownSafePreviewDock->hide();
     }
 }
 
@@ -3875,22 +3910,6 @@ bool MainWindow::isMarkdown(const ScintillaNext *editor) {
         return true;
     }
     return editor->languageName.contains(QStringLiteral("markdown"), Qt::CaseInsensitive);
-}
-
-bool MainWindow::isHtml(const ScintillaNext *editor) {
-    if (!editor) {
-        return false;
-    }
-    if (const QString target = editor->isFile() ? editor->getFileInfo().filePath() : editor->getName();
-        MarkdownPreviewEnhancer::isHtmlPath(target)) {
-        return true;
-    }
-    const QString lang = editor->languageName.toLower();
-    return (lang.contains(QStringLiteral("html")) || lang.contains(QStringLiteral("xml")));
-}
-
-bool MainWindow::isMarkdownOrHtml(const ScintillaNext *editor) {
-    return isMarkdown(editor) || isHtml(editor);
 }
 
 void MainWindow::updateDocumentBasedUi(Scintilla::Update updated) {
@@ -3917,6 +3936,7 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor) {
     const bool hasAnySelections = !editor->selectionEmpty();
 
     ui->actionPaste->setEnabled(editor->canPaste());
+    ui->actionPasteAndMatchStyle->setEnabled(editor->canPaste());
 
     const bool canConvert = (editor != nullptr && !editor->readOnly() && editor->textLength() > 0);
     ui->actionLowerCase->setEnabled(canConvert);
@@ -4475,37 +4495,21 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
         editor->setEmptySelection(contextMenuPos);
     }
 
-    const QStringList defaultActionNames = {"Undo",
-                                            "Redo",
-                                            "",
-                                            "Cut",
-                                            "Copy",
-                                            "Paste",
-                                            "Delete",
-                                            "",
-                                            "SelectAll",
-                                            "",
-                                            "Find",
-                                            "",
-                                            "Open",
-                                            "Save",
-                                            "",
-                                            "ShowCharacterInfo",
-                                            "",
-                                            "Base64Encode",
-                                            "URLEncode",
-                                            "",
-                                            "Base64Decode",
-                                            "URLDecode"};
+    const QStringList defaultActionNames = {
+        "Undo", "Redo",         "", "Cut",  "Copy", "Paste", "PasteAndMatchStyle", "Delete", "", "SelectAll", "",
+        "Find", "SearchGoogle", "", "Open", "Save", "",      "ShowCharacterInfo"};
 
     QStringList actionNames = defaultActionNames;
 
     // If the entry exists in the settings, use that
     if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
         actionNames = settings->value("Gui/EditorContextMenu").toStringList();
-        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, and Find are always included
+        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle are
+        // present
         if (!actionNames.contains("Undo") || !actionNames.contains("Redo") || !actionNames.contains("Open") ||
-            !actionNames.contains("Save") || !actionNames.contains("Find")) {
+            !actionNames.contains("Save") || !actionNames.contains("Find") ||
+            !actionNames.contains("PasteAndMatchStyle") || !actionNames.contains("SearchGoogle") ||
+            actionNames.contains("Base64Encode") || actionNames.contains("URLEncode")) {
             actionNames = defaultActionNames;
         }
     }
@@ -4520,24 +4524,38 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
 
     auto *menu = buildMenu(actionNames);
 
-    // Relocate Convert Case directly below Select All
+    // Relocate UPPERCASE and lowercase directly below Select All (replacing convert case submenu)
     const auto actions = menu->actions();
     if (const auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll); selectAllIt != actions.end()) {
         const auto nextIt = std::next(selectAllIt);
         if (nextIt != actions.end()) {
-            menu->insertMenu(*nextIt, ui->menuConvertCase);
+            menu->insertAction(*nextIt, ui->actionUpperCase);
+            menu->insertAction(*nextIt, ui->actionLowerCase);
         } else {
-            menu->addMenu(ui->menuConvertCase);
+            menu->addAction(ui->actionUpperCase);
+            menu->addAction(ui->actionLowerCase);
         }
     } else {
-        menu->addMenu(ui->menuConvertCase);
+        menu->addAction(ui->actionUpperCase);
+        menu->addAction(ui->actionLowerCase);
     }
 
     menu->addSeparator();
     menu->addMenu(ui->menuMarkAllOccurrences);
     menu->addMenu(ui->menuClearMarks);
-    if (menuRun) {
-        menu->addMenu(menuRun);
+
+    // Contextual keyword adaptation for Google Search
+    if (const QString searchQuery = ExternalToolManager::getSelectedOrCurrentWord(editor);
+        !searchQuery.trimmed().isEmpty()) {
+        QString preview = searchQuery.trimmed();
+        if (preview.length() > 25) {
+            preview = preview.left(25) + QStringLiteral("...");
+        }
+        ui->actionSearchGoogle->setText(tr("Search on &Google for \"%1\"").arg(preview));
+        ui->actionSearchGoogle->setEnabled(true);
+    } else {
+        ui->actionSearchGoogle->setText(tr("Search on &Google"));
+        ui->actionSearchGoogle->setEnabled(false);
     }
 
     // Ensure all context menu actions and submenus display their icons matching the active icon pack
@@ -4574,29 +4592,17 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     menu->setFont(contextFont);
     menu->setStyleSheet(contextMenuStyle);
 
-    const QFont originalMenuFont = ui->menuConvertCase->font();
-    ui->menuConvertCase->setFont(contextFont);
-    ui->menuConvertCase->setStyleSheet(contextMenuStyle);
     ui->menuMarkAllOccurrences->setFont(contextFont);
     ui->menuMarkAllOccurrences->setStyleSheet(contextMenuStyle);
     ui->menuClearMarks->setFont(contextFont);
     ui->menuClearMarks->setStyleSheet(contextMenuStyle);
-    if (menuRun) {
-        menuRun->setFont(contextFont);
-        menuRun->setStyleSheet(contextMenuStyle);
-    }
 
-    connect(menu, &QMenu::aboutToHide, this, [this, originalMenuFont] {
-        ui->menuConvertCase->setStyleSheet(QString());
-        ui->menuConvertCase->setFont(originalMenuFont);
+    connect(menu, &QMenu::aboutToHide, this, [this] {
+        ui->actionSearchGoogle->setText(tr("Search on &Google"));
         ui->menuMarkAllOccurrences->setStyleSheet(QString());
-        ui->menuMarkAllOccurrences->setFont(originalMenuFont);
+        ui->menuMarkAllOccurrences->setFont(QFont());
         ui->menuClearMarks->setStyleSheet(QString());
-        ui->menuClearMarks->setFont(originalMenuFont);
-        if (menuRun) {
-            menuRun->setStyleSheet(QString());
-            menuRun->setFont(originalMenuFont);
-        }
+        ui->menuClearMarks->setFont(QFont());
     });
 
     menu->popup(QCursor::pos());
@@ -4616,7 +4622,7 @@ void MainWindow::checkForUpdatesFinished(const QString & /*url*/) {
 void MainWindow::initUpdateCheck() {
     ui->actionCheckForUpdates->setEnabled(true);
     ui->actionCheckForUpdates->setVisible(true);
-    ui->actionCheckForUpdates->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_U));
+    ui->actionCheckForUpdates->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_U));
     connect(ui->actionCheckForUpdates, &QAction::triggered, this, [this] { checkForUpdates(false); });
 
     // Check periodically in background
@@ -4784,35 +4790,15 @@ void MainWindow::populateTabBarPreviewActions(QMenu *menu, ScintillaNext *editor
     if (!editor) {
         return;
     }
-    const bool isMd = isMarkdown(editor);
-    const bool isH = isHtml(editor);
-    if (!isMd && !isH) {
+    if (!isMarkdown(editor)) {
         return;
     }
 
     menu->addSeparator();
-    if (isMd) {
-        auto *actPreviewMd =
-            menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
-        actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
-        connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, false); });
-    } else if (isH) {
-        auto *actPreviewHtml =
-            menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview HTML in New Tab"));
-        actPreviewHtml->setObjectName(QStringLiteral("previewHtml"));
-        connect(actPreviewHtml, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor, true); });
+    auto *actPreviewMd = menu->addAction(QIcon(QStringLiteral(":/icons/find.svg")), tr("Preview Markdown in New Tab"));
+    actPreviewMd->setObjectName(QStringLiteral("previewMarkdown"));
+    connect(actPreviewMd, &QAction::triggered, this, [this, editor] { openPreviewInNewTab(editor); });
 
-        auto *actPreviewBrowser =
-            menu->addAction(QIcon(QStringLiteral(":/icons/openFile.svg")), tr("Preview in Default Browser"));
-        actPreviewBrowser->setObjectName(QStringLiteral("previewHtmlInBrowser"));
-        connect(actPreviewBrowser, &QAction::triggered, this, [this, editor] {
-            if (editor->isFile() && editor->getFileInfo().exists()) {
-                openInDefaultBrowser(editor->getFileInfo().absoluteFilePath());
-            } else {
-                openPreviewInNewTab(editor, true);
-            }
-        });
-    }
     ToolbarIconManager::instance()->applyToMenu(menu);
     ensureMenuIconsVisible(menu);
 }
@@ -4966,9 +4952,7 @@ void MainWindow::setupRunMenu() {
     menuRun->addSeparator();
 
     // 6. Web Searches & Developer Help References
-    auto *actionGoogle = new QAction(tr("Search on &Google"), this);
-    connect(actionGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
-    menuRun->addAction(actionGoogle);
+    menuRun->addAction(ui->actionSearchGoogle);
 
     auto *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
     actionWiki->setShortcuts(
@@ -5071,6 +5055,24 @@ void MainWindow::onOpenInBrowserTriggered() const {
     if (currentEditor() && currentEditor()->isFile()) {
         ExternalToolManager::openInBrowser(currentEditor()->getFileInfo().absoluteFilePath());
     }
+}
+
+void MainWindow::onPasteAndMatchStyleTriggered() const {
+    auto *editor = currentEditor();
+    if (!editor) {
+        return;
+    }
+    const QClipboard *clipboard = QGuiApplication::clipboard();
+    if (!clipboard) {
+        return;
+    }
+    const QString text = clipboard->text(QClipboard::Clipboard);
+    if (text.isEmpty()) {
+        return;
+    }
+
+    const QByteArray utf8 = text.toUtf8();
+    editor->replaceSel(utf8.constData());
 }
 
 void MainWindow::onSearchGoogleTriggered() const {
@@ -5575,10 +5577,10 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addSeparator();
 
     // 6. Reset and Mode Toggles
-    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - NotepadNext)"), this);
+    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - SparkNotepad)"), this);
     connect(actionThemeLight, &QAction::triggered, this, [this] {
-        ThemeManager::instance()->setPalette(QStringLiteral("notepadNext"), this);
-        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (NotepadNext)"), 3000);
+        ThemeManager::instance()->setPalette(QStringLiteral("sparkNotepad"), this);
+        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (SparkNotepad)"), 3000);
     });
     menuTheme->addAction(actionThemeLight);
 
@@ -5647,14 +5649,14 @@ void MainWindow::onChangelogTriggered() {
     }
 }
 
-void MainWindow::openPreviewInNewTab(ScintillaNext *editor, bool asHtml) {
+void MainWindow::openPreviewInNewTab(ScintillaNext *editor) {
     if (!editor) {
         return;
     }
 
-    auto *previewWidget = new PreviewTabWidget(editor, asHtml, this);
+    auto *previewWidget = new PreviewTabWidget(editor, this);
     const QString title = previewWidget->documentTitle();
-    const auto icon = QIcon(asHtml ? QStringLiteral(":/icons/openFile.svg") : QStringLiteral(":/icons/find.svg"));
+    const auto icon = QIcon(QStringLiteral(":/icons/find.svg"));
     const QString toolTip = editor->isFile() ? editor->getFilePath() : editor->getName();
 
     ads::CDockWidget *dockWidget = dockedEditor->addTabWidget(previewWidget, title, icon, toolTip);

@@ -23,6 +23,7 @@
 
 class ScintillaNext;
 class MainWindow;
+class MarkdownBrowser;
 class QComboBox;
 class QLabel;
 class QPushButton;
@@ -34,7 +35,6 @@ public:
     enum class PreviewFormat : std::uint8_t {
         Auto = 0,
         Markdown = 1,
-        Html = 2,
     };
     Q_ENUM(PreviewFormat)
 
@@ -90,7 +90,7 @@ private:
     void applyGitHubTheme();
 
     ToolbarUi m_ui;
-    QTextBrowser *browser = nullptr;
+    MarkdownBrowser *browser = nullptr;
     QTimer *debounceTimer = nullptr;
     QPointer<ScintillaNext> currentEditor;
 

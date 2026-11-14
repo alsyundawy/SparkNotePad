@@ -66,7 +66,8 @@ def main():
             json.dump(cmds, f, indent=2)
 
     print(
-        f"Successfully synchronized {added} headers in compilation database ({len(cmds)} total entries)."
+        f"Successfully synchronized {added} headers in compilation database "
+        f"({len(cmds)} total entries)."
     )
     return 0
 

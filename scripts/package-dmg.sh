@@ -13,7 +13,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 # Input parameters
 APP_DIR="${1:-${REPO_ROOT}/build/install/SparkNotePad.app}"
-DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.4.0-x64.dmg}"
+DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.4.7-x64.dmg}"
 VOL_NAME="${3:-SparkNotePad}"
 
 # Ensure absolute paths
@@ -79,13 +79,14 @@ cp -R "${APP_DIR}" "${STAGE_DIR}/SparkNotePad.app"
 RESOURCES_DIR="${STAGE_DIR}/SparkNotePad.app/Contents/Resources"
 mkdir -p "${RESOURCES_DIR}"
 if [[ ! -f "${RESOURCES_DIR}/SparkNotePad.icns" ]]; then
-	if [[ -f "${VOL_ICON}" ]]; then
+	if [[ -f ${VOL_ICON} ]]; then
 		echo "[*] Injecting application icon into bundle Resources..."
 		cp "${VOL_ICON}" "${RESOURCES_DIR}/SparkNotePad.icns"
 	fi
 fi
 
 # Prune unneeded heavy frameworks, plugins, and debug symbols from staged bundle
+# NOTE: QtDBus.framework is strictly REQUIRED by QtGui.framework on macOS and must NOT be removed!
 rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtQmlMeta.framework" \
@@ -95,16 +96,36 @@ rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtPdf.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboard.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtVirtualKeyboardQml.framework" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/networkinformation/libqapplenetworkinformation.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqpdf.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtiff.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwebp.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqjpeg.dylib" \
+	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqicns.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacheif.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqmacjp2.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqwbmp.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/imageformats/libqtga.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqopensslbackend.dylib" \
 	"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/tls/libqcertonlybackend.dylib" 2>/dev/null || true
-strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+
+# Safe removal of QtOpenGL.framework: only prune if no bundle component links to it
+if [[ -d "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" ]]; then
+	if ! otool -L "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" \
+		"${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/"* \
+		"${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns/platforms/"* 2>/dev/null | grep -q "QtOpenGL"; then
+		rm -rf "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework"
+	fi
+fi
+
+# Ensure @executable_path/../Frameworks LC_RPATH exists and strip main executable only (per AGENTS.md Rule 3)
+if [[ -f "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" ]]; then
+	if ! otool -l "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null | grep -q "@executable_path/../Frameworks"; then
+		install_name_tool -add_rpath "@executable_path/../Frameworks" "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+	fi
+	strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
+fi
+
 codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
 # Touch the app bundle so macOS LaunchServices/Finder refreshes its icon cache
@@ -155,13 +176,19 @@ fi
 echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
-# Strict size gate: must not exceed 35MB (36700160 bytes)
-DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c < "${DMG_OUTPUT}")"
-MAX_ALLOWED_BYTES=36700160 # 35 MB
+# Strict size gate: must remain between 30MB and 40MB without bloatware
+DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
+MIN_ALLOWED_BYTES=31457280 # 30 MB (31,457,280 bytes) per AGENTS.md Rule 3 floor
+MAX_ALLOWED_BYTES=41943040 # 40 MB (41,943,040 bytes) per AGENTS.md Rule 3 ceiling
 DMG_SIZE="$(du -h "${DMG_OUTPUT}" | cut -f1)"
 
-if (( DMG_SIZE_BYTES > MAX_ALLOWED_BYTES )); then
-	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) exceeds the strict 35MB limit! Bloatware detected." >&2
+if ((DMG_SIZE_BYTES < MIN_ALLOWED_BYTES)); then
+	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) is below the 30MB threshold! Over-pruned or missing standard assets." >&2
+	exit 1
+fi
+
+if ((DMG_SIZE_BYTES > MAX_ALLOWED_BYTES)); then
+	echo "[-] FATAL ERROR: SparkNotePad DMG size (${DMG_SIZE}, ${DMG_SIZE_BYTES} bytes) exceeds the strict 40MB limit! Bloatware detected." >&2
 	exit 1
 fi
 
@@ -180,11 +207,21 @@ if hdiutil attach "${DMG_OUTPUT}" -mountpoint "${VERIFY_MOUNT}" -nobrowse >/dev/
 		echo "[-] FATAL ERROR: Built DMG is missing .background/dmg-background.png!" >&2
 		exit 1
 	fi
+	# Strict runtime launch verification: binary must load all dyld frameworks cleanly
+	echo "[*] Testing binary launch from mounted DMG..."
+	if ! TEST_LAUNCH_OUTPUT="$(QT_QPA_PLATFORM=offscreen "${VERIFY_MOUNT}/SparkNotePad.app/Contents/MacOS/SparkNotePad" --version 2>&1)"; then
+		hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
+		rm -rf "${VERIFY_MOUNT}"
+		echo "[-] FATAL ERROR: SparkNotePad binary inside DMG failed dyld load or runtime launch!" >&2
+		echo "[-] Binary output: ${TEST_LAUNCH_OUTPUT}" >&2
+		exit 1
+	fi
+	echo "✔ Binary launch test passed: ${TEST_LAUNCH_OUTPUT}"
 	hdiutil detach "${VERIFY_MOUNT}" -force >/dev/null 2>&1 || true
 fi
 rm -rf "${VERIFY_MOUNT}"
 
 echo "=========================================================="
 echo "✔ SparkNotePad DMG packaging complete: ${DMG_OUTPUT} (${DMG_SIZE})"
-echo "✔ Verified lightweight size (< 35MB) and custom background presentation"
+echo "✔ Verified standard lightweight size (30MB–40MB) and custom background presentation"
 echo "=========================================================="

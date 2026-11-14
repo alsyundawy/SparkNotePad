@@ -183,7 +183,7 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
     connect(ui->buttonClearAllMarks, &QPushButton::clicked, this, &FindReplaceDialog::clearAllMarks);
     connect(ui->buttonCopyMarkedText, &QPushButton::clicked, this, &FindReplaceDialog::copyMarkedText);
 
-    const auto findPrevious = [this]() {
+    const auto findPrevious = [this] {
         const int curTab = tabBar->currentIndex();
         if (curTab == FIND_TAB || curTab == REPLACE_TAB) {
             performFind(SearchDirection::Backwards);
@@ -554,7 +554,7 @@ void FindReplaceDialog::prepareToPerformSearch(bool isReplace) {
 
     updateFindList(findText);
     if (isReplace) {
-        QString replaceText = replaceString();
+        const QString replaceText = replaceString();
         updateReplaceList(replaceText);
     }
 
@@ -827,19 +827,15 @@ void FindReplaceDialog::copyMarkedText() {
 
 void FindReplaceDialog::showMessage(const QString &message, MessageType type) {
     const bool dark = ThemeManager::instance()->isDarkActive();
-    QString resolvedColor;
-    using enum MessageType;
-    switch (type) {
-        case Success:
-            resolvedColor = dark ? QStringLiteral("#3fb950") : QStringLiteral("#1a7f37");
-            break;
-        case Error:
-            resolvedColor = dark ? QStringLiteral("#f85149") : QStringLiteral("#cf222e");
-            break;
-        case Info:
-            resolvedColor = dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
-            break;
-    }
-    statusBar->setStyleSheet(QStringLiteral("color: %1; font-weight: 500;").arg(resolvedColor));
+    const auto resolveColor = [dark](MessageType t) -> QString {
+        if (t == MessageType::Success) {
+            return dark ? QStringLiteral("#3fb950") : QStringLiteral("#1a7f37");
+        }
+        if (t == MessageType::Error) {
+            return dark ? QStringLiteral("#f85149") : QStringLiteral("#cf222e");
+        }
+        return dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
+    };
+    statusBar->setStyleSheet(QStringLiteral("color: %1; font-weight: 500;").arg(resolveColor(type)));
     statusBar->showMessage(message);
 }

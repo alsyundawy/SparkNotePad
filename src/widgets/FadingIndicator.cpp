@@ -23,6 +23,7 @@
 
 #include "FadingIndicator.h"
 
+#include <QObject>
 #include <QGraphicsOpacityEffect>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -63,8 +64,9 @@ public:
         adjustSize();
         const QWidget *parent = parentWidget();
         QPoint pos = parent ? (parent->rect().center() - rect().center()) : QPoint();
-        if (pixmapIndicator && pixmapIndicator->geometry().intersects(QRect(pos, size())))
+        if (pixmapIndicator && pixmapIndicator->geometry().intersects(QRect(pos, size()))) {
             pos.setY(pixmapIndicator->geometry().bottom() + 1);
+        }
         move(pos);
     }
 
@@ -75,8 +77,9 @@ public:
         resize(m_pixmap.size() / m_pixmap.devicePixelRatio());
         const QWidget *parent = parentWidget();
         QPoint pos = parent ? (parent->rect().center() - rect().center()) : QPoint();
-        if (textIndicator && textIndicator->geometry().intersects(QRect(pos, size())))
+        if (textIndicator && textIndicator->geometry().intersects(QRect(pos, size()))) {
             pos.setY(textIndicator->geometry().bottom() + 1);
+        }
         move(pos);
     }
 
@@ -126,8 +129,9 @@ namespace FadingIndicator {
 void showText(QWidget *parent, const QString &text, TextSize size) {
     QPointer<Internal::FadingIndicatorPrivate> &indicator = Internal::FadingIndicatorPrivate::textIndicator;
 
-    if (indicator)
+    if (indicator) {
         delete indicator.data();
+    }
 
     indicator = new Internal::FadingIndicatorPrivate(parent, size);
     indicator->setText(text);
@@ -137,8 +141,9 @@ void showText(QWidget *parent, const QString &text, TextSize size) {
 void showPixmap(QWidget *parent, const QString &pixmap) {
     QPointer<Internal::FadingIndicatorPrivate> &indicator = Internal::FadingIndicatorPrivate::pixmapIndicator;
 
-    if (indicator)
+    if (indicator) {
         delete indicator.data();
+    }
 
     indicator = new Internal::FadingIndicatorPrivate(parent, LargeText);
     indicator->setPixmap(pixmap);

@@ -280,14 +280,21 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     QVBoxLayout *headerTextLayout = new QVBoxLayout();
     headerTextLayout->setSpacing(4);
 
-    QLabel *titleLabel = new QLabel(tr("SparkNotePad Update Available"), this);
+    QLabel *titleLabel =
+        new QLabel(info.isMandatory ? tr("SparkNotePad Mandatory Update") : tr("SparkNotePad Update Available"), this);
     titleLabel->setStyleSheet(QString("font-size: 17px; font-weight: 700; color: %1;").arg(colors.txtPri));
     headerTextLayout->addWidget(titleLabel);
 
     QLabel *subtitleLabel = new QLabel(
-        tr("A new version is available for download with performance, stability, and feature improvements."), this);
+        info.isMandatory
+            ? tr("A mandatory force update is required for all versions to ensure maximum security, performance, and "
+                 "stability.")
+            : tr("A new version is available for download with performance, stability, and feature improvements."),
+        this);
     subtitleLabel->setWordWrap(true);
-    subtitleLabel->setStyleSheet(QString("font-size: 13px; color: %1;").arg(colors.txtSec));
+    subtitleLabel->setStyleSheet(QString("font-size: 13px; %1color: %2;")
+                                     .arg(info.isMandatory ? QStringLiteral("font-weight: 600; ") : QStringLiteral(""),
+                                          info.isMandatory ? QStringLiteral("#ef4444") : colors.txtSec));
     headerTextLayout->addWidget(subtitleLabel);
 
     headerLayout->addLayout(headerTextLayout, 1);
@@ -329,6 +336,16 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
                 "<b style='background:rgba(16,185,129,0.18); color:%3; padding:2px 8px; border-radius:4px;'>%4</b>")
             .arg(colors.txtSec, tr("Latest"), colors.green, info.versionTag));
     pillsLayout->addWidget(newPill);
+
+    if (info.isMandatory) {
+        QLabel *mandatoryPill = new QLabel(this);
+        mandatoryPill->setTextFormat(Qt::RichText);
+        mandatoryPill->setText(
+            QString(
+                "<b style='background:rgba(239,68,68,0.22); color:#ef4444; padding:2px 8px; border-radius:4px;'>%1</b>")
+                .arg(tr("MANDATORY")));
+        pillsLayout->addWidget(mandatoryPill);
+    }
     pillsLayout->addStretch();
 
     cardLayout->addLayout(pillsLayout);
@@ -397,16 +414,18 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
                                      "  color: #0062cc;"
                                      "}")
                                  .arg(colors.accent));
-    connect(btnGitHub, &QPushButton::clicked, this, [info]() {
-        QString url = !info.htmlUrl.isEmpty() ? info.htmlUrl
-                                              : QStringLiteral("https://github.com/alsyundawy/SparkNotePad/releases");
+    connect(btnGitHub, &QPushButton::clicked, this, [info] {
+        const QString url = !info.htmlUrl.isEmpty()
+                                ? info.htmlUrl
+                                : QStringLiteral("https://github.com/alsyundawy/SparkNotePad/releases");
         QDesktopServices::openUrl(QUrl(url));
     });
     buttonBar->addWidget(btnGitHub);
     buttonBar->addStretch();
 
     // Neutral Remind Later button
-    QPushButton *btnLater = createSecondaryButton(tr("Remind Me Later"), colors, this);
+    QPushButton *btnLater = createSecondaryButton(
+        info.isMandatory ? tr("Remind Me Later (Mandatory)") : tr("Remind Me Later"), colors, this);
     connect(btnLater, &QPushButton::clicked, this, &QDialog::reject);
     buttonBar->addWidget(btnLater);
 
@@ -414,9 +433,14 @@ void UpdateDialog::setupUpdateAvailableUi(const QString &curVer, const ReleaseIn
     QPushButton *btnDownload = createPrimaryButton(tr("Download Update ⤓"), colors.accent, this);
     btnDownload->setDefault(true);
     btnDownload->setFocus();
-    connect(btnDownload, &QPushButton::clicked, this, [this, info]() {
-        QString url = !info.htmlUrl.isEmpty() ? info.htmlUrl
-                                              : QStringLiteral("https://github.com/alsyundawy/SparkNotePad/releases");
+    connect(btnDownload, &QPushButton::clicked, this, [this, info] {
+        QString url = info.downloadUrl;
+        if (url.isEmpty()) {
+            url = info.htmlUrl;
+        }
+        if (url.isEmpty()) {
+            url = QStringLiteral("https://github.com/alsyundawy/SparkNotePad/releases");
+        }
         QDesktopServices::openUrl(QUrl(url));
         accept();
     });
@@ -478,7 +502,7 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
     headerTextLayout->addWidget(subTitle);
 
     // Description line: "SparkNotePad sudah sepenuhnya menggunakan versi terbaru dengan optimasi penuh untuk macOS."
-#if defined(Q_OS_MACOS)
+#ifdef Q_OS_MACOS
     const QString platformName = QStringLiteral("macOS");
 #elif defined(Q_OS_LINUX)
     const QString platformName = QStringLiteral("Linux");
@@ -553,7 +577,7 @@ void UpdateDialog::setupUpToDateUi(const QString &curVer) {
     addCardRow(tr("Current Version:"), verFormatted);
 
     // Row 2: System Architecture
-#if defined(Q_OS_MACOS)
+#ifdef Q_OS_MACOS
     const QString archCpu = QSysInfo::currentCpuArchitecture();
     const QString archStr = (archCpu == QLatin1String("arm64") || archCpu == QLatin1String("aarch64"))
                                 ? QStringLiteral("macOS Apple Silicon (arm64)")

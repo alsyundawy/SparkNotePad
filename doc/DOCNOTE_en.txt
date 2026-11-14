@@ -1,9 +1,9 @@
-# SparkNotePad Release DocNote — v1.4.5 (English)
+# SparkNotePad Release DocNote — v1.4.6 (English)
 
 --------------------------------------------------------------------------------
 ================================================================================
-Release Version     : 1.4.5 (Closed Tab Stack, Tab Color Tagging, Crash Recovery, Extended Search, PDF Export, Mermaid/LaTeX, Developer Tools, Corresponding Switcher, EditorConfig, Clipboard History & Quick Switcher, Aksara Icon Packs (28 Suites) & 14-Pillar Hardening)
-Release Date        : 2026-11-08
+Release Version     : 1.4.6 (41 New Modern Toolbar Icon Packs [69 Built-in Suites Total], Context Menu Ergonomics, General Preferences, WCAG 2.1 Syntax Highlighting Overhaul & 30MB–40MB Standard DMG)
+Release Date        : 2026-11-10
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -18,61 +18,83 @@ License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 
 ---
 
-## 1. Executive Summary (English): Release v1.4.5
+## 1. Executive Summary: Changes from v1.4.5 to v1.4.6
+
+SparkNotePad v1.4.6 delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging:
+
+1. Toolbar Icon Packs Expansion (69 Built-in Suites Total):
+   - Expanded from the 28 icon packs in v1.4.5 by adding 41 new multi-resolution icon suites across all resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
+     * 11 Thematic Packs: royal_blue, notepad_pro, pastel, fluent_modern, macos_bigsur_modern, dark_neon_pro, macos_glass, modern_flat_colorful, glossy_3d_skeuomorphic, retro_8bit_pixel, sketchy_doodle.
+     * 30 Modern Packs: 01-macos-big-sur, 02-windows-11-fluent, 03-arc-browser-glow, 04-nordic-frost-minimal, 05-dracula-cyber-neon, 06-catppuccin-macchiato, 07-tokyo-night-storm, 08-synthwave-80s, 09-monokai-pro-vivid, 10-solarized-accent, 11-retro-commodore-64, 12-retro-win95-classic, 13-matrix-phosphor-green, 14-gameboy-nostalgia, 15-pixel-dungeon-rpg, 16-claymorphism-3d, 17-skeuomorphic-leather-brass, 18-neu-brutalism-bold, 19-isometric-voxel-3d, 20-origami-paper-fold, 21-cyberpunk-2077-yellow, 22-lofi-aesthetic-grain, 23-vaporwave-pastel-sunset, 24-astronomy-deep-space, 25-botanical-nature-green, 26-blueprint-schematic, 27-chalkboard-handdrawn, 28-gouache-art-paint, 29-stained-glass-mosaic, 30-swiss-minimal-3d.
+   - Clean Notepad++ Classic standard: completely eradicated floor drop shadows, halos, gray background tiles, and edge clipping across all packs, with 18% breathing margins preventing clipping on Retina displays.
+   - Permanent Dark Toolbar Invariant: `#mainToolBar` permanently locked to `#21252b` across all themes and appearance modes to guarantee icon contrast.
+
+2. Context Menu Ergonomics Overhaul:
+   - Added "Paste & Match Style" (pasteAndMatchStyle, Cmd+Alt+Shift+V / Ctrl+Shift+V) to strip foreign formatting and match current indentation level.
+   - Added "Search on Google" (searchOnGoogle, Cmd+Alt+G / Ctrl+Alt+G) to instantly query selected text or word under cursor in system browser.
+   - Streamlined case conversion to direct UPPERCASE and lowercase actions, eliminating cluttered run/bash options.
+
+3. General Preferences Additions:
+   - Added option to Enable / Disable Character Encoding Auto-detection (enableEncodingAutoDetection) in Preferences > General.
+   - Added option to Enable / Disable Save All Confirmation dialog (enableSaveAllConfirmation) in Preferences > General.
+
+4. Syntax Highlighting & Theme Engine Mathematical Overhaul (WCAG 2.1):
+   - Integrated WCAG 2.1 relative luminance and contrast calculations (0.2126*R + 0.7152*G + 0.0722*B), guaranteeing minimum 4.0:1 contrast ratio on primary text across all 70+ themes.
+   - Semantic styling tailored to language families (C/C++, Python, Web/HTML/JS/CSS, Markdown progressive H1-H6, SQL, Shell, YAML, etc.).
+   - High-visibility Gold Badges (#FFD700) for critical comment markers (TODO, FIXME, BUG, HACK, NOTE).
+   - Warm golden amber for string escape sequences (\n, \t, \xHH).
+   - Theme-synchronized rounded border box indicator for SmartHighlighter word occurrences.
+
+5. Standard Lightweight macOS DMG Packaging (30MB–40MB Standard):
+   - Calibrated release DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving universal Qt libraries and standard image format plugins (libqjpeg, libqgif, libqwebp).
+   - Packaged via canonical native hdiutil with custom retina background, layout preset .DS_Store (680x440), and verified CRC32 checksum.
+
+6. Split View Tab Modernization & Zero Theme Clash Architecture:
+   - Eliminated legacy dark metallic gradients and orange/peach borders by setting ads::CDockManager::DisableStylesheet, true.
+   - Fully unified split view tab styling through ThemeManager with dynamic theme palette colors.
+   - Dual-state visual hierarchy: focused active tabs feature vibrant accent top border (2px solid %6) and bold text (%2, weight 600); unfocused active tabs feature refined subtle indicator line (%12) and readable text (%2, weight 500).
+
+7. Auto-Completion UX, Theme Harmonization & Rendering Performance:
+   - Disabled auto-completion by default (autoCompletion = false) to prevent disruptive popups during normal typing.
+   - Cleared aggressive auto-fill triggers (autoCSetFillUps("")), preventing accidental insertions when typing spaces or parentheses.
+   - Harmonized default light theme palette name to sparkNotepad ("SparkNotepad Default") with backward compatibility.
+   - Precomputed HighlightedScrollBar geometry outside rendering loops to reduce Scintilla IPC queries.
+   - Implemented ultra-fast linear zero-allocation word counter for Markdown preview statistics.
+
+8. Comprehensive Multi-Build updates.json & Force-Update Delivery Engine:
+   - Upgraded updates.json to v1.4.6 covering the full build matrix: macOS Apple Silicon (arm64) and Intel (x86_64) across Qt 6.2–6.12, Linux Debian/Ubuntu (.deb) and RedHat/Fedora (.rpm) packages for both x86_64 and aarch64, and POSIX default editor helper scripts.
+   - Activated mandatory force update policy across all builds with resilient 3-tier update check pipeline in ReleaseManager.
+
+9. Markdown Live Preview & Engine Architecture Overhaul:
+   - Researched and integrated modern best practices from markedjs/marked, markdown-it, stackedit, editor.md, milkdown, and GitHub Flavored Markdown (GFM).
+   - Consolidated callout rendering into MarkdownPreviewEnhancer::enhanceCallouts across docks and tabs.
+   - GitHub Alert Admonitions ([!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]) with high-contrast icons, tinted backgrounds, and accent borders.
+   - Interactive Table of Contents generator ([TOC] / {:toc}) with automatic heading slug anchors (<h1 id="...">).
+   - Emoji shortcodes expansion (:rocket:, :sparkles:, etc.) with code block protection.
+   - Keyboard shortcut chips [[Key]] -> <kbd>Key</kbd>.
+   - Unified copyHtml(), openInBrowser(), and DocumentExportManager::markdownToHtml pipelines.
+   - Fixed compile_commands.json with 685 synchronized header entries, resolving 945+ IDE linter errors.
+
+10. 14-Pillar Code Quality & Static Analysis Gates:
+   - 100% clean passes on cppcheck (171 files, 0 errors, 0 warnings), clangd, clang-tidy, and trunk check.
+   - SonarLint compliance: resolved parameter warnings and enforced const correctness.
+   - 100% automated test suite pass rate (ctest).
+   - 100% bilingual translation coverage (English and Bahasa Indonesia).
+
+---
+
+## 2. Archive Summary: Release v1.4.5
 
 SparkNotePad v1.4.5 represents a major feature and stabilization milestone delivering 14 foundational architectural pillars designed for professional developers, system administrators, and power users:
 
 1. Closed Tab Stack & Reopen Closed Tab (Ctrl+Shift+T / Cmd+Shift+T):
    - ClosedTabsManager maintains a resilient 50-entry FIFO stack preserving caret position, line scroll ratio, encoding, EOL mode, language syntax styling, and tab color tags.
-   - Context menu and File menu actions for instant tab restoration.
-
 2. Tab Color Tagging & Grouping:
-   - TabColorManager provides 8 high-contrast, accessible color presets (Red, Orange, Yellow, Green, Cyan, Blue, Purple, Magenta) with persistent state across app restarts via ApplicationSettings.
-
+   - TabColorManager provides 8 high-contrast, accessible color presets with persistent state.
 3. Autosave & Crash Recovery Manager (10s Interval, Strict 0600 POSIX Permissions):
-   - AutosaveRecoveryManager writes background snapshots every 10 seconds for modified documents, enforced with POSIX 0600 permissions and SHA-256 integrity checksums. Interactive CrashRecoveryDialog allows selective recovery or discard on application relaunch.
-
+   - AutosaveRecoveryManager writes background snapshots every 10 seconds for modified documents.
 4. Comprehensive Extended Find/Replace Escape Engine:
-   - ExtendedSearchParser parses \xHH (hexadecimal byte), \dDDD (decimal byte), \0 (NUL byte), \b (backspace), \f (form-feed), and \v (vertical tab) across Find/Replace and Quick Find in Extended Search mode.
-
-5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages):
-   - Added new native lexers: Crystal (.cr), Cangjie (.cj), LLVM IR (.ll), and JSON5 (.json5).
-   - Modernized standard keyword sets: C23 (_BitInt, constexpr, nullptr), Rust 2024 (gen, async gen), Swift 6 (consuming, borrowing, sending), and TypeScript 5.8.
-
-6. Native Markdown / HTML / PDF Export Pipeline:
-   - Implemented DocumentExportManager with native Qt 6 QPrinter / Qt6::PrintSupport and Pandoc fallback engine.
-   - Interactive ExportOptionsDialog supporting custom page sizes (A4, Letter, Legal), orientation, margins, and embedded CSS styling.
-
-7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas):
-   - MarkdownPreviewEnhancer renders Mermaid flowcharts, sequence diagrams, class diagrams, and state machines via client containers.
-   - Full LaTeX math rendering support ($$...$$ block and $...$ inline math) with currency/escaped dollar preservation.
-   - Two-Way SyncScroll matching Scintilla editor line ratios with Markdown preview viewport.
-
-8. Developer Tools Suite:
-   - DeveloperToolsEngine in Tools menu: JSON Prettify & Minify, URL Encode & Decode, Unicode Escape & Unescape, UUID v4 generator.
-   - Interactive TimestampConverterDialog converting Unix Epoch timestamps (seconds/milliseconds) to human-readable UTC and Local ISO formats with copy helpers.
-
-9. Scrollbar Navigation Markers & Corresponding Header/Source Switcher (F4 / Alt+O):
-   - CorrespondingFileSwitcher supporting instant bidirectional toggle between C/C++ header (.h, .hpp, .hxx) and source (.c, .cpp, .cxx), and TypeScript/JavaScript source and test files (.test.ts, .spec.ts).
-   - Added ScrollbarNavigationMarkers tracking bookmark lines and search match highlights on the scrollbar track.
-
-10. Native .editorconfig Automatic Parser & Enforcement:
-    - EditorConfigParser supporting indent_style, indent_size, tab_width, end_of_line, and root = true parent directory traversal with automatic enforcement.
-
-11. Clipboard History Dock & Character Info Dock:
-    - Dockable ClipboardHistoryDock tracking recent clipboard history (FIFO queue of 20 items), search filtering, and one-click editor insertion.
-    - Dockable CharacterInfoDock displaying real-time Unicode glyph preview, code point U+XXXX, Unicode character name, category, UTF-8/16/32 hex, and HTML entities.
-
-12. Fuzzy Quick Switcher (Cmd+P / Ctrl+P) & Document Minimap Dock:
-    - Spotlight-style frameless QuickSwitcherDialog with subsequence fuzzy matching scoring open tabs and recent files.
-    - DocumentMinimapDock providing a lightweight overview minimap with viewport tracking and a >50 MB large file safeguard.
-    - Native macOS Dock recent documents integration via MacServicesHandler::updateDockRecentMenu.
-
-13. Aksara Toolbar Icon Pack Suite Integration (28 Packs Total) & Menu Ergonomics:
-    - Integrated 10 curated Aksara toolbar icon packs (340 vector SVGs and PNGs) across macOS Big Sur, Windows XP/Vista/10/11, Ubuntu Yaru, Arch Linux, Elementary OS, and modern styles (28 built-in packs total).
-    - Relocated Themes menu: Toolbar Icon Size placed prominently above Toolbar Icon Packs, moved Customize Toolbar into the Tools menu, and removed Open Custom Icon Pack from the menubar.
-    - Integrated into toolbar_icons.qrc and ToolbarIconManager.cpp with alias normalization and comprehensive unit test coverage.
-
-14. SonarLint & Clang-Tidy Static Analysis Eradication:
-    - Resolved all 25 SonarLint/SonarQube and clang-tidy static analysis warnings across src/ (misc-const-correctness, misc-override-with-different-visibility, bugprone-implicit-widening-of-multiplication-result, readability-use-concise-preprocessor-directives, readability-braces-around-statements, readability-else-after-return, performance-unnecessary-value-param).
-    - Verified 0 diagnostics and 0 errors across clangd --check, cppcheck, and unit tests.
+   - ExtendedSearchParser parses \xHH, \dDDD, \0, \b, \f, and \v across Find/Replace and Quick Find.
+5. 100+ Lexers Audit & Modern Language Expansion (129 Total Languages).
+6. Native Markdown / HTML / PDF Export Pipeline.
+7. Markdown Preview Enhancements (Mermaid Diagrams & LaTeX Math Formulas).

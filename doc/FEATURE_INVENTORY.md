@@ -1,8 +1,8 @@
 # SparkNotePad — Feature Inventory & Implementation Status
 
-- **Date:** 2026-11-07
-- **Release Version:** SparkNotePad v1.3.9
-- **Editor Engine:** Scintilla 5.6.9 + Lexilla 5.5.5 (125 lexers complete)
+- **Date:** 2026-11-14
+- **Release Version:** SparkNotePad v1.4.7
+- **Editor Engine:** Scintilla 5.6.9 + Lexilla 5.5.5 (129 lexers complete)
 - **Standard:** C++20 / Qt 6.5–6.12
 
 ---
@@ -100,55 +100,73 @@
 - **Full Qt 6.2 LTS Backward Compatibility**: Universal support for macOS Catalina 10.15 and Ubuntu 20.04 LTS via `QTimeZone::utc()`, `QLatin1String`, `parseColor`, and version-guarded cryptographic checks.
 - **Multi-Architecture Linux ARM64 & x64 Release Matrix (50+ Packages)**: Automated native packaging for Linux ARM64 (`aarch64`) and x64 across DEB and RPM distributions, immediate per-job publishing, and lean DMG packaging with bloatware pruned.
 
+### 1.10 30 Modern Icon Packs (69 Total), Context Menu Ergonomics, General Preferences & WCAG 2.1 Syntax Highlighting (v1.4.6)
+
+- **30 New Modern Toolbar Icon Packs (69 Built-in Suites Total)**: Added 30 modern multi-resolution icon packs (16x16–64x64): `01-macos-big-sur`, `02-windows-11-fluent`, `03-fluent-glass`, `04-dark-neon-pro`, `05-modern-colorful`, `06-metallic-pro`, `07-material-design-3`, `08-neumorphism`, `09-claymorphism`, `10-aurora-gradient`, `11-bento-grid`, `12-cyber-y2k`, `13-glassmorphism-light`, `14-windows-xp`, `15-flat-20-squircle`, `16-techno-blueprint`, `17-pastel-dream`, `18-vaporwave`, `19-neo-brutalism`, `20-monochrome-steel`, `21-deep-space`, `22-liquid-glass`, `23-retro-mac-os-classic`, `24-holographic`, `25-earthy-organic`, `26-ai-generative`, `27-high-tech-carbon`, `28-synthwave-neon`, `29-fluent-acrylic`, `30-swiss-minimal-3d`.
+- **Editor Context Menu Ergonomics**: Added **Paste & Match Style** (`Cmd+Alt+Shift+V` / `Ctrl+Shift+V`), **Search on Google** (`Cmd+Alt+G` / `Ctrl+Alt+G`), and direct **UPPERCASE** / **lowercase** conversion actions.
+- **General Preferences Additions**: Toggle checkboxes for Character Encoding Auto-detection (`enableEncodingAutoDetection`) and Save All Confirmation dialog (`enableSaveAllConfirmation`).
+- **WCAG 2.1 Contrast Safety & Syntax Highlighting Overhaul**: Mathematical luminance calculation guaranteeing 4.0:1 contrast ratio across all 70+ themes, High-visibility Gold Badges (`#FFD700`) for TODO/FIXME markers, and theme-synchronized indicator box.
+- **Canonical 30MB–40MB Lightweight macOS DMG Standard**: Calibrated release DMG packaging strictly between 30MB and 40MB (38MB–39MB) preserving Qt frameworks and image plugins.
+
 ---
 
 ## 2. Capability Implementation Matrix
 
-| Capability                                  | Status in v1.3.9 | Engine / Implementation                                             |
-| :------------------------------------------ | :--------------: | :------------------------------------------------------------------ |
-| **Scintilla 5.6.9 Official Engine**         |   ✅ Complete    | Core text rendering canvas, fold margins, Unicode 17                |
-| **Lexilla 5.5.5 Official Lexer Library**    |   ✅ Complete    | Complete 125 language lexers with memory safety hardening           |
-| **Markdown Front-Matter Syntax Styling**    |   ✅ Complete    | YAML (`---`), TOML (`+++`), JSON (`{}`) front-matter styling        |
-| **Sandboxed Lua 5.5.1 Runtime**             |   ✅ Complete    | Official Lua 5.5.1 with unsafe OS/IO system APIs disabled           |
-| **Default Language for New Documents**      |   ✅ Complete    | `ApplicationSettings::DefaultLanguage` in Preferences > Editor      |
-| **Infinite-Loop Regex Fix (CWE-835)**       |   ✅ Complete    | `Finder::replaceAll()` with enforced forward cursor advancement     |
-| **Dynamic About Dialog Metadata**           |   ✅ Complete    | `AboutDialog` dynamic `APP_VERSION` binding & Scintilla 5.6.9       |
-| **Qt 6.2 LTS Universal Compatibility**      |   ✅ Complete    | macOS Catalina 10.15 & Ubuntu 20.04 support                         |
-| **Multi-Arch Linux ARM64 & x64 Matrix**     |   ✅ Complete    | 50+ binary release packages across DEB, RPM, and DMG                |
-| **Lean macOS DMG Packaging (33 MB)**        |   ✅ Complete    | Bloatware Qt frameworks pruned, styled layout verified via hdiutil  |
-| **Toolbar Icon Packs Suite (38 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (Modern Ribbon, Fluent, Win7, Win11, Aksara)   |
-| **Dynamic Menu & Context Menu Icon Sync**   |   ✅ Complete    | `ToolbarIconManager::applyToWindow()` & `applyToMenu()`             |
-| **Tab Bar Plus (+) Button**                 |   ✅ Complete    | `DockedEditorTitleBar` (`m_plusButton`)                             |
-| **In-Tab HTML & Markdown Preview**          |   ✅ Complete    | `PreviewTabWidget` + `ads::CenterDockWidgetArea`                    |
-| **Preview in Default Web Browser**          |   ✅ Complete    | `MainWindow::openInDefaultBrowser()` via `QDesktopServices`         |
-| **Modern File Commander Browser**           |   ✅ Complete    | `FileBrowserDock` with bookmarks bar & storage metrics status bar   |
-| **Reversible Hex / Binary View**            |   ✅ Complete    | `MainWindow::toggleHexBinaryView()` (`Ctrl+Alt+H`)                  |
-| **100% Lexilla Lexers Parity (125 Lexers)** |   ✅ Complete    | `src/languages/*.lua` synced into `scripts/init.lua`                |
-| **Multi-DPI Icon Sizing (16x16–64x64)**     |   ✅ Complete    | `ToolbarIconManager::setIconSize()` (16, 20, 24, 32, 48, 64)        |
-| **Omnibar Command Palette & Quick Open**    |   ✅ Complete    | `CommandPaletteDialog` (`Cmd+P`, `Cmd+Shift+P`)                     |
-| **Side-by-Side Visual Diff**                |   ✅ Complete    | `FileDiffDialog` + pure C++20 `MyersDiffEngine`                     |
-| **Project Tree Live Filter Bar**            |   ✅ Complete    | `FolderAsWorkspaceDock` filter bar & context menu                   |
-| **Document Statistics & Shannon Entropy**   |   ✅ Complete    | `DocumentStatisticsDialog` & `TokenForensicUtils`                   |
-| **XML / HTML & SQL Prettify / Minify**      |   ✅ Complete    | `CodeCompressPretty` streaming formatter                            |
-| **JWT Token Inspector & Validator**         |   ✅ Complete    | `TokenForensicUtils::decodeJwt()`                                   |
-| **Multi-Cursor Active Counter**             |   ✅ Complete    | `EditorInfoStatusBar` (`[N Cursors]`)                               |
-| **Mark All Occurrences + Match Count**      |   ✅ Complete    | Scintilla indicator marking + real-time status bar counter          |
-| **Enhanced Auto-completion & Auto-close**   |   ✅ Complete    | Auto-close pairs `()`, `[]`, `{}`, `""`, `''`, context completion   |
-| **File Browser Dock**                       |   ✅ Complete    | Integrated file tree explorer dock widget                           |
-| **Base64 Encode / Decode**                  |   ✅ Complete    | Direct in-place selection encode/decode                             |
-| **Number Conversion**                       |   ✅ Complete    | Dec ↔ Hex ↔ Oct ↔ Bin conversion                                    |
-| **Insert GUID & Timestamps**                |   ✅ Complete    | Configurable GUID formats and timestamp insertion                   |
-| **Full-Screen Mode**                        |   ✅ Complete    | Native macOS + Qt full-screen toggle                                |
-| **Color Preview CallTip**                   |   ✅ Complete    | Hex/RGB hover swatch preview via Scintilla CallTip                  |
-| **Pretty & Compress (JSON/CSS/JS/XML/SQL)** |   ✅ Complete    | In-place formatters without external dependencies                   |
-| **Focused View**                            |   ✅ Complete    | Filter editor buffer to display only matching lines                 |
-| **Show Character Info**                     |   ✅ Complete    | Unicode code point, category, and byte sequence dump                |
-| **File Time Utilities**                     |   ✅ Complete    | Touch file time & save preserving original timestamp                |
-| **AES-256 File & Text Encryption**          |   ✅ Complete    | `CryptoManager` with PBKDF2 100k + HMAC-SHA256                      |
-| **Log Tail Monitoring (`tail -f`)**         |   ✅ Complete    | Non-modal real-time log monitoring engine                           |
-| **JavaScript Expression Evaluator**         |   ✅ Complete    | Sandboxed JS expression and math evaluation                         |
-| **Application Restart & Explicit Exit**     |   ✅ Complete    | `MainWindow::restartApplication()` and clean exit                   |
-| **Preferences Themes & Toolbar Tab**        |   ✅ Complete    | `PreferencesDialog` (Themes & Toolbar Icon Packs with card layout)  |
-| **Preferences Custom Toolbar Config Tab**   |   ✅ Complete    | `PreferencesDialog` (Embedded visual toolbar customizer widget)     |
-| **Standard Desktop Editor Menu Hierarchy**  |   ✅ Complete    | `MainWindow` (Hex/Binary below Compare, macOS app menu Restart)     |
-| **Complete Indonesian Localization**        |   ✅ Complete    | 1,850 translations finished (100% complete, 0 unfinished)           |
+| Capability                                  | Status in v1.4.6 | Engine / Implementation                                               |
+| :------------------------------------------ | :--------------: | :-------------------------------------------------------------------- |
+| **Scintilla 5.6.9 Official Engine**         |   ✅ Complete    | Core text rendering canvas, fold margins, Unicode 17                  |
+| **Lexilla 5.5.5 Official Lexer Library**    |   ✅ Complete    | Complete 125 language lexers with memory safety hardening             |
+| **Markdown Front-Matter Syntax Styling**    |   ✅ Complete    | YAML (`---`), TOML (`+++`), JSON (`{}`) front-matter styling          |
+| **Sandboxed Lua 5.5.1 Runtime**             |   ✅ Complete    | Official Lua 5.5.1 with unsafe OS/IO system APIs disabled             |
+| **Default Language for New Documents**      |   ✅ Complete    | `ApplicationSettings::DefaultLanguage` in Preferences > Editor        |
+| **Infinite-Loop Regex Fix (CWE-835)**       |   ✅ Complete    | `Finder::replaceAll()` with enforced forward cursor advancement       |
+| **Dynamic About Dialog Metadata**           |   ✅ Complete    | `AboutDialog` dynamic `APP_VERSION` binding & Scintilla 5.6.9         |
+| **Qt 6.2 LTS Universal Compatibility**      |   ✅ Complete    | macOS Catalina 10.15 & Ubuntu 20.04 support                           |
+| **Multi-Arch Linux ARM64 & x64 Matrix**     |   ✅ Complete    | 50+ binary release packages across DEB, RPM, and DMG                  |
+| **Lean macOS DMG Packaging (38–39 MB)**     |   ✅ Complete    | Strictly within 30MB–40MB ceiling with pre-baked `.DS_Store` layout   |
+| **Toolbar Icon Packs Suite (69 Packs)**     |   ✅ Complete    | `ToolbarIconManager` (69 modern and classic multi-DPI icon packs)     |
+| **Dynamic Menu & Context Menu Icon Sync**   |   ✅ Complete    | `ToolbarIconManager::applyToWindow()` & `applyToMenu()`               |
+| **Paste & Match Style & Google Search**     |   ✅ Complete    | Editor context menu ergonomics with direct UPPER/lowercase actions    |
+| **General Preferences Additions**           |   ✅ Complete    | Encoding auto-detection and save all confirmation toggle checks       |
+| **WCAG 2.1 Contrast Syntax Highlighting**   |   ✅ Complete    | 4.0:1 contrast calculation, Gold Badges `#FFD700`, indicator boxes    |
+| **Tab Bar Plus (+) Button**                 |   ✅ Complete    | `DockedEditorTitleBar` (`m_plusButton`)                               |
+| **In-Tab HTML & Markdown Preview**          |   ✅ Complete    | `PreviewTabWidget` + `ads::CenterDockWidgetArea`                      |
+| **Preview in Default Web Browser**          |   ✅ Complete    | `MainWindow::openInDefaultBrowser()` via `QDesktopServices`           |
+| **Modern File Commander Browser**           |   ✅ Complete    | `FileBrowserDock` with bookmarks bar & storage metrics status bar     |
+| **Reversible Hex / Binary View**            |   ✅ Complete    | `MainWindow::toggleHexBinaryView()` (`Ctrl+Alt+H`)                    |
+| **100% Lexilla Lexers Parity (125 Lexers)** |   ✅ Complete    | `src/languages/*.lua` synced into `scripts/init.lua`                  |
+| **Multi-DPI Icon Sizing (16x16–64x64)**     |   ✅ Complete    | `ToolbarIconManager::setIconSize()` (16, 20, 24, 32, 48, 64)          |
+| **Omnibar Command Palette & Quick Open**    |   ✅ Complete    | `CommandPaletteDialog` (`Cmd+P`, `Cmd+Shift+P`)                       |
+| **Side-by-Side Visual Diff**                |   ✅ Complete    | `FileDiffDialog` + pure C++20 `MyersDiffEngine`                       |
+| **Project Tree Live Filter Bar**            |   ✅ Complete    | `FolderAsWorkspaceDock` filter bar & context menu                     |
+| **Document Statistics & Shannon Entropy**   |   ✅ Complete    | `DocumentStatisticsDialog` & `TokenForensicUtils`                     |
+| **XML / HTML & SQL Prettify / Minify**      |   ✅ Complete    | `CodeCompressPretty` streaming formatter                              |
+| **JWT Token Inspector & Validator**         |   ✅ Complete    | `TokenForensicUtils::decodeJwt()`                                     |
+| **Multi-Cursor Active Counter**             |   ✅ Complete    | `EditorInfoStatusBar` (`[N Cursors]`)                                 |
+| **Mark All Occurrences + Match Count**      |   ✅ Complete    | Scintilla indicator marking + real-time status bar counter            |
+| **Enhanced Auto-completion & Auto-close**   |   ✅ Complete    | Auto-close pairs `()`, `[]`, `{}`, `""`, `''`, context completion     |
+| **File Browser Dock**                       |   ✅ Complete    | Integrated file tree explorer dock widget                             |
+| **Base64 Encode / Decode**                  |   ✅ Complete    | Direct in-place selection encode/decode                               |
+| **Number Conversion**                       |   ✅ Complete    | Dec ↔ Hex ↔ Oct ↔ Bin conversion                                      |
+| **Insert GUID & Timestamps**                |   ✅ Complete    | Configurable GUID formats and timestamp insertion                     |
+| **Full-Screen Mode**                        |   ✅ Complete    | Native macOS + Qt full-screen toggle                                  |
+| **Color Preview CallTip**                   |   ✅ Complete    | Hex/RGB hover swatch preview via Scintilla CallTip                    |
+| **Pretty & Compress (JSON/CSS/JS/XML/SQL)** |   ✅ Complete    | In-place formatters without external dependencies                     |
+| **Focused View**                            |   ✅ Complete    | Filter editor buffer to display only matching lines                   |
+| **Show Character Info**                     |   ✅ Complete    | Unicode code point, category, and byte sequence dump                  |
+| **File Time Utilities**                     |   ✅ Complete    | Touch file time & save preserving original timestamp                  |
+| **AES-256 File & Text Encryption**          |   ✅ Complete    | `CryptoManager` with PBKDF2 100k + HMAC-SHA256                        |
+| **Log Tail Monitoring (`tail -f`)**         |   ✅ Complete    | Non-modal real-time log monitoring engine                             |
+| **JavaScript Expression Evaluator**         |   ✅ Complete    | Sandboxed JS expression and math evaluation                           |
+| **Application Restart & Explicit Exit**     |   ✅ Complete    | `MainWindow::restartApplication()` and clean exit                     |
+| **Preferences Themes & Toolbar Tab**        |   ✅ Complete    | `PreferencesDialog` (Themes & Toolbar Icon Packs with card layout)    |
+| **Preferences Custom Toolbar Config Tab**   |   ✅ Complete    | `PreferencesDialog` (Embedded visual toolbar customizer widget)       |
+| **Standard Desktop Editor Menu Hierarchy**  |   ✅ Complete    | `MainWindow` (Hex/Binary below Compare, macOS app menu Restart)       |
+| **System Transfer (.sparkbundle)**          |   ✅ Complete    | `SparkTransferManager` & `TransferBundleDialog` with Zip-Slip defense |
+| **POSIX Shell Inspector & Touch Utility**   |   ✅ Complete    | `PosixFileInspector`, shebang dialect, octal/symbolic, `chmod +x`     |
+| **Stateless 3-Point Encoding Detector**     |   ✅ Complete    | `EncodingDetector` (header, middle, tail 16KB), UTF-32 LE/BE BOM      |
+| **Atomic File Save & Sibling Tmp Guard**    |   ✅ Complete    | `ScintillaNext::writeToDisk` with atomic rename and 0600 permissions  |
+| **Multi-Mode Goto Dialog (Line/Char/Byte)** |   ✅ Complete    | `GotoDialog` with live preview and target pos calculation             |
+| **Project Tree Safe Rename Preview**        |   ✅ Complete    | `FolderAsWorkspaceDock` safe rename with traversal & collision checks |
+| **2025–2026 CVE Security Hardening**        |   ✅ Complete    | Immunity against CVE-2026-42214, 48778, 52885, 52886, 57233, etc.     |
+| **Complete Indonesian Localization**        |   ✅ Complete    | 2,247 translations finished (100% complete, 0 unfinished, EYD V)      |

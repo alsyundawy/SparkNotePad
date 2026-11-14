@@ -52,11 +52,11 @@ All side panels in SparkNotePad use the **Qt Advanced Docking System**:
 
 ---
 
-## 4. Toolbar Icon Packs Suite (28 Built-In Packs), Plus (+) Tab Button & Visual Customizer
+## 4. Toolbar Icon Packs Suite (69 Built-In Packs), Plus (+) Tab Button & Visual Customizer
 
-SparkNotePad v1.4.5 features a comprehensive toolbar theming and customization architecture with 28 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
+SparkNotePad v1.4.6 features a comprehensive toolbar theming and customization architecture with 69 curated icon packs, full high-DPI (2x Retina) multi-resolution support, and dynamic Dark Mode luminance adaptation:
 
-### Built-in Toolbar Icon Packs (28 Packs)
+### Built-in Toolbar Icon Packs (69 Packs)
 
 1. **Modern Ribbon (Default)** (`modernRibbon`): High-DPI 20x20 monoline vector SVG suite with refined contours (Default).
 2. **Fugue Classic (Silk Suite)** (`fugue`): Authentic pixel-perfect Fugue 3.5.6 iconography by Yusuke Kamiyamane across all 6 resolutions.
@@ -68,7 +68,7 @@ SparkNotePad v1.4.5 features a comprehensive toolbar theming and customization a
 8. **Notepad++ Classic** (`notepadPlusPlus`): Authentic high-DPI vector recreations of classic Notepad++ iconography.
 9. **Glossy Orange** (`glossy_orange`): Vibrant skeuomorphic orange vector icons.
 10. **Windows XP (Luna Classic)** (`windowsXp`): Authentic Windows XP Luna 3D skeuomorphic nostalgia rebuilt from official master icons (master 64×64 PNG supporting 16×16 to 64×64).
-11. **NotepadNext Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from NotepadNext.
+11. **SparkNotepad Classic (Silk)** (`notepadNext`): Authentic 16x16 Silk bitmap icons from SparkNotepad.
 12. **Vibrant DuoTone (Cyberpunk)** (`vibrantDuotone`): High-luminance electric cyan & radiant magenta dual-tone contrast.
 13. **Monochrome Outline (Minimalist)** (`monochrome`): Clean 1.8px monoline wireframes engineered for dark and light themes.
 14. **Elegant Themes** (`eleganticons`): Authentic classic 48x48 iconography by Nicholas Roach across all resolution scales.
@@ -86,6 +86,47 @@ SparkNotePad v1.4.5 features a comprehensive toolbar theming and customization a
 26. **Aksara Ubuntu Yaru** (`aksara-ubuntu-yaru`): Ubuntu official Yaru desktop theme vector iconography.
 27. **Aksara Arch Linux** (`aksara-arch-linux`): Arch Linux cyan and dark blue minimalist iconography.
 28. **Aksara Elementary OS** (`aksara-elementary-os`): Elementary OS human-centered design vector iconography.
+29. **Royal Blue** (`royal_blue`): Royal Blue Aero Glossy skeuomorphic glass desktop iconography.
+30. **Notepad Pro** (`notepad_pro`): Modern elegant Vista/7 aero translucent iconography.
+31. **Pastel Modern** (`pastel`): Warm minimalist pastel color palette.
+32. **Fluent Modern** (`fluent_modern`): Windows 11 Fluent 3D layered iconography.
+33. **macOS Big Sur Modern** (`macos_bigsur_modern`): Sleek macOS squircle aesthetics with vibrant accents.
+34. **Dark Neon Pro** (`dark_neon_pro`): High-contrast cyberpunk neon glowing on dark palettes.
+35. **macOS Glass** (`macos_glass`): Translucent frosted glass aero acrylic aesthetic.
+36. **Modern Flat & Colorful** (`modern_flat_colorful`): Clean vector flat style with distinct high-contrast colors.
+37. **Glossy 3D Skeuomorphic** (`glossy_3d_skeuomorphic`): Tactile volumetric glossy 3D clay aesthetic.
+38. **Retro 8-Bit Pixel Art** (`retro_8bit_pixel`): Pixel-perfect retro arcade gaming iconography.
+39. **Sketchy Hand-Drawn Doodle** (`sketchy_doodle`): Expressive hand-drawn artistic doodle iconography.
+40. **macOS Big Sur (2020)** (`01-macos-big-sur`): Soft 3D, white/translucent squircle with vibrant skeuomorphic elements and subtle drop shadow.
+41. **Windows 11 Fluent (2021)** (`02-windows-11-fluent`): Dark acrylic squircle with deep glossy blue/cyan backlight and crisp reflections.
+42. **Fluent Glass (2024)** (`03-fluent-glass`): Frosted glass squircle with heavy translucency, pastel gradients, and refractive edges.
+43. **Dark Neon Pro (2020)** (`04-dark-neon-pro`): Dark obsidian background with intense glowing neon purple, pink, and cyan outlines.
+44. **Modern Colorful (2020)** (`05-modern-colorful`): Bright soft 3D squircle with vibrant, saturated colors inspired by modern mobile OS.
+45. **Metallic Pro (2023)** (`06-metallic-pro`): Brushed metal and chrome squircle with machined silver/grey 3D bevels.
+46. **Material Design 3 (2023)** (`07-material-design-3`): Dynamic color palettes with soft rounded 3D and tonal elevations.
+47. **Neumorphism (2019)** (`08-neumorphism`): Soft UI with extruded plastic surfaces and dual light/dark soft shadows.
+48. **Claymorphism (2022)** (`09-claymorphism`): Matte 3D clay with puffy, rounded soft geometry and playful tactile warmth.
+49. **Aurora Gradient (2021)** (`10-aurora-gradient`): Glowing mesh gradients with smooth 3D blends of cyan, purple, and emerald.
+50. **Bento Grid (2023)** (`11-bento-grid`): Modular, clean distinct colors with glossy card finishes and sharp micro-borders.
+51. **Cyber-Y2K (2024)** (`12-cyber-y2k`): Metallic liquid silver with vibrant neon pink and cyan specular reflections.
+52. **Glassmorphism Light (2021)** (`13-glassmorphism-light`): Ultra-clean semi-transparent white acrylic glass with chromatic edge refraction.
+53. **Windows XP (2001)** (`14-windows-xp`): Authentic 3D skeuomorphic Windows XP Luna icons with vibrant primary colors and bevels.
+54. **Flat 2.0 Squircle (2022)** (`15-flat-20-squircle`): Modern flat vector aesthetic enclosed in soft squircle bounding cards.
+55. **Techno Blueprint (2023)** (`16-techno-blueprint`): Engineering schematic CAD blueprint wireframes in technical cyan on gridlines.
+56. **Pastel Dream (2022)** (`17-pastel-dream`): Soothing dreamy pastel palette with soft marshmallow 3D forms.
+57. **Vaporwave (2020)** (`18-vaporwave`): Retro 80s/90s vaporwave aesthetic with wireframe grids and palm-tree magenta sunsets.
+58. **Neo-Brutalism (2023)** (`19-neo-brutalism`): High-contrast stark black 2px borders, bold primary colors, and hard drop shadows.
+59. **Monochrome Steel (2022)** (`20-monochrome-steel`): Industrial brushed steel and slate grey monochromes for focused minimalism.
+60. **Deep Space (2023)** (`21-deep-space`): Cosmic nebula gradients with glowing stellar cyan and violet accents.
+61. **Liquid Glass (2024)** (`22-liquid-glass`): Fluid organic glass shapes with specular highlights and liquid refraction.
+62. **Retro Mac OS Classic (1991)** (`23-retro-mac-os-classic`): Classic System 7 / Platinum 1-bit & 8-bit black-and-white dithered nostalgic iconography.
+63. **Holographic (2024)** (`24-holographic`): Iridescent pearlescent foil reflections with rainbow specular highlights.
+64. **Earthy Organic (2023)** (`25-earthy-organic`): Natural botanical olive, terracotta, and warm ochre tones.
+65. **AI Generative (2024)** (`26-ai-generative`): Futuristic neural spark iconography with luminous quantum purple and cyan gradients.
+66. **High-Tech Carbon (2023)** (`27-high-tech-carbon`): Woven carbon fiber weave texture with racing yellow accents.
+67. **Synthwave Neon (2021)** (`28-synthwave-neon`): Outrun 80s synthwave neon gridlines in radiant hot pink and electric cobalt.
+68. **Fluent Acrylic (2023)** (`29-fluent-acrylic`): Windows 11 Sun Valley Mica/Acrylic translucent desktop styling.
+69. **Swiss Minimal 3D (2024)** (`30-swiss-minimal-3d`): International typographic style translated into disciplined 3D geometric forms.
 
 ### High-DPI & Retina Clarity
 
@@ -126,7 +167,7 @@ Switch icon size seamlessly from `Themes > Toolbar Icon Size` (located above `To
 
 - **Themes & Toolbar Tab (Tab 3)**:
   - Consolidates active theme selection, window opacity slider, tail -f reload interval, and multi-display safety guards.
-  - Comprehensive Toolbar Icon Packs manager featuring 28 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector (16x16 to 64x64), live icon sample preview strip, custom icon packs folder launcher, and live rescan.
+  - Comprehensive Toolbar Icon Packs manager featuring 69 distinct packs, active icon pack selector with responsive description card styling, multi-DPI icon size selector (16x16 to 64x64), live icon sample preview strip, custom icon packs folder launcher, and live rescan.
 - **Custom Toolbar Config Tab (Tab 4)**:
   - Embedded visual toolbar customizer (`CustomizeToolbarWidget`) directly inside Preferences.
   - Add, remove, and reorder toolbar buttons using intuitive dual list views with search filtering.
@@ -160,7 +201,7 @@ SparkNotePad includes dedicated multi-monitor ergonomics:
 
 ---
 
-## 6. Markdown & HTML Live Preview with 30 Built-in Themes
+## 6. Markdown Live Preview with 30 Built-in Themes
 
 SparkNotePad features an interactive, sandboxed live preview dock (`Ctrl+Shift+M` / `Cmd+Shift+M`) and dedicated tab preview (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 
