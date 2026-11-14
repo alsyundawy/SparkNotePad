@@ -168,4 +168,32 @@ SparkNotePad v1.4.5 introduces 12 major foundational features:
 
 ---
 
+## 14. v1.4.7 Core Engine Upgrade, System Transfer, POSIX Inspector & 2026 CVE Security Hardening
+
+- **Core Engine Upgrade to Scintilla 5.6.9 & Lexilla 5.5.5**:
+  - Scintilla 5.6.9 brings Unicode 17 character categories, 40-byte lexeme caching, line-start layout bypass accelerating rendering, change history undo crash resolution, and restored XPM autocompletion/marker colors.
+  - Lexilla 5.5.5 adds Markdown YAML/TOML/JSON front-matter styling, nested HTML/JS template literals, regex slash within character classes, PHP `$$variable` styling, SQL `q-string` speedups, and 12 upstream memory safety/OOB fixes (#388).
+  - Applied the 4 official Lua 5.5.1 bug-fix patches.
+- **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**:
+  - Cross-platform export/import of preferences, custom themes (QSS), macros, sessions, and user scripts as `.sparkbundle` packages.
+  - Hardened with Zip-Slip defense (`CVE-2026-57233`), traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.
+- **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**:
+  - Real-time shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d` scripts.
+  - Interactive status bar permission badge (`FieldPosixPerms`) with one-click `chmod +x` toggle.
+  - Menu actions for toggling executable permissions and enforcing owner-only private mode (`chmod 0600`).
+  - Precision file touch utility via POSIX `utimes`.
+- **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**:
+  - 3-point sampling (header 16KB, midpoint 16KB, tail 16KB) for robust large-file character set detection via `uchardet`.
+  - UTF-32 LE/BE BOM support.
+  - Atomic file saving in `ScintillaNext::writeToDisk` using private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, and atomic POSIX `rename()`.
+- **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
+  - Multi-mode navigation supporting Visual Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with live target calculation.
+  - Interactive safe rename dialog in `FolderAsWorkspaceDock` with traversal validation, collision checks, and dry-run preview.
+- **Comprehensive 2025–2026 CVE Security Hardening**:
+  - Automated regression test suite `tests/test_v147_features.h` verifying immunity against `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, and `CVE-2026-77605`.
+- **Complete Localization Synchronization**:
+  - Updated translation catalogs `SparkNotePad_en.ts` and `SparkNotePad_id.ts` with 2,247 strings, 100% completion, 0 unfinished entries, and strict EYD V / PASTI compliance.
+
+---
+
 Next Chapter: **[[03. User Interface & Themes|03-User-Interface-and-Themes]]**

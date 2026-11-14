@@ -28,6 +28,9 @@
 #define APP_VERSION "1.3.9"
 #endif
 #include "CommandPaletteDialog.h"
+#include "GotoDialog.h"
+#include "TransferBundleDialog.h"
+#include "PosixFileInspector.h"
 #include "DocumentStatisticsDialog.h"
 #include "FileDiffDialog.h"
 #include "TokenForensicUtils.h"
@@ -426,6 +429,46 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     });
 
     connect(ui->actionExportPdf, &QAction::triggered, this, &MainWindow::exportPdf);
+
+    // System Transfer: Export / Import Workspace Bundle (.sparkbundle)
+    auto *menuSystemTransfer = new QMenu(tr("System Transfer"), this);
+    auto *actTransferBundle = menuSystemTransfer->addAction(tr("Export / Import Workspace Bundle (.sparkbundle)..."));
+    connect(actTransferBundle, &QAction::triggered, this, [this] {
+        TransferBundleDialog dlg(this);
+        dlg.exec();
+    });
+    ui->menuFile->insertMenu(ui->actionPrint, menuSystemTransfer);
+
+    // File Permissions: chmod +x, chmod 0600
+    auto *menuPermissions = new QMenu(tr("File Permissions"), this);
+    auto *actToggleExec = menuPermissions->addAction(tr("Toggle Executable Bit (chmod +x)"));
+    connect(actToggleExec, &QAction::triggered, this, [this] {
+        if (auto *editor = currentEditor()) {
+            if (editor->isFile()) {
+                QString err;
+                if (PosixFileInspector::toggleExecutable(editor->getFilePath(), &err)) {
+                    ui->statusBar->showMessage(tr("Updated executable bit for \"%1\"").arg(editor->getName()), 3000);
+                } else {
+                    ui->statusBar->showMessage(tr("Failed to update executable bit: %1").arg(err), 4000);
+                }
+            }
+        }
+    });
+    auto *actSetOwnerOnly = menuPermissions->addAction(tr("Enforce Owner-Only Private Mode (chmod 0600)"));
+    connect(actSetOwnerOnly, &QAction::triggered, this, [this] {
+        if (auto *editor = currentEditor()) {
+            if (editor->isFile()) {
+                QString err;
+                if (PosixFileInspector::setOwnerOnly(editor->getFilePath(), &err)) {
+                    ui->statusBar->showMessage(
+                        tr("Enforced owner-only 0600 permissions for \"%1\"").arg(editor->getName()), 3000);
+                } else {
+                    ui->statusBar->showMessage(tr("Failed to set 0600 permissions: %1").arg(err), 4000);
+                }
+            }
+        }
+    });
+    ui->menuFile->insertMenu(ui->actionPrint, menuPermissions);
 
     connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::print);
 
@@ -1845,20 +1888,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
             [this] { showFindReplaceDialog(FindReplaceDialog::MARK_TAB); });
 
     connect(ui->actionGoToLine, &QAction::triggered, this, [this] {
-        ScintillaNext *editor = currentEditor();
-        const int currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos())) + 1;
-        const auto maxLine = static_cast<int>(editor->lineCount());
-        bool ok;
-
-        const auto d = QInputDialog(this);
-        const Qt::WindowFlags flags = d.windowFlags() & ~Qt::WindowContextHelpButtonHint;
-        const int lineToGoTo = QInputDialog::getInt(this, tr("Go to line"), tr("Line Number (1 - %1)").arg(maxLine),
-                                                    currentLine, 1, maxLine, 1, &ok, flags);
-
-        if (ok) {
-            editor->ensureVisible(lineToGoTo - 1);
-            editor->gotoLine(lineToGoTo - 1);
-            editor->verticalCentreCaret();
+        if (ScintillaNext *editor = currentEditor()) {
+            GotoDialog dlg(editor, this);
+            dlg.exec();
         }
     });
 

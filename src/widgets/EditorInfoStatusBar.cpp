@@ -11,6 +11,7 @@
  */
 
 #include "EditorInfoStatusBar.h"
+#include "PosixFileInspector.h"
 #include "EncodingDetector.h"
 #include "CharacterInfo.h"
 #include "MainWindow.h"
@@ -74,8 +75,22 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     addPermanentWidget(overType, 0);
     overType->setToolTip(tr("Typing Mode: Insert (INS) / Overtype (OVR)"));
 
+    posixPerms = new StatusLabel(110, this);  // NOSONAR
+    addPermanentWidget(posixPerms, 0);
+    posixPerms->setToolTip(tr("POSIX File Permissions & Script Dialect (Click to toggle +x)"));
+
     const auto *w = qobject_cast<const MainWindow *>(window);
     connect(w, &MainWindow::editorActivated, this, &EditorInfoStatusBar::connectToEditor);
+
+    connect(qobject_cast<StatusLabel *>(posixPerms), &StatusLabel::clicked, w, [this, w]() {
+        if (auto *editor = w->currentEditor()) {
+            if (editor->isFile()) {
+                QString err;
+                PosixFileInspector::toggleExecutable(editor->getFilePath(), &err);
+                updatePosixPermissions(editor);
+            }
+        }
+    });
 
     connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [this, w]() {
         if (auto *editor = w->currentEditor()) {
@@ -105,6 +120,8 @@ QLabel *EditorInfoStatusBar::labelForField(Field field) const {
             return unicodeType;
         case FieldOverType:
             return overType;
+        case FieldPosixPerms:
+            return posixPerms;
         default:
             return nullptr;
     }
@@ -121,6 +138,7 @@ void EditorInfoStatusBar::loadSettings() {
     m_fieldVisibility[FieldEol] = settings.value(QStringLiteral("Eol"), true).toBool();
     m_fieldVisibility[FieldEncoding] = settings.value(QStringLiteral("Encoding"), true).toBool();
     m_fieldVisibility[FieldOverType] = settings.value(QStringLiteral("OverType"), true).toBool();
+    m_fieldVisibility[FieldPosixPerms] = settings.value(QStringLiteral("PosixPerms"), true).toBool();
     settings.endGroup();
 
     for (int i = 0; i < static_cast<int>(FieldCount); ++i) {
@@ -142,6 +160,7 @@ void EditorInfoStatusBar::saveSettings() const {
     settings.setValue(QStringLiteral("Eol"), m_fieldVisibility.value(FieldEol, true));
     settings.setValue(QStringLiteral("Encoding"), m_fieldVisibility.value(FieldEncoding, true));
     settings.setValue(QStringLiteral("OverType"), m_fieldVisibility.value(FieldOverType, true));
+    settings.setValue(QStringLiteral("PosixPerms"), m_fieldVisibility.value(FieldPosixPerms, true));
     settings.endGroup();
 }
 
@@ -192,6 +211,7 @@ void EditorInfoStatusBar::contextMenuEvent(QContextMenuEvent *event) {
     addFieldAction(FieldEol, tr("End-of-Line Format"));
     addFieldAction(FieldEncoding, tr("File Encoding"));
     addFieldAction(FieldOverType, tr("Insert / Overtype Mode"));
+    addFieldAction(FieldPosixPerms, tr("POSIX Permissions & Dialect"));
 
     menu.addSeparator();
 
@@ -228,6 +248,7 @@ void EditorInfoStatusBar::refresh(ScintillaNext *editor) {
     updateEol(editor);
     updateEncoding(editor);
     updateOverType(editor);
+    updatePosixPermissions(editor);
 }
 
 void EditorInfoStatusBar::connectToEditor(ScintillaNext *editor) {
@@ -349,5 +370,28 @@ void EditorInfoStatusBar::updateOverType(const ScintillaNext *editor) {
         overType->setText(tr("OVR"));
     } else {
         overType->setText(tr("INS"));
+    }
+}
+
+void EditorInfoStatusBar::updatePosixPermissions(const ScintillaNext *editor) {
+    if (!posixPerms || !isFieldVisible(FieldPosixPerms))
+        return;
+    if (!editor || !editor->isFile()) {
+        posixPerms->setText(tr("---"));
+        posixPerms->setToolTip(tr("New file (unsaved)"));
+        return;
+    }
+
+    const PosixFileInspector::InspectionResult info = PosixFileInspector::inspect(editor->getFilePath());
+    if (info.isValidFile) {
+        posixPerms->setText(PosixFileInspector::formatPermissionBadge(info));
+        posixPerms->setToolTip(
+            tr("Path: %1\nPermissions: %2 (%3)\nScript Dialect: %4\nExecutable: %5\nModified: %6\n(Click to toggle +x)")
+                .arg(editor->getFilePath(), info.octalString, info.symbolicString,
+                     info.shellDialect.isEmpty() ? tr("None") : info.shellDialect,
+                     info.isExecutable ? tr("Yes") : tr("No"), info.lastModified.toString(Qt::ISODate)));
+    } else {
+        posixPerms->setText(tr("---"));
+        posixPerms->setToolTip(tr("File permissions unavailable"));
     }
 }

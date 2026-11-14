@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.6-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.6"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.7-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.7"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.6-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.7-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -79,7 +79,7 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.4.6)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.4.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
@@ -325,19 +325,19 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Official production binary packages for SparkNotePad v1.4.6 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
+Official production binary packages for SparkNotePad v1.4.7 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
 | Platform                    | Target Architecture             | Package Format  | Download Link                                                                                                                                    |
 | :-------------------------- | :------------------------------ | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.4.6-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-v1.4.6-x64.dmg)                   |
-| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.4.6-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-v1.4.6-arm64.dmg)               |
-| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.4.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.6)                                                         |
-| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.4.6_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/sparknotepad_1.4.6_amd64.deb)                 |
-| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.4.6-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/sparknotepad-1.4.6-1.x86_64.rpm)           |
-| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.4.6](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.6)                                                         |
-| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SparkNotePad-Default-Editor.sh)             |
-| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.6/SHA256SUMS.txt)                                             |
+| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.4.7-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-v1.4.7-x64.dmg)                   |
+| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.4.7-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-v1.4.7-arm64.dmg)               |
+| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.4.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.7)                                                         |
+| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.4.7_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/sparknotepad_1.4.7_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.4.7-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/sparknotepad-1.4.7-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.4.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.7)                                                         |
+| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-Default-Editor.sh)             |
+| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SHA256SUMS.txt)                                             |
 | **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)      |  Source / Pkg   | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Linux Package Installation (Automated Dependencies)
@@ -346,7 +346,7 @@ Official production binary packages for SparkNotePad v1.4.6 are ready for immedi
   Install via `apt` with a leading `./` so all Qt 6 and desktop dependencies are automatically resolved and installed from official repositories:
 
   ```bash
-  sudo apt install ./sparknotepad_1.4.6_amd64.deb
+  sudo apt install ./sparknotepad_1.4.7_amd64.deb
   ```
 
   _(See detailed [Debian & Ubuntu Native Build Guide](doc/BUILD_UBUNTU_DEBIAN.md) and [Linux Packaging Guide](doc/LINUX_DEB_RPM_PACKAGING.md))._
@@ -354,7 +354,7 @@ Official production binary packages for SparkNotePad v1.4.6 are ready for immedi
 - **Fedora / RHEL / AlmaLinux / openSUSE (`.rpm`)**:
 
   ```bash
-  sudo dnf install ./sparknotepad-1.4.6-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-1.4.7-1.x86_64.rpm
   ```
 
 ### FreeBSD Build & Desktop Installation (KDE Plasma 6 & XFCE)
@@ -446,6 +446,33 @@ trunk check -n -j 2
 ## Changelog
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.4.7] — Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening (2026-11-14)
+
+- **Core Engine Upgrade to Scintilla 5.6.9 & Lexilla 5.5.5**:
+  - Upgraded Scintilla to **v5.6.9** (Unicode 17 character tables, 40-byte lexeme cache, line-start layout calculation bypass, change history undo crash fix, and restored XPM marker colors).
+  - Upgraded Lexilla to **v5.5.5** (Markdown front-matter styling [#59], HTML/JS nested template literals [#290], regex `/` in `[]` character classes [#377], PHP `$$variable` styling [#2208], SQL `q-string` speedup [#378], and all 12 memory safety/OOB fixes [#388]).
+  - Applied official Lua 5.5.1 bug-fix patches 1–4 (`luaO_applyparam` negative shift guard, NaN `for` loop fix, `-0.0 - 0` folding prevention, and `coroutine.close` error preservation).
+- **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**:
+  - Export and import preferences, custom themes, macros, sessions, and scripts into portable `.sparkbundle` files for macOS, FreeBSD, and Linux.
+  - Built-in Zip-Slip defense (`CVE-2026-57233`), path traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC integrity verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.
+- **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**:
+  - Real-time shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d` scripts.
+  - Status bar badge `FieldPosixPerms` with one-click executable bit toggle (`chmod +x`).
+  - Menu actions for toggling executable permissions and enforcing owner-only mode (`chmod 0600`).
+  - Precision file touch utility leveraging POSIX `utimes`.
+- **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**:
+  - Tri-point sampling across header (16KB), midpoint (16KB), and tail (16KB) for robust large-file character set detection via `uchardet`.
+  - Added explicit UTF-32 LE/BE BOM support (`\xFF\xFE\x00\x00` and `\x00\x00\xFE\xFF`).
+  - Hardened `ScintillaNext::writeToDisk` with atomic saving via private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, and atomic POSIX `rename()`.
+- **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
+  - Multi-mode navigation dialog supporting Visual Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with live target calculation.
+  - Safe rename in `FolderAsWorkspaceDock` with path traversal defense, collision detection, and dry-run preview.
+- **Comprehensive 2025–2026 CVE Security Hardening**:
+  - 100% immunity and automated test coverage across `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, and `CVE-2026-20841`.
+  - Added `tests/test_v147_features.h` with 9 automated unit tests verifying all new security and architectural invariants.
+- **Localization Synchronization**:
+  - Updated English (`i18n/SparkNotePad_en.ts`) and Indonesian (`i18n/SparkNotePad_id.ts`) translation catalogs with 2,247 strings, 100% completion, and strict EYD V / PASTI compliance.
 
 ### [v1.4.6] — 30 New Modern Toolbar Icon Packs (69 Total), Context Menu Ergonomics, Preferences Additions, WCAG 2.1 Syntax Highlighting & Calibrated 30MB–40MB DMG Packaging (2026-11-10)
 

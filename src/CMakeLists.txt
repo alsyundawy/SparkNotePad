@@ -50,6 +50,10 @@ qt_add_executable(SparkNotePad
 	TranslationManager.h
 	UndoAction.h
 	ZoomEventWatcher.h
+	SparkTransferManager.h
+	SparkTransferManager.cpp
+	PosixFileInspector.h
+	PosixFileInspector.cpp
 	resources.qrc
 	toolbar_icons.qrc
 	scripts.qrc
@@ -328,6 +332,10 @@ qt_add_executable(SparkNotePad
 	dialogs/GenerateHashDigestDialog.cpp
 	dialogs/QuickSwitcherDialog.h
 	dialogs/QuickSwitcherDialog.cpp
+	dialogs/TransferBundleDialog.h
+	dialogs/TransferBundleDialog.cpp
+	dialogs/GotoDialog.h
+	dialogs/GotoDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

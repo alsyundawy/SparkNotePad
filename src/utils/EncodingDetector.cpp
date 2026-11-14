@@ -13,6 +13,7 @@
 #include "EncodingDetector.h"
 #include "uchardet.h"
 
+#include <QFile>
 #include <algorithm>
 #include <QStringDecoder>
 #include <QStringEncoder>
@@ -21,6 +22,8 @@
 #include <QtGlobal>
 
 #define BOM_UTF8_BYTES QByteArrayLiteral("\xEF\xBB\xBF")
+#define BOM_UTF32LE_BYTES QByteArrayLiteral("\xFF\xFE\x00\x00")
+#define BOM_UTF32BE_BYTES QByteArrayLiteral("\x00\x00\xFE\xFF")
 #define BOM_UTF16LE_BYTES QByteArrayLiteral("\xFF\xFE")
 #define BOM_UTF16BE_BYTES QByteArrayLiteral("\xFE\xFF")
 
@@ -108,6 +111,22 @@ bool EncodingDetector::detectBom(const QByteArray &data, DetectionResult &result
         result.detectionMethod = QStringLiteral("UTF-8 BOM");
         return true;
     }
+    if (data.startsWith(BOM_UTF32LE_BYTES)) {
+        result.encoding = QStringLiteral("UTF-32LE");
+        result.bomType = ScintillaNext::BomType::None;
+        result.bomLength = 4;
+        result.confidence = 100;
+        result.detectionMethod = QStringLiteral("UTF-32LE BOM");
+        return true;
+    }
+    if (data.startsWith(BOM_UTF32BE_BYTES)) {
+        result.encoding = QStringLiteral("UTF-32BE");
+        result.bomType = ScintillaNext::BomType::None;
+        result.bomLength = 4;
+        result.confidence = 100;
+        result.detectionMethod = QStringLiteral("UTF-32BE BOM");
+        return true;
+    }
     if (data.startsWith(BOM_UTF16LE_BYTES)) {
         result.encoding = QStringLiteral("UTF-16LE");
         result.bomType = ScintillaNext::BomType::Utf16LE;
@@ -125,6 +144,46 @@ bool EncodingDetector::detectBom(const QByteArray &data, DetectionResult &result
         return true;
     }
     return false;
+}
+
+EncodingDetector::DetectionResult EncodingDetector::detect3PointSample(QFile &file, bool autoDetect) {
+    if (!file.isOpen() || file.size() <= 65536) {
+        return detect(file.peek(65536), autoDetect);
+    }
+
+    const qint64 total = file.size();
+    constexpr qint64 CHUNK = 16384;  // 16 KB
+
+    const qint64 origPos = file.pos();
+    file.seek(0);
+    const QByteArray head = file.read(CHUNK);
+
+    DetectionResult bomResult;
+    if (detectBom(head, bomResult)) {
+        bomResult.friendlyName = formatDisplayName(bomResult.encoding, bomResult.bomType);
+        file.seek(origPos);
+        return bomResult;
+    }
+
+    const qint64 midPos = qMax<qint64>(0, (total / 2) - (CHUNK / 2));
+    file.seek(midPos);
+    const QByteArray mid = file.read(CHUNK);
+
+    const qint64 tailPos = qMax<qint64>(0, total - CHUNK);
+    file.seek(tailPos);
+    const QByteArray tail = file.read(CHUNK);
+
+    file.seek(origPos);
+
+    QByteArray compositeSample;
+    compositeSample.reserve(head.size() + mid.size() + tail.size());
+    compositeSample.append(head);
+    compositeSample.append(mid);
+    compositeSample.append(tail);
+
+    DetectionResult res = detect(compositeSample, autoDetect);
+    res.detectionMethod += QStringLiteral(" (3-Point Head/Mid/Tail Sample)");
+    return res;
 }
 
 bool EncodingDetector::detectInterleavedUtf16(const QByteArray &data, DetectionResult &result) {

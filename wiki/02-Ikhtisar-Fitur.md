@@ -155,4 +155,33 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
 
 ---
 
+## 14. Peningkatan Engine Inti, Transfer Sistem, Inspektur POSIX & Penguatan Keamanan CVE 2026 v1.4.7
+
+- **Peningkatan Engine Inti ke Scintilla 5.6.9 & Lexilla 5.5.5**:
+  - Scintilla 5.6.9 menghadirkan kategori karakter Unicode 17, tembolok leksem 40 bita, bypass kalkulasi tata letak awal baris untuk akselerasi rendering, perbaikan crash undo riwayat perubahan, dan pemulihan warna penanda/pelengkapan otomatis XPM.
+  - Lexilla 5.5.5 menambahkan pewarnaan front-matter Markdown, templat literal bersarang HTML/JS, garis miring regex di kelas karakter, penataan `$variable` ganda PHP, akselerasi `q-string` SQL, serta perbaikan 12 celah keamanan memori (#388).
+  - Penerapan 4 patch resmi Lua 5.5.1 untuk stabilitas runtime.
+- **Transfer Sistem & Bundel Ruang Kerja Portabel (`SparkTransferManager`)**:
+  - Ekspor dan impor preferensi, tema visual kustom (QSS), makro, sesi, dan skrip pengguna ke dalam berkas portabel `.sparkbundle` lintas macOS, FreeBSD, dan Linux.
+  - Dilengkapi proteksi sanitasi Zip-Slip (`CVE-2026-57233`), penolakan traversal jalur (`CVE-2026-52886`), verifikasi integritas HMAC-SHA256 dalam memori (`CVE-2026-52885`), dan enkripsi opsional AES-256-CBC.
+- **Inspektur Skrip Berkas POSIX & Utilitas Touch (`PosixFileInspector`)**:
+  - Deteksi real-time dialek shebang untuk Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, dan skrip `rc.d` FreeBSD.
+  - Lencana izin `FieldPosixPerms` interaktif pada bilah status dengan peralihan satu-klik izin eksekusi (`chmod +x`).
+  - Submenu izin berkas di menu utama untuk beralih izin eksekusi dan menerapkan mode privat khusus pemilik (`chmod 0600`).
+  - Utilitas penyesuaian waktu berkas (touch) presisi menggunakan panggilan POSIX `utimes`.
+- **Deteksi Enkoding 3-Titik & Proteksi Simpan Berkas Besar Atomik**:
+  - Pengambilan sampel 3-titik (kepala 16KB, tengah 16KB, ekor 16KB) untuk keandalan deteksi set karakter berkas besar via `uchardet`.
+  - Dukungan eksplisit tanda BOM UTF-32 LE dan BE.
+  - Pengamanan penyimpanan berkas di `ScintillaNext::writeToDisk` menggunakan berkas sementara privat berdampingan (`.filename.sparktmp`), izin `0600`, `fsync()`, preservasi mode izin asli, dan operasi POSIX `rename()` atomik.
+- **Dialog Go To Multi-Mode & Pratinjau Ganti Nama Aman Pohon Proyek**:
+  - Dialog navigasi multi-mode baru yang mendukung Baris:Kolom Visual, Ofset Karakter (`Baris:-Kolom`), dan Ofset Bita Dokumen dengan kalkulasi posisi target langsung.
+  - Dialog ganti nama aman di `FolderAsWorkspaceDock` dengan validasi penelusuran jalur, deteksi konflik nama, dan pratinjau uji coba (dry-run).
+- **Penguatan Keamanan Komprehensif CVE 2025–2026**:
+  - Kekebalan 100% dan pengujian otomatis terhadap `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, dan `CVE-2026-77605`.
+  - Penambahan berkas uji `tests/test_v147_features.h` dengan 9 uji coba unit otomatis.
+- **Sinkronisasi Katalog Terjemahan**:
+  - Pembaruan katalog bahasa Inggris (`i18n/SparkNotePad_en.ts`) dan bahasa Indonesia (`i18n/SparkNotePad_id.ts`) mencapai 2.247 entri, cakupan 100%, 0 entri tertunda, dengan standar ketat EYD V / PASTI.
+
+---
+
 Lanjutkan ke bab berikutnya: [[Antarmuka dan Koleksi Tema|03-Antarmuka-dan-Tema]].

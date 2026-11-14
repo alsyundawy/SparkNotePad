@@ -54,6 +54,21 @@ QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(std::make
     connect(ui->buttonWholeWord, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
     connect(ui->buttonRegexp, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
     connect(ui->buttonFuzzy, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
+
+    setStyleSheet(
+        QStringLiteral("QFrame#QuickFindWidget {"
+                       "  background-color: rgba(32, 36, 42, 0.94);"
+                       "  border: 1px solid rgba(255, 255, 255, 0.16);"
+                       "  border-radius: 8px;"
+                       "}"
+                       "QLineEdit {"
+                       "  border-radius: 4px;"
+                       "  padding: 3px 6px;"
+                       "}"
+                       "QToolButton {"
+                       "  border-radius: 4px;"
+                       "  padding: 2px 5px;"
+                       "}"));
 }
 
 QuickFindWidget::~QuickFindWidget() {

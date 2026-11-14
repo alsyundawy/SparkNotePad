@@ -35,6 +35,7 @@ public:
         FieldEol,
         FieldEncoding,
         FieldOverType,
+        FieldPosixPerms,
         FieldCount
     };
     using enum Field;
@@ -71,6 +72,7 @@ private slots:
     void updateLanguage(const ScintillaNext *editor);
     void updateEol(const ScintillaNext *editor);
     void updateOverType(const ScintillaNext *editor);
+    void updatePosixPermissions(const ScintillaNext *editor);
 
 private:
     void loadSettings();
@@ -85,6 +87,7 @@ private:
     QLabel *eolFormat{nullptr};
     QLabel *unicodeType{nullptr};
     QLabel *overType{nullptr};
+    QLabel *posixPerms{nullptr};
 
     QMap<Field, bool> m_fieldVisibility;
 

@@ -1,16 +1,16 @@
-# SparkNotePad Release DocNote — v1.4.6
+# SparkNotePad Release DocNote — v1.4.7
 
 ```text
 ================================================================================
-Release Version     : 1.4.6 (30 New Modern Toolbar Icon Packs [69 Total Suites],
-                      Context Menu Ergonomics, General Preferences, WCAG 2.1 Contrast Safety
-                      & Standard 30MB–40MB Lightweight DMG Packaging)
-Release Date        : 2026-11-10
+Release Version     : 1.4.7 (Core Engine Upgrade [Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1],
+                      System Transfer [.sparkbundle], POSIX File Inspector, 3-Point Encoding Detection,
+                      Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
+Release Date        : 2026-11-14
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine : Scintilla 5.6.9 (Vendored) & Lexilla 5.5.5 (Vendored)
-Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Source)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Patched Source 1-4)
 Scripting Runtime   : Python 3.13+ Engine Bridge
 GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
@@ -22,9 +22,34 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Changes from v1.4.5 to v1.4.6
+## 1. Executive Summary: Changes from v1.4.6 to v1.4.7
 
-SparkNotePad **v1.4.6** delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging over version 1.4.5:
+SparkNotePad **v1.4.7** delivers major enhancements across core text editing engines, cross-platform configuration mobility, system-level file permissions and scripting ergonomics, robust multi-point character encoding detection, and comprehensive security hardening against 2025–2026 CVE vulnerabilities:
+
+- **Core Engine Upgrade to Scintilla 5.6.9, Lexilla 5.5.5 & Patched Lua 5.5.1**:
+  - Upgraded Scintilla to **v5.6.9**: Incorporates Unicode 17 character categories and case conversion tables, expands maximum cached lexeme size to 40 bytes, bypasses redundant line layout calculations at line starts for major rendering speedups, fixes a critical change history undo crash, and restores XPM marker/autocompletion colors.
+  - Upgraded Lexilla to **v5.5.5**: Adds YAML/TOML/JSON front-matter styling in Markdown (#59), supports HTML/JS nested template literals (#290), regex slash within character classes (#377), JavaScript identifier expansions (#371), PHP `$$variable` styling (#2208), SQL `q-string` performance improvements (#378), and resolves 12 upstream memory safety and OOB issues (#388).
+  - Applied official Lua 5.5.1 bug-fix patches: Patches 1 through 4 guarding against negative parameter left-shift, NaN `for` loop limits, negative zero constant folding, and error unwinding preservation during `coroutine.close`.
+- **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**:
+  - Cross-platform configuration backup and migration system allowing users to export and import preferences, themes, macros, sessions, and user scripts as `.sparkbundle` packages.
+  - Built-in Zip-Slip defense (`CVE-2026-57233`), path traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC integrity verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.
+- **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**:
+  - Real-time shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d` scripts.
+  - Interactive status bar permission badge (`FieldPosixPerms`) with one-click executable bit toggling (`chmod +x`).
+  - Menu actions for toggling executable permissions and enforcing owner-only private mode (`chmod 0600`).
+  - Precision file touch utility leveraging POSIX `utimes`.
+- **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**:
+  - Tri-point sampling across header (16KB), midpoint (16KB), and tail (16KB) for accurate character set detection in large files.
+  - Explicit BOM detection for UTF-32 LE and BE.
+  - Atomic saving in `ScintillaNext::writeToDisk` using private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, original permission preservation, and atomic POSIX `rename()`.
+- **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
+  - Multi-mode navigation dialog supporting Visual Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with live target calculation.
+  - Interactive folder and file safe rename in `FolderAsWorkspaceDock` with path traversal validation, name collision checks, and dry-run preview.
+- **Comprehensive 2025–2026 CVE Security Hardening**:
+  - Full immunity and automated regression test coverage against `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, and `CVE-2026-20841`.
+  - Added `tests/test_v147_features.h` with 9 automated unit tests verifying all new security and architectural invariants.
+- **Localization Synchronization**:
+  - 100% translation coverage across English (`SparkNotePad_en.ts`) and Indonesian (`SparkNotePad_id.ts`) with 2,247 strings, 0 unfinished entries, and strict EYD V / PASTI compliance.
 
 - **41 New Modern Toolbar Icon Packs (69 Total Built-in Suites)**: Multiplied the icon library from 28 packs in v1.4.5 to 69 complete built-in suites across all 6 resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
   - 11 Thematic Suites: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.
