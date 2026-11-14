@@ -23,6 +23,7 @@
 
 class ScintillaNext;
 class MainWindow;
+class MarkdownBrowser;
 class QComboBox;
 class QLabel;
 class QPushButton;
@@ -90,7 +91,7 @@ private:
     void applyGitHubTheme();
 
     ToolbarUi m_ui;
-    QTextBrowser *browser = nullptr;
+    MarkdownBrowser *browser = nullptr;
     QTimer *debounceTimer = nullptr;
     QPointer<ScintillaNext> currentEditor;
 

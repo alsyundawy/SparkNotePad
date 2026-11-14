@@ -50,6 +50,7 @@ find_package(Qt6
             Network
             PrintSupport
             Core5Compat
+            Svg
         OPTIONAL_COMPONENTS
             GuiPrivate
 )

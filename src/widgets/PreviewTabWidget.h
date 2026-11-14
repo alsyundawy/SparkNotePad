@@ -17,7 +17,7 @@
 #include <QUrl>
 
 #include "ScintillaNext.h"
-class QTextBrowser;
+class MarkdownBrowser;
 class QLabel;
 class QPushButton;
 class QTimer;
@@ -66,7 +66,7 @@ private:
     bool m_isHtml{false};
     int m_baseFontSize{13};
 
-    QTextBrowser *m_browser{nullptr};
+    MarkdownBrowser *m_browser{nullptr};
     QTimer *m_debounceTimer{nullptr};
 
     QLabel *m_badgeLabel{nullptr};

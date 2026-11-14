@@ -235,4 +235,26 @@ private slots:
                  QStringLiteral("section-1-2-3"));
         QCOMPARE(MarkdownPreviewEnhancer::slugifyHeading(QStringLiteral("")), QStringLiteral("heading"));
     }
+
+    void testRenderMarkdownToHtmlPreservesHtmlBlocks() const {
+        const auto input = QStringLiteral(
+            "<p align=\"center\">\n"
+            "  <a href=\"https://example.com\"><img src=\"banner.png\" width=\"100%\" alt=\"Banner\" /></a>\n"
+            "</p>\n\n"
+            "<h1 align=\"center\">Title</h1>\n\n"
+            "<p align=\"center\"><b>Subtitle</b><br>details &nbsp; more</p>\n\n"
+            "> [!NOTE]\n"
+            "> Important note here\n\n"
+            "| Col1 | Col2 |\n"
+            "|:---|:---|\n"
+            "| A | B |\n");
+
+        const auto html = MarkdownPreviewEnhancer::renderMarkdownToHtml(input, false);
+        QVERIFY(html.contains(QStringLiteral("align=\"center\"")));
+        QVERIFY(html.contains(QStringLiteral("banner.png")));
+        QVERIFY(html.contains(QStringLiteral("Title")));
+        QVERIFY(html.contains(QStringLiteral("Subtitle")));
+        QVERIFY(html.contains(QStringLiteral("<table")));
+        QVERIFY(html.contains(QStringLiteral("Important note here")));
+    }
 };

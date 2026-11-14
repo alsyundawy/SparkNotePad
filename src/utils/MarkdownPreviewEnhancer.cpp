@@ -14,6 +14,7 @@
 #include "MarkdownPreviewEnhancer.h"
 #include <QCoreApplication>
 #include <QRegularExpression>
+#include <QTextDocument>
 #include <array>
 #include <vector>
 
@@ -90,6 +91,14 @@ void replaceSingleCallout(QString &result, const CalloutDef &c, qsizetype &idx, 
 
     result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
     idx = bqStart + replacement.length();
+}
+
+QString sanitizeHtmlInsideBlock(QString block) {
+    static const QRegularExpression brRegex(QStringLiteral(R"(<br\s*/?>)"), QRegularExpression::CaseInsensitiveOption);
+    block.replace(brRegex, QStringLiteral("<br />"));
+    block.replace(QStringLiteral("&nbsp;"), QStringLiteral("&#160;"));
+    block.replace(QStringLiteral("width=\"100%\""), QStringLiteral("style=\"width: 100%; max-width: 100%;\""));
+    return block;
 }
 
 }  // namespace
@@ -693,4 +702,79 @@ QString MarkdownPreviewEnhancer::enhanceMarkdown(const QString &rawMd, bool isDa
     processed = processFootnotes(processed);
     processed = processEmoji(processed);
     return processed;
+}
+
+QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool isDark) {
+    if (rawMd.isEmpty()) {
+        return QString();
+    }
+
+    // 1. Mask HTML comments
+    static const QRegularExpression commentRegex(QStringLiteral(R"(<!--[\s\S]*?-->)"));
+    std::vector<QString> comments;
+    QString working = rawMd;
+    auto commentIt = commentRegex.globalMatch(rawMd);
+    qsizetype offset = 0;
+    while (commentIt.hasNext()) {
+        const auto m = commentIt.next();
+        comments.push_back(m.captured(0));
+        const QString token = QStringLiteral("SPARKCOMMENT%1XYZ").arg(comments.size() - 1);
+        working.replace(m.capturedStart() + offset, m.capturedLength(), token);
+        offset += token.length() - m.capturedLength();
+    }
+
+    // 2. Mask HTML blocks
+    static const QRegularExpression htmlBlockRegex(
+        QStringLiteral(
+            R"((?:^|\n)(<(p|div|h[1-6]|table|center|section|article|header|footer|figure|details|summary)[^>]*>[\s\S]*?<\/\2>))"),
+        QRegularExpression::CaseInsensitiveOption);
+
+    std::vector<QString> htmlBlocks;
+    auto blockIt = htmlBlockRegex.globalMatch(working);
+    offset = 0;
+    while (blockIt.hasNext()) {
+        const auto m = blockIt.next();
+        const QString rawBlock = sanitizeHtmlInsideBlock(m.captured(1).trimmed());
+        htmlBlocks.push_back(rawBlock);
+        const QString token = QStringLiteral("\n\nSPARKHTMLBLOCK%1XYZ\n\n").arg(htmlBlocks.size() - 1);
+
+        const qsizetype start = m.capturedStart(1) + offset;
+        const qsizetype length = m.capturedLength(1);
+        working.replace(start, length, token);
+        offset += token.length() - length;
+    }
+
+    // 3. Process markdown extensions
+    const QString enriched = enhanceMarkdown(working, isDark);
+
+    // 4. Convert via QTextDocument
+    QTextDocument doc;
+    doc.setMarkdown(enriched);
+    QString html = doc.toHtml();
+
+    // 5. Restore HTML blocks
+    for (std::size_t i = 0; i < htmlBlocks.size(); ++i) {
+        const QString token = QStringLiteral("SPARKHTMLBLOCK%1XYZ").arg(i);
+        const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
+        if (html.contains(tokenP)) {
+            html.replace(tokenP, htmlBlocks[i]);
+        } else {
+            html.replace(token, htmlBlocks[i]);
+        }
+    }
+
+    // 6. Strip masked comments
+    for (std::size_t i = 0; i < comments.size(); ++i) {
+        const QString token = QStringLiteral("SPARKCOMMENT%1XYZ").arg(i);
+        const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
+        if (html.contains(tokenP)) {
+            html.remove(tokenP);
+        } else {
+            html.remove(token);
+        }
+    }
+
+    // 7. Post-process headings with IDs and callouts
+    const QString htmlWithIds = processHeadingsWithIds(html);
+    return enhanceCallouts(htmlWithIds, isDark);
 }

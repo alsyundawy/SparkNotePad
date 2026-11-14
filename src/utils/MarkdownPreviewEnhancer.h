@@ -18,6 +18,8 @@ class MarkdownPreviewEnhancer {
 public:
     static QString enhanceMarkdown(const QString &rawMd, bool isDark);
 
+    static QString renderMarkdownToHtml(const QString &rawMd, bool isDark);
+
     static QString enhanceCallouts(const QString &html, bool isDark);
 
     static QString processMermaidBlocks(const QString &content, bool isDark);

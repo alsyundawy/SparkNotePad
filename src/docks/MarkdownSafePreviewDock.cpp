@@ -41,6 +41,7 @@
 #include "../features/ThemePaletteData.h"
 #include "../utils/MarkdownPreviewEnhancer.h"
 #include "../utils/MarkdownThemeManager.h"
+#include "../widgets/MarkdownBrowser.h"
 
 namespace {
 
@@ -88,7 +89,7 @@ void updateFormatLabel(QLabel *lblFormatStatus, MarkdownSafePreviewDock::Preview
 
 MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     : QDockWidget(tr("HTML & Markdown Live Preview"), parent),
-      browser(new QTextBrowser(this)),
+      browser(new MarkdownBrowser(this)),
       debounceTimer(new QTimer(this)) {
     m_ui.comboFormat = new QComboBox(this);
     m_ui.comboTheme = new QComboBox(this);
@@ -528,16 +529,16 @@ void MarkdownSafePreviewDock::renderPreview() {
         scrollRatio = static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum());
     }
 
+    // Set document source path for relative image resolution
+    const QString filePath = currentEditor->isFile() ? currentEditor->getFileInfo().filePath() : QString();
+    browser->setDocumentSourcePath(filePath);
+
     if (effectiveFormat == Html) {
         browser->setHtml(text);
     } else if (text.size() > 2LL * 1024LL * 1024LL) {
         browser->setPlainText(text);
     } else {
-        const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(text, isDark);
-        QTextDocument doc;
-        doc.setMarkdown(enrichedMd);
-        const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark);
+        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(text, isDark);
         browser->setHtml(enhanced);
     }
 
@@ -582,11 +583,7 @@ void MarkdownSafePreviewDock::copyHtml() {
         bodyHtml = rawContent;
     } else {
         const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
-        const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
-        QTextDocument doc;
-        doc.setMarkdown(enrichedMd);
-        const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-        bodyHtml = MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark);
+        bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
     }
     const QString fileName = currentEditor->getFileInfo().fileName();
     const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
@@ -698,11 +695,7 @@ void MarkdownSafePreviewDock::openInBrowser() {
         bodyHtml = rawContent;
     } else {
         const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
-        const QString enrichedMd = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
-        QTextDocument doc;
-        doc.setMarkdown(enrichedMd);
-        const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-        bodyHtml = MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark);
+        bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
     }
 
     QTemporaryFile tempFile(QDir::tempPath() + QStringLiteral("/SparkNotePad_preview_XXXXXX.html"));

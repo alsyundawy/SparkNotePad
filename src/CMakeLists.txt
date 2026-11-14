@@ -389,6 +389,8 @@ qt_add_executable(SparkNotePad
 	widgets/TabsQuickActionsBar.h
 	widgets/PreviewTabWidget.cpp
 	widgets/PreviewTabWidget.h
+	widgets/MarkdownBrowser.cpp
+	widgets/MarkdownBrowser.h
 	ShiftMiddleClickBlocker.h ShiftMiddleClickBlocker.cpp
 	ShiftWheelToHorizontalScrollFilter.h ShiftWheelToHorizontalScrollFilter.cpp
 
@@ -447,6 +449,7 @@ target_link_libraries(SparkNotePad
         Qt6::Network
         Qt6::PrintSupport
         Qt6::Core5Compat
+        Qt6::Svg
         qtadvanceddocking-qt6
         QSimpleUpdater
         SingleApplication::SingleApplication

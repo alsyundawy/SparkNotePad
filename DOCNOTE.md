@@ -3,8 +3,8 @@
 ```text
 ================================================================================
 Release Version     : 1.4.7 (Core Engine Upgrade [Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1],
-                      System Transfer [.sparkbundle], POSIX File Inspector, 3-Point Encoding Detection,
-                      Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
+                      System Transfer [.sparkbundle], POSIX File Inspector, Markdown Live Preview Overhaul,
+                      3-Point Encoding Detection, Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
 Release Date        : 2026-11-14
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -30,6 +30,14 @@ SparkNotePad **v1.4.7** delivers major enhancements across core text editing eng
   - Upgraded Scintilla to **v5.6.9**: Incorporates Unicode 17 character categories and case conversion tables, expands maximum cached lexeme size to 40 bytes, bypasses redundant line layout calculations at line starts for major rendering speedups, fixes a critical change history undo crash, and restores XPM marker/autocompletion colors.
   - Upgraded Lexilla to **v5.5.5**: Adds YAML/TOML/JSON front-matter styling in Markdown (#59), supports HTML/JS nested template literals (#290), regex slash within character classes (#377), JavaScript identifier expansions (#371), PHP `$$variable` styling (#2208), SQL `q-string` performance improvements (#378), and resolves 12 upstream memory safety and OOB issues (#388).
   - Applied official Lua 5.5.1 bug-fix patches: Patches 1 through 4 guarding against negative parameter left-shift, NaN `for` loop limits, negative zero constant folding, and error unwinding preservation during `coroutine.close`.
+- **Markdown Live Preview & Network Image Engine Overhaul (`MarkdownBrowser` & `MarkdownPreviewEnhancer`)**:
+  - Engineered custom `MarkdownBrowser` subclassing `QTextBrowser` with encapsulated asynchronous `QNetworkAccessManager` to download and display remote `http`/`https` images non-blockingly.
+  - Implemented thread-safe in-memory LRU image cache (`QHash<QUrl, QImage>`) capped at 64 entries with fast memory reclamation.
+  - Added high-DPI vector SVG rendering via `QSvgRenderer` rasterized onto device-pixel-ratio-scaled transparent canvases, rendering shields.io vector badges and local SVGs crystal-clear on Retina and 4K displays.
+  - Implemented `MarkdownPreviewEnhancer::renderMarkdownToHtml` preserving raw HTML blocks (`<p align="...">`, `<div>`, `<h1>`-`<h6>`, `<table>`, `<center>`, `<figure>`, `<details>`, `<!-- ... -->`) preventing Qt's MD4C/`QXmlStreamReader` parser from corrupting or dropping blocks.
+  - Sanitized void elements (`<br>` -> `<br />`), entities (`&nbsp;` -> `&#160;`), and normalized `width="100%"` attributes preventing Qt negative pixel size bugs.
+  - Set document base URL dynamically from editor file directory for seamless relative asset resolution (e.g. `assets/` and `logo.png`).
+  - Integrated across dock preview (`MarkdownSafePreviewDock`), tab preview (`PreviewTabWidget`), and HTML document export (`DocumentExportManager`).
 - **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**:
   - Cross-platform configuration backup and migration system allowing users to export and import preferences, themes, macros, sessions, and user scripts as `.sparkbundle` packages.
   - Built-in Zip-Slip defense (`CVE-2026-57233`), path traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC integrity verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.

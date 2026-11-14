@@ -9,6 +9,7 @@
  */
 
 #include "PreviewTabWidget.h"
+#include "MarkdownBrowser.h"
 #include "../ScintillaNext.h"
 #include "../features/ThemeManager.h"
 #include "../features/ThemePaletteData.h"
@@ -171,7 +172,7 @@ void PreviewTabWidget::setupUi() {
     mainLayout->addWidget(headerWidget);
 
     // Text browser display
-    m_browser = new QTextBrowser(this);
+    m_browser = new MarkdownBrowser(this);
     m_browser->setObjectName(QStringLiteral("previewBrowser"));
     m_browser->setOpenExternalLinks(false);
     m_browser->setOpenLinks(false);
@@ -307,10 +308,9 @@ void PreviewTabWidget::renderPreview() {
 
     // Resolve base path for relative URLs/assets
     if (m_editor->isFile()) {
-        const QFileInfo fi = m_editor->getFileInfo();
-        if (fi.exists()) {
-            m_browser->document()->setBaseUrl(QUrl::fromLocalFile(fi.absolutePath() + QStringLiteral("/")));
-        }
+        m_browser->setDocumentSourcePath(m_editor->getFileInfo().filePath());
+    } else {
+        m_browser->setDocumentSourcePath(QString());
     }
 
     const QString rawContent = QString::fromUtf8(m_editor->getText());
@@ -337,11 +337,7 @@ void PreviewTabWidget::renderPreview() {
     if (m_isHtml) {
         m_browser->setHtml(rawContent);
     } else {
-        const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
-        QTextDocument doc;
-        doc.setMarkdown(enriched);
-        const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-        const QString enhanced = MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark);
+        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
         m_browser->setHtml(enhanced);
     }
 
@@ -384,11 +380,8 @@ void PreviewTabWidget::copyHtml() {
     if (m_isHtml) {
         fullHtml = wrapHtmlDocument(rawContent, isDark);
     } else {
-        const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
-        QTextDocument doc;
-        doc.setMarkdown(enriched);
-        const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-        fullHtml = wrapHtmlDocument(MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark), isDark);
+        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
+        fullHtml = wrapHtmlDocument(enhanced, isDark);
     }
     QApplication::clipboard()->setText(fullHtml);
     if (m_badgeLabel) {
@@ -427,11 +420,8 @@ void PreviewTabWidget::exportHtml() {
     if (m_isHtml) {
         fullHtml = wrapHtmlDocument(rawContent, isDark);
     } else {
-        const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(rawContent, isDark);
-        QTextDocument doc;
-        doc.setMarkdown(enriched);
-        const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-        fullHtml = wrapHtmlDocument(MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark), isDark);
+        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
+        fullHtml = wrapHtmlDocument(enhanced, isDark);
     }
     QFile file(savePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
@@ -461,11 +451,8 @@ void PreviewTabWidget::openInBrowser() {
         if (m_isHtml) {
             fullHtml = wrapHtmlDocument(content, isDark);
         } else {
-            const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(content, isDark);
-            QTextDocument doc;
-            doc.setMarkdown(enriched);
-            const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-            fullHtml = wrapHtmlDocument(MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, isDark), isDark);
+            const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(content, isDark);
+            fullHtml = wrapHtmlDocument(enhanced, isDark);
         }
         tempFile->write(fullHtml.toUtf8());
         tempFile->flush();

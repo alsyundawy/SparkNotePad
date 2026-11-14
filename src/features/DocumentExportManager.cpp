@@ -150,11 +150,7 @@ QString DocumentExportManager::defaultHtmlTemplate(const QString &title, const Q
 }
 
 QString DocumentExportManager::markdownToHtml(const QString &markdown, const ExportOptions &options) {
-    const QString enriched = MarkdownPreviewEnhancer::enhanceMarkdown(markdown, options.darkTheme);
-    QTextDocument doc;
-    doc.setMarkdown(enriched);
-    const QString htmlWithIds = MarkdownPreviewEnhancer::processHeadingsWithIds(doc.toHtml());
-    QString bodyHtml = MarkdownPreviewEnhancer::enhanceCallouts(htmlWithIds, options.darkTheme);
+    QString bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(markdown, options.darkTheme);
 
     if (!options.includeCss) {
         return bodyHtml;

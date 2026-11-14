@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets PrintSupport)
+find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets PrintSupport Network Svg)
 
 set(TEST_HEADERS
     test_base64.h
@@ -87,6 +87,8 @@ target_link_libraries(SparkNotePadTests PRIVATE
     Qt6::Test
     Qt6::Widgets
     Qt6::PrintSupport
+    Qt6::Network
+    Qt6::Svg
     lua
     uchardet
     scintilla

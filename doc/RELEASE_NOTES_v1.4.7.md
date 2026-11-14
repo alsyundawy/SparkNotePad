@@ -1,4 +1,4 @@
-# SparkNotePad v1.4.7 — Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening
+# SparkNotePad v1.4.7 — Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, Markdown Live Preview Overhaul, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening
 
 **Release Version:** `v1.4.7`<br/>
 **Release Date:** 2026-11-14<br/>
@@ -51,11 +51,12 @@
 SparkNotePad **v1.4.7** introduces significant advancements across the core editing engines, portable workspace mobility, POSIX file permissions and script analysis, robust character encoding detection, enhanced navigation dialogs, and comprehensive 2025–2026 CVE security hardening:
 
 1. **Scintilla 5.6.9 & Lexilla 5.5.5 Upgrades**: Upgrades the core text engine with Unicode 17 character categories, 40-byte lexeme cache, line-start layout bypass, change history undo crash fix, restored XPM image colors, and 12 upstream Lexilla memory safety and OOB fixes.
-2. **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**: Enables seamless export and import of user preferences, themes, macros, sessions, and scripts via `.sparkbundle` archives with Zip-Slip defense and in-memory HMAC validation.
-3. **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**: Real-time shebang dialect detection, octal and symbolic permission formatters, status bar executable bit toggle badge (`FieldPosixPerms`), and precision file touch utility.
-4. **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**: 3-point sampling across header, midpoint, and tail for robust encoding detection, UTF-32 LE/BE BOM support, and atomic saving via private sibling temporary files (`0600` permissions).
-5. **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**: Direct navigation by Line:Col, Character Offset, or Document Byte Offset, alongside interactive folder/file rename with dry-run collision detection.
-6. **Comprehensive 2025–2026 CVE Security Hardening**: Automated test verification against CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, and CVE-2026-77605.
+2. **Markdown Live Preview & Network Image Engine Overhaul (`MarkdownBrowser`)**: Full fidelity Markdown rendering with asynchronous remote `http`/`https` image downloading, high-DPI vector SVG rasterization for Retina badges, raw HTML block protection preventing parser drops, and dynamic relative asset resolution.
+3. **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**: Enables seamless export and import of user preferences, themes, macros, sessions, and scripts via `.sparkbundle` archives with Zip-Slip defense and in-memory HMAC validation.
+4. **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**: Real-time shebang dialect detection, octal and symbolic permission formatters, status bar executable bit toggle badge (`FieldPosixPerms`), and precision file touch utility.
+5. **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**: 3-point sampling across header, midpoint, and tail for robust encoding detection, UTF-32 LE/BE BOM support, and atomic saving via private sibling temporary files (`0600` permissions).
+6. **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**: Direct navigation by Line:Col, Character Offset, or Document Byte Offset, alongside interactive folder/file rename with dry-run collision detection.
+7. **Comprehensive 2025–2026 CVE Security Hardening**: Automated test verification against CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, and CVE-2026-77605.
 
 ---
 
@@ -76,26 +77,34 @@ SparkNotePad **v1.4.7** introduces significant advancements across the core edit
 - **Embedded Lua 5.5.1 Patches**:
   - Official bug-fix patches 1 through 4 guarding against negative parameter left-shift, NaN `for` loop limits, negative zero constant folding, and error unwinding preservation during `coroutine.close`.
 
-### 2. System Transfer & Workspace Bundles (`.sparkbundle`)
+### 2. Markdown Live Preview & Network Image Engine Overhaul
+
+- **Asynchronous Remote Image Loading (`MarkdownBrowser`)**: Custom `QTextBrowser` subclass with encapsulated `QNetworkAccessManager` asynchronously fetches remote `http`/`https` images and badges without blocking the GUI.
+- **High-DPI Vector SVG Rendering**: Sharp vector graphics rendering via `QSvgRenderer` on high-resolution Retina/4K displays.
+- **Raw HTML Block Protection (`MarkdownPreviewEnhancer`)**: Preserves `<p align="...">`, `<div>`, `<h1>`-`<h6>`, `<table>`, `<center>`, `<figure>`, `<details>`, and comment blocks preventing Qt's MD4C parser from swallowing content.
+- **HTML Normalization**: Sanitizes void tags (`<br>` -> `<br />`), converts `&nbsp;` to `&#160;`, and fixes `width="100%"` to avoid Qt's negative pixel size bug (`-2`).
+- **Dynamic Relative Asset Resolution**: Automatically resolves local relative paths (such as `assets/` and `logo.png`) by binding the document base URL to the active file directory.
+
+### 3. System Transfer & Workspace Bundles (`.sparkbundle`)
 
 - Export and import workspace configurations across macOS, Linux, and FreeBSD.
 - Secure bundle format with in-memory SHA-256 HMAC digest verification and optional AES-256-CBC encryption.
 - Built-in protection against Zip-Slip path traversal attacks (`CVE-2026-57233`).
 
-### 3. POSIX Shell Inspector & File Permissions
+### 4. POSIX Shell Inspector & File Permissions
 
 - Detects shebang dialects: Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d`.
 - Status bar badge `FieldPosixPerms` showing octal and symbolic permissions with one-click `chmod +x` toggle.
 - File menu actions: `Toggle Executable Bit (chmod +x)` and `Enforce Owner-Only Private Mode (chmod 0600)`.
 - Precision file touch utility via POSIX `utimes`.
 
-### 4. 3-Point Encoding Detection & Atomic Save Guard
+### 5. 3-Point Encoding Detection & Atomic Save Guard
 
 - Stateless tri-point sampling (header 16KB, midpoint 16KB, tail 16KB) for reliable charset detection in large files.
 - UTF-32 LE/BE BOM detection.
 - Atomic file save in `ScintillaNext::writeToDisk` using private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, and atomic POSIX `rename()`.
 
-### 5. Multi-Mode Goto Dialog & Safe Rename Preview
+### 6. Multi-Mode Goto Dialog & Safe Rename Preview
 
 - Modal `GotoDialog` supporting Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with real-time target calculations.
 - Safe rename in `FolderAsWorkspaceDock` with live path traversal check, collision detection, and dry-run preview.
