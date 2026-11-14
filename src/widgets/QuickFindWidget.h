@@ -80,7 +80,7 @@ private:
 
     std::unique_ptr<Ui::QuickFindWidget> ui;
     ScintillaNext *editor = Q_NULLPTR;
-    Finder *finder = Q_NULLPTR;
+    std::unique_ptr<Finder> finder;
     int indicator;
 
     QList<QPair<int, int>> matches;

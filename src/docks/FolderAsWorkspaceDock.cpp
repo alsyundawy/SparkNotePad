@@ -63,6 +63,38 @@ QString readProjectName(const QString &dir) {
     }
     return {};
 }
+
+struct RenameValidationResult {
+    QString errorMsg;
+    QString targetPath;
+    bool isOk = false;
+};
+
+RenameValidationResult validateRenameTarget(const QString &rawName, const QString &currentName,
+                                            const QString &parentDir) {
+    RenameValidationResult res;
+    const QString newName = rawName.trimmed();
+    if (newName.isEmpty()) {
+        res.errorMsg = QObject::tr("Name cannot be empty.");
+        return res;
+    }
+    if (newName.contains(QLatin1Char('/')) || newName.contains(QLatin1Char('\\')) ||
+        newName.contains(QStringLiteral(".."))) {
+        res.errorMsg = QObject::tr("Invalid characters or path traversal sequence in name.");
+        return res;
+    }
+    res.targetPath = QDir(parentDir).filePath(newName);
+    if (newName == currentName) {
+        res.errorMsg = QObject::tr("Name is unchanged.");
+        return res;
+    }
+    if (QFileInfo::exists(res.targetPath)) {
+        res.errorMsg = QObject::tr("A file or folder with this name already exists.");
+        return res;
+    }
+    res.isOk = true;
+    return res;
+}
 }  // namespace
 
 FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
@@ -376,7 +408,7 @@ void FolderAsWorkspaceDock::renameItemWithPreview(const QString &filePath) {
     statusLabel->setStyleSheet(QStringLiteral("color: #cf222e; font-size: 11px;"));
     layout->addWidget(statusLabel);
 
-    auto *btnLayout = new QHBoxLayout();
+    auto *btnLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     btnLayout->addStretch();
     auto *btnRename = new QPushButton(tr("Rename"), &dlg);
     btnRename->setDefault(true);
@@ -387,47 +419,31 @@ void FolderAsWorkspaceDock::renameItemWithPreview(const QString &filePath) {
     layout->addLayout(btnLayout);
 
     const QString parentDir = info.dir().absolutePath();
+    const QString currentName = info.fileName();
 
-    auto validate = [&]() {
-        const QString newName = nameEdit->text().trimmed();
-        if (newName.isEmpty()) {
-            statusLabel->setText(tr("Name cannot be empty."));
-            previewLabel->clear();
+    const auto validate = [nameEdit, statusLabel, previewLabel, btnRename, parentDir, currentName] {
+        const auto res = validateRenameTarget(nameEdit->text(), currentName, parentDir);
+        if (!res.isOk) {
+            statusLabel->setText(res.errorMsg);
+            statusLabel->setStyleSheet(QStringLiteral("color: #cf222e; font-size: 11px;"));
+            if (res.targetPath.isEmpty()) {
+                previewLabel->clear();
+            } else {
+                previewLabel->setText(QObject::tr("Target: %1").arg(res.targetPath));
+            }
             btnRename->setEnabled(false);
-            return;
+        } else {
+            previewLabel->setText(QObject::tr("Target: %1").arg(res.targetPath));
+            statusLabel->setText(QObject::tr("Ready to rename (no conflicts)."));
+            statusLabel->setStyleSheet(QStringLiteral("color: #1a7f37; font-size: 11px;"));
+            btnRename->setEnabled(true);
         }
-        if (newName.contains(QLatin1Char('/')) || newName.contains(QLatin1Char('\\')) ||
-            newName.contains(QStringLiteral(".."))) {
-            statusLabel->setText(tr("Invalid characters or path traversal sequence in name."));
-            previewLabel->clear();
-            btnRename->setEnabled(false);
-            return;
-        }
-
-        const QString targetPath = QDir(parentDir).filePath(newName);
-        previewLabel->setText(tr("Target: %1").arg(targetPath));
-
-        if (newName == info.fileName()) {
-            statusLabel->setText(tr("Name is unchanged."));
-            btnRename->setEnabled(false);
-            return;
-        }
-
-        if (QFileInfo::exists(targetPath)) {
-            statusLabel->setText(tr("A file or folder with this name already exists."));
-            btnRename->setEnabled(false);
-            return;
-        }
-
-        statusLabel->setText(tr("Ready to rename (no conflicts)."));
-        statusLabel->setStyleSheet(QStringLiteral("color: #1a7f37; font-size: 11px;"));
-        btnRename->setEnabled(true);
     };
 
     connect(nameEdit, &QLineEdit::textChanged, &dlg, validate);
     validate();
 
-    connect(btnRename, &QPushButton::clicked, &dlg, [&]() {
+    connect(btnRename, &QPushButton::clicked, &dlg, [&dlg, &info, filePath, nameEdit, parentDir, statusLabel] {
         const QString newName = nameEdit->text().trimmed();
         const QString targetPath = QDir(parentDir).filePath(newName);
         bool ok = false;
@@ -439,7 +455,7 @@ void FolderAsWorkspaceDock::renameItemWithPreview(const QString &filePath) {
         if (ok) {
             dlg.accept();
         } else {
-            statusLabel->setText(tr("Failed to rename on disk. Check file permissions."));
+            statusLabel->setText(QObject::tr("Failed to rename on disk. Check file permissions."));
             statusLabel->setStyleSheet(QStringLiteral("color: #cf222e; font-size: 11px;"));
         }
     });

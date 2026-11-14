@@ -71,9 +71,7 @@ QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(std::make
                        "}"));
 }
 
-QuickFindWidget::~QuickFindWidget() {
-    delete finder;
-}
+QuickFindWidget::~QuickFindWidget() = default;
 
 void QuickFindWidget::setEditor(ScintillaNext *newEditor) {
     if (this->editor != nullptr) {
@@ -87,7 +85,7 @@ void QuickFindWidget::setEditor(ScintillaNext *newEditor) {
     this->editor = newEditor;
 
     if (finder == nullptr) {
-        finder = new Finder(newEditor);
+        finder = std::make_unique<Finder>(newEditor);
         finder->options().wrapAround = true;  // Always wrap the search
     } else {
         finder->setEditor(newEditor);

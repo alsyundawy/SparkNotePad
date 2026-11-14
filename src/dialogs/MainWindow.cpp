@@ -432,7 +432,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     // System Transfer: Export / Import Workspace Bundle (.sparkbundle)
     auto *menuSystemTransfer = new QMenu(tr("System Transfer"), this);
-    auto *actTransferBundle = menuSystemTransfer->addAction(tr("Export / Import Workspace Bundle (.sparkbundle)..."));
+    const auto *actTransferBundle =
+        menuSystemTransfer->addAction(tr("Export / Import Workspace Bundle (.sparkbundle)..."));
     connect(actTransferBundle, &QAction::triggered, this, [this] {
         TransferBundleDialog dlg(this);
         dlg.exec();
@@ -441,30 +442,26 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     // File Permissions: chmod +x, chmod 0600
     auto *menuPermissions = new QMenu(tr("File Permissions"), this);
-    auto *actToggleExec = menuPermissions->addAction(tr("Toggle Executable Bit (chmod +x)"));
+    const auto *actToggleExec = menuPermissions->addAction(tr("Toggle Executable Bit (chmod +x)"));
     connect(actToggleExec, &QAction::triggered, this, [this] {
-        if (auto *editor = currentEditor()) {
-            if (editor->isFile()) {
-                QString err;
-                if (PosixFileInspector::toggleExecutable(editor->getFilePath(), &err)) {
-                    ui->statusBar->showMessage(tr("Updated executable bit for \"%1\"").arg(editor->getName()), 3000);
-                } else {
-                    ui->statusBar->showMessage(tr("Failed to update executable bit: %1").arg(err), 4000);
-                }
+        if (const auto *editor = currentEditor(); editor && editor->isFile()) {
+            QString err;
+            if (PosixFileInspector::toggleExecutable(editor->getFilePath(), &err)) {
+                ui->statusBar->showMessage(tr("Updated executable bit for \"%1\"").arg(editor->getName()), 3000);
+            } else {
+                ui->statusBar->showMessage(tr("Failed to update executable bit: %1").arg(err), 4000);
             }
         }
     });
-    auto *actSetOwnerOnly = menuPermissions->addAction(tr("Enforce Owner-Only Private Mode (chmod 0600)"));
+    const auto *actSetOwnerOnly = menuPermissions->addAction(tr("Enforce Owner-Only Private Mode (chmod 0600)"));
     connect(actSetOwnerOnly, &QAction::triggered, this, [this] {
-        if (auto *editor = currentEditor()) {
-            if (editor->isFile()) {
-                QString err;
-                if (PosixFileInspector::setOwnerOnly(editor->getFilePath(), &err)) {
-                    ui->statusBar->showMessage(
-                        tr("Enforced owner-only 0600 permissions for \"%1\"").arg(editor->getName()), 3000);
-                } else {
-                    ui->statusBar->showMessage(tr("Failed to set 0600 permissions: %1").arg(err), 4000);
-                }
+        if (const auto *editor = currentEditor(); editor && editor->isFile()) {
+            QString err;
+            if (PosixFileInspector::setOwnerOnly(editor->getFilePath(), &err)) {
+                ui->statusBar->showMessage(tr("Enforced owner-only 0600 permissions for \"%1\"").arg(editor->getName()),
+                                           3000);
+            } else {
+                ui->statusBar->showMessage(tr("Failed to set 0600 permissions: %1").arg(err), 4000);
             }
         }
     });
@@ -3505,8 +3502,7 @@ bool MainWindow::saveCopyAs(const QString &fileName) {
 }
 
 bool MainWindow::saveAll() {
-    const ApplicationSettings settings;
-    if (settings.confirmSaveAll()) {
+    if (const ApplicationSettings settings; settings.confirmSaveAll()) {
         const auto unsavedCount = std::ranges::count_if(editors(), [](const auto *ed) { return ed && ed->modify(); });
         if (unsavedCount > 0) {
             const auto res = QMessageBox::question(
@@ -3921,19 +3917,24 @@ void MainWindow::updateGui(ScintillaNext *editor) {
     updateContentBasedUi(editor);
     updateLanguageBasedUi(editor);
 
-    if (markdownSafePreviewDock) {
-        if (markdownSafePreviewDock->isAutoShowEnabled()) {
-            if (isMarkdownOrHtml(editor)) {
-                if (!markdownSafePreviewDock->isVisible()) {
-                    markdownSafePreviewDock->show();
-                }
-                markdownSafePreviewDock->setActiveEditor(editor);
-            } else if (markdownSafePreviewDock->isVisible()) {
-                markdownSafePreviewDock->hide();
-            }
-        } else if (markdownSafePreviewDock->isVisible()) {
+    if (!markdownSafePreviewDock) {
+        return;
+    }
+
+    if (!markdownSafePreviewDock->isAutoShowEnabled()) {
+        if (markdownSafePreviewDock->isVisible()) {
             markdownSafePreviewDock->setActiveEditor(editor);
         }
+        return;
+    }
+
+    if (isMarkdownOrHtml(editor)) {
+        if (!markdownSafePreviewDock->isVisible()) {
+            markdownSafePreviewDock->show();
+        }
+        markdownSafePreviewDock->setActiveEditor(editor);
+    } else if (markdownSafePreviewDock->isVisible()) {
+        markdownSafePreviewDock->hide();
     }
 }
 
@@ -4597,8 +4598,8 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     menu->addMenu(ui->menuClearMarks);
 
     // Contextual keyword adaptation for Google Search
-    const QString searchQuery = ExternalToolManager::getSelectedOrCurrentWord(editor);
-    if (!searchQuery.trimmed().isEmpty()) {
+    if (const QString searchQuery = ExternalToolManager::getSelectedOrCurrentWord(editor);
+        !searchQuery.trimmed().isEmpty()) {
         QString preview = searchQuery.trimmed();
         if (preview.length() > 25) {
             preview = preview.left(25) + QStringLiteral("...");

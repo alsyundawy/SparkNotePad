@@ -72,7 +72,7 @@ void GotoDialog::setupUi() {
     connect(m_rbCharOffset, &QRadioButton::toggled, this, &GotoDialog::onModeChanged);
     connect(m_rbByteOffset, &QRadioButton::toggled, this, &GotoDialog::onModeChanged);
 
-    auto *inputLayout = new QVBoxLayout();
+    auto *inputLayout = new QVBoxLayout();  // NOSONAR(cpp:S5025)
     m_infoLabel = new QLabel(tr("Enter Line (1 - %1) or Line:Col:").arg(m_maxLines), this);
     m_lineEdit = new QLineEdit(this);
     m_lineEdit->setPlaceholderText(tr("e.g. 42 or 42:10"));
@@ -89,7 +89,7 @@ void GotoDialog::setupUi() {
 
     mainLayout->addStretch();
 
-    auto *buttonLayout = new QHBoxLayout();
+    auto *buttonLayout = new QHBoxLayout();  // NOSONAR(cpp:S5025)
     buttonLayout->addStretch();
     m_btnJump = new QPushButton(tr("Go To"), this);
     m_btnJump->setDefault(true);
@@ -122,16 +122,17 @@ void GotoDialog::updateTheme() {
 }
 
 void GotoDialog::onModeChanged() {
+    using enum GotoMode;
     if (m_rbVisualLineCol->isChecked()) {
-        m_mode = GotoMode::VisualLineCol;
+        m_mode = VisualLineCol;
         m_infoLabel->setText(tr("Enter Line (1 - %1) or Line:Col:").arg(m_maxLines));
         m_lineEdit->setPlaceholderText(tr("e.g. 42 or 42:10"));
     } else if (m_rbCharOffset->isChecked()) {
-        m_mode = GotoMode::CharOffset;
+        m_mode = CharOffset;
         m_infoLabel->setText(tr("Enter Character Offset (0 - %1) or Line:-Col:").arg(m_docLength));
         m_lineEdit->setPlaceholderText(tr("e.g. 1500 or 42:-5"));
     } else {
-        m_mode = GotoMode::ByteOffset;
+        m_mode = ByteOffset;
         m_infoLabel->setText(tr("Enter Document Byte Offset (0 - %1):").arg(m_docLength));
         m_lineEdit->setPlaceholderText(tr("e.g. 2048"));
     }

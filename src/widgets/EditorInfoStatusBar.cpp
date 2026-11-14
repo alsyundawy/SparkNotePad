@@ -82,13 +82,11 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     const auto *w = qobject_cast<const MainWindow *>(window);
     connect(w, &MainWindow::editorActivated, this, &EditorInfoStatusBar::connectToEditor);
 
-    connect(qobject_cast<StatusLabel *>(posixPerms), &StatusLabel::clicked, w, [this, w]() {
-        if (auto *editor = w->currentEditor()) {
-            if (editor->isFile()) {
-                QString err;
-                PosixFileInspector::toggleExecutable(editor->getFilePath(), &err);
-                updatePosixPermissions(editor);
-            }
+    connect(qobject_cast<StatusLabel *>(posixPerms), &StatusLabel::clicked, w, [this, w] {
+        if (const auto *editor = w->currentEditor(); editor && editor->isFile()) {
+            QString err;
+            PosixFileInspector::toggleExecutable(editor->getFilePath(), &err);
+            updatePosixPermissions(editor);
         }
     });
 
