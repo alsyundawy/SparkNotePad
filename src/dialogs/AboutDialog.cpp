@@ -383,7 +383,7 @@ void AboutDialog::updateThemeColors() {
         QString creditsHtml;
         creditsHtml += QString(
                            "<div style='color: %1; line-height: 1.6; font-size: 11px;'>"
-                           "<h3 style='color: %1; margin-top: 0; font-size: 13px; font-weight: bold;'>%3</h3>"
+                           "<h3 style='color: %2; margin-top: 0; font-size: 13px; font-weight: bold;'>%3</h3>"
                            "<p>%4</p>")
                            .arg(txtPri, accentCol, tr("Credits, Resources & Upstream Attribution"),
                                 tr("SparkNotePad stands on the shoulders of giants. We express our deepest gratitude "
