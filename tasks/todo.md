@@ -88,6 +88,16 @@
   - [x] Task 7.30: Arsitektur Native Qt Markdown Engine dengan GitHub Primer Styling (`MarkdownPreviewEnhancer` & `MarkdownThemeManager`).
   - [x] Task 7.31: Eliminasi Menyeluruh Fungsi & Tombol "Open in Default Web Browser" di Seluruh Aplikasi.
   - [x] Task 7.32: Pengujian Unit & Regresi Visual Markdown Preview Engine (`tests/test_markdown_preview_engine.h`).
+  - [x] Task 7.33: Modernisasi Kontainer Blok Kode GitHub Primer (`#0d1117`), header pill berkas (`#161b22`), lencana rounded (`#21262d`), dan tombol salin aksi `[ ❐ ]` / `[ ⎘ Copy ]`.
+  - [x] Task 7.34: Normalisasi Sintaks Strict Mode Bash Multiline (`IFS=$'\n\t'`) & Eliminasi Label Salin Redundan (`Salin Blok Kode`, `Salin Perintah`, `Salin Konfigurasi`, `Salin Skrip`).
+  - [x] Task 7.35: Engine Penormal SVG Shields.io & Canvas Clipping (Normalisasi `font-size="100"` ke 10, pencabutan `transform="scale(.1)"`, pencegahan badge bertumpuk dan meluap).
+  - [x] Task 7.36: Penanganan Lebar Persentase Gambar & Relayout Asinkron Ter-debounce (`performDeferredRelayout()`) pasca pengunduhan gambar remote.
+  - [x] Task 7.37: Sinkronisasi Scroll Presisi Sub-Pixel Anchor-Bracketed (`findAnchorBracket` dengan interpolasi linier) & eliminasi drift pengguliran pratinjau.
+  - [x] Task 7.38: Eliminasi Jeda Inisialisasi Font macOS 3.1 Detik via standardisasi font stack (`'Helvetica Neue', Helvetica, Arial, sans-serif`) di 30 tema Markdown.
+  - [x] Task 7.39: Tata Letak Tombol & Font Developer Tools Hub (font 10px, padding 2px 6px, min-height 24px, base font 9.5pt, pemisahan baris utilitas) & Tooltip 100% Menyeluruh.
+  - [x] Task 7.40: Penambahan Pemisah Visual Menu Konteks Editor (Pemisah antara "Select All" dan "UPPER CASE" / "lowercase").
+  - [x] Task 7.41: Sinkronisasi Penuh Translasi i18n Bahasa Indonesia (`SparkNotePad_id.ts`) dan Inggris (`SparkNotePad_en.ts`) Bebas Unfinished (2.347+ id, 2.376+ en).
+  - [x] Task 7.42: Penormalan Jarak Vertikal Baris Badge Shields.io (`line-height: 34px`) & Penataan Elemen Inline Gambar pada Pratinjau Markdown.
 
 - [x] **Milestone 8: Remote File Browser Dock (`SFTP` / `SCP` / `FTPS`)**
   - [x] Task 8.1: Implementasi `RemoteFileBrowserDock.cpp/.h` (Arsitektur SparkleSFTP).

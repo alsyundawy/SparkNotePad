@@ -32,10 +32,13 @@ SparkNotePad **v1.5.0** delivers a major feature expansion with developer toolin
 2. **GitHub Primer Markdown Preview Overhaul**:
    - Upgraded to full GitHub Flavored Markdown (GFM) aesthetic parity matching `mjbvz/vscode-github-markdown-preview-style` and GitHub Primer design tokens.
    - Eliminated Qt rich text formatting artifacts (`-qt-block-indent`, zero margin resets) and fixed CSS text inheritance across all elements (`p`, `li`, `td`, `th`, `span`, `div`), completely resolving invisible white-on-white text in light themes (`GITHUB`, etc.).
-   - Implemented unified, clean fenced code block containers with language headers (`💻 bash`, `🐍 python`, `🌐 html`, etc.) and 1-click interactive `📋 Copy` buttons.
-   - Guaranteed 100% exact newline, indentation, and syntax preservation for shell scripts (`bash`, `sh`, etc.) when selecting and copying from preview to terminal (stripping CRLF `\r`, normalizing NBSP `\u00A0`/`\u202F`, zero-width spaces, and converting curly quotes to ASCII quotes), preventing syntax errors in bash execution.
-   - Reverse anchor line synchronization: exact 1:1 side-by-side scroll alignment with Scintilla editor, masking code blocks and comments from falsely registering as headings, and debounced bidirectional scroll loop prevention.
+   - Modernized fenced code block containers with GitHub Primer `#0d1117` dark container, file header pill (`#161b22`, `#30363d` border), rounded pill badges (`#21262d`), clean copy action button (`[ ❐ ]` / `[ ⎘ Copy ]`), and pure monospace typography.
+   - Fixed broken multiline bash strict mode syntax (normalizing `IFS=$'[\r\n\t ]*'` to `IFS=$'\n\t'`), converted curly/smart quotes to ASCII, enforced pure Unix LF, stripped trailing whitespace, and eradicated redundant copy labels (`[📋 Salin Perintah / Copy Code Block]`, `[📋 Salin Blok Kode / Copy Code Block]`, `[📋 Salin Konfigurasi / Copy Configuration]`, `[📋 Salin Skrip / Copy Script Code]`), ensuring copied bash commands paste and execute in terminals with 0 syntax errors.
+   - Built-in SVG normalizer automatically rectifies Shields.io SVG scaling quirks (replaces `font-size="100"` with `10`, strips `transform="scale(.1)"`, rescales textLength coordinates, and sets strict canvas clip rectangles), eliminating giant, stretched, overlapping stacked badges.
+   - Stripped Qt-unsupported `width="100%"` attributes that collapsed images to -2px, dynamically constrained images to viewport boundaries (capped at 850px), and implemented debounced asynchronous relayout (`performDeferredRelayout()`) once network images finish downloading to preserve exact document heights and eliminate visual overlaps.
+   - Sub-Pixel Anchor-Bracketed Scroll Synchronization: replaced naive linear line ratios with anchor-bracketed sub-pixel scroll interpolation (`findAnchorBracket`), eliminating scroll drift and preview lag so the preview stays perfectly aligned with the editor in real-time.
    - Massive document resilience: validated and optimized for 100k+ lines (e.g. 6,000-line production guides) without memory spikes or render limits.
+   - Eliminated 3.1-second macOS font database rebuild lag on every preview refresh by replacing non-existent `-apple-system` font references with standard `'Helvetica Neue', Helvetica, Arial, sans-serif` across all 30 markdown themes.
    - Support for GitHub Alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with high-contrast icons, tinted backgrounds, and accent borders.
    - Complete purging of all external browser buttons and "Open in Default Web Browser" actions across docks and tabs for a self-contained, secure preview experience.
 3. **Format & Tools Menu Bar Relocation**:
@@ -59,6 +62,15 @@ SparkNotePad **v1.5.0** delivers a major feature expansion with developer toolin
    - Added interactive `Custom Color...` dialog (`QColorDialog`) and dedicated `Clear Tab Color` action with visual icons.
 8. **Editor Context Menu Ergonomic Separator**:
    - Added dedicated visual separator between `Select All` and `UPPER CASE` / `lowercase` in the editor right-click context menu, cleanly isolating selection commands from text transformation tools.
+   - Updated QSettings validation check to ensure existing user configuration incorporates the separator seamlessly.
+9. **Developer Tools Hub Layout & Universal Tooltip Overhaul**:
+   - Standardized compact button geometry (`font-size: 10px`, `padding: 2px 6px`, `min-height: 24px`, base font `9.5pt`) to eliminate all button label truncation across resolutions and languages.
+   - Removed restrictive minimum width constraints and split crowded utility controls into two spacious, balanced rows (`rowJwt` and `rowUuid`).
+   - Added comprehensive, informative tooltips (`setToolTip(...)`) across 100% of dialog widgets without exception (buttons, tabs, inputs, checkboxes, spinboxes, and comboboxes).
+10. **Shields.io Badge Spacing & Paragraph Layout**:
+   - Enforced 34px vertical line height and proper margins for paragraphs containing badges and inline images, completely eliminating vertical clipping and overlapping in documents like `SparkleSFTP/README.md`.
+11. **Complete i18n Localization**:
+   - 100% translation coverage for Indonesian (`SparkNotePad_id.ts`, 2,347 strings) and English (`SparkNotePad_en.ts`, 2,376 strings) with 0 unfinished entries, compiled to binary `.qm` packages.
 
 ---
 

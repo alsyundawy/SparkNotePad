@@ -24,22 +24,22 @@ using ThemeColors = MarkdownThemeManager::ThemeColors;
 constexpr std::array<ThemeColors, 30> s_themes = {{
     // 0: GITHUB
     {"GITHUB", "#1f2328", "#ffffff", "#d0d7de", "#656d76", "#eff1f3", "#f6f8fa", "#0969da",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif", "#d0d7de", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', 'Noto Sans', sans-serif", "#d0d7de", false},
     // 1: GITHUB-DARK
     {"GITHUB-DARK", "#e6edf3", "#0d1117", "#30363d", "#848d97", "#1f242c", "#161b22", "#2f81f7",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif", "#30363d", true},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', 'Noto Sans', sans-serif", "#30363d", true},
     // 2: ALMOND
     {"ALMOND", "#333333", "#fcfcfc", "#e5e5e5", "#666666", "#f0f0f0", "#f4f4f4", "#007acc",
-     "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#e5e5e5", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#e5e5e5", false},
     // 3: AWSM
     {"AWSM", "#222222", "#ffffff", "#dcdcdc", "#777777", "#f5f5f5", "#fbfbfb", "#b22222",
      "Georgia, Cambria, 'Times New Roman', Times, serif", "#b22222", false},
     // 4: AXIST
     {"AXIST", "#111111", "#ffffff", "#222222", "#555555", "#f3f3f3", "#fafafa", "#0000ee",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#222222", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#222222", false},
     // 5: BAMBOO
     {"BAMBOO", "#2b303a", "#fdfdfd", "#a3c9a8", "#6b7280", "#edf7ed", "#f1f8e9", "#2e7d32",
-     "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", "#a3c9a8", false},
+     "'Noto Sans', 'Helvetica Neue', Helvetica, Arial, 'Segoe UI', sans-serif", "#a3c9a8", false},
     // 6: BULLFRAME
     {"BULLFRAME", "#1a202c", "#ffffff", "#cbd5e0", "#718096", "#edf2f7", "#f7fafc", "#3f51b5",
      "'Inter', 'Segoe UI', Helvetica, Arial, sans-serif", "#cbd5e0", false},
@@ -57,37 +57,37 @@ constexpr std::array<ThemeColors, 30> s_themes = {{
      "Georgia, 'Times New Roman', serif", "#eaeaea", false},
     // 11: MINI
     {"MINI", "#212121", "#ffffff", "#e0e0e0", "#757575", "#f5f5f5", "#fafafa", "#1976d2",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#e0e0e0", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#e0e0e0", false},
     // 12: MODEST
     {"MODEST", "#444444", "#fcfcfc", "#e0e0e0", "#888888", "#f5f5f5", "#f9f9f9", "#16a085",
      "'Open Sans', 'Segoe UI', sans-serif", "#e0e0e0", false},
     // 13: NEW
     {"NEW", "#222222", "#ffffff", "#cccccc", "#666666", "#f4f4f4", "#f9f9f9", "#0066cc",
-     "system-ui, -apple-system, sans-serif", "#cccccc", false},
+     "'Helvetica Neue', Helvetica, Arial, sans-serif", "#cccccc", false},
     // 14: NO-CLASS
     {"NO-CLASS", "#222222", "#ffffff", "#dddddd", "#777777", "#f2f2f2", "#f8f8f8", "#1b6acb",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#dddddd", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#dddddd", false},
     // 15: PICO
     {"PICO", "#374151", "#ffffff", "#e5e7eb", "#6b7280", "#f3f4f6", "#f9fafb", "#0172ad",
-     "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif", "#e5e7eb", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#e5e7eb", false},
     // 16: RETRO
     {"RETRO", "#00ff66", "#121212", "#00aa44", "#008833", "#1a1a1a", "#0d0d0d", "#33ff99",
      "'Courier New', Courier, 'Lucida Console', monospace", "#00aa44", true},
     // 17: SAKURA
     {"SAKURA", "#222222", "#fbf7f8", "#f3d1dc", "#777777", "#fae8ee", "#fdf2f5", "#d63384",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#f3d1dc", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#f3d1dc", false},
     // 18: SAKURA-VADER
     {"SAKURA-VADER", "#e0e0e0", "#181518", "#4a2c3a", "#a08a95", "#281e25", "#201820", "#ff79c6",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#4a2c3a", true},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#4a2c3a", true},
     // 19: SEMANTIC
     {"SEMANTIC", "#2c3e50", "#ffffff", "#d4d4d5", "#767676", "#f8f8f9", "#f3f4f5", "#2185d0",
      "'Segoe UI', Helvetica, Arial, sans-serif", "#d4d4d5", false},
     // 20: SIMPLE
     {"SIMPLE", "#212529", "#fffff8", "#e9ecef", "#6c757d", "#f8f9fa", "#f1f3f5", "#d9534f",
-     "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif", "#e9ecef", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#e9ecef", false},
     // 21: STYLE-SANS
     {"STYLE-SANS", "#111111", "#ffffff", "#cccccc", "#666666", "#eeeeee", "#f6f6f6", "#0066cc",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", "#cccccc", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif", "#cccccc", false},
     // 22: STYLE-SERIF
     {"STYLE-SERIF", "#2b2b2b", "#faf8f5", "#d8d2c7", "#6e675f", "#f0ece4", "#f5f0e8", "#8b0000",
      "'Merriweather', 'Georgia', 'Garamond', serif", "#d8d2c7", false},
@@ -99,16 +99,16 @@ constexpr std::array<ThemeColors, 30> s_themes = {{
      "'Ubuntu', 'Segoe UI', sans-serif", "#b2dfdb", false},
     // 25: TACIT
     {"TACIT", "#333333", "#ffffff", "#dcdcdc", "#777777", "#f3f3f3", "#fbfbfb", "#1b98f8",
-     "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", "#dcdcdc", false},
+     "'Helvetica Neue', Helvetica, Arial, 'Segoe UI', sans-serif", "#dcdcdc", false},
     // 26: VANILLA
     {"VANILLA", "#000000", "#ffffff", "#dddddd", "#555555", "#f0f0f0", "#fafafa", "#0000ee",
-     "system-ui, sans-serif", "#dddddd", false},
+     "'Helvetica Neue', Helvetica, Arial, sans-serif", "#dddddd", false},
     // 27: WATER
     {"WATER", "#212121", "#fefefe", "#e0e0e0", "#616161", "#f1f1f1", "#f7f7f7", "#0076df",
-     "system-ui, -apple-system, BlinkMacSystemFont, sans-serif", "#e0e0e0", false},
+     "'Helvetica Neue', Helvetica, Arial, sans-serif", "#e0e0e0", false},
     // 28: WATER-DARK
     {"WATER-DARK", "#dbdbdb", "#202b38", "#364659", "#8ba2b9", "#161f27", "#1a232e", "#41adff",
-     "system-ui, -apple-system, BlinkMacSystemFont, sans-serif", "#364659", true},
+     "'Helvetica Neue', Helvetica, Arial, sans-serif", "#364659", true},
     // 29: WRIT
     {"WRIT", "#1f2421", "#fefefa", "#dce1de", "#5b655f", "#f0f2f0", "#f5f7f5", "#216869",
      "'Palatino', 'Palatino Linotype', 'Georgia', serif", "#dce1de", false},
@@ -241,7 +241,9 @@ QString MarkdownThemeManager::generateThemeCss(ThemeId id, int baseFontSize) {
                                 "  display: inline-block; padding: 3px 6px; font-size: 11px; line-height: 10px; color: %3; "
                                 "  background-color: %8; border: 1px solid %7; border-radius: 4px; box-shadow: inset 0 -1px 0 %7; "
                                 "} "
-                                "img { max-width: 100%; height: auto; border-radius: 4px; } "
+                                "img { max-width: 100%; height: auto; border-radius: 4px; vertical-align: middle; } "
+                                "p img, a img { vertical-align: middle; margin: 3px 2px; } "
+                                ".badge-row, p.badge-row { margin: 10px 0; line-height: 34px !important; } "
                                 "mark { background-color: #fff59d; color: #111111; padding: 2px 4px; border-radius: 3px; } "
                                 "del, s { text-decoration: line-through; color: %6; } "
                                 "ins { text-decoration: underline; } "

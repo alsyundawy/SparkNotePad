@@ -309,6 +309,30 @@ private slots:
         QVERIFY(clean.contains(QStringLiteral("PORT='8080'")));
         QVERIFY(clean.contains(QStringLiteral("FLAG=--help")));
         QVERIFY(clean.contains(QStringLiteral("CMD=echo \"HelloWorld\"")));
+
+        // Test multiline IFS normalization to strict mode IFS=$'\n\t'
+        const QString brokenIfs = QStringLiteral("set -Eeuo pipefail\nIFS=$'\n    '\n");
+        const QString cleanIfs = MarkdownPreviewEnhancer::sanitizeCodeForTerminal(brokenIfs, QStringLiteral("bash"));
+        QVERIFY(cleanIfs.contains(QStringLiteral("IFS=$'\\n\\t'")));
+
+        // Test redundant copy label removal (including Indonesian & English variations)
+        const QString docWithLabels = QStringLiteral(
+            "**[📋 Salin Blok Kode / Copy Code Block]**\n\n"
+            "```bash\n"
+            "echo \"Test 1\"\n"
+            "```\n\n"
+            "**[📋 Salin Konfigurasi / Copy Configuration]**\n\n"
+            "```text\n"
+            "config_val=1\n"
+            "```\n\n"
+            "**[📋 Salin Skrip / Copy Script Code]**\n\n"
+            "```sh\n"
+            "echo \"Test 2\"\n"
+            "```\n");
+        const QString renderedLabels = MarkdownPreviewEnhancer::renderMarkdownToHtml(docWithLabels, false);
+        QVERIFY(!renderedLabels.contains(QStringLiteral("Salin Blok Kode")));
+        QVERIFY(!renderedLabels.contains(QStringLiteral("Salin Konfigurasi")));
+        QVERIFY(!renderedLabels.contains(QStringLiteral("Salin Skrip")));
     }
 
     void testCopyCodeSnippetAndAnchors() const {

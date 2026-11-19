@@ -57,43 +57,51 @@ void DeveloperToolsDialog::setCurrentTab(int index) {
 
 void DeveloperToolsDialog::setupUi() {
     QFont dlgFont = font();
-    dlgFont.setPointSizeF(10.5);
+    dlgFont.setPointSizeF(9.5);
     setFont(dlgFont);
 
     setStyleSheet(QStringLiteral(
-        "QDialog { font-size: 11px; }"
-        "QTabBar::tab { font-weight: 600; font-size: 11px; min-height: 26px; padding: 4px 14px; }"
-        "QPushButton { font-size: 11px; font-weight: 500; padding: 4px 10px; min-height: 26px; border-radius: 4px; }"
-        "QComboBox { font-size: 11px; padding: 3px 8px; min-height: 26px; }"
-        "QLabel { font-size: 11px; }"
-        "QGroupBox { font-weight: 600; font-size: 11.5px; }"
-        "QCheckBox { font-size: 11px; }"
+        "QDialog { font-size: 10px; }"
+        "QTabBar::tab { font-weight: 600; font-size: 10px; min-height: 24px; padding: 2px 10px; }"
+        "QPushButton { font-size: 10px; font-weight: 500; padding: 2px 6px; min-height: 24px; border-radius: 4px; }"
+        "QComboBox { font-size: 10px; padding: 2px 6px; min-height: 24px; }"
+        "QLineEdit { font-size: 10px; padding: 2px 6px; min-height: 24px; }"
+        "QLabel { font-size: 10px; }"
+        "QGroupBox { font-weight: 600; font-size: 10.5px; }"
+        "QCheckBox { font-size: 10px; }"
+        "QSpinBox { font-size: 10px; padding: 2px 4px; min-height: 24px; }"
     ));
 
     auto *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(12, 12, 12, 12);
-    mainLayout->setSpacing(10);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->setSpacing(8);
 
-    // Tab Widget with modern styling and padding
+    // Tab Widget with modern styling, compact padding, and descriptive tooltips
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->addTab(createHashTab(), tr("Hash Tools"));
+    m_tabWidget->setTabToolTip(0, tr("Compute cryptographic hashes (MD5, SHA-1, SHA-256, SHA-512, Keccak) and verify file checksums"));
     m_tabWidget->addTab(createMimeTab(), tr("MIME Tools"));
+    m_tabWidget->setTabToolTip(1, tr("Encode and decode Base64, URL percent-encoding, HTML entities, and Quoted-Printable"));
     m_tabWidget->addTab(createConverterTab(), tr("Converter"));
+    m_tabWidget->setTabToolTip(2, tr("Convert numeral radix bases (Hex, Dec, Bin, Oct) and text casing"));
     m_tabWidget->addTab(createCryptoTab(), tr("Encryption"));
+    m_tabWidget->setTabToolTip(3, tr("HTML document encryption, obfuscation, and password strength analysis"));
     m_tabWidget->addTab(createDevToolsTab(), tr("Developer Tools"));
+    m_tabWidget->setTabToolTip(4, tr("Format and minify JSON/XML/HTML/CSS/JS, decode JWT, generate UUIDv4, and Epoch timestamps"));
     mainLayout->addWidget(m_tabWidget, 0);
 
     // Monospace font for code and cryptographic data
     QFont monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    monoFont.setPointSizeF(10.5);
+    monoFont.setPointSizeF(10.0);
 
     // Shared Splitter for Input and Output
     auto *splitter = new QSplitter(Qt::Vertical, this);
 
     auto *inputBox = new QGroupBox(tr("Input Text:"), this);
-    inputBox->setStyleSheet(QStringLiteral("QGroupBox { font-weight: 600; font-size: 11.5px; }"));
+    inputBox->setStyleSheet(QStringLiteral("QGroupBox { font-weight: 600; font-size: 10.5px; }"));
+    inputBox->setToolTip(tr("Source text pane for formatting, hashing, encoding, or conversion"));
     auto *inputLayout = new QVBoxLayout(inputBox);
-    inputLayout->setContentsMargins(8, 8, 8, 8);
+    inputLayout->setContentsMargins(6, 6, 6, 6);
     m_inputEdit = new QPlainTextEdit(inputBox);
     m_inputEdit->setPlaceholderText(tr("Enter or paste input text here... (Loaded automatically from active document selection)"));
     m_inputEdit->setFont(monoFont);
@@ -104,9 +112,10 @@ void DeveloperToolsDialog::setupUi() {
     splitter->addWidget(inputBox);
 
     auto *outputBox = new QGroupBox(tr("Processed Output:"), this);
-    outputBox->setStyleSheet(QStringLiteral("QGroupBox { font-weight: 600; font-size: 11.5px; }"));
+    outputBox->setStyleSheet(QStringLiteral("QGroupBox { font-weight: 600; font-size: 10.5px; }"));
+    outputBox->setToolTip(tr("Target output pane showing results from developer tools operations"));
     auto *outputLayout = new QVBoxLayout(outputBox);
-    outputLayout->setContentsMargins(8, 8, 8, 8);
+    outputLayout->setContentsMargins(6, 6, 6, 6);
     m_outputEdit = new QPlainTextEdit(outputBox);
     m_outputEdit->setPlaceholderText(tr("Processed result will appear here..."));
     m_outputEdit->setFont(monoFont);
@@ -124,25 +133,26 @@ void DeveloperToolsDialog::setupUi() {
     bottomLayout->setSpacing(8);
 
     m_statusLabel = new QLabel(this);
-    m_statusLabel->setStyleSheet(QStringLiteral("color: #3fb950; font-weight: 600; font-size: 11px; padding: 2px 6px;"));
+    m_statusLabel->setStyleSheet(QStringLiteral("color: #3fb950; font-weight: 600; font-size: 10.5px; padding: 2px 6px;"));
+    m_statusLabel->setToolTip(tr("Operational feedback and status notifications"));
     bottomLayout->addWidget(m_statusLabel, 1);
 
-    auto *btnFromEditor = new QPushButton(tr("📥 From Active Document"), this);
-    btnFromEditor->setMinimumHeight(28);
+    auto *btnFromEditor = new QPushButton(tr("Load from Editor"), this);
+    btnFromEditor->setMinimumHeight(24);
     btnFromEditor->setCursor(Qt::PointingHandCursor);
     btnFromEditor->setToolTip(tr("Load selected text or entire content from currently active document in editor"));
     connect(btnFromEditor, &QPushButton::clicked, this, &DeveloperToolsDialog::onLoadFromEditor);
     bottomLayout->addWidget(btnFromEditor);
 
-    auto *btnCopy = new QPushButton(tr("📋 Copy Output"), this);
-    btnCopy->setMinimumHeight(28);
+    auto *btnCopy = new QPushButton(tr("Copy Output"), this);
+    btnCopy->setMinimumHeight(24);
     btnCopy->setCursor(Qt::PointingHandCursor);
     btnCopy->setToolTip(tr("Copy processed output text directly to system clipboard"));
     connect(btnCopy, &QPushButton::clicked, this, &DeveloperToolsDialog::onCopyOutput);
     bottomLayout->addWidget(btnCopy);
 
-    auto *btnApply = new QPushButton(tr("✨ Apply to Active Document"), this);
-    btnApply->setMinimumHeight(28);
+    auto *btnApply = new QPushButton(tr("Apply to Editor"), this);
+    btnApply->setMinimumHeight(24);
     btnApply->setCursor(Qt::PointingHandCursor);
     btnApply->setToolTip(tr("Replace current selection or insert processed output into active document"));
     btnApply->setStyleSheet(QStringLiteral("QPushButton { font-weight: 600; }"));
@@ -150,7 +160,7 @@ void DeveloperToolsDialog::setupUi() {
     bottomLayout->addWidget(btnApply);
 
     auto *btnClose = new QPushButton(tr("Close"), this);
-    btnClose->setMinimumHeight(28);
+    btnClose->setMinimumHeight(24);
     btnClose->setCursor(Qt::PointingHandCursor);
     btnClose->setToolTip(tr("Close Developer Tools Hub dialog"));
     connect(btnClose, &QPushButton::clicked, this, &QDialog::accept);
@@ -162,19 +172,20 @@ void DeveloperToolsDialog::setupUi() {
 QWidget *DeveloperToolsDialog::createHashTab() {
     auto *tab = new QWidget(this);
     auto *layout = new QGridLayout(tab);
-    layout->setContentsMargins(12, 12, 12, 12);
-    layout->setHorizontalSpacing(12);
-    layout->setVerticalSpacing(10);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setHorizontalSpacing(10);
+    layout->setVerticalSpacing(8);
 
     // Row 0: Algorithm & Generate
     auto *lblAlgo = new QLabel(tr("Algorithm:"), tab);
     lblAlgo->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    lblAlgo->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 12px;"));
+    lblAlgo->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblAlgo->setToolTip(tr("Cryptographic hash algorithm to compute"));
     layout->addWidget(lblAlgo, 0, 0);
 
     m_comboHashAlgo = new QComboBox(tab);
-    m_comboHashAlgo->setMinimumHeight(28);
-    m_comboHashAlgo->setToolTip(tr("Select cryptographic hash algorithm"));
+    m_comboHashAlgo->setMinimumHeight(24);
+    m_comboHashAlgo->setToolTip(tr("Select cryptographic hash algorithm (SHA-256, SHA-512, MD5, SHA-1, SHA3, Keccak)"));
     m_comboHashAlgo->addItems({
         QStringLiteral("SHA-256"), QStringLiteral("SHA-512"),
         QStringLiteral("SHA-1"), QStringLiteral("MD5"),
@@ -183,9 +194,8 @@ QWidget *DeveloperToolsDialog::createHashTab() {
     });
     layout->addWidget(m_comboHashAlgo, 0, 1);
 
-    auto *btnCompute = new QPushButton(tr("⚡ Generate Text Hash"), tab);
-    btnCompute->setMinimumHeight(28);
-    btnCompute->setMinimumWidth(160);
+    auto *btnCompute = new QPushButton(tr("Generate Hash"), tab);
+    btnCompute->setMinimumHeight(24);
     btnCompute->setCursor(Qt::PointingHandCursor);
     btnCompute->setToolTip(tr("Compute selected cryptographic hash from input text"));
     connect(btnCompute, &QPushButton::clicked, this, &DeveloperToolsDialog::onComputeHash);
@@ -194,11 +204,12 @@ QWidget *DeveloperToolsDialog::createHashTab() {
     // Row 1: Compare Hash
     auto *lblCompare = new QLabel(tr("Compare Hash:"), tab);
     lblCompare->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    lblCompare->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 11px;"));
+    lblCompare->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblCompare->setToolTip(tr("Expected hash string for automated integrity comparison"));
     layout->addWidget(lblCompare, 1, 0);
 
     m_compareHashEdit = new QLineEdit(tab);
-    m_compareHashEdit->setMinimumHeight(28);
+    m_compareHashEdit->setMinimumHeight(24);
     m_compareHashEdit->setPlaceholderText(tr("Paste expected hash to compare against output..."));
     m_compareHashEdit->setToolTip(tr("Paste target hash here to compare and verify integrity"));
     m_compareHashEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
@@ -206,25 +217,26 @@ QWidget *DeveloperToolsDialog::createHashTab() {
     layout->addWidget(m_compareHashEdit, 1, 1);
 
     m_hashCompareResult = new QLabel(tab);
-    m_hashCompareResult->setMinimumWidth(110);
+    m_hashCompareResult->setMinimumWidth(90);
     m_hashCompareResult->setAlignment(Qt::AlignCenter);
+    m_hashCompareResult->setToolTip(tr("Checksum match validation indicator"));
     layout->addWidget(m_hashCompareResult, 1, 2);
 
     // Row 2: File Checksum
     auto *lblFile = new QLabel(tr("File Checksum:"), tab);
     lblFile->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    lblFile->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 11px;"));
+    lblFile->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblFile->setToolTip(tr("Target file path for binary checksum calculation"));
     layout->addWidget(lblFile, 2, 0);
 
     m_filePathEdit = new QLineEdit(tab);
-    m_filePathEdit->setMinimumHeight(28);
+    m_filePathEdit->setMinimumHeight(24);
     m_filePathEdit->setPlaceholderText(tr("Select file to calculate cryptographic hash..."));
     m_filePathEdit->setToolTip(tr("Path to target file for checksum calculation"));
     layout->addWidget(m_filePathEdit, 2, 1);
 
-    auto *btnBrowse = new QPushButton(tr("📁 Browse & Compute..."), tab);
-    btnBrowse->setMinimumHeight(28);
-    btnBrowse->setMinimumWidth(160);
+    auto *btnBrowse = new QPushButton(tr("Browse File..."), tab);
+    btnBrowse->setMinimumHeight(24);
     btnBrowse->setCursor(Qt::PointingHandCursor);
     btnBrowse->setToolTip(tr("Browse file from disk to compute or verify cryptographic hash"));
     connect(btnBrowse, &QPushButton::clicked, this, &DeveloperToolsDialog::onBrowseFileForHash);
@@ -237,65 +249,65 @@ QWidget *DeveloperToolsDialog::createHashTab() {
 QWidget *DeveloperToolsDialog::createMimeTab() {
     auto *tab = new QWidget(this);
     auto *layout = new QGridLayout(tab);
-    layout->setContentsMargins(12, 12, 12, 12);
-    layout->setHorizontalSpacing(10);
-    layout->setVerticalSpacing(10);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setHorizontalSpacing(8);
+    layout->setVerticalSpacing(8);
 
     // Row 0: Base64 & URL Encoding
     auto *btnB64Enc = new QPushButton(tr("Base64 Encode"), tab);
-    btnB64Enc->setMinimumHeight(28);
+    btnB64Enc->setMinimumHeight(24);
     btnB64Enc->setCursor(Qt::PointingHandCursor);
     btnB64Enc->setToolTip(tr("Encode input text to standard RFC 4648 Base64"));
     connect(btnB64Enc, &QPushButton::clicked, this, &DeveloperToolsDialog::onBase64Encode);
     layout->addWidget(btnB64Enc, 0, 0);
 
     auto *btnB64Dec = new QPushButton(tr("Base64 Decode"), tab);
-    btnB64Dec->setMinimumHeight(28);
+    btnB64Dec->setMinimumHeight(24);
     btnB64Dec->setCursor(Qt::PointingHandCursor);
     btnB64Dec->setToolTip(tr("Decode Base64 string back to plain text"));
     connect(btnB64Dec, &QPushButton::clicked, this, &DeveloperToolsDialog::onBase64Decode);
     layout->addWidget(btnB64Dec, 0, 1);
 
     auto *btnUrlEnc = new QPushButton(tr("URL Encode"), tab);
-    btnUrlEnc->setMinimumHeight(28);
+    btnUrlEnc->setMinimumHeight(24);
     btnUrlEnc->setCursor(Qt::PointingHandCursor);
     btnUrlEnc->setToolTip(tr("Percent-encode URL parameters (RFC 3986)"));
     connect(btnUrlEnc, &QPushButton::clicked, this, &DeveloperToolsDialog::onUrlEncode);
     layout->addWidget(btnUrlEnc, 0, 2);
 
     auto *btnUrlDec = new QPushButton(tr("URL Decode"), tab);
-    btnUrlDec->setMinimumHeight(28);
+    btnUrlDec->setMinimumHeight(24);
     btnUrlDec->setCursor(Qt::PointingHandCursor);
     btnUrlDec->setToolTip(tr("Decode percent-encoded URL string"));
     connect(btnUrlDec, &QPushButton::clicked, this, &DeveloperToolsDialog::onUrlDecode);
     layout->addWidget(btnUrlDec, 0, 3);
 
     // Row 1: HTML Entities & Quoted-Printable Encoding
-    auto *btnEntityEnc = new QPushButton(tr("HTML Entities Encode"), tab);
-    btnEntityEnc->setMinimumHeight(28);
+    auto *btnEntityEnc = new QPushButton(tr("HTML Encode"), tab);
+    btnEntityEnc->setMinimumHeight(24);
     btnEntityEnc->setCursor(Qt::PointingHandCursor);
-    btnEntityEnc->setToolTip(tr("Escape special characters to HTML entities (&lt;, &gt;, &amp;)"));
+    btnEntityEnc->setToolTip(tr("Escape special characters to HTML entities (&lt;, &gt;, &amp;, &quot;)"));
     connect(btnEntityEnc, &QPushButton::clicked, this, &DeveloperToolsDialog::onHtmlEntityEncode);
     layout->addWidget(btnEntityEnc, 1, 0);
 
-    auto *btnEntityDec = new QPushButton(tr("HTML Entities Decode"), tab);
-    btnEntityDec->setMinimumHeight(28);
+    auto *btnEntityDec = new QPushButton(tr("HTML Decode"), tab);
+    btnEntityDec->setMinimumHeight(24);
     btnEntityDec->setCursor(Qt::PointingHandCursor);
-    btnEntityDec->setToolTip(tr("Unescape HTML entities to raw text"));
+    btnEntityDec->setToolTip(tr("Unescape HTML entities back to raw characters"));
     connect(btnEntityDec, &QPushButton::clicked, this, &DeveloperToolsDialog::onHtmlEntityDecode);
     layout->addWidget(btnEntityDec, 1, 1);
 
-    auto *btnQpEnc = new QPushButton(tr("Quoted-Printable Encode"), tab);
-    btnQpEnc->setMinimumHeight(28);
+    auto *btnQpEnc = new QPushButton(tr("QP Encode"), tab);
+    btnQpEnc->setMinimumHeight(24);
     btnQpEnc->setCursor(Qt::PointingHandCursor);
-    btnQpEnc->setToolTip(tr("Encode text to Quoted-Printable (RFC 2045)"));
+    btnQpEnc->setToolTip(tr("Encode text to MIME Quoted-Printable format (RFC 2045)"));
     connect(btnQpEnc, &QPushButton::clicked, this, &DeveloperToolsDialog::onQuotedPrintableEncode);
     layout->addWidget(btnQpEnc, 1, 2);
 
-    auto *btnQpDec = new QPushButton(tr("Quoted-Printable Decode"), tab);
-    btnQpDec->setMinimumHeight(28);
+    auto *btnQpDec = new QPushButton(tr("QP Decode"), tab);
+    btnQpDec->setMinimumHeight(24);
     btnQpDec->setCursor(Qt::PointingHandCursor);
-    btnQpDec->setToolTip(tr("Decode Quoted-Printable content to plain text"));
+    btnQpDec->setToolTip(tr("Decode MIME Quoted-Printable content to plain text"));
     connect(btnQpDec, &QPushButton::clicked, this, &DeveloperToolsDialog::onQuotedPrintableDecode);
     layout->addWidget(btnQpDec, 1, 3);
 
@@ -308,20 +320,21 @@ QWidget *DeveloperToolsDialog::createMimeTab() {
 QWidget *DeveloperToolsDialog::createConverterTab() {
     auto *tab = new QWidget(this);
     auto *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(12, 12, 12, 12);
-    layout->setSpacing(10);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     // Row 0: Radix Base Conversion
     auto *rowRadix = new QHBoxLayout();
-    rowRadix->setSpacing(10);
+    rowRadix->setSpacing(8);
 
     auto *lblFrom = new QLabel(tr("From Base:"), tab);
-    lblFrom->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 12px;"));
+    lblFrom->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblFrom->setToolTip(tr("Source numeral base for conversion"));
     rowRadix->addWidget(lblFrom);
 
     m_comboFromRadix = new QComboBox(tab);
-    m_comboFromRadix->setMinimumHeight(28);
-    m_comboFromRadix->setToolTip(tr("Source numeral base representation"));
+    m_comboFromRadix->setMinimumHeight(24);
+    m_comboFromRadix->setToolTip(tr("Source numeral base representation (Decimal, Hex, Binary, Octal)"));
     m_comboFromRadix->addItem(tr("Decimal (10)"), 10);
     m_comboFromRadix->addItem(tr("Hexadecimal (16)"), 16);
     m_comboFromRadix->addItem(tr("Binary (2)"), 2);
@@ -329,12 +342,13 @@ QWidget *DeveloperToolsDialog::createConverterTab() {
     rowRadix->addWidget(m_comboFromRadix);
 
     auto *lblTo = new QLabel(tr("To Base:"), tab);
-    lblTo->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 11px;"));
+    lblTo->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblTo->setToolTip(tr("Target numeral base for conversion"));
     rowRadix->addWidget(lblTo);
 
     m_comboToRadix = new QComboBox(tab);
-    m_comboToRadix->setMinimumHeight(28);
-    m_comboToRadix->setToolTip(tr("Target numeral base representation"));
+    m_comboToRadix->setMinimumHeight(24);
+    m_comboToRadix->setToolTip(tr("Target numeral base representation (Hex, Decimal, Binary, Octal)"));
     m_comboToRadix->addItem(tr("Hexadecimal (16)"), 16);
     m_comboToRadix->addItem(tr("Decimal (10)"), 10);
     m_comboToRadix->addItem(tr("Binary (2)"), 2);
@@ -346,9 +360,8 @@ QWidget *DeveloperToolsDialog::createConverterTab() {
     m_chkUppercaseHex->setToolTip(tr("Format hexadecimal digits with uppercase characters (A-F)"));
     rowRadix->addWidget(m_chkUppercaseHex);
 
-    auto *btnConvertRadix = new QPushButton(tr("🔄 Convert Radix"), tab);
-    btnConvertRadix->setMinimumHeight(28);
-    btnConvertRadix->setMinimumWidth(130);
+    auto *btnConvertRadix = new QPushButton(tr("Convert Radix"), tab);
+    btnConvertRadix->setMinimumHeight(24);
     btnConvertRadix->setCursor(Qt::PointingHandCursor);
     btnConvertRadix->setToolTip(tr("Convert numbers between selected numeral bases"));
     connect(btnConvertRadix, &QPushButton::clicked, this, &DeveloperToolsDialog::onConvertRadix);
@@ -357,38 +370,38 @@ QWidget *DeveloperToolsDialog::createConverterTab() {
 
     // Row 1: Text & Case Transformations
     auto *rowText = new QHBoxLayout();
-    rowText->setSpacing(8);
+    rowText->setSpacing(6);
 
     auto *btnAsciiHex = new QPushButton(tr("ASCII → Hex"), tab);
-    btnAsciiHex->setMinimumHeight(28);
+    btnAsciiHex->setMinimumHeight(24);
     btnAsciiHex->setCursor(Qt::PointingHandCursor);
     btnAsciiHex->setToolTip(tr("Convert ASCII characters to hexadecimal byte representation"));
     connect(btnAsciiHex, &QPushButton::clicked, this, &DeveloperToolsDialog::onAsciiToHex);
     rowText->addWidget(btnAsciiHex);
 
     auto *btnHexAscii = new QPushButton(tr("Hex → ASCII"), tab);
-    btnHexAscii->setMinimumHeight(28);
+    btnHexAscii->setMinimumHeight(24);
     btnHexAscii->setCursor(Qt::PointingHandCursor);
     btnHexAscii->setToolTip(tr("Convert hexadecimal byte stream back to ASCII characters"));
     connect(btnHexAscii, &QPushButton::clicked, this, &DeveloperToolsDialog::onHexToAscii);
     rowText->addWidget(btnHexAscii);
 
     auto *btnTitle = new QPushButton(tr("Title Case"), tab);
-    btnTitle->setMinimumHeight(28);
+    btnTitle->setMinimumHeight(24);
     btnTitle->setCursor(Qt::PointingHandCursor);
-    btnTitle->setToolTip(tr("Convert words to Title Case"));
+    btnTitle->setToolTip(tr("Convert words to Title Case (capitalizing first letter of each word)"));
     connect(btnTitle, &QPushButton::clicked, this, &DeveloperToolsDialog::onCaseTitle);
     rowText->addWidget(btnTitle);
 
     auto *btnInvert = new QPushButton(tr("Invert Case"), tab);
-    btnInvert->setMinimumHeight(28);
+    btnInvert->setMinimumHeight(24);
     btnInvert->setCursor(Qt::PointingHandCursor);
-    btnInvert->setToolTip(tr("Invert character casing (upper <-> lower)"));
+    btnInvert->setToolTip(tr("Invert character casing (swapping upper and lower case letters)"));
     connect(btnInvert, &QPushButton::clicked, this, &DeveloperToolsDialog::onCaseInvert);
     rowText->addWidget(btnInvert);
 
     auto *btnSentence = new QPushButton(tr("Sentence Case"), tab);
-    btnSentence->setMinimumHeight(28);
+    btnSentence->setMinimumHeight(24);
     btnSentence->setCursor(Qt::PointingHandCursor);
     btnSentence->setToolTip(tr("Capitalize first character of each sentence"));
     connect(btnSentence, &QPushButton::clicked, this, &DeveloperToolsDialog::onCaseSentence);
@@ -401,19 +414,20 @@ QWidget *DeveloperToolsDialog::createConverterTab() {
 QWidget *DeveloperToolsDialog::createCryptoTab() {
     auto *tab = new QWidget(this);
     auto *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(12, 12, 12, 12);
-    layout->setSpacing(10);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     // Row 0: Passphrase & Strength
     auto *rowPass = new QHBoxLayout();
     rowPass->setSpacing(8);
 
     auto *lblPass = new QLabel(tr("Passphrase:"), tab);
-    lblPass->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 11px;"));
+    lblPass->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblPass->setToolTip(tr("Secret passphrase for encryption, decryption, and strength evaluation"));
     rowPass->addWidget(lblPass);
 
     m_cryptoPassphrase = new QLineEdit(tab);
-    m_cryptoPassphrase->setMinimumHeight(28);
+    m_cryptoPassphrase->setMinimumHeight(24);
     m_cryptoPassphrase->setEchoMode(QLineEdit::PasswordEchoOnEdit);
     m_cryptoPassphrase->setPlaceholderText(tr("Enter encryption passphrase..."));
     m_cryptoPassphrase->setToolTip(tr("Passphrase for symmetric encryption, decryption, and strength analysis"));
@@ -423,15 +437,16 @@ QWidget *DeveloperToolsDialog::createCryptoTab() {
     m_passwordScoreBar = new QProgressBar(tab);
     m_passwordScoreBar->setRange(0, 4);
     m_passwordScoreBar->setValue(0);
-    m_passwordScoreBar->setFixedWidth(110);
-    m_passwordScoreBar->setFixedHeight(20);
+    m_passwordScoreBar->setFixedWidth(100);
+    m_passwordScoreBar->setFixedHeight(18);
     m_passwordScoreBar->setTextVisible(false);
-    m_passwordScoreBar->setToolTip(tr("Password entropy score (0 to 4)"));
+    m_passwordScoreBar->setToolTip(tr("Password entropy score based on zxcvbn evaluation (0 = Very Weak to 4 = Very Strong)"));
     rowPass->addWidget(m_passwordScoreBar);
 
     m_passwordStrengthLabel = new QLabel(tr("Empty"), tab);
-    m_passwordStrengthLabel->setMinimumWidth(100);
-    m_passwordStrengthLabel->setStyleSheet(QStringLiteral("font-weight: 600; font-size: 11px;"));
+    m_passwordStrengthLabel->setMinimumWidth(80);
+    m_passwordStrengthLabel->setStyleSheet(QStringLiteral("font-weight: 600; font-size: 10.5px;"));
+    m_passwordStrengthLabel->setToolTip(tr("Real-time password strength rating"));
     rowPass->addWidget(m_passwordStrengthLabel);
 
     layout->addLayout(rowPass);
@@ -441,30 +456,29 @@ QWidget *DeveloperToolsDialog::createCryptoTab() {
     rowHtml->setSpacing(8);
 
     auto *lblHtml = new QLabel(tr("Protection Mode:"), tab);
-    lblHtml->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 11px;"));
+    lblHtml->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10.5px;"));
+    lblHtml->setToolTip(tr("Obfuscation or encryption algorithm for HTML document protection"));
     rowHtml->addWidget(lblHtml);
 
     m_comboHtmlEncryptMethod = new QComboBox(tab);
-    m_comboHtmlEncryptMethod->setMinimumHeight(28);
-    m_comboHtmlEncryptMethod->setToolTip(tr("Select HTML protection algorithm or password encryption"));
+    m_comboHtmlEncryptMethod->setMinimumHeight(24);
+    m_comboHtmlEncryptMethod->setToolTip(tr("Select HTML protection algorithm (JS unescape, Base64, or AES-256-GCM)"));
     m_comboHtmlEncryptMethod->addItem(tr("JavaScript unescape"), static_cast<int>(HtmlEncryptMethod::JavascriptEscape));
     m_comboHtmlEncryptMethod->addItem(tr("Base64 Obfuscation"), static_cast<int>(HtmlEncryptMethod::Base64));
     m_comboHtmlEncryptMethod->addItem(tr("Password (AES-256-GCM)"), static_cast<int>(HtmlEncryptMethod::PasswordProtected));
     rowHtml->addWidget(m_comboHtmlEncryptMethod, 1);
 
-    auto *btnHtmlEncrypt = new QPushButton(tr("🔒 Encrypt HTML"), tab);
-    btnHtmlEncrypt->setMinimumHeight(28);
-    btnHtmlEncrypt->setMinimumWidth(130);
+    auto *btnHtmlEncrypt = new QPushButton(tr("Encrypt HTML"), tab);
+    btnHtmlEncrypt->setMinimumHeight(24);
     btnHtmlEncrypt->setCursor(Qt::PointingHandCursor);
-    btnHtmlEncrypt->setToolTip(tr("Protect HTML file using selected obfuscation or encryption"));
+    btnHtmlEncrypt->setToolTip(tr("Protect HTML file using selected obfuscation or AES-256-GCM encryption"));
     connect(btnHtmlEncrypt, &QPushButton::clicked, this, &DeveloperToolsDialog::onHtmlEncrypt);
     rowHtml->addWidget(btnHtmlEncrypt);
 
-    auto *btnHtmlDecrypt = new QPushButton(tr("🔓 Decrypt HTML"), tab);
-    btnHtmlDecrypt->setMinimumHeight(28);
-    btnHtmlDecrypt->setMinimumWidth(130);
+    auto *btnHtmlDecrypt = new QPushButton(tr("Decrypt HTML"), tab);
+    btnHtmlDecrypt->setMinimumHeight(24);
     btnHtmlDecrypt->setCursor(Qt::PointingHandCursor);
-    btnHtmlDecrypt->setToolTip(tr("Decrypt and restore protected HTML content"));
+    btnHtmlDecrypt->setToolTip(tr("Decrypt and restore protected HTML content to source markup"));
     connect(btnHtmlDecrypt, &QPushButton::clicked, this, &DeveloperToolsDialog::onHtmlDecrypt);
     rowHtml->addWidget(btnHtmlDecrypt);
 
@@ -475,81 +489,81 @@ QWidget *DeveloperToolsDialog::createCryptoTab() {
 QWidget *DeveloperToolsDialog::createDevToolsTab() {
     auto *tab = new QWidget(this);
     auto *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(12, 12, 12, 12);
-    layout->setSpacing(10);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     // Grid 0: Code Formatters & Minifiers (2 rows x 5 cols)
     auto *gridFmt = new QGridLayout();
-    gridFmt->setHorizontalSpacing(8);
+    gridFmt->setHorizontalSpacing(6);
     gridFmt->setVerticalSpacing(6);
 
     auto *btnFmtJson = new QPushButton(tr("Format JSON"), tab);
-    btnFmtJson->setMinimumHeight(28);
+    btnFmtJson->setMinimumHeight(24);
     btnFmtJson->setCursor(Qt::PointingHandCursor);
-    btnFmtJson->setToolTip(tr("Format and beautify JSON with indentation"));
+    btnFmtJson->setToolTip(tr("Format and beautify JSON with configurable indentation"));
     connect(btnFmtJson, &QPushButton::clicked, this, &DeveloperToolsDialog::onFormatJson);
     gridFmt->addWidget(btnFmtJson, 0, 0);
 
     auto *btnMinJson = new QPushButton(tr("Minify JSON"), tab);
-    btnMinJson->setMinimumHeight(28);
+    btnMinJson->setMinimumHeight(24);
     btnMinJson->setCursor(Qt::PointingHandCursor);
-    btnMinJson->setToolTip(tr("Minify JSON by removing whitespace and linebreaks"));
+    btnMinJson->setToolTip(tr("Minify JSON by removing unnecessary whitespace and line breaks"));
     connect(btnMinJson, &QPushButton::clicked, this, &DeveloperToolsDialog::onMinifyJson);
     gridFmt->addWidget(btnMinJson, 1, 0);
 
     auto *btnFmtXml = new QPushButton(tr("Format XML"), tab);
-    btnFmtXml->setMinimumHeight(28);
+    btnFmtXml->setMinimumHeight(24);
     btnFmtXml->setCursor(Qt::PointingHandCursor);
-    btnFmtXml->setToolTip(tr("Format and indent XML document"));
+    btnFmtXml->setToolTip(tr("Format and indent XML markup with proper hierarchy"));
     connect(btnFmtXml, &QPushButton::clicked, this, &DeveloperToolsDialog::onFormatXml);
     gridFmt->addWidget(btnFmtXml, 0, 1);
 
     auto *btnMinXml = new QPushButton(tr("Minify XML"), tab);
-    btnMinXml->setMinimumHeight(28);
+    btnMinXml->setMinimumHeight(24);
     btnMinXml->setCursor(Qt::PointingHandCursor);
-    btnMinXml->setToolTip(tr("Minify XML by stripping extra whitespace"));
+    btnMinXml->setToolTip(tr("Minify XML document by stripping indentation and whitespace"));
     connect(btnMinXml, &QPushButton::clicked, this, &DeveloperToolsDialog::onMinifyXml);
     gridFmt->addWidget(btnMinXml, 1, 1);
 
     auto *btnFmtHtml = new QPushButton(tr("Format HTML"), tab);
-    btnFmtHtml->setMinimumHeight(28);
+    btnFmtHtml->setMinimumHeight(24);
     btnFmtHtml->setCursor(Qt::PointingHandCursor);
-    btnFmtHtml->setToolTip(tr("Format and beautify HTML document"));
+    btnFmtHtml->setToolTip(tr("Format and beautify HTML document structure"));
     connect(btnFmtHtml, &QPushButton::clicked, this, &DeveloperToolsDialog::onFormatHtml);
     gridFmt->addWidget(btnFmtHtml, 0, 2);
 
     auto *btnMinHtml = new QPushButton(tr("Minify HTML"), tab);
-    btnMinHtml->setMinimumHeight(28);
+    btnMinHtml->setMinimumHeight(24);
     btnMinHtml->setCursor(Qt::PointingHandCursor);
-    btnMinHtml->setToolTip(tr("Minify HTML markup"));
+    btnMinHtml->setToolTip(tr("Minify HTML markup by compressing tags and attributes"));
     connect(btnMinHtml, &QPushButton::clicked, this, &DeveloperToolsDialog::onMinifyHtml);
     gridFmt->addWidget(btnMinHtml, 1, 2);
 
     auto *btnFmtCss = new QPushButton(tr("Format CSS"), tab);
-    btnFmtCss->setMinimumHeight(28);
+    btnFmtCss->setMinimumHeight(24);
     btnFmtCss->setCursor(Qt::PointingHandCursor);
     btnFmtCss->setToolTip(tr("Format CSS stylesheets with clean rules and indentation"));
     connect(btnFmtCss, &QPushButton::clicked, this, &DeveloperToolsDialog::onFormatCss);
     gridFmt->addWidget(btnFmtCss, 0, 3);
 
     auto *btnMinCss = new QPushButton(tr("Minify CSS"), tab);
-    btnMinCss->setMinimumHeight(28);
+    btnMinCss->setMinimumHeight(24);
     btnMinCss->setCursor(Qt::PointingHandCursor);
-    btnMinCss->setToolTip(tr("Minify CSS stylesheets by compressing rules"));
+    btnMinCss->setToolTip(tr("Minify CSS stylesheets by compressing rules and declarations"));
     connect(btnMinCss, &QPushButton::clicked, this, &DeveloperToolsDialog::onMinifyCss);
     gridFmt->addWidget(btnMinCss, 1, 3);
 
     auto *btnFmtJs = new QPushButton(tr("Format JS"), tab);
-    btnFmtJs->setMinimumHeight(28);
+    btnFmtJs->setMinimumHeight(24);
     btnFmtJs->setCursor(Qt::PointingHandCursor);
     btnFmtJs->setToolTip(tr("Format and beautify JavaScript / TypeScript source code"));
     connect(btnFmtJs, &QPushButton::clicked, this, &DeveloperToolsDialog::onFormatJs);
     gridFmt->addWidget(btnFmtJs, 0, 4);
 
     auto *btnMinJs = new QPushButton(tr("Minify JS"), tab);
-    btnMinJs->setMinimumHeight(28);
+    btnMinJs->setMinimumHeight(24);
     btnMinJs->setCursor(Qt::PointingHandCursor);
-    btnMinJs->setToolTip(tr("Minify JavaScript by stripping comments and whitespace"));
+    btnMinJs->setToolTip(tr("Minify JavaScript code by stripping comments and extra whitespace"));
     connect(btnMinJs, &QPushButton::clicked, this, &DeveloperToolsDialog::onMinifyJs);
     gridFmt->addWidget(btnMinJs, 1, 4);
 
@@ -558,58 +572,67 @@ QWidget *DeveloperToolsDialog::createDevToolsTab() {
     }
     layout->addLayout(gridFmt);
 
-    // Row 1: Utilities & Generators
-    auto *rowMisc = new QHBoxLayout();
-    rowMisc->setSpacing(8);
+    // Row 1: JWT & JSON Format Controls
+    auto *rowJwt = new QHBoxLayout();
+    rowJwt->setSpacing(8);
 
-    auto *btnJwt = new QPushButton(tr("🔑 Decode JWT Token"), tab);
-    btnJwt->setMinimumHeight(28);
+    auto *btnJwt = new QPushButton(tr("Decode JWT Token"), tab);
+    btnJwt->setMinimumHeight(24);
     btnJwt->setCursor(Qt::PointingHandCursor);
-    btnJwt->setToolTip(tr("Decode JSON Web Token (JWT) header, claims, and payload"));
+    btnJwt->setToolTip(tr("Decode JSON Web Token (JWT) header, claims payload, and signature"));
     connect(btnJwt, &QPushButton::clicked, this, &DeveloperToolsDialog::onParseJwt);
-    rowMisc->addWidget(btnJwt);
+    rowJwt->addWidget(btnJwt);
 
     auto *lblIndent = new QLabel(tr("JSON Indent:"), tab);
-    lblIndent->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 11px;"));
-    rowMisc->addWidget(lblIndent);
+    lblIndent->setStyleSheet(QStringLiteral("font-weight: 500; font-size: 10px;"));
+    lblIndent->setToolTip(tr("Number of spaces per indentation level for JSON formatting"));
+    rowJwt->addWidget(lblIndent);
 
     m_spinJsonIndent = new QSpinBox(tab);
     m_spinJsonIndent->setRange(1, 8);
     m_spinJsonIndent->setValue(2);
-    m_spinJsonIndent->setMinimumHeight(28);
+    m_spinJsonIndent->setMinimumHeight(24);
     m_spinJsonIndent->setToolTip(tr("Indentation width in spaces for JSON formatting (1 to 8)"));
-    rowMisc->addWidget(m_spinJsonIndent);
+    rowJwt->addWidget(m_spinJsonIndent);
 
-    rowMisc->addSpacing(4);
+    rowJwt->addSpacing(8);
 
-    auto *btnUuid = new QPushButton(tr("🎲 Generate UUIDv4"), tab);
-    btnUuid->setMinimumHeight(28);
+    auto *btnEpoch = new QPushButton(tr("Current Epoch & ISO"), tab);
+    btnEpoch->setMinimumHeight(24);
+    btnEpoch->setCursor(Qt::PointingHandCursor);
+    btnEpoch->setToolTip(tr("Display current Unix timestamp (seconds, milliseconds) and ISO 8601 UTC date-time"));
+    connect(btnEpoch, &QPushButton::clicked, this, &DeveloperToolsDialog::onCurrentEpoch);
+    rowJwt->addWidget(btnEpoch);
+
+    rowJwt->addStretch(1);
+    layout->addLayout(rowJwt);
+
+    // Row 2: UUIDv4 Generator & Options
+    auto *rowUuid = new QHBoxLayout();
+    rowUuid->setSpacing(8);
+
+    auto *btnUuid = new QPushButton(tr("Generate UUIDv4"), tab);
+    btnUuid->setMinimumHeight(24);
     btnUuid->setCursor(Qt::PointingHandCursor);
-    btnUuid->setToolTip(tr("Generate random RFC 4122 Version 4 UUID"));
+    btnUuid->setToolTip(tr("Generate cryptographically random RFC 4122 Version 4 UUID"));
     connect(btnUuid, &QPushButton::clicked, this, &DeveloperToolsDialog::onGenerateUuid);
-    rowMisc->addWidget(btnUuid);
+    rowUuid->addWidget(btnUuid);
 
-    m_chkUuidUpper = new QCheckBox(tr("Upper"), tab);
-    m_chkUuidUpper->setToolTip(tr("Format UUID with uppercase hex characters"));
-    rowMisc->addWidget(m_chkUuidUpper);
-    m_chkUuidBraces = new QCheckBox(tr("{ }"), tab);
-    m_chkUuidBraces->setToolTip(tr("Wrap UUID in curly braces { ... }"));
-    rowMisc->addWidget(m_chkUuidBraces);
+    m_chkUuidUpper = new QCheckBox(tr("Uppercase"), tab);
+    m_chkUuidUpper->setToolTip(tr("Format generated UUID with uppercase hexadecimal letters (A-F)"));
+    rowUuid->addWidget(m_chkUuidUpper);
+
+    m_chkUuidBraces = new QCheckBox(tr("{ } Braces"), tab);
+    m_chkUuidBraces->setToolTip(tr("Wrap generated UUID in curly braces: {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}"));
+    rowUuid->addWidget(m_chkUuidBraces);
+
     m_chkUuidDashes = new QCheckBox(tr("Dashes"), tab);
     m_chkUuidDashes->setChecked(true);
-    m_chkUuidDashes->setToolTip(tr("Include hyphens in UUID representation"));
-    rowMisc->addWidget(m_chkUuidDashes);
+    m_chkUuidDashes->setToolTip(tr("Include hyphens in UUID representation (standard 8-4-4-4-12 format)"));
+    rowUuid->addWidget(m_chkUuidDashes);
 
-    rowMisc->addSpacing(4);
-
-    auto *btnEpoch = new QPushButton(tr("⏱️ Current Epoch & ISO"), tab);
-    btnEpoch->setMinimumHeight(28);
-    btnEpoch->setCursor(Qt::PointingHandCursor);
-    btnEpoch->setToolTip(tr("Display current Unix timestamp in seconds, milliseconds, and ISO 8601 string"));
-    connect(btnEpoch, &QPushButton::clicked, this, &DeveloperToolsDialog::onCurrentEpoch);
-    rowMisc->addWidget(btnEpoch);
-
-    layout->addLayout(rowMisc);
+    rowUuid->addStretch(1);
+    layout->addLayout(rowUuid);
     return tab;
 }
 

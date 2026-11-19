@@ -336,7 +336,7 @@ void PreviewTabWidget::renderPreview() {
     const bool isDark = ThemeManager::instance()->isDarkActive();
     const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
     const QString fullHtml = wrapHtmlDocument(enhanced, isDark);
-    m_browser->setHtml(fullHtml);
+    m_browser->setDocumentHtml(fullHtml);
 
     if (scrollBar && scrollBar->maximum() > 0 && scrollRatio > 0.0) {
         scrollBar->setValue(static_cast<int>(scrollRatio * scrollBar->maximum()));
@@ -444,8 +444,18 @@ void PreviewTabWidget::handleAnchorClicked(const QUrl &url) {
 
     // 1. One-click copy code snippet from code block header
     if (scheme == QStringLiteral("copy-code")) {
+        QString pathStr = url.path();
+        if (pathStr.startsWith(QLatin1Char('/'))) {
+            pathStr.remove(0, 1);
+        }
+        if (pathStr.isEmpty()) {
+            pathStr = url.toString().mid(scheme.length() + 1);
+            while (pathStr.startsWith(QLatin1Char('/'))) {
+                pathStr.remove(0, 1);
+            }
+        }
         bool ok = false;
-        const int snippetIdx = url.path().toInt(&ok);
+        const int snippetIdx = pathStr.toInt(&ok);
         if (ok) {
             const QString code = MarkdownPreviewEnhancer::codeSnippet(snippetIdx);
             if (!code.isEmpty()) {
@@ -508,12 +518,23 @@ void PreviewTabWidget::syncScrollFromEditor(Scintilla::Update updated) {
         MarkdownPreviewEnhancer::findAnchorBracket(docLine, prevAnchor, nextAnchor);
 
         if (prevAnchor > 0 && nextAnchor > prevAnchor) {
+            m_browser->scrollToAnchor(QStringLiteral("line_%1").arg(prevAnchor));
+            const int y1 = scrollBar->value();
+            m_browser->scrollToAnchor(QStringLiteral("line_%1").arg(nextAnchor));
+            const int y2 = scrollBar->value();
             const double localFraction = std::clamp(
                 static_cast<double>(docLine - prevAnchor) / static_cast<double>(nextAnchor - prevAnchor), 0.0, 1.0);
-            const double prevRatio = static_cast<double>(prevAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
-            const double nextRatio = static_cast<double>(nextAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
-            const double blendedRatio = prevRatio + (localFraction * (nextRatio - prevRatio));
-            scrollBar->setValue(static_cast<int>(std::round(blendedRatio * scrollBar->maximum())));
+            const int targetY = y1 + static_cast<int>(std::round(localFraction * static_cast<double>(y2 - y1)));
+            scrollBar->setValue(targetY);
+        } else if (prevAnchor > 0 && docLine >= prevAnchor) {
+            // When document is past the last anchor, interpolate smoothly down to maximum() so preview stays in sync
+            m_browser->scrollToAnchor(QStringLiteral("line_%1").arg(prevAnchor));
+            const int y1 = scrollBar->value();
+            const int yMax = scrollBar->maximum();
+            const double remFraction = std::clamp(
+                static_cast<double>(docLine - prevAnchor) / static_cast<double>(std::max(1, totalLines - prevAnchor)), 0.0, 1.0);
+            const int targetY = y1 + static_cast<int>(std::round(remFraction * static_cast<double>(yMax - y1)));
+            scrollBar->setValue(targetY);
         } else {
             const double ratio =
                 std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);

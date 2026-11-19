@@ -18,6 +18,7 @@
 #include <QQueue>
 #include <QSet>
 #include <QTextBrowser>
+#include <QTimer>
 #include <QUrl>
 
 class QNetworkAccessManager;
@@ -31,6 +32,8 @@ public:
     ~MarkdownBrowser() override;
 
     void setDocumentSourcePath(const QString &filePath);
+    void setDocumentHtml(const QString &html);
+    [[nodiscard]] const QString &documentHtml() const { return m_currentHtml; }
     void clearImageCache();
 
     [[nodiscard]] QVariant loadResource(int type, const QUrl &name) override;
@@ -40,6 +43,7 @@ signals:
 
 private slots:
     void handleImageReply(QNetworkReply *reply, const QUrl &url);
+    void performDeferredRelayout();
 
 private:
     void fetchRemoteImage(const QUrl &url);
@@ -52,6 +56,8 @@ private:
     QSet<QUrl> m_pendingUrls;
     QSet<QUrl> m_failedUrls;
     QQueue<QUrl> m_downloadQueue;
+    QString m_currentHtml;
+    QTimer *m_relayoutTimer = nullptr;
 
     static constexpr int s_maxCacheEntries = 256;
     static constexpr int s_maxConcurrentDownloads = 16;

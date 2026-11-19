@@ -4660,19 +4660,25 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     }
 
     const QStringList defaultActionNames = {
-        "Undo", "Redo",         "", "Cut",  "Copy", "Paste", "PasteAndMatchStyle", "Delete", "", "SelectAll", "",
-        "Find", "SearchGoogle", "", "Open", "Save", "",      "ShowCharacterInfo"};
+        "Undo", "Redo", "",
+        "Cut", "Copy", "Paste", "PasteAndMatchStyle", "Delete", "",
+        "SelectAll", "",
+        "UpperCase", "LowerCase", "",
+        "Find", "SearchGoogle", "",
+        "Open", "Save", "",
+        "ShowCharacterInfo"};
 
     QStringList actionNames = defaultActionNames;
 
     // If the entry exists in the settings, use that
     if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
         actionNames = settings->value("Gui/EditorContextMenu").toStringList();
-        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle are
+        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle, UpperCase, LowerCase are
         // present
         if (!actionNames.contains("Undo") || !actionNames.contains("Redo") || !actionNames.contains("Open") ||
             !actionNames.contains("Save") || !actionNames.contains("Find") ||
             !actionNames.contains("PasteAndMatchStyle") || !actionNames.contains("SearchGoogle") ||
+            !actionNames.contains("UpperCase") || !actionNames.contains("LowerCase") ||
             actionNames.contains("Base64Encode") || actionNames.contains("URLEncode")) {
             actionNames = defaultActionNames;
         }
@@ -4688,20 +4694,29 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
 
     auto *menu = buildMenu(actionNames);
 
-    // Relocate UPPERCASE and lowercase directly below Select All with a distinct separator
+    // Ensure UPPERCASE and lowercase are always distinctly separated from Select All
     const auto actions = menu->actions();
-    if (const auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll); selectAllIt != actions.end()) {
+    const auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll);
+    const auto upperCaseIt = std::ranges::find(actions, ui->actionUpperCase);
+    if (selectAllIt != actions.end() && upperCaseIt != actions.end()) {
+        // If UpperCase is directly adjacent to SelectAll without a separator, insert one
+        if (std::next(selectAllIt) == upperCaseIt) {
+            menu->insertSeparator(ui->actionUpperCase);
+        }
+    } else if (selectAllIt != actions.end() && upperCaseIt == actions.end()) {
+        // UpperCase not in custom menu - insert separator then UpperCase and LowerCase
         const auto nextIt = std::next(selectAllIt);
         if (nextIt != actions.end()) {
             menu->insertSeparator(*nextIt);
             menu->insertAction(*nextIt, ui->actionUpperCase);
             menu->insertAction(*nextIt, ui->actionLowerCase);
+            menu->insertSeparator(*nextIt);
         } else {
             menu->addSeparator();
             menu->addAction(ui->actionUpperCase);
             menu->addAction(ui->actionLowerCase);
         }
-    } else {
+    } else if (upperCaseIt == actions.end()) {
         menu->addSeparator();
         menu->addAction(ui->actionUpperCase);
         menu->addAction(ui->actionLowerCase);

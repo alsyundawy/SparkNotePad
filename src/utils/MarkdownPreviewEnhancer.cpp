@@ -171,6 +171,30 @@ QString cleanQtHtml(const QString &rawHtml) {
     static const QRegularExpression tableRegex(QStringLiteral(R"(<table\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
     content.replace(tableRegex, QStringLiteral(R"(<table class="markdown-table" border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 16px 0;">)"));
 
+    // 6. Clean negative image widths produced by Qt percent parsing (e.g. width="-2")
+    static const QRegularExpression negWidthRegex(
+        QStringLiteral(R"(\s+width\s*=\s*["']?-\d+["']?)"), QRegularExpression::CaseInsensitiveOption);
+    content.remove(negWidthRegex);
+
+    // 7. Ensure paragraphs containing images have sufficient line height for badges
+    static const QRegularExpression pImgTagRegex(
+        QStringLiteral(R"(<p\b([^>]*?>[\s\S]*?<img\b[^>]*>[\s\S]*?<\/p>))"),
+        QRegularExpression::CaseInsensitiveOption);
+    auto pImgIt = pImgTagRegex.globalMatch(content);
+    qsizetype pOffset = 0;
+    while (pImgIt.hasNext()) {
+        const auto m = pImgIt.next();
+        QString pBlock = m.captured(1);
+        if (!pBlock.contains(QStringLiteral("line-height: 34px"))) {
+            static const QRegularExpression pOpenRegex(QStringLiteral(R"(<p\b([^>]*?)(?:style\s*=\s*["']([^"']*)["'])?([^>]*?>))"), QRegularExpression::CaseInsensitiveOption);
+            pBlock.replace(pOpenRegex, QStringLiteral("<p\\1 style=\"line-height: 34px; margin: 10px 0; \\2\"\\3"));
+            const qsizetype start = m.capturedStart(1) + pOffset;
+            const qsizetype len = m.capturedLength(1);
+            content.replace(start, len, pBlock);
+            pOffset += pBlock.length() - len;
+        }
+    }
+
     return content;
 }
 
@@ -178,6 +202,20 @@ QString sanitizeHtmlInsideBlock(QString block) {
     static const QRegularExpression brRegex(QStringLiteral(R"(<br\s*/?>)"), QRegularExpression::CaseInsensitiveOption);
     block.replace(brRegex, QStringLiteral("<br />"));
     block.replace(QStringLiteral("&nbsp;"), QStringLiteral("&#160;"));
+
+    // Strip percentage widths from <img> tags inside HTML blocks to prevent negative width="-2" corruption
+    static const QRegularExpression percentWidthBlockRegex(
+        QStringLiteral(R"(<img\b([^>]*?)\s+width\s*=\s*["']?\d+%\s*["']?([^>]*?>))"),
+        QRegularExpression::CaseInsensitiveOption);
+    block.replace(percentWidthBlockRegex, QStringLiteral("<img\\1\\2"));
+
+    // Ensure paragraphs with images/badges have adequate line-height so badges never collide vertically
+    if (block.contains(QStringLiteral("<img"), Qt::CaseInsensitive)) {
+        static const QRegularExpression pBadgeRegex(
+            QStringLiteral(R"(<p\b([^>]*?)(?:style\s*=\s*["']([^"']*)["'])?([^>]*?>))"),
+            QRegularExpression::CaseInsensitiveOption);
+        block.replace(pBadgeRegex, QStringLiteral("<p\\1 style=\"line-height: 34px; margin: 10px 0; \\2\"\\3"));
+    }
     return block;
 }
 
@@ -221,6 +259,23 @@ QString MarkdownPreviewEnhancer::sanitizeCodeForTerminal(const QString &rawCode,
         code.replace(QChar(0x2013), QLatin1Char('-'));
         code.replace(QChar(0x2014), QLatin1Char('-'));
         code.replace(QChar(0x2212), QLatin1Char('-'));
+
+        // Normalize broken multiline IFS in bash scripts to standard strict mode IFS=$'\n\t'
+        static const QRegularExpression brokenIfsRegex(
+            QStringLiteral(R"(IFS=\$'[\r\n\t ]*')"));
+        code.replace(brokenIfsRegex, QStringLiteral("IFS=$'\\n\\t'"));
+    }
+
+    // 5. Normalize trailing whitespace per line and ensure clean single trailing LF
+    QStringList lines = code.split(QLatin1Char('\n'));
+    for (QString &line : lines) {
+        while (line.endsWith(QLatin1Char(' ')) || line.endsWith(QLatin1Char('\t'))) {
+            line.chop(1);
+        }
+    }
+    code = lines.join(QLatin1Char('\n')).trimmed();
+    if (!code.isEmpty()) {
+        code.append(QLatin1Char('\n'));
     }
 
     return code;
@@ -315,6 +370,12 @@ QString MarkdownPreviewEnhancer::sanitizePseudoHtmlTags(const QString &text) {
             offset += replacement.length() - length;
         }
     }
+
+    // 4. Strip percentage width on <img> tags (e.g. width="100%"), which Qt parses as width="-2"
+    static const QRegularExpression percentWidthRegex(
+        QStringLiteral(R"(<img\b([^>]*?)\s+width\s*=\s*["']?\d+%\s*["']?([^>]*?>))"),
+        QRegularExpression::CaseInsensitiveOption);
+    result.replace(percentWidthRegex, QStringLiteral("<img\\1\\2"));
 
     return result;
 }
@@ -712,7 +773,25 @@ QString MarkdownPreviewEnhancer::processMermaidBlocks(const QString &content, bo
 }
 
 QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) {
-    QString result = content;
+    if (!content.contains(QLatin1Char('$'))) {
+        return content;
+    }
+
+    // Mask inline code snippets to protect shell variables (e.g. `IFS=$'\n\t'`, `$PATH`) from math parsing
+    std::vector<QString> inlineCode;
+    static const QRegularExpression inlineCodeRegex(QStringLiteral(R"(`[^`\n]+`)"));
+    QString masked = content;
+    auto codeIt = inlineCodeRegex.globalMatch(masked);
+    qsizetype codeOffset = 0;
+    while (codeIt.hasNext()) {
+        const auto m = codeIt.next();
+        inlineCode.push_back(m.captured(0));
+        const QString token = QStringLiteral("SPARKINLINECODE%1XYZ").arg(inlineCode.size() - 1);
+        masked.replace(m.capturedStart() + codeOffset, m.capturedLength(), token);
+        codeOffset += token.length() - m.capturedLength();
+    }
+
+    QString result = masked;
 
     // 1. Process block math: $$ ... $$
     static const QRegularExpression blockMathRegex(QStringLiteral(R"(\$\$\s*\n?([\s\S]*?)\n?\s*\$\$)"));
@@ -754,6 +833,17 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
             result.replace(start, length, replacement);
             offset += replacement.length() - length;
         }
+    }
+
+    // 4. Strip percentage width on <img> tags (e.g. width="100%"), which Qt parses as width="-2"
+    static const QRegularExpression percentWidthRegex(
+        QStringLiteral(R"(<img\b([^>]*?)\s+width\s*=\s*["']?\d+%\s*["']?([^>]*?>))"),
+        QRegularExpression::CaseInsensitiveOption);
+    result.replace(percentWidthRegex, QStringLiteral("<img\\1\\2"));
+
+    // 5. Unmask protected inline code snippets
+    for (std::size_t i = 0; i < inlineCode.size(); ++i) {
+        result.replace(QStringLiteral("SPARKINLINECODE%1XYZ").arg(i), inlineCode[i]);
     }
 
     return result;
@@ -958,7 +1048,7 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
     // Clean redundant copy labels placed above code blocks in external markdown documents
     static const QRegularExpression copyLabelRegex(
-        QStringLiteral(R"((?:\*\*|__)?\[\s*📋\s*(?:Salin\s+(?:Blok\s+Kode|Perintah)\s*\/\s*Copy\s+Code\s+Block)\s*\](?:\*\*|__)?\s*)"),
+        QStringLiteral(R"((?:\*\*|__)?\[\s*(?:📋\s*)?(?:Salin\s+[^\]/]+\/\s*Copy\s+[^\]]+|Copy\s+(?:Code|Command|Configuration|Script)(?:\s+Block)?|Salin\s+(?:Perintah|Kode|Blok\s+Kode|Konfigurasi|Skrip))\s*\](?:\*\*|__)?\s*)"),
         QRegularExpression::CaseInsensitiveOption);
     working.remove(copyLabelRegex);
 
@@ -1166,8 +1256,17 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
         if (title.isEmpty()) {
             const auto [icon, displayLang] = getLangInfo(lang);
-            title = !displayLang.isEmpty() ? (!icon.isEmpty() ? QStringLiteral("%1 %2").arg(icon, displayLang) : displayLang)
-                                           : (lang.isEmpty() ? QStringLiteral("code") : lang.toLower());
+            if (!displayLang.isEmpty()) {
+                if (!icon.isEmpty()) {
+                    title = QStringLiteral("%1 %2").arg(icon, displayLang);
+                } else {
+                    title = displayLang;
+                }
+            } else if (!lang.isEmpty()) {
+                title = lang.toLower();
+            } else {
+                title = QStringLiteral("code");
+            }
         }
 
         // Sanitize code for pristine terminal execution (Unix LF, ASCII spaces, safe quotes)

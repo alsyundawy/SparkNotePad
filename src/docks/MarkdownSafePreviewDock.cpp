@@ -504,7 +504,7 @@ void MarkdownSafePreviewDock::renderPreview() {
     const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
     const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(text, isDark);
     const QString fullHtml = generateFullHtmlDocument(enhanced, title, currentTheme, baseFontSize);
-    browser->setHtml(fullHtml);
+    browser->setDocumentHtml(fullHtml);
 
     if (auto *const bar = browser->verticalScrollBar(); bar && bar->maximum() > 0 && scrollRatio > 0.0) {
         bar->setValue(static_cast<int>(scrollRatio * bar->maximum()));
@@ -532,7 +532,7 @@ void MarkdownSafePreviewDock::setAutoShowEnabled(bool enabled) {
     autoShowEnabled = enabled;
     QSettings settings;
     settings.setValue(QStringLiteral("Gui/AutoShowMarkdownHtmlPreview"), enabled);
-    emit autoShowChanged(enabled);
+    emit this->autoShowChanged(enabled);
 }
 
 void MarkdownSafePreviewDock::copyHtml() {
@@ -621,8 +621,18 @@ void MarkdownSafePreviewDock::handleAnchorClicked(const QUrl &url) {
 
     // 1. One-click copy code snippet from code block header
     if (scheme == QStringLiteral("copy-code")) {
+        QString pathStr = url.path();
+        if (pathStr.startsWith(QLatin1Char('/'))) {
+            pathStr.remove(0, 1);
+        }
+        if (pathStr.isEmpty()) {
+            pathStr = url.toString().mid(scheme.length() + 1);
+            while (pathStr.startsWith(QLatin1Char('/'))) {
+                pathStr.remove(0, 1);
+            }
+        }
         bool ok = false;
-        const int snippetIdx = url.path().toInt(&ok);
+        const int snippetIdx = pathStr.toInt(&ok);
         if (ok) {
             const QString code = MarkdownPreviewEnhancer::codeSnippet(snippetIdx);
             if (!code.isEmpty()) {
@@ -693,12 +703,23 @@ void MarkdownSafePreviewDock::syncScrollFromEditor(Scintilla::Update updated) {
         MarkdownPreviewEnhancer::findAnchorBracket(docLine, prevAnchor, nextAnchor);
 
         if (prevAnchor > 0 && nextAnchor > prevAnchor) {
+            browser->scrollToAnchor(QStringLiteral("line_%1").arg(prevAnchor));
+            const int y1 = scrollBar->value();
+            browser->scrollToAnchor(QStringLiteral("line_%1").arg(nextAnchor));
+            const int y2 = scrollBar->value();
             const double localFraction = std::clamp(
                 static_cast<double>(docLine - prevAnchor) / static_cast<double>(nextAnchor - prevAnchor), 0.0, 1.0);
-            const double prevRatio = static_cast<double>(prevAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
-            const double nextRatio = static_cast<double>(nextAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
-            const double blendedRatio = prevRatio + (localFraction * (nextRatio - prevRatio));
-            scrollBar->setValue(static_cast<int>(std::round(blendedRatio * scrollBar->maximum())));
+            const int targetY = y1 + static_cast<int>(std::round(localFraction * static_cast<double>(y2 - y1)));
+            scrollBar->setValue(targetY);
+        } else if (prevAnchor > 0 && docLine >= prevAnchor) {
+            // When document is past the last anchor, interpolate smoothly down to maximum() so preview stays in sync
+            browser->scrollToAnchor(QStringLiteral("line_%1").arg(prevAnchor));
+            const int y1 = scrollBar->value();
+            const int yMax = scrollBar->maximum();
+            const double remFraction = std::clamp(
+                static_cast<double>(docLine - prevAnchor) / static_cast<double>(std::max(1, totalLines - prevAnchor)), 0.0, 1.0);
+            const int targetY = y1 + static_cast<int>(std::round(remFraction * static_cast<double>(yMax - y1)));
+            scrollBar->setValue(targetY);
         } else {
             const double ratio =
                 std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);

@@ -192,10 +192,17 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
     - **Encryption Tools**: Proteksi Enkripsi Dokumen HTML dengan 3 mode (Injeksi JS escape, Base64 `atob()`, dan Password AES-256-GCM dengan harness runtime dekripsi CryptoJS tertanam) plus pengukur kekuatan kata sandi real-time.
     - **Developer Tools**: Pemformat dan pemadat untuk JSON, XML, HTML, CSS, JS; Inspektur Token JWT RFC 7519; pembuat UUID v4; dan konverter Unix Epoch / ISO-8601.
 - **Pratinjau Langsung Markdown Aman GitHub Primer Sempurna (`mjbvz/vscode-github-markdown-preview-style`)**:
-  - Rekayasa ulang engine pratinjau agar sepenuhnya selaras dengan spesifikasi GitHub Markdown CSS.
-  - Eliminasi artefak internal Qt rich text demi menjaga tipografi native, garis batas, zebra striping tabel, dan kotak kode.
-  - Dukungan native GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
-  - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan mandiri.
+  - Rekayasa ulang engine perender pratinjau yang sepenuhnya selaras dengan token visual GitHub Markdown Preview.
+  - Pembersihan seluruh artefak internal Qt rich text demi menjaga tipografi GitHub native, garis batas, zebra striping tabel, dan kotak kode.
+  - Kontainer blok kode modern GitHub Primer dengan background gelap `#0d1117`, pill header berkas (`#161b22`, border `#30363d`), lencana pill rounded (`#21262d`), tombol salin bersih (`[ ❐ ]` / `[ ⎘ Copy ]`), dan tipografi monospace murni.
+  - Jaminan eksekusi skrip bash 100% valid saat disalin: normalisasi sintaks strict mode multiline `IFS=$'[\r\n\t ]*'` menjadi `IFS=$'\n\t'`, konversi tanda kutip cerdas ke ASCII, pemaksaan Unix LF murni, pembersihan spasi di akhir baris, dan eliminasi label salin redundan (`[📋 Salin Perintah / Copy Code Block]`, dll.), menjamin perintah bash yang disalin dapat langsung dijalankan di terminal tanpa kesalahan sintaks.
+  - Integrasi penormal SVG otomatis untuk Shields.io (mengganti `font-size="100"` menjadi `10`, menghapus `transform="scale(.1)"`, menskalakan ulang textLength, dan menerapkan batas klip kanvas), melenyapkan masalah lencana bertumpuk dan meluap.
+  - Pembersihan atribut `width="100%"` yang tidak didukung Qt (mencegah gambar menciut ke -2px), pembatasan lebar gambar ke batas viewport (maksimal 850px), serta relayout asynchronous ter-debounce (`performDeferredRelayout()`) setelah gambar remote selesai diunduh untuk menjaga ketinggian dokumen yang presisi.
+  - Sinkronisasi Scroll Presisi Sub-Pixel Anchor-Bracketed: menggantikan rasio baris linear dengan interpolasi sub-pixel berbasis kurung anchor (`findAnchorBracket`), melenyapkan drift scroll dan lagging pratinjau sehingga editor dan preview sejajar sempurna secara real-time.
+  - Ketahanan dokumen masif: divalidasi pada dokumen teknis raksasa (seperti panduan Zimbra 10.1.21 dengan 6.000+ baris) tanpa lonjakan memori, jeda, atau batasan perenderan.
+  - Melenyapkan jeda 3,1 detik pembangunan database font macOS pada setiap perenderan dengan mengganti font tidak terdaftar `-apple-system` menjadi `'Helvetica Neue', Helvetica, Arial, sans-serif` di 30 tema Markdown.
+  - Dukungan native GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) dengan garis tepi dan lencana resmi.
+  - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan maksimal dan operasi mandiri tanpa bloatware.
 - **Restrukturisasi Menu Tingkat Atas**:
   - Menu tingkat atas **Format** untuk Enkoding Karakter dan Konversi Pemisah Baris.
   - Relokasi **Run & External Execution** ke menu `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
@@ -211,6 +218,14 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
   - Sinkronisasi dinamis terhadap pergantian tema Terang/Gelap tanpa kehilangan konfigurasi warna tab aktif.
 - **Pemisah Visual Menu Konteks Editor**:
   - Penambahan pemisah visual khusus antara `Select All` dan `UPPER CASE` / `lowercase` pada menu klik kanan editor Scintilla, memisahkan perintah seleksi global secara ergonomis dari operasi transformasi teks.
+- **Tata Letak & Tooltip Menyeluruh Dialog Alat Pengembang (Developer Tools Hub)**:
+  - Standardisasi ukuran tombol yang kompak (`font-size: 10px`, `padding: 2px 6px`, `min-height: 24px`, font dasar dialog `9.5pt`) melenyapkan pemotongan teks tombol di seluruh bahasa dan resolusi layar.
+  - Penghapusan pembatasan lebar kaku dan pemecahan baris kontrol utilitas menjadi dua baris berimbang (`rowJwt` dan `rowUuid`).
+  - Penambahan tooltip interaktif informatif (`setToolTip(...)`) pada 100% kontrol dialog tanpa terkecuali (tombol, tab, kolom teks, checkbox, spinbox, dan combobox).
+- **Penataan Jarak Vertikal & Line-Height Baris Lencana Shields.io**:
+  - Penegakan `line-height: 34px` dan margin proporsional pada paragraf yang memuat lencana/badge Shields.io (seperti pada README SparkleSFTP), melenyapkan tuntas pemotongan vertikal dan tumpang tindih lencana.
+- **Lokalisasi Penuh Bahasa Indonesia & Inggris (i18n)**:
+  - Cakupan terjemahan 100% tuntas untuk Bahasa Indonesia (`SparkNotePad_id.ts`, 2.347 entri) dan Bahasa Inggris (`SparkNotePad_en.ts`, 2.376 entri) dengan 0 entri unfinished, terkompilasi langsung ke pustaka biner `.qm`.
 
 ---
 
