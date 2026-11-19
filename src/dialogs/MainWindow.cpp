@@ -78,6 +78,7 @@
 #include "dialogs/ExportOptionsDialog.h"
 #include "dialogs/TimestampConverterDialog.h"
 #include <QColor>
+#include <QColorDialog>
 #include "dialogs/HashIntegrityDialog.h"
 #include "dialogs/GenerateHashDigestDialog.h"
 #include "ui_MainWindow.h"
@@ -3165,6 +3166,7 @@ void MainWindow::reopenClosedTab() {
             ed->setFirstVisibleLine(closed->firstVisibleLine);
             if (closed->tabColor.isValid()) {
                 ed->setQtProperty("tabColor", closed->tabColor);
+                dockedEditor->setEditorTabColor(ed, closed->tabColor);
             }
         }
     }
@@ -3822,8 +3824,7 @@ void MainWindow::renameFile() {
 
         // Note: The new fileName might be to one of the existing editors.
 
-        const bool renameSuccessful = editor->rename(fileName);
-        Q_UNUSED(renameSuccessful)
+        (void)editor->rename(fileName);
     } else {
         bool ok;
         const QString text =
@@ -4687,18 +4688,21 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
 
     auto *menu = buildMenu(actionNames);
 
-    // Relocate UPPERCASE and lowercase directly below Select All (replacing convert case submenu)
+    // Relocate UPPERCASE and lowercase directly below Select All with a distinct separator
     const auto actions = menu->actions();
     if (const auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll); selectAllIt != actions.end()) {
         const auto nextIt = std::next(selectAllIt);
         if (nextIt != actions.end()) {
+            menu->insertSeparator(*nextIt);
             menu->insertAction(*nextIt, ui->actionUpperCase);
             menu->insertAction(*nextIt, ui->actionLowerCase);
         } else {
+            menu->addSeparator();
             menu->addAction(ui->actionUpperCase);
             menu->addAction(ui->actionLowerCase);
         }
     } else {
+        menu->addSeparator();
         menu->addAction(ui->actionUpperCase);
         menu->addAction(ui->actionLowerCase);
     }
@@ -4973,6 +4977,7 @@ void MainWindow::populateTabBarColorActions(QMenu *menu, ScintillaNext *editor) 
     menu->addSeparator();
     auto *tabColorMenu = menu->addMenu(tr("Set Tab Color"));
     const auto presets = TabColorManager::presets();
+    const QString pathKey = editor->isFile() ? editor->getFilePath() : editor->getName();
     for (const auto &preset : presets) {
         QPixmap px(14, 14);
         px.fill(Qt::transparent);
@@ -4984,18 +4989,54 @@ void MainWindow::populateTabBarColorActions(QMenu *menu, ScintillaNext *editor) 
             p.drawEllipse(1, 1, 12, 12);
         }
         const auto *const colorAct = tabColorMenu->addAction(QIcon(px), preset.name);
-        connect(colorAct, &QAction::triggered, this, [this, editor, c = preset.color] {
+        connect(colorAct, &QAction::triggered, this, [this, editor, pathKey, c = preset.color] {
             if (editor) {
-                TabColorManager::instance()->setTabColor(editor->getFilePath(), c);
+                TabColorManager::instance()->setTabColor(pathKey, c);
                 dockedEditor->setEditorTabColor(editor, c);
             }
         });
     }
     tabColorMenu->addSeparator();
-    const auto *const clearColorAct = tabColorMenu->addAction(tr("Clear Tab Color"));
-    connect(clearColorAct, &QAction::triggered, this, [this, editor] {
+
+    // Custom Color picker
+    QPixmap customPx(14, 14);
+    customPx.fill(Qt::transparent);
+    {
+        QPainter p(&customPx);
+        p.setRenderHint(QPainter::Antialiasing);
+        p.fillRect(1, 1, 6, 6, QColor(QStringLiteral("#cf222e")));
+        p.fillRect(7, 1, 6, 6, QColor(QStringLiteral("#0969da")));
+        p.fillRect(1, 7, 6, 6, QColor(QStringLiteral("#bf8700")));
+        p.fillRect(7, 7, 6, 6, QColor(QStringLiteral("#1a7f37")));
+    }
+    const auto *const customColorAct = tabColorMenu->addAction(QIcon(customPx), tr("Custom Color..."));
+    connect(customColorAct, &QAction::triggered, this, [this, editor, pathKey] {
         if (editor) {
-            TabColorManager::instance()->clearTabColor(editor->getFilePath());
+            const QColor currentColor = dockedEditor->editorTabColor(editor);
+            const QColor chosen = QColorDialog::getColor(
+                currentColor.isValid() ? currentColor : QColor(QStringLiteral("#0969da")), this,
+                tr("Select Tab Color"));
+            if (chosen.isValid()) {
+                TabColorManager::instance()->setTabColor(pathKey, chosen);
+                dockedEditor->setEditorTabColor(editor, chosen);
+            }
+        }
+    });
+
+    // Clear Tab Color with indicator icon
+    QPixmap clearPx(14, 14);
+    clearPx.fill(Qt::transparent);
+    {
+        QPainter p(&clearPx);
+        p.setRenderHint(QPainter::Antialiasing);
+        p.setPen(QPen(QColor(QStringLiteral("#cf222e")), 1.5));
+        p.drawEllipse(1, 1, 11, 11);
+        p.drawLine(3, 3, 10, 10);
+    }
+    const auto *const clearColorAct = tabColorMenu->addAction(QIcon(clearPx), tr("Clear Tab Color"));
+    connect(clearColorAct, &QAction::triggered, this, [this, editor, pathKey] {
+        if (editor) {
+            TabColorManager::instance()->clearTabColor(pathKey);
             dockedEditor->setEditorTabColor(editor, QColor());
         }
     });

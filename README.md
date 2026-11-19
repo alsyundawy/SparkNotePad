@@ -473,6 +473,14 @@ Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md)
   - Added dedicated **Developer Tools** submenu inside `Tools` with direct actions for formatters, minifiers, encoders, and the Developer Tools Hub (`Ctrl+Alt+T`).
 - **Enhanced View & Navigation Toggles**:
   - Added View actions in `View` menu for toggling Line Numbers, Code Folding, Indent Guides, Caret Line Highlight, Read-Only mode, and Zoom In / Out / Reset.
+- **Redesigned & Theme-Aware Tab Color System (`TabColorManager` & `DockedEditor`)**:
+  - Re-engineered tab coloring with a complete ADS tab stylesheet preserving rounded corners, background gradients, and hover/active states.
+  - Crisp 3px top accent bar (`border-top: 3px solid <color>`) with subtle background tinting (28% active, 14% inactive).
+  - Extended color persistence to untitled buffers (`new 1`, `new 2`) with auto-migration upon file save/rename.
+  - Added `Custom Color...` picker (`QColorDialog`) and dedicated `Clear Tab Color` action with visual icons.
+  - Dynamic palette synchronization across Light and Dark theme switches without losing tab color tags.
+- **Editor Context Menu Ergonomic Separator**:
+  - Added a dedicated visual separator between `Select All` and `UPPER CASE` / `lowercase` in the editor right-click context menu, cleanly isolating selection commands from case transformation tools.
 - **Updated Credits, Shortcuts & Translations**:
   - Full updates to `AboutDialog` Credits & Shortcuts tabs with the new hotkeys and attributions.
   - Synchronized `i18n` translation catalogs (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) and compiled binary `.qm` packages.

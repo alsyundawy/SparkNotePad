@@ -51,6 +51,14 @@ SparkNotePad **v1.5.0** delivers a major feature expansion with developer toolin
 6. **Bilingual Localization & Complete Documentation Update**:
    - Updated English and Indonesian translation matrices (`SparkNotePad_en.qm`, `SparkNotePad_id.qm`).
    - Comprehensive updates to READMEs, User Guide, Wiki shortcuts, and release notes.
+7. **Redesigned & Theme-Aware Tab Color System (`TabColorManager` & `DockedEditor`)**:
+   - Replaced fragile border-only styling with a full, theme-aware ADS tab stylesheet preserving background gradients, border-radius (`6px`), active/inactive tab states, and close button hover aesthetics.
+   - 3px solid top accent bar (`border-top: 3px solid <color>`) and soft gradient background tinting (28% active, 14% inactive).
+   - Extended support to untitled buffers (`new 1`, `new 2`) using buffer names with automatic persistence migration upon saving.
+   - Added real-time palette adaptation via `ThemeManager::themeChanged` and `paletteChanged` listeners.
+   - Added interactive `Custom Color...` dialog (`QColorDialog`) and dedicated `Clear Tab Color` action with visual icons.
+8. **Editor Context Menu Ergonomic Separator**:
+   - Added dedicated visual separator between `Select All` and `UPPER CASE` / `lowercase` in the editor right-click context menu, cleanly isolating selection commands from text transformation tools.
 
 ---
 

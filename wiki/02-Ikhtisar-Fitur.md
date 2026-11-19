@@ -203,6 +203,14 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
 - **Peningkatan Sakelar Tampilan & Manajemen Window**:
   - Kontrol menu Window lengkap (Zoom, Tile Left/Right, Bring All to Front, Tab Navigasi).
   - Sakelar tampilan untuk Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, dan Mode Hanya-Baca.
+- **Perbaikan & Modernisasi Sistem Pewarnaan Tab (`TabColorManager` & `DockedEditor`)**:
+  - Rekayasa ulang menyeluruh gaya tab: mengganti styling border lokal yang rapuh dengan stylesheet ADS lengkap yang mempertahankan sudut melengkung (`6px`), gradien latar tema, serta status tab aktif/tidak aktif dan efek tombol tutup.
+  - Garis aksen atas 3px (`border-top: 3px solid <warna>`) dengan tint latar belakang lembut (28% tab aktif, 14% tab tidak aktif).
+  - Dukungan warna untuk berkas baru tanpa judul (`new 1`, `new 2`) dengan migrasi persistensi otomatis saat berkas disimpan atau diubah namanya.
+  - Penambahan pemilih warna interaktif `Warna Kustom...` (`QColorDialog`) dan aksi `Hapus Warna Tab` berikon visual.
+  - Sinkronisasi dinamis terhadap pergantian tema Terang/Gelap tanpa kehilangan konfigurasi warna tab aktif.
+- **Pemisah Visual Menu Konteks Editor**:
+  - Penambahan pemisah visual khusus antara `Select All` dan `UPPER CASE` / `lowercase` pada menu klik kanan editor Scintilla, memisahkan perintah seleksi global secara ergonomis dari operasi transformasi teks.
 
 ---
 

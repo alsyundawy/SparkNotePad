@@ -68,4 +68,15 @@ private slots:
         QVERIFY(manager2.hasTabColor(QStringLiteral("/persist/main.rs")));
         QCOMPARE(manager2.tabColor(QStringLiteral("/persist/main.rs")), QColor(QStringLiteral("#0969da")));
     }
+
+    void testUntitledBufferNameColor() const {
+        TabColorManager manager;
+        const QString buffer = QStringLiteral("new 1");
+        QVERIFY(!manager.hasTabColor(buffer));
+
+        const QColor cyan(QStringLiteral("#0969da"));
+        manager.setTabColor(buffer, cyan);
+        QVERIFY(manager.hasTabColor(buffer));
+        QCOMPARE(manager.tabColor(buffer), cyan);
+    }
 };

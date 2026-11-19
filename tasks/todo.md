@@ -110,6 +110,8 @@
   - [x] Task 9.11: Relokasi Menu Encoding ke Submenu Format (`Format -> File Encoding` & `Line Endings`).
   - [x] Task 9.12: Relokasi Menu Run ke Submenu Tools (`Tools -> Run & External Execution` - browser eksternal dihapus).
   - [x] Task 9.13: Standardisasi Sistem Shortcut & Resolusi Konflik Keyboard Global (`ShortcutCustomizerDialog`).
+  - [x] Task 9.14: Perbaikan & Modernisasi Sistem Pewarnaan Tab ADS (`TabColorManager` & `DockedEditor` dengan top accent bar 3px, gradien latar lembut, dukungan buffer tanpa judul, dan dialog `QColorDialog`).
+  - [x] Task 9.15: Pemisah Visual Menu Konteks Editor antara `Select All` dan `UPPER CASE` / `lowercase`.
 
 - [x] **Milestone 10: 2025–2026 CVE/GHSA Threat Mitigation & Hardening**
   - [x] Task 10.1: Mitigasi Supply-Chain & Update Metadata Hijacking (`CVE-2025-15556`).

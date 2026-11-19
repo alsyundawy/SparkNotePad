@@ -43,6 +43,14 @@ SparkNotePad v1.5.0 brings a complete, unified Developer Tools suite ported from
   - Added dedicated **Developer Tools** submenu inside `Tools` with direct actions for formatters, minifiers, encoders, and the Developer Tools Hub (`Ctrl+Alt+T`).
 - **Enhanced View & Navigation Toggles**:
   - Added toggle actions in `View` menu for Line Numbers, Code Folding, Indent Guides, Caret Line Highlight, Read-Only mode, and Zoom In / Out / Reset.
+- **Redesigned & Theme-Aware Tab Color System (`TabColorManager` & `DockedEditor`)**:
+  - Completely re-engineered tab coloring architecture: replaced intrusive border-only styling with a full, theme-aware ADS tab stylesheet preserving background gradients, border-radius (`6px`), active/inactive tab states, and close button hover aesthetics.
+  - Implemented 3px solid top accent bar (`border-top: 3px solid <color>`) and soft gradient background tinting (28% active, 14% inactive).
+  - Extended support to untitled buffers (`new 1`, `new 2`) using buffer names with automatic persistence migration upon saving.
+  - Added real-time palette adaptation via `ThemeManager::themeChanged` and `paletteChanged` listeners.
+  - Added interactive `Custom Color...` dialog (`QColorDialog`) and dedicated `Clear Tab Color` action with visual icons.
+- **Editor Context Menu Ergonomic Separator**:
+  - Added dedicated visual separator between `Select All` and `UPPER CASE` / `lowercase` in the editor right-click context menu, cleanly isolating selection commands from text transformation tools.
 - **Updated Credits, Shortcuts & Translations**:
   - Full updates to `AboutDialog` Credits & Shortcuts tabs with the new hotkeys and attributions.
   - Synchronized `i18n` translation catalogs (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) and compiled binary `.qm` packages.

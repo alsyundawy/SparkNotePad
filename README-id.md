@@ -473,6 +473,14 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
   - Penambahan submenu khusus **Developer Tools** di dalam `Tools` dengan aksi langsung untuk formatter, minifier, encoder, dan dialog Developer Tools Hub (`Ctrl+Alt+T`).
 - **Peningkatan Sakelar Tampilan (View & Navigation Toggles)**:
   - Penambahan sakelar di menu `View` untuk mengaktifkan/menonaktifkan Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, Mode Hanya-Baca (Read-Only), serta Pembesaran (Zoom In / Out / Reset).
+- **Perbaikan & Modernisasi Sistem Pewarnaan Tab (`TabColorManager` & `DockedEditor`)**:
+  - Rekayasa ulang menyeluruh gaya tab: mengganti styling border lokal yang rapuh dengan stylesheet ADS lengkap yang mempertahankan sudut melengkung (`6px`), gradien latar tema, serta status tab aktif/tidak aktif dan efek tombol tutup.
+  - Garis aksen atas 3px (`border-top: 3px solid <warna>`) dengan tint latar belakang lembut (28% tab aktif, 14% tab tidak aktif).
+  - Dukungan warna untuk berkas baru tanpa judul (`new 1`, `new 2`) dengan migrasi persistensi otomatis saat berkas disimpan atau diubah namanya.
+  - Penambahan pemilih warna interaktif `Warna Kustom...` (`QColorDialog`) dan aksi `Hapus Warna Tab` berikon visual.
+  - Sinkronisasi dinamis terhadap pergantian tema Terang/Gelap tanpa kehilangan konfigurasi warna tab aktif.
+- **Pemisah Pemisah Menu Konteks Editor**:
+  - Penambahan pemisah visual khusus antara `Select All` dan `UPPER CASE` / `lowercase` pada menu klik kanan editor Scintilla, memisahkan perintah seleksi global secara ergonomis dari operasi transformasi teks.
 - **Pembaruan Kredit, Pintasan & Terjemahan**:
   - Pembaruan tab Kredit & Pintasan pada dialog `AboutDialog` dengan hotkey dan atribusi baru.
   - Sinkronisasi katalog terjemahan `i18n` (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) dan kompilasi berkas biner `.qm`.
