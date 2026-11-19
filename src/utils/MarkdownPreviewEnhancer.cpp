@@ -14,11 +14,53 @@
 #include "MarkdownPreviewEnhancer.h"
 #include <QCoreApplication>
 #include <QRegularExpression>
+#include <QSet>
 #include <QTextDocument>
+#include <algorithm>
 #include <array>
+#include <mutex>
+#include <numeric>
 #include <vector>
 
 namespace {
+
+std::vector<QString> s_codeSnippets;
+std::vector<int> s_lineAnchors;
+std::mutex s_enhancerMutex;
+
+const QSet<QString> &validHtmlTags() {
+    static const QSet<QString> s_tags = {
+        QStringLiteral("a"), QStringLiteral("abbr"), QStringLiteral("address"), QStringLiteral("area"),
+        QStringLiteral("article"), QStringLiteral("aside"), QStringLiteral("audio"), QStringLiteral("b"),
+        QStringLiteral("base"), QStringLiteral("bdi"), QStringLiteral("bdo"), QStringLiteral("blockquote"),
+        QStringLiteral("body"), QStringLiteral("br"), QStringLiteral("button"), QStringLiteral("canvas"),
+        QStringLiteral("caption"), QStringLiteral("cite"), QStringLiteral("code"), QStringLiteral("col"),
+        QStringLiteral("colgroup"), QStringLiteral("data"), QStringLiteral("datalist"), QStringLiteral("dd"),
+        QStringLiteral("del"), QStringLiteral("details"), QStringLiteral("dfn"), QStringLiteral("dialog"),
+        QStringLiteral("div"), QStringLiteral("dl"), QStringLiteral("dt"), QStringLiteral("em"),
+        QStringLiteral("embed"), QStringLiteral("fieldset"), QStringLiteral("figcaption"), QStringLiteral("figure"),
+        QStringLiteral("footer"), QStringLiteral("form"), QStringLiteral("h1"), QStringLiteral("h2"),
+        QStringLiteral("h3"), QStringLiteral("h4"), QStringLiteral("h5"), QStringLiteral("h6"),
+        QStringLiteral("head"), QStringLiteral("header"), QStringLiteral("hgroup"), QStringLiteral("hr"),
+        QStringLiteral("html"), QStringLiteral("i"), QStringLiteral("iframe"), QStringLiteral("img"),
+        QStringLiteral("input"), QStringLiteral("ins"), QStringLiteral("kbd"), QStringLiteral("label"),
+        QStringLiteral("legend"), QStringLiteral("li"), QStringLiteral("link"), QStringLiteral("main"),
+        QStringLiteral("map"), QStringLiteral("mark"), QStringLiteral("menu"), QStringLiteral("meta"),
+        QStringLiteral("meter"), QStringLiteral("nav"), QStringLiteral("noscript"), QStringLiteral("object"),
+        QStringLiteral("ol"), QStringLiteral("optgroup"), QStringLiteral("option"), QStringLiteral("output"),
+        QStringLiteral("p"), QStringLiteral("picture"), QStringLiteral("pre"), QStringLiteral("progress"),
+        QStringLiteral("q"), QStringLiteral("rp"), QStringLiteral("rt"), QStringLiteral("ruby"),
+        QStringLiteral("s"), QStringLiteral("samp"), QStringLiteral("script"), QStringLiteral("section"),
+        QStringLiteral("select"), QStringLiteral("slot"), QStringLiteral("small"), QStringLiteral("source"),
+        QStringLiteral("span"), QStringLiteral("strong"), QStringLiteral("style"), QStringLiteral("sub"),
+        QStringLiteral("summary"), QStringLiteral("sup"), QStringLiteral("svg"), QStringLiteral("table"),
+        QStringLiteral("tbody"), QStringLiteral("td"), QStringLiteral("template"), QStringLiteral("textarea"),
+        QStringLiteral("tfoot"), QStringLiteral("th"), QStringLiteral("thead"), QStringLiteral("time"),
+        QStringLiteral("title"), QStringLiteral("tr"), QStringLiteral("track"), QStringLiteral("u"),
+        QStringLiteral("ul"), QStringLiteral("var"), QStringLiteral("video"), QStringLiteral("wbr")
+    };
+    return s_tags;
+}
 
 struct CalloutDef {
     const char *tag;
@@ -81,30 +123,200 @@ void replaceSingleCallout(QString &result, const CalloutDef &c, qsizetype &idx, 
     const QString inner = cleanCalloutInner(result.mid(contentStart, bqEnd - contentStart));
     const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
     const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
+    const QString alertClass = QString::fromLatin1(c.title).toLower();
     const QString replacement = QStringLiteral(
-                                    "<div style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %1; "
-                                    "background-color: %2; border-radius: 4px;\">"
-                                    "<div style=\"font-weight: 600; color: %1; margin-bottom: 4px;\">%3 %4</div>"
-                                    "<div>%5</div></div>")
-                                    .arg(color, bg, QString::fromUtf8(c.icon),
+                                    "<div class=\"markdown-alert markdown-alert-%1\" style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %2; "
+                                    "background-color: %3; border-radius: 4px;\">"
+                                    "<div class=\"markdown-alert-title\" style=\"font-weight: 600; color: %2; margin-bottom: 4px;\">%4 %5</div>"
+                                    "<div>%6</div></div>")
+                                    .arg(alertClass, color, bg, QString::fromUtf8(c.icon),
                                          QCoreApplication::translate("MarkdownPreviewEnhancer", c.title), inner);
 
     result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
     idx = bqStart + replacement.length();
 }
 
+QString cleanQtHtml(const QString &rawHtml) {
+    // 1. Extract body content
+    QString content = rawHtml;
+    const qsizetype bodyStart = content.indexOf(QStringLiteral("<body"), 0, Qt::CaseInsensitive);
+    if (bodyStart != -1) {
+        const qsizetype openClose = content.indexOf(QLatin1Char('>'), bodyStart);
+        if (openClose != -1) {
+            const qsizetype bodyEnd = content.lastIndexOf(QStringLiteral("</body>"), -1, Qt::CaseInsensitive);
+            if (bodyEnd != -1 && bodyEnd > openClose) {
+                content = content.mid(openClose + 1, bodyEnd - (openClose + 1)).trimmed();
+            } else {
+                content = content.mid(openClose + 1).trimmed();
+            }
+        }
+    }
+
+    // 2. Remove -qt-block-indent and text-indent
+    static const QRegularExpression qtIndentRegex(QStringLiteral(R"(-qt-block-indent:\s*\d+;?)"));
+    content.remove(qtIndentRegex);
+    static const QRegularExpression textIndentRegex(QStringLiteral(R"(text-indent:\s*\d+px;?)"));
+    content.remove(textIndentRegex);
+
+    // 3. Remove default margin resets that wipe out CSS margins on paragraphs
+    static const QRegularExpression zeroMarginRegex(
+        QStringLiteral(R"(margin-(?:top|bottom|left|right):\s*0px;?)"));
+    content.remove(zeroMarginRegex);
+
+    // 4. Clean empty style attributes
+    static const QRegularExpression emptyStyleRegex(QStringLiteral(R"(\s*style="\s*")"));
+    content.remove(emptyStyleRegex);
+
+    // 5. Replace table tags with styled markdown-table class preserving border attributes
+    static const QRegularExpression tableRegex(QStringLiteral(R"(<table\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
+    content.replace(tableRegex, QStringLiteral(R"(<table class="markdown-table" border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 16px 0;">)"));
+
+    return content;
+}
+
 QString sanitizeHtmlInsideBlock(QString block) {
     static const QRegularExpression brRegex(QStringLiteral(R"(<br\s*/?>)"), QRegularExpression::CaseInsensitiveOption);
     block.replace(brRegex, QStringLiteral("<br />"));
     block.replace(QStringLiteral("&nbsp;"), QStringLiteral("&#160;"));
-    block.replace(QStringLiteral("width=\"100%\""), QStringLiteral("style=\"width: 100%; max-width: 100%;\""));
     return block;
 }
 
 }  // namespace
 
 QString MarkdownPreviewEnhancer::sanitizeForPreview(const QString &text) {
-    return text.toHtmlEscaped();
+    QString s = text;
+    s.replace(QLatin1Char('&'), QStringLiteral("&amp;"));
+    s.replace(QLatin1Char('<'), QStringLiteral("&lt;"));
+    s.replace(QLatin1Char('>'), QStringLiteral("&gt;"));
+    return s;
+}
+
+QString MarkdownPreviewEnhancer::sanitizeCodeForTerminal(const QString &rawCode, const QString &lang) {
+    QString code = rawCode;
+
+    // 1. Strip all carriage returns to ensure pure Unix LF line endings
+    code.remove(QLatin1Char('\r'));
+
+    // 2. Normalize non-breaking spaces and narrow NBSP to standard ASCII space (0x20)
+    code.replace(QChar(0x00A0), QLatin1Char(' '));
+    code.replace(QChar(0x202F), QLatin1Char(' '));
+
+    // 3. Strip zero-width spaces, joiners, and byte order marks that corrupt bash commands
+    code.remove(QChar(0x200B));
+    code.remove(QChar(0x200C));
+    code.remove(QChar(0x200D));
+    code.remove(QChar(0xFEFF));
+
+    // 4. Normalize quotes and dashes for shell scripts (bash, sh, zsh, shell)
+    const QString l = lang.trimmed().toLower();
+    if (l == QStringLiteral("bash") || l == QStringLiteral("sh") ||
+        l == QStringLiteral("zsh") || l == QStringLiteral("shell") || l.isEmpty()) {
+        code.replace(QChar(0x201C), QLatin1Char('"'));
+        code.replace(QChar(0x201D), QLatin1Char('"'));
+        code.replace(QChar(0x2018), QLatin1Char('\''));
+        code.replace(QChar(0x2019), QLatin1Char('\''));
+        code.replace(QChar(0x0060), QLatin1Char('`'));
+        code.replace(QChar(0x00B4), QLatin1Char('\''));
+
+        code.replace(QChar(0x2013), QLatin1Char('-'));
+        code.replace(QChar(0x2014), QLatin1Char('-'));
+        code.replace(QChar(0x2212), QLatin1Char('-'));
+    }
+
+    return code;
+}
+
+QString MarkdownPreviewEnhancer::codeSnippet(int index) {
+    const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+    if (index >= 0 && static_cast<std::size_t>(index) < s_codeSnippets.size()) {
+        return s_codeSnippets[static_cast<std::size_t>(index)];
+    }
+    return QString();
+}
+
+int MarkdownPreviewEnhancer::codeSnippetCount() {
+    const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+    return static_cast<int>(s_codeSnippets.size());
+}
+
+void MarkdownPreviewEnhancer::clearCodeSnippets() {
+    const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+    s_codeSnippets.clear();
+    s_lineAnchors.clear();
+}
+
+std::vector<int> MarkdownPreviewEnhancer::lastRenderedLineAnchors() {
+    const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+    return s_lineAnchors;
+}
+
+int MarkdownPreviewEnhancer::findClosestAnchorLine(int docLine) {
+    const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+    if (s_lineAnchors.empty()) {
+        return -1;
+    }
+    auto it = std::upper_bound(s_lineAnchors.begin(), s_lineAnchors.end(), docLine);
+    if (it == s_lineAnchors.begin()) {
+        return s_lineAnchors.front();
+    }
+    --it;
+    return *it;
+}
+
+void MarkdownPreviewEnhancer::findAnchorBracket(int line, int &prevAnchor, int &nextAnchor) {
+    const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+    if (s_lineAnchors.empty()) {
+        prevAnchor = -1;
+        nextAnchor = -1;
+        return;
+    }
+    auto it = std::upper_bound(s_lineAnchors.begin(), s_lineAnchors.end(), line);
+    if (it == s_lineAnchors.begin()) {
+        prevAnchor = s_lineAnchors.front();
+        nextAnchor = (s_lineAnchors.size() > 1) ? s_lineAnchors[1] : s_lineAnchors.front();
+        return;
+    }
+    nextAnchor = (it != s_lineAnchors.end()) ? *it : s_lineAnchors.back();
+    --it;
+    prevAnchor = *it;
+}
+
+QString MarkdownPreviewEnhancer::sanitizePseudoHtmlTags(const QString &text) {
+    QString result = text;
+
+    // 1. Normalize unclosed <br> to self-closing <br />
+    static const QRegularExpression unclosedBrRegex(QStringLiteral(R"(<br\s*(?<!/)>)"),
+                                                    QRegularExpression::CaseInsensitiveOption);
+    result.replace(unclosedBrRegex, QStringLiteral("<br />"));
+
+    // 2. Normalize unclosed <hr> to self-closing <hr />
+    static const QRegularExpression unclosedHrRegex(QStringLiteral(R"(<hr\s*(?<!/)>)"),
+                                                    QRegularExpression::CaseInsensitiveOption);
+    result.replace(unclosedHrRegex, QStringLiteral("<hr />"));
+
+    // 3. Escape pseudo-HTML tags that are not standard HTML5 elements (e.g. <user>, <domain>, <PPID>)
+    static const QRegularExpression tagRegex(QStringLiteral(R"(<(/)?([a-zA-Z0-9_\-]+)([^>]*)>)"));
+    const auto &validTags = validHtmlTags();
+
+    auto matchIt = tagRegex.globalMatch(result);
+    qsizetype offset = 0;
+
+    while (matchIt.hasNext()) {
+        const auto match = matchIt.next();
+        const QString tagName = match.captured(2).toLower();
+        if (!validTags.contains(tagName)) {
+            const QString slash = match.captured(1);
+            const QString attrs = match.captured(3);
+            const QString replacement = QStringLiteral("&lt;%1%2%3&gt;").arg(slash, match.captured(2), attrs);
+
+            const qsizetype start = match.capturedStart() + offset;
+            const qsizetype length = match.capturedLength();
+            result.replace(start, length, replacement);
+            offset += replacement.length() - length;
+        }
+    }
+
+    return result;
 }
 
 bool MarkdownPreviewEnhancer::isMarkdownPath(const QString &path) {
@@ -458,8 +670,9 @@ QString MarkdownPreviewEnhancer::mathAndMermaidCss(bool isDark) {
 
 QString MarkdownPreviewEnhancer::processMermaidBlocks(const QString &content, bool isDark) {
     (void)isDark;
-    static const QRegularExpression mermaidRegex(QStringLiteral("```mermaid\\s*\\n([\\s\\S]*?)\\n```"),
-                                                 QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression mermaidRegex(
+        QStringLiteral(R"((?:^|\n)[ \t]*```mermaid[ \t]*\r?\n([\s\S]*?)\r?\n[ \t]*```(?=[ \t]*(?:\r?\n|$)))"),
+        QRegularExpression::CaseInsensitiveOption);
 
     QString result = content;
     auto matchIterator = mermaidRegex.globalMatch(content);
@@ -467,15 +680,27 @@ QString MarkdownPreviewEnhancer::processMermaidBlocks(const QString &content, bo
 
     while (matchIterator.hasNext()) {
         const QRegularExpressionMatch match = matchIterator.next();
-        const QString diagramSource = match.captured(1).trimmed();
-        const QString escapedSource = sanitizeForPreview(diagramSource);
+        const QString rawDiagram = match.captured(1).trimmed();
+        const QString cleanDiagram = sanitizeCodeForTerminal(rawDiagram, QStringLiteral("mermaid"));
+
+        int snippetId = -1;
+        {
+            const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+            snippetId = static_cast<int>(s_codeSnippets.size());
+            s_codeSnippets.push_back(cleanDiagram);
+        }
+
+        const QString escapedSource = sanitizeForPreview(cleanDiagram);
 
         const QString replacement = QStringLiteral(
-                                        "<div class=\"mermaid-diagram\">\n"
-                                        "<div class=\"mermaid-header\">📊 Mermaid Diagram</div>\n"
-                                        "<pre class=\"mermaid-code\">%1</pre>\n"
+                                        "<div class=\"code-block-container mermaid-diagram\">\n"
+                                        "<div class=\"code-block-header mermaid-header\" style=\"user-select: none; -webkit-user-select: none;\">"
+                                        "<span style=\"user-select: none;\">📊 Mermaid Diagram</span>"
+                                        "<a href=\"copy-code:%1\" class=\"code-copy-btn\" style=\"float: right; text-decoration: none; font-size: 11px; font-weight: 600; cursor: pointer; padding: 1px 7px; border-radius: 4px;\" title=\"Copy clean diagram source\">📋 Copy</a>"
+                                        "</div>\n"
+                                        "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 12px 14px; background: transparent; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.45; white-space: pre !important;\">%2</pre>\n"
                                         "</div>\n")
-                                        .arg(escapedSource);
+                                        .arg(QString::number(snippetId), escapedSource);
 
         const qsizetype start = match.capturedStart() + offset;
         const qsizetype length = match.capturedLength();
@@ -611,14 +836,15 @@ QString MarkdownPreviewEnhancer::processFootnotes(const QString &content) {
     }
 
     // Append footnotes section
-    auto footnotesHtml = QStringLiteral(
-        "\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n");
-    for (const auto &def : definitions) {
-        footnotesHtml += QStringLiteral(
-                             "<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" "
-                             "class=\"footnote-backref\">↩</a></p></li>\n")
-                             .arg(def.id, sanitizeForPreview(def.text));
-    }
+    auto footnotesHtml = std::accumulate(definitions.begin(), definitions.end(),
+        QStringLiteral("\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n"),
+        [](QString acc, const FootnoteDef &def) {
+            acc += QStringLiteral(
+                       "<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" "
+                       "class=\"footnote-backref\">↩</a></p></li>\n")
+                       .arg(def.id, sanitizeForPreview(def.text));
+            return acc;
+        });
     footnotesHtml += QStringLiteral("</ol>\n</section>\n");
 
     return body + footnotesHtml;
@@ -660,8 +886,8 @@ QString MarkdownPreviewEnhancer::processExtensions(const QString &content) {
     static const QRegularExpression insRegex(QStringLiteral(R"(\+\+(?=\S)(.+?)(?<=\S)\+\+)"));
     masked.replace(insRegex, QStringLiteral("<ins>\\1</ins>"));
 
-    // 6. Subscript: ~sub~ (single ~ not preceded or followed by ~)
-    static const QRegularExpression subRegex(QStringLiteral(R"((?<!~)~(?!~|\s)([^~\s\n]+?)(?<!\s)~(?!~))"));
+    // 6. Subscript: ~sub~ (single ~ not preceded or followed by slash/tilde; content alphanumeric)
+    static const QRegularExpression subRegex(QStringLiteral(R"((?<![~/\\])~(?!/)(\w+?)~(?!~))"));
     masked.replace(subRegex, QStringLiteral("<sub>\\1</sub>"));
 
     // 7. Superscript: ^sup^ (single ^ not preceded or followed by ^)
@@ -703,11 +929,43 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         return QString();
     }
 
+    {
+        const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+        s_codeSnippets.clear();
+        s_lineAnchors.clear();
+    }
+
+    // Precompute newline offsets for fast O(log N) source line lookup
+    std::vector<qsizetype> lineOffsets;
+    lineOffsets.reserve((rawMd.length() / 40) + 1);
+    lineOffsets.push_back(0);
+    for (qsizetype i = 0; i < rawMd.length(); ++i) {
+        if (rawMd.at(i) == QLatin1Char('\n')) {
+            lineOffsets.push_back(i + 1);
+        }
+    }
+
+    const auto getLineNum = [&lineOffsets](qsizetype charPos) -> int {
+        const auto it = std::upper_bound(lineOffsets.begin(), lineOffsets.end(), charPos);
+        return static_cast<int>(std::distance(lineOffsets.begin(), it));
+    };
+
+    std::vector<int> localAnchors;
+    localAnchors.push_back(1);
+
+    // 0. Sanitize pseudo-tags & normalize <br> / <hr> elements
+    QString working = sanitizePseudoHtmlTags(rawMd);
+
+    // Clean redundant copy labels placed above code blocks in external markdown documents
+    static const QRegularExpression copyLabelRegex(
+        QStringLiteral(R"((?:\*\*|__)?\[\s*📋\s*(?:Salin\s+(?:Blok\s+Kode|Perintah)\s*\/\s*Copy\s+Code\s+Block)\s*\](?:\*\*|__)?\s*)"),
+        QRegularExpression::CaseInsensitiveOption);
+    working.remove(copyLabelRegex);
+
     // 1. Mask HTML comments
     static const QRegularExpression commentRegex(QStringLiteral(R"(<!--[\s\S]*?-->)"));
     std::vector<QString> comments;
-    QString working = rawMd;
-    auto commentIt = commentRegex.globalMatch(rawMd);
+    auto commentIt = commentRegex.globalMatch(working);
     qsizetype offset = 0;
     while (commentIt.hasNext()) {
         const auto m = commentIt.next();
@@ -717,7 +975,240 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         offset += token.length() - m.capturedLength();
     }
 
-    // 2. Mask HTML blocks
+    // 2. Mask Mermaid blocks to prevent MD4C parser entity double-escaping
+    static const QRegularExpression mermaidRegex(
+        QStringLiteral(R"((?:^|\n)[ \t]*```mermaid[ \t]*\r?\n([\s\S]*?)\r?\n[ \t]*```(?=[ \t]*(?:\r?\n|$)))"),
+        QRegularExpression::CaseInsensitiveOption);
+    std::vector<QString> mermaidBlocks;
+    auto mermaidIt = mermaidRegex.globalMatch(working);
+    offset = 0;
+    while (mermaidIt.hasNext()) {
+        const auto m = mermaidIt.next();
+        const int startLine = getLineNum(m.capturedStart());
+        localAnchors.push_back(startLine);
+
+        const QString rawDiagram = m.captured(1).trimmed();
+        const QString cleanDiagram = sanitizeCodeForTerminal(rawDiagram, QStringLiteral("mermaid"));
+
+        int snippetId = -1;
+        {
+            const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+            snippetId = static_cast<int>(s_codeSnippets.size());
+            s_codeSnippets.push_back(cleanDiagram);
+        }
+
+        const QString diagramSource = sanitizeForPreview(cleanDiagram);
+        const QString blockHtml = QStringLiteral(
+                                      "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
+                                      "<div class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" style=\"margin: 16px 0; background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;\">\n"
+                                      "<table width=\"100%\" class=\"code-block-header mermaid-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none; margin: 0; padding: 6px 12px; background-color: #161b22; border-bottom: 1px solid #30363d;\">\n"
+                                      "<tr>\n"
+                                      "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
+                                      "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: #21262d; color: #f0f6fc; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 12px; border: 1px solid #30363d;\">📊 Mermaid Diagram</span>\n"
+                                      "</td>\n"
+                                      "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
+                                      "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: #c9d1d9; cursor: pointer; padding: 2px 8px; border: 1px solid #30363d; border-radius: 6px; background-color: #21262d;\" title=\"Copy clean diagram source\">📋 Copy</a>\n"
+                                      "</td>\n"
+                                      "</tr>\n"
+                                      "</table>\n"
+                                      "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 14px 16px; background-color: #0d1117; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: #e6edf3; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
+                                      "</div>")
+                                      .arg(QString::number(startLine), QString::number(snippetId), diagramSource);
+        mermaidBlocks.push_back(blockHtml);
+        const QString token = QStringLiteral("\n\nSPARKMERMAIDBLOCK%1XYZ\n\n").arg(mermaidBlocks.size() - 1);
+        working.replace(m.capturedStart() + offset, m.capturedLength(), token);
+        offset += token.length() - m.capturedLength();
+    }
+
+    // 3. Mask Block Math ($$ ... $$)
+    static const QRegularExpression blockMathRegex(QStringLiteral(R"(\$\$\s*\n?([\s\S]*?)\n?\s*\$\$)"));
+    std::vector<QString> mathBlocks;
+    auto mathIt = blockMathRegex.globalMatch(working);
+    offset = 0;
+    while (mathIt.hasNext()) {
+        const auto m = mathIt.next();
+        const int startLine = getLineNum(m.capturedStart());
+        localAnchors.push_back(startLine);
+
+        const QString mathSource = sanitizeForPreview(m.captured(1).trimmed());
+        const QString blockHtml = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n<div class=\"math-block\"><span class=\"math-tex\">%2</span></div>")
+                                      .arg(QString::number(startLine), mathSource);
+        mathBlocks.push_back(blockHtml);
+        const QString token = QStringLiteral("\n\nSPARKMATHBLOCK%1XYZ\n\n").arg(mathBlocks.size() - 1);
+        working.replace(m.capturedStart() + offset, m.capturedLength(), token);
+        offset += token.length() - m.capturedLength();
+    }
+
+    // 4. Mask Fenced Code Blocks (``` or ~~~) into unified pre containers
+    static const QRegularExpression fencedCodeRegex(
+        QStringLiteral(R"((?:^|\n)[ \t]*(```|~~~)[ \t]*([^\r\n]*)\r?\n([\s\S]*?)\r?\n[ \t]*\1(?=[ \t]*(?:\r?\n|$)))"));
+
+    const auto getLangInfo = [](const QString &lang) -> std::pair<QString, QString> {
+        const QString l = lang.trimmed().toLower();
+        if (l.isEmpty()) {
+            return {QString(), QString()};
+        }
+        if (l == QStringLiteral("bash") || l == QStringLiteral("sh") || l == QStringLiteral("shell") || l == QStringLiteral("zsh")) {
+            return {QStringLiteral("💻"), l};
+        }
+        if (l == QStringLiteral("python") || l == QStringLiteral("py")) {
+            return {QStringLiteral("🐍"), QStringLiteral("python")};
+        }
+        if (l == QStringLiteral("cpp") || l == QStringLiteral("c++") || l == QStringLiteral("c") || l == QStringLiteral("h") || l == QStringLiteral("hpp") || l == QStringLiteral("cc")) {
+            return {QStringLiteral("⚙️"), l};
+        }
+        if (l == QStringLiteral("html") || l == QStringLiteral("xml") || l == QStringLiteral("xhtml")) {
+            return {QStringLiteral("🌐"), l};
+        }
+        if (l == QStringLiteral("json")) {
+            return {QStringLiteral("📋"), QStringLiteral("json")};
+        }
+        if (l == QStringLiteral("yaml") || l == QStringLiteral("yml")) {
+            return {QStringLiteral("📄"), QStringLiteral("yaml")};
+        }
+        if (l == QStringLiteral("sql")) {
+            return {QStringLiteral("🗄️"), QStringLiteral("sql")};
+        }
+        if (l == QStringLiteral("docker") || l == QStringLiteral("dockerfile")) {
+            return {QStringLiteral("🐳"), QStringLiteral("docker")};
+        }
+        if (l == QStringLiteral("nginx")) {
+            return {QStringLiteral("🚀"), QStringLiteral("nginx")};
+        }
+        if (l == QStringLiteral("ini") || l == QStringLiteral("conf") || l == QStringLiteral("cfg")) {
+            return {QStringLiteral("⚙️"), l};
+        }
+        if (l == QStringLiteral("markdown") || l == QStringLiteral("md")) {
+            return {QStringLiteral("📝"), QStringLiteral("markdown")};
+        }
+        if (l == QStringLiteral("js") || l == QStringLiteral("javascript")) {
+            return {QStringLiteral("⚡"), QStringLiteral("javascript")};
+        }
+        if (l == QStringLiteral("ts") || l == QStringLiteral("typescript")) {
+            return {QStringLiteral("⚡"), QStringLiteral("typescript")};
+        }
+        if (l == QStringLiteral("css") || l == QStringLiteral("scss") || l == QStringLiteral("sass") || l == QStringLiteral("less")) {
+            return {QStringLiteral("🎨"), l};
+        }
+        if (l == QStringLiteral("java") || l == QStringLiteral("kotlin") || l == QStringLiteral("swift") || l == QStringLiteral("rust") || l == QStringLiteral("go")) {
+            return {QStringLiteral("💻"), l};
+        }
+        if (l == QStringLiteral("text") || l == QStringLiteral("txt")) {
+            return {QStringLiteral("📄"), QStringLiteral("text")};
+        }
+        return {QStringLiteral("💻"), l};
+    };
+
+    std::vector<QString> codeBlocks;
+    auto codeIt = fencedCodeRegex.globalMatch(working);
+    offset = 0;
+    while (codeIt.hasNext()) {
+        const auto m = codeIt.next();
+        const int startLine = getLineNum(m.capturedStart());
+        localAnchors.push_back(startLine);
+
+        const QString info = m.captured(2).trimmed();
+        const QString rawCode = m.captured(3);
+
+        QString lang;
+        QString title;
+
+        if (!info.isEmpty()) {
+            static const QRegularExpression attrRegex(
+                QStringLiteral(R"((?:filename|title|file)\s*=\s*["']?([^"'\s]+)["']?)"),
+                QRegularExpression::CaseInsensitiveOption);
+            const auto attrMatch = attrRegex.match(info);
+            if (attrMatch.hasMatch()) {
+                title = attrMatch.captured(1).trimmed();
+            }
+
+            static const QRegularExpression langTokenRegex(QStringLiteral(R"(^([a-zA-Z0-9_\-\+#]+)(?:[:\s]+(.*))?$)"));
+            const auto langMatch = langTokenRegex.match(info);
+            if (langMatch.hasMatch()) {
+                lang = langMatch.captured(1).trimmed();
+                if (title.isEmpty()) {
+                    QString rest = langMatch.captured(2).trimmed();
+                    if (!rest.isEmpty()) {
+                        if ((rest.startsWith(QLatin1Char('"')) && rest.endsWith(QLatin1Char('"'))) ||
+                            (rest.startsWith(QLatin1Char('\'')) && rest.endsWith(QLatin1Char('\'')))) {
+                            rest = rest.mid(1, rest.length() - 2).trimmed();
+                        }
+                        title = rest;
+                    }
+                }
+            } else {
+                lang = info;
+            }
+        }
+
+        if (title.isEmpty()) {
+            static const QRegularExpression headerCommentRegex(
+                QStringLiteral(R"((?:#|\/\/|\/\*)\s*(?:Nama|Script\s*Name|File\s*Name|File)\s*:\s*([a-zA-Z0-9_\-\.\/]+))"),
+                QRegularExpression::CaseInsensitiveOption);
+            const auto headerMatch = headerCommentRegex.match(rawCode.left(1024));
+            if (headerMatch.hasMatch()) {
+                title = headerMatch.captured(1).trimmed();
+            }
+        }
+
+        if (title.isEmpty()) {
+            const qsizetype codeStart = m.capturedStart();
+            const qsizetype checkWindowStart = std::max(static_cast<qsizetype>(0), codeStart - 250);
+            const QString precedingText = working.mid(checkWindowStart, codeStart - checkWindowStart);
+            static const QRegularExpression precFileRegex(
+                QStringLiteral(R"(\*\*(?:Source\s+Code\s+dari\s+file|File|Skrip)\s+[`*_]*([a-zA-Z0-9_\-\.\/]+)[`*_]*\s*:\s*\*\*)"),
+                QRegularExpression::CaseInsensitiveOption);
+            const auto precMatch = precFileRegex.match(precedingText);
+            if (precMatch.hasMatch()) {
+                title = precMatch.captured(1).trimmed();
+            }
+        }
+
+        if (title.isEmpty()) {
+            const auto [icon, displayLang] = getLangInfo(lang);
+            title = !displayLang.isEmpty() ? (!icon.isEmpty() ? QStringLiteral("%1 %2").arg(icon, displayLang) : displayLang)
+                                           : (lang.isEmpty() ? QStringLiteral("code") : lang.toLower());
+        }
+
+        // Sanitize code for pristine terminal execution (Unix LF, ASCII spaces, safe quotes)
+        const QString cleanCode = sanitizeCodeForTerminal(rawCode, lang);
+
+        int snippetId = -1;
+        {
+            const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+            snippetId = static_cast<int>(s_codeSnippets.size());
+            s_codeSnippets.push_back(cleanCode);
+        }
+
+        const QString escapedCode = sanitizeForPreview(cleanCode);
+
+        const QString blockHtml = QStringLiteral(
+            "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
+            "<div class=\"code-block-container\" id=\"line_box_%1\" style=\"margin: 16px 0; background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;\">\n"
+            "<table width=\"100%\" class=\"code-block-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none; margin: 0; padding: 6px 12px; background-color: #161b22; border-bottom: 1px solid #30363d;\">\n"
+            "<tr>\n"
+            "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
+            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: #21262d; color: #f0f6fc; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 12px; border: 1px solid #30363d;\">%2</span>\n"
+            "</td>\n"
+            "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
+            "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: #c9d1d9; cursor: pointer; padding: 2px 8px; border: 1px solid #30363d; border-radius: 6px; background-color: #21262d;\" title=\"Copy clean terminal code\">📋 Copy</a>\n"
+            "</td>\n"
+            "</tr>\n"
+            "</table>\n"
+            "<pre class=\"code-block-content\" style=\"margin: 0; padding: 14px 16px; background-color: #0d1117; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: #e6edf3; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
+            "</div>")
+            .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode);
+
+        codeBlocks.push_back(blockHtml);
+        const QString token = QStringLiteral("\n\nSPARKCODEBLOCK%1XYZ\n\n").arg(codeBlocks.size() - 1);
+
+        const qsizetype start = m.capturedStart() + offset;
+        const qsizetype length = m.capturedLength();
+        working.replace(start, length, token);
+        offset += token.length() - length;
+    }
+
+    // 5. Mask HTML blocks
     static const QRegularExpression htmlBlockRegex(
         QStringLiteral(
             R"((?:^|\n)(<(p|div|h[1-6]|table|center|section|article|header|footer|figure|details|summary)[^>]*>[\s\S]*?<\/\2>))"),
@@ -738,37 +1229,184 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         offset += token.length() - length;
     }
 
-    // 3. Process markdown extensions
-    const QString enriched = enhanceMarkdown(working, isDark);
+    // Pre-record all masked intervals in rawMd (code blocks, mermaid, comments, math, html blocks)
+    // so headings and tables inside bash comments/code blocks are never misidentified
+    std::vector<std::pair<qsizetype, qsizetype>> maskedIntervals;
+    auto maskIt = fencedCodeRegex.globalMatch(rawMd);
+    while (maskIt.hasNext()) {
+        const auto m = maskIt.next();
+        maskedIntervals.emplace_back(m.capturedStart(), m.capturedEnd());
+    }
+    auto mIt = mermaidRegex.globalMatch(rawMd);
+    while (mIt.hasNext()) {
+        const auto m = mIt.next();
+        maskedIntervals.emplace_back(m.capturedStart(), m.capturedEnd());
+    }
+    auto cIt = commentRegex.globalMatch(rawMd);
+    while (cIt.hasNext()) {
+        const auto m = cIt.next();
+        maskedIntervals.emplace_back(m.capturedStart(), m.capturedEnd());
+    }
+    auto mathMaskIt = blockMathRegex.globalMatch(rawMd);
+    while (mathMaskIt.hasNext()) {
+        const auto m = mathMaskIt.next();
+        maskedIntervals.emplace_back(m.capturedStart(), m.capturedEnd());
+    }
+    auto htmlMaskIt = htmlBlockRegex.globalMatch(rawMd);
+    while (htmlMaskIt.hasNext()) {
+        const auto m = htmlMaskIt.next();
+        maskedIntervals.emplace_back(m.capturedStart(), m.capturedEnd());
+    }
 
-    // 4. Convert via QTextDocument
+    const auto isInMaskedInterval = [&maskedIntervals](qsizetype pos) -> bool {
+        return std::ranges::any_of(maskedIntervals, [pos](const auto &interval) {
+            return pos >= interval.first && pos <= interval.second;
+        });
+    };
+
+    // Scan source line numbers for real headings and tables (excluding code blocks and comments)
+    std::vector<int> headingLines;
+    static const QRegularExpression headingLineRegex(QStringLiteral(R"((?:^|\n)#{1,6}\s+[^\n]+)"));
+    auto headingIt = headingLineRegex.globalMatch(rawMd);
+    while (headingIt.hasNext()) {
+        const auto m = headingIt.next();
+        const qsizetype pos = m.capturedStart();
+        if (!isInMaskedInterval(pos)) {
+            const int hLine = getLineNum(pos);
+            headingLines.push_back(hLine);
+            localAnchors.push_back(hLine);
+        }
+    }
+
+    std::vector<int> tableLines;
+    static const QRegularExpression tableLineRegex(QStringLiteral(R"((?:^|\n)\|[^\n]+\|\r?\n\|[-:\s|]+\|)"));
+    auto tableIt = tableLineRegex.globalMatch(rawMd);
+    while (tableIt.hasNext()) {
+        const auto m = tableIt.next();
+        const qsizetype pos = m.capturedStart();
+        if (!isInMaskedInterval(pos)) {
+            const int tLine = getLineNum(pos);
+            tableLines.push_back(tLine);
+            localAnchors.push_back(tLine);
+        }
+    }
+
+    // 7. Process markdown extensions
+    QString enriched = enhanceMarkdown(working, isDark);
+
+    // Normalize any unclosed <input> tags to self-closing <input ... />
+    // to prevent MD4C/QTextDocument parser element nesting and font shrinkage
+    static const QRegularExpression unclosedInputRegex(
+        QStringLiteral(R"(<input\b([^>]*?)(?<!/)>)"), QRegularExpression::CaseInsensitiveOption);
+    enriched.replace(unclosedInputRegex, QStringLiteral("<input\\1 />"));
+
+    // 8. Convert via QTextDocument (native MD4C parser)
     QTextDocument doc;
     doc.setMarkdown(enriched);
-    QString html = doc.toHtml();
+    const QString rawDocHtml = doc.toHtml();
 
-    // 5. Restore HTML blocks
+    // 9. Clean Qt artifacts to ensure semantic HTML conforming to GitHub Primer
+    QString html = cleanQtHtml(rawDocHtml);
+
+    // 10. Restore Code blocks
+    for (std::size_t i = 0; i < codeBlocks.size(); ++i) {
+        const QString token = QStringLiteral("SPARKCODEBLOCK%1XYZ").arg(i);
+        const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
+        const auto match = tokenP.match(html);
+        if (match.hasMatch()) {
+            html.replace(match.capturedStart(), match.capturedLength(), codeBlocks[i]);
+        } else {
+            html.replace(token, codeBlocks[i]);
+        }
+    }
+
+    // 11. Restore HTML blocks
     for (std::size_t i = 0; i < htmlBlocks.size(); ++i) {
         const QString token = QStringLiteral("SPARKHTMLBLOCK%1XYZ").arg(i);
         const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
-        if (html.contains(tokenP)) {
-            html.replace(tokenP, htmlBlocks[i]);
+        const auto match = tokenP.match(html);
+        if (match.hasMatch()) {
+            html.replace(match.capturedStart(), match.capturedLength(), htmlBlocks[i]);
         } else {
             html.replace(token, htmlBlocks[i]);
         }
     }
 
-    // 6. Strip masked comments
-    for (std::size_t i = 0; i < comments.size(); ++i) {
-        const QString token = QStringLiteral("SPARKCOMMENT%1XYZ").arg(i);
+    // 12. Restore Math blocks
+    for (std::size_t i = 0; i < mathBlocks.size(); ++i) {
+        const QString token = QStringLiteral("SPARKMATHBLOCK%1XYZ").arg(i);
         const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
-        if (html.contains(tokenP)) {
-            html.remove(tokenP);
+        const auto match = tokenP.match(html);
+        if (match.hasMatch()) {
+            html.replace(match.capturedStart(), match.capturedLength(), mathBlocks[i]);
         } else {
-            html.remove(token);
+            html.replace(token, mathBlocks[i]);
         }
     }
 
-    // 7. Post-process headings with IDs and callouts
+    // 13. Restore Mermaid blocks
+    for (std::size_t i = 0; i < mermaidBlocks.size(); ++i) {
+        const QString token = QStringLiteral("SPARKMERMAIDBLOCK%1XYZ").arg(i);
+        const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
+        const auto match = tokenP.match(html);
+        if (match.hasMatch()) {
+            html.replace(match.capturedStart(), match.capturedLength(), mermaidBlocks[i]);
+        } else {
+            html.replace(token, mermaidBlocks[i]);
+        }
+    }
+
+    // 14. Strip masked comments
+    for (std::size_t i = 0; i < comments.size(); ++i) {
+        const QString token = QStringLiteral("SPARKCOMMENT%1XYZ").arg(i);
+        const QRegularExpression tokenP(QStringLiteral(R"(<p[^>]*>\s*)") + token + QStringLiteral(R"(\s*<\/p>)"));
+        const auto match = tokenP.match(html);
+        if (match.hasMatch()) {
+            html.replace(match.capturedStart(), match.capturedLength(), QString());
+        } else {
+            html.replace(token, QString());
+        }
+    }
+
+    // 15. Post-process headings with IDs and callouts
     const QString htmlWithIds = processHeadingsWithIds(html);
-    return enhanceCallouts(htmlWithIds, isDark);
+    const QString calloutsEnhanced = enhanceCallouts(htmlWithIds, isDark);
+
+    // 16. Attach line anchors to tables and headings in HTML post-processing (iterating backwards to preserve offsets)
+    QString finalHtml = calloutsEnhanced;
+
+    std::vector<QRegularExpressionMatch> tableMatches;
+    static const QRegularExpression tableTagRegex(QStringLiteral(R"(<table\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
+    auto tblMatchIt = tableTagRegex.globalMatch(finalHtml);
+    while (tblMatchIt.hasNext()) {
+        tableMatches.push_back(tblMatchIt.next());
+    }
+    for (qsizetype i = static_cast<qsizetype>(tableMatches.size()) - 1; i >= 0; --i) {
+        const int tLine = (static_cast<std::size_t>(i) < tableLines.size()) ? tableLines[static_cast<std::size_t>(i)] : 1;
+        const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n").arg(tLine);
+        finalHtml.insert(tableMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
+    }
+
+    std::vector<QRegularExpressionMatch> headingMatches;
+    static const QRegularExpression hTagRegex(QStringLiteral(R"(<h([1-6])([^>]*)>)"), QRegularExpression::CaseInsensitiveOption);
+    auto hMatchIt = hTagRegex.globalMatch(finalHtml);
+    while (hMatchIt.hasNext()) {
+        headingMatches.push_back(hMatchIt.next());
+    }
+    for (qsizetype i = static_cast<qsizetype>(headingMatches.size()) - 1; i >= 0; --i) {
+        const int hLine = (static_cast<std::size_t>(i) < headingLines.size()) ? headingLines[static_cast<std::size_t>(i)] : 1;
+        const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n").arg(hLine);
+        finalHtml.insert(headingMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
+    }
+
+    // Finalize synchronized scroll line anchors
+    {
+        const std::lock_guard<std::mutex> lock(s_enhancerMutex);
+        std::sort(localAnchors.begin(), localAnchors.end());
+        localAnchors.erase(std::unique(localAnchors.begin(), localAnchors.end()), localAnchors.end());
+        s_lineAnchors = std::move(localAnchors);
+    }
+
+    // 17. Wrap in .markdown-body container for GitHub Markdown Preview Style compliance
+    return QStringLiteral("<div class=\"markdown-body\">\n%1\n</div>").arg(finalHtml);
 }

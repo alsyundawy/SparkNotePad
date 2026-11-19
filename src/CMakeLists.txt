@@ -161,6 +161,8 @@ qt_add_executable(SparkNotePad
 	features/EditorConfigParser.cpp
 	dialogs/CrashRecoveryDialog.h
 	dialogs/CrashRecoveryDialog.cpp
+	dialogs/DeveloperToolsDialog.h
+	dialogs/DeveloperToolsDialog.cpp
 	dialogs/ExportOptionsDialog.h
 	dialogs/ExportOptionsDialog.cpp
 	dialogs/TimestampConverterDialog.h
@@ -423,6 +425,7 @@ target_include_directories(SparkNotePad
         ${CMAKE_CURRENT_SOURCE_DIR}/utils
         ${CMAKE_CURRENT_SOURCE_DIR}/widgets
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${OPENSSL_INCLUDE_DIR}
 )
 
 configure_file(
@@ -458,6 +461,7 @@ target_link_libraries(SparkNotePad
         lexilla
         scintilla
         uchardet
+        ${SPARK_OPENSSL_CRYPTO}
 )
 
 set_source_files_properties(
@@ -469,7 +473,7 @@ set_source_files_properties(
 
 if(APPLE)
     target_link_directories(SparkNotePad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
-    target_link_libraries(SparkNotePad PRIVATE "-framework Security" "-framework JavaScriptCore" "-framework AppKit")
+    target_link_libraries(SparkNotePad PRIVATE "-framework Security" "-framework JavaScriptCore" "-framework AppKit" "-framework WebKit")
     target_sources(SparkNotePad PRIVATE
         features/MacServicesHandler.h
         features/MacServicesHandler.mm

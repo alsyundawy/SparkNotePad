@@ -18,6 +18,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QPainter>
+#include <QtSvg/QSvgRenderer>
 #include <QSvgRenderer>
 #include <QWindow>
 
@@ -56,21 +57,30 @@ QImage MarkdownBrowser::renderSvgToImage(const QByteArray &data, qreal devicePix
         return QImage();
     }
 
-    QSize defaultSize = renderer.defaultSize();
-    if (defaultSize.isEmpty() || defaultSize.width() <= 0 || defaultSize.height() <= 0) {
-        defaultSize = QSize(120, 28);
+    const QRectF viewBox = renderer.viewBoxF();
+    qreal w = viewBox.width();
+    qreal h = viewBox.height();
+    if (w <= 0.0 || h <= 0.0) {
+        const QSize ds = renderer.defaultSize();
+        w = ds.width();
+        h = ds.height();
+    }
+    if (w <= 0.0 || h <= 0.0) {
+        w = 120.0;
+        h = 28.0;
     }
 
     const qreal dpr = (devicePixelRatio > 0.0) ? devicePixelRatio : 1.0;
-    const QSize targetSize = defaultSize * dpr;
-    QImage image(targetSize, QImage::Format_ARGB32_Premultiplied);
+    const QSize pixelSize(std::max(1, static_cast<int>(std::ceil(w * dpr))),
+                          std::max(1, static_cast<int>(std::ceil(h * dpr))));
+    QImage image(pixelSize, QImage::Format_ARGB32_Premultiplied);
     image.setDevicePixelRatio(dpr);
     image.fill(Qt::transparent);
 
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-    renderer.render(&painter);
+    renderer.render(&painter, QRectF(0.0, 0.0, w, h));
     return image;
 }
 
@@ -80,21 +90,30 @@ QImage MarkdownBrowser::renderSvgFileToImage(const QString &filePath, qreal devi
         return QImage();
     }
 
-    QSize defaultSize = renderer.defaultSize();
-    if (defaultSize.isEmpty() || defaultSize.width() <= 0 || defaultSize.height() <= 0) {
-        defaultSize = QSize(120, 28);
+    const QRectF viewBox = renderer.viewBoxF();
+    qreal w = viewBox.width();
+    qreal h = viewBox.height();
+    if (w <= 0.0 || h <= 0.0) {
+        const QSize ds = renderer.defaultSize();
+        w = ds.width();
+        h = ds.height();
+    }
+    if (w <= 0.0 || h <= 0.0) {
+        w = 120.0;
+        h = 28.0;
     }
 
     const qreal dpr = (devicePixelRatio > 0.0) ? devicePixelRatio : 1.0;
-    const QSize targetSize = defaultSize * dpr;
-    QImage image(targetSize, QImage::Format_ARGB32_Premultiplied);
+    const QSize pixelSize(std::max(1, static_cast<int>(std::ceil(w * dpr))),
+                          std::max(1, static_cast<int>(std::ceil(h * dpr))));
+    QImage image(pixelSize, QImage::Format_ARGB32_Premultiplied);
     image.setDevicePixelRatio(dpr);
     image.fill(Qt::transparent);
 
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-    renderer.render(&painter);
+    renderer.render(&painter, QRectF(0.0, 0.0, w, h));
     return image;
 }
 
@@ -114,7 +133,7 @@ void MarkdownBrowser::fetchRemoteImage(const QUrl &url) {
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::UserAgentHeader,
-                      QStringLiteral("SparkNotePad/1.4.7 (macOS; Universal; Scintilla/5.6.9)"));
+                      QStringLiteral("SparkNotePad/1.5.0 (macOS; Universal; Scintilla/5.6.9)"));
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
 
     QNetworkReply *reply = m_networkManager->get(request);
@@ -171,6 +190,11 @@ void MarkdownBrowser::handleImageReply(QNetworkReply *reply, const QUrl &url) {
         return;
     }
 
+    constexpr int maxImgWidth = 850;
+    if (image.width() > maxImgWidth && !isSvg) {
+        image = image.scaledToWidth(maxImgWidth, Qt::SmoothTransformation);
+    }
+
     if (m_imageCache.size() >= s_maxCacheEntries) {
         m_imageCache.erase(m_imageCache.begin());
     }
@@ -205,10 +229,10 @@ QVariant MarkdownBrowser::loadResource(int type, const QUrl &name) {
 
         if (resolvedUrl.isLocalFile()) {
             const QString localPath = resolvedUrl.toLocalFile();
+            if (const auto it = m_imageCache.constFind(resolvedUrl); it != m_imageCache.constEnd()) {
+                return QVariant::fromValue(*it);
+            }
             if (localPath.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)) {
-                if (const auto it = m_imageCache.constFind(resolvedUrl); it != m_imageCache.constEnd()) {
-                    return QVariant::fromValue(*it);
-                }
                 const QImage svgImg = renderSvgFileToImage(localPath, devicePixelRatioF());
                 if (!svgImg.isNull()) {
                     if (m_imageCache.size() >= s_maxCacheEntries) {
@@ -216,6 +240,19 @@ QVariant MarkdownBrowser::loadResource(int type, const QUrl &name) {
                     }
                     m_imageCache.insert(resolvedUrl, svgImg);
                     return QVariant::fromValue(svgImg);
+                }
+            } else {
+                QImage img(localPath);
+                if (!img.isNull()) {
+                    constexpr int maxImgWidth = 850;
+                    if (img.width() > maxImgWidth) {
+                        img = img.scaledToWidth(maxImgWidth, Qt::SmoothTransformation);
+                    }
+                    if (m_imageCache.size() >= s_maxCacheEntries) {
+                        m_imageCache.erase(m_imageCache.begin());
+                    }
+                    m_imageCache.insert(resolvedUrl, img);
+                    return QVariant::fromValue(img);
                 }
             }
         }

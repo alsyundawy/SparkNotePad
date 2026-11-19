@@ -471,6 +471,10 @@ void AboutDialog::updateThemeColors() {
                 "<li><b>OpenSSL:</b> %9 (<a style='color: %1;' href='https://www.openssl.org'>openssl.org</a>)</li>"
                 "<li><b>cleanrmd & markdown-viewer Themes:</b> %10 (<a style='color: %1;' "
                 "href='https://github.com/simov/markdown-viewer'>github.com</a>)</li>"
+                "<li><b>GitHub Primer Markdown Preview:</b> %11 (<a style='color: %1;' "
+                "href='https://github.com/mjbvz/vscode-github-markdown-preview-style'>github.com</a>)</li>"
+                "<li><b>Notepad-- & NotepadMac Architecture:</b> %12 (<a style='color: %1;' "
+                "href='https://github.com/cxasm/notepad--'>github.com</a>)</li>"
                 "</ul>")
                 .arg(accentCol, tr("Libraries & Frameworks"),
                      tr("Developed by The Qt Company and the Qt Open Source Community (Qt 6.5–6.12)."),
@@ -480,7 +484,9 @@ void AboutDialog::updateThemeColors() {
                      tr("Created by Hong Xu. Universal .editorconfig format enforcement."),
                      tr("Maintained by Freedesktop. Enables fast universal character encoding detection."),
                      tr("Standard open-source cryptography and TLS/SSL security library."),
-                     tr("Curated classless CSS stylesheet collection and markdown-it formatting for live preview."));
+                     tr("Curated classless CSS stylesheet collection and markdown-it formatting for live preview."),
+                     tr("Official GitHub Primer Markdown preview style specification and CSS tokens."),
+                     tr("Notepad-- cross-platform architecture and Developer Tools suite inspiration."));
 
         creditsHtml +=
             QString(
@@ -530,21 +536,22 @@ void AboutDialog::updateThemeColors() {
                 "<tr><td style='color: %2; font-weight: bold;'>F5 / Ctrl+Alt+R</td><td>%18</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + F5</td><td>%19</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + T</td><td>%20</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + R</td><td>%21</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + C</td><td>%22</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + D</td><td>%21</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + R</td><td>%22</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Alt + C</td><td>%23</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl+Alt+Shift+E</td><td>Encrypt Current "
                 "Document</td></tr>"
                 "<tr><td style='color: %2; font-weight: bold;'>Ctrl+Alt+Shift+O</td><td>Toggle File Browser "
                 "Dock</td></tr>"
-                "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%23</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + D</td><td>%24</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + /</td><td>%25</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + /</td><td>%26</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + U</td><td>%27</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + U</td><td>%28</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + B</td><td>%29</td></tr>"
-                "<tr><td style='color: %2; font-weight: bold;'>Alt + Click &amp; Drag</td><td>%30</td></tr>"
-                "<tr><td colspan='2' style='color: %2; font-style: italic; padding-top: 8px;'>%31</td></tr>"
+                "<tr><td colspan='2' style='color: %2; font-weight: bold; padding-top: 8px;'>%24</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + D</td><td>%25</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + /</td><td>%26</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + /</td><td>%27</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + U</td><td>%28</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + U</td><td>%29</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + B</td><td>%30</td></tr>"
+                "<tr><td style='color: %2; font-weight: bold;'>Alt + Click &amp; Drag</td><td>%31</td></tr>"
+                "<tr><td colspan='2' style='color: %2; font-style: italic; padding-top: 8px;'>%32</td></tr>"
                 "</table>"
                 "</div>")
                 .arg(txtPri, accentCol, tr("SparkNotePad Keyboard Shortcuts &amp; Hotkeys"),
@@ -555,6 +562,7 @@ void AboutDialog::updateThemeColors() {
                      tr("Developer &amp; Documentation Tools"), tr("Get PHP Help (php.net)"),
                      tr("Rust Documentation (rust-lang.org/learn)"), tr("Python Documentation (w3schools.com/python)"),
                      tr("Wikipedia Search"), tr("Run External Tool"), tr("Run Current File with Interpreter"),
+                     tr("Developer Tools Hub (JSON, XML, HTML, CSS, JS, Crypto, MIME, Radix)"),
                      tr("Toggle Dark / Light Mode"), tr("Run Python Script / Selection (3.13+)"),
                      tr("Generate Development SSL Certificate (mkcert/OpenSSL)"), tr("Editing &amp; Selection"),
                      tr("Duplicate Current Line or Selection"), tr("Toggle Single-Line Comment"),

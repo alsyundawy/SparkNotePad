@@ -53,7 +53,6 @@ public slots:
     void setPreviewFormat(PreviewFormat newFormat);
     void setPreviewTheme(MarkdownThemeManager::ThemeId newTheme);
     void setAutoShowEnabled(bool enabled);
-    void openInBrowser();
     void copyHtml();
     void exportHtml();
     void exportPdf();
@@ -76,7 +75,6 @@ private:
         QComboBox *comboTheme = nullptr;
         QLabel *lblFormatStatus = nullptr;
         QLabel *lblStats = nullptr;
-        QPushButton *btnOpenBrowser = nullptr;
         QPushButton *btnCopyHtml = nullptr;
         QPushButton *btnExportHtml = nullptr;
         QPushButton *btnExportPdf = nullptr;

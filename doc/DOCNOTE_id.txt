@@ -1,4 +1,57 @@
-# Catatan Rilis SparkNotePad — v1.4.6 (Bahasa Indonesia)
+# Catatan Rilis SparkNotePad — v1.5.0 (Bahasa Indonesia)
+
+--------------------------------------------------------------------------------
+================================================================================
+Versi Rilis          : 1.5.0 (Rangkaian Lengkap Developer Tools [Paritas NotepadMac],
+                       Perombakan Pratinjau Markdown GitHub Primer, Relokasi Menu
+                       Format & Tools, Sakelar Tampilan, Manajemen Window & Penguatan Keamanan)
+Tanggal Rilis        : 2026-11-19
+Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repositori           : https://github.com/alsyundawy/SparkNotePad
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (129 Lexer Resmi)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
+Kerangka Kerja GUI   : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
+Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
+================================================================================
+--------------------------------------------------------------------------------
+
+---
+
+## 1. Ringkasan Eksekutif: Perubahan pada v1.5.0
+
+SparkNotePad v1.5.0 menghadirkan ekspansi fitur signifikan dan modernisasi antarmuka menyeluruh:
+
+1. **Rangkaian Lengkap Developer Tools (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+   - Dialog interaktif multi-tab Developer Tools Hub (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) dengan 5 tab fungsional.
+   - Hash Tools: 11 algoritma hash kriptografis (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3, Keccak-256), hashing integritas berkas, dan perbandingan checksum berdampingan.
+   - MIME Tools: Enkode/dekode Base64 baris demi baris, Quoted-Printable (RFC 2045), URL encode/decode, dan HTML entities encode/decode.
+   - Converter Tools: Konverter basis Radiks (Biner, Oktal, Desimal, Heksadesimal), ASCII <-> Heksadesimal, dan konversi huruf (Title Case, Invert Case, Sentence Case).
+   - Encryption Tools: Proteksi Enkripsi Dokumen HTML dengan 3 mode: Injeksi JS escape, Base64 `atob()`, dan Password AES-256-GCM dengan harness runtime dekripsi CryptoJS tertanam.
+   - Developer Tools: Pretty-print dan pemadat (minify) untuk JSON, XML, HTML, CSS, JS; Inspektur Token JWT RFC 7519; pembuat UUID v4; dan konverter Unix Epoch / ISO-8601.
+   - Perombakan total tata letak dan ergonomi dialog `DeveloperToolsDialog`: standarisasi tinggi tombol 32px, tipografi modern, pemisahan kontrol proteksi enkripsi untuk mencegah desak-desakan kolom, grid 5-kolom seimbang untuk formatter/minifier, serta integrasi font sistem native macOS.
+2. **Pratinjau Langsung Markdown Aman GitHub Primer Sempurna**:
+   - Rekayasa ulang engine pratinjau agar sepenuhnya selaras dengan spesifikasi GitHub Markdown CSS (`mjbvz/vscode-github-markdown-preview-style`).
+   - Pembersihan seluruh artefak internal Qt rich text (`-qt-block-indent`, margin bawaan paragraf) dan perbaikan pewarisan warna CSS ke seluruh elemen anak (`p`, `li`, `td`, `th`, `span`, `div`), melenyapkan tuntas masalah teks putih di atas latar putih pada tema terang (`GITHUB`, dll.).
+   - Kontainer blok kode terpadu dengan header bahasa (`💻 bash`, `🐍 python`, `🌐 html`, dll.) dan tombol interaktif 1-klik `📋 Salin Kode / Copy`.
+   - Pelestarian sintaks dan karakter terminal-safe: newlines Unix LF murni, penghapusan CRLF `\r`, normalisasi spasi tanpa-putus (NBSP `\u00A0`/`\u202F`), spasi lebar nol (`\u200B`-`\u200D`, `\uFEFF`), dan normalisasi tanda kutip cerdas menjadi tanda kutip ASCII murni agar skrip shell bash dapat disalin dan langsung dieksekusi di terminal tanpa kesalahan sintaks.
+   - Sinkronisasi scroll presisi reverse line anchor sejajar berdampingan dengan editor Scintilla, masking blok kode dan komentar dari deteksi palsu heading, dan eliminasi feedback loop debounce.
+   - Ketahanan dokumen masif: divalidasi dan dioptimalkan untuk ratusan ribu baris (misal panduan operasional produksi 6.000+ baris) tanpa lonjakan memori atau batasan render.
+   - Dukungan penuh GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
+   - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan mandiri.
+3. **Restrukturisasi Menu Format & Tools**:
+   - Menu tingkat atas Format untuk Enkoding Karakter dan Konversi Pemisah Baris.
+   - Relokasi Run & Eksekusi Eksternal ke menu `Tools -> Run & External Execution`.
+4. **Peningkatan Sakelar Tampilan & Manajemen Window**:
+   - Kontrol menu Window lengkap dari NotepadMac (Zoom, Tile Left/Right, Bring All to Front, Tab Navigasi).
+   - Sakelar tampilan untuk Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, dan Mode Hanya-Baca.
+5. **Pemaketan DMG Ringan & Penguatan Keamanan**:
+   - Penautan static `libcrypto.a` dengan `-Wl,-dead_strip`, menjamin ukuran DMG tetap di rentang 30MB–40MB (~39.2 MB).
+
+---
+
+## 2. Arsip Rilis Sebelumnya: v1.4.6
 
 --------------------------------------------------------------------------------
 ================================================================================

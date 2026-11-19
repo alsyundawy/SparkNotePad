@@ -80,6 +80,7 @@ target_include_directories(SparkNotePadTests PRIVATE
     ${CMAKE_SOURCE_DIR}/thirdparty/scintilla/qt/ScintillaEditBase
     ${CMAKE_SOURCE_DIR}/thirdparty/lexilla/include
     ${CMAKE_CURRENT_SOURCE_DIR}
+    /usr/local/opt/openssl@3/include
 )
 
 target_link_libraries(SparkNotePadTests PRIVATE
@@ -93,11 +94,12 @@ target_link_libraries(SparkNotePadTests PRIVATE
     uchardet
     scintilla
     lexilla
+    ${SPARK_OPENSSL_CRYPTO}
 )
 
 if(APPLE)
     target_link_directories(SparkNotePadTests PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
-    target_link_libraries(SparkNotePadTests PRIVATE "-framework Security")
+    target_link_libraries(SparkNotePadTests PRIVATE "-framework Security" "-framework WebKit")
 endif()
 
 add_test(NAME SparkNotePadUnitTests COMMAND SparkNotePadTests)

@@ -1,11 +1,11 @@
-# SparkNotePad Release DocNote — v1.4.7
+# SparkNotePad Release DocNote — v1.5.0
 
 ```text
 ================================================================================
-Release Version     : 1.4.7 (Core Engine Upgrade [Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1],
-                      System Transfer [.sparkbundle], POSIX File Inspector, 3-Point Encoding Detection,
-                      Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
-Release Date        : 2026-11-14
+Release Version     : 1.5.0 (Developer Tools Suite [NotepadMac Parity], GitHub Primer
+                      Markdown Preview Overhaul, Format & Tools Menu Relocation,
+                      View Toggles, Window Management & 2025–2026 CVE Hardening)
+Release Date        : 2026-11-19
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -22,7 +22,39 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Changes in v1.4.7
+## 1. Executive Summary: Changes in v1.5.0
+
+SparkNotePad **v1.5.0** delivers a major feature expansion with developer tooling parity from NotepadMac, a complete overhaul of the Markdown Live Preview matching GitHub Primer design standards, ergonomic menu reorganizations, advanced macOS window controls, and thorough security mitigations:
+
+1. **Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+   - 5-tab developer hub: Format & Minify (JSON, XML, HTML, CSS, SQL), Regex & Pattern Matcher, Hash & Cryptography (MD5, SHA-1, SHA-256, SHA-512, Keccak-256, HMAC-SHA256, Base64, Hex), Text & Case Transforms (Sorting, Deduplication, Line numbering, Reverse, Randomize, Slugs), and Text Escaping & Web Security (URL, HTML Entities, JavaScript, C-String, SQL, and HTML Encryption modes: JS Escape, Base64, and AES-256-GCM Web Crypto).
+   - Ergonomics overhaul of `DeveloperToolsDialog`: standardized 32px button heights, modern typography, decoupled crypto protection controls preventing column cramping, balanced 5-column formatter grids, and clean macOS system font integration.
+2. **GitHub Primer Markdown Preview Overhaul**:
+   - Upgraded to full GitHub Flavored Markdown (GFM) aesthetic parity matching `mjbvz/vscode-github-markdown-preview-style` and GitHub Primer design tokens.
+   - Eliminated Qt rich text formatting artifacts (`-qt-block-indent`, zero margin resets) and fixed CSS text inheritance across all elements (`p`, `li`, `td`, `th`, `span`, `div`), completely resolving invisible white-on-white text in light themes (`GITHUB`, etc.).
+   - Implemented unified, clean fenced code block containers with language headers (`💻 bash`, `🐍 python`, `🌐 html`, etc.) and 1-click interactive `📋 Copy` buttons.
+   - Guaranteed 100% exact newline, indentation, and syntax preservation for shell scripts (`bash`, `sh`, etc.) when selecting and copying from preview to terminal (stripping CRLF `\r`, normalizing NBSP `\u00A0`/`\u202F`, zero-width spaces, and converting curly quotes to ASCII quotes), preventing syntax errors in bash execution.
+   - Reverse anchor line synchronization: exact 1:1 side-by-side scroll alignment with Scintilla editor, masking code blocks and comments from falsely registering as headings, and debounced bidirectional scroll loop prevention.
+   - Massive document resilience: validated and optimized for 100k+ lines (e.g. 6,000-line production guides) without memory spikes or render limits.
+   - Support for GitHub Alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with high-contrast icons, tinted backgrounds, and accent borders.
+   - Complete purging of all external browser buttons and "Open in Default Web Browser" actions across docks and tabs for a self-contained, secure preview experience.
+3. **Format & Tools Menu Bar Relocation**:
+   - Dedicated `Format` menu hosting `File Encoding` (UTF-8, UTF-16, ISO, CJK, etc.) and `Line Endings` (CRLF, LF, CR).
+   - Relocated `Run` and external execution commands to `Tools -> Run & External Execution`, standardizing global menu bar hierarchy.
+4. **Window Management & View Toggles**:
+   - Added full Window menu controls from NotepadMac: Zoom, Tile Left/Right, Bring All to Front, and Document Tab Navigation (`Next Tab`, `Previous Tab`, `Focus Editor`).
+   - Dynamic document list with active checkmark (`✓`) and dirty indicators (`*`).
+   - Ported essential View toggles: Line Numbers, Code Folding, Visible White Space & EOL, Indent Guides, Caret Line Highlighting, Column Marker, Word Wrap, and Read-Only lock.
+5. **Static Crypto Link & Lightweight macOS DMG Packaging**:
+   - Linked static OpenSSL `libcrypto.a` with `-Wl,-dead_strip`, eliminating external dylib runtime dependencies.
+   - Guaranteed canonical 30MB–40MB DMG package size (~39.2 MB) with pre-baked `.DS_Store` layout preset and branded presentation assets.
+6. **Bilingual Localization & Complete Documentation Update**:
+   - Updated English and Indonesian translation matrices (`SparkNotePad_en.qm`, `SparkNotePad_id.qm`).
+   - Comprehensive updates to READMEs, User Guide, Wiki shortcuts, and release notes.
+
+---
+
+## 2. Archive Summary: Release v1.4.7
 
 SparkNotePad **v1.4.7** introduces major architectural advancements across the core editing engines, portable workspace mobility, POSIX file permissions and script analysis, robust character encoding detection, enhanced navigation dialogs, and comprehensive 2025–2026 CVE security hardening:
 

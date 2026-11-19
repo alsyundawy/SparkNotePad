@@ -81,17 +81,19 @@ SparkNotePad features a dual-mode quick palette architecture inspired by modern 
 
 ## 5. Security & Developer Utilities
 
-| Action                              | macOS Shortcut | Linux / Windows Shortcut | Description                                           |
-| :---------------------------------- | :------------- | :----------------------- | :---------------------------------------------------- |
-| **Encrypt Document**                | `Cmd+Alt+E`    | `Ctrl+Alt+E`             | Encrypt document using AES-256-CBC and PBKDF2         |
-| **Decrypt Document**                | `Cmd+Alt+X`    | `Ctrl+Alt+X`             | Decrypt encrypted document buffer                     |
-| **Evaluate JavaScript / Math**      | `Cmd+Alt+J`    | `Ctrl+Alt+J`             | Evaluate active line or selection in QJSEngine        |
-| **Log Tail Monitoring**             | `Cmd+Alt+M`    | `Ctrl+Alt+M`             | Toggle real-time log file tailing and auto-scroll     |
-| **Clipboard History**               | `Cmd+Alt+V`    | `Ctrl+Alt+V`             | Open multi-item clipboard history viewer              |
-| **Format Document (Prettier/JSON)** | `Cmd+Shift+I`  | `Ctrl+Shift+I`           | Auto-format current file buffer                       |
-| **Safe Markdown Preview**           | `Cmd+Shift+M`  | `Ctrl+Shift+M`           | Toggle sandboxed side-by-side Markdown HTML preview   |
-| **Toggle Hex / Binary View**        | `Cmd+Alt+H`    | `Ctrl+Alt+H`             | Toggle in-place reversible hexadecimal inspection     |
-| **Toggle Dark / Light Theme**       | `Cmd+Alt+T`    | `Ctrl+Alt+T`             | Cycle between configured Dark and Light theme presets |
+| Action                              | macOS Shortcut | Linux / Windows Shortcut | Description                                                 |
+| :---------------------------------- | :------------- | :----------------------- | :---------------------------------------------------------- |
+| **Encrypt Document**                | `Cmd+Alt+E`    | `Ctrl+Alt+E`             | Encrypt document using AES-256-CBC and PBKDF2               |
+| **Decrypt Document**                | `Cmd+Alt+X`    | `Ctrl+Alt+X`             | Decrypt encrypted document buffer                           |
+| **Evaluate JavaScript / Math**      | `Cmd+Alt+J`    | `Ctrl+Alt+J`             | Evaluate active line or selection in QJSEngine              |
+| **Log Tail Monitoring**             | `Cmd+Alt+M`    | `Ctrl+Alt+M`             | Toggle real-time log file tailing and auto-scroll           |
+| **Clipboard History**               | `Cmd+Alt+V`    | `Ctrl+Alt+V`             | Open multi-item clipboard history viewer                    |
+| **Format Document (Prettier/JSON)** | `Cmd+Shift+I`  | `Ctrl+Shift+I`           | Auto-format current file buffer                             |
+| **Safe Markdown Preview**           | `Cmd+Shift+M`  | `Ctrl+Shift+M`           | Toggle sandboxed side-by-side Markdown HTML preview         |
+| **Toggle Hex / Binary View**        | `Cmd+Alt+H`    | `Ctrl+Alt+H`             | Toggle in-place reversible hexadecimal inspection           |
+| **Developer Tools Hub**             | `Cmd+Alt+T`    | `Ctrl+Alt+T`             | Interactive hub (JSON/XML/HTML/CSS/JS, Crypto, MIME, Radix) |
+| **Toggle Dark / Light Theme**       | `Cmd+Shift+D`  | `Ctrl+Shift+D`           | Cycle between configured Dark and Light theme presets       |
+| **Switch Header / Source**          | `F4` / `Alt+O` | `F4` / `Alt+O`           | Switch corresponding C/C++ header and implementation file   |
 
 ---
 

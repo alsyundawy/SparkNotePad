@@ -1,7 +1,7 @@
 # SparkNotePad — Feature Inventory & Implementation Status
 
-- **Date:** 2026-11-14
-- **Release Version:** SparkNotePad v1.4.7
+- **Date:** 2026-11-19
+- **Release Version:** SparkNotePad v1.5.0
 - **Editor Engine:** Scintilla 5.6.9 + Lexilla 5.5.5 (129 lexers complete)
 - **Standard:** C++20 / Qt 6.5–6.12
 
@@ -170,3 +170,8 @@
 | **Project Tree Safe Rename Preview**        |   ✅ Complete    | `FolderAsWorkspaceDock` safe rename with traversal & collision checks |
 | **2025–2026 CVE Security Hardening**        |   ✅ Complete    | Immunity against CVE-2026-42214, 48778, 52885, 52886, 57233, etc.     |
 | **Complete Indonesian Localization**        |   ✅ Complete    | 2,247 translations finished (100% complete, 0 unfinished, EYD V)      |
+| **Developer Tools Suite (5-Tab Hub)**       |   ✅ Complete    | Format/Minify, Regex, Hashes, Case/Radix, HTML AES-GCM Encrypt (v1.5) |
+| **GitHub Primer Markdown Safe Preview**     |   ✅ Complete    | GFM styling (`mjbvz`), Alert callouts, zero external browser bloat    |
+| **Format & Tools Menu Restructuring**       |   ✅ Complete    | Format menu (Encodings & EOL), Tools (Run & External Execution)       |
+| **Window Controls & View Toggles**          |   ✅ Complete    | NotepadMac Window controls (Zoom/Tile/Tabs), 8 editor view toggles    |
+| **Lightweight DMG Standard (30MB–40MB)**    |   ✅ Complete    | Canonical ~39.2MB DMG via native hdiutil with preserved background    |

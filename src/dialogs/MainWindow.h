@@ -270,7 +270,7 @@ private:
     void onRunCurrentFileTriggered();
     void onOpenTerminalHereTriggered() const;
     void onRevealInFileManagerTriggered() const;
-    void onOpenInBrowserTriggered() const;
+    void onDeveloperToolsTriggered(int initialTab = 0);
     void onPasteAndMatchStyleTriggered() const;
     void onSearchGoogleTriggered() const;
     void onSearchWikipediaTriggered() const;
@@ -312,7 +312,7 @@ private:
     void onChangelogTriggered();
     void onGenerateCertTriggered();
     void openPreviewInNewTab(ScintillaNext *editor);
-    static void openInDefaultBrowser(const QString &filePath);
+
     void onToggleHexBinaryView(bool checked);
 
     QMenu *menuRun = nullptr;

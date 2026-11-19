@@ -12,6 +12,7 @@
  */
 
 #include "MarkdownSafePreviewDock.h"
+#include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QClipboard>
 #include <QComboBox>
@@ -85,7 +86,6 @@ MarkdownSafePreviewDock::MarkdownSafePreviewDock(MainWindow *parent)
     m_ui.comboTheme = new QComboBox(this);
     m_ui.lblFormatStatus = new QLabel(this);
     m_ui.lblStats = new QLabel(this);
-    m_ui.btnOpenBrowser = new QPushButton(this);
     m_ui.btnCopyHtml = new QPushButton(this);
     m_ui.btnExportHtml = new QPushButton(this);
     m_ui.btnExportPdf = new QPushButton(this);
@@ -237,15 +237,6 @@ void MarkdownSafePreviewDock::setupUi() {
     m_ui.btnExportPdf->setCursor(Qt::PointingHandCursor);
     connect(m_ui.btnExportPdf, &QPushButton::clicked, this, &MarkdownSafePreviewDock::exportPdf);
     topLayout->addWidget(m_ui.btnExportPdf);
-
-    m_ui.btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
-    m_ui.btnOpenBrowser->setIconSize(QSize(14, 14));
-    m_ui.btnOpenBrowser->setText(QStringLiteral("Browser"));
-    m_ui.btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
-    m_ui.btnOpenBrowser->setFixedHeight(24);
-    m_ui.btnOpenBrowser->setCursor(Qt::PointingHandCursor);
-    connect(m_ui.btnOpenBrowser, &QPushButton::clicked, this, &MarkdownSafePreviewDock::openInBrowser);
-    topLayout->addWidget(m_ui.btnOpenBrowser);
 
     mainLayout->addWidget(topBar);
 
@@ -438,6 +429,13 @@ void MarkdownSafePreviewDock::applyGitHubTheme() {
                                           "}")
                                .arg(themeBg.name(), themeFg.name(), selColor));
 
+    QPalette browserPal = browser->palette();
+    browserPal.setColor(QPalette::Base, themeBg);
+    browserPal.setColor(QPalette::Window, themeBg);
+    browserPal.setColor(QPalette::Text, themeFg);
+    browserPal.setColor(QPalette::WindowText, themeFg);
+    browser->setPalette(browserPal);
+
     browser->document()->setDefaultStyleSheet(MarkdownThemeManager::generateThemeCss(currentTheme, baseFontSize));
     m_isUpdatingTheme = false;
 }
@@ -501,12 +499,12 @@ void MarkdownSafePreviewDock::renderPreview() {
     const QString filePath = currentEditor->isFile() ? currentEditor->getFileInfo().filePath() : QString();
     browser->setDocumentSourcePath(filePath);
 
-    if (text.size() > 2LL * 1024LL * 1024LL) {
-        browser->setPlainText(text);
-    } else {
-        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(text, isDark);
-        browser->setHtml(enhanced);
-    }
+    // Support hundreds of thousands of lines without arbitrary plain text limits
+    const QString fileName = currentEditor->getFileInfo().fileName();
+    const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
+    const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(text, isDark);
+    const QString fullHtml = generateFullHtmlDocument(enhanced, title, currentTheme, baseFontSize);
+    browser->setHtml(fullHtml);
 
     if (auto *const bar = browser->verticalScrollBar(); bar && bar->maximum() > 0 && scrollRatio > 0.0) {
         bar->setValue(static_cast<int>(scrollRatio * bar->maximum()));
@@ -618,33 +616,38 @@ void MarkdownSafePreviewDock::exportPdf() {
     DocumentExportManager::exportToPdf(rawContent, true, savePath, dlg.options());
 }
 
-void MarkdownSafePreviewDock::openInBrowser() {
-    if (!currentEditor) {
-        return;
-    }
-
-    // Render full styled page
-    const QString rawContent = QString::fromUtf8(currentEditor->getText());
-    const bool isDark = MarkdownThemeManager::isThemeDark(currentTheme);
-    const QString bodyHtml = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-
-    QTemporaryFile tempFile(QDir::tempPath() + QStringLiteral("/SparkNotePad_preview_XXXXXX.html"));
-    tempFile.setAutoRemove(false);
-    if (tempFile.open()) {
-        const QString fileName = currentEditor->getFileInfo().fileName();
-        const QString title = fileName.isEmpty() ? tr("SparkNotePad Preview") : fileName;
-        const QString fullHtml = generateFullHtmlDocument(bodyHtml, title, currentTheme, baseFontSize);
-        tempFile.write(fullHtml.toUtf8());
-        const QString tempPath = tempFile.fileName();
-        tempFile.close();
-        QDesktopServices::openUrl(QUrl::fromLocalFile(tempPath));
-    }
-}
-
 void MarkdownSafePreviewDock::handleAnchorClicked(const QUrl &url) {
     const QString scheme = url.scheme().toLower();
 
-    // Whitelist: strictly allow only safe external protocols
+    // 1. One-click copy code snippet from code block header
+    if (scheme == QStringLiteral("copy-code")) {
+        bool ok = false;
+        const int snippetIdx = url.path().toInt(&ok);
+        if (ok) {
+            const QString code = MarkdownPreviewEnhancer::codeSnippet(snippetIdx);
+            if (!code.isEmpty()) {
+                QApplication::clipboard()->setText(code);
+                if (m_ui.lblFormatStatus) {
+                    const QString orig = m_ui.lblFormatStatus->text();
+                    m_ui.lblFormatStatus->setText(tr("Code Copied!"));
+                    QTimer::singleShot(2000, this, [this, orig] {
+                        if (m_ui.lblFormatStatus) {
+                            m_ui.lblFormatStatus->setText(orig);
+                        }
+                    });
+                }
+            }
+        }
+        return;
+    }
+
+    // 2. In-document anchor fragment navigation (e.g. #line_462 or table of contents)
+    if (url.hasFragment() && (scheme.isEmpty() || scheme == QStringLiteral("file"))) {
+        browser->scrollToAnchor(url.fragment());
+        return;
+    }
+
+    // 3. Whitelist: strictly allow only safe external protocols
     if (scheme == QStringLiteral("http") || scheme == QStringLiteral("https") || scheme == QStringLiteral("mailto")) {
         QDesktopServices::openUrl(url);
         return;
@@ -666,19 +669,44 @@ void MarkdownSafePreviewDock::syncScrollFromEditor(Scintilla::Update updated) {
     if (!FlagSet(updated, Scintilla::Update::VScroll) && !FlagSet(updated, Scintilla::Update::Content)) {
         return;
     }
+
     const auto totalLines = static_cast<int>(currentEditor->lineCount());
     const auto linesOnScreen = static_cast<int>(currentEditor->linesOnScreen());
     const int maxScrollLine = std::max(1, totalLines - linesOnScreen);
     const auto currentFirstLine = static_cast<int>(currentEditor->firstVisibleLine());
-    const double ratio =
-        std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);
+    const int docLine = static_cast<int>(currentEditor->docLineFromVisible(currentFirstLine)) + 1;
 
     auto *const scrollBar = browser->verticalScrollBar();
-    if (scrollBar && scrollBar->maximum() > 0) {
-        m_syncingScroll = true;
-        scrollBar->setValue(static_cast<int>(ratio * scrollBar->maximum()));
-        m_syncingScroll = false;
+    if (!scrollBar || scrollBar->maximum() <= 0) {
+        return;
     }
+
+    m_syncingScroll = true;
+
+    if (currentFirstLine <= 0 || docLine <= 1) {
+        scrollBar->setValue(0);
+    } else if (currentFirstLine >= maxScrollLine || docLine >= totalLines - 2) {
+        scrollBar->setValue(scrollBar->maximum());
+    } else {
+        int prevAnchor = -1;
+        int nextAnchor = -1;
+        MarkdownPreviewEnhancer::findAnchorBracket(docLine, prevAnchor, nextAnchor);
+
+        if (prevAnchor > 0 && nextAnchor > prevAnchor) {
+            const double localFraction = std::clamp(
+                static_cast<double>(docLine - prevAnchor) / static_cast<double>(nextAnchor - prevAnchor), 0.0, 1.0);
+            const double prevRatio = static_cast<double>(prevAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
+            const double nextRatio = static_cast<double>(nextAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
+            const double blendedRatio = prevRatio + (localFraction * (nextRatio - prevRatio));
+            scrollBar->setValue(static_cast<int>(std::round(blendedRatio * scrollBar->maximum())));
+        } else {
+            const double ratio =
+                std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);
+            scrollBar->setValue(static_cast<int>(std::round(ratio * scrollBar->maximum())));
+        }
+    }
+
+    QTimer::singleShot(60, this, [this] { m_syncingScroll = false; });
 }
 
 void MarkdownSafePreviewDock::syncScrollFromBrowser() {
@@ -698,5 +726,5 @@ void MarkdownSafePreviewDock::syncScrollFromBrowser() {
 
     m_syncingScroll = true;
     currentEditor->setFirstVisibleLine(targetLine);
-    m_syncingScroll = false;
+    QTimer::singleShot(60, this, [this] { m_syncingScroll = false; });
 }

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(SparkNotePad
-    VERSION 1.4.7
+    VERSION 1.5.0
     DESCRIPTION "Lightweight Scintilla-based text and source code editor for macOS and Linux"
     LANGUAGES C CXX
 )
@@ -10,7 +10,7 @@ if(APPLE)
     enable_language(OBJCXX)
 endif()
 
-set(APP_VERSION "1.4.7")
+set(APP_VERSION "1.5.0")
 set(APP_DISTRIBUTION "" CACHE STRING "Distribution type")
 string(TIMESTAMP CURRENT_YEAR "%Y")
 set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey & SparkNotePad Contributors")
@@ -55,6 +55,18 @@ find_package(Qt6
             GuiPrivate
 )
 
+find_package(OpenSSL REQUIRED)
+if(APPLE)
+    get_filename_component(_OPENSSL_LIB_DIR "${OPENSSL_CRYPTO_LIBRARY}" DIRECTORY)
+    if(EXISTS "${_OPENSSL_LIB_DIR}/libcrypto.a")
+        set(SPARK_OPENSSL_CRYPTO "${_OPENSSL_LIB_DIR}/libcrypto.a")
+    else()
+        set(SPARK_OPENSSL_CRYPTO OpenSSL::Crypto)
+    endif()
+else()
+    set(SPARK_OPENSSL_CRYPTO OpenSSL::Crypto)
+endif()
+
 set(CMAKE_AUTORCC ON)
 if(COMMAND qt_standard_project_setup)
     qt_standard_project_setup()
@@ -65,6 +77,7 @@ else()
 endif()
 
 if(APPLE)
+    add_link_options(-Wl,-dead_strip)
     if(CMAKE_OSX_DEPLOYMENT_TARGET AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "11.0")
         if(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
             add_link_options(-Wl,-ld_classic)

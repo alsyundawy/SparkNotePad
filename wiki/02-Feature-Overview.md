@@ -194,6 +194,28 @@ SparkNotePad v1.4.5 introduces 12 major foundational features:
 - **Complete Localization Synchronization**:
   - Updated translation catalogs `SparkNotePad_en.ts` and `SparkNotePad_id.ts` with 2,247 strings, 100% completion, 0 unfinished entries, and strict EYD V / PASTI compliance.
 
+## 15. v1.5.0 Developer Tools Suite, GitHub Primer Markdown Safe Preview & Ergonomic Menus
+
+- **Comprehensive Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Interactive multi-tab Developer Tools Hub dialog (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) with 5 dedicated functional tabs:
+    - **Hash Tools**: 11 cryptographic hash algorithms (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), file integrity hashing, and side-by-side verification comparison.
+    - **MIME Tools**: Base64 line-by-line encode/decode, Quoted-Printable (RFC 2045), URL percent-encoding/decoding, and HTML entity encode/decode.
+    - **Converter Tools**: Radix base converter (bases 2, 8, 10, 16), ASCII <-> Hexadecimal converter with configurable delimiters, and advanced Case Conversion.
+    - **Encryption Tools**: HTML Document Protection with 3 distinct operational modes (JavaScript unescape, Base64 `atob()`, and Password AES-256-GCM with embedded CryptoJS runtime decryption harness) plus real-time password strength evaluation.
+    - **Developer Tools**: Format and minify for JSON, XML, HTML, CSS, and JavaScript; RFC 7519 JWT Token Inspector; UUID v4 generator; and Unix Epoch / ISO-8601 bidirectional converter.
+- **GitHub Primer Markdown Safe Live Preview (`mjbvz/vscode-github-markdown-preview-style`)**:
+  - Re-engineered preview renderer conforming strictly to GitHub Markdown CSS specifications.
+  - Eliminated Qt rich text formatting artifacts to preserve GitHub typography, borders, table zebra striping, and code styling.
+  - Added native GitHub Alert Callout rendering (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
+  - Completely removed "Open in Default Browser" buttons and actions for a self-contained, secure preview experience.
+- **Top-Level Menu Restructuring**:
+  - Top-level **Format** menu grouping character set encodings and newline conversions.
+  - Relocated **Run & External Execution** to `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
+  - Dedicated **Developer Tools** submenu inside `Tools`.
+- **View & Window Management Enhancements**:
+  - Full Window menu controls (Zoom, Tile Left/Right, Bring All to Front, Tab Navigation).
+  - Toggles for Line Numbers, Code Folding, Indent Guides, Caret Line Highlight, and Read-Only mode.
+
 ---
 
 Next Chapter: **[[03. User Interface & Themes|03-User-Interface-and-Themes]]**

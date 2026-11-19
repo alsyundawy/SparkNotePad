@@ -53,6 +53,7 @@ def get_include_dirs(root: Path) -> list[str]:
         str(root / "thirdparty" / "lua" / "src"),
         str(root / "thirdparty" / "uchardet" / "src"),
         str(root / "tests"),
+        "/usr/local/opt/openssl@3/include",
         # Qt system headers and includes
         QT_MACOS_INCLUDE,
         f"{QT_MACOS_INCLUDE}/QtCore",
@@ -62,6 +63,8 @@ def get_include_dirs(root: Path) -> list[str]:
         f"{QT_MACOS_INCLUDE}/QtPrintSupport",
         f"{QT_MACOS_INCLUDE}/QtCore5Compat",
         f"{QT_MACOS_INCLUDE}/QtTest",
+        f"{QT_MACOS_INCLUDE}/QtSvg",
+        f"{QT_MACOS_INCLUDE}/QtSvgWidgets",
         # Qt system framework headers
         f"{FLYENV_NODE_LIB}/QtCore.framework/Headers",
         f"{FLYENV_NODE_LIB}/QtGui.framework/Headers",
@@ -70,6 +73,8 @@ def get_include_dirs(root: Path) -> list[str]:
         f"{FLYENV_NODE_LIB}/QtPrintSupport.framework/Headers",
         f"{FLYENV_NODE_LIB}/QtCore5Compat.framework/Headers",
         f"{FLYENV_NODE_LIB}/QtTest.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtSvg.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtSvgWidgets.framework/Headers",
         f"{QT_MACOS_LIB}/QtCore.framework/Headers",
         f"{QT_MACOS_LIB}/QtGui.framework/Headers",
         f"{QT_MACOS_LIB}/QtWidgets.framework/Headers",
@@ -77,6 +82,8 @@ def get_include_dirs(root: Path) -> list[str]:
         f"{QT_MACOS_LIB}/QtPrintSupport.framework/Headers",
         f"{QT_MACOS_LIB}/QtCore5Compat.framework/Headers",
         f"{QT_MACOS_LIB}/QtTest.framework/Headers",
+        f"{QT_MACOS_LIB}/QtSvg.framework/Headers",
+        f"{QT_MACOS_LIB}/QtSvgWidgets.framework/Headers",
     ]
     return [d for d in dirs if Path(d).exists()]
 
@@ -84,7 +91,7 @@ def get_include_dirs(root: Path) -> list[str]:
 def get_base_defines() -> list[str]:
     """Return common preprocessor defines."""
     return [
-        '-DAPP_VERSION="1.4.7"',
+        '-DAPP_VERSION="1.5.0"',
         '-DAPP_DISTRIBUTION="Source"',
         '-DAPP_COPYRIGHT="Copyright 2019-2026 Justin Dailey & SparkNotePad Contributors"',
         '-DAPP_COPYRIGHT_BUILDER="Copyright 2026 HARRY DS ALSYUNDAWY (SparkNotePad Maintainer)"',

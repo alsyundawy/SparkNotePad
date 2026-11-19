@@ -13,7 +13,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 # Input parameters
 APP_DIR="${1:-${REPO_ROOT}/build/install/SparkNotePad.app}"
-DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.4.7-x64.dmg}"
+DMG_OUTPUT="${2:-${REPO_ROOT}/build/SparkNotePad-v1.5.0-x64.dmg}"
 VOL_NAME="${3:-SparkNotePad}"
 
 # Ensure absolute paths
@@ -162,6 +162,7 @@ echo "[*] Packaging styled lightweight DMG via native hdiutil..."
 hdiutil create \
 	-volname "${VOL_NAME}" \
 	-srcfolder "${STAGE_DIR}" \
+	-fs "HFS+" \
 	-ov \
 	-format UDZO \
 	-imagekey zlib-level=9 \

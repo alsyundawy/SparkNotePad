@@ -8,6 +8,8 @@
 
 #include <QObject>
 #include <QTest>
+#include <QTextBrowser>
+#include <QFile>
 #include "utils/MarkdownPreviewEnhancer.h"
 #include "utils/MarkdownThemeManager.h"
 
@@ -253,5 +255,144 @@ private slots:
         QVERIFY(html.contains(QStringLiteral("Subtitle")));
         QVERIFY(html.contains(QStringLiteral("<table")));
         QVERIFY(html.contains(QStringLiteral("Important note here")));
+    }
+
+    void testRenderMarkdownFencedCodeBlocks() const {
+        const auto input = QStringLiteral(
+            "# Script Execution Test\n\n"
+            "```bash\n"
+            "# 1. Setup Zimbra Host\n"
+            "HOST=\"mail.example.co.id\"\n"
+            "if [ -z \"$HOST\" ]; then\n"
+            "    echo \"Host is empty!\"\n"
+            "    exit 1\n"
+            "fi\n"
+            "# 2. Check service status\n"
+            "su - zimbra -c 'zmcontrol status'\n"
+            "```\n\n"
+            "```html\n"
+            "<div class=\"sample\"><p>Safe code</p></div>\n"
+            "```\n");
+
+        const auto html = MarkdownPreviewEnhancer::renderMarkdownToHtml(input, true);
+        QVERIFY(html.contains(QStringLiteral("code-block-container")));
+        QVERIFY(html.contains(QStringLiteral("code-block-header")));
+        QVERIFY(html.contains(QStringLiteral("💻 bash")));
+        QVERIFY(html.contains(QStringLiteral("🌐 html")));
+        QVERIFY(html.contains(QStringLiteral("code-block-content")));
+        QVERIFY(html.contains(QStringLiteral("zmcontrol status")));
+        QVERIFY(html.contains(QStringLiteral("copy-code:")));
+        QVERIFY(html.contains(QStringLiteral("📋 Copy")));
+    }
+
+    void testSanitizeCodeForTerminal() const {
+        // Test CRLF removal, NBSP replacement, zero-width space removal, smart quote normalization
+        const QString dirtyBash = QString::fromUtf8(
+            "# Bash test\r\n"
+            "HOST=\u201Cmail.example.co.id\u201D\r\n"
+            "PORT=\u20188080\u2019\r\n"
+            "FLAG=\u2013-help\r\n"
+            "CMD=echo\u00A0\"Hello\u200BWorld\"\r\n");
+
+        const QString clean = MarkdownPreviewEnhancer::sanitizeCodeForTerminal(dirtyBash, QStringLiteral("bash"));
+
+        QVERIFY(!clean.contains(QLatin1Char('\r')));
+        QVERIFY(!clean.contains(QChar(0x00A0)));
+        QVERIFY(!clean.contains(QChar(0x200B)));
+        QVERIFY(!clean.contains(QChar(0x201C)));
+        QVERIFY(!clean.contains(QChar(0x201D)));
+        QVERIFY(!clean.contains(QChar(0x2018)));
+        QVERIFY(!clean.contains(QChar(0x2019)));
+        QVERIFY(!clean.contains(QChar(0x2013)));
+
+        QVERIFY(clean.contains(QStringLiteral("HOST=\"mail.example.co.id\"")));
+        QVERIFY(clean.contains(QStringLiteral("PORT='8080'")));
+        QVERIFY(clean.contains(QStringLiteral("FLAG=--help")));
+        QVERIFY(clean.contains(QStringLiteral("CMD=echo \"HelloWorld\"")));
+    }
+
+    void testCopyCodeSnippetAndAnchors() const {
+        const auto input = QStringLiteral(
+            "# Header 1\n\n"
+            "Some introductory text.\n\n"
+            "```bash\n"
+            "echo \"First script\"\n"
+            "```\n\n"
+            "## Header 2\n\n"
+            "| Col A | Col B |\n"
+            "|:---|:---|\n"
+            "| Val 1 | Val 2 |\n\n"
+            "```python\n"
+            "print('Second script')\n"
+            "```\n");
+
+        const auto html = MarkdownPreviewEnhancer::renderMarkdownToHtml(input, true);
+
+        // Verify code snippets registered
+        QVERIFY(MarkdownPreviewEnhancer::codeSnippetCount() >= 2);
+        QCOMPARE(MarkdownPreviewEnhancer::codeSnippet(0).trimmed(), QStringLiteral("echo \"First script\""));
+        QCOMPARE(MarkdownPreviewEnhancer::codeSnippet(1).trimmed(), QStringLiteral("print('Second script')"));
+
+        // Verify anchors are generated and indexed
+        const auto anchors = MarkdownPreviewEnhancer::lastRenderedLineAnchors();
+        QVERIFY(!anchors.empty());
+        QVERIFY(std::is_sorted(anchors.begin(), anchors.end()));
+
+        // Test anchor lookups
+        const int closest1 = MarkdownPreviewEnhancer::findClosestAnchorLine(1);
+        QVERIFY(closest1 >= 1);
+
+        const int closestCode = MarkdownPreviewEnhancer::findClosestAnchorLine(6);
+        QVERIFY(closestCode <= 6);
+
+        // Test bracket anchor lookups
+        int prev = -1;
+        int next = -1;
+        MarkdownPreviewEnhancer::findAnchorBracket(4, prev, next);
+        QVERIFY(prev >= 1);
+        QVERIFY(next >= prev);
+
+        // Verify HTML contains line anchors and Image 1 rounded pill badge
+        QVERIFY(html.contains(QStringLiteral("name=\"line_")));
+        QVERIFY(html.contains(QStringLiteral("class=\"code-block-pill\"")));
+    }
+
+    void testZimbraProductionGuideRender() const {
+        QFile file(QStringLiteral("/Users/alsyundawy/Downloads/Zimbra-10.1.21-Complete-Production-Guide-example.md"));
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QSKIP("Zimbra example file not found on disk");
+        }
+        const QString content = QString::fromUtf8(file.readAll());
+        file.close();
+
+        const auto html = MarkdownPreviewEnhancer::renderMarkdownToHtml(content, false);
+        QVERIFY(html.length() > 500000);
+
+        // Verify beginning
+        QVERIFY(html.contains(QStringLiteral("ZIMBRA COLLABORATION 10.1.21")));
+        // Verify middle
+        QVERIFY(html.contains(QStringLiteral("Panel Hosting Komersial")));
+        // Verify end
+        QVERIFY(html.contains(QStringLiteral("LEMBAR PENGESAHAN DOKUMEN PRODUKSI")));
+        // Verify tables
+        QVERIFY(html.contains(QStringLiteral("Kategori Parameter")));
+        // Verify copy buttons on bash blocks
+        QVERIFY(html.contains(QStringLiteral("copy-code:")));
+        QVERIFY(html.contains(QStringLiteral("📋 Copy")));
+        // Verify Mermaid block copy buttons and diagram headers
+        QVERIFY(html.contains(QStringLiteral("📊 Mermaid Diagram")));
+        QVERIFY(html.contains(QStringLiteral("class=\"mermaid-code\"")));
+
+        // Verify line anchors
+        const auto anchors = MarkdownPreviewEnhancer::lastRenderedLineAnchors();
+        QVERIFY(anchors.size() > 200);
+
+        // Verify closest anchor for line 464
+        const int anchor464 = MarkdownPreviewEnhancer::findClosestAnchorLine(464);
+        QVERIFY(anchor464 > 0 && anchor464 <= 464);
+
+        // Verify closest anchor for line 5954
+        const int anchor5954 = MarkdownPreviewEnhancer::findClosestAnchorLine(5954);
+        QVERIFY(anchor5954 > 0 && anchor5954 <= 5954);
     }
 };

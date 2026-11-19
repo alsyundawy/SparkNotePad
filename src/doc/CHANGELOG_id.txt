@@ -7,6 +7,76 @@ dan proyek ini sepenuhnya mematuhi [Semantic Versioning](https://semver.org/spec
 
 ---
 
+## [1.5.0] - 2026-11-19
+
+### 🌟 Rilis: Rangkaian Fitur Lengkap Developer Tools (JSON/XML/HTML/CSS/JS, Enkripsi, JWT, Radiks), Restrukturisasi Menu, Pratinjau Markdown GitHub Primer & Peningkatan Tampilan
+
+SparkNotePad v1.5.0 menghadirkan suite Developer Tools lengkap terpadu yang diporting dari NotepadMac, ergonomi menu yang direstrukturisasi, Pratinjau Langsung Markdown Aman GitHub Primer, dan peningkatan kontrol tampilan:
+
+#### 🆕 Ditambahkan (Added)
+
+- **Rangkaian Lengkap Developer Tools (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Dialog interaktif multi-tab Developer Tools Hub (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) dengan 5 tab fungsional:
+    - **Hash Tools**: 11 algoritma hash kriptografis (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), hashing integritas berkas, serta perbandingan checksum berdampingan dengan indikator kecocokan visual.
+    - **MIME Tools**: Enkode/dekode Base64 baris demi baris, Quoted-Printable (RFC 2045), URL encode/decode, dan HTML entities encode/decode.
+    - **Converter Tools**: Konverter basis Radiks (Biner, Oktal, Desimal, Heksadesimal), konverter ASCII <-> Heksadesimal dengan pemisah kustom, serta konversi format huruf (Title Case, Invert Case, Sentence Case).
+    - **Encryption Tools**: Proteksi Enkripsi Dokumen HTML dengan 3 mode operasional:
+      1. Injeksi unescape JavaScript.
+      2. Enkode Base64 `atob()`.
+      3. Enkripsi standar militer Password AES-256-GCM dengan harness runtime dekripsi CryptoJS tertanam.
+      - Pengukur kekuatan kata sandi dan entropi ala zxcvbn secara real-time.
+    - **Developer Tools**: Pemformat (pretty-print) dan pemadat (minify) untuk JSON, XML, HTML, CSS, dan JavaScript; Inspektur Token RFC 7519 JWT dengan ekstraksi header/payload serta validasi timestamp kedaluwarsa; pembuat UUID v4; dan konverter dua arah Unix Epoch / ISO-8601.
+  - Perombakan total tata letak dan ergonomi dialog `DeveloperToolsDialog`: standarisasi tinggi tombol 32px, tipografi modern, pemisahan kontrol enkripsi html untuk mencegah desak-desakan kolom, grid 5-kolom seimbang untuk formatter/minifier, serta integrasi font sistem native macOS.
+  - Penambahan suite unit test di `tests/test_developer_tools_engine.h` yang memverifikasi seluruh 10 fitur developer tools.
+- **Pratinjau Langsung Markdown Aman GitHub Primer Sempurna (`mjbvz/vscode-github-markdown-preview-style`)**:
+  - Rekayasa ulang engine perender pratinjau yang sepenuhnya selaras dengan token visual GitHub Markdown Preview.
+  - Pembersihan seluruh artefak internal Qt rich text (`-qt-block-indent`, margin bawaan paragraf) dan perbaikan pewarisan warna CSS ke seluruh elemen anak (`p`, `li`, `td`, `th`, `span`, `div`), melenyapkan tuntas masalah teks putih di atas latar putih pada tema terang (`GITHUB`, dll.).
+  - Dukungan native GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) dengan garis tepi dan lencana resmi.
+  - Kontainer blok kode terpadu dengan header bahasa (`💻 bash`, `🐍 python`, `🌐 html`, dll.) dan tombol interaktif 1-klik `📋 Salin Kode / Copy`.
+  - Pelestarian sintaks dan karakter terminal-safe: newlines Unix LF murni, penghapusan CRLF `\r`, normalisasi spasi tanpa-putus (NBSP `\u00A0`/`\u202F`), spasi lebar nol (`\u200B`-`\u200D`, `\uFEFF`), dan normalisasi tanda kutip cerdas menjadi tanda kutip ASCII murni agar skrip shell bash dapat disalin dan langsung dieksekusi di terminal tanpa kesalahan sintaks.
+  - Sinkronisasi scroll presisi reverse line anchor sejajar berdampingan dengan editor Scintilla, masking blok kode dan komentar dari deteksi palsu heading, dan eliminasi feedback loop debounce.
+  - Ketahanan dokumen masif: divalidasi dan dioptimalkan untuk ratusan ribu baris (misal panduan operasional produksi 6.000+ baris) tanpa lonjakan memori atau batasan render.
+  - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan maksimal dan operasi mandiri tanpa bloatware.
+- **Restrukturisasi Menu Tingkat Atas**:
+  - Penambahan menu tingkat atas **Format** yang mengelompokkan konversi set karakter / enkoding (`ui->menuEncodings`) dan konversi pemisah baris (`ui->menuEOLConversion`).
+  - Relokasi menu **Run & External Execution** dari bilah menu utama ke dalam menu `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
+  - Penambahan submenu khusus **Developer Tools** di dalam `Tools` dengan aksi langsung untuk formatter, minifier, encoder, dan dialog Developer Tools Hub (`Ctrl+Alt+T`).
+- **Peningkatan Sakelar Tampilan (View & Navigation Toggles)**:
+  - Penambahan sakelar di menu `View` untuk mengaktifkan/menonaktifkan Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, Mode Hanya-Baca (Read-Only), serta Pembesaran (Zoom In / Out / Reset).
+- **Pembaruan Kredit, Pintasan & Terjemahan**:
+  - Pembaruan tab Kredit & Pintasan pada dialog `AboutDialog` dengan hotkey dan atribusi baru.
+  - Sinkronisasi katalog terjemahan `i18n` (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) dan kompilasi berkas biner `.qm`.
+
+---
+
+## [1.4.7] - 2026-11-14
+
+### 🌟 Rilis: Peningkatan Engine Inti (Scintilla 5.6.9, Lexilla 5.5.5, Lua 5.5.1 Ter-patch), Transfer Sistem (.sparkbundle), Inspektur Berkas POSIX, Deteksi Enkoding 3 Titik & Penguatan Keamanan CVE 2025–2026
+
+SparkNotePad v1.4.7 menghadirkan peningkatan engine inti, mobilitas ruang kerja lintas platform, diagnostik skrip POSIX, ketahanan enkoding berkas besar, ergonomi navigasi, dan penguatan keamanan CVE komprehensif:
+
+#### 🆕 Ditambahkan (Added)
+
+- **Peningkatan Engine Inti ke Scintilla 5.6.9 & Lexilla 5.5.5**:
+  - Sinkronisasi Scintilla ke versi **5.6.9** (kategori karakter Unicode 17, cache leksem 40-byte, bypass kalkulasi tata letak awal baris, perbaikan crash undo riwayat perubahan, dan pemulihan warna gambar XPM).
+  - Sinkronisasi Lexilla ke versi **5.5.5** (pengenalan front-matter Markdown YAML/TOML/JSON, template literal bersarang HTML/JS, perbaikan 12 isu keamanan memori dan crash preprocessor C++).
+  - Penerapan 4 patch resmi Lua pasca-5.5.1 pada embedded Lua 5.5.1.
+- **Transfer Sistem & Bundel Ruang Kerja Portabel (`SparkTransferManager`)**:
+  - Fitur **Berkas → Transfer Sistem → Ekspor / Impor Bundel Ruang Kerja (`.sparkbundle`)** untuk migrasi preferensi, tema kustom, makro, sesi, dan skrip Lua/Python.
+  - Penguatan terhadap Zip-Slip traversal (`CVE-2026-57233`), validasi integritas HMAC-SHA256 dalam memori (`CVE-2026-52885`), dan opsi enkripsi AES-256-CBC.
+- **Inspektur Shell POSIX & Utilitas Touch (`PosixFileInspector`)**:
+  - Deteksi dialek shebang untuk Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, dan skrip `rc.d` FreeBSD.
+  - Pemformat izin oktal (`0755`/`0600`) dan simbolik (`rwxr-xr-x`/`rw-------`).
+  - Lencana status bar `FieldPosixPerms` dengan sakelar bit eksekusi sekali klik (`chmod +x`).
+- **Deteksi Enkoding 3-Titik & Penyimpanan Berkas Atomik Aman**:
+  - Pengambilan sampel 3 titik (header 16KB, midpoint 16KB, tail 16KB) untuk deteksi akurat encoding file besar via `uchardet`.
+  - Dukungan BOM UTF-32 LE/BE eksplisit dan penyimpanan file atomik via file sementara bertanda `0600` dan `fsync()`.
+- **Dialog Goto Multi-Mode & Pratinjau Ganti Nama Aman Folder As Workspace**:
+  - Penggantian dialog input lawas dengan `GotoDialog` yang mendukung Baris:Kolom Visual, Offset Karakter, dan Offset Byte Dokumen.
+  - Dialog ganti nama berkas/folder interaktif dengan mitigasi path traversal dan pratinjau dry-run.
+
+---
+
 ## [1.4.6] - 2026-11-10
 
 ### 🌟 Rilis: 41 Paket Ikon Toolbar Baru (Total 69 Koleksi Bawaan), Ergonomi Menu Konteks, Opsi Preferensi Umum, Perombakan Syntax Highlighting WCAG 2.1 & Standar DMG Rilis 30MB–40MB

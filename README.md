@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.7-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.7"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.5.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.5.0"></a>
   <a href="https://github.com/alsyundawy/SparkNotePad"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.7-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.5.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -79,9 +79,9 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Official GitHub Wiki (Comprehensive Documentation)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Latest Releases (v1.4.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.5.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Platform Support Matrix (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
-> 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
+> 📖 **[`Release DocNotes (DOCNOTE.md)`](doc/DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
 > 🍏 **[`macOS Codesign & Notarization Guide`](doc/MACOS_CODESIGN_AND_NOTARIZATION.md)** &nbsp;|&nbsp;
 > 🐧 **[`Ubuntu & Debian Build Guide`](doc/BUILD_UBUNTU_DEBIAN.md)** &nbsp;|&nbsp;
@@ -325,19 +325,19 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Official production binary packages for SparkNotePad v1.4.7 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
+Official production binary packages for SparkNotePad v1.5.0 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (see detailed matrix in [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
 | Platform                    | Target Architecture             | Package Format  | Download Link                                                                                                                                    |
 | :-------------------------- | :------------------------------ | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.4.7-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-v1.4.7-x64.dmg)                   |
-| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.4.7-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-v1.4.7-arm64.dmg)               |
-| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.4.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.7)                                                         |
-| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.4.7_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/sparknotepad_1.4.7_amd64.deb)                 |
-| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.4.7-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/sparknotepad-1.4.7-1.x86_64.rpm)           |
-| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.4.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.7)                                                         |
-| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-Default-Editor.sh)             |
-| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SHA256SUMS.txt)                                             |
+| **macOS Intel (Canonical)** | x86_64                          |     `.dmg`      | [SparkNotePad-v1.5.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-v1.5.0-x64.dmg)                   |
+| **macOS Apple Silicon**     | arm64 (M1/M2/M3/M4)             |     `.dmg`      | [SparkNotePad-v1.5.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-v1.5.0-arm64.dmg)               |
+| **macOS Multi-Qt Builds**   | x86_64 / arm64 (Qt 6.5–6.12)    |     `.dmg`      | [GitHub Releases v1.5.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.5.0)                                                         |
+| **Linux Ubuntu/Debian**     | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.deb`      | [sparknotepad_1.5.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/sparknotepad_1.5.0_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**  | x86_64 (glibc 2.35+ / Qt 6.8)   |     `.rpm`      | [sparknotepad-1.5.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/sparknotepad-1.5.0-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**   | Debian / RPM (Qt 6.5–6.12)      | `.deb` / `.rpm` | [GitHub Releases v1.5.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.5.0)                                                         |
+| **Linux (All Distros)**     | Default Editor Script (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**           | Universal Association Script    |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-Default-Editor.sh)             |
+| **Verification Checksums**  | SHA-256 Release Digest Manifest |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SHA256SUMS.txt)                                             |
 | **FreeBSD**                 | 13.x – 15.x (KDE 6 / XFCE)      |  Source / Pkg   | [FreeBSD Build & Integration Guide](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Linux Package Installation (Automated Dependencies)
@@ -446,6 +446,36 @@ trunk check -n -j 2
 ## Changelog
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.5.0] — Full Developer Tools Suite (JSON/XML/HTML/CSS/JS, Encryption, JWT, Radix), Re-Architected Menus, GitHub Primer Markdown Preview & View Enhancements (2026-11-19)
+
+- **Comprehensive Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Full ported architecture inspired by NotepadMac with zero external runtime bloat.
+  - Interactive multi-tab Developer Tools Hub (`Ctrl+Alt+T` / `Ctrl+Cmd+T`):
+    - **Tab 1: Hash Tools**: Real-time hash calculation (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), file integrity hashing, and side-by-side checksum comparison with visual match badge.
+    - **Tab 2: MIME Tools**: Base64 line-by-line encode/decode, Quoted-Printable (RFC 2045) encode/decode, URL encoding/decoding, and HTML entity encode/decode.
+    - **Tab 3: Converter Tools**: Radix base converter (Binary, Octal, Decimal, Hexadecimal), ASCII <-> Hex converter with custom separators, and advanced Case Conversion (Title Case, Invert Case, Sentence Case).
+    - **Tab 4: Encryption Tools**: HTML Document Protection with 3 distinct operational modes:
+      1. JavaScript unescape injection.
+      2. Base64 `atob()` encoding.
+      3. Military-grade Password AES-256-GCM encryption with embedded CryptoJS runtime decryption harness.
+      - Integrated zxcvbn-style entropy and password strength evaluation meter.
+    - **Tab 5: Developer Tools**: Format and minify for JSON, XML, HTML, CSS, and JavaScript; RFC 7519 JWT Token Inspector with header/payload extraction and timestamp validation; UUID v4 generator; and Unix Epoch / ISO-8601 bidirectional converter.
+- **Perfect GitHub Primer Markdown Safe Live Preview (`mjbvz/vscode-github-markdown-preview-style`)**:
+  - Completely re-engineered preview rendering engine conforming strictly to GitHub Markdown Preview styling tokens.
+  - Stripped all intrusive Qt rich text artifacts (`-qt-block-indent`, inline paragraph margins) to preserve native GitHub typography, borders, table zebra striping, and code block styling.
+  - Added unified, clean fenced code block containers with language headers (`💻 bash`, `🐍 python`, `🌐 html`, etc.) and 100% newline/syntax preservation, eliminating fragmented multi-`<pre>` boxes per line and ensuring scripts copied from the preview execute flawlessly in terminal shells.
+  - Native rendering of GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with official accent borders and badges.
+  - Completely removed "Open in Default Browser" buttons and functions across all preview docks and widgets for maximum security and zero-bloat standalone operation.
+- **Re-Architected Top-Level Menu Structure**:
+  - Created top-level **Format** menu grouping character set encodings (`ui->menuEncodings`) and newline conversions (`ui->menuEOLConversion`).
+  - Relocated **Run & External Execution** from top-level menubar into `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
+  - Added dedicated **Developer Tools** submenu inside `Tools` with direct actions for formatters, minifiers, encoders, and the Developer Tools Hub (`Ctrl+Alt+T`).
+- **Enhanced View & Navigation Toggles**:
+  - Added View actions in `View` menu for toggling Line Numbers, Code Folding, Indent Guides, Caret Line Highlight, Read-Only mode, and Zoom In / Out / Reset.
+- **Updated Credits, Shortcuts & Translations**:
+  - Full updates to `AboutDialog` Credits & Shortcuts tabs with the new hotkeys and attributions.
+  - Synchronized `i18n` translation catalogs (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) and compiled binary `.qm` packages.
 
 ### [v1.4.7] — Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening (2026-11-14)
 

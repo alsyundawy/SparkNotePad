@@ -16,6 +16,7 @@
 #include "../utils/MarkdownPreviewEnhancer.h"
 #include "../utils/MarkdownThemeManager.h"
 
+#include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -46,6 +47,7 @@ PreviewTabWidget::PreviewTabWidget(ScintillaNext *editor, QWidget *parent) : QWi
 
     if (m_editor) {
         connect(m_editor, &ScintillaNext::notifyChange, this, &PreviewTabWidget::scheduleRender);
+        connect(m_editor, &ScintillaNext::updateUi, this, &PreviewTabWidget::syncScrollFromEditor);
         connect(m_editor, &ScintillaNext::renamed, this, &PreviewTabWidget::onEditorRenamed);
         connect(m_editor, &QObject::destroyed, this, &PreviewTabWidget::onEditorDestroyed);
     }
@@ -157,17 +159,6 @@ void PreviewTabWidget::setupUi() {
     connect(m_btnExportHtml, &QPushButton::clicked, this, &PreviewTabWidget::exportHtml);
     headerLayout->addWidget(m_btnExportHtml);
 
-    // Open in browser button
-    m_btnOpenBrowser = new QPushButton(headerWidget);
-    m_btnOpenBrowser->setIcon(QIcon(QStringLiteral(":/icons/globe.svg")));
-    m_btnOpenBrowser->setIconSize(QSize(14, 14));
-    m_btnOpenBrowser->setToolTip(tr("Open in Default Web Browser"));
-    m_btnOpenBrowser->setText(QStringLiteral("Browser"));
-    m_btnOpenBrowser->setFixedHeight(24);
-    m_btnOpenBrowser->setCursor(Qt::PointingHandCursor);
-    connect(m_btnOpenBrowser, &QPushButton::clicked, this, &PreviewTabWidget::openInBrowser);
-    headerLayout->addWidget(m_btnOpenBrowser);
-
     mainLayout->addWidget(headerWidget);
 
     // Text browser display
@@ -176,9 +167,12 @@ void PreviewTabWidget::setupUi() {
     m_browser->setOpenExternalLinks(false);
     m_browser->setOpenLinks(false);
     connect(m_browser, &QTextBrowser::anchorClicked, this, &PreviewTabWidget::handleAnchorClicked);
+    connect(m_browser->verticalScrollBar(), &QScrollBar::valueChanged, this, &PreviewTabWidget::syncScrollFromBrowser);
     connect(m_browser, &MarkdownBrowser::remoteImageLoaded, this, [this](const QUrl &) {
-        m_browser->document()->markContentsDirty(0, m_browser->document()->characterCount());
-        m_browser->viewport()->update();
+        if (m_browser && m_browser->document()) {
+            m_browser->document()->markContentsDirty(0, m_browser->document()->characterCount());
+            m_browser->viewport()->update();
+        }
     });
 
     mainLayout->addWidget(m_browser, 1);
@@ -281,6 +275,16 @@ void PreviewTabWidget::applyTheme() {
             "QTextBrowser { background-color: %1; color: %2; border: none; selection-background-color: %3; }")
             .arg(browserBg, browserFg, selBg));
 
+    const MarkdownThemeManager::ThemeId themeId = MarkdownThemeManager::defaultTheme(isDark);
+    const QColor themeBg = MarkdownThemeManager::themeBackgroundColor(themeId);
+    const QColor themeFg = MarkdownThemeManager::themeTextColor(themeId);
+    QPalette browserPal = m_browser->palette();
+    browserPal.setColor(QPalette::Base, themeBg);
+    browserPal.setColor(QPalette::Window, themeBg);
+    browserPal.setColor(QPalette::Text, themeFg);
+    browserPal.setColor(QPalette::WindowText, themeFg);
+    m_browser->setPalette(browserPal);
+
     m_browser->document()->setDefaultStyleSheet(buildDevDocsStyleSheet(isDark));
     m_isUpdatingTheme = false;
 }
@@ -331,7 +335,8 @@ void PreviewTabWidget::renderPreview() {
 
     const bool isDark = ThemeManager::instance()->isDarkActive();
     const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(rawContent, isDark);
-    m_browser->setHtml(enhanced);
+    const QString fullHtml = wrapHtmlDocument(enhanced, isDark);
+    m_browser->setHtml(fullHtml);
 
     if (scrollBar && scrollBar->maximum() > 0 && scrollRatio > 0.0) {
         scrollBar->setValue(static_cast<int>(scrollRatio * scrollBar->maximum()));
@@ -412,27 +417,6 @@ void PreviewTabWidget::exportHtml() {
     }
 }
 
-void PreviewTabWidget::openInBrowser() {
-    if (!m_editor) {
-        return;
-    }
-
-    // Write out to a temporary file with DevDocs styling and open in default browser
-    const bool isDark = ThemeManager::instance()->isDarkActive();
-    const QString content = QString::fromUtf8(m_editor->getText());
-
-    auto *tempFile = new QTemporaryFile(QDir::tempPath() + QStringLiteral("/sparkpreview_XXXXXX.html"), this);
-    if (tempFile->open()) {
-        const QString enhanced = MarkdownPreviewEnhancer::renderMarkdownToHtml(content, isDark);
-        const QString fullHtml = wrapHtmlDocument(enhanced, isDark);
-        tempFile->write(fullHtml.toUtf8());
-        tempFile->flush();
-        const QString tempPath = tempFile->fileName();
-        tempFile->close();
-        QDesktopServices::openUrl(QUrl::fromLocalFile(tempPath));
-    }
-}
-
 QString PreviewTabWidget::wrapHtmlDocument(const QString &rawBody, bool isDark) const {
     const QString css = buildDevDocsStyleSheet(isDark);
     const QString title = m_editor ? m_editor->getName() : tr("SparkNotePad Preview");
@@ -456,12 +440,108 @@ QString PreviewTabWidget::wrapHtmlDocument(const QString &rawBody, bool isDark) 
 }
 
 void PreviewTabWidget::handleAnchorClicked(const QUrl &url) {
-    if (url.scheme() == QStringLiteral("http") || url.scheme() == QStringLiteral("https") ||
-        url.scheme() == QStringLiteral("mailto")) {
-        QDesktopServices::openUrl(url);
-    } else if (url.hasFragment() && (url.scheme().isEmpty() || url.scheme() == QStringLiteral("file"))) {
-        m_browser->scrollToAnchor(url.fragment());
+    const QString scheme = url.scheme().toLower();
+
+    // 1. One-click copy code snippet from code block header
+    if (scheme == QStringLiteral("copy-code")) {
+        bool ok = false;
+        const int snippetIdx = url.path().toInt(&ok);
+        if (ok) {
+            const QString code = MarkdownPreviewEnhancer::codeSnippet(snippetIdx);
+            if (!code.isEmpty()) {
+                QApplication::clipboard()->setText(code);
+                if (m_badgeLabel) {
+                    const QString orig = m_badgeLabel->text();
+                    m_badgeLabel->setText(tr("CODE COPIED!"));
+                    QTimer::singleShot(2000, this, [this, orig] {
+                        if (m_badgeLabel) {
+                            m_badgeLabel->setText(orig);
+                        }
+                    });
+                }
+            }
+        }
+        return;
     }
+
+    // 2. In-document fragment navigation (e.g. #line_462)
+    if (url.hasFragment() && (scheme.isEmpty() || scheme == QStringLiteral("file"))) {
+        m_browser->scrollToAnchor(url.fragment());
+        return;
+    }
+
+    // 3. Whitelisted external schemes
+    if (scheme == QStringLiteral("http") || scheme == QStringLiteral("https") ||
+        scheme == QStringLiteral("mailto")) {
+        QDesktopServices::openUrl(url);
+    }
+}
+
+void PreviewTabWidget::syncScrollFromEditor(Scintilla::Update updated) {
+    if (m_syncingScroll || !m_editor || !isVisible()) {
+        return;
+    }
+    if (!FlagSet(updated, Scintilla::Update::VScroll) && !FlagSet(updated, Scintilla::Update::Content)) {
+        return;
+    }
+
+    const auto totalLines = static_cast<int>(m_editor->lineCount());
+    const auto linesOnScreen = static_cast<int>(m_editor->linesOnScreen());
+    const int maxScrollLine = std::max(1, totalLines - linesOnScreen);
+    const auto currentFirstLine = static_cast<int>(m_editor->firstVisibleLine());
+    const int docLine = static_cast<int>(m_editor->docLineFromVisible(currentFirstLine)) + 1;
+
+    auto *const scrollBar = m_browser->verticalScrollBar();
+    if (!scrollBar || scrollBar->maximum() <= 0) {
+        return;
+    }
+
+    m_syncingScroll = true;
+
+    if (currentFirstLine <= 0 || docLine <= 1) {
+        scrollBar->setValue(0);
+    } else if (currentFirstLine >= maxScrollLine || docLine >= totalLines - 2) {
+        scrollBar->setValue(scrollBar->maximum());
+    } else {
+        int prevAnchor = -1;
+        int nextAnchor = -1;
+        MarkdownPreviewEnhancer::findAnchorBracket(docLine, prevAnchor, nextAnchor);
+
+        if (prevAnchor > 0 && nextAnchor > prevAnchor) {
+            const double localFraction = std::clamp(
+                static_cast<double>(docLine - prevAnchor) / static_cast<double>(nextAnchor - prevAnchor), 0.0, 1.0);
+            const double prevRatio = static_cast<double>(prevAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
+            const double nextRatio = static_cast<double>(nextAnchor - 1) / static_cast<double>(std::max(1, totalLines - 1));
+            const double blendedRatio = prevRatio + (localFraction * (nextRatio - prevRatio));
+            scrollBar->setValue(static_cast<int>(std::round(blendedRatio * scrollBar->maximum())));
+        } else {
+            const double ratio =
+                std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);
+            scrollBar->setValue(static_cast<int>(std::round(ratio * scrollBar->maximum())));
+        }
+    }
+
+    QTimer::singleShot(60, this, [this] { m_syncingScroll = false; });
+}
+
+void PreviewTabWidget::syncScrollFromBrowser() {
+    if (m_syncingScroll || !m_editor || !isVisible()) {
+        return;
+    }
+    const auto *scrollBar = m_browser->verticalScrollBar();
+    if (!scrollBar || scrollBar->maximum() <= 0) {
+        return;
+    }
+    const double ratio =
+        std::clamp(static_cast<double>(scrollBar->value()) / static_cast<double>(scrollBar->maximum()), 0.0, 1.0);
+    const auto totalLines = static_cast<int>(m_editor->lineCount());
+    const auto linesOnScreen = static_cast<int>(m_editor->linesOnScreen());
+    const int maxScrollLine = std::max(1, totalLines - linesOnScreen);
+    const auto targetLine = static_cast<int>(ratio * static_cast<double>(maxScrollLine));
+
+    m_syncingScroll = true;
+    m_editor->setFirstVisibleLine(targetLine);
+    QTimer::singleShot(60, this, [this] { m_syncingScroll = false; });
 }
 
 void PreviewTabWidget::onEditorRenamed() {

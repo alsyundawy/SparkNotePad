@@ -182,6 +182,28 @@ SparkNotePad v1.4.5 menghadirkan 12 fitur pilar utama:
 - **Sinkronisasi Katalog Terjemahan**:
   - Pembaruan katalog bahasa Inggris (`i18n/SparkNotePad_en.ts`) dan bahasa Indonesia (`i18n/SparkNotePad_id.ts`) mencapai 2.247 entri, cakupan 100%, 0 entri tertunda, dengan standar ketat EYD V / PASTI.
 
+## 15. Rangkaian Fitur Lengkap Developer Tools, Pratinjau Markdown Aman GitHub Primer & Restrukturisasi Menu v1.5.0
+
+- **Rangkaian Lengkap Developer Tools (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Dialog interaktif multi-tab Developer Tools Hub (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) dengan 5 tab fungsional:
+    - **Hash Tools**: 11 algoritma hash kriptografis (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), hashing berkas, dan perbandingan checksum berdampingan.
+    - **MIME Tools**: Enkode/dekode Base64 baris demi baris, Quoted-Printable (RFC 2045), URL encode/decode, dan HTML entities encode/decode.
+    - **Converter Tools**: Konverter basis Radiks (Biner, Oktal, Desimal, Heksadesimal), ASCII <-> Heksadesimal, dan konversi huruf (Title Case, Invert Case, Sentence Case).
+    - **Encryption Tools**: Proteksi Enkripsi Dokumen HTML dengan 3 mode (Injeksi JS escape, Base64 `atob()`, dan Password AES-256-GCM dengan harness runtime dekripsi CryptoJS tertanam) plus pengukur kekuatan kata sandi real-time.
+    - **Developer Tools**: Pemformat dan pemadat untuk JSON, XML, HTML, CSS, JS; Inspektur Token JWT RFC 7519; pembuat UUID v4; dan konverter Unix Epoch / ISO-8601.
+- **Pratinjau Langsung Markdown Aman GitHub Primer Sempurna (`mjbvz/vscode-github-markdown-preview-style`)**:
+  - Rekayasa ulang engine pratinjau agar sepenuhnya selaras dengan spesifikasi GitHub Markdown CSS.
+  - Eliminasi artefak internal Qt rich text demi menjaga tipografi native, garis batas, zebra striping tabel, dan kotak kode.
+  - Dukungan native GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
+  - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan mandiri.
+- **Restrukturisasi Menu Tingkat Atas**:
+  - Menu tingkat atas **Format** untuk Enkoding Karakter dan Konversi Pemisah Baris.
+  - Relokasi **Run & External Execution** ke menu `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
+  - Submenu khusus **Developer Tools** di dalam `Tools`.
+- **Peningkatan Sakelar Tampilan & Manajemen Window**:
+  - Kontrol menu Window lengkap (Zoom, Tile Left/Right, Bring All to Front, Tab Navigasi).
+  - Sakelar tampilan untuk Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, dan Mode Hanya-Baca.
+
 ---
 
 Lanjutkan ke bab berikutnya: [[Antarmuka dan Koleksi Tema|03-Antarmuka-dan-Tema]].

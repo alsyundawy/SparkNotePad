@@ -13,6 +13,7 @@
  */
 
 #include <QString>
+#include <vector>
 
 class MarkdownPreviewEnhancer {
 public:
@@ -42,9 +43,25 @@ public:
 
     static QString sanitizeForPreview(const QString &text);
 
+    static QString sanitizePseudoHtmlTags(const QString &text);
+
     static QString mathAndMermaidCss(bool isDark);
 
     static bool isMarkdownPath(const QString &path);
 
     static bool isMarkdownOrHtmlPath(const QString &path);
+
+    static QString sanitizeCodeForTerminal(const QString &rawCode, const QString &lang);
+
+    static QString codeSnippet(int index);
+
+    static int codeSnippetCount();
+
+    static void clearCodeSnippets();
+
+    static int findClosestAnchorLine(int docLine);
+
+    static void findAnchorBracket(int line, int &prevAnchor, int &nextAnchor);
+
+    static std::vector<int> lastRenderedLineAnchors();
 };

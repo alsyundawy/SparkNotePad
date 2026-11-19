@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.4.7-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.4.7"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.5.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.5.0"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20FreeBSD-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5–6.12-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.4.7-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.5.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -79,9 +79,9 @@
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
 > 📚 **[`Dokumentasi Resmi GitHub Wiki (Bilingual EN/ID)`](https://github.com/alsyundawy/SparkNotePad/wiki)** &nbsp;|&nbsp;
-> 🍏 **[`Rilis Terbaru (v1.4.7)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Rilis Terbaru (v1.5.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 🐧 **[`Matriks Dukungan Platform (PLATFORM_SUPPORT.md)`](doc/PLATFORM_SUPPORT.md)** &nbsp;|&nbsp;
-> 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
+> 📖 **[`Release DocNotes (DOCNOTE.md)`](doc/DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
 > 🍏 **[`Panduan Codesign & Notarisasi macOS`](doc/MACOS_CODESIGN_AND_NOTARIZATION.md)** &nbsp;|&nbsp;
 > 🐧 **[`Panduan Build Ubuntu & Debian`](doc/BUILD_UBUNTU_DEBIAN.md)** &nbsp;|&nbsp;
@@ -325,19 +325,19 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Berkas biner resmi SparkNotePad v1.4.7 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (lihat matriks lengkap di [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
+Berkas biner resmi SparkNotePad v1.5.0 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest) (lihat matriks lengkap di [PLATFORM_SUPPORT.md](doc/PLATFORM_SUPPORT.md)):
 
 | Platform                     | Arsitektur Target              |  Format Paket   | Tautan Unduhan                                                                                                                                   |
 | :--------------------------- | :----------------------------- | :-------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS Intel (Kanonikal)**  | x86_64                         |     `.dmg`      | [SparkNotePad-v1.4.7-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-v1.4.7-x64.dmg)                   |
-| **macOS Apple Silicon**      | arm64 (M1/M2/M3/M4)            |     `.dmg`      | [SparkNotePad-v1.4.7-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-v1.4.7-arm64.dmg)               |
-| **macOS Multi-Qt Builds**    | x86_64 / arm64 (Qt 6.5–6.12)   |     `.dmg`      | [GitHub Releases v1.4.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.7)                                                         |
-| **Linux Ubuntu/Debian**      | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.deb`      | [sparknotepad_1.4.7_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/sparknotepad_1.4.7_amd64.deb)                 |
-| **Linux Fedora/RHEL/SUSE**   | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.rpm`      | [sparknotepad-1.4.7-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/sparknotepad-1.4.7-1.x86_64.rpm)           |
-| **Linux Multi-Qt Builds**    | Debian / RPM (Qt 6.5–6.12)     | `.deb` / `.rpm` | [GitHub Releases v1.4.7](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.4.7)                                                         |
-| **Linux (Semua Distro)**     | Skrip Editor Default (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-Default-Editor-Linux.sh) |
-| **macOS / Linux**            | Skrip Asosiasi Universal       |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SparkNotePad-Default-Editor.sh)             |
-| **Manifes Checksum SHA-256** | Manifes Integritas SHA-256     |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.4.7/SHA256SUMS.txt)                                             |
+| **macOS Intel (Kanonikal)**  | x86_64                         |     `.dmg`      | [SparkNotePad-v1.5.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-v1.5.0-x64.dmg)                   |
+| **macOS Apple Silicon**      | arm64 (M1/M2/M3/M4)            |     `.dmg`      | [SparkNotePad-v1.5.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-v1.5.0-arm64.dmg)               |
+| **macOS Multi-Qt Builds**    | x86_64 / arm64 (Qt 6.5–6.12)   |     `.dmg`      | [GitHub Releases v1.5.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.5.0)                                                         |
+| **Linux Ubuntu/Debian**      | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.deb`      | [sparknotepad_1.5.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/sparknotepad_1.5.0_amd64.deb)                 |
+| **Linux Fedora/RHEL/SUSE**   | x86_64 (glibc 2.35+ / Qt 6.8)  |     `.rpm`      | [sparknotepad-1.5.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/sparknotepad-1.5.0-1.x86_64.rpm)           |
+| **Linux Multi-Qt Builds**    | Debian / RPM (Qt 6.5–6.12)     | `.deb` / `.rpm` | [GitHub Releases v1.5.0](https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.5.0)                                                         |
+| **Linux (Semua Distro)**     | Skrip Editor Default (DEB/RPM) |      `.sh`      | [SparkNotePad-Default-Editor-Linux.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-Default-Editor-Linux.sh) |
+| **macOS / Linux**            | Skrip Asosiasi Universal       |      `.sh`      | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SparkNotePad-Default-Editor.sh)             |
+| **Manifes Checksum SHA-256** | Manifes Integritas SHA-256     |     `.txt`      | [SHA256SUMS.txt](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.5.0/SHA256SUMS.txt)                                             |
 | **FreeBSD**                  | 13.x – 15.x (KDE 6 / XFCE)     |  Source / Pkg   | [Panduan Build & Integrasi FreeBSD](doc/BUILD_FREEBSD_KDE_XFCE.md)                                                                               |
 
 ### Pemasangan Paket Linux (Instalasi Dependensi Otomatis)
@@ -446,6 +446,36 @@ trunk check -n -j 2
 ## Changelog
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.5.0] — Rangkaian Fitur Lengkap Developer Tools (JSON/XML/HTML/CSS/JS, Enkripsi, JWT, Radiks), Restrukturisasi Menu, Pratinjau Markdown GitHub Primer & Peningkatan Tampilan (2026-11-19)
+
+- **Rangkaian Lengkap Developer Tools (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Arsitektur native terpadu yang diadaptasi dari NotepadMac tanpa ketergantungan eksternal runtime.
+  - Dialog interaktif multi-tab Developer Tools Hub (`Ctrl+Alt+T` / `Ctrl+Cmd+T`):
+    - **Tab 1: Hash Tools**: Kalkulasi hash real-time (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), hashing integritas berkas, serta perbandingan checksum berdampingan dengan lencana kecocokan visual.
+    - **Tab 2: MIME Tools**: Enkode/dekode Base64 baris demi baris, Quoted-Printable (RFC 2045), URL encode/decode, dan HTML entities encode/decode.
+    - **Tab 3: Converter Tools**: Konverter basis Radiks (Biner, Oktal, Desimal, Heksadesimal), konverter ASCII <-> Heksadesimal dengan pemisah kustom, serta konversi format huruf (Title Case, Invert Case, Sentence Case).
+    - **Tab 4: Encryption Tools**: Proteksi Enkripsi Dokumen HTML dengan 3 mode operasional:
+      1. Injeksi unescape JavaScript.
+      2. Enkode Base64 `atob()`.
+      3. Enkripsi standar militer Password AES-256-GCM dengan harness runtime dekripsi CryptoJS tertanam.
+      - Pengukur kekuatan kata sandi dan entropi ala zxcvbn secara real-time.
+    - **Tab 5: Developer Tools**: Pemformat (pretty-print) dan pemadat (minify) untuk JSON, XML, HTML, CSS, dan JavaScript; Inspektur Token RFC 7519 JWT dengan ekstraksi header/payload serta validasi timestamp kedaluwarsa; pembuat UUID v4; dan konverter dua arah Unix Epoch / ISO-8601.
+- **Pratinjau Langsung Markdown Aman GitHub Primer Sempurna (`mjbvz/vscode-github-markdown-preview-style`)**:
+  - Rekayasa ulang engine perender pratinjau yang sepenuhnya selaras dengan token visual GitHub Markdown Preview.
+  - Pembersihan seluruh artefak internal Qt rich text (`-qt-block-indent`, margin bawaan paragraf) demi menjaga tipografi GitHub native, garis batas, zebra striping tabel, dan kotak kode.
+  - Wadah blok kode terpadu dengan header bahasa (`💻 bash`, `🐍 python`, `🌐 html`, dll.) dan preservasi 100% baris baru, indentasi, serta sintaks tanpa fragmentasi banyak kotak per baris, menjamin skrip shell yang disalin dapat langsung dieksekusi di terminal bash tanpa galat sintaksis.
+  - Dukungan native GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) dengan garis tepi dan lencana resmi.
+  - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan maksimal dan operasi mandiri tanpa bloatware.
+- **Restrukturisasi Menu Tingkat Atas**:
+  - Penambahan menu tingkat atas **Format** yang mengelompokkan konversi set karakter / enkoding (`ui->menuEncodings`) dan konversi pemisah baris (`ui->menuEOLConversion`).
+  - Relokasi menu **Run & External Execution** dari bilah menu utama ke dalam menu `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
+  - Penambahan submenu khusus **Developer Tools** di dalam `Tools` dengan aksi langsung untuk formatter, minifier, encoder, dan dialog Developer Tools Hub (`Ctrl+Alt+T`).
+- **Peningkatan Sakelar Tampilan (View & Navigation Toggles)**:
+  - Penambahan sakelar di menu `View` untuk mengaktifkan/menonaktifkan Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, Mode Hanya-Baca (Read-Only), serta Pembesaran (Zoom In / Out / Reset).
+- **Pembaruan Kredit, Pintasan & Terjemahan**:
+  - Pembaruan tab Kredit & Pintasan pada dialog `AboutDialog` dengan hotkey dan atribusi baru.
+  - Sinkronisasi katalog terjemahan `i18n` (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) dan kompilasi berkas biner `.qm`.
 
 ### [v1.4.7] — Peningkatan Engine Inti (Scintilla 5.6.9, Lexilla 5.5.5, Patch Lua 5.5.1), Transfer Sistem (.sparkbundle), Inspektur Berkas POSIX, Deteksi Enkoding 3-Titik & Penguatan Keamanan CVE 2025–2026 (2026-11-14)
 

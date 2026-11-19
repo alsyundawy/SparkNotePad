@@ -35,13 +35,14 @@ public:
 public slots:
     void renderPreview();
     void scheduleRender();
-    void openInBrowser();
     void copyHtml();
     void exportHtml();
     void zoomIn();
     void zoomOut();
     void resetZoom();
     void updateThemeColors();
+    void syncScrollFromEditor(Scintilla::Update updated);
+    void syncScrollFromBrowser();
 
 signals:
     void titleChanged(const QString &newTitle);
@@ -76,8 +77,8 @@ private:
     QPushButton *m_btnZoomIn{nullptr};
     QPushButton *m_btnCopyHtml{nullptr};
     QPushButton *m_btnExportHtml{nullptr};
-    QPushButton *m_btnOpenBrowser{nullptr};
     bool m_isUpdatingTheme{false};
+    bool m_syncingScroll{false};
 };
 
 #endif  // PREVIEWTABWIDGET_H

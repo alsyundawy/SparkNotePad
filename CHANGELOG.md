@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2026-11-19
+
+### 🌟 Release: Full Developer Tools Suite (JSON/XML/HTML/CSS/JS, Encryption, JWT, Radix), Re-Architected Menus, GitHub Primer Markdown Preview & View Enhancements
+
+SparkNotePad v1.5.0 brings a complete, unified Developer Tools suite ported from NotepadMac, re-architected menu ergonomics, GitHub Primer Markdown Safe Live Preview, and extended view control:
+
+#### 🆕 Added
+
+- **Comprehensive Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Unified interactive Developer Tools Hub dialog (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) with 5 dedicated functional tabs:
+    - **Hash Tools**: 11 cryptographic hash algorithms (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), file integrity hashing with progress, and side-by-side verification comparison with match status badge.
+    - **MIME Tools**: Base64 line-by-line encode/decode, Quoted-Printable (RFC 2045) encode/decode, URL percent-encoding/decoding, and HTML entity encode/decode.
+    - **Converter Tools**: Radix base converter (bases 2, 8, 10, 16), ASCII <-> Hexadecimal converter with configurable delimiters, and advanced Case Conversion (Title Case, Invert Case, Sentence Case).
+    - **Encryption Tools**: HTML Document Protection with 3 distinct operational modes:
+      1. JavaScript unescape string injection.
+      2. Base64 `atob()` encoding.
+      3. Military-grade Password AES-256-GCM encryption with embedded CryptoJS runtime decryption harness.
+      - Integrated real-time zxcvbn password strength and entropy evaluation meter.
+    - **Developer Tools**: Format and minify for JSON, XML, HTML, CSS, and JavaScript; RFC 7519 JWT Token Inspector with decoded header, payload claims, and expiration dates; UUID v4 generator; and Unix Epoch / ISO-8601 bidirectional converter.
+  - Complete layout and ergonomics overhaul of `DeveloperToolsDialog`: standardized 32px button heights, modern typography, decoupled crypto protection controls preventing column cramping, balanced 5-column formatter grids, and clean macOS system font integration.
+  - Added dedicated unit test suite in `tests/test_developer_tools_engine.h` covering all 10 developer tools features.
+- **Perfect GitHub Primer Markdown Safe Live Preview (`mjbvz/vscode-github-markdown-preview-style`)**:
+  - Re-engineered preview HTML generator strictly conforming to GitHub Markdown CSS specifications.
+  - Eliminated Qt rich text formatting artifacts (`-qt-block-indent`, zero margin resets) and fixed CSS text inheritance across all elements (`p`, `li`, `td`, `th`, `span`, `div`), completely resolving invisible white-on-white text in light themes (`GITHUB`, etc.).
+  - Added native GitHub Alert Callout rendering (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with official icons, accent borders, and background tints.
+  - Implemented unified, clean fenced code block containers with language headers (`💻 bash`, `🐍 python`, `🌐 html`, etc.) and 1-click interactive `📋 Copy` buttons.
+  - Ensured terminal-safe code snippet execution: pure Unix LF newlines, stripping CRLF `\r`, normalizing non-breaking spaces (NBSP `\u00A0`/`\u202F`), zero-width spaces (`\u200B`-`\u200D`, `\uFEFF`), and converting curly/smart quotes to ASCII quotes for error-free bash terminal execution.
+  - Reverse anchor line synchronization: exact 1:1 side-by-side scroll alignment with Scintilla editor, masking code blocks and comments from falsely registering as headings, and debounced bidirectional scroll loop prevention.
+  - Massive document resilience: validated and optimized for 100k+ lines (e.g. 6,000-line production guides) without memory spikes or render limits.
+  - Completely removed "Open in Default Browser" buttons and functions across all preview docks and widgets for maximum security and zero-bloat standalone operation.
+- **Re-Architected Top-Level Menu Structure**:
+  - Created top-level **Format** menu grouping character set encodings (`ui->menuEncodings`) and newline conversions (`ui->menuEOLConversion`).
+  - Relocated **Run & External Execution** from top-level menubar into `Tools -> Run & External Execution` (`Ctrl+Alt+R` / `F5`).
+  - Added dedicated **Developer Tools** submenu inside `Tools` with direct actions for formatters, minifiers, encoders, and the Developer Tools Hub (`Ctrl+Alt+T`).
+- **Enhanced View & Navigation Toggles**:
+  - Added toggle actions in `View` menu for Line Numbers, Code Folding, Indent Guides, Caret Line Highlight, Read-Only mode, and Zoom In / Out / Reset.
+- **Updated Credits, Shortcuts & Translations**:
+  - Full updates to `AboutDialog` Credits & Shortcuts tabs with the new hotkeys and attributions.
+  - Synchronized `i18n` translation catalogs (`SparkNotePad_id.ts`, `SparkNotePad_en.ts`) and compiled binary `.qm` packages.
+
+---
+
 ## [1.4.7] - 2026-11-14
 
 ### 🌟 Release: Core Engine Upgrade (Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1), System Transfer (.sparkbundle), POSIX File Inspector, 3-Point Encoding Detection & 2025–2026 CVE Security Hardening

@@ -23,10 +23,10 @@ using ThemeColors = MarkdownThemeManager::ThemeColors;
 
 constexpr std::array<ThemeColors, 30> s_themes = {{
     // 0: GITHUB
-    {"GITHUB", "#1f2328", "#ffffff", "#d0d7de", "#656d76", "rgba(175, 184, 193, 0.2)", "#f6f8fa", "#0969da",
+    {"GITHUB", "#1f2328", "#ffffff", "#d0d7de", "#656d76", "#eff1f3", "#f6f8fa", "#0969da",
      "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif", "#d0d7de", false},
     // 1: GITHUB-DARK
-    {"GITHUB-DARK", "#e6edf3", "#0d1117", "#30363d", "#848d97", "rgba(110, 118, 129, 0.4)", "#161b22", "#2f81f7",
+    {"GITHUB-DARK", "#e6edf3", "#0d1117", "#30363d", "#848d97", "#1f242c", "#161b22", "#2f81f7",
      "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif", "#30363d", true},
     // 2: ALMOND
     {"ALMOND", "#333333", "#fcfcfc", "#e5e5e5", "#666666", "#f0f0f0", "#f4f4f4", "#007acc",
@@ -181,7 +181,10 @@ QString MarkdownThemeManager::generateThemeCss(ThemeId id, int baseFontSize) {
     const QString hBorder = QString::fromLatin1(c.headingBorderColor);
 
     const QString baseCss = QStringLiteral(
-                                "body { "
+                                "body, .markdown-body, p, ul, ol, li, table, tr, td, th, div, span, blockquote { "
+                                "  color: %3; "
+                                "} "
+                                "body, .markdown-body { "
                                 "  font-family: %1; "
                                 "  font-size: %2px; line-height: 1.6; color: %3; background-color: %4; margin: 0; padding: 18px 24px; "
                                 "} "
@@ -194,28 +197,46 @@ QString MarkdownThemeManager::generateThemeCss(ThemeId id, int baseFontSize) {
                                 "h4 { font-size: 1em; } "
                                 "h5 { font-size: 0.875em; } "
                                 "h6 { font-size: 0.85em; color: %6; } "
-                                "p { margin-top: 0; margin-bottom: 16px; line-height: 1.6; } "
+                                "p { margin-top: 0; margin-bottom: 16px; line-height: 1.6; color: %3; } "
                                 "blockquote { "
                                 "  margin: 0 0 16px 0; padding: 6px 16px; color: %6; border-left: 4px solid %7; background-color: %8; "
                                 "  border-radius: 0 4px 4px 0; "
                                 "} "
-                                "ul, ol { margin-top: 0; margin-bottom: 16px; padding-left: 2em; } "
-                                "li { margin-top: 0.3em; } "
+                                "ul, ol { margin-top: 0; margin-bottom: 16px; padding-left: 2em; color: %3; } "
+                                "li { margin-top: 0.3em; color: %3; } "
                                 "code { "
                                 "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; "
-                                "  font-size: 85%; padding: 0.2em 0.4em; background-color: %9; border-radius: 4px; "
+                                "  font-size: 85%; padding: 0.2em 0.4em; background-color: %9; color: %3; border-radius: 4px; "
                                 "} "
                                 "pre { "
                                 "  margin-top: 0; margin-bottom: 16px; padding: 14px; line-height: 1.45; "
                                 "  background-color: %8; border: 1px solid %7; border-radius: 6px; "
                                 "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 85%; "
                                 "} "
-                                "table { border-collapse: collapse; border-spacing: 0; margin-top: 0; margin-bottom: 16px; width: 100%; } "
-                                "th, td { padding: 8px 14px; border: 1px solid %7; } "
-                                "th { font-weight: 600; background-color: %8; } "
+                                ".code-block-container { "
+                                "  margin: 14px 0; background-color: %8; border: 1px solid %7; border-radius: 6px; overflow: hidden; "
+                                "} "
+                                ".code-block-header { "
+                                "  padding: 4px 12px; font-size: 11px; font-weight: 600; color: %6; background-color: %4; border-bottom: 1px solid %7; "
+                                "  user-select: none; -webkit-user-select: none; "
+                                "} "
+                                ".code-copy-btn { "
+                                "  text-decoration: none; font-size: 11px; font-weight: 600; color: %6; cursor: pointer; "
+                                "  padding: 2px 8px; border: 1px solid %7; border-radius: 4px; background-color: %8; "
+                                "} "
+                                ".code-copy-btn:hover { color: @@LINK_COLOR@@; border-color: @@LINK_COLOR@@; } "
+                                ".code-block-content { "
+                                "  margin: 0 !important; padding: 12px 14px !important; background: transparent !important; border: none !important; "
+                                "  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important; "
+                                "  font-size: 85% !important; line-height: 1.45 !important; color: %3 !important; white-space: pre !important; "
+                                "} "
+                                "table, .markdown-table { border-collapse: collapse; border-spacing: 0; margin-top: 0; margin-bottom: 16px; width: 100%; color: %3; } "
+                                "th, td { padding: 8px 14px; border: 1px solid %7; color: %3; } "
+                                "th { font-weight: 600; background-color: %8; color: %3; } "
+                                "td p, th p { margin: 0 !important; padding: 0 !important; color: %3 !important; } "
                                 "tr:nth-child(2n) { background-color: %8; } "
                                 "hr { height: 2px; padding: 0; margin: 24px 0; background-color: %7; border: 0; } "
-                                "a { color: %10; text-decoration: none; font-weight: 500; } "
+                                "a { color: @@LINK_COLOR@@; text-decoration: none; font-weight: 500; } "
                                 "kbd { "
                                 "  display: inline-block; padding: 3px 6px; font-size: 11px; line-height: 10px; color: %3; "
                                 "  background-color: %8; border: 1px solid %7; border-radius: 4px; box-shadow: inset 0 -1px 0 %7; "
@@ -226,9 +247,35 @@ QString MarkdownThemeManager::generateThemeCss(ThemeId id, int baseFontSize) {
                                 "ins { text-decoration: underline; } "
                                 "sub, sup { font-size: 75%; line-height: 0; } "
                                 ".footnotes { font-size: 85%; border-top: 1px solid %7; margin-top: 32px; padding-top: 16px; color: %6; } "
-                                ".footnote-ref { font-size: 80%; text-decoration: none; }\n")
+                                ".footnote-ref { font-size: 80%; text-decoration: none; } "
+                                ".contains-task-list { list-style-type: none; padding-left: 0; } "
+                                ".task-list-item { list-style-type: none; } "
+                                ".task-list-item input[type=\"checkbox\"] { margin: 0 0.35em 0.25em -1.3em; vertical-align: middle; } "
+                                ".highlight { background-color: %8; border: 1px solid %7; border-radius: 6px; margin-bottom: 16px; } "
+                                ".highlight pre { margin: 0; padding: 14px; background: transparent; border: none; } "
+                                ".markdown-alert { padding: 8px 16px; margin-bottom: 16px; color: inherit; border-left: 4px solid %7; border-radius: 4px; } "
+                                ".markdown-alert-title { font-weight: 600; line-height: 1.25; margin-bottom: 6px; } "
+                                ".markdown-alert-note { border-left-color: #2f81f7; background-color: %10; } "
+                                ".markdown-alert-tip { border-left-color: #3fb950; background-color: %11; } "
+                                ".markdown-alert-important { border-left-color: #a371f7; background-color: %12; } "
+                                ".markdown-alert-warning { border-left-color: #d29922; background-color: %13; } "
+                                ".markdown-alert-caution { border-left-color: #f85149; background-color: %14; }\n")
                                 .arg(fontFamily, sizeStr, textColor, bgColor, hBorder, mutedColor, borderColor, blockBg,
-                                     codeBg, linkColor);
+                                     codeBg);
 
-    return baseCss + MarkdownPreviewEnhancer::mathAndMermaidCss(c.isDark);
+    const QString noteBg = c.isDark ? QStringLiteral("#162232") : QStringLiteral("#edf4fe");
+    const QString tipBg = c.isDark ? QStringLiteral("#132719") : QStringLiteral("#edf8f0");
+    const QString impBg = c.isDark ? QStringLiteral("#211a33") : QStringLiteral("#f5edfd");
+    const QString warnBg = c.isDark ? QStringLiteral("#2b2210") : QStringLiteral("#fdf8ea");
+    const QString cautBg = c.isDark ? QStringLiteral("#2f1717") : QStringLiteral("#feefee");
+
+    QString resolvedCss = baseCss;
+    resolvedCss.replace(QStringLiteral("@@LINK_COLOR@@"), linkColor);
+    resolvedCss.replace(QStringLiteral("%10"), noteBg);
+    resolvedCss.replace(QStringLiteral("%11"), tipBg);
+    resolvedCss.replace(QStringLiteral("%12"), impBg);
+    resolvedCss.replace(QStringLiteral("%13"), warnBg);
+    resolvedCss.replace(QStringLiteral("%14"), cautBg);
+
+    return resolvedCss + MarkdownPreviewEnhancer::mathAndMermaidCss(c.isDark);
 }

@@ -74,6 +74,7 @@
 #include "features/DeveloperToolsEngine.h"
 #include "features/CorrespondingFileSwitcher.h"
 #include "dialogs/CrashRecoveryDialog.h"
+#include "dialogs/DeveloperToolsDialog.h"
 #include "dialogs/ExportOptionsDialog.h"
 #include "dialogs/TimestampConverterDialog.h"
 #include <QColor>
@@ -1185,6 +1186,17 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     // --- Tools top-level menu (Notepad++ style) ---
     menuTools = new QMenu(tr("&Tools"), this);
 
+    auto *actionToolsHub = new QAction(tr("Tools &Hub & Utilities Suite..."), this);
+    actionToolsHub->setIcon(QIcon(QStringLiteral(":/icons/wrench.svg")));
+#ifdef Q_OS_MACOS
+    actionToolsHub->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_T));
+#else
+    actionToolsHub->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
+#endif
+    connect(actionToolsHub, &QAction::triggered, this, [this] { onDeveloperToolsTriggered(0); });
+    menuTools->addAction(actionToolsHub);
+    menuTools->addSeparator();
+
     // Hash submenu
     auto *menuHash = new QMenu(tr("&Hash"), this);
     struct HashAlgSpec {
@@ -1528,6 +1540,17 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
     auto *const menuDevTools = menuTools->addMenu(tr("&Developer Tools"));
     menuDevTools->setIcon(QIcon(QStringLiteral(":/icons/wrench.svg")));
 
+    auto *actionDevToolsHub = new QAction(tr("Developer Tools &Hub..."), this);
+#ifdef Q_OS_MACOS
+    actionDevToolsHub->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_D));
+#else
+    actionDevToolsHub->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
+#endif
+    connect(actionDevToolsHub, &QAction::triggered, this, [this] { onDeveloperToolsTriggered(4); });
+    menuDevTools->addAction(actionDevToolsHub);
+
+    menuDevTools->addSeparator();
+
     connect(menuDevTools->addAction(tr("JSON Format / Prettify")), &QAction::triggered, this, [this] {
         applyEditorTextTransform(
             [](const QString &in, QString *err) { return DeveloperToolsEngine::formatJson(in, 4, err); },
@@ -1538,6 +1561,62 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         applyEditorTextTransform(
             [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJson(in, err); },
             tr("JSON Minify"));
+    });
+
+    menuDevTools->addSeparator();
+
+    connect(menuDevTools->addAction(tr("HTML Format / Prettify")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatHtml(in, 2, err); },
+            tr("HTML Prettify"));
+    });
+
+    connect(menuDevTools->addAction(tr("HTML Minify / Compact")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyHtml(in, err); },
+            tr("HTML Minify"));
+    });
+
+    menuDevTools->addSeparator();
+
+    connect(menuDevTools->addAction(tr("XML Format / Prettify")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatXml(in, 2, err); },
+            tr("XML Prettify"));
+    });
+
+    connect(menuDevTools->addAction(tr("XML Minify / Compact")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyXml(in, err); },
+            tr("XML Minify"));
+    });
+
+    menuDevTools->addSeparator();
+
+    connect(menuDevTools->addAction(tr("CSS Format / Prettify")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatCss(in, err); },
+            tr("CSS Prettify"));
+    });
+
+    connect(menuDevTools->addAction(tr("CSS Minify / Compact")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyCss(in, err); },
+            tr("CSS Minify"));
+    });
+
+    menuDevTools->addSeparator();
+
+    connect(menuDevTools->addAction(tr("JavaScript Format / Prettify")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatJs(in, err); },
+            tr("JS Prettify"));
+    });
+
+    connect(menuDevTools->addAction(tr("JavaScript Minify / Compact")), &QAction::triggered, this, [this] {
+        applyEditorTextTransform(
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJs(in, err); },
+            tr("JS Minify"));
     });
 
     menuDevTools->addSeparator();
@@ -1604,13 +1683,6 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
         }
     });
     menuPreview->addAction(actionOpenPreviewTab);
-
-    auto *actionPreviewInBrowser = new QAction(tr("Open in Default &Web Browser..."), this);
-    actionPreviewInBrowser->setIcon(QIcon(QStringLiteral(":/icons/openFile.svg")));
-    actionPreviewInBrowser->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
-    connect(actionPreviewInBrowser, &QAction::triggered, markdownSafePreviewDock,
-            &MarkdownSafePreviewDock::openInBrowser);
-    menuPreview->addAction(actionPreviewInBrowser);
 
     auto *actionAutoShowPreview = new QAction(tr("&Auto-Show Preview on Markdown Tabs"), this);
     actionAutoShowPreview->setCheckable(true);
@@ -1781,6 +1853,97 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     ui->menuView->addSeparator();
     ui->menuView->addMenu(menuTransparency);
+
+    // View toggles ported from NotepadMac
+    ui->menuView->addSeparator();
+
+    auto *actionToggleLineNumbers = new QAction(tr("Toggle &Line Numbers"), this);
+    actionToggleLineNumbers->setCheckable(true);
+    actionToggleLineNumbers->setChecked(true);
+    connect(actionToggleLineNumbers, &QAction::toggled, this, [this](bool visible) {
+        if (auto *ed = currentEditor()) {
+            ed->setMarginWidthN(0, visible ? ed->textWidth(STYLE_LINENUMBER, "_9999") : 0);
+        }
+    });
+    ui->menuView->addAction(actionToggleLineNumbers);
+
+    auto *actionToggleFolding = new QAction(tr("Toggle Code &Folding Margin"), this);
+    actionToggleFolding->setCheckable(true);
+    actionToggleFolding->setChecked(true);
+    connect(actionToggleFolding, &QAction::toggled, this, [this](bool visible) {
+        if (auto *ed = currentEditor()) {
+            ed->setMarginWidthN(2, visible ? 14 : 0);
+        }
+    });
+    ui->menuView->addAction(actionToggleFolding);
+
+    auto *actionToggleIndentGuides = new QAction(tr("Toggle &Indentation Guides"), this);
+    actionToggleIndentGuides->setCheckable(true);
+    actionToggleIndentGuides->setChecked(false);
+    connect(actionToggleIndentGuides, &QAction::toggled, this, [this](bool visible) {
+        if (auto *ed = currentEditor()) {
+            ed->setIndentationGuides(visible ? SC_IV_LOOKBOTH : SC_IV_NONE);
+        }
+    });
+    ui->menuView->addAction(actionToggleIndentGuides);
+
+    auto *actionToggleCaretLine = new QAction(tr("Toggle &Caret Line Highlight"), this);
+    actionToggleCaretLine->setCheckable(true);
+    actionToggleCaretLine->setChecked(true);
+    connect(actionToggleCaretLine, &QAction::toggled, this, [this](bool visible) {
+        if (auto *ed = currentEditor()) {
+            ed->setCaretLineVisible(visible);
+        }
+    });
+    ui->menuView->addAction(actionToggleCaretLine);
+
+    auto *actionToggleReadOnly = new QAction(tr("Toggle &Read-Only"), this);
+    actionToggleReadOnly->setCheckable(true);
+    actionToggleReadOnly->setChecked(false);
+    connect(actionToggleReadOnly, &QAction::toggled, this, [this](bool readOnly) {
+        if (auto *ed = currentEditor()) {
+            ed->setReadOnly(readOnly);
+            ui->statusBar->refresh(ed);
+        }
+    });
+    ui->menuView->addAction(actionToggleReadOnly);
+
+    ui->menuView->addSeparator();
+
+    auto *actionZoomIn = new QAction(tr("Zoom &In"), this);
+    actionZoomIn->setShortcut(QKeySequence::ZoomIn);
+    connect(actionZoomIn, &QAction::triggered, this, [this] {
+        if (auto *ed = currentEditor()) {
+            ed->zoomIn();
+        }
+    });
+    ui->menuView->addAction(actionZoomIn);
+
+    auto *actionZoomOut = new QAction(tr("Zoom &Out"), this);
+    actionZoomOut->setShortcut(QKeySequence::ZoomOut);
+    connect(actionZoomOut, &QAction::triggered, this, [this] {
+        if (auto *ed = currentEditor()) {
+            ed->zoomOut();
+        }
+    });
+    ui->menuView->addAction(actionZoomOut);
+
+    auto *actionResetZoom = new QAction(tr("&Reset Zoom (100%)"), this);
+    actionResetZoom->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_0));
+    connect(actionResetZoom, &QAction::triggered, this, [this] {
+        if (auto *ed = currentEditor()) {
+            ed->setZoom(0);
+        }
+    });
+    ui->menuView->addAction(actionResetZoom);
+
+    // Format top-level menu grouping File Encoding and Line Endings
+    auto *menuFormat = new QMenu(tr("F&ormat"), this);
+    ui->menuEncodings->setTitle(tr("File &Encoding"));
+    menuFormat->addMenu(ui->menuEncodings);
+    ui->menuEOLConversion->setTitle(tr("&Line Endings"));
+    menuFormat->addMenu(ui->menuEOLConversion);
+    menuBar()->insertMenu(ui->menuView->menuAction(), menuFormat);
 
     connect(ClipboardMonitor::instance(), &ClipboardMonitor::monitoringStateChanged, this,
             &MainWindow::onClipboardMonitoringStateChanged);
@@ -4905,8 +5068,14 @@ void MainWindow::setupRunMenu() {
         return;
     }
 
-    menuRun = new QMenu(tr("&Run"), this);
-    ui->menuBar->insertMenu(ui->menuHelp->menuAction(), menuRun);
+    menuRun = new QMenu(tr("&Run & External Execution"), this);
+    menuRun->setIcon(QIcon(QStringLiteral(":/icons/playRecord.svg")));
+    if (menuTools) {
+        menuTools->addSeparator();
+        menuTools->addMenu(menuRun);
+    } else {
+        ui->menuBar->insertMenu(ui->menuHelp->menuAction(), menuRun);
+    }
 
     // 1. Run... (Ctrl+Alt+R, F6)
     auto *actionRun = new QAction(tr("&Run..."), this);
@@ -4937,13 +5106,7 @@ void MainWindow::setupRunMenu() {
     connect(actionReveal, &QAction::triggered, this, &MainWindow::onRevealInFileManagerTriggered);
     menuRun->addAction(actionReveal);
 
-    // 5. Open in Default Browser
-    auto *actionBrowser = new QAction(tr("Open in Default &Web Browser"), this);
-    actionBrowser->setIcon(QIcon(QStringLiteral(":/icons/folder.svg")));
-    connect(actionBrowser, &QAction::triggered, this, &MainWindow::onOpenInBrowserTriggered);
-    menuRun->addAction(actionBrowser);
-
-    // 6. Generate Development SSL Certificate (mkcert / OpenSSL)
+    // 5. Generate Development SSL Certificate (mkcert / OpenSSL)
     auto *actionGenerateCert = new QAction(tr("Generate Development SSL &Certificate (mkcert/OpenSSL)..."), this);
     actionGenerateCert->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
     connect(actionGenerateCert, &QAction::triggered, this, &MainWindow::onGenerateCertTriggered);
@@ -5051,10 +5214,10 @@ void MainWindow::onRevealInFileManagerTriggered() const {
     }
 }
 
-void MainWindow::onOpenInBrowserTriggered() const {
-    if (currentEditor() && currentEditor()->isFile()) {
-        ExternalToolManager::openInBrowser(currentEditor()->getFileInfo().absoluteFilePath());
-    }
+void MainWindow::onDeveloperToolsTriggered(int initialTab) {
+    auto *dlg = new DeveloperToolsDialog(this, initialTab, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->show();
 }
 
 void MainWindow::onPasteAndMatchStyleTriggered() const {
@@ -5667,12 +5830,6 @@ void MainWindow::openPreviewInNewTab(ScintillaNext *editor) {
     }
 }
 
-void MainWindow::openInDefaultBrowser(const QString &filePath) {
-    if (filePath.isEmpty()) {
-        return;
-    }
-    QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
-}
 
 namespace {
 QString formatHexDump(const QByteArray &originalBytes) {
