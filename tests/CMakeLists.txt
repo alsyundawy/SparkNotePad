@@ -80,7 +80,7 @@ target_include_directories(SparkNotePadTests PRIVATE
     ${CMAKE_SOURCE_DIR}/thirdparty/scintilla/qt/ScintillaEditBase
     ${CMAKE_SOURCE_DIR}/thirdparty/lexilla/include
     ${CMAKE_CURRENT_SOURCE_DIR}
-    /usr/local/opt/openssl@3/include
+    ${OPENSSL_INCLUDE_DIR}
 )
 
 target_link_libraries(SparkNotePadTests PRIVATE
