@@ -784,6 +784,9 @@
    <property name="text">
     <string>Copy Full Path</string>
    </property>
+     <property name="toolTip">
+    <string>Copy absolute path of current file to clipboard</string>
+   </property>
   </action>
   <action name="actionCopyFileName">
    <property name="icon">
@@ -793,6 +796,9 @@
    <property name="text">
     <string>Copy File Name</string>
    </property>
+     <property name="toolTip">
+    <string>Copy file name of current file to clipboard</string>
+   </property>
   </action>
   <action name="actionCopyFileDirectory">
    <property name="icon">
@@ -801,6 +807,9 @@
    </property>
    <property name="text">
     <string>Copy File Directory</string>
+   </property>
+     <property name="toolTip">
+    <string>Copy parent directory path of current file to clipboard</string>
    </property>
   </action>
   <action name="actionClose">
@@ -829,6 +838,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Alt+S</string>
    </property>
+     <property name="toolTip">
+    <string>Save active document with a new file name or location</string>
+   </property>
   </action>
   <action name="actionSaveCopyAs">
    <property name="icon">
@@ -837,6 +849,9 @@
    </property>
    <property name="text">
     <string>Save a Copy As...</string>
+   </property>
+     <property name="toolTip">
+    <string>Save a copy of active document without changing current file</string>
    </property>
   </action>
   <action name="actionSaveAll">
@@ -910,6 +925,9 @@
    <property name="text">
     <string>Increase Indent</string>
    </property>
+     <property name="toolTip">
+    <string>Increase indentation for current line or selection</string>
+   </property>
   </action>
   <action name="actionDecreaseIndent">
    <property name="icon">
@@ -918,6 +936,9 @@
    </property>
    <property name="text">
     <string>Decrease Indent</string>
+   </property>
+     <property name="toolTip">
+    <string>Decrease indentation for current line or selection</string>
    </property>
   </action>
   <action name="actionRename">
@@ -928,6 +949,9 @@
     <iconset resource="../resources.qrc">:/icons/table_edit.svg<normaloff>:/icons/table_edit.svg</normaloff>
     </iconset>
    </property>
+     <property name="toolTip">
+    <string>Rename active document file on disk</string>
+   </property>
   </action>
   <action name="actionReload">
    <property name="icon">
@@ -937,6 +961,9 @@
    <property name="text">
     <string>Re&amp;load</string>
    </property>
+     <property name="toolTip">
+    <string>Reload active document from disk, discarding unsaved changes</string>
+   </property>
   </action>
   <action name="actionWindows">
    <property name="checkable">
@@ -944,6 +971,9 @@
    </property>
    <property name="text">
     <string>Windows (CR LF)</string>
+   </property>
+     <property name="toolTip">
+    <string>Convert line endings to Windows format (CRLF)</string>
    </property>
   </action>
   <action name="actionUnix">
@@ -953,6 +983,9 @@
    <property name="text">
     <string>Unix (LF)</string>
    </property>
+     <property name="toolTip">
+    <string>Convert line endings to Unix format (LF)</string>
+   </property>
   </action>
   <action name="actionMacintosh">
    <property name="checkable">
@@ -960,6 +993,9 @@
    </property>
    <property name="text">
     <string>Macintosh (CR)</string>
+   </property>
+     <property name="toolTip">
+    <string>Convert line endings to legacy Macintosh format (CR)</string>
    </property>
   </action>
   <action name="actionUpperCase">
@@ -1024,10 +1060,16 @@
    <property name="shortcut">
     <string notr="true">Alt+Down</string>
    </property>
+     <property name="toolTip">
+    <string>Duplicate current line or selected lines below</string>
+   </property>
   </action>
   <action name="actionSplitLines">
    <property name="text">
     <string>Split Lines</string>
+   </property>
+     <property name="toolTip">
+    <string>Split selected lines according to window margins</string>
    </property>
   </action>
   <action name="actionJoinLines">
@@ -1037,6 +1079,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+J</string>
    </property>
+     <property name="toolTip">
+    <string>Join selected lines into a single continuous line</string>
+   </property>
   </action>
   <action name="actionMoveSelectedLinesUp">
    <property name="text">
@@ -1045,6 +1090,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+Up</string>
    </property>
+     <property name="toolTip">
+    <string>Move current line or selected lines up by one line</string>
+   </property>
   </action>
   <action name="actionMoveSelectedLinesDown">
    <property name="text">
@@ -1052,6 +1100,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+Down</string>
+   </property>
+     <property name="toolTip">
+    <string>Move current line or selected lines down by one line</string>
    </property>
   </action>
   <action name="actionCloseAll">
@@ -1077,6 +1128,9 @@
    <property name="text">
     <string>Close All Except Active Document</string>
    </property>
+     <property name="toolTip">
+    <string>Close all open documents except the currently active tab</string>
+   </property>
   </action>
   <action name="actionCloseAllToLeft">
    <property name="icon">
@@ -1086,6 +1140,9 @@
    <property name="text">
     <string>Close All to the Left</string>
    </property>
+     <property name="toolTip">
+    <string>Close all tabs located to the left of the active tab</string>
+   </property>
   </action>
   <action name="actionCloseAllToRight">
    <property name="icon">
@@ -1094,6 +1151,9 @@
    </property>
    <property name="text">
     <string>Close All to the Right</string>
+   </property>
+     <property name="toolTip">
+    <string>Close all tabs located to the right of the active tab</string>
    </property>
   </action>
   <action name="actionZoomIn">
@@ -1133,6 +1193,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+0</string>
    </property>
+     <property name="toolTip">
+    <string>Reset editor zoom level to default 100%</string>
+   </property>
   </action>
   <action name="actionAboutQt">
    <property name="text">
@@ -1140,6 +1203,9 @@
    </property>
    <property name="menuRole">
     <enum>QAction::AboutQtRole</enum>
+   </property>
+     <property name="toolTip">
+    <string>Display information about Qt framework and licensing</string>
    </property>
   </action>
   <action name="actionAboutSparkNotePad">
@@ -1152,6 +1218,9 @@
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>
+   </property>
+     <property name="toolTip">
+    <string>Display SparkNotePad version, credits, and system architecture</string>
    </property>
   </action>
   <action name="actionDocnote">
@@ -1196,6 +1265,9 @@
    <property name="text">
     <string>Show Whitespace</string>
    </property>
+     <property name="toolTip">
+    <string>Toggle display of space and tab whitespace characters</string>
+   </property>
   </action>
   <action name="actionShowEndofLine">
    <property name="checkable">
@@ -1203,6 +1275,9 @@
    </property>
    <property name="text">
     <string>Show End of Line</string>
+   </property>
+     <property name="toolTip">
+    <string>Toggle display of end-of-line carriage return and newline symbols</string>
    </property>
   </action>
   <action name="actionShowAllCharacters">
@@ -1247,6 +1322,9 @@
    <property name="text">
     <string>Show Wrap Symbol</string>
    </property>
+     <property name="toolTip">
+    <string>Toggle visual line wrap indicator glyphs</string>
+   </property>
   </action>
   <action name="actionWordWrap">
    <property name="checkable">
@@ -1275,6 +1353,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+T</string>
    </property>
+     <property name="toolTip">
+    <string>Reopen the most recently closed document tab</string>
+   </property>
   </action>
   <action name="actionOpenAllRecentFiles">
    <property name="icon">
@@ -1284,6 +1365,9 @@
    <property name="text">
     <string>Open All Recent Files</string>
    </property>
+     <property name="toolTip">
+    <string>Open all files listed in recent files history</string>
+   </property>
   </action>
   <action name="actionClearRecentFilesList">
    <property name="icon">
@@ -1292,6 +1376,9 @@
    </property>
    <property name="text">
     <string>Clear Recent Files List</string>
+   </property>
+     <property name="toolTip">
+    <string>Clear all entries from the recent files menu</string>
    </property>
   </action>
   <action name="actionFind">
@@ -1332,6 +1419,9 @@
    <property name="text">
     <string>Find in Files...</string>
    </property>
+     <property name="toolTip">
+    <string>Search for text or regular expressions across multiple files or directory</string>
+   </property>
   </action>
   <action name="actionFindNext">
    <property name="icon">
@@ -1344,6 +1434,9 @@
    <property name="shortcut">
     <string notr="true">F3</string>
    </property>
+     <property name="toolTip">
+    <string>Find next match of current search pattern</string>
+   </property>
   </action>
   <action name="actionFindPrevious">
    <property name="icon">
@@ -1355,6 +1448,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Shift+F3</string>
+   </property>
+     <property name="toolTip">
+    <string>Find previous match of current search pattern</string>
    </property>
   </action>
   <action name="actionReplace">
@@ -1381,6 +1477,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">F11</string>
+   </property>
+     <property name="toolTip">
+    <string>Toggle full screen editing mode</string>
    </property>
   </action>
   <action name="actionMacroRecording">
@@ -1473,6 +1572,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Alt+I</string>
    </property>
+     <property name="toolTip">
+    <string>Open inline quick search bar at bottom of editor</string>
+   </property>
   </action>
   <action name="actionSelectNext">
    <property name="text">
@@ -1480,6 +1582,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+D</string>
+   </property>
+     <property name="toolTip">
+    <string>Select next occurrence matching current word or selection</string>
    </property>
   </action>
   <action name="actionMoveToTrash">
@@ -1493,6 +1598,9 @@
    <property name="iconText">
     <string>Move to Trash</string>
    </property>
+     <property name="toolTip">
+    <string>Move active document file directly to system trash bin</string>
+   </property>
   </action>
   <action name="actionCheckForUpdates">
    <property name="icon">
@@ -1502,6 +1610,9 @@
    <property name="text">
     <string>Check for Updates...</string>
    </property>
+     <property name="toolTip">
+    <string>Check for newer SparkNotePad releases and updates</string>
+   </property>
   </action>
   <action name="actionGoToLine">
    <property name="text">
@@ -1509,6 +1620,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+G</string>
+   </property>
+     <property name="toolTip">
+    <string>Navigate directly to a specific line number in document</string>
    </property>
   </action>
   <action name="actionPrint">
@@ -1522,6 +1636,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Alt+Shift+P</string>
    </property>
+     <property name="toolTip">
+    <string>Print active document or export to paper/PDF</string>
+   </property>
   </action>
   <action name="actionOpenFolderasWorkspace">
    <property name="icon">
@@ -1531,6 +1648,9 @@
    <property name="text">
     <string>Open Folder as Workspace...</string>
    </property>
+     <property name="toolTip">
+    <string>Open directory as workspace tree in side panel</string>
+   </property>
   </action>
   <action name="actionToggleSingleLineComment">
    <property name="text">
@@ -1538,6 +1658,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+/</string>
+   </property>
+     <property name="toolTip">
+    <string>Toggle line comment syntax on current line or selection</string>
    </property>
   </action>
   <action name="actionSingleLineComment">
@@ -1547,6 +1670,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+K</string>
    </property>
+     <property name="toolTip">
+    <string>Comment out current line or selection with language line comment prefix</string>
+   </property>
   </action>
   <action name="actionSingleLineUncomment">
    <property name="text">
@@ -1554,6 +1680,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+K</string>
+   </property>
+     <property name="toolTip">
+    <string>Uncomment current line or selection removing line comment prefix</string>
    </property>
   </action>
   <action name="actionEditMacros">
@@ -1566,6 +1695,9 @@
    </property>
    <property name="text">
     <string>Edit Macros...</string>
+   </property>
+     <property name="toolTip">
+    <string>Open macro manager to inspect, edit, or delete recorded macros</string>
    </property>
   </action>
   <action name="actionShowEncodingInfo">
@@ -1586,10 +1718,16 @@
    <property name="shortcut">
     <string>Ctrl+Alt+U</string>
    </property>
+     <property name="toolTip">
+    <string>Convert document buffer encoding to UTF-8 without BOM</string>
+   </property>
   </action>
   <action name="actionConvertToUtf8Bom">
    <property name="text">
     <string>Convert to UTF-8 with &amp;BOM</string>
+   </property>
+     <property name="toolTip">
+    <string>Convert document buffer encoding to UTF-8 with BOM</string>
    </property>
   </action>
   <action name="actionConvertToAnsi">
@@ -1599,90 +1737,144 @@
    <property name="shortcut">
     <string>Ctrl+Alt+A</string>
    </property>
+     <property name="toolTip">
+    <string>Convert document buffer encoding to ANSI / Windows-1252</string>
+   </property>
   </action>
   <action name="actionConvertToUtf16Le">
    <property name="text">
     <string>Convert to UTF-16 &amp;LE</string>
+   </property>
+     <property name="toolTip">
+    <string>Convert document buffer encoding to UTF-16 Little Endian</string>
    </property>
   </action>
   <action name="actionConvertToUtf16Be">
    <property name="text">
     <string>Convert to UTF-16 &amp;BE</string>
    </property>
+     <property name="toolTip">
+    <string>Convert document buffer encoding to UTF-16 Big Endian</string>
+   </property>
   </action>
   <action name="actionReopenUtf8">
    <property name="text">
     <string>UTF-8</string>
+   </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with UTF-8</string>
    </property>
   </action>
   <action name="actionReopenAnsi">
    <property name="text">
     <string>ANSI / Windows-1252</string>
    </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with ANSI / Windows-1252</string>
+   </property>
   </action>
   <action name="actionReopenUtf16Le">
    <property name="text">
     <string>UTF-16 LE</string>
+   </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with UTF-16 Little Endian</string>
    </property>
   </action>
   <action name="actionReopenUtf16Be">
    <property name="text">
     <string>UTF-16 BE</string>
    </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with UTF-16 Big Endian</string>
+   </property>
   </action>
   <action name="actionReopenShiftJis">
    <property name="text">
     <string>Shift-JIS (Japanese)</string>
+   </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with Shift-JIS (Japanese)</string>
    </property>
   </action>
   <action name="actionReopenGbk">
    <property name="text">
     <string>GB18030 / GBK (Chinese)</string>
    </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with GB18030 / GBK (Chinese)</string>
+   </property>
   </action>
   <action name="actionReopenBig5">
    <property name="text">
     <string>Big5 (Traditional Chinese)</string>
+   </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with Big5 (Traditional Chinese)</string>
    </property>
   </action>
   <action name="actionReopenEucKr">
    <property name="text">
     <string>EUC-KR (Korean)</string>
    </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with EUC-KR (Korean)</string>
+   </property>
   </action>
   <action name="actionReopenWin1251">
    <property name="text">
     <string>Windows-1251 (Cyrillic)</string>
+   </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with Windows-1251 (Cyrillic)</string>
    </property>
   </action>
   <action name="actionReopenWin1250">
    <property name="text">
     <string>Windows-1250 (Central European)</string>
    </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with Windows-1250 (Central European)</string>
+   </property>
   </action>
   <action name="actionReopenCp437">
    <property name="text">
     <string>OEM-US (DOS CP437)</string>
+   </property>
+     <property name="toolTip">
+    <string>Reopen current file from disk decoding with OEM-US (DOS CP437)</string>
    </property>
   </action>
   <action name="actionReopenMore">
    <property name="text">
     <string>&amp;More Encodings...</string>
    </property>
+     <property name="toolTip">
+    <string>Choose from complete catalog of international text encodings</string>
+   </property>
   </action>
   <action name="actionColumnMode">
    <property name="text">
     <string>Column Mode...</string>
+   </property>
+     <property name="toolTip">
+    <string>Open column and multi-line sequential number editor</string>
    </property>
   </action>
   <action name="actionExportHtml">
    <property name="text">
     <string>Export as HTML...</string>
    </property>
+     <property name="toolTip">
+    <string>Export styled source document as standalone HTML file</string>
+   </property>
   </action>
   <action name="actionExportRtf">
    <property name="text">
     <string>Export as RTF...</string>
+   </property>
+     <property name="toolTip">
+    <string>Export styled source document as Rich Text Format (.rtf)</string>
    </property>
   </action>
   <action name="actionExportPdf">
@@ -1696,6 +1888,9 @@
   <action name="actionCopyAsHtml">
    <property name="text">
     <string>Copy as HTML</string>
+   </property>
+     <property name="toolTip">
+    <string>Copy styled syntax-highlighted code to clipboard as HTML markup</string>
    </property>
   </action>
   <action name="actionCopyAsRtf">
@@ -1730,6 +1925,9 @@
    <property name="text">
     <string>URL Encode</string>
    </property>
+     <property name="toolTip">
+    <string>Percent-encode selected URL text (RFC 3986)</string>
+   </property>
   </action>
   <action name="actionBase64Decode">
    <property name="text">
@@ -1749,6 +1947,9 @@
    <property name="text">
     <string>URL Decode</string>
    </property>
+     <property name="toolTip">
+    <string>Decode percent-encoded URL text</string>
+   </property>
   </action>
   <action name="actionCopyURL">
    <property name="icon">
@@ -1760,6 +1961,9 @@
    </property>
    <property name="shortcut">
     <string>Alt+Shift+U</string>
+   </property>
+     <property name="toolTip">
+    <string>Copy clicked URL link to clipboard</string>
    </property>
   </action>
   <action name="actionOpenURL">
@@ -1773,6 +1977,9 @@
    <property name="shortcut">
     <string>Alt+U</string>
    </property>
+     <property name="toolTip">
+    <string>Open clicked link in default web browser</string>
+   </property>
   </action>
   <action name="actionToggleURLHighlighting">
    <property name="checkable">
@@ -1781,15 +1988,24 @@
    <property name="text">
     <string>Highlight URLs</string>
    </property>
+     <property name="toolTip">
+    <string>Toggle clickable hyperlink detection and highlighting in editor</string>
+   </property>
   </action>
   <action name="actionRemoveEmptyLines">
    <property name="text">
     <string>Remove Empty Lines</string>
    </property>
+     <property name="toolTip">
+    <string>Remove all blank lines from document buffer</string>
+   </property>
   </action>
   <action name="actionTrimTrailingSpace">
    <property name="text">
     <string>Trim Trailing Space</string>
+   </property>
+     <property name="toolTip">
+    <string>Trim trailing whitespace and tabs from every line in document</string>
    </property>
   </action>
   <action name="actionShowInExplorer">
@@ -1812,6 +2028,9 @@
    <property name="text">
     <string>Open %1 Here</string>
    </property>
+     <property name="toolTip">
+    <string>Open terminal shell in directory containing current file</string>
+   </property>
   </action>
   <action name="actionToggleBookmark">
    <property name="text">
@@ -1819,6 +2038,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+F2</string>
+   </property>
+     <property name="toolTip">
+    <string>Toggle bookmark indicator on current line</string>
    </property>
   </action>
   <action name="actionSearchAndBookmark">
@@ -1828,6 +2050,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+M</string>
    </property>
+     <property name="toolTip">
+    <string>Search for text or regex and bookmark all matching lines</string>
+   </property>
   </action>
   <action name="actionNextBookmark">
    <property name="text">
@@ -1835,6 +2060,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">F2</string>
+   </property>
+     <property name="toolTip">
+    <string>Navigate to next bookmarked line in document</string>
    </property>
   </action>
   <action name="actionPreviousBookmark">
@@ -1844,15 +2072,24 @@
    <property name="shortcut">
     <string notr="true">Shift+F2</string>
    </property>
+     <property name="toolTip">
+    <string>Navigate to previous bookmarked line in document</string>
+   </property>
   </action>
   <action name="actionClearBookmarks">
    <property name="text">
     <string>Clear Bookmarks</string>
    </property>
+     <property name="toolTip">
+    <string>Remove all bookmark indicators from document</string>
+   </property>
   </action>
   <action name="actionInvertBookmarks">
    <property name="text">
     <string>Invert Bookmarks</string>
+   </property>
+     <property name="toolTip">
+    <string>Invert bookmarks across document (bookmark unbookmarked lines and vice versa)</string>
    </property>
   </action>
   <action name="actionNextTab">
@@ -1865,6 +2102,9 @@
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
+     <property name="toolTip">
+    <string>Switch to next document tab</string>
+   </property>
   </action>
   <action name="actionPreviousTab">
    <property name="text">
@@ -1876,6 +2116,9 @@
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
+     <property name="toolTip">
+    <string>Switch to previous document tab</string>
+   </property>
   </action>
   <action name="actionFoldLevel1">
    <property name="text">
@@ -1883,6 +2126,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+1</string>
+   </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 1</string>
    </property>
   </action>
   <action name="actionFoldLevel2">
@@ -1892,6 +2138,9 @@
    <property name="shortcut">
     <string notr="true">Alt+2</string>
    </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 2</string>
+   </property>
   </action>
   <action name="actionFoldLevel3">
    <property name="text">
@@ -1899,6 +2148,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+3</string>
+   </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 3</string>
    </property>
   </action>
   <action name="actionFoldLevel4">
@@ -1908,6 +2160,9 @@
    <property name="shortcut">
     <string notr="true">Alt+4</string>
    </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 4</string>
+   </property>
   </action>
   <action name="actionUnfoldLevel1">
    <property name="text">
@@ -1915,6 +2170,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+Shift+1</string>
+   </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 1</string>
    </property>
   </action>
   <action name="actionUnfoldLevel2">
@@ -1924,6 +2182,9 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+2</string>
    </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 2</string>
+   </property>
   </action>
   <action name="actionUnfoldLevel3">
    <property name="text">
@@ -1931,6 +2192,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+Shift+3</string>
+   </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 3</string>
    </property>
   </action>
   <action name="actionUnfoldLevel4">
@@ -1940,6 +2204,9 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+4</string>
    </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 4</string>
+   </property>
   </action>
   <action name="actionFoldAll">
    <property name="text">
@@ -1947,6 +2214,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+0</string>
+   </property>
+     <property name="toolTip">
+    <string>Fold all code blocks in active document</string>
    </property>
   </action>
   <action name="actionUnfoldAll">
@@ -1956,6 +2226,9 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+0</string>
    </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks in active document</string>
+   </property>
   </action>
   <action name="actionFoldLevel5">
    <property name="text">
@@ -1963,6 +2236,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+5</string>
+   </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 5</string>
    </property>
   </action>
   <action name="actionFoldLevel6">
@@ -1972,6 +2248,9 @@
    <property name="shortcut">
     <string notr="true">Alt+6</string>
    </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 6</string>
+   </property>
   </action>
   <action name="actionFoldLevel7">
    <property name="text">
@@ -1979,6 +2258,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+7</string>
+   </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 7</string>
    </property>
   </action>
   <action name="actionFoldLevel8">
@@ -1988,6 +2270,9 @@
    <property name="shortcut">
     <string notr="true">Alt+8</string>
    </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 8</string>
+   </property>
   </action>
   <action name="actionFoldLevel9">
    <property name="text">
@@ -1995,6 +2280,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+9</string>
+   </property>
+     <property name="toolTip">
+    <string>Fold all code blocks at indentation hierarchy level 9</string>
    </property>
   </action>
   <action name="actionUnfoldLevel5">
@@ -2004,6 +2292,9 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+5</string>
    </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 5</string>
+   </property>
   </action>
   <action name="actionUnfoldLevel6">
    <property name="text">
@@ -2011,6 +2302,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+Shift+6</string>
+   </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 6</string>
    </property>
   </action>
   <action name="actionUnfoldLevel7">
@@ -2020,6 +2314,9 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+7</string>
    </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 7</string>
+   </property>
   </action>
   <action name="actionUnfoldLevel8">
    <property name="text">
@@ -2028,6 +2325,9 @@
    <property name="shortcut">
     <string notr="true">Alt+Shift+8</string>
    </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 8</string>
+   </property>
   </action>
   <action name="actionUnfoldLevel9">
    <property name="text">
@@ -2035,6 +2335,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+Shift+9</string>
+   </property>
+     <property name="toolTip">
+    <string>Unfold all code blocks at indentation hierarchy level 9</string>
    </property>
   </action>
   <action name="actionToggleOverType">
@@ -2069,20 +2372,32 @@
    <property name="text">
     <string>Debug Info...</string>
    </property>
+     <property name="toolTip">
+    <string>Display detailed diagnostic and environment debug metrics</string>
+   </property>
   </action>
   <action name="actionCutBookmarkedLines">
    <property name="text">
     <string>Cut Bookmarked Lines</string>
+   </property>
+     <property name="toolTip">
+    <string>Cut all bookmarked lines to clipboard and remove them</string>
    </property>
   </action>
   <action name="actionCopyBookmarkedLines">
    <property name="text">
     <string>Copy Bookmarked Lines</string>
    </property>
+     <property name="toolTip">
+    <string>Copy all bookmarked lines to clipboard</string>
+   </property>
   </action>
   <action name="actionDeleteBookmarkedLines">
    <property name="text">
     <string>Delete Bookmarked Lines</string>
+   </property>
+     <property name="toolTip">
+    <string>Delete all bookmarked lines from document</string>
    </property>
   </action>
   <action name="actionMarkStyle1">
@@ -2092,6 +2407,9 @@
    <property name="MarkerNumber" stdset="0">
     <number>0</number>
    </property>
+     <property name="toolTip">
+    <string>Highlight all occurrences of selected text with Style 1 indicator</string>
+   </property>
   </action>
   <action name="actionMarkStyle2">
    <property name="text">
@@ -2099,6 +2417,9 @@
    </property>
    <property name="MarkerNumber" stdset="0">
     <number>1</number>
+   </property>
+     <property name="toolTip">
+    <string>Highlight all occurrences of selected text with Style 2 indicator</string>
    </property>
   </action>
   <action name="actionClearStyle1">
@@ -2108,6 +2429,9 @@
    <property name="MarkerNumber" stdset="0">
     <number>0</number>
    </property>
+     <property name="toolTip">
+    <string>Clear all Style 1 highlight indicators from document</string>
+   </property>
   </action>
   <action name="actionClearStyle2">
    <property name="text">
@@ -2115,6 +2439,9 @@
    </property>
    <property name="MarkerNumber" stdset="0">
     <number>1</number>
+   </property>
+     <property name="toolTip">
+    <string>Clear all Style 2 highlight indicators from document</string>
    </property>
   </action>
   <action name="actionMarkStyle3">
@@ -2124,6 +2451,9 @@
    <property name="MarkerNumber" stdset="0">
     <number>2</number>
    </property>
+     <property name="toolTip">
+    <string>Highlight all occurrences of selected text with Style 3 indicator</string>
+   </property>
   </action>
   <action name="actionClearStyle3">
    <property name="text">
@@ -2131,6 +2461,9 @@
    </property>
    <property name="MarkerNumber" stdset="0">
     <number>2</number>
+   </property>
+     <property name="toolTip">
+    <string>Clear all Style 3 highlight indicators from document</string>
    </property>
   </action>
   <action name="actionClearAllStyles">
@@ -2145,45 +2478,72 @@
    <property name="text">
     <string>Remove Duplicate Lines</string>
    </property>
+     <property name="toolTip">
+    <string>Remove duplicate lines across entire document preserving first occurrence</string>
+   </property>
   </action>
   <action name="actionRemoveConsecutiveDuplicateLines">
    <property name="text">
     <string>Remove Consecutive Duplicate Lines</string>
+   </property>
+     <property name="toolTip">
+    <string>Remove consecutive adjacent duplicate lines</string>
    </property>
   </action>
   <action name="actionSortLinesAsc">
    <property name="text">
     <string>Sort Lines Ascending</string>
    </property>
+     <property name="toolTip">
+    <string>Sort selected lines in ascending alphabetical order</string>
+   </property>
   </action>
   <action name="actionSortLinesDesc">
    <property name="text">
     <string>Sort Lines Descending</string>
+   </property>
+     <property name="toolTip">
+    <string>Sort selected lines in descending alphabetical order</string>
    </property>
   </action>
   <action name="actionSortLinesAscCaseInsensitive">
    <property name="text">
     <string>Sort Lines Ascending (Case-Insensitive)</string>
    </property>
+     <property name="toolTip">
+    <string>Sort selected lines in ascending alphabetical order ignoring case</string>
+   </property>
   </action>
   <action name="actionSortLinesDescCaseInsensitive">
    <property name="text">
     <string>Sort Lines Descending (Case-Insensitive)</string>
+   </property>
+     <property name="toolTip">
+    <string>Sort selected lines in descending alphabetical order ignoring case</string>
    </property>
   </action>
   <action name="actionSortLinesbyLengthAsc">
    <property name="text">
     <string>Sort Lines by Length Ascending</string>
    </property>
+     <property name="toolTip">
+    <string>Sort selected lines by string length in ascending order</string>
+   </property>
   </action>
   <action name="actionSortLinesbyLengthDesc">
    <property name="text">
     <string>Sort Lines by Length Descending</string>
    </property>
+     <property name="toolTip">
+    <string>Sort selected lines by string length in descending order</string>
+   </property>
   </action>
   <action name="actionReverseLineOrder">
    <property name="text">
     <string>Reverse Line Order</string>
+   </property>
+     <property name="toolTip">
+    <string>Reverse the order of selected lines or entire document</string>
    </property>
   </action>
   <action name="actionSplitHorizontal">
@@ -2219,6 +2579,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+F3</string>
    </property>
+     <property name="toolTip">
+    <string>Select current word or pattern and find next occurrence</string>
+   </property>
   </action>
   <action name="actionSelectandFindPrevious">
    <property name="icon">
@@ -2230,6 +2593,9 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+F3</string>
+   </property>
+     <property name="toolTip">
+    <string>Select current word or pattern and find previous occurrence</string>
    </property>
   </action>
   <action name="actionMarkAllOccurrences">
@@ -2464,40 +2830,64 @@
    <property name="text">
     <string>JSON Prettify</string>
    </property>
+     <property name="toolTip">
+    <string>Format and beautify JSON markup with indentation</string>
+   </property>
   </action>
   <action name="actionMinifyJson">
    <property name="text">
     <string>JSON Minify</string>
+   </property>
+     <property name="toolTip">
+    <string>Minify JSON markup by removing whitespace</string>
    </property>
   </action>
   <action name="actionFormatJson5">
    <property name="text">
     <string>JSON5 Prettify</string>
    </property>
+     <property name="toolTip">
+    <string>Format and beautify ECMAScript-compatible JSON5 markup</string>
+   </property>
   </action>
   <action name="actionMinifyJson5">
    <property name="text">
     <string>JSON5 Minify</string>
+   </property>
+     <property name="toolTip">
+    <string>Minify JSON5 markup by removing unnecessary formatting</string>
    </property>
   </action>
   <action name="actionFormatCss">
    <property name="text">
     <string>CSS Prettify</string>
    </property>
+     <property name="toolTip">
+    <string>Format and beautify CSS stylesheet rules</string>
+   </property>
   </action>
   <action name="actionMinifyCss">
    <property name="text">
     <string>CSS Minify</string>
+   </property>
+     <property name="toolTip">
+    <string>Minify CSS stylesheet by compressing whitespace</string>
    </property>
   </action>
   <action name="actionFormatJs">
    <property name="text">
     <string>JavaScript Prettify</string>
    </property>
+     <property name="toolTip">
+    <string>Format and beautify JavaScript / TypeScript source code</string>
+   </property>
   </action>
   <action name="actionMinifyJs">
    <property name="text">
     <string>JavaScript Minify</string>
+   </property>
+     <property name="toolTip">
+    <string>Minify JavaScript source code by compressing whitespace</string>
    </property>
   </action>
   <action name="actionEvaluateJsReplace">

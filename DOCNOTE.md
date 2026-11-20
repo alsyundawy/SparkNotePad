@@ -44,7 +44,7 @@ SparkNotePad **v1.5.0** delivers major enhancements across developer tooling, Ma
 
 ---
 
-# SparkNotePad Release DocNote — v1.4.7
+## SparkNotePad Release DocNote — v1.4.7
 
 ```text
 ================================================================================

@@ -92,6 +92,9 @@
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
+     <property name="toolTip">
+    <string>Sort open documents alphabetically by file name</string>
+   </property>
   </action>
  </widget>
  <resources>

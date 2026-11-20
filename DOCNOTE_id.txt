@@ -1,4 +1,76 @@
-# Catatan Rilis SparkNotePad — v1.4.6 (Bahasa Indonesia)
+# Catatan Rilis SparkNotePad — v1.5.0 (Bahasa Indonesia)
+
+--------------------------------------------------------------------------------
+================================================================================
+Versi Rilis          : 1.5.0 (Rangkaian Lengkap Developer Tools [Paritas NotepadMac],
+                       Perombakan Pratinjau Markdown GitHub Primer, Relokasi Menu
+                       Format & Tools, Sakelar Tampilan, Manajemen Window & Penguatan Keamanan)
+Tanggal Rilis        : 2026-11-19
+Pengelola Utama      : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organisasi           : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repositori           : https://github.com/alsyundawy/SparkNotePad
+Mesin Penyunting     : Scintilla 5.6.9 & Lexilla 5.5.5 (129 Lexer Resmi)
+Runtime Skrip        : Sandboxed Lua 5.5.1 & Python 3.13+ Bridge
+Kerangka Kerja GUI   : Qt 6.5 LTS / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platform      : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (x86_64 & ARM64), FreeBSD 13–15
+Lisensi              : GNU General Public License v3.0 (GPL-3.0-or-later)
+================================================================================
+--------------------------------------------------------------------------------
+
+---
+
+## 1. Ringkasan Eksekutif: Perubahan pada v1.5.0
+
+SparkNotePad v1.5.0 menghadirkan ekspansi fitur signifikan dan modernisasi antarmuka menyeluruh:
+
+1. **Rangkaian Lengkap Developer Tools (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+   - Dialog interaktif multi-tab Developer Tools Hub (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) dengan 5 tab fungsional.
+   - Hash Tools: 11 algoritma hash kriptografis (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3, Keccak-256), hashing integritas berkas, dan perbandingan checksum berdampingan.
+   - MIME Tools: Enkode/dekode Base64 baris demi baris, Quoted-Printable (RFC 2045), URL encode/decode, dan HTML entities encode/decode.
+   - Converter Tools: Konverter basis Radiks (Biner, Oktal, Desimal, Heksadesimal), ASCII <-> Heksadesimal, dan konversi huruf (Title Case, Invert Case, Sentence Case).
+   - Encryption Tools: Proteksi Enkripsi Dokumen HTML dengan 3 mode: Injeksi JS escape, Base64 `atob()`, dan Password AES-256-GCM dengan harness runtime dekripsi CryptoJS tertanam.
+   - Developer Tools: Pretty-print dan pemadat (minify) untuk JSON, XML, HTML, CSS, JS; Inspektur Token JWT RFC 7519; pembuat UUID v4; dan konverter Unix Epoch / ISO-8601.
+   - Perombakan total tata letak dan ergonomi dialog `DeveloperToolsDialog`: standarisasi tinggi tombol 32px, tipografi modern, pemisahan kontrol proteksi enkripsi untuk mencegah desak-desakan kolom, grid 5-kolom seimbang untuk formatter/minifier, serta integrasi font sistem native macOS.
+2. **Pratinjau Langsung Markdown Aman GitHub Primer Sempurna**:
+   - Rekayasa ulang engine pratinjau agar sepenuhnya selaras dengan spesifikasi GitHub Markdown CSS (`mjbvz/vscode-github-markdown-preview-style`).
+   - Pembersihan seluruh artefak internal Qt rich text (`-qt-block-indent`, margin bawaan paragraf) dan perbaikan pewarisan warna CSS ke seluruh elemen anak (`p`, `li`, `td`, `th`, `span`, `div`), melenyapkan tuntas masalah teks putih di atas latar putih pada tema terang (`GITHUB`, dll.).
+   - Kontainer blok kode modern GitHub Primer dengan background gelap `#0d1117`, pill header berkas (`#161b22`, border `#30363d`), lencana pill rounded (`#21262d`), tombol salin bersih (`[ ❐ ]` / `[ ⎘ Copy ]`), dan tipografi monospace murni.
+   - Perbaikan sintaks bash strict mode multiline (normalisasi `IFS=$'[\r\n\t ]*'` menjadi `IFS=$'\n\t'`), eliminasi label duplikat `[📋 Salin Perintah / Copy Code Block]`, dll., menjamin skrip bash yang disalin dapat langsung dijalankan di terminal dengan 0 kesalahan sintaks.
+   - Penormal SVG Shields.io otomatis & Canvas Clipping: mengatasi badge bertumpuk dan raksasa dengan normalisasi `font-size="100"` ke 10, pencabutan `transform="scale(.1)"`, penskalaan ulang koordinat textLength, dan pembatasan klip kanvas.
+   - Perbaikan lebar persentase dan relayout gambar tertunda (`performDeferredRelayout()`): menghapus `width="100%"` yang menciutkan gambar ke -2px di Qt, membatasi lebar gambar ke batas viewport (maksimal 850px), serta relayout asynchronous ter-debounce setelah badge/gambar selesai diunduh.
+   - Sinkronisasi Scroll Presisi Sub-Pixel Anchor-Bracketed: menggantikan rasio baris linear dengan interpolasi sub-pixel berbasis kurung anchor (`findAnchorBracket`), melenyapkan drift scroll dan lagging pratinjau sehingga editor dan preview sejajar sempurna.
+   - Ketahanan dokumen masif: divalidasi dan dioptimalkan untuk ratusan ribu baris (misal panduan operasional produksi 6.000+ baris) tanpa lonjakan memori atau batasan render.
+   - Melenyapkan jeda 3,1 detik pada setiap render pratinjau dengan mengganti font tidak tersedia `-apple-system` menjadi standard `'Helvetica Neue', Helvetica, Arial, sans-serif` pada ke-30 tema pratinjau markdown.
+   - Dukungan penuh GitHub Alert Callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
+   - Penghapusan total tombol dan fungsi "Open in Default Browser" di seluruh dock dan widget pratinjau demi keamanan mandiri.
+3. **Restrukturisasi Menu Format & Tools**:
+   - Menu tingkat atas Format untuk Enkoding Karakter dan Konversi Pemisah Baris.
+   - Relokasi Run & Eksekusi Eksternal ke menu `Tools -> Run & External Execution`.
+4. **Peningkatan Sakelar Tampilan & Manajemen Window**:
+   - Kontrol menu Window lengkap dari NotepadMac (Zoom, Tile Left/Right, Bring All to Front, Tab Navigasi).
+   - Sakelar tampilan untuk Nomor Baris, Pelipatan Kode, Garis Panduan Indentasi, Sorotan Baris Kursor, dan Mode Hanya-Baca.
+5. **Pemaketan DMG Ringan & Penguatan Keamanan**:
+   - Penautan static `libcrypto.a` dengan `-Wl,-dead_strip`, menjamin ukuran DMG tetap di rentang 30MB–40MB (~39.2 MB).
+6. **Perbaikan & Modernisasi Sistem Pewarnaan Tab (`TabColorManager` & `DockedEditor`)**:
+   - Rekayasa ulang menyeluruh gaya tab: mengganti styling border lokal yang rapuh dengan stylesheet ADS lengkap yang mempertahankan sudut melengkung (`6px`), gradien latar tema, serta status tab aktif/tidak aktif dan efek tombol tutup.
+   - Garis aksen atas 3px (`border-top: 3px solid <warna>`) dengan tint latar belakang lembut (28% tab aktif, 14% tab tidak aktif).
+   - Dukungan warna untuk berkas baru tanpa judul (`new 1`, `new 2`) dengan migrasi persistensi otomatis saat berkas disimpan atau diubah namanya.
+   - Penambahan pemilih warna interaktif `Warna Kustom...` (`QColorDialog`) dan aksi `Hapus Warna Tab` berikon visual.
+   - Sinkronisasi dinamis terhadap pergantian tema Terang/Gelap tanpa kehilangan konfigurasi warna tab aktif.
+7. **Pemisah Visual Menu Konteks Editor**:
+   - Penambahan pemisah visual khusus antara `Select All` dan `UPPER CASE` / `lowercase` pada menu klik kanan editor Scintilla, memisahkan perintah seleksi global secara ergonomis dari operasi transformasi teks.
+8. **Tata Letak & Tooltip Menyeluruh Dialog Alat Pengembang (Developer Tools Hub)**:
+   - Standardisasi ukuran tombol yang kompak (`font-size: 10px`, `padding: 2px 6px`, `min-height: 24px`, font dasar dialog `9.5pt`) melenyapkan pemotongan teks tombol di seluruh bahasa dan resolusi layar.
+   - Penghapusan pembatasan lebar kaku dan pemecahan baris kontrol utilitas menjadi dua baris berimbang (`rowJwt` dan `rowUuid`).
+   - Penambahan tooltip interaktif informatif (`setToolTip(...)`) pada 100% kontrol dialog tanpa terkecuali (tombol, tab, kolom teks, checkbox, spinbox, dan combobox).
+9. **Penataan Jarak Vertikal & Line-Height Baris Lencana Shields.io**:
+   - Penegakan `line-height: 34px` dan margin proporsional pada paragraf yang memuat lencana/badge Shields.io (seperti pada README SparkleSFTP), melenyapkan tuntas pemotongan vertikal dan tumpang tindih lencana.
+10. **Lokalisasi Penuh Bahasa Indonesia & Inggris (i18n)**:
+   - Cakupan terjemahan 100% tuntas untuk Bahasa Indonesia (`SparkNotePad_id.ts`, 2.347 entri) dan Bahasa Inggris (`SparkNotePad_en.ts`, 2.376 entri) dengan 0 entri unfinished, terkompilasi langsung ke pustaka biner `.qm`.
+
+---
+
+## 2. Arsip Rilis Sebelumnya: v1.4.6
 
 --------------------------------------------------------------------------------
 ================================================================================

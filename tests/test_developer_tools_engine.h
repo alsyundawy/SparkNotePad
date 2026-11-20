@@ -133,7 +133,8 @@ private slots:
         QString errorMsg;
 
         // Mode 1: JS Unescape
-        const QString encJs = DeveloperToolsEngine::encryptHtml(originalHtml, HtmlEncryptMethod::JavascriptEscape, QString(), &errorMsg);
+        const QString encJs =
+            DeveloperToolsEngine::encryptHtml(originalHtml, HtmlEncryptMethod::JavascriptEscape, QString(), &errorMsg);
         QVERIFY(errorMsg.isEmpty());
         QVERIFY(encJs.contains(QStringLiteral("unescape")));
 
@@ -142,7 +143,8 @@ private slots:
         QCOMPARE(decJs, originalHtml);
 
         // Mode 2: Base64
-        const QString encB64 = DeveloperToolsEngine::encryptHtml(originalHtml, HtmlEncryptMethod::Base64, QString(), &errorMsg);
+        const QString encB64 =
+            DeveloperToolsEngine::encryptHtml(originalHtml, HtmlEncryptMethod::Base64, QString(), &errorMsg);
         QVERIFY(errorMsg.isEmpty());
         QVERIFY(encB64.contains(QStringLiteral("atob")));
 
@@ -152,7 +154,8 @@ private slots:
 
         // Mode 3: Password AES-256-GCM
         const QString password = QStringLiteral("SuperSecretPass123!@#");
-        const QString encPass = DeveloperToolsEngine::encryptHtml(originalHtml, HtmlEncryptMethod::PasswordProtected, password, &errorMsg);
+        const QString encPass =
+            DeveloperToolsEngine::encryptHtml(originalHtml, HtmlEncryptMethod::PasswordProtected, password, &errorMsg);
         QVERIFY(errorMsg.isEmpty());
         QVERIFY(encPass.contains(QStringLiteral("crypto.subtle")));
         QVERIFY(encPass.contains(QStringLiteral("SPKENC01:")));
@@ -206,7 +209,8 @@ private slots:
         const QString inverted = DeveloperToolsEngine::toInvertCase(QStringLiteral("SparkNotePad 1.5.0"));
         QCOMPARE(inverted, QStringLiteral("sPARKnOTEpAD 1.5.0"));
 
-        const QString sentence = DeveloperToolsEngine::toSentenceCase(QStringLiteral("hello world. this is spark. cool!"));
+        const QString sentence =
+            DeveloperToolsEngine::toSentenceCase(QStringLiteral("hello world. this is spark. cool!"));
         QCOMPARE(sentence, QStringLiteral("Hello world. This is spark. Cool!"));
     }
 
@@ -215,7 +219,8 @@ private slots:
         QVERIFY(weak.score <= 1);
         QVERIFY(!weak.isStrong);
 
-        const PasswordStrength strong = DeveloperToolsEngine::evaluatePasswordStrength(QStringLiteral("K9#vP2$xL!mQ8@zW"));
+        const PasswordStrength strong =
+            DeveloperToolsEngine::evaluatePasswordStrength(QStringLiteral("K9#vP2$xL!mQ8@zW"));
         QVERIFY(strong.score >= 3);
         QVERIFY(strong.isStrong);
     }

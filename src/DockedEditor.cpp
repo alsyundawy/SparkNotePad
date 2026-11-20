@@ -106,11 +106,10 @@ DockedEditor::DockedEditor(QWidget *parent) : QObject(parent) {
     dockManager = new ads::CDockManager(parent);
     dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
 
-    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this,
-            [this](bool /*isDark*/) {
-                dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
-                refreshAllEditorTabColors();
-            });
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, [this](bool /*isDark*/) {
+        dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
+        refreshAllEditorTabColors();
+    });
     connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, [this](const QString & /*palId*/) {
         dockManager->setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
         refreshAllEditorTabColors();
@@ -347,92 +346,97 @@ void DockedEditor::setEditorTabColor(ScintillaNext *editor, const QColor &color)
 
     const bool isDark = ThemeManager::instance()->isDarkActive();
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
-    const QString cardBg = pal ? QString::fromLatin1(pal->card) : (isDark ? QStringLiteral("#282c34") : QStringLiteral("#ffffff"));
-    const QString borderCol = pal ? QString::fromLatin1(pal->border) : (isDark ? QStringLiteral("#3e4451") : QStringLiteral("#d0d7de"));
-    const QString textPri = pal ? QString::fromLatin1(pal->txtPri) : (isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#24292f"));
-    const QString textSec = pal ? QString::fromLatin1(pal->txtSec) : (isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a"));
+    const QString cardBg =
+        pal ? QString::fromLatin1(pal->card) : (isDark ? QStringLiteral("#282c34") : QStringLiteral("#ffffff"));
+    const QString borderCol =
+        pal ? QString::fromLatin1(pal->border) : (isDark ? QStringLiteral("#3e4451") : QStringLiteral("#d0d7de"));
+    const QString textPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#24292f"));
+    const QString textSec =
+        pal ? QString::fromLatin1(pal->txtSec) : (isDark ? QStringLiteral("#8b949e") : QStringLiteral("#57606a"));
     const QString colorHex = color.name(QColor::HexRgb);
     const int r = color.red();
     const int g = color.green();
     const int b = color.blue();
     const QString iconSuffix = isDark ? QStringLiteral("_dark.svg") : QStringLiteral(".svg");
 
-    const QString style = QStringLiteral(
-        "ads--CDockWidgetTab {"
-        "  background-color: rgba(%1, %2, %3, 0.14);"
-        "  margin-top: 2px;"
-        "  margin-right: 2px;"
-        "  border: 1px solid rgba(%1, %2, %3, 0.35);"
-        "  border-top: 3px solid %4;"
-        "  border-bottom: 1px solid %5;"
-        "  padding: 3px 12px 3px 12px;"
-        "  border-top-left-radius: 6px;"
-        "  border-top-right-radius: 6px;"
-        "}"
-        "ads--CDockWidgetTab ads--CElidingLabel,"
-        "ads--CDockWidgetTab QLabel {"
-        "  color: %6;"
-        "  font-weight: 500;"
-        "}"
-        "ads--CDockWidgetTab:hover[activeTab=\"false\"] {"
-        "  background-color: rgba(%1, %2, %3, 0.24);"
-        "  border: 1px solid rgba(%1, %2, %3, 0.55);"
-        "  border-top: 3px solid %4;"
-        "}"
-        "ads--CDockWidgetTab:hover[activeTab=\"false\"] ads--CElidingLabel,"
-        "ads--CDockWidgetTab:hover[activeTab=\"false\"] QLabel {"
-        "  color: %7;"
-        "}"
-        "ads--CDockWidgetTab[activeTab=\"true\"] {"
-        "  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(%1, %2, %3, 0.28), stop:1 %8);"
-        "  border-left: 1px solid rgba(%1, %2, %3, 0.45);"
-        "  border-right: 1px solid rgba(%1, %2, %3, 0.45);"
-        "  border-top: 3px solid %4;"
-        "  border-bottom: 1px solid %8;"
-        "  padding-bottom: 5px;"
-        "  margin-top: 0px;"
-        "}"
-        "ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel,"
-        "ads--CDockWidgetTab[activeTab=\"true\"] QLabel {"
-        "  color: %7;"
-        "  font-weight: 600;"
-        "}"
-        "ads--CDockWidgetTab[activeTab=\"true\"][focused=\"true\"],"
-        "ads--CDockWidgetTab[focused=\"true\"] {"
-        "  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(%1, %2, %3, 0.36), stop:1 %8);"
-        "  border-left: 1px solid rgba(%1, %2, %3, 0.60);"
-        "  border-right: 1px solid rgba(%1, %2, %3, 0.60);"
-        "  border-top: 3px solid %4;"
-        "  border-bottom: 1px solid %8;"
-        "  padding-bottom: 5px;"
-        "  margin-top: 0px;"
-        "}"
-        "ads--CDockWidgetTab[activeTab=\"true\"][focused=\"true\"] ads--CElidingLabel,"
-        "ads--CDockWidgetTab[activeTab=\"true\"][focused=\"true\"] QLabel,"
-        "ads--CDockWidgetTab[focused=\"true\"] ads--CElidingLabel,"
-        "ads--CDockWidgetTab[focused=\"true\"] QLabel {"
-        "  color: %7;"
-        "  font-weight: 600;"
-        "}"
-        "#tabCloseButton {"
-        "  background: transparent;"
-        "  margin-bottom: 1px;"
-        "  margin-left: 6px;"
-        "  border: none;"
-        "  padding: 0px;"
-        "  qproperty-icon: url(:/ads/images/close-button%9);"
-        "  qproperty-iconSize: 14px;"
-        "}"
-        "#tabCloseButton:hover {"
-        "  background-color: rgba(235, 87, 87, 0.25);"
-        "  border-radius: 3px;"
-        "}"
-        "#tabCloseButton:pressed {"
-        "  background-color: rgba(235, 87, 87, 0.50);"
-        "  border-radius: 3px;"
-        "}"
-    ).arg(QString::number(r), QString::number(g), QString::number(b), colorHex, borderCol)
-     .arg(textSec, textPri, cardBg, iconSuffix);
+    const QString style =
+        QStringLiteral(
+            "ads--CDockWidgetTab {"
+            "  background-color: rgba(%1, %2, %3, 0.14);"
+            "  margin-top: 2px;"
+            "  margin-right: 2px;"
+            "  border: 1px solid rgba(%1, %2, %3, 0.35);"
+            "  border-top: 3px solid %4;"
+            "  border-bottom: 1px solid %5;"
+            "  padding: 3px 12px 3px 12px;"
+            "  border-top-left-radius: 6px;"
+            "  border-top-right-radius: 6px;"
+            "}"
+            "ads--CDockWidgetTab ads--CElidingLabel,"
+            "ads--CDockWidgetTab QLabel {"
+            "  color: %6;"
+            "  font-weight: 500;"
+            "}"
+            "ads--CDockWidgetTab:hover[activeTab=\"false\"] {"
+            "  background-color: rgba(%1, %2, %3, 0.24);"
+            "  border: 1px solid rgba(%1, %2, %3, 0.55);"
+            "  border-top: 3px solid %4;"
+            "}"
+            "ads--CDockWidgetTab:hover[activeTab=\"false\"] ads--CElidingLabel,"
+            "ads--CDockWidgetTab:hover[activeTab=\"false\"] QLabel {"
+            "  color: %7;"
+            "}"
+            "ads--CDockWidgetTab[activeTab=\"true\"] {"
+            "  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(%1, %2, %3, 0.28), stop:1 %8);"
+            "  border-left: 1px solid rgba(%1, %2, %3, 0.45);"
+            "  border-right: 1px solid rgba(%1, %2, %3, 0.45);"
+            "  border-top: 3px solid %4;"
+            "  border-bottom: 1px solid %8;"
+            "  padding-bottom: 5px;"
+            "  margin-top: 0px;"
+            "}"
+            "ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel,"
+            "ads--CDockWidgetTab[activeTab=\"true\"] QLabel {"
+            "  color: %7;"
+            "  font-weight: 600;"
+            "}"
+            "ads--CDockWidgetTab[activeTab=\"true\"][focused=\"true\"],"
+            "ads--CDockWidgetTab[focused=\"true\"] {"
+            "  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(%1, %2, %3, 0.36), stop:1 %8);"
+            "  border-left: 1px solid rgba(%1, %2, %3, 0.60);"
+            "  border-right: 1px solid rgba(%1, %2, %3, 0.60);"
+            "  border-top: 3px solid %4;"
+            "  border-bottom: 1px solid %8;"
+            "  padding-bottom: 5px;"
+            "  margin-top: 0px;"
+            "}"
+            "ads--CDockWidgetTab[activeTab=\"true\"][focused=\"true\"] ads--CElidingLabel,"
+            "ads--CDockWidgetTab[activeTab=\"true\"][focused=\"true\"] QLabel,"
+            "ads--CDockWidgetTab[focused=\"true\"] ads--CElidingLabel,"
+            "ads--CDockWidgetTab[focused=\"true\"] QLabel {"
+            "  color: %7;"
+            "  font-weight: 600;"
+            "}"
+            "#tabCloseButton {"
+            "  background: transparent;"
+            "  margin-bottom: 1px;"
+            "  margin-left: 6px;"
+            "  border: none;"
+            "  padding: 0px;"
+            "  qproperty-icon: url(:/ads/images/close-button%9);"
+            "  qproperty-iconSize: 14px;"
+            "}"
+            "#tabCloseButton:hover {"
+            "  background-color: rgba(235, 87, 87, 0.25);"
+            "  border-radius: 3px;"
+            "}"
+            "#tabCloseButton:pressed {"
+            "  background-color: rgba(235, 87, 87, 0.50);"
+            "  border-radius: 3px;"
+            "}")
+            .arg(QString::number(r), QString::number(g), QString::number(b), colorHex, borderCol)
+            .arg(textSec, textPri, cardBg, iconSuffix);
 
     dockWidget->tabWidget()->setStyleSheet(style);
 }

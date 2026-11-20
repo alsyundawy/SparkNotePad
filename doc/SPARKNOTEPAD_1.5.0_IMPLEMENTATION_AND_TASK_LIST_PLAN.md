@@ -42,25 +42,25 @@ Berdasarkan investigasi mendalam terhadap sumber primer internasional (Scintilla
 
 ## 2. Matriks Analisis Keamanan Siber & CVE Komprehensif (2025–2026)
 
-| Komponen / Editor | CVE / Advisory | Versi Terdampak / Fixed | Keparahan & CVSS | CWE | Akar Masalah (Root Cause) | Eksploitabilitas & Vektor | Dampak | Patch / Commit | Platform | Relevansi SparkNotePad |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Notepad++** | CVE-2025-15556 | < 8.8.9 / 8.8.9+ | High (7.7) | CWE-494, CWE-347 | Updater WinGUp tidak memvalidasi tanda tangan digital (XMLDSig) metadata dan biner rilis | Jaringan MITM / DNS Hijacking / Supply Chain | Eksekusi Kode Jarak Jauh (RCE) | Commit `e4d7b21` enforce XMLDSig | Windows | **KRITIKAL**: Modul auto-updater `UpdateChecker.cpp` wajib verifikasi SHA-256 & GPG signature |
-| **Notepad++** | CVE-2026-48800 | < 8.9.6.1 / 8.9.6.1 | High (8.4) | CWE-20, CWE-94 | Parsing `<Command>` di `shortcuts.xml` tanpa validasi; dilempar mentah ke `ShellExecute` via `RunDlg.cpp` | File lokal tidak tepercaya / Phishing konfigurasi | Arbitrary Code Execution (ACE) | `isInTrustedDirectory()` added di `Command::run()` | Windows | **TINGGI**: Validasi ketat seluruh command eksternal di `ExternalToolManager` |
-| **Notepad++** | CVE-2026-52884 | 8.9.6.1 / 8.9.6.2 | High (7.8) | CWE-22, CWE-42 | `isInTrustedDirectory()` memakai prefix-match tanpa kanonisasi; bypass via `..\..\` | Path Traversal via custom run command | Security Control Bypass / ACE | Kanonisasi mutlak path sebelum prefix matching | Windows / Cross | **KRITIKAL**: Wajib terapkan `QFileInfo::canonicalFilePath()` sebelum verifikasi direktori aman |
-| **Notepad++** | CVE-2025-49144 | <= 8.8.1 / 8.8.2 | Medium (6.8) | CWE-426 | Pemuatan library DLL tanpa absolute path pada installer / binary planting | Lokal / Drop file di folder Downloads | Local Privilege Escalation (LPE) | Strict search path & `SetDefaultDllDirectories` | Windows | **SEDANG**: macOS dylib loading menggunakan rpath terisolasi `@executable_path/../Frameworks` |
-| **Notepad++** | CVE-2025-56383 | <= 8.8.4 / 8.8.5 | High (7.2) | CWE-276 | Folder plugin memiliki izin tulis lemah; penggantian plugin berbahaya | Lokal / Write access ke plugin dir | Arbitrary Code Execution | Enforce strict ACL `0755` & SHA-256 manifest | Windows / Linux | **TINGGI**: Folder plugin SparkNotePad wajib read-only bagi user biasa |
-| **Notepad++** | CVE-2026-3008 | < 8.9.4 / 8.9.4 | Medium (6.5) | CWE-134 | Format string injection pada pemformatan string status bar dan dialog logging | Input teks dengan format specifier (`%n`, `%s`) | Application Crash / DoS / Info Leak | Sanitasi format string, gunakan `%s` eksplisit | Windows / Cross | **TINGGI**: Hindari evaluasi dinamis pada `showMessage()` dan `statusLabel` |
-| **Notepad3** | CVE-2026-38972 | <= 6.25.822.1 / 6.25.823.1 | High (7.8) | CWE-426 | About dialog memanggil `LoadLibrary(L"MSFTEDIT.DLL")` dengan bare filename | DLL Search-Order Hijacking saat buka About | Arbitrary Code Execution (ACE) | Gunakan absolute system directory & search flags | Windows | **SEDANG**: macOS framework/bundle loading aman, tapi plugin dynamic load wajib absolute path |
-| **Notepad3** | CVE-2026-4744 | < 6.25.714.1 / 6.25.714.1 | High (8.8) | CWE-122 | Heap buffer overflow di bundled Oniguruma regex (`compile_string_node()`) | Crafted regex pattern di dialog pencarian | Heap Corruption / Potensial RCE | Update regex engine ke versi patched | Windows / Cross | **TINGGI**: Gunakan engine bawaan `QRegularExpression` dengan `setMatchTimeLimit()` |
-| **Windows Notepad** | CVE-2026-20841 | Windows 11 Build < Feb 2026 | High (8.8) | CWE-78, CWE-20 | Penanganan URI skema Markdown tanpa allowlist; mengeksekusi skema arbitrary | Klik tautan di Markdown preview dialog | Remote Code Execution (RCE) | Strict URI scheme allowlist (`http`, `https`) | Windows / Cross | **KRITIKAL**: `MarkdownSafePreviewDock.cpp` wajib tolak skema non-web dan file biner eksekusi |
-| **Sublime Text** | CVE-2026-7006 | Build <= 4192 / 4193 | High (7.5) | CWE-379, CWE-732 | Direktori staging update di `%LOCALAPPDATA%` dapat ditanami DLL read-only | Local DLL hijacking pada proses updater | Local Privilege Escalation (LPE) | Restrictive ACLs & atomic staging wipe | Windows | **SEDANG**: macOS staging update menggunakan temporary direktori terisolasi `0700` |
-| **BBEdit** | CVE-2026-82605 | < 16.0 / 16.0 | Medium (5.3) | CWE-835 | Infinite loop pada Lasso Language Tokenizer parsing component | Membuka berkas Lasso berstruktur khusus | Denial of Service (Application Hang) | Bounded loop iteration & max-step guard | macOS | **SEDANG**: Setiap custom token parser wajib memiliki batas iterasi maksimal |
-| **Qt 6 Framework** | CVE-2026-105925 | Qt 6.5–6.12 / 6.12.1+ | High (7.5) | CWE-400, CWE-674 | Rekursi tak terkontrol dan memory exhaustion pada `QXmlStreamReader` | Dokumen XML bersarang ekstrem / Entity Expansion | Denial of Service (OOM Crash) | Batasi ukuran XML 16MB & nonaktifkan DTD eksternal | Cross-Platform | **KRITIKAL**: Terapkan batas ukuran 16MB pada konfigurasi sesi dan import file |
-| **Qt 6 Framework** | CVE-2025-14576 | Qt 6.8.0–6.8.6 / 6.8.7+ | High (7.5) | CWE-94, CWE-20 | Node ID pada file SVG tidak divalidasi; memicu injeksi QML/JS di `VectorImage` | Memuat ikon SVG berbahaya dari luar | Local Information Disclosure / Injeksi | Sanitasi ketat node ID pada SVG parser | Cross-Platform | **KRITIKAL**: `SvgIconRenderer` wajib memvalidasi struktur SVG icon pack |
-| **Scintilla** | Bug Regression | 5.6.8 / 5.6.9 | Medium (4.5) | CWE-704 | Regresi pemetaan warna XPM; warna ikon margin terbalik | Membuka file dengan margin XPM | UI Display Glitch / Anomali Visual | Perbaikan mapping RGB XPM di Scintilla 5.6.9 | Cross-Platform | **TINGGI**: Update Scintilla core ke 5.6.9 untuk menjamin tampilan ikon margin sempurna |
-| **Lexilla** | Issue #388 | 5.5.4 / 5.5.5 | Medium (5.5) | CWE-476 | Crash saat parsing preprocessor macro C++ yang tidak lengkap | Mengetik makro C++ tidak lengkap di editor | Application Crash (Null Pointer Deref) | Patch batas state token C++ preprocessor | Cross-Platform | **TINGGI**: Update Lexilla lexer ke 5.5.5 untuk stabilitas pengetikan kode C++ |
-| **Lua** | CVE-2026-42214 | 5.4–5.5.0 / 5.5.1 | High (7.8) | CWE-94, CWE-265 | Akses pustaka OS/IO dan manipulasi debug environment | Eksekusi skrip Lua tanpa isolasi sandbox | Arbitrary System Command Execution | Strip pustaka `os`, `io`, `debug`; sandboxing | Cross-Platform | **KRITIKAL**: Isolasi total lingkungan Lua di `LuaState.cpp` |
-| **Notepad--** | cxasm/notepad-- | v3.9.1 / v3.9.2 (2026) | N/A (Feature) | N/A | Penanganan file besar multi-GB dan deteksi encoding CJK GB18030 | Buka file log masif / encoding legacy | Buffer Thrashing / Freeze | Streamed chunk loading & uchardet tuning | Win/Linux/macOS | **TINGGI**: Terapkan optimasi pembacaan chunk bertahap untuk file >500MB |
+| Komponen / Editor   | CVE / Advisory  | Versi Terdampak / Fixed     | Keparahan & CVSS | CWE              | Akar Masalah (Root Cause)                                                                                 | Eksploitabilitas & Vektor                         | Dampak                                 | Patch / Commit                                     | Platform        | Relevansi SparkNotePad                                                                          |
+| :------------------ | :-------------- | :-------------------------- | :--------------- | :--------------- | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------ | :------------------------------------- | :------------------------------------------------- | :-------------- | :---------------------------------------------------------------------------------------------- |
+| **Notepad++**       | CVE-2025-15556  | < 8.8.9 / 8.8.9+            | High (7.7)       | CWE-494, CWE-347 | Updater WinGUp tidak memvalidasi tanda tangan digital (XMLDSig) metadata dan biner rilis                  | Jaringan MITM / DNS Hijacking / Supply Chain      | Eksekusi Kode Jarak Jauh (RCE)         | Commit `e4d7b21` enforce XMLDSig                   | Windows         | **KRITIKAL**: Modul auto-updater `UpdateChecker.cpp` wajib verifikasi SHA-256 & GPG signature   |
+| **Notepad++**       | CVE-2026-48800  | < 8.9.6.1 / 8.9.6.1         | High (8.4)       | CWE-20, CWE-94   | Parsing `<Command>` di `shortcuts.xml` tanpa validasi; dilempar mentah ke `ShellExecute` via `RunDlg.cpp` | File lokal tidak tepercaya / Phishing konfigurasi | Arbitrary Code Execution (ACE)         | `isInTrustedDirectory()` added di `Command::run()` | Windows         | **TINGGI**: Validasi ketat seluruh command eksternal di `ExternalToolManager`                   |
+| **Notepad++**       | CVE-2026-52884  | 8.9.6.1 / 8.9.6.2           | High (7.8)       | CWE-22, CWE-42   | `isInTrustedDirectory()` memakai prefix-match tanpa kanonisasi; bypass via `..\..\`                       | Path Traversal via custom run command             | Security Control Bypass / ACE          | Kanonisasi mutlak path sebelum prefix matching     | Windows / Cross | **KRITIKAL**: Wajib terapkan `QFileInfo::canonicalFilePath()` sebelum verifikasi direktori aman |
+| **Notepad++**       | CVE-2025-49144  | <= 8.8.1 / 8.8.2            | Medium (6.8)     | CWE-426          | Pemuatan library DLL tanpa absolute path pada installer / binary planting                                 | Lokal / Drop file di folder Downloads             | Local Privilege Escalation (LPE)       | Strict search path & `SetDefaultDllDirectories`    | Windows         | **SEDANG**: macOS dylib loading menggunakan rpath terisolasi `@executable_path/../Frameworks`   |
+| **Notepad++**       | CVE-2025-56383  | <= 8.8.4 / 8.8.5            | High (7.2)       | CWE-276          | Folder plugin memiliki izin tulis lemah; penggantian plugin berbahaya                                     | Lokal / Write access ke plugin dir                | Arbitrary Code Execution               | Enforce strict ACL `0755` & SHA-256 manifest       | Windows / Linux | **TINGGI**: Folder plugin SparkNotePad wajib read-only bagi user biasa                          |
+| **Notepad++**       | CVE-2026-3008   | < 8.9.4 / 8.9.4             | Medium (6.5)     | CWE-134          | Format string injection pada pemformatan string status bar dan dialog logging                             | Input teks dengan format specifier (`%n`, `%s`)   | Application Crash / DoS / Info Leak    | Sanitasi format string, gunakan `%s` eksplisit     | Windows / Cross | **TINGGI**: Hindari evaluasi dinamis pada `showMessage()` dan `statusLabel`                     |
+| **Notepad3**        | CVE-2026-38972  | <= 6.25.822.1 / 6.25.823.1  | High (7.8)       | CWE-426          | About dialog memanggil `LoadLibrary(L"MSFTEDIT.DLL")` dengan bare filename                                | DLL Search-Order Hijacking saat buka About        | Arbitrary Code Execution (ACE)         | Gunakan absolute system directory & search flags   | Windows         | **SEDANG**: macOS framework/bundle loading aman, tapi plugin dynamic load wajib absolute path   |
+| **Notepad3**        | CVE-2026-4744   | < 6.25.714.1 / 6.25.714.1   | High (8.8)       | CWE-122          | Heap buffer overflow di bundled Oniguruma regex (`compile_string_node()`)                                 | Crafted regex pattern di dialog pencarian         | Heap Corruption / Potensial RCE        | Update regex engine ke versi patched               | Windows / Cross | **TINGGI**: Gunakan engine bawaan `QRegularExpression` dengan `setMatchTimeLimit()`             |
+| **Windows Notepad** | CVE-2026-20841  | Windows 11 Build < Feb 2026 | High (8.8)       | CWE-78, CWE-20   | Penanganan URI skema Markdown tanpa allowlist; mengeksekusi skema arbitrary                               | Klik tautan di Markdown preview dialog            | Remote Code Execution (RCE)            | Strict URI scheme allowlist (`http`, `https`)      | Windows / Cross | **KRITIKAL**: `MarkdownSafePreviewDock.cpp` wajib tolak skema non-web dan file biner eksekusi   |
+| **Sublime Text**    | CVE-2026-7006   | Build <= 4192 / 4193        | High (7.5)       | CWE-379, CWE-732 | Direktori staging update di `%LOCALAPPDATA%` dapat ditanami DLL read-only                                 | Local DLL hijacking pada proses updater           | Local Privilege Escalation (LPE)       | Restrictive ACLs & atomic staging wipe             | Windows         | **SEDANG**: macOS staging update menggunakan temporary direktori terisolasi `0700`              |
+| **BBEdit**          | CVE-2026-82605  | < 16.0 / 16.0               | Medium (5.3)     | CWE-835          | Infinite loop pada Lasso Language Tokenizer parsing component                                             | Membuka berkas Lasso berstruktur khusus           | Denial of Service (Application Hang)   | Bounded loop iteration & max-step guard            | macOS           | **SEDANG**: Setiap custom token parser wajib memiliki batas iterasi maksimal                    |
+| **Qt 6 Framework**  | CVE-2026-105925 | Qt 6.5–6.12 / 6.12.1+       | High (7.5)       | CWE-400, CWE-674 | Rekursi tak terkontrol dan memory exhaustion pada `QXmlStreamReader`                                      | Dokumen XML bersarang ekstrem / Entity Expansion  | Denial of Service (OOM Crash)          | Batasi ukuran XML 16MB & nonaktifkan DTD eksternal | Cross-Platform  | **KRITIKAL**: Terapkan batas ukuran 16MB pada konfigurasi sesi dan import file                  |
+| **Qt 6 Framework**  | CVE-2025-14576  | Qt 6.8.0–6.8.6 / 6.8.7+     | High (7.5)       | CWE-94, CWE-20   | Node ID pada file SVG tidak divalidasi; memicu injeksi QML/JS di `VectorImage`                            | Memuat ikon SVG berbahaya dari luar               | Local Information Disclosure / Injeksi | Sanitasi ketat node ID pada SVG parser             | Cross-Platform  | **KRITIKAL**: `SvgIconRenderer` wajib memvalidasi struktur SVG icon pack                        |
+| **Scintilla**       | Bug Regression  | 5.6.8 / 5.6.9               | Medium (4.5)     | CWE-704          | Regresi pemetaan warna XPM; warna ikon margin terbalik                                                    | Membuka file dengan margin XPM                    | UI Display Glitch / Anomali Visual     | Perbaikan mapping RGB XPM di Scintilla 5.6.9       | Cross-Platform  | **TINGGI**: Update Scintilla core ke 5.6.9 untuk menjamin tampilan ikon margin sempurna         |
+| **Lexilla**         | Issue #388      | 5.5.4 / 5.5.5               | Medium (5.5)     | CWE-476          | Crash saat parsing preprocessor macro C++ yang tidak lengkap                                              | Mengetik makro C++ tidak lengkap di editor        | Application Crash (Null Pointer Deref) | Patch batas state token C++ preprocessor           | Cross-Platform  | **TINGGI**: Update Lexilla lexer ke 5.5.5 untuk stabilitas pengetikan kode C++                  |
+| **Lua**             | CVE-2026-42214  | 5.4–5.5.0 / 5.5.1           | High (7.8)       | CWE-94, CWE-265  | Akses pustaka OS/IO dan manipulasi debug environment                                                      | Eksekusi skrip Lua tanpa isolasi sandbox          | Arbitrary System Command Execution     | Strip pustaka `os`, `io`, `debug`; sandboxing      | Cross-Platform  | **KRITIKAL**: Isolasi total lingkungan Lua di `LuaState.cpp`                                    |
+| **Notepad--**       | cxasm/notepad-- | v3.9.1 / v3.9.2 (2026)      | N/A (Feature)    | N/A              | Penanganan file besar multi-GB dan deteksi encoding CJK GB18030                                           | Buka file log masif / encoding legacy             | Buffer Thrashing / Freeze              | Streamed chunk loading & uchardet tuning           | Win/Linux/macOS | **TINGGI**: Terapkan optimasi pembacaan chunk bertahap untuk file >500MB                        |
 
 ---
 
@@ -218,31 +218,31 @@ graph TD
   - `/Users/alsyundawy/Downloads/SparkNotePad-Default-Editor-Linux.sh` (Linux 5-layer takeover).
 - **Rancangan Pembaruan Menu Window**:
   1. **Aksi Native Window**:
-     - *Minimize* (`Cmd+M` pada macOS / `Alt+F9` pada Linux): Menyembunyikan jendela ke Dock.
-     - *Zoom*: Toggle maximize/normal jendela native macOS.
-     - *Center Window on Screen* (`Cmd+Option+C` / `Ctrl+Alt+C`): Memposisikan jendela tepat di tengah layar aktif.
-     - *Move to Next/Previous Screen* (`Cmd+Option+Right/Left`): Memindahkan jendela antar monitor fisik dengan kalkulasi DPI akurat.
-     - *Bring All to Front*: Membawa seluruh jendela aplikasi ke lapisan terdepan.
+     - _Minimize_ (`Cmd+M` pada macOS / `Alt+F9` pada Linux): Menyembunyikan jendela ke Dock.
+     - _Zoom_: Toggle maximize/normal jendela native macOS.
+     - _Center Window on Screen_ (`Cmd+Option+C` / `Ctrl+Alt+C`): Memposisikan jendela tepat di tengah layar aktif.
+     - _Move to Next/Previous Screen_ (`Cmd+Option+Right/Left`): Memindahkan jendela antar monitor fisik dengan kalkulasi DPI akurat.
+     - _Bring All to Front_: Membawa seluruh jendela aplikasi ke lapisan terdepan.
   2. **Navigasi Tab Cepat**:
-     - *Next Document / Tab* (`Ctrl+Tab` atau `Cmd+Shift+]`).
-     - *Previous Document / Tab* (`Ctrl+Shift+Tab` atau `Cmd+Shift+[`).
-     - *Focus Editor* (`Ctrl+Alt+Shift+F`).
+     - _Next Document / Tab_ (`Ctrl+Tab` atau `Cmd+Shift+]`).
+     - _Previous Document / Tab_ (`Ctrl+Shift+Tab` atau `Cmd+Shift+[`).
+     - _Focus Editor_ (`Ctrl+Alt+Shift+F`).
   3. **Daftar Dokumen Dinamis**:
      - Menghasilkan daftar seluruh tab terbuka secara dinamis di Menu Window dengan penanda berkas belum disimpan (`*`) dan centang (`✓`) pada tab aktif, memungkinkan peralihan 1-klik langsung dari menu bar native macOS.
 - **Rancangan Pembaruan Menu Toggle pada View**:
-  1. *Toggle Line Numbers* (`Cmd+Option+L`): Mengaktifkan/menonaktifkan margin nomor baris Scintilla.
-  2. *Toggle Code Folding* (`Cmd+Option+F`): Mengaktifkan/menonaktifkan margin pelipatan kode.
-  3. *Toggle White Space & EOL* (`Cmd+Option+W`): Menampilkan/menyembunyikan simbol whitespace dan end-of-line (`CRLF`/`LF`).
-  4. *Toggle Indentation Guides* (`Cmd+Option+I`): Menampilkan/menyembunyikan garis panduan indentasi visual.
-  5. *Toggle Caret Line Highlight* (`Cmd+Option+H`): Penyorotan latar belakang baris aktif tempat kursor berada.
-  6. *Toggle Column Marker / Edge Guide* (`Cmd+Option+E`): Garis batas kolom vertikal (80/120 karakter).
-  7. *Toggle Word Wrap* (`Cmd+Option+Z`): Sinkronisasi pembungkusan teks dengan tombol toolbar dan label status bar.
-  8. *Toggle Read-Only Mode* (`Cmd+Option+R`): Mengunci buffer editor dari pengetikan tidak sengaja.
-  9. *Zoom Controls*: Zoom In (`Cmd++`), Zoom Out (`Cmd+-`), Reset Zoom (`Cmd+0`).
+  1. _Toggle Line Numbers_ (`Cmd+Option+L`): Mengaktifkan/menonaktifkan margin nomor baris Scintilla.
+  2. _Toggle Code Folding_ (`Cmd+Option+F`): Mengaktifkan/menonaktifkan margin pelipatan kode.
+  3. _Toggle White Space & EOL_ (`Cmd+Option+W`): Menampilkan/menyembunyikan simbol whitespace dan end-of-line (`CRLF`/`LF`).
+  4. _Toggle Indentation Guides_ (`Cmd+Option+I`): Menampilkan/menyembunyikan garis panduan indentasi visual.
+  5. _Toggle Caret Line Highlight_ (`Cmd+Option+H`): Penyorotan latar belakang baris aktif tempat kursor berada.
+  6. _Toggle Column Marker / Edge Guide_ (`Cmd+Option+E`): Garis batas kolom vertikal (80/120 karakter).
+  7. _Toggle Word Wrap_ (`Cmd+Option+Z`): Sinkronisasi pembungkusan teks dengan tombol toolbar dan label status bar.
+  8. _Toggle Read-Only Mode_ (`Cmd+Option+R`): Mengunci buffer editor dari pengetikan tidak sengaja.
+  9. _Zoom Controls_: Zoom In (`Cmd++`), Zoom Out (`Cmd+-`), Reset Zoom (`Cmd+0`).
 - **Relokasi Menu Encoding & Run (Pembersihan Menu Bar)**:
-  1. *Relokasi Encoding*: Memindahkan `menuEncodings` dari menu bar top-level menjadi sub-menu terorganisir di bawah menu `Format`: `Format -> File Encoding` dan `Format -> Line Endings` (mengadopsi struktur `NotepadMac`).
-  2. *Relokasi Run*: Memindahkan `menuRun` dari menu bar top-level menjadi sub-menu di bawah menu `Tools`: `Tools -> Run...` (`F6`), `Tools -> Run in Terminal`, `Tools -> Open Terminal Here`, dan `Tools -> Reveal in Finder`. Menghilangkan ketergantungan pada browser web eksternal.
-  3. *Manfaat UX*: Mencegah kepenuhan menu bar horizontal di macOS yang berpotensi terpotong oleh notch layar atau status bar Apple.
+  1. _Relokasi Encoding_: Memindahkan `menuEncodings` dari menu bar top-level menjadi sub-menu terorganisir di bawah menu `Format`: `Format -> File Encoding` dan `Format -> Line Endings` (mengadopsi struktur `NotepadMac`).
+  2. _Relokasi Run_: Memindahkan `menuRun` dari menu bar top-level menjadi sub-menu di bawah menu `Tools`: `Tools -> Run...` (`F6`), `Tools -> Run in Terminal`, `Tools -> Open Terminal Here`, dan `Tools -> Reveal in Finder`. Menghilangkan ketergantungan pada browser web eksternal.
+  3. _Manfaat UX_: Mencegah kepenuhan menu bar horizontal di macOS yang berpotensi terpotong oleh notch layar atau status bar Apple.
 - **Standardisasi Sistem Shortcut Global**:
   1. Harmonisasi modifier key `Cmd` pada macOS vs `Ctrl` pada Linux/Windows.
   2. Eliminasi konflik penekanan tombol ganda di `ShortcutCustomizerDialog`.
@@ -253,21 +253,21 @@ graph TD
 
 ### Milestone 10: 2025–2026 CVE/GHSA Threat Mitigation & Hardening
 
-| Identifikasi CVE | Kerentanan & Vektor | Mitigasi Ketat SparkNotePad v1.5.0 |
-| :--- | :--- | :--- |
-| **CVE-2025-15556** | WinGUp / Notepad++ supply-chain update hijacking | Validasi tanda tangan digital XMLDSig/GPG & HTTPS pinning pada update metadata |
-| **CVE-2025-49144** | Notepad++ installer local privilege escalation | Eksekusi biner menggunakan absolute path terverifikasi & environment terisolasi |
-| **CVE-2025-56383** | Notepad++ plugin directory abuse / code execution | Izin folder plugin baca-saja (`0755`) & verifikasi SHA-256 dynamic library sebelum dimuat |
-| **CVE-2026-3008** | Notepad++ string injection vulnerability | Sanitasi format string status bar & logging (`%s`) tanpa evaluasi format dinamis |
-| **CVE-2026-48800** | Notepad++ config handling arbitrary code execution | Penulisan konfigurasi atomik ke berkas temporer `.tmp` dengan izin `0600` |
-| **CVE-2026-52884** | Notepad++ custom command path traversal bypass | Kanonisasi ketat `canonicalFilePath()` sebelum pemeriksaan direktori tepercaya |
-| **CVE-2026-20841** | Text editor Markdown URI handler RCE | Filter URL allowlist: hanya izinkan `http:`, `https:`, `data:`, jalur gambar lokal |
-| **CVE-2026-105925** | Qt XML Entity Expansion / DoS | Batasi ukuran dokumen XML maksimal 16MB & nonaktifkan external DTDs di `QXmlStreamReader` |
-| **CVE-2026-8168** | Qt SVG recursion stack overflow | Batasi kedalaman nested tag `<use>` dan grup SVG maksimal 16 level di `SvgIconRenderer` |
-| **CVE-2026-5525** | Drag & Drop stack buffer overflow | Gunakan alokasi dinamis aman `QUrl` tanpa buffer array statis |
-| **CVE-2026-57233** | Zip-Slip / Path Traversal | Kanonisasi ketat `canonicalFilePath()` dalam sandbox root |
-| **CVE-2026-7006** | Sublime Text update staging DLL planting LPE | Isolasi direktori staging dengan restrictive ACLs & pembersihan atomik berkas staging |
-| **CVE-2026-82605** | BBEdit Lasso tokenizer infinite loop DoS | Bounded step counters pada setiap loop pemindaian token parser kustom |
+| Identifikasi CVE    | Kerentanan & Vektor                                | Mitigasi Ketat SparkNotePad v1.5.0                                                        |
+| :------------------ | :------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| **CVE-2025-15556**  | WinGUp / Notepad++ supply-chain update hijacking   | Validasi tanda tangan digital XMLDSig/GPG & HTTPS pinning pada update metadata            |
+| **CVE-2025-49144**  | Notepad++ installer local privilege escalation     | Eksekusi biner menggunakan absolute path terverifikasi & environment terisolasi           |
+| **CVE-2025-56383**  | Notepad++ plugin directory abuse / code execution  | Izin folder plugin baca-saja (`0755`) & verifikasi SHA-256 dynamic library sebelum dimuat |
+| **CVE-2026-3008**   | Notepad++ string injection vulnerability           | Sanitasi format string status bar & logging (`%s`) tanpa evaluasi format dinamis          |
+| **CVE-2026-48800**  | Notepad++ config handling arbitrary code execution | Penulisan konfigurasi atomik ke berkas temporer `.tmp` dengan izin `0600`                 |
+| **CVE-2026-52884**  | Notepad++ custom command path traversal bypass     | Kanonisasi ketat `canonicalFilePath()` sebelum pemeriksaan direktori tepercaya            |
+| **CVE-2026-20841**  | Text editor Markdown URI handler RCE               | Filter URL allowlist: hanya izinkan `http:`, `https:`, `data:`, jalur gambar lokal        |
+| **CVE-2026-105925** | Qt XML Entity Expansion / DoS                      | Batasi ukuran dokumen XML maksimal 16MB & nonaktifkan external DTDs di `QXmlStreamReader` |
+| **CVE-2026-8168**   | Qt SVG recursion stack overflow                    | Batasi kedalaman nested tag `<use>` dan grup SVG maksimal 16 level di `SvgIconRenderer`   |
+| **CVE-2026-5525**   | Drag & Drop stack buffer overflow                  | Gunakan alokasi dinamis aman `QUrl` tanpa buffer array statis                             |
+| **CVE-2026-57233**  | Zip-Slip / Path Traversal                          | Kanonisasi ketat `canonicalFilePath()` dalam sandbox root                                 |
+| **CVE-2026-7006**   | Sublime Text update staging DLL planting LPE       | Isolasi direktori staging dengan restrictive ACLs & pembersihan atomik berkas staging     |
+| **CVE-2026-82605**  | BBEdit Lasso tokenizer infinite loop DoS           | Bounded step counters pada setiap loop pemindaian token parser kustom                     |
 
 - **Pilar**: 1 (Bug Review), 4 (Logic Review), 5 (Resource Review), 10 (Security Vulnerability Review).
 

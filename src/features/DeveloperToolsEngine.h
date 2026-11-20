@@ -27,18 +27,14 @@ struct JwtInfo {
 };
 
 struct PasswordStrength {
-    int score{0};          // 0 to 4
-    double entropy{0.0};   // bits of entropy
-    QString label;         // "Very Weak", "Weak", "Medium", "Strong", "Very Strong"
+    int score{0};         // 0 to 4
+    double entropy{0.0};  // bits of entropy
+    QString label;        // "Very Weak", "Weak", "Medium", "Strong", "Very Strong"
     bool isStrong{false};
     QString feedback;
 };
 
-enum class HtmlEncryptMethod : std::uint8_t {
-    JavascriptEscape = 0,
-    Base64 = 1,
-    PasswordProtected = 2
-};
+enum class HtmlEncryptMethod : std::uint8_t { JavascriptEscape = 0, Base64 = 1, PasswordProtected = 2 };
 
 class DeveloperToolsEngine {
 public:
@@ -93,7 +89,8 @@ public:
     static QString hexToAscii(const QString &hex, QString *errorMsg = nullptr);
 
     // Radix Base Conversion (2, 8, 10, 16)
-    static QString convertRadix(const QString &input, int fromBase, int toBase, bool uppercase = true, QString *errorMsg = nullptr);
+    static QString convertRadix(const QString &input, int fromBase, int toBase, bool uppercase = true,
+                                QString *errorMsg = nullptr);
 
     // Advanced Case Conversion
     static QString toTitleCase(const QString &text);

@@ -1588,8 +1588,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     connect(menuDevTools->addAction(tr("XML Minify / Compact")), &QAction::triggered, this, [this] {
         applyEditorTextTransform(
-            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyXml(in, err); },
-            tr("XML Minify"));
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyXml(in, err); }, tr("XML Minify"));
     });
 
     menuDevTools->addSeparator();
@@ -1602,22 +1601,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)  // NOSONAR(cpp:S3776, cpp:
 
     connect(menuDevTools->addAction(tr("CSS Minify / Compact")), &QAction::triggered, this, [this] {
         applyEditorTextTransform(
-            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyCss(in, err); },
-            tr("CSS Minify"));
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyCss(in, err); }, tr("CSS Minify"));
     });
 
     menuDevTools->addSeparator();
 
     connect(menuDevTools->addAction(tr("JavaScript Format / Prettify")), &QAction::triggered, this, [this] {
         applyEditorTextTransform(
-            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatJs(in, err); },
-            tr("JS Prettify"));
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::formatJs(in, err); }, tr("JS Prettify"));
     });
 
     connect(menuDevTools->addAction(tr("JavaScript Minify / Compact")), &QAction::triggered, this, [this] {
         applyEditorTextTransform(
-            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJs(in, err); },
-            tr("JS Minify"));
+            [](const QString &in, QString *err) { return DeveloperToolsEngine::minifyJs(in, err); }, tr("JS Minify"));
     });
 
     menuDevTools->addSeparator();
@@ -4659,22 +4655,35 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
         editor->setEmptySelection(contextMenuPos);
     }
 
-    const QStringList defaultActionNames = {
-        "Undo", "Redo", "",
-        "Cut", "Copy", "Paste", "PasteAndMatchStyle", "Delete", "",
-        "SelectAll", "",
-        "UpperCase", "LowerCase", "",
-        "Find", "SearchGoogle", "",
-        "Open", "Save", "",
-        "ShowCharacterInfo"};
+    const QStringList defaultActionNames = {"Undo",
+                                            "Redo",
+                                            "",
+                                            "Cut",
+                                            "Copy",
+                                            "Paste",
+                                            "PasteAndMatchStyle",
+                                            "Delete",
+                                            "",
+                                            "SelectAll",
+                                            "",
+                                            "UpperCase",
+                                            "LowerCase",
+                                            "",
+                                            "Find",
+                                            "SearchGoogle",
+                                            "",
+                                            "Open",
+                                            "Save",
+                                            "",
+                                            "ShowCharacterInfo"};
 
     QStringList actionNames = defaultActionNames;
 
     // If the entry exists in the settings, use that
     if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
         actionNames = settings->value("Gui/EditorContextMenu").toStringList();
-        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle, UpperCase, LowerCase are
-        // present
+        // Upgrade legacy context menu settings so Undo, Redo, Open, Save, Find, PasteAndMatchStyle, SearchGoogle,
+        // UpperCase, LowerCase are present
         if (!actionNames.contains("Undo") || !actionNames.contains("Redo") || !actionNames.contains("Open") ||
             !actionNames.contains("Save") || !actionNames.contains("Find") ||
             !actionNames.contains("PasteAndMatchStyle") || !actionNames.contains("SearchGoogle") ||
@@ -4775,11 +4784,16 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
         }
     }
 
-    // Refined compact typography and icon pack scaling for right-click context menu (1-2px smaller)
+    // Refined compact typography, separator styling, and icon pack scaling for right-click context menu (1-2px smaller)
+    const bool isDark = ThemeManager::instance()->isDarkActive();
+    const QString sepColor =
+        isDark ? QStringLiteral("rgba(255, 255, 255, 0.16)") : QStringLiteral("rgba(0, 0, 0, 0.16)");
     const auto contextMenuStyle = QStringLiteral(
-        "QMenu { font-size: 11px; }"
-        "QMenu::item { padding: 3px 18px 3px 20px; font-size: 11px; }"
-        "QMenu::icon { width: 14px; height: 14px; }");
+                                      "QMenu { font-size: 11px; }"
+                                      "QMenu::item { padding: 3px 18px 3px 20px; font-size: 11px; }"
+                                      "QMenu::icon { width: 14px; height: 14px; }"
+                                      "QMenu::separator { height: 1px; background-color: %1; margin: 4px 6px; }")
+                                      .arg(sepColor);
 
     QFont contextFont = menu->font();
     if (contextFont.pointSize() > 10) {
@@ -5047,9 +5061,9 @@ void MainWindow::populateTabBarColorActions(QMenu *menu, ScintillaNext *editor) 
     connect(customColorAct, &QAction::triggered, this, [this, editor, pathKey] {
         if (editor) {
             const QColor currentColor = dockedEditor->editorTabColor(editor);
-            const QColor chosen = QColorDialog::getColor(
-                currentColor.isValid() ? currentColor : QColor(QStringLiteral("#0969da")), this,
-                tr("Select Tab Color"));
+            const QColor chosen =
+                QColorDialog::getColor(currentColor.isValid() ? currentColor : QColor(QStringLiteral("#0969da")), this,
+                                       tr("Select Tab Color"));
             if (chosen.isValid()) {
                 TabColorManager::instance()->setTabColor(pathKey, chosen);
                 dockedEditor->setEditorTabColor(editor, chosen);
@@ -5904,7 +5918,6 @@ void MainWindow::openPreviewInNewTab(ScintillaNext *editor) {
         connect(previewWidget, &PreviewTabWidget::closeRequested, dockWidget, &ads::CDockWidget::closeDockWidget);
     }
 }
-
 
 namespace {
 QString formatHexDump(const QByteArray &originalBytes) {

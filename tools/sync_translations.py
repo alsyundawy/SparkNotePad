@@ -4,7 +4,10 @@ Populate and compile i18n translations for SparkNotePad (Indonesian & English).
 Ensures 100% complete translation coverage with 0 unfinished entries.
 """
 
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET  # nosec B405
+except ImportError:
+    import xml.etree.ElementTree as ET  # nosec B405
 
 ID_MAP = {
     # AboutDialog
@@ -331,7 +334,7 @@ ID_MAP = {
 
 
 def process_ts_file(filepath, is_id=True):
-    tree = ET.parse(filepath)
+    tree = ET.parse(filepath)  # nosec B314
     root = tree.getroot()
     updated = 0
     for ctx in root.findall("context"):

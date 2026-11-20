@@ -136,6 +136,9 @@
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
+   <property name="toolTip">
+    <string>Toggle file size column display in workspace tree</string>
+   </property>
   </action>
   <action name="actionShowType">
    <property name="checkable">
@@ -146,6 +149,9 @@
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
+   </property>
+   <property name="toolTip">
+    <string>Toggle file type description column display in workspace tree</string>
    </property>
   </action>
   <action name="actionShowDateModified">
@@ -158,6 +164,9 @@
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
+   <property name="toolTip">
+    <string>Toggle modification date-time column display in workspace tree</string>
+   </property>
   </action>
   <action name="actionShowHidden">
    <property name="checkable">
@@ -168,6 +177,9 @@
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
+   </property>
+   <property name="toolTip">
+    <string>Toggle visibility of hidden dot-files and folders in workspace</string>
    </property>
   </action>
  </widget>

@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.5.0] - 2026-11-19
+## [1.5.0] - 2026-11-20
 
 ### 🌟 Release: Full Developer Tools Suite (JSON/XML/HTML/CSS/JS, Encryption, JWT, Radix), Re-Architected Menus, GitHub Primer Markdown Preview & View Enhancements
 
@@ -18,7 +18,7 @@ SparkNotePad v1.5.0 brings a complete, unified Developer Tools suite ported from
 - **Comprehensive Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
   - Unified interactive Developer Tools Hub dialog (`Ctrl+Alt+T` / `Ctrl+Cmd+T`) with 5 dedicated functional tabs:
     - **Hash Tools**: 11 cryptographic hash algorithms (MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, Keccak-256), file integrity hashing with progress, and side-by-side verification comparison with match status badge.
-    - **MIME Tools**: Base64 line-by-line encode/decode, Quoted-Printable (RFC 2045) encode/decode, URL percent-encoding/decoding, and HTML entity encode/decode.
+    - **MIME Tools**: Base64 line-by-line encode/decode, Quoted-Printable (RFC 2045) encode/decode, URL percent-encoding/decoding, and HTML entity encode/decode in a clean 2x4 grid layout with compact 8.5px typography.
     - **Converter Tools**: Radix base converter (bases 2, 8, 10, 16), ASCII <-> Hexadecimal converter with configurable delimiters, and advanced Case Conversion (Title Case, Invert Case, Sentence Case).
     - **Encryption Tools**: HTML Document Protection with 3 distinct operational modes:
       1. JavaScript unescape string injection.
@@ -26,18 +26,21 @@ SparkNotePad v1.5.0 brings a complete, unified Developer Tools suite ported from
       3. Military-grade Password AES-256-GCM encryption with embedded CryptoJS runtime decryption harness.
       - Integrated real-time zxcvbn password strength and entropy evaluation meter.
     - **Developer Tools**: Format and minify for JSON, XML, HTML, CSS, and JavaScript; RFC 7519 JWT Token Inspector with decoded header, payload claims, and expiration dates; UUID v4 generator; and Unix Epoch / ISO-8601 bidirectional converter.
-  - Complete layout and ergonomics overhaul of `DeveloperToolsDialog`: standardized 32px button heights, modern typography, decoupled crypto protection controls preventing column cramping, balanced 5-column formatter grids, and clean macOS system font integration.
+  - Complete layout and ergonomics overhaul of `DeveloperToolsDialog`: compact 8.5px typography, zero clipped button text across all tabs, balanced grids, 940x680 minimum size, and 100% comprehensive localized tooltips on all controls.
   - Added dedicated unit test suite in `tests/test_developer_tools_engine.h` covering all 10 developer tools features.
+- **Editor Context Menu Ergonomics**:
+  - Inserted mandatory visual separator line between `Select All` and `UPPER CASE` / `lowercase` across all menu configurations and dynamic settings.
 - **Perfect GitHub Primer Markdown Safe Live Preview (`mjbvz/vscode-github-markdown-preview-style`)**:
   - Re-engineered preview HTML generator strictly conforming to GitHub Markdown CSS specifications.
   - Eliminated Qt rich text formatting artifacts (`-qt-block-indent`, zero margin resets) and fixed CSS text inheritance across all elements (`p`, `li`, `td`, `th`, `span`, `div`), completely resolving invisible white-on-white text in light themes (`GITHUB`, etc.).
   - Added native GitHub Alert Callout rendering (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with official icons, accent borders, and background tints.
-  - **Modern GitHub Primer Code Blocks & Pill Header**: Redesigned fenced code block containers with sleek `#0d1117` background, dark file header pill (`#161b22`, `#30363d` border), rounded pill badges (`#21262d`), clean copy action button (`[ ❐ ]` / `[ ⎘ Copy ]`), and pure monospace typography.
-  - **Bash Strict Mode & Terminal Script Execution Guarantee**: Fixed broken multiline bash strict mode syntax (normalizing `IFS=$'[\r\n\t ]*'` to `IFS=$'\n\t'`), converted curly/smart quotes to ASCII, enforced pure Unix LF, stripped trailing whitespace, and eradicated redundant copy labels (`[📋 Salin Perintah / Copy Code Block]`, `[📋 Salin Blok Kode / Copy Code Block]`, `[📋 Salin Konfigurasi / Copy Configuration]`, `[📋 Salin Skrip / Copy Script Code]`), ensuring copied bash commands paste and execute in terminals with 0 syntax errors.
-  - **Shields.io SVG Badge Normalizer & Canvas Clipping**: Built-in SVG normalizer automatically rectifies Shields.io SVG scaling quirks (replaces `font-size="100"` with `10`, strips `transform="scale(.1)"`, rescales textLength coordinates, and sets strict canvas clip rectangles), eliminating giant, stretched, overlapping stacked badges.
-  - **Percentage Width Fix & Asynchronous Image Relayout**: Stripped Qt-unsupported `width="100%"` attributes that collapsed images to -2px, dynamically constrained images to viewport boundaries (capped at 850px), and implemented debounced asynchronous relayout (`performDeferredRelayout()`) once network images finish downloading to preserve exact document heights and eliminate visual overlaps.
-  - **Sub-Pixel Anchor-Bracketed Scroll Synchronization**: Replaced naive linear line ratios with anchor-bracketed sub-pixel scroll interpolation (`findAnchorBracket`), eliminating scroll drift and preview lag so the preview stays perfectly aligned with the editor in real-time.
-  - **Massive Document Resilience (100k+ Lines)**: Validated on massive technical documents (such as Zimbra 10.1.21 Complete Production Guide with 6,000+ lines and complex nested scripts) without CPU spikes, memory leaks, or rendering constraints.
+  - **Modern GitHub Primer Code Blocks & Pill Header**: Redesigned fenced code block containers with sleek `#0d1117` background, dark file header pill (`#161b22`, `#30363d` border), rounded pill badges (`#21262d`), clean copy action button, and pure monospace typography.
+  - **Bash Strict Mode & Terminal Script Execution Guarantee**: Fenced code blocks masked before math expressions to prevent shell variables (`$VAR`, `$$`, `$'...'`) from being corrupted by math regexes; converted curly/smart quotes to ASCII, enforced pure Unix LF, stripped trailing whitespace, and eradicated redundant copy labels, ensuring copied bash commands paste and execute in terminals with 0 syntax errors.
+  - **Shields.io SVG Badge Normalizer & Centered Table Layout**: Automatically normalizes Shields.io SVG badges into 2-cell centered HTML tables, completely eliminating Qt rich text line height collapse and vertical badge overlapping.
+  - **Sub-Pixel Anchor-Bracketed Scroll Synchronization**: Line anchors registered for headings, code blocks, tables, and list items, with single-shot anchor snapping to keep preview and editor side-by-side aligned without lag.
+  - **Massive Document Resilience (100k+ Lines)**: Validated on massive technical documents without CPU spikes, memory leaks, or rendering constraints.
+- **macOS Release Packaging Standard (30MB–40MB Standard)**:
+  - Pruned unneeded Qt plugins and stripped local symbols (`strip -x`) on binary and staged dylibs, achieving a verified 39MB release DMG with custom background presentation preserved and auto-synced to `/Applications/SparkNotePad.app`.
   - **macOS Font Alias Optimization**: Replaced non-existent `-apple-system` font references with standard `'Helvetica Neue', Helvetica, Arial, sans-serif` across all 30 markdown themes, eliminating a 3.1-second QPA font database rebuild stall on every render.
   - Completely removed "Open in Default Browser" buttons and functions across all preview docks and widgets for maximum security and zero-bloat standalone operation.
 - **Re-Architected Top-Level Menu Structure**:

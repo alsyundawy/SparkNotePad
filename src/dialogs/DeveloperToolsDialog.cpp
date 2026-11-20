@@ -70,15 +70,14 @@ void DeveloperToolsDialog::setupUi() {
 
     setStyleSheet(QStringLiteral(
         "QDialog { font-size: 10px; }"
-        "QTabBar::tab { font-weight: 600; font-size: 10px; min-height: 24px; min-width: 90px; padding: 2px 14px; }"
-        "QPushButton { font-size: 9.5px; font-weight: 500; padding: 2px 6px; min-height: 22px; border-radius: 4px; }"
-        "QComboBox { font-size: 10px; padding: 2px 8px 2px 6px; min-height: 22px; }"
-        "QLineEdit { font-size: 10px; padding: 2px 6px; min-height: 22px; }"
-        "QLabel { font-size: 10px; }"
+        "QTabBar::tab { font-weight: 600; font-size: 9.5px; min-height: 24px; min-width: 90px; padding: 2px 14px; }"
+        "QPushButton { font-size: 9px; font-weight: 500; padding: 2px 5px; min-height: 22px; border-radius: 4px; }"
+        "QComboBox { font-size: 9.5px; padding: 2px 8px 2px 6px; min-height: 22px; }"
+        "QLineEdit { font-size: 9.5px; padding: 2px 6px; min-height: 22px; }"
+        "QLabel { font-size: 9.5px; }"
         "QGroupBox { font-weight: 600; font-size: 10px; }"
-        "QCheckBox { font-size: 10px; }"
-        "QSpinBox { font-size: 10px; padding: 2px 4px; min-height: 22px; }"
-    ));
+        "QCheckBox { font-size: 9.5px; }"
+        "QSpinBox { font-size: 9.5px; padding: 2px 4px; min-height: 22px; }"));
 
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(10, 10, 10, 10);
@@ -93,15 +92,18 @@ void DeveloperToolsDialog::setupUi() {
         m_tabWidget->tabBar()->setExpanding(false);
     }
     m_tabWidget->addTab(createHashTab(), tr("Hash Tools"));
-    m_tabWidget->setTabToolTip(0, tr("Compute cryptographic hashes (MD5, SHA-1, SHA-256, SHA-512, Keccak) and verify file checksums"));
+    m_tabWidget->setTabToolTip(
+        0, tr("Compute cryptographic hashes (MD5, SHA-1, SHA-256, SHA-512, Keccak) and verify file checksums"));
     m_tabWidget->addTab(createMimeTab(), tr("MIME Tools"));
-    m_tabWidget->setTabToolTip(1, tr("Encode and decode Base64, URL percent-encoding, HTML entities, and Quoted-Printable"));
+    m_tabWidget->setTabToolTip(
+        1, tr("Encode and decode Base64, URL percent-encoding, HTML entities, and Quoted-Printable"));
     m_tabWidget->addTab(createConverterTab(), tr("Converter"));
     m_tabWidget->setTabToolTip(2, tr("Convert numeral radix bases (Hex, Dec, Bin, Oct) and text casing"));
     m_tabWidget->addTab(createCryptoTab(), tr("Encryption"));
     m_tabWidget->setTabToolTip(3, tr("HTML document encryption, obfuscation, and password strength analysis"));
     m_tabWidget->addTab(createDevToolsTab(), tr("Developer Tools"));
-    m_tabWidget->setTabToolTip(4, tr("Format and minify JSON/XML/HTML/CSS/JS, decode JWT, generate UUIDv4, and Epoch timestamps"));
+    m_tabWidget->setTabToolTip(
+        4, tr("Format and minify JSON/XML/HTML/CSS/JS, decode JWT, generate UUIDv4, and Epoch timestamps"));
     mainLayout->addWidget(m_tabWidget, 0);
 
     // Monospace font for code and cryptographic data
@@ -147,7 +149,8 @@ void DeveloperToolsDialog::setupUi() {
     bottomLayout->setSpacing(8);
 
     m_statusLabel = new QLabel(this);
-    m_statusLabel->setStyleSheet(QStringLiteral("color: #3fb950; font-weight: 600; font-size: 10.5px; padding: 2px 6px;"));
+    m_statusLabel->setStyleSheet(
+        QStringLiteral("color: #3fb950; font-weight: 600; font-size: 10.5px; padding: 2px 6px;"));
     m_statusLabel->setToolTip(tr("Operational feedback and status notifications"));
     bottomLayout->addWidget(m_statusLabel, 1);
 
@@ -169,7 +172,6 @@ void DeveloperToolsDialog::setupUi() {
     btnApply->setMinimumHeight(24);
     btnApply->setCursor(Qt::PointingHandCursor);
     btnApply->setToolTip(tr("Replace current selection or insert processed output into active document"));
-    btnApply->setStyleSheet(QStringLiteral("QPushButton { font-weight: 600; }"));
     connect(btnApply, &QPushButton::clicked, this, &DeveloperToolsDialog::onApplyToEditor);
     bottomLayout->addWidget(btnApply);
 
@@ -200,12 +202,9 @@ QWidget *DeveloperToolsDialog::createHashTab() {
     m_comboHashAlgo = new QComboBox(tab);
     m_comboHashAlgo->setMinimumHeight(24);
     m_comboHashAlgo->setToolTip(tr("Select cryptographic hash algorithm (SHA-256, SHA-512, MD5, SHA-1, SHA3, Keccak)"));
-    m_comboHashAlgo->addItems({
-        QStringLiteral("SHA-256"), QStringLiteral("SHA-512"),
-        QStringLiteral("SHA-1"), QStringLiteral("MD5"),
-        QStringLiteral("SHA3-256"), QStringLiteral("SHA3-512"),
-        QStringLiteral("Keccak-256"), QStringLiteral("Keccak-512")
-    });
+    m_comboHashAlgo->addItems({QStringLiteral("SHA-256"), QStringLiteral("SHA-512"), QStringLiteral("SHA-1"),
+                               QStringLiteral("MD5"), QStringLiteral("SHA3-256"), QStringLiteral("SHA3-512"),
+                               QStringLiteral("Keccak-256"), QStringLiteral("Keccak-512")});
     layout->addWidget(m_comboHashAlgo, 0, 1);
 
     auto *btnCompute = new QPushButton(tr("Generate Hash"), tab);
@@ -456,7 +455,8 @@ QWidget *DeveloperToolsDialog::createCryptoTab() {
     m_passwordScoreBar->setFixedWidth(100);
     m_passwordScoreBar->setFixedHeight(18);
     m_passwordScoreBar->setTextVisible(false);
-    m_passwordScoreBar->setToolTip(tr("Password entropy score based on zxcvbn evaluation (0 = Very Weak to 4 = Very Strong)"));
+    m_passwordScoreBar->setToolTip(
+        tr("Password entropy score based on zxcvbn evaluation (0 = Very Weak to 4 = Very Strong)"));
     rowPass->addWidget(m_passwordScoreBar);
 
     m_passwordStrengthLabel = new QLabel(tr("Empty"), tab);
@@ -481,7 +481,8 @@ QWidget *DeveloperToolsDialog::createCryptoTab() {
     m_comboHtmlEncryptMethod->setToolTip(tr("Select HTML protection algorithm (JS unescape, Base64, or AES-256-GCM)"));
     m_comboHtmlEncryptMethod->addItem(tr("JavaScript unescape"), static_cast<int>(HtmlEncryptMethod::JavascriptEscape));
     m_comboHtmlEncryptMethod->addItem(tr("Base64 Obfuscation"), static_cast<int>(HtmlEncryptMethod::Base64));
-    m_comboHtmlEncryptMethod->addItem(tr("Password (AES-256-GCM)"), static_cast<int>(HtmlEncryptMethod::PasswordProtected));
+    m_comboHtmlEncryptMethod->addItem(tr("Password (AES-256-GCM)"),
+                                      static_cast<int>(HtmlEncryptMethod::PasswordProtected));
     rowHtml->addWidget(m_comboHtmlEncryptMethod, 1);
 
     auto *btnHtmlEncrypt = new QPushButton(tr("Encrypt HTML"), tab);
@@ -730,7 +731,7 @@ QCryptographicHash::Algorithm parseHashAlgorithm(const QString &algoStr) {
     return QCryptographicHash::Sha256;
 }
 
-} // namespace
+}  // namespace
 
 void DeveloperToolsDialog::onComputeHash() {
     const QString input = m_inputEdit->toPlainText();
@@ -752,10 +753,12 @@ void DeveloperToolsDialog::onCompareHash() {
     }
 
     if (QString::compare(expected, computed, Qt::CaseInsensitive) == 0) {
-        m_hashCompareResult->setStyleSheet(QStringLiteral("color: #3fb950; font-weight: bold; padding: 2px 6px; border: 1px solid #3fb950; border-radius: 4px;"));
+        m_hashCompareResult->setStyleSheet(QStringLiteral(
+            "color: #3fb950; font-weight: bold; padding: 2px 6px; border: 1px solid #3fb950; border-radius: 4px;"));
         m_hashCompareResult->setText(tr("✓ MATCH"));
     } else {
-        m_hashCompareResult->setStyleSheet(QStringLiteral("color: #f85149; font-weight: bold; padding: 2px 6px; border: 1px solid #f85149; border-radius: 4px;"));
+        m_hashCompareResult->setStyleSheet(QStringLiteral(
+            "color: #f85149; font-weight: bold; padding: 2px 6px; border: 1px solid #f85149; border-radius: 4px;"));
         m_hashCompareResult->setText(tr("✗ MISMATCH"));
     }
 }
@@ -780,7 +783,8 @@ void DeveloperToolsDialog::onBrowseFileForHash() {
     hasher.addData(&file);
     const QByteArray hash = hasher.result();
     m_outputEdit->setPlainText(QString::fromLatin1(hash.toHex()));
-    m_statusLabel->setText(tr("Calculated %1 for %2 (%3 bytes)").arg(algoStr, QFileInfo(path).fileName()).arg(file.size()));
+    m_statusLabel->setText(
+        tr("Calculated %1 for %2 (%3 bytes)").arg(algoStr, QFileInfo(path).fileName()).arg(file.size()));
     onCompareHash();
 }
 
@@ -829,7 +833,8 @@ void DeveloperToolsDialog::onConvertRadix() {
     const int fromBase = m_comboFromRadix->currentData().toInt();
     const int toBase = m_comboToRadix->currentData().toInt();
     const bool upper = m_chkUppercaseHex->isChecked();
-    const QString result = DeveloperToolsEngine::convertRadix(m_inputEdit->toPlainText(), fromBase, toBase, upper, &err);
+    const QString result =
+        DeveloperToolsEngine::convertRadix(m_inputEdit->toPlainText(), fromBase, toBase, upper, &err);
     if (!err.isEmpty()) {
         m_outputEdit->setPlainText(tr("Error: %1").arg(err));
         m_statusLabel->setText(err);

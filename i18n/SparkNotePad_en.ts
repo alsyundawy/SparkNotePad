@@ -2299,7 +2299,7 @@ Select which documents you would like to recover:</translation>
     </message>
     <message>
         <source>Enter or paste input text here... (Loaded automatically from active document selection)</source>
-        <translation type="vanished">Enter or paste input text here... (Loaded automatically from active document selection)</translation>
+        <translation>Enter or paste input text here... (Loaded automatically from active document selection)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DeveloperToolsDialog.cpp" line="116" />
@@ -2608,7 +2608,7 @@ Select which documents you would like to recover:</translation>
     </message>
     <message>
         <source>Decode JWT Token</source>
-        <translation type="vanished">Decode JWT Token</translation>
+        <translation>Decode JWT Token</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DeveloperToolsDialog.cpp" line="592" />
@@ -2622,7 +2622,7 @@ Select which documents you would like to recover:</translation>
     </message>
     <message>
         <source>Current Epoch &amp; ISO</source>
-        <translation type="vanished">Current Epoch &amp; ISO</translation>
+        <translation>Current Epoch &amp; ISO</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DeveloperToolsDialog.cpp" line="613" />
@@ -4516,8 +4516,7 @@ Modified: %6
         <location filename="../src/dialogs/FindReplaceDialog.cpp" line="179" />
         <location filename="../src/dialogs/FindReplaceDialog.cpp" line="371" />
         <source>Replaced %Ln matches</source>
-        <translation>
-            <numerusform>Replaced %Ln match</numerusform>
+        <translation><numerusform>Replaced %Ln match</numerusform>
             <numerusform>Replaced %Ln matches</numerusform>
         </translation>
     </message>
@@ -4544,16 +4543,14 @@ Modified: %6
     <message numerus="yes">
         <location filename="../src/dialogs/FindReplaceDialog.cpp" line="381" />
         <source>Found %Ln matches</source>
-        <translation>
-            <numerusform>Found %Ln match</numerusform>
+        <translation><numerusform>Found %Ln match</numerusform>
             <numerusform>Found %Ln matches</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/dialogs/FindReplaceDialog.cpp" line="787" />
         <source>Mark: %Ln match in entire file</source>
-        <translation>
-            <numerusform>Mark: %Ln match in entire file</numerusform>
+        <translation><numerusform>Mark: %Ln match in entire file</numerusform>
             <numerusform>Mark: %Ln matches in entire file</numerusform>
         </translation>
     </message>
@@ -4570,8 +4567,7 @@ Modified: %6
     <message numerus="yes">
         <location filename="../src/dialogs/FindReplaceDialog.cpp" line="825" />
         <source>Copied %Ln marked text(s)</source>
-        <translation>
-            <numerusform>Copied %Ln marked text</numerusform>
+        <translation><numerusform>Copied %Ln marked text</numerusform>
             <numerusform>Copied %Ln marked texts</numerusform>
         </translation>
     </message>

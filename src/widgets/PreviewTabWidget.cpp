@@ -481,8 +481,7 @@ void PreviewTabWidget::handleAnchorClicked(const QUrl &url) {
     }
 
     // 3. Whitelisted external schemes
-    if (scheme == QStringLiteral("http") || scheme == QStringLiteral("https") ||
-        scheme == QStringLiteral("mailto")) {
+    if (scheme == QStringLiteral("http") || scheme == QStringLiteral("https") || scheme == QStringLiteral("mailto")) {
         QDesktopServices::openUrl(url);
     }
 }

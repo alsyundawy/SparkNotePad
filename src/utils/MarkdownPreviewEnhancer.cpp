@@ -30,35 +30,44 @@ std::mutex s_enhancerMutex;
 
 const QSet<QString> &validHtmlTags() {
     static const QSet<QString> s_tags = {
-        QStringLiteral("a"), QStringLiteral("abbr"), QStringLiteral("address"), QStringLiteral("area"),
-        QStringLiteral("article"), QStringLiteral("aside"), QStringLiteral("audio"), QStringLiteral("b"),
-        QStringLiteral("base"), QStringLiteral("bdi"), QStringLiteral("bdo"), QStringLiteral("blockquote"),
-        QStringLiteral("body"), QStringLiteral("br"), QStringLiteral("button"), QStringLiteral("canvas"),
-        QStringLiteral("caption"), QStringLiteral("cite"), QStringLiteral("code"), QStringLiteral("col"),
-        QStringLiteral("colgroup"), QStringLiteral("data"), QStringLiteral("datalist"), QStringLiteral("dd"),
-        QStringLiteral("del"), QStringLiteral("details"), QStringLiteral("dfn"), QStringLiteral("dialog"),
-        QStringLiteral("div"), QStringLiteral("dl"), QStringLiteral("dt"), QStringLiteral("em"),
-        QStringLiteral("embed"), QStringLiteral("fieldset"), QStringLiteral("figcaption"), QStringLiteral("figure"),
-        QStringLiteral("footer"), QStringLiteral("form"), QStringLiteral("h1"), QStringLiteral("h2"),
-        QStringLiteral("h3"), QStringLiteral("h4"), QStringLiteral("h5"), QStringLiteral("h6"),
-        QStringLiteral("head"), QStringLiteral("header"), QStringLiteral("hgroup"), QStringLiteral("hr"),
-        QStringLiteral("html"), QStringLiteral("i"), QStringLiteral("iframe"), QStringLiteral("img"),
-        QStringLiteral("input"), QStringLiteral("ins"), QStringLiteral("kbd"), QStringLiteral("label"),
-        QStringLiteral("legend"), QStringLiteral("li"), QStringLiteral("link"), QStringLiteral("main"),
-        QStringLiteral("map"), QStringLiteral("mark"), QStringLiteral("menu"), QStringLiteral("meta"),
-        QStringLiteral("meter"), QStringLiteral("nav"), QStringLiteral("noscript"), QStringLiteral("object"),
-        QStringLiteral("ol"), QStringLiteral("optgroup"), QStringLiteral("option"), QStringLiteral("output"),
-        QStringLiteral("p"), QStringLiteral("picture"), QStringLiteral("pre"), QStringLiteral("progress"),
-        QStringLiteral("q"), QStringLiteral("rp"), QStringLiteral("rt"), QStringLiteral("ruby"),
-        QStringLiteral("s"), QStringLiteral("samp"), QStringLiteral("script"), QStringLiteral("section"),
-        QStringLiteral("select"), QStringLiteral("slot"), QStringLiteral("small"), QStringLiteral("source"),
-        QStringLiteral("span"), QStringLiteral("strong"), QStringLiteral("style"), QStringLiteral("sub"),
-        QStringLiteral("summary"), QStringLiteral("sup"), QStringLiteral("svg"), QStringLiteral("table"),
-        QStringLiteral("tbody"), QStringLiteral("td"), QStringLiteral("template"), QStringLiteral("textarea"),
-        QStringLiteral("tfoot"), QStringLiteral("th"), QStringLiteral("thead"), QStringLiteral("time"),
-        QStringLiteral("title"), QStringLiteral("tr"), QStringLiteral("track"), QStringLiteral("u"),
-        QStringLiteral("ul"), QStringLiteral("var"), QStringLiteral("video"), QStringLiteral("wbr")
-    };
+        QStringLiteral("a"),        QStringLiteral("abbr"),       QStringLiteral("address"),
+        QStringLiteral("area"),     QStringLiteral("article"),    QStringLiteral("aside"),
+        QStringLiteral("audio"),    QStringLiteral("b"),          QStringLiteral("base"),
+        QStringLiteral("bdi"),      QStringLiteral("bdo"),        QStringLiteral("blockquote"),
+        QStringLiteral("body"),     QStringLiteral("br"),         QStringLiteral("button"),
+        QStringLiteral("canvas"),   QStringLiteral("caption"),    QStringLiteral("cite"),
+        QStringLiteral("code"),     QStringLiteral("col"),        QStringLiteral("colgroup"),
+        QStringLiteral("data"),     QStringLiteral("datalist"),   QStringLiteral("dd"),
+        QStringLiteral("del"),      QStringLiteral("details"),    QStringLiteral("dfn"),
+        QStringLiteral("dialog"),   QStringLiteral("div"),        QStringLiteral("dl"),
+        QStringLiteral("dt"),       QStringLiteral("em"),         QStringLiteral("embed"),
+        QStringLiteral("fieldset"), QStringLiteral("figcaption"), QStringLiteral("figure"),
+        QStringLiteral("footer"),   QStringLiteral("form"),       QStringLiteral("h1"),
+        QStringLiteral("h2"),       QStringLiteral("h3"),         QStringLiteral("h4"),
+        QStringLiteral("h5"),       QStringLiteral("h6"),         QStringLiteral("head"),
+        QStringLiteral("header"),   QStringLiteral("hgroup"),     QStringLiteral("hr"),
+        QStringLiteral("html"),     QStringLiteral("i"),          QStringLiteral("iframe"),
+        QStringLiteral("img"),      QStringLiteral("input"),      QStringLiteral("ins"),
+        QStringLiteral("kbd"),      QStringLiteral("label"),      QStringLiteral("legend"),
+        QStringLiteral("li"),       QStringLiteral("link"),       QStringLiteral("main"),
+        QStringLiteral("map"),      QStringLiteral("mark"),       QStringLiteral("menu"),
+        QStringLiteral("meta"),     QStringLiteral("meter"),      QStringLiteral("nav"),
+        QStringLiteral("noscript"), QStringLiteral("object"),     QStringLiteral("ol"),
+        QStringLiteral("optgroup"), QStringLiteral("option"),     QStringLiteral("output"),
+        QStringLiteral("p"),        QStringLiteral("picture"),    QStringLiteral("pre"),
+        QStringLiteral("progress"), QStringLiteral("q"),          QStringLiteral("rp"),
+        QStringLiteral("rt"),       QStringLiteral("ruby"),       QStringLiteral("s"),
+        QStringLiteral("samp"),     QStringLiteral("script"),     QStringLiteral("section"),
+        QStringLiteral("select"),   QStringLiteral("slot"),       QStringLiteral("small"),
+        QStringLiteral("source"),   QStringLiteral("span"),       QStringLiteral("strong"),
+        QStringLiteral("style"),    QStringLiteral("sub"),        QStringLiteral("summary"),
+        QStringLiteral("sup"),      QStringLiteral("svg"),        QStringLiteral("table"),
+        QStringLiteral("tbody"),    QStringLiteral("td"),         QStringLiteral("template"),
+        QStringLiteral("textarea"), QStringLiteral("tfoot"),      QStringLiteral("th"),
+        QStringLiteral("thead"),    QStringLiteral("time"),       QStringLiteral("title"),
+        QStringLiteral("tr"),       QStringLiteral("track"),      QStringLiteral("u"),
+        QStringLiteral("ul"),       QStringLiteral("var"),        QStringLiteral("video"),
+        QStringLiteral("wbr")};
     return s_tags;
 }
 
@@ -124,22 +133,23 @@ void replaceSingleCallout(QString &result, const CalloutDef &c, qsizetype &idx, 
     const QString color = isDark ? QString::fromLatin1(c.colorDark) : QString::fromLatin1(c.colorLight);
     const QString bg = isDark ? QString::fromLatin1(c.bgDark) : QString::fromLatin1(c.bgLight);
     const QString alertClass = QString::fromLatin1(c.title).toLower();
-    const QString replacement = QStringLiteral(
-                                    "<div class=\"markdown-alert markdown-alert-%1\" style=\"margin: 12px 0; padding: 10px 14px; border-left: 4px solid %2; "
-                                    "background-color: %3; border-radius: 4px;\">"
-                                    "<div class=\"markdown-alert-title\" style=\"font-weight: 600; color: %2; margin-bottom: 4px;\">%4 %5</div>"
-                                    "<div>%6</div></div>")
-                                    .arg(alertClass, color, bg, QString::fromUtf8(c.icon),
-                                         QCoreApplication::translate("MarkdownPreviewEnhancer", c.title), inner);
+    const QString replacement =
+        QStringLiteral(
+            "<div class=\"markdown-alert markdown-alert-%1\" style=\"margin: 12px 0; padding: 10px 14px; border-left: "
+            "4px solid %2; "
+            "background-color: %3; border-radius: 4px;\">"
+            "<div class=\"markdown-alert-title\" style=\"font-weight: 600; color: %2; margin-bottom: 4px;\">%4 %5</div>"
+            "<div>%6</div></div>")
+            .arg(alertClass, color, bg, QString::fromUtf8(c.icon),
+                 QCoreApplication::translate("MarkdownPreviewEnhancer", c.title), inner);
 
     result.replace(bqStart, (bqEnd + 13) - bqStart, replacement);
     idx = bqStart + replacement.length();
 }
 
 QString formatBadgeParagraphs(const QString &html) {
-    static const QRegularExpression pBadgeRegex(
-        QStringLiteral(R"(<p\b([^>]*?)>([\s\S]*?)<\/p>)"),
-        QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression pBadgeRegex(QStringLiteral(R"(<p\b([^>]*?)>([\s\S]*?)<\/p>)"),
+                                                QRegularExpression::CaseInsensitiveOption);
     static const QRegularExpression badgeItemRegex(
         QStringLiteral(R"((?:<a\b[^>]*>\s*)?<img\b[^>]*>(?:\s*<\/a>)?|\bEnglish\b|\bBahasa Indonesia\b)"),
         QRegularExpression::CaseInsensitiveOption);
@@ -164,14 +174,16 @@ QString formatBadgeParagraphs(const QString &html) {
 
         if (items.size() >= 2) {
             const int total = static_cast<int>(items.size());
-            const int rowSize = 2; // Strict 2 badges per row prevents line wrapping and overlapping
+            const int rowSize = 2;  // Strict 2 badges per row prevents line wrapping and overlapping
             QString replacement = QStringLiteral(
-                "<table align=\"center\" border=\"0\" cellpadding=\"2\" cellspacing=\"4\" style=\"margin: 8px auto; border: none; border-collapse: separate; text-align: center;\">\n");
+                "<table align=\"center\" border=\"0\" cellpadding=\"2\" cellspacing=\"4\" style=\"margin: 8px auto; "
+                "border: none; border-collapse: separate; text-align: center;\">\n");
             for (int i = 0; i < total; i += rowSize) {
                 const int count = std::min(rowSize, total - i);
                 replacement += QStringLiteral("  <tr>\n");
                 for (int j = 0; j < count; ++j) {
-                    replacement += QStringLiteral("    <td align=\"center\" style=\"border: none; padding: 2px 4px; vertical-align: middle;\">");
+                    replacement += QStringLiteral(
+                        "    <td align=\"center\" style=\"border: none; padding: 2px 4px; vertical-align: middle;\">");
                     replacement += items[static_cast<std::size_t>(i) + static_cast<std::size_t>(j)];
                     replacement += QStringLiteral("</td>\n");
                 }
@@ -211,8 +223,7 @@ QString cleanQtHtml(const QString &rawHtml) {
     content.remove(textIndentRegex);
 
     // 3. Remove default margin resets that wipe out CSS margins on paragraphs
-    static const QRegularExpression zeroMarginRegex(
-        QStringLiteral(R"(margin-(?:top|bottom|left|right):\s*0px;?)"));
+    static const QRegularExpression zeroMarginRegex(QStringLiteral(R"(margin-(?:top|bottom|left|right):\s*0px;?)"));
     content.remove(zeroMarginRegex);
 
     // 4. Clean empty style attributes
@@ -220,12 +231,16 @@ QString cleanQtHtml(const QString &rawHtml) {
     content.remove(emptyStyleRegex);
 
     // 5. Replace table tags with styled markdown-table class preserving border attributes
-    static const QRegularExpression tableRegex(QStringLiteral(R"(<table\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
-    content.replace(tableRegex, QStringLiteral(R"(<table class="markdown-table" border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 16px 0;">)"));
+    static const QRegularExpression tableRegex(QStringLiteral(R"(<table\b[^>]*>)"),
+                                               QRegularExpression::CaseInsensitiveOption);
+    content.replace(
+        tableRegex,
+        QStringLiteral(
+            R"(<table class="markdown-table" border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 16px 0;">)"));
 
     // 6. Clean negative image widths produced by Qt percent parsing (e.g. width="-2")
-    static const QRegularExpression negWidthRegex(
-        QStringLiteral(R"(\s+width\s*=\s*["']?-\d+["']?)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression negWidthRegex(QStringLiteral(R"(\s+width\s*=\s*["']?-\d+["']?)"),
+                                                  QRegularExpression::CaseInsensitiveOption);
     content.remove(negWidthRegex);
 
     content = formatBadgeParagraphs(content);
@@ -279,8 +294,8 @@ QString MarkdownPreviewEnhancer::sanitizeCodeForTerminal(const QString &rawCode,
 
     // 4. Normalize quotes and dashes for shell scripts (bash, sh, zsh, shell)
     const QString l = lang.trimmed().toLower();
-    if (l == QStringLiteral("bash") || l == QStringLiteral("sh") ||
-        l == QStringLiteral("zsh") || l == QStringLiteral("shell") || l.isEmpty()) {
+    if (l == QStringLiteral("bash") || l == QStringLiteral("sh") || l == QStringLiteral("zsh") ||
+        l == QStringLiteral("shell") || l.isEmpty()) {
         code.replace(QChar(0x201C), QLatin1Char('"'));
         code.replace(QChar(0x201D), QLatin1Char('"'));
         code.replace(QChar(0x2018), QLatin1Char('\''));
@@ -293,8 +308,7 @@ QString MarkdownPreviewEnhancer::sanitizeCodeForTerminal(const QString &rawCode,
         code.replace(QChar(0x2212), QLatin1Char('-'));
 
         // Normalize broken multiline IFS in bash scripts to standard strict mode IFS=$'\n\t'
-        static const QRegularExpression brokenIfsRegex(
-            QStringLiteral(R"(IFS=\$'[\r\n\t ]*')"));
+        static const QRegularExpression brokenIfsRegex(QStringLiteral(R"(IFS=\$'[\r\n\t ]*')"));
         code.replace(brokenIfsRegex, QStringLiteral("IFS=$'\\n\\t'"));
     }
 
@@ -792,15 +806,21 @@ QString MarkdownPreviewEnhancer::processMermaidBlocks(const QString &content, bo
 
         const QString escapedSource = sanitizeForPreview(cleanDiagram);
 
-        const QString replacement = QStringLiteral(
-                                        "<div class=\"code-block-container mermaid-diagram\">\n"
-                                        "<div class=\"code-block-header mermaid-header\" style=\"user-select: none; -webkit-user-select: none;\">"
-                                        "<span style=\"user-select: none;\">📊 Mermaid Diagram</span>"
-                                        "<a href=\"copy-code:%1\" class=\"code-copy-btn\" style=\"float: right; text-decoration: none; font-size: 11px; font-weight: 600; cursor: pointer; padding: 1px 7px; border-radius: 4px;\" title=\"Copy clean diagram source\">📋 Copy</a>"
-                                        "</div>\n"
-                                        "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 12px 14px; background: transparent; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.45; white-space: pre !important;\">%2</pre>\n"
-                                        "</div>\n")
-                                        .arg(QString::number(snippetId), escapedSource);
+        const QString replacement =
+            QStringLiteral(
+                "<div class=\"code-block-container mermaid-diagram\">\n"
+                "<div class=\"code-block-header mermaid-header\" style=\"user-select: none; -webkit-user-select: "
+                "none;\">"
+                "<span style=\"user-select: none;\">📊 Mermaid Diagram</span>"
+                "<a href=\"copy-code:%1\" class=\"code-copy-btn\" style=\"float: right; text-decoration: none; "
+                "font-size: 11px; font-weight: 600; cursor: pointer; padding: 1px 7px; border-radius: 4px;\" "
+                "title=\"Copy clean diagram source\">📋 Copy</a>"
+                "</div>\n"
+                "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 12px 14px; background: transparent; border: "
+                "none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; "
+                "line-height: 1.45; white-space: pre !important;\">%2</pre>\n"
+                "</div>\n")
+                .arg(QString::number(snippetId), escapedSource);
 
         const qsizetype start = match.capturedStart() + offset;
         const qsizetype length = match.capturedLength();
@@ -816,7 +836,8 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
         return content;
     }
 
-    // Mask inline code snippets to protect shell variables (e.g. `IFS=$'\n\t'`, `$PATH`, `$$variable`) from math parsing
+    // Mask inline code snippets to protect shell variables (e.g. `IFS=$'\n\t'`, `$PATH`, `$$variable`) from math
+    // parsing
     std::vector<QString> inlineCode;
     static const QRegularExpression inlineCodeRegex(QStringLiteral(R"(`[^`\r\n]+`)"));
     QString masked = content;
@@ -972,8 +993,10 @@ QString MarkdownPreviewEnhancer::processFootnotes(const QString &content) {
     }
 
     // Append footnotes section
-    auto footnotesHtml = std::accumulate(definitions.begin(), definitions.end(),
-        QStringLiteral("\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n"),
+    auto footnotesHtml = std::accumulate(
+        definitions.begin(), definitions.end(),
+        QStringLiteral(
+            "\n\n<hr class=\"footnotes-sep\">\n<section class=\"footnotes\">\n<ol class=\"footnotes-list\">\n"),
         [](QString acc, const FootnoteDef &def) {
             acc += QStringLiteral(
                        "<li id=\"fn_%1\" class=\"footnote-item\"><p>%2 <a href=\"#fnref_%1\" "
@@ -1094,7 +1117,8 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
     // Clean redundant copy labels placed above code blocks in external markdown documents
     static const QRegularExpression copyLabelRegex(
-        QStringLiteral(R"((?:\*\*|__)?\[\s*(?:📋\s*)?(?:Salin\s+[^\]/]+\/\s*Copy\s+[^\]]+|Copy\s+(?:Code|Command|Configuration|Script)(?:\s+Block)?|Salin\s+(?:Perintah|Kode|Blok\s+Kode|Konfigurasi|Skrip))\s*\](?:\*\*|__)?\s*)"),
+        QStringLiteral(
+            R"((?:\*\*|__)?\[\s*(?:📋\s*)?(?:Salin\s+[^\]/]+\/\s*Copy\s+[^\]]+|Copy\s+(?:Code|Command|Configuration|Script)(?:\s+Block)?|Salin\s+(?:Perintah|Kode|Blok\s+Kode|Konfigurasi|Skrip))\s*\](?:\*\*|__)?\s*)"),
         QRegularExpression::CaseInsensitiveOption);
     working.remove(copyLabelRegex);
 
@@ -1113,13 +1137,13 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
     // Theme-aware palette for solid, seamless code blocks without Qt rich-text line striping
     const QString codeContainerBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
-    const QString codeHeaderBg    = isDark ? QStringLiteral("#1f242c") : QStringLiteral("#ebeef1");
-    const QString codeBorderCol   = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
-    const QString codeTextColor   = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
-    const QString codePillBg      = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
-    const QString codePillText    = isDark ? QStringLiteral("#f0f6fc") : QStringLiteral("#1f2328");
-    const QString codeBtnBg       = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
-    const QString codeBtnText     = isDark ? QStringLiteral("#c9d1d9") : QStringLiteral("#24292f");
+    const QString codeHeaderBg = isDark ? QStringLiteral("#1f242c") : QStringLiteral("#ebeef1");
+    const QString codeBorderCol = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
+    const QString codeTextColor = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
+    const QString codePillBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
+    const QString codePillText = isDark ? QStringLiteral("#f0f6fc") : QStringLiteral("#1f2328");
+    const QString codeBtnBg = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
+    const QString codeBtnText = isDark ? QStringLiteral("#c9d1d9") : QStringLiteral("#24292f");
 
     // 2. Mask Mermaid blocks to prevent MD4C parser entity double-escaping
     static const QRegularExpression mermaidRegex(
@@ -1144,30 +1168,42 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         }
 
         const QString diagramSource = sanitizeForPreview(cleanDiagram);
-        QString blockHtml = QStringLiteral(
-            "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
-            "<table width=\"100%\" class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"@@BG@@\" style=\"width: 100%; margin: 14px 0; border: 1px solid @@BORDER@@; border-radius: 8px; border-collapse: separate;\">\n"
-            "<tr>\n"
-            "<td bgcolor=\"@@HDRBG@@\" style=\"padding: 6px 12px; background-color: @@HDRBG@@; border-bottom: 1px solid @@BORDER@@;\">\n"
-            "<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
-            "<tr>\n"
-            "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
-            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: @@PILLBG@@; color: @@PILLTEXT@@; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid @@BORDER@@;\">📊 Mermaid Diagram</span>\n"
-            "</td>\n"
-            "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
-            "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: @@BTNTEXT@@; cursor: pointer; padding: 2px 8px; border: 1px solid @@BORDER@@; border-radius: 6px; background-color: @@BTNBG@@;\" title=\"Copy clean diagram source\">📋 Copy</a>\n"
-            "</td>\n"
-            "</tr>\n"
-            "</table>\n"
-            "</td>\n"
-            "</tr>\n"
-            "<tr>\n"
-            "<td bgcolor=\"@@BG@@\" style=\"padding: 12px 16px; background-color: @@BG@@;\">\n"
-            "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: @@TEXTCOL@@; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
-            "</td>\n"
-            "</tr>\n"
-            "</table>")
-            .arg(QString::number(startLine), QString::number(snippetId), diagramSource);
+        QString blockHtml =
+            QStringLiteral(
+                "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
+                "<table width=\"100%\" class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" "
+                "cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"@@BG@@\" style=\"width: 100%; margin: 14px 0; border: "
+                "1px solid @@BORDER@@; border-radius: 8px; border-collapse: separate;\">\n"
+                "<tr>\n"
+                "<td bgcolor=\"@@HDRBG@@\" style=\"padding: 6px 12px; background-color: @@HDRBG@@; border-bottom: 1px "
+                "solid @@BORDER@@;\">\n"
+                "<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
+                "<tr>\n"
+                "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
+                "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: @@PILLBG@@; color: "
+                "@@PILLTEXT@@; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: "
+                "11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid @@BORDER@@;\">📊 "
+                "Mermaid Diagram</span>\n"
+                "</td>\n"
+                "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
+                "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; "
+                "font-weight: 600; color: @@BTNTEXT@@; cursor: pointer; padding: 2px 8px; border: 1px solid "
+                "@@BORDER@@; border-radius: 6px; background-color: @@BTNBG@@;\" title=\"Copy clean diagram source\">📋 "
+                "Copy</a>\n"
+                "</td>\n"
+                "</tr>\n"
+                "</table>\n"
+                "</td>\n"
+                "</tr>\n"
+                "<tr>\n"
+                "<td bgcolor=\"@@BG@@\" style=\"padding: 12px 16px; background-color: @@BG@@;\">\n"
+                "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains "
+                "Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: "
+                "@@TEXTCOL@@; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
+                "</td>\n"
+                "</tr>\n"
+                "</table>")
+                .arg(QString::number(startLine), QString::number(snippetId), diagramSource);
 
         blockHtml.replace(QStringLiteral("@@BG@@"), codeContainerBg);
         blockHtml.replace(QStringLiteral("@@BORDER@@"), codeBorderCol);
@@ -1184,7 +1220,8 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         offset += token.length() - m.capturedLength();
     }
 
-    // 3. Mask Fenced Code Blocks (``` or ~~~) into unified pre containers (Masked before Math to protect shell variables and $$)
+    // 3. Mask Fenced Code Blocks (``` or ~~~) into unified pre containers (Masked before Math to protect shell
+    // variables and $$)
     static const QRegularExpression fencedCodeRegex(
         QStringLiteral(R"((?:^|\n)[ \t]*(```|~~~)[ \t]*([^\r\n]*)\r?\n([\s\S]*?)\r?\n[ \t]*\1(?=[ \t]*(?:\r?\n|$)))"));
 
@@ -1193,13 +1230,15 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         if (l.isEmpty()) {
             return {QString(), QString()};
         }
-        if (l == QStringLiteral("bash") || l == QStringLiteral("sh") || l == QStringLiteral("shell") || l == QStringLiteral("zsh")) {
+        if (l == QStringLiteral("bash") || l == QStringLiteral("sh") || l == QStringLiteral("shell") ||
+            l == QStringLiteral("zsh")) {
             return {QStringLiteral("💻"), l};
         }
         if (l == QStringLiteral("python") || l == QStringLiteral("py")) {
             return {QStringLiteral("🐍"), QStringLiteral("python")};
         }
-        if (l == QStringLiteral("cpp") || l == QStringLiteral("c++") || l == QStringLiteral("c") || l == QStringLiteral("h") || l == QStringLiteral("hpp") || l == QStringLiteral("cc")) {
+        if (l == QStringLiteral("cpp") || l == QStringLiteral("c++") || l == QStringLiteral("c") ||
+            l == QStringLiteral("h") || l == QStringLiteral("hpp") || l == QStringLiteral("cc")) {
             return {QStringLiteral("⚙️"), l};
         }
         if (l == QStringLiteral("html") || l == QStringLiteral("xml") || l == QStringLiteral("xhtml")) {
@@ -1232,10 +1271,12 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         if (l == QStringLiteral("ts") || l == QStringLiteral("typescript")) {
             return {QStringLiteral("⚡"), QStringLiteral("typescript")};
         }
-        if (l == QStringLiteral("css") || l == QStringLiteral("scss") || l == QStringLiteral("sass") || l == QStringLiteral("less")) {
+        if (l == QStringLiteral("css") || l == QStringLiteral("scss") || l == QStringLiteral("sass") ||
+            l == QStringLiteral("less")) {
             return {QStringLiteral("🎨"), l};
         }
-        if (l == QStringLiteral("java") || l == QStringLiteral("kotlin") || l == QStringLiteral("swift") || l == QStringLiteral("rust") || l == QStringLiteral("go")) {
+        if (l == QStringLiteral("java") || l == QStringLiteral("kotlin") || l == QStringLiteral("swift") ||
+            l == QStringLiteral("rust") || l == QStringLiteral("go")) {
             return {QStringLiteral("💻"), l};
         }
         if (l == QStringLiteral("text") || l == QStringLiteral("txt")) {
@@ -1288,7 +1329,8 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
         if (title.isEmpty()) {
             static const QRegularExpression headerCommentRegex(
-                QStringLiteral(R"((?:#|\/\/|\/\*)\s*(?:Nama|Script\s*Name|File\s*Name|File)\s*:\s*([a-zA-Z0-9_\-\.\/]+))"),
+                QStringLiteral(
+                    R"((?:#|\/\/|\/\*)\s*(?:Nama|Script\s*Name|File\s*Name|File)\s*:\s*([a-zA-Z0-9_\-\.\/]+))"),
                 QRegularExpression::CaseInsensitiveOption);
             const auto headerMatch = headerCommentRegex.match(rawCode.left(1024));
             if (headerMatch.hasMatch()) {
@@ -1301,7 +1343,8 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
             const qsizetype checkWindowStart = std::max(static_cast<qsizetype>(0), codeStart - 250);
             const QString precedingText = working.mid(checkWindowStart, codeStart - checkWindowStart);
             static const QRegularExpression precFileRegex(
-                QStringLiteral(R"(\*\*(?:Source\s+Code\s+dari\s+file|File|Skrip)\s+[`*_]*([a-zA-Z0-9_\-\.\/]+)[`*_]*\s*:\s*\*\*)"),
+                QStringLiteral(
+                    R"(\*\*(?:Source\s+Code\s+dari\s+file|File|Skrip)\s+[`*_]*([a-zA-Z0-9_\-\.\/]+)[`*_]*\s*:\s*\*\*)"),
                 QRegularExpression::CaseInsensitiveOption);
             const auto precMatch = precFileRegex.match(precedingText);
             if (precMatch.hasMatch()) {
@@ -1336,30 +1379,43 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
         const QString escapedCode = sanitizeForPreview(cleanCode);
 
-        QString blockHtml = QStringLiteral(
-            "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
-            "<table width=\"100%\" class=\"code-block-container\" id=\"line_box_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"@@BG@@\" style=\"width: 100%; margin: 14px 0; border: 1px solid @@BORDER@@; border-radius: 8px; border-collapse: separate;\">\n"
-            "<tr>\n"
-            "<td bgcolor=\"@@HDRBG@@\" class=\"code-block-header\" style=\"padding: 6px 12px; background-color: @@HDRBG@@; border-bottom: 1px solid @@BORDER@@;\">\n"
-            "<table width=\"100%\" class=\"code-block-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
-            "<tr>\n"
-            "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
-            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: @@PILLBG@@; color: @@PILLTEXT@@; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid @@BORDER@@;\">%2</span>\n"
-            "</td>\n"
-            "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
-            "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: @@BTNTEXT@@; cursor: pointer; padding: 2px 8px; border: 1px solid @@BORDER@@; border-radius: 6px; background-color: @@BTNBG@@;\" title=\"Copy clean terminal code\">📋 Copy</a>\n"
-            "</td>\n"
-            "</tr>\n"
-            "</table>\n"
-            "</td>\n"
-            "</tr>\n"
-            "<tr>\n"
-            "<td bgcolor=\"@@BG@@\" style=\"padding: 12px 16px; background-color: @@BG@@;\">\n"
-            "<pre class=\"code-block-content\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: @@TEXTCOL@@; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
-            "</td>\n"
-            "</tr>\n"
-            "</table>")
-            .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode);
+        QString blockHtml =
+            QStringLiteral(
+                "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
+                "<table width=\"100%\" class=\"code-block-container\" id=\"line_box_%1\" cellpadding=\"0\" "
+                "cellspacing=\"0\" bgcolor=\"@@BG@@\" style=\"width: 100%; margin: 14px 0; border: 1px solid "
+                "@@BORDER@@; border-radius: 8px; border-collapse: separate;\">\n"
+                "<tr>\n"
+                "<td bgcolor=\"@@HDRBG@@\" class=\"code-block-header\" style=\"padding: 6px 12px; background-color: "
+                "@@HDRBG@@; border-bottom: 1px solid @@BORDER@@;\">\n"
+                "<table width=\"100%\" class=\"code-block-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: "
+                "100%; border: none;\">\n"
+                "<tr>\n"
+                "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
+                "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: @@PILLBG@@; color: "
+                "@@PILLTEXT@@; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: "
+                "11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid "
+                "@@BORDER@@;\">%2</span>\n"
+                "</td>\n"
+                "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
+                "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; "
+                "font-weight: 600; color: @@BTNTEXT@@; cursor: pointer; padding: 2px 8px; border: 1px solid "
+                "@@BORDER@@; border-radius: 6px; background-color: @@BTNBG@@;\" title=\"Copy clean terminal code\">📋 "
+                "Copy</a>\n"
+                "</td>\n"
+                "</tr>\n"
+                "</table>\n"
+                "</td>\n"
+                "</tr>\n"
+                "<tr>\n"
+                "<td bgcolor=\"@@BG@@\" style=\"padding: 12px 16px; background-color: @@BG@@;\">\n"
+                "<pre class=\"code-block-content\" style=\"margin: 0; padding: 0; border: none; font-family: "
+                "'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; "
+                "color: @@TEXTCOL@@; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
+                "</td>\n"
+                "</tr>\n"
+                "</table>")
+                .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode);
 
         blockHtml.replace(QStringLiteral("@@BG@@"), codeContainerBg);
         blockHtml.replace(QStringLiteral("@@BORDER@@"), codeBorderCol);
@@ -1399,7 +1455,9 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         localAnchors.push_back(startLine);
 
         const QString mathSource = sanitizeForPreview(mathRaw);
-        const QString blockHtml = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n<div class=\"math-block\"><span class=\"math-tex\">%2</span></div>")
+        const QString blockHtml = QStringLiteral(
+                                      "<a name=\"line_%1\" id=\"line_%1\"></a>\n<div class=\"math-block\"><span "
+                                      "class=\"math-tex\">%2</span></div>")
                                       .arg(QString::number(startLine), mathSource);
         mathBlocks.push_back(blockHtml);
         const QString token = QStringLiteral("\n\nSPARKMATHBLOCK%1XYZ\n\n").arg(mathBlocks.size() - 1);
@@ -1458,9 +1516,8 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
     }
 
     const auto isInMaskedInterval = [&maskedIntervals](qsizetype pos) -> bool {
-        return std::ranges::any_of(maskedIntervals, [pos](const auto &interval) {
-            return pos >= interval.first && pos <= interval.second;
-        });
+        return std::ranges::any_of(
+            maskedIntervals, [pos](const auto &interval) { return pos >= interval.first && pos <= interval.second; });
     };
 
     // Scan source line numbers for real headings and tables (excluding code blocks and comments)
@@ -1508,8 +1565,8 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
     // Normalize any unclosed <input> tags to self-closing <input ... />
     // to prevent MD4C/QTextDocument parser element nesting and font shrinkage
-    static const QRegularExpression unclosedInputRegex(
-        QStringLiteral(R"(<input\b([^>]*?)(?<!/)>)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression unclosedInputRegex(QStringLiteral(R"(<input\b([^>]*?)(?<!/)>)"),
+                                                       QRegularExpression::CaseInsensitiveOption);
     enriched.replace(unclosedInputRegex, QStringLiteral("<input\\1 />"));
 
     // 8. Convert via QTextDocument (native MD4C parser)
@@ -1588,31 +1645,37 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
     QString finalHtml = calloutsEnhanced;
 
     std::vector<QRegularExpressionMatch> tableMatches;
-    static const QRegularExpression tableTagRegex(QStringLiteral(R"(<table\b(?![^>]*\b(?:code-block-container|code-block-header)\b)[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression tableTagRegex(
+        QStringLiteral(R"(<table\b(?![^>]*\b(?:code-block-container|code-block-header)\b)[^>]*>)"),
+        QRegularExpression::CaseInsensitiveOption);
     auto tblMatchIt = tableTagRegex.globalMatch(finalHtml);
     while (tblMatchIt.hasNext()) {
         tableMatches.push_back(tblMatchIt.next());
     }
     for (qsizetype i = static_cast<qsizetype>(tableMatches.size()) - 1; i >= 0; --i) {
-        const int tLine = (static_cast<std::size_t>(i) < tableLines.size()) ? tableLines[static_cast<std::size_t>(i)] : 1;
+        const int tLine =
+            (static_cast<std::size_t>(i) < tableLines.size()) ? tableLines[static_cast<std::size_t>(i)] : 1;
         const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n").arg(tLine);
         finalHtml.insert(tableMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
     }
 
     std::vector<QRegularExpressionMatch> headingMatches;
-    static const QRegularExpression hTagRegex(QStringLiteral(R"(<h([1-6])([^>]*)>)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression hTagRegex(QStringLiteral(R"(<h([1-6])([^>]*)>)"),
+                                              QRegularExpression::CaseInsensitiveOption);
     auto hMatchIt = hTagRegex.globalMatch(finalHtml);
     while (hMatchIt.hasNext()) {
         headingMatches.push_back(hMatchIt.next());
     }
     for (qsizetype i = static_cast<qsizetype>(headingMatches.size()) - 1; i >= 0; --i) {
-        const int hLine = (static_cast<std::size_t>(i) < headingLines.size()) ? headingLines[static_cast<std::size_t>(i)] : 1;
+        const int hLine =
+            (static_cast<std::size_t>(i) < headingLines.size()) ? headingLines[static_cast<std::size_t>(i)] : 1;
         const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n").arg(hLine);
         finalHtml.insert(headingMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
     }
 
     std::vector<QRegularExpressionMatch> listMatches;
-    static const QRegularExpression liTagRegex(QStringLiteral(R"(<li\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression liTagRegex(QStringLiteral(R"(<li\b[^>]*>)"),
+                                               QRegularExpression::CaseInsensitiveOption);
     auto liMatchIt = liTagRegex.globalMatch(finalHtml);
     while (liMatchIt.hasNext()) {
         listMatches.push_back(liMatchIt.next());

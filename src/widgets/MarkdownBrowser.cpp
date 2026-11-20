@@ -41,12 +41,10 @@ QByteArray normalizeSvgForRendering(const QByteArray &data) {
 
     static const QRegularExpression textTagRegex(QStringLiteral(R"(<text\b([^>]*?)>)"),
                                                  QRegularExpression::CaseInsensitiveOption);
-    static const QRegularExpression transformScaleRegex(
-        QStringLiteral(R"(\s*transform\s*=\s*["']scale\(0?\.1\)["'])"),
-        QRegularExpression::CaseInsensitiveOption);
-    static const QRegularExpression numAttrRegex(
-        QStringLiteral(R"(\b(x|y|textLength)\s*=\s*["']([0-9.]+)["'])"),
-        QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression transformScaleRegex(QStringLiteral(R"(\s*transform\s*=\s*["']scale\(0?\.1\)["'])"),
+                                                        QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression numAttrRegex(QStringLiteral(R"(\b(x|y|textLength)\s*=\s*["']([0-9.]+)["'])"),
+                                                 QRegularExpression::CaseInsensitiveOption);
 
     auto matchIt = textTagRegex.globalMatch(svg);
     qsizetype offset = 0;
@@ -62,7 +60,8 @@ QByteArray normalizeSvgForRendering(const QByteArray &data) {
             bool ok = false;
             const double val = am.captured(2).toDouble(&ok);
             if (ok) {
-                const QString scaled = QStringLiteral("%1=\"%2\"").arg(am.captured(1), QString::number(val * 0.1, 'f', 2));
+                const QString scaled =
+                    QStringLiteral("%1=\"%2\"").arg(am.captured(1), QString::number(val * 0.1, 'f', 2));
                 tag.replace(am.capturedStart() + innerOffset, am.capturedLength(), scaled);
                 innerOffset += scaled.length() - am.capturedLength();
             }
@@ -77,12 +76,10 @@ QByteArray normalizeSvgForRendering(const QByteArray &data) {
     return svg.toUtf8();
 }
 
-} // namespace
+}  // namespace
 
 MarkdownBrowser::MarkdownBrowser(QWidget *parent)
-    : QTextBrowser(parent),
-      m_networkManager(new QNetworkAccessManager(this)),
-      m_relayoutTimer(new QTimer(this)) {
+    : QTextBrowser(parent), m_networkManager(new QNetworkAccessManager(this)), m_relayoutTimer(new QTimer(this)) {
     setOpenExternalLinks(false);
     setOpenLinks(false);
     m_relayoutTimer->setSingleShot(true);

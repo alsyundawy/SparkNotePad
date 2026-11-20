@@ -81,19 +81,19 @@ SparkNotePad memiliki arsitektur palet cepat dua mode yang terinspirasi oleh lin
 
 ## 5. Keamanan & Utilitas Pengembang
 
-| Tindakan                        | macOS Shortcut | Linux / Windows Shortcut | Deskripsi                                                      |
-| :------------------------------ | :------------- | :----------------------- | :------------------------------------------------------------- |
-| **Enkripsi Dokumen**            | `Cmd+Alt+E`    | `Ctrl+Alt+E`             | Mengenkripsi dokumen menggunakan AES-256-CBC dan PBKDF2        |
-| **Dekripsi Dokumen**            | `Cmd+Alt+X`    | `Ctrl+Alt+X`             | Mendekripsi dokumen aman format `SPKENC01`                     |
-| **Evaluasi JavaScript / Rumus** | `Cmd+Alt+J`    | `Ctrl+Alt+J`             | Menjalankan rumus matematika atau kode JavaScript di QJSEngine |
-| **Pemantauan Log Real-Time**    | `Cmd+Alt+M`    | `Ctrl+Alt+M`             | Memantau perubahan berkas log secara langsung (_live tail_)    |
-| **Riwayat Papan Klip**          | `Cmd+Alt+V`    | `Ctrl+Alt+V`             | Membuka riwayat teks yang pernah disalin sebelumnya            |
-| **Format Dokumen**              | `Cmd+Shift+I`  | `Ctrl+Shift+I`           | Merapikan format kode dokumen secara otomatis                  |
-| **Pratinjau Aman Markdown**     | `Cmd+Shift+M`  | `Ctrl+Shift+M`           | Membuka pratinjau rendering HTML Markdown berdampingan         |
-| **Tampilan Hex / Biner**        | `Cmd+Alt+H`    | `Ctrl+Alt+H`             | Beralih inspeksi biner dan heksadesimal secara reversibel      |
-| **Developer Tools Hub**         | `Cmd+Alt+T`    | `Ctrl+Alt+T`             | Hub interaktif (JSON/XML/HTML/CSS/JS, Kripto, MIME, Radiks)    |
-| **Ganti Tema Gelap / Terang**   | `Cmd+Shift+D`  | `Ctrl+Shift+D`           | Berganti cepat antara tema gelap dan terang favorit            |
-| **Pindah Header / Source**      | `F4` / `Alt+O` | `F4` / `Alt+O`           | Beralih antara berkas header (.h) dan implementasi C/C++ (.cpp)|
+| Tindakan                        | macOS Shortcut | Linux / Windows Shortcut | Deskripsi                                                       |
+| :------------------------------ | :------------- | :----------------------- | :-------------------------------------------------------------- |
+| **Enkripsi Dokumen**            | `Cmd+Alt+E`    | `Ctrl+Alt+E`             | Mengenkripsi dokumen menggunakan AES-256-CBC dan PBKDF2         |
+| **Dekripsi Dokumen**            | `Cmd+Alt+X`    | `Ctrl+Alt+X`             | Mendekripsi dokumen aman format `SPKENC01`                      |
+| **Evaluasi JavaScript / Rumus** | `Cmd+Alt+J`    | `Ctrl+Alt+J`             | Menjalankan rumus matematika atau kode JavaScript di QJSEngine  |
+| **Pemantauan Log Real-Time**    | `Cmd+Alt+M`    | `Ctrl+Alt+M`             | Memantau perubahan berkas log secara langsung (_live tail_)     |
+| **Riwayat Papan Klip**          | `Cmd+Alt+V`    | `Ctrl+Alt+V`             | Membuka riwayat teks yang pernah disalin sebelumnya             |
+| **Format Dokumen**              | `Cmd+Shift+I`  | `Ctrl+Shift+I`           | Merapikan format kode dokumen secara otomatis                   |
+| **Pratinjau Aman Markdown**     | `Cmd+Shift+M`  | `Ctrl+Shift+M`           | Membuka pratinjau rendering HTML Markdown berdampingan          |
+| **Tampilan Hex / Biner**        | `Cmd+Alt+H`    | `Ctrl+Alt+H`             | Beralih inspeksi biner dan heksadesimal secara reversibel       |
+| **Developer Tools Hub**         | `Cmd+Alt+T`    | `Ctrl+Alt+T`             | Hub interaktif (JSON/XML/HTML/CSS/JS, Kripto, MIME, Radiks)     |
+| **Ganti Tema Gelap / Terang**   | `Cmd+Shift+D`  | `Ctrl+Shift+D`           | Berganti cepat antara tema gelap dan terang favorit             |
+| **Pindah Header / Source**      | `F4` / `Alt+O` | `F4` / `Alt+O`           | Beralih antara berkas header (.h) dan implementasi C/C++ (.cpp) |
 
 ---
 

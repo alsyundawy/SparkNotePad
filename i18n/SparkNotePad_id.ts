@@ -2299,7 +2299,7 @@ Pilih dokumen yang ingin Anda pulihkan:</translation>
     </message>
     <message>
         <source>Enter or paste input text here... (Loaded automatically from active document selection)</source>
-        <translation type="vanished">Masukkan atau tempel teks masukan di sini... (Dimuat otomatis dari pilihan dokumen aktif)</translation>
+        <translation>Masukkan atau tempel teks masukan di sini... (Dimuat otomatis dari pilihan dokumen aktif)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DeveloperToolsDialog.cpp" line="116" />
@@ -2608,7 +2608,7 @@ Pilih dokumen yang ingin Anda pulihkan:</translation>
     </message>
     <message>
         <source>Decode JWT Token</source>
-        <translation type="vanished">Dekode Token JWT</translation>
+        <translation>Dekode Token JWT</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DeveloperToolsDialog.cpp" line="592" />
@@ -2622,7 +2622,7 @@ Pilih dokumen yang ingin Anda pulihkan:</translation>
     </message>
     <message>
         <source>Current Epoch &amp; ISO</source>
-        <translation type="vanished">Epoch &amp; ISO Saat Ini</translation>
+        <translation>Epoch &amp; ISO Saat Ini</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DeveloperToolsDialog.cpp" line="613" />
