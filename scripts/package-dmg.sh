@@ -168,6 +168,10 @@ if command -v SetFile >/dev/null 2>&1; then
 	SetFile -a C "${STAGE_DIR}" 2>/dev/null || true
 fi
 
+# Strict size gate: must remain between 30MB and 40MB without bloatware
+MIN_ALLOWED_BYTES=31457280 # 30 MB (31,457,280 bytes) per AGENTS.md Rule 3 floor
+MAX_ALLOWED_BYTES=41943040 # 40 MB (41,943,040 bytes) per AGENTS.md Rule 3 ceiling
+
 echo "[*] Packaging styled lightweight DMG via native hdiutil..."
 hdiutil create \
 	-volname "${VOL_NAME}" \
@@ -178,6 +182,19 @@ hdiutil create \
 	-imagekey zlib-level=9 \
 	"${DMG_OUTPUT}"
 
+DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
+if ((DMG_SIZE_BYTES > MAX_ALLOWED_BYTES)); then
+	echo "[*] Notice: UDZO image (${DMG_SIZE_BYTES} bytes) exceeds 40MB ceiling. Re-compressing via native UDBZ..."
+	hdiutil create \
+		-volname "${VOL_NAME}" \
+		-srcfolder "${STAGE_DIR}" \
+		-fs "HFS+" \
+		-ov \
+		-format UDBZ \
+		"${DMG_OUTPUT}"
+	DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
+fi
+
 # Verification
 if [[ ! -f ${DMG_OUTPUT} ]]; then
 	echo "Error: Failed to create disk image '${DMG_OUTPUT}'" >&2
@@ -187,10 +204,6 @@ fi
 echo "[*] Verifying DMG checksum and structure..."
 hdiutil verify "${DMG_OUTPUT}"
 
-# Strict size gate: must remain between 30MB and 40MB without bloatware
-DMG_SIZE_BYTES="$(stat -f%z "${DMG_OUTPUT}" 2>/dev/null || wc -c <"${DMG_OUTPUT}")"
-MIN_ALLOWED_BYTES=31457280 # 30 MB (31,457,280 bytes) per AGENTS.md Rule 3 floor
-MAX_ALLOWED_BYTES=41943040 # 40 MB (41,943,040 bytes) per AGENTS.md Rule 3 ceiling
 DMG_SIZE="$(du -h "${DMG_OUTPUT}" | cut -f1)"
 
 if ((DMG_SIZE_BYTES < MIN_ALLOWED_BYTES)); then

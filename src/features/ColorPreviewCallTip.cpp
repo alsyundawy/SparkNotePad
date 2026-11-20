@@ -20,11 +20,12 @@
 #include <QtGlobal>
 #include <algorithm>
 
-static inline int QColorToScintillaColour(const QColor &c) {
+namespace {
+inline int QColorToScintillaColour(const QColor &c) {
     return c.red() | (c.green() << 8) | (c.blue() << 16);
 }
 
-static inline QColor parseColor(const QString &text) {
+inline QColor parseColor(const QString &text) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     return QColor::fromString(text);
 #else
@@ -34,7 +35,8 @@ static inline QColor parseColor(const QString &text) {
     }
     // Fallback for Qt < 6.4: parse functional rgb/rgba notation
     static const QRegularExpression rgbFuncRegex(
-        QStringLiteral("rgba?\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})(?:\\s*,\\s*([0-9.]+))?\\s*\\)"),
+        QStringLiteral(
+            "rgba?\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})(?:\\s*,\\s*([0-9.]+))?\\s*\\)"),
         QRegularExpression::CaseInsensitiveOption);
     const auto rgbMatch = rgbFuncRegex.match(text);
     if (rgbMatch.hasMatch()) {
@@ -49,6 +51,7 @@ static inline QColor parseColor(const QString &text) {
     return QColor();
 #endif
 }
+}  // namespace
 
 ColorPreviewCallTip::ColorPreviewCallTip(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName(QStringLiteral("ColorPreviewCallTip"));
@@ -73,10 +76,8 @@ void ColorPreviewCallTip::notify(const Scintilla::NotificationData *pscn) {
     }
 
     // Dismiss preview on text modification or focus loss
-    if (pscn->nmhdr.code == Scintilla::Notification::UpdateUI) {
-        if (editor->callTipActive() && !m_currentMatch.found) {
-            dismissPreview();
-        }
+    if (pscn->nmhdr.code == Scintilla::Notification::UpdateUI && editor->callTipActive() && !m_currentMatch.found) {
+        dismissPreview();
     }
 }
 
@@ -90,7 +91,7 @@ void ColorPreviewCallTip::onDwellStart(int x, int y) {
         return;
     }
 
-    const int pos = editor->positionFromPoint(x, y);
+    const int pos = static_cast<int>(editor->positionFromPoint(x, y));
     if (pos >= 0 && pos <= editor->length()) {
         showPreviewAt(pos);
     }
@@ -120,8 +121,8 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
 
     // 1. Check active selection if non-empty
     if (editor->selectionStart() != editor->selectionEnd()) {
-        const int selStart = editor->selectionStart();
-        const int selEnd = editor->selectionEnd();
+        const int selStart = static_cast<int>(editor->selectionStart());
+        const int selEnd = static_cast<int>(editor->selectionEnd());
         if (pos >= selStart && pos <= selEnd) {
             const QString selText = QString::fromUtf8(editor->get_text_range(selStart, selEnd)).trimmed();
             QColor c;
@@ -161,9 +162,9 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
     }
 
     // 2. Scan line containing pos
-    const int line = editor->lineFromPosition(pos);
-    const int lineStart = editor->positionFromLine(line);
-    const int lineEnd = editor->lineEndPosition(line);
+    const int line = static_cast<int>(editor->lineFromPosition(pos));
+    const int lineStart = static_cast<int>(editor->positionFromLine(line));
+    const int lineEnd = static_cast<int>(editor->lineEndPosition(line));
     if (lineStart >= lineEnd) {
         return match;
     }
@@ -176,7 +177,7 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
         QStringLiteral("(?:#|0x)([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\\b"));
     auto hexIt = hexRegex.globalMatch(lineText);
     while (hexIt.hasNext()) {
-        auto m = hexIt.next();
+        const auto m = hexIt.next();
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString raw = m.captured(0);
             QColor c;
@@ -185,19 +186,20 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
                 match.format = Hex0x;
             } else {
                 c = parseColor(raw);
-                if (raw.length() == 4)
+                if (raw.length() == 4) {
                     match.format = Hex3;
-                else if (raw.length() == 5)
+                } else if (raw.length() == 5) {
                     match.format = Hex4;
-                else if (raw.length() == 7)
+                } else if (raw.length() == 7) {
                     match.format = Hex6;
-                else
+                } else {
                     match.format = Hex8;
+                }
             }
             if (c.isValid()) {
                 match.found = true;
-                match.startPos = lineStart + m.capturedStart();
-                match.endPos = lineStart + m.capturedEnd();
+                match.startPos = lineStart + static_cast<int>(m.capturedStart());
+                match.endPos = lineStart + static_cast<int>(m.capturedEnd());
                 match.text = raw;
                 match.color = c;
                 return match;
@@ -212,14 +214,14 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
         QRegularExpression::CaseInsensitiveOption);
     auto rgbIt = rgbRegex.globalMatch(lineText);
     while (rgbIt.hasNext()) {
-        auto m = rgbIt.next();
+        const auto m = rgbIt.next();
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString raw = m.captured(0);
             const QColor c = parseColor(raw);
             if (c.isValid()) {
                 match.found = true;
-                match.startPos = lineStart + m.capturedStart();
-                match.endPos = lineStart + m.capturedEnd();
+                match.startPos = lineStart + static_cast<int>(m.capturedStart());
+                match.endPos = lineStart + static_cast<int>(m.capturedEnd());
                 match.text = raw;
                 match.color = c;
                 match.format = raw.startsWith(QLatin1String("rgba"), Qt::CaseInsensitive) ? Rgba : Rgb;
@@ -235,14 +237,14 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
         QRegularExpression::CaseInsensitiveOption);
     auto hslIt = hslRegex.globalMatch(lineText);
     while (hslIt.hasNext()) {
-        auto m = hslIt.next();
+        const auto m = hslIt.next();
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString raw = m.captured(0);
             const QColor c = parseColor(raw);
             if (c.isValid()) {
                 match.found = true;
-                match.startPos = lineStart + m.capturedStart();
-                match.endPos = lineStart + m.capturedEnd();
+                match.startPos = lineStart + static_cast<int>(m.capturedStart());
+                match.endPos = lineStart + static_cast<int>(m.capturedEnd());
                 match.text = raw;
                 match.color = c;
                 match.format = raw.startsWith(QLatin1String("hsla"), Qt::CaseInsensitive) ? Hsla : Hsl;
@@ -263,15 +265,15 @@ ColorPreviewCallTip::ColorMatch ColorPreviewCallTip::findColorAt(ScintillaNext *
     static const QRegularExpression wordRegex(QStringLiteral("\\b[a-zA-Z]{3,10}\\b"));
     auto wordIt = wordRegex.globalMatch(lineText);
     while (wordIt.hasNext()) {
-        auto m = wordIt.next();
+        const auto m = wordIt.next();
         if (col >= m.capturedStart() && col <= m.capturedEnd()) {
             const QString word = m.captured(0).toLower();
             if (namedColors.contains(word)) {
                 const QColor c = parseColor(word);
                 if (c.isValid()) {
                     match.found = true;
-                    match.startPos = lineStart + m.capturedStart();
-                    match.endPos = lineStart + m.capturedEnd();
+                    match.startPos = lineStart + static_cast<int>(m.capturedStart());
+                    match.endPos = lineStart + static_cast<int>(m.capturedEnd());
                     match.text = m.captured(0);
                     match.color = c;
                     match.format = Named;
@@ -334,7 +336,7 @@ bool ColorPreviewCallTip::showPreviewAt(int pos) {
         return false;
     }
 
-    ColorMatch match = findColorAt(editor, pos);
+    const ColorMatch match = findColorAt(editor, pos);
     if (!match.found || !match.color.isValid()) {
         return false;
     }
@@ -406,9 +408,9 @@ bool ColorPreviewCallTip::triggerColorPreviewOrPick() {
         return false;
     }
 
-    int pos = editor->currentPos();
+    int pos = static_cast<int>(editor->currentPos());
     if (editor->selectionStart() != editor->selectionEnd()) {
-        pos = editor->selectionStart();
+        pos = static_cast<int>(editor->selectionStart());
     }
 
     if (showPreviewAt(pos)) {

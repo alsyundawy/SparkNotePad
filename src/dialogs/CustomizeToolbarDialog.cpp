@@ -429,8 +429,7 @@ void CustomizeToolbarWidget::refreshActions() {
 // CustomizeToolbarDialog
 // -----------------------------------------------------------------------------
 
-CustomizeToolbarDialog::CustomizeToolbarDialog(MainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent) {
+CustomizeToolbarDialog::CustomizeToolbarDialog(MainWindow *mainWindow, QWidget *parent) : QDialog(parent) {
     setWindowTitle(tr("Customize Toolbar Buttons"));
     setMinimumSize(740, 520);
 

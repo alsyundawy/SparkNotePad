@@ -133,8 +133,7 @@ TokenForensicUtils::DocumentStats TokenForensicUtils::analyzeText(const QString 
 
     const auto lines = text.split(QLatin1Char('\n'));
     stats.lines = lines.size();
-    stats.nonEmptyLines =
-        std::ranges::count_if(lines, [](const QString &line) { return !line.trimmed().isEmpty(); });
+    stats.nonEmptyLines = std::ranges::count_if(lines, [](const QString &line) { return !line.trimmed().isEmpty(); });
 
     stats.charsNoSpaces = std::ranges::count_if(text, [](const QChar &ch) { return !ch.isSpace(); });
 

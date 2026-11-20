@@ -233,26 +233,66 @@ private:
     }
 
     static double evaluateUnaryMath(const QString &fn, double x) {
-        if (fn == QStringLiteral("sqrt")) { return std::sqrt(x); }
-        if (fn == QStringLiteral("cbrt")) { return std::cbrt(x); }
-        if (fn == QStringLiteral("abs")) { return std::fabs(x); }
-        if (fn == QStringLiteral("sin")) { return std::sin(x); }
-        if (fn == QStringLiteral("cos")) { return std::cos(x); }
-        if (fn == QStringLiteral("tan")) { return std::tan(x); }
-        if (fn == QStringLiteral("asin")) { return std::asin(x); }
-        if (fn == QStringLiteral("acos")) { return std::acos(x); }
-        if (fn == QStringLiteral("atan")) { return std::atan(x); }
-        if (fn == QStringLiteral("sinh")) { return std::sinh(x); }
-        if (fn == QStringLiteral("cosh")) { return std::cosh(x); }
-        if (fn == QStringLiteral("tanh")) { return std::tanh(x); }
-        if (fn == QStringLiteral("log") || fn == QStringLiteral("ln")) { return std::log(x); }
-        if (fn == QStringLiteral("log10")) { return std::log10(x); }
-        if (fn == QStringLiteral("log2")) { return std::log2(x); }
-        if (fn == QStringLiteral("exp")) { return std::exp(x); }
-        if (fn == QStringLiteral("floor")) { return std::floor(x); }
-        if (fn == QStringLiteral("ceil")) { return std::ceil(x); }
-        if (fn == QStringLiteral("round")) { return std::round(x); }
-        if (fn == QStringLiteral("trunc")) { return std::trunc(x); }
+        if (fn == QStringLiteral("sqrt")) {
+            return std::sqrt(x);
+        }
+        if (fn == QStringLiteral("cbrt")) {
+            return std::cbrt(x);
+        }
+        if (fn == QStringLiteral("abs")) {
+            return std::fabs(x);
+        }
+        if (fn == QStringLiteral("sin")) {
+            return std::sin(x);
+        }
+        if (fn == QStringLiteral("cos")) {
+            return std::cos(x);
+        }
+        if (fn == QStringLiteral("tan")) {
+            return std::tan(x);
+        }
+        if (fn == QStringLiteral("asin")) {
+            return std::asin(x);
+        }
+        if (fn == QStringLiteral("acos")) {
+            return std::acos(x);
+        }
+        if (fn == QStringLiteral("atan")) {
+            return std::atan(x);
+        }
+        if (fn == QStringLiteral("sinh")) {
+            return std::sinh(x);
+        }
+        if (fn == QStringLiteral("cosh")) {
+            return std::cosh(x);
+        }
+        if (fn == QStringLiteral("tanh")) {
+            return std::tanh(x);
+        }
+        if (fn == QStringLiteral("log") || fn == QStringLiteral("ln")) {
+            return std::log(x);
+        }
+        if (fn == QStringLiteral("log10")) {
+            return std::log10(x);
+        }
+        if (fn == QStringLiteral("log2")) {
+            return std::log2(x);
+        }
+        if (fn == QStringLiteral("exp")) {
+            return std::exp(x);
+        }
+        if (fn == QStringLiteral("floor")) {
+            return std::floor(x);
+        }
+        if (fn == QStringLiteral("ceil")) {
+            return std::ceil(x);
+        }
+        if (fn == QStringLiteral("round")) {
+            return std::round(x);
+        }
+        if (fn == QStringLiteral("trunc")) {
+            return std::trunc(x);
+        }
         return std::numeric_limits<double>::quiet_NaN();
     }
 

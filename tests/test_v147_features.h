@@ -68,7 +68,8 @@ private slots:
             QVERIFY(inspOk.success);
 
             // Import with correct password
-            const auto importRes = SparkTransferManager::importBundle(bundlePath, QStringLiteral("SecurePassphrase123!"));
+            const auto importRes =
+                SparkTransferManager::importBundle(bundlePath, QStringLiteral("SecurePassphrase123!"));
             QVERIFY(importRes.success);
         }
     }
