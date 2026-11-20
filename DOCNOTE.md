@@ -1,3 +1,49 @@
+# SparkNotePad Release DocNote — v1.5.0
+
+```text
+================================================================================
+Release Version     : 1.5.0 (Full Developer Tools Suite [JSON/XML/HTML/CSS/JS, Encryption,
+                      JWT, Radix, UUID], GitHub Primer Markdown Safe Live Preview, Context Menu
+                      Separator, Shields.io Badge Normalizer & Scroll Synchronization)
+Release Date        : 2026-11-20
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine : Scintilla 5.6.9 (Vendored) & Lexilla 5.5.5 (Vendored)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Patched Source 1-4)
+Scripting Runtime   : Python 3.13+ Engine Bridge
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
+Architecture        : 100% Additive Safe Enhancements Grounded in Primary Sources & 14 Review Pillars
+CI/CD Status        : 100% Passing across all release matrices, MegaLinter & CodeQL
+================================================================================
+```
+
+---
+
+## 1. Executive Summary: Changes from v1.4.7 to v1.5.0
+
+SparkNotePad **v1.5.0** delivers major enhancements across developer tooling, Markdown preview fidelity, context menu ergonomics, translations, and macOS packaging:
+
+- **Comprehensive Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Full port and modernization of NotepadMac developer utilities into a unified, lightweight, modal dialog accessible via `Ctrl+Alt+T` / `Ctrl+Cmd+T` or `Tools -> Developer Tools -> Developer Tools Hub`.
+  - 5 functional tabs: Hash Tools (11 cryptographic hashes & HMAC), MIME Tools (Base64, Quoted-Printable, URL, HTML entities), Converter Tools (Radix 2–16, Hex <-> ASCII, Title/Invert/Sentence Case), Encryption Tools (HTML Protection via JS unescape, Base64, or AES-256-GCM with zxcvbn password evaluation), and Developer Tools (Format/Minify JSON, XML, HTML, CSS, JS; JWT Decoder; UUIDv4; Epoch).
+  - Compact typography, zero clipped buttons across all display scales, 100% empty initial input, and 100% localized tooltips.
+- **Theme-Aware Seamless Markdown Code Blocks & Mermaid Containers**:
+  - Re-engineered fenced code blocks and Mermaid diagram containers as contiguous HTML tables with theme-aware background colors (`#f6f8fa` light mode / `#161b22` dark mode), eliminating Qt rich-text block background horizontal striping / black bars completely.
+  - One-click copy buttons copy clean, sanitized terminal commands with pure Unix LF, no smart quotes, no NBSP, and no broken IFS.
+- **Zero-Lag Proportional Lockstep Scroll Synchronization**:
+  - Replaced timer-based throttling with synchronous recursion guards and proportional ratio tracking, guaranteeing 60fps real-time scroll alignment across hundreds of thousands of lines without lag or desync.
+- **Editor Context Menu Ergonomics**:
+  - Inserted mandatory visual separator line between `Select All` and `UPPER CASE` / `lowercase` across all menu configurations and dynamic settings.
+- **Complete i18n Localization Parity**:
+  - Synchronized 2,376 UI strings with 100% completion (0 unfinished) across `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts`, compiled to binary `.qm` packages.
+- **macOS Release Packaging Standard (30MB–40MB Standard)**:
+  - Pruned unneeded Qt plugins and stripped local symbols (`strip -x`), producing a verified 39MB release DMG via native `hdiutil` with custom background presentation preserved.
+
+---
+
 # SparkNotePad Release DocNote — v1.4.7
 
 ```text

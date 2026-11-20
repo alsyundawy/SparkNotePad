@@ -52,6 +52,25 @@ private slots:
         QVERIFY(result.contains(QStringLiteral("$50")));
     }
 
+    void testMathDoesNotSwallowListsOrVariables() const {
+        const auto input = QStringLiteral(
+            "- Upgraded Lexilla: PHP `$$variable` styling (#2208)\n"
+            "- Next item with important changes\n"
+            "- Another bullet point\n"
+            "$$var without backticks\n");
+        const auto result = MarkdownPreviewEnhancer::processMathExpressions(input);
+
+        // Block math should NOT match $$variable or $$var
+        QVERIFY(!result.contains(QStringLiteral("class=\"math-block\"")));
+        QVERIFY(result.contains(QStringLiteral("$$variable")));
+
+        const auto html = MarkdownPreviewEnhancer::renderMarkdownToHtml(input, false);
+        // All list items must be preserved as bullet points / list items
+        QVERIFY(html.contains(QStringLiteral("<li")));
+        QVERIFY(html.contains(QStringLiteral("Next item with important changes")));
+        QVERIFY(html.contains(QStringLiteral("Another bullet point")));
+    }
+
     void testXssSanitization() const {
         const auto malicious =
             QStringLiteral("```mermaid\n<script>alert('xss')</script>\n```\n$$<img src=x onerror=alert(1)>$$");

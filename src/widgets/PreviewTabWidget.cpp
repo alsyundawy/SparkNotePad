@@ -488,7 +488,7 @@ void PreviewTabWidget::handleAnchorClicked(const QUrl &url) {
 }
 
 void PreviewTabWidget::syncScrollFromEditor(Scintilla::Update updated) {
-    if (m_syncingScroll || !m_editor || !isVisible()) {
+    if (m_syncingFromBrowser || !m_editor || !isVisible()) {
         return;
     }
     if (!FlagSet(updated, Scintilla::Update::VScroll) && !FlagSet(updated, Scintilla::Update::Content)) {
@@ -506,47 +506,23 @@ void PreviewTabWidget::syncScrollFromEditor(Scintilla::Update updated) {
         return;
     }
 
-    m_syncingScroll = true;
+    m_syncingFromEditor = true;
 
     if (currentFirstLine <= 0 || docLine <= 1) {
         scrollBar->setValue(0);
     } else if (currentFirstLine >= maxScrollLine || docLine >= totalLines - 2) {
         scrollBar->setValue(scrollBar->maximum());
     } else {
-        int prevAnchor = -1;
-        int nextAnchor = -1;
-        MarkdownPreviewEnhancer::findAnchorBracket(docLine, prevAnchor, nextAnchor);
-
-        if (prevAnchor > 0 && nextAnchor > prevAnchor) {
-            m_browser->scrollToAnchor(QStringLiteral("line_%1").arg(prevAnchor));
-            const int y1 = scrollBar->value();
-            m_browser->scrollToAnchor(QStringLiteral("line_%1").arg(nextAnchor));
-            const int y2 = scrollBar->value();
-            const double localFraction = std::clamp(
-                static_cast<double>(docLine - prevAnchor) / static_cast<double>(nextAnchor - prevAnchor), 0.0, 1.0);
-            const int targetY = y1 + static_cast<int>(std::round(localFraction * static_cast<double>(y2 - y1)));
-            scrollBar->setValue(targetY);
-        } else if (prevAnchor > 0 && docLine >= prevAnchor) {
-            // When document is past the last anchor, interpolate smoothly down to maximum() so preview stays in sync
-            m_browser->scrollToAnchor(QStringLiteral("line_%1").arg(prevAnchor));
-            const int y1 = scrollBar->value();
-            const int yMax = scrollBar->maximum();
-            const double remFraction = std::clamp(
-                static_cast<double>(docLine - prevAnchor) / static_cast<double>(std::max(1, totalLines - prevAnchor)), 0.0, 1.0);
-            const int targetY = y1 + static_cast<int>(std::round(remFraction * static_cast<double>(yMax - y1)));
-            scrollBar->setValue(targetY);
-        } else {
-            const double ratio =
-                std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);
-            scrollBar->setValue(static_cast<int>(std::round(ratio * scrollBar->maximum())));
-        }
+        const double ratio =
+            std::clamp(static_cast<double>(currentFirstLine) / static_cast<double>(maxScrollLine), 0.0, 1.0);
+        scrollBar->setValue(static_cast<int>(std::round(ratio * scrollBar->maximum())));
     }
 
-    QTimer::singleShot(60, this, [this] { m_syncingScroll = false; });
+    m_syncingFromEditor = false;
 }
 
 void PreviewTabWidget::syncScrollFromBrowser() {
-    if (m_syncingScroll || !m_editor || !isVisible()) {
+    if (m_syncingFromEditor || !m_editor || !isVisible()) {
         return;
     }
     const auto *scrollBar = m_browser->verticalScrollBar();
@@ -560,9 +536,9 @@ void PreviewTabWidget::syncScrollFromBrowser() {
     const int maxScrollLine = std::max(1, totalLines - linesOnScreen);
     const auto targetLine = static_cast<int>(ratio * static_cast<double>(maxScrollLine));
 
-    m_syncingScroll = true;
+    m_syncingFromBrowser = true;
     m_editor->setFirstVisibleLine(targetLine);
-    QTimer::singleShot(60, this, [this] { m_syncingScroll = false; });
+    m_syncingFromBrowser = false;
 }
 
 void PreviewTabWidget::onEditorRenamed() {

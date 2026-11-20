@@ -98,5 +98,6 @@ private:
     bool autoShowEnabled = false;
     int baseFontSize = 13;
     bool m_isUpdatingTheme{false};
-    bool m_syncingScroll{false};
+    bool m_syncingFromEditor{false};
+    bool m_syncingFromBrowser{false};
 };

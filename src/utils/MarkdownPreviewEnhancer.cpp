@@ -136,6 +136,58 @@ void replaceSingleCallout(QString &result, const CalloutDef &c, qsizetype &idx, 
     idx = bqStart + replacement.length();
 }
 
+QString formatBadgeParagraphs(const QString &html) {
+    static const QRegularExpression pBadgeRegex(
+        QStringLiteral(R"(<p\b([^>]*?)>([\s\S]*?)<\/p>)"),
+        QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression badgeItemRegex(
+        QStringLiteral(R"((?:<a\b[^>]*>\s*)?<img\b[^>]*>(?:\s*<\/a>)?|\bEnglish\b|\bBahasa Indonesia\b)"),
+        QRegularExpression::CaseInsensitiveOption);
+
+    QString result = html;
+    auto pIt = pBadgeRegex.globalMatch(result);
+    qsizetype offset = 0;
+    while (pIt.hasNext()) {
+        const auto m = pIt.next();
+        const QString pInner = m.captured(2);
+
+        if (!pInner.contains(QStringLiteral("<img"), Qt::CaseInsensitive)) {
+            continue;
+        }
+
+        // Check if paragraph contains multiple badges
+        std::vector<QString> items;
+        auto itemIt = badgeItemRegex.globalMatch(pInner);
+        while (itemIt.hasNext()) {
+            items.push_back(itemIt.next().captured(0).trimmed());
+        }
+
+        if (items.size() >= 2) {
+            const int total = static_cast<int>(items.size());
+            const int rowSize = 2; // Strict 2 badges per row prevents line wrapping and overlapping
+            QString replacement = QStringLiteral(
+                "<table align=\"center\" border=\"0\" cellpadding=\"2\" cellspacing=\"4\" style=\"margin: 8px auto; border: none; border-collapse: separate; text-align: center;\">\n");
+            for (int i = 0; i < total; i += rowSize) {
+                const int count = std::min(rowSize, total - i);
+                replacement += QStringLiteral("  <tr>\n");
+                for (int j = 0; j < count; ++j) {
+                    replacement += QStringLiteral("    <td align=\"center\" style=\"border: none; padding: 2px 4px; vertical-align: middle;\">");
+                    replacement += items[static_cast<std::size_t>(i) + static_cast<std::size_t>(j)];
+                    replacement += QStringLiteral("</td>\n");
+                }
+                replacement += QStringLiteral("  </tr>\n");
+            }
+            replacement += QStringLiteral("</table>\n");
+
+            const qsizetype start = m.capturedStart() + offset;
+            const qsizetype len = m.capturedLength();
+            result.replace(start, len, replacement);
+            offset += replacement.length() - len;
+        }
+    }
+    return result;
+}
+
 QString cleanQtHtml(const QString &rawHtml) {
     // 1. Extract body content
     QString content = rawHtml;
@@ -176,24 +228,7 @@ QString cleanQtHtml(const QString &rawHtml) {
         QStringLiteral(R"(\s+width\s*=\s*["']?-\d+["']?)"), QRegularExpression::CaseInsensitiveOption);
     content.remove(negWidthRegex);
 
-    // 7. Ensure paragraphs containing images have sufficient line height for badges
-    static const QRegularExpression pImgTagRegex(
-        QStringLiteral(R"(<p\b([^>]*?>[\s\S]*?<img\b[^>]*>[\s\S]*?<\/p>))"),
-        QRegularExpression::CaseInsensitiveOption);
-    auto pImgIt = pImgTagRegex.globalMatch(content);
-    qsizetype pOffset = 0;
-    while (pImgIt.hasNext()) {
-        const auto m = pImgIt.next();
-        QString pBlock = m.captured(1);
-        if (!pBlock.contains(QStringLiteral("line-height: 34px"))) {
-            static const QRegularExpression pOpenRegex(QStringLiteral(R"(<p\b([^>]*?)(?:style\s*=\s*["']([^"']*)["'])?([^>]*?>))"), QRegularExpression::CaseInsensitiveOption);
-            pBlock.replace(pOpenRegex, QStringLiteral("<p\\1 style=\"line-height: 34px; margin: 10px 0; \\2\"\\3"));
-            const qsizetype start = m.capturedStart(1) + pOffset;
-            const qsizetype len = m.capturedLength(1);
-            content.replace(start, len, pBlock);
-            pOffset += pBlock.length() - len;
-        }
-    }
+    content = formatBadgeParagraphs(content);
 
     return content;
 }
@@ -209,12 +244,9 @@ QString sanitizeHtmlInsideBlock(QString block) {
         QRegularExpression::CaseInsensitiveOption);
     block.replace(percentWidthBlockRegex, QStringLiteral("<img\\1\\2"));
 
-    // Ensure paragraphs with images/badges have adequate line-height so badges never collide vertically
+    // Ensure paragraphs with images/badges are neatly chunked so badges never collide vertically
     if (block.contains(QStringLiteral("<img"), Qt::CaseInsensitive)) {
-        static const QRegularExpression pBadgeRegex(
-            QStringLiteral(R"(<p\b([^>]*?)(?:style\s*=\s*["']([^"']*)["'])?([^>]*?>))"),
-            QRegularExpression::CaseInsensitiveOption);
-        block.replace(pBadgeRegex, QStringLiteral("<p\\1 style=\"line-height: 34px; margin: 10px 0; \\2\"\\3"));
+        block = formatBadgeParagraphs(block);
     }
     return block;
 }
@@ -777,9 +809,9 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
         return content;
     }
 
-    // Mask inline code snippets to protect shell variables (e.g. `IFS=$'\n\t'`, `$PATH`) from math parsing
+    // Mask inline code snippets to protect shell variables (e.g. `IFS=$'\n\t'`, `$PATH`, `$$variable`) from math parsing
     std::vector<QString> inlineCode;
-    static const QRegularExpression inlineCodeRegex(QStringLiteral(R"(`[^`\n]+`)"));
+    static const QRegularExpression inlineCodeRegex(QStringLiteral(R"(`[^`\r\n]+`)"));
     QString masked = content;
     auto codeIt = inlineCodeRegex.globalMatch(masked);
     qsizetype codeOffset = 0;
@@ -793,18 +825,25 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
 
     QString result = masked;
 
-    // 1. Process block math: $$ ... $$
-    static const QRegularExpression blockMathRegex(QStringLiteral(R"(\$\$\s*\n?([\s\S]*?)\n?\s*\$\$)"));
+    // 1. Process block and display math: $$ ... $$ bounded by whitespace or newlines
+    static const QRegularExpression blockMathRegex(
+        QStringLiteral(R"((?<!\S)\$\$([^\$\r\n]+|\r?\n[\s\S]*?\r?\n)[ \t]*\$\$(?!\S))"));
 
     auto blockIt = blockMathRegex.globalMatch(result);
     qsizetype offset = 0;
     while (blockIt.hasNext()) {
         const QRegularExpressionMatch match = blockIt.next();
         const QString mathSource = match.captured(1).trimmed();
+        // Skip accidental matches that cross markdown headings, lists, or horizontal rules
+        if (mathSource.contains(QStringLiteral("\n#")) || mathSource.contains(QStringLiteral("\n- ")) ||
+            mathSource.contains(QStringLiteral("\n* ")) || mathSource.contains(QStringLiteral("\n---")) ||
+            mathSource.contains(QStringLiteral("\n\n\n"))) {
+            continue;
+        }
         const QString escaped = sanitizeForPreview(mathSource);
 
         const QString replacement =
-            QStringLiteral("<div class=\"math-block\"><span class=\"math-tex\">%1</span></div>").arg(escaped);
+            QStringLiteral("\n\n<div class=\"math-block\"><span class=\"math-tex\">%1</span></div>\n\n").arg(escaped);
 
         const qsizetype start = match.capturedStart() + offset;
         const qsizetype length = match.capturedLength();
@@ -812,9 +851,9 @@ QString MarkdownPreviewEnhancer::processMathExpressions(const QString &content) 
         offset += replacement.length() - length;
     }
 
-    // 2. Process inline math: $...$ (avoid escaped \$ and currency like $50 or $100)
+    // 2. Process inline math: $...$ (avoid escaped \$ and currency like $50 or $100, and variables like $foo or $$bar)
     static const QRegularExpression inlineMathRegex(
-        QStringLiteral(R"((?<![\\a-zA-Z0-9])\$(?![0-9\s\$])([^\$\n]+?)(?<![\\\s])\$(?![a-zA-Z0-9]))"));
+        QStringLiteral(R"((?<![\\a-zA-Z0-9_\$])\$(?![0-9\s\$])([^\$\r\n]+?)(?<![\\\s\$])\$(?![a-zA-Z0-9_\$]))"));
 
     auto inlineIt = inlineMathRegex.globalMatch(result);
     offset = 0;
@@ -1065,6 +1104,16 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         offset += token.length() - m.capturedLength();
     }
 
+    // Theme-aware palette for solid, seamless code blocks without Qt rich-text line striping
+    const QString codeContainerBg = isDark ? QStringLiteral("#161b22") : QStringLiteral("#f6f8fa");
+    const QString codeHeaderBg    = isDark ? QStringLiteral("#1f242c") : QStringLiteral("#ebeef1");
+    const QString codeBorderCol   = isDark ? QStringLiteral("#30363d") : QStringLiteral("#d0d7de");
+    const QString codeTextColor   = isDark ? QStringLiteral("#e6edf3") : QStringLiteral("#1f2328");
+    const QString codePillBg      = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
+    const QString codePillText    = isDark ? QStringLiteral("#f0f6fc") : QStringLiteral("#1f2328");
+    const QString codeBtnBg       = isDark ? QStringLiteral("#21262d") : QStringLiteral("#ffffff");
+    const QString codeBtnText     = isDark ? QStringLiteral("#c9d1d9") : QStringLiteral("#24292f");
+
     // 2. Mask Mermaid blocks to prevent MD4C parser entity double-escaping
     static const QRegularExpression mermaidRegex(
         QStringLiteral(R"((?:^|\n)[ \t]*```mermaid[ \t]*\r?\n([\s\S]*?)\r?\n[ \t]*```(?=[ \t]*(?:\r?\n|$)))"),
@@ -1089,47 +1138,38 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
         const QString diagramSource = sanitizeForPreview(cleanDiagram);
         const QString blockHtml = QStringLiteral(
-                                      "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
-                                      "<div class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" style=\"margin: 16px 0; background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;\">\n"
-                                      "<table width=\"100%\" class=\"code-block-header mermaid-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none; margin: 0; padding: 6px 12px; background-color: #161b22; border-bottom: 1px solid #30363d;\">\n"
-                                      "<tr>\n"
-                                      "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
-                                      "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: #21262d; color: #f0f6fc; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 12px; border: 1px solid #30363d;\">📊 Mermaid Diagram</span>\n"
-                                      "</td>\n"
-                                      "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
-                                      "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: #c9d1d9; cursor: pointer; padding: 2px 8px; border: 1px solid #30363d; border-radius: 6px; background-color: #21262d;\" title=\"Copy clean diagram source\">📋 Copy</a>\n"
-                                      "</td>\n"
-                                      "</tr>\n"
-                                      "</table>\n"
-                                      "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 14px 16px; background-color: #0d1117; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: #e6edf3; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
-                                      "</div>")
-                                      .arg(QString::number(startLine), QString::number(snippetId), diagramSource);
+            "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
+            "<table width=\"100%\" class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"%4\" style=\"width: 100%; margin: 14px 0; border: 1px solid %5; border-radius: 8px; border-collapse: separate;\">\n"
+            "<tr>\n"
+            "<td bgcolor=\"%6\" style=\"padding: 6px 12px; background-color: %6; border-bottom: 1px solid %5;\">\n"
+            "<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
+            "<tr>\n"
+            "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
+            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: %7; color: %8; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid %5;\">📊 Mermaid Diagram</span>\n"
+            "</td>\n"
+            "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
+            "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: %9; cursor: pointer; padding: 2px 8px; border: 1px solid %5; border-radius: 6px; background-color: %10;\" title=\"Copy clean diagram source\">📋 Copy</a>\n"
+            "</td>\n"
+            "</tr>\n"
+            "</table>\n"
+            "</td>\n"
+            "</tr>\n"
+            "<tr>\n"
+            "<td bgcolor=\"%4\" style=\"padding: 12px 16px; background-color: %4;\">\n"
+            "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: %11; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
+            "</td>\n"
+            "</tr>\n"
+            "</table>")
+            .arg(QString::number(startLine), QString::number(snippetId), diagramSource,
+                 codeContainerBg, codeBorderCol, codeHeaderBg, codePillBg, codePillText,
+                 codeBtnText, codeBtnBg, codeTextColor);
         mermaidBlocks.push_back(blockHtml);
         const QString token = QStringLiteral("\n\nSPARKMERMAIDBLOCK%1XYZ\n\n").arg(mermaidBlocks.size() - 1);
         working.replace(m.capturedStart() + offset, m.capturedLength(), token);
         offset += token.length() - m.capturedLength();
     }
 
-    // 3. Mask Block Math ($$ ... $$)
-    static const QRegularExpression blockMathRegex(QStringLiteral(R"(\$\$\s*\n?([\s\S]*?)\n?\s*\$\$)"));
-    std::vector<QString> mathBlocks;
-    auto mathIt = blockMathRegex.globalMatch(working);
-    offset = 0;
-    while (mathIt.hasNext()) {
-        const auto m = mathIt.next();
-        const int startLine = getLineNum(m.capturedStart());
-        localAnchors.push_back(startLine);
-
-        const QString mathSource = sanitizeForPreview(m.captured(1).trimmed());
-        const QString blockHtml = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n<div class=\"math-block\"><span class=\"math-tex\">%2</span></div>")
-                                      .arg(QString::number(startLine), mathSource);
-        mathBlocks.push_back(blockHtml);
-        const QString token = QStringLiteral("\n\nSPARKMATHBLOCK%1XYZ\n\n").arg(mathBlocks.size() - 1);
-        working.replace(m.capturedStart() + offset, m.capturedLength(), token);
-        offset += token.length() - m.capturedLength();
-    }
-
-    // 4. Mask Fenced Code Blocks (``` or ~~~) into unified pre containers
+    // 3. Mask Fenced Code Blocks (``` or ~~~) into unified pre containers (Masked before Math to protect shell variables and $$)
     static const QRegularExpression fencedCodeRegex(
         QStringLiteral(R"((?:^|\n)[ \t]*(```|~~~)[ \t]*([^\r\n]*)\r?\n([\s\S]*?)\r?\n[ \t]*\1(?=[ \t]*(?:\r?\n|$)))"));
 
@@ -1283,20 +1323,30 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
         const QString blockHtml = QStringLiteral(
             "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
-            "<div class=\"code-block-container\" id=\"line_box_%1\" style=\"margin: 16px 0; background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;\">\n"
-            "<table width=\"100%\" class=\"code-block-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none; margin: 0; padding: 6px 12px; background-color: #161b22; border-bottom: 1px solid #30363d;\">\n"
+            "<table width=\"100%\" class=\"code-block-container\" id=\"line_box_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"%5\" style=\"width: 100%; margin: 14px 0; border: 1px solid %6; border-radius: 8px; border-collapse: separate;\">\n"
+            "<tr>\n"
+            "<td bgcolor=\"%7\" class=\"code-block-header\" style=\"padding: 6px 12px; background-color: %7; border-bottom: 1px solid %6;\">\n"
+            "<table width=\"100%\" class=\"code-block-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
             "<tr>\n"
             "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
-            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: #21262d; color: #f0f6fc; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 12px; border: 1px solid #30363d;\">%2</span>\n"
+            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: %8; color: %9; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid %6;\">%2</span>\n"
             "</td>\n"
             "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
-            "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: #c9d1d9; cursor: pointer; padding: 2px 8px; border: 1px solid #30363d; border-radius: 6px; background-color: #21262d;\" title=\"Copy clean terminal code\">📋 Copy</a>\n"
+            "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: %10; cursor: pointer; padding: 2px 8px; border: 1px solid %6; border-radius: 6px; background-color: %11;\" title=\"Copy clean terminal code\">📋 Copy</a>\n"
             "</td>\n"
             "</tr>\n"
             "</table>\n"
-            "<pre class=\"code-block-content\" style=\"margin: 0; padding: 14px 16px; background-color: #0d1117; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: #e6edf3; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
-            "</div>")
-            .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode);
+            "</td>\n"
+            "</tr>\n"
+            "<tr>\n"
+            "<td bgcolor=\"%5\" style=\"padding: 12px 16px; background-color: %5;\">\n"
+            "<pre class=\"code-block-content\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: %12; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
+            "</td>\n"
+            "</tr>\n"
+            "</table>")
+            .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode,
+                 codeContainerBg, codeBorderCol, codeHeaderBg, codePillBg, codePillText,
+                 codeBtnText, codeBtnBg, codeTextColor);
 
         codeBlocks.push_back(blockHtml);
         const QString token = QStringLiteral("\n\nSPARKCODEBLOCK%1XYZ\n\n").arg(codeBlocks.size() - 1);
@@ -1305,6 +1355,34 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         const qsizetype length = m.capturedLength();
         working.replace(start, length, token);
         offset += token.length() - length;
+    }
+
+    // 4. Mask Block and Display Math ($$ ... $$)
+    static const QRegularExpression blockMathRegex(
+        QStringLiteral(R"((?<!\S)\$\$([^\$\r\n]+|\r?\n[\s\S]*?\r?\n)[ \t]*\$\$(?!\S))"));
+    std::vector<QString> mathBlocks;
+    auto mathIt = blockMathRegex.globalMatch(working);
+    offset = 0;
+    while (mathIt.hasNext()) {
+        const auto m = mathIt.next();
+        const QString mathRaw = m.captured(1).trimmed();
+        // Skip accidental matches that cross markdown headings, lists, or horizontal rules
+        if (mathRaw.contains(QStringLiteral("\n#")) || mathRaw.contains(QStringLiteral("\n- ")) ||
+            mathRaw.contains(QStringLiteral("\n* ")) || mathRaw.contains(QStringLiteral("\n---")) ||
+            mathRaw.contains(QStringLiteral("\n\n\n"))) {
+            continue;
+        }
+
+        const int startLine = getLineNum(m.capturedStart());
+        localAnchors.push_back(startLine);
+
+        const QString mathSource = sanitizeForPreview(mathRaw);
+        const QString blockHtml = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n<div class=\"math-block\"><span class=\"math-tex\">%2</span></div>")
+                                      .arg(QString::number(startLine), mathSource);
+        mathBlocks.push_back(blockHtml);
+        const QString token = QStringLiteral("\n\nSPARKMATHBLOCK%1XYZ\n\n").arg(mathBlocks.size() - 1);
+        working.replace(m.capturedStart() + offset, m.capturedLength(), token);
+        offset += token.length() - m.capturedLength();
     }
 
     // 5. Mask HTML blocks
@@ -1387,6 +1465,19 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
             const int tLine = getLineNum(pos);
             tableLines.push_back(tLine);
             localAnchors.push_back(tLine);
+        }
+    }
+
+    std::vector<int> listLines;
+    static const QRegularExpression listLineRegex(QStringLiteral(R"((?:^|\n)[ \t]*(?:[-*+]|\d+\.)\s+[^\n]+)"));
+    auto listIt = listLineRegex.globalMatch(rawMd);
+    while (listIt.hasNext()) {
+        const auto m = listIt.next();
+        const qsizetype pos = m.capturedStart();
+        if (!isInMaskedInterval(pos)) {
+            const int lLine = getLineNum(pos);
+            listLines.push_back(lLine);
+            localAnchors.push_back(lLine);
         }
     }
 
@@ -1496,6 +1587,20 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         const int hLine = (static_cast<std::size_t>(i) < headingLines.size()) ? headingLines[static_cast<std::size_t>(i)] : 1;
         const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>\n").arg(hLine);
         finalHtml.insert(headingMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
+    }
+
+    std::vector<QRegularExpressionMatch> listMatches;
+    static const QRegularExpression liTagRegex(QStringLiteral(R"(<li\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
+    auto liMatchIt = liTagRegex.globalMatch(finalHtml);
+    while (liMatchIt.hasNext()) {
+        listMatches.push_back(liMatchIt.next());
+    }
+    for (qsizetype i = static_cast<qsizetype>(listMatches.size()) - 1; i >= 0; --i) {
+        if (static_cast<std::size_t>(i) < listLines.size()) {
+            const int lLine = listLines[static_cast<std::size_t>(i)];
+            const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>").arg(lLine);
+            finalHtml.insert(listMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
+        }
     }
 
     // Finalize synchronized scroll line anchors

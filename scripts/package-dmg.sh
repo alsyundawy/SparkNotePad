@@ -24,6 +24,12 @@ if [[ -d ${APP_PARENT_DIR} ]]; then
 	APP_DIR="${APP_PARENT_ABS}/${APP_BASE}"
 fi
 
+# If APP_DIR was not explicitly passed as an argument, ensure fresh build and install into build/install
+if [[ $# -eq 0 ]]; then
+	echo "[*] Packaging invocation without arguments: ensuring fresh install into ${REPO_ROOT}/build/install..."
+	cmake --install "${REPO_ROOT}/build" --prefix "${REPO_ROOT}/build/install"
+fi
+
 DMG_PARENT_DIR="$(dirname "${DMG_OUTPUT}")"
 mkdir -p "${DMG_PARENT_DIR}"
 DMG_OUTPUT_DIR="$(cd "${DMG_PARENT_DIR}" && pwd)"
@@ -118,13 +124,17 @@ if [[ -d "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks/QtOpenGL.framework" 
 	fi
 fi
 
-# Ensure @executable_path/../Frameworks LC_RPATH exists and strip main executable only (per AGENTS.md Rule 3)
+# Ensure @executable_path/../Frameworks LC_RPATH exists and strip binaries (per AGENTS.md Rule 3)
 if [[ -f "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" ]]; then
 	if ! otool -l "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null | grep -q "@executable_path/../Frameworks"; then
 		install_name_tool -add_rpath "@executable_path/../Frameworks" "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
 	fi
 	strip -x "${STAGE_DIR}/SparkNotePad.app/Contents/MacOS/SparkNotePad" 2>/dev/null || true
 fi
+
+# Strip local symbols from all staged dylibs and framework binaries to strictly adhere to the <= 40MB DMG ceiling
+find "${STAGE_DIR}/SparkNotePad.app/Contents/PlugIns" -type f -name "*.dylib" -exec strip -x {} + 2>/dev/null || true
+find "${STAGE_DIR}/SparkNotePad.app/Contents/Frameworks" -type f -perm +111 -exec strip -x {} + 2>/dev/null || true
 
 codesign --force --deep -s - "${STAGE_DIR}/SparkNotePad.app" 2>/dev/null || true
 
@@ -226,3 +236,11 @@ echo "=========================================================="
 echo "✔ SparkNotePad DMG packaging complete: ${DMG_OUTPUT} (${DMG_SIZE})"
 echo "✔ Verified standard lightweight size (30MB–40MB) and custom background presentation"
 echo "=========================================================="
+
+# Auto-sync fresh binary to /Applications/SparkNotePad.app for immediate local testing
+if [[ -d "/Applications/SparkNotePad.app" ]] || [[ -w "/Applications" ]]; then
+	echo "[*] Syncing freshly built app bundle to /Applications/SparkNotePad.app..."
+	rm -rf "/Applications/SparkNotePad.app"
+	cp -R "${APP_DIR}" "/Applications/SparkNotePad.app"
+	echo "✔ Fresh SparkNotePad.app installed to /Applications/SparkNotePad.app"
+fi

@@ -40,13 +40,21 @@
 DeveloperToolsDialog::DeveloperToolsDialog(MainWindow *mainWindow, int initialTab, QWidget *parent)
     : QDialog(parent ? parent : mainWindow), m_mainWindow(mainWindow) {
     setWindowTitle(tr("Developer Tools & Utilities Hub"));
-    setMinimumSize(920, 680);
-    resize(980, 720);
+    setMinimumSize(960, 680);
+    resize(1000, 720);
     setupUi();
+    if (m_inputEdit) {
+        m_inputEdit->clear();
+    }
+    if (m_outputEdit) {
+        m_outputEdit->clear();
+    }
+    if (m_statusLabel) {
+        m_statusLabel->clear();
+    }
     if (m_tabWidget && initialTab >= 0 && initialTab < m_tabWidget->count()) {
         m_tabWidget->setCurrentIndex(initialTab);
     }
-    onLoadFromEditor();
 }
 
 void DeveloperToolsDialog::setCurrentTab(int index) {
@@ -57,19 +65,19 @@ void DeveloperToolsDialog::setCurrentTab(int index) {
 
 void DeveloperToolsDialog::setupUi() {
     QFont dlgFont = font();
-    dlgFont.setPointSizeF(9.5);
+    dlgFont.setPointSize(9);
     setFont(dlgFont);
 
     setStyleSheet(QStringLiteral(
         "QDialog { font-size: 10px; }"
-        "QTabBar::tab { font-weight: 600; font-size: 10px; min-height: 24px; padding: 2px 10px; }"
-        "QPushButton { font-size: 10px; font-weight: 500; padding: 2px 6px; min-height: 24px; border-radius: 4px; }"
-        "QComboBox { font-size: 10px; padding: 2px 6px; min-height: 24px; }"
-        "QLineEdit { font-size: 10px; padding: 2px 6px; min-height: 24px; }"
+        "QTabBar::tab { font-weight: 600; font-size: 10px; min-height: 22px; padding: 2px 8px; }"
+        "QPushButton { font-size: 10px; font-weight: 500; padding: 2px 6px; min-height: 22px; border-radius: 4px; }"
+        "QComboBox { font-size: 10px; padding: 2px 8px 2px 6px; min-height: 22px; }"
+        "QLineEdit { font-size: 10px; padding: 2px 6px; min-height: 22px; }"
         "QLabel { font-size: 10px; }"
-        "QGroupBox { font-weight: 600; font-size: 10.5px; }"
+        "QGroupBox { font-weight: 600; font-size: 10px; }"
         "QCheckBox { font-size: 10px; }"
-        "QSpinBox { font-size: 10px; padding: 2px 4px; min-height: 24px; }"
+        "QSpinBox { font-size: 10px; padding: 2px 4px; min-height: 22px; }"
     ));
 
     auto *mainLayout = new QVBoxLayout(this);
@@ -103,7 +111,7 @@ void DeveloperToolsDialog::setupUi() {
     auto *inputLayout = new QVBoxLayout(inputBox);
     inputLayout->setContentsMargins(6, 6, 6, 6);
     m_inputEdit = new QPlainTextEdit(inputBox);
-    m_inputEdit->setPlaceholderText(tr("Enter or paste input text here... (Loaded automatically from active document selection)"));
+    m_inputEdit->setPlaceholderText(tr("Enter or paste input text here..."));
     m_inputEdit->setFont(monoFont);
     m_inputEdit->setToolTip(tr("Source text to be processed, converted, hashed, or formatted"));
     const int tabStop = 4 * QFontMetrics(monoFont).horizontalAdvance(QLatin1Char(' '));
@@ -334,6 +342,7 @@ QWidget *DeveloperToolsDialog::createConverterTab() {
 
     m_comboFromRadix = new QComboBox(tab);
     m_comboFromRadix->setMinimumHeight(24);
+    m_comboFromRadix->setMinimumWidth(135);
     m_comboFromRadix->setToolTip(tr("Source numeral base representation (Decimal, Hex, Binary, Octal)"));
     m_comboFromRadix->addItem(tr("Decimal (10)"), 10);
     m_comboFromRadix->addItem(tr("Hexadecimal (16)"), 16);
@@ -348,6 +357,7 @@ QWidget *DeveloperToolsDialog::createConverterTab() {
 
     m_comboToRadix = new QComboBox(tab);
     m_comboToRadix->setMinimumHeight(24);
+    m_comboToRadix->setMinimumWidth(135);
     m_comboToRadix->setToolTip(tr("Target numeral base representation (Hex, Decimal, Binary, Octal)"));
     m_comboToRadix->addItem(tr("Hexadecimal (16)"), 16);
     m_comboToRadix->addItem(tr("Decimal (10)"), 10);
@@ -576,7 +586,7 @@ QWidget *DeveloperToolsDialog::createDevToolsTab() {
     auto *rowJwt = new QHBoxLayout();
     rowJwt->setSpacing(8);
 
-    auto *btnJwt = new QPushButton(tr("Decode JWT Token"), tab);
+    auto *btnJwt = new QPushButton(tr("Decode JWT"), tab);
     btnJwt->setMinimumHeight(24);
     btnJwt->setCursor(Qt::PointingHandCursor);
     btnJwt->setToolTip(tr("Decode JSON Web Token (JWT) header, claims payload, and signature"));
@@ -597,7 +607,7 @@ QWidget *DeveloperToolsDialog::createDevToolsTab() {
 
     rowJwt->addSpacing(8);
 
-    auto *btnEpoch = new QPushButton(tr("Current Epoch & ISO"), tab);
+    auto *btnEpoch = new QPushButton(tr("Current Epoch"), tab);
     btnEpoch->setMinimumHeight(24);
     btnEpoch->setCursor(Qt::PointingHandCursor);
     btnEpoch->setToolTip(tr("Display current Unix timestamp (seconds, milliseconds) and ISO 8601 UTC date-time"));

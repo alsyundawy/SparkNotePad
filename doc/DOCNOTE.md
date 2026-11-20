@@ -2,10 +2,10 @@
 
 ```text
 ================================================================================
-Release Version     : 1.5.0 (Developer Tools Suite [NotepadMac Parity], GitHub Primer
-                      Markdown Preview Overhaul, Format & Tools Menu Relocation,
-                      View Toggles, Window Management & 2025–2026 CVE Hardening)
-Release Date        : 2026-11-19
+Release Version     : 1.5.0 (Full Developer Tools Suite [JSON/XML/HTML/CSS/JS, Encryption,
+                      JWT, Radix, UUID], GitHub Primer Markdown Safe Live Preview, Context Menu
+                      Separator, Shields.io Badge Normalizer & Scroll Synchronization)
+Release Date        : 2026-11-20
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -22,77 +22,80 @@ CI/CD Status        : 100% Passing across all release matrices, MegaLinter & Cod
 
 ---
 
-## 1. Executive Summary: Changes in v1.5.0
+## 1. Executive Summary: Changes from v1.4.7 to v1.5.0
 
-SparkNotePad **v1.5.0** delivers a major feature expansion with developer tooling parity from NotepadMac, a complete overhaul of the Markdown Live Preview matching GitHub Primer design standards, ergonomic menu reorganizations, advanced macOS window controls, and thorough security mitigations:
+SparkNotePad **v1.5.0** delivers major enhancements across developer tooling, Markdown preview fidelity, context menu ergonomics, translations, and macOS packaging:
 
-1. **Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
-   - 5-tab developer hub: Format & Minify (JSON, XML, HTML, CSS, SQL), Regex & Pattern Matcher, Hash & Cryptography (MD5, SHA-1, SHA-256, SHA-512, Keccak-256, HMAC-SHA256, Base64, Hex), Text & Case Transforms (Sorting, Deduplication, Line numbering, Reverse, Randomize, Slugs), and Text Escaping & Web Security (URL, HTML Entities, JavaScript, C-String, SQL, and HTML Encryption modes: JS Escape, Base64, and AES-256-GCM Web Crypto).
-   - Ergonomics overhaul of `DeveloperToolsDialog`: standardized 32px button heights, modern typography, decoupled crypto protection controls preventing column cramping, balanced 5-column formatter grids, and clean macOS system font integration.
-2. **GitHub Primer Markdown Preview Overhaul**:
-   - Upgraded to full GitHub Flavored Markdown (GFM) aesthetic parity matching `mjbvz/vscode-github-markdown-preview-style` and GitHub Primer design tokens.
-   - Eliminated Qt rich text formatting artifacts (`-qt-block-indent`, zero margin resets) and fixed CSS text inheritance across all elements (`p`, `li`, `td`, `th`, `span`, `div`), completely resolving invisible white-on-white text in light themes (`GITHUB`, etc.).
-   - Modernized fenced code block containers with GitHub Primer `#0d1117` dark container, file header pill (`#161b22`, `#30363d` border), rounded pill badges (`#21262d`), clean copy action button (`[ ❐ ]` / `[ ⎘ Copy ]`), and pure monospace typography.
-   - Fixed broken multiline bash strict mode syntax (normalizing `IFS=$'[\r\n\t ]*'` to `IFS=$'\n\t'`), converted curly/smart quotes to ASCII, enforced pure Unix LF, stripped trailing whitespace, and eradicated redundant copy labels (`[📋 Salin Perintah / Copy Code Block]`, `[📋 Salin Blok Kode / Copy Code Block]`, `[📋 Salin Konfigurasi / Copy Configuration]`, `[📋 Salin Skrip / Copy Script Code]`), ensuring copied bash commands paste and execute in terminals with 0 syntax errors.
-   - Built-in SVG normalizer automatically rectifies Shields.io SVG scaling quirks (replaces `font-size="100"` with `10`, strips `transform="scale(.1)"`, rescales textLength coordinates, and sets strict canvas clip rectangles), eliminating giant, stretched, overlapping stacked badges.
-   - Stripped Qt-unsupported `width="100%"` attributes that collapsed images to -2px, dynamically constrained images to viewport boundaries (capped at 850px), and implemented debounced asynchronous relayout (`performDeferredRelayout()`) once network images finish downloading to preserve exact document heights and eliminate visual overlaps.
-   - Sub-Pixel Anchor-Bracketed Scroll Synchronization: replaced naive linear line ratios with anchor-bracketed sub-pixel scroll interpolation (`findAnchorBracket`), eliminating scroll drift and preview lag so the preview stays perfectly aligned with the editor in real-time.
-   - Massive document resilience: validated and optimized for 100k+ lines (e.g. 6,000-line production guides) without memory spikes or render limits.
-   - Eliminated 3.1-second macOS font database rebuild lag on every preview refresh by replacing non-existent `-apple-system` font references with standard `'Helvetica Neue', Helvetica, Arial, sans-serif` across all 30 markdown themes.
-   - Support for GitHub Alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with high-contrast icons, tinted backgrounds, and accent borders.
-   - Complete purging of all external browser buttons and "Open in Default Web Browser" actions across docks and tabs for a self-contained, secure preview experience.
-3. **Format & Tools Menu Bar Relocation**:
-   - Dedicated `Format` menu hosting `File Encoding` (UTF-8, UTF-16, ISO, CJK, etc.) and `Line Endings` (CRLF, LF, CR).
-   - Relocated `Run` and external execution commands to `Tools -> Run & External Execution`, standardizing global menu bar hierarchy.
-4. **Window Management & View Toggles**:
-   - Added full Window menu controls from NotepadMac: Zoom, Tile Left/Right, Bring All to Front, and Document Tab Navigation (`Next Tab`, `Previous Tab`, `Focus Editor`).
-   - Dynamic document list with active checkmark (`✓`) and dirty indicators (`*`).
-   - Ported essential View toggles: Line Numbers, Code Folding, Visible White Space & EOL, Indent Guides, Caret Line Highlighting, Column Marker, Word Wrap, and Read-Only lock.
-5. **Static Crypto Link & Lightweight macOS DMG Packaging**:
-   - Linked static OpenSSL `libcrypto.a` with `-Wl,-dead_strip`, eliminating external dylib runtime dependencies.
-   - Guaranteed canonical 30MB–40MB DMG package size (~39.2 MB) with pre-baked `.DS_Store` layout preset and branded presentation assets.
-6. **Bilingual Localization & Complete Documentation Update**:
-   - Updated English and Indonesian translation matrices (`SparkNotePad_en.qm`, `SparkNotePad_id.qm`).
-   - Comprehensive updates to READMEs, User Guide, Wiki shortcuts, and release notes.
-7. **Redesigned & Theme-Aware Tab Color System (`TabColorManager` & `DockedEditor`)**:
-   - Replaced fragile border-only styling with a full, theme-aware ADS tab stylesheet preserving background gradients, border-radius (`6px`), active/inactive tab states, and close button hover aesthetics.
-   - 3px solid top accent bar (`border-top: 3px solid <color>`) and soft gradient background tinting (28% active, 14% inactive).
-   - Extended support to untitled buffers (`new 1`, `new 2`) using buffer names with automatic persistence migration upon saving.
-   - Added real-time palette adaptation via `ThemeManager::themeChanged` and `paletteChanged` listeners.
-   - Added interactive `Custom Color...` dialog (`QColorDialog`) and dedicated `Clear Tab Color` action with visual icons.
-8. **Editor Context Menu Ergonomic Separator**:
-   - Added dedicated visual separator between `Select All` and `UPPER CASE` / `lowercase` in the editor right-click context menu, cleanly isolating selection commands from text transformation tools.
-   - Updated QSettings validation check to ensure existing user configuration incorporates the separator seamlessly.
-9. **Developer Tools Hub Layout & Universal Tooltip Overhaul**:
-   - Standardized compact button geometry (`font-size: 10px`, `padding: 2px 6px`, `min-height: 24px`, base font `9.5pt`) to eliminate all button label truncation across resolutions and languages.
-   - Removed restrictive minimum width constraints and split crowded utility controls into two spacious, balanced rows (`rowJwt` and `rowUuid`).
-   - Added comprehensive, informative tooltips (`setToolTip(...)`) across 100% of dialog widgets without exception (buttons, tabs, inputs, checkboxes, spinboxes, and comboboxes).
-10. **Shields.io Badge Spacing & Paragraph Layout**:
-   - Enforced 34px vertical line height and proper margins for paragraphs containing badges and inline images, completely eliminating vertical clipping and overlapping in documents like `SparkleSFTP/README.md`.
-11. **Complete i18n Localization**:
-   - 100% translation coverage for Indonesian (`SparkNotePad_id.ts`, 2,347 strings) and English (`SparkNotePad_en.ts`, 2,376 strings) with 0 unfinished entries, compiled to binary `.qm` packages.
+- **Comprehensive Developer Tools Suite (`DeveloperToolsEngine` & `DeveloperToolsDialog`)**:
+  - Full port and modernization of NotepadMac developer utilities into a unified, lightweight, modal dialog accessible via `Ctrl+Alt+T` / `Ctrl+Cmd+T` or `Tools -> Developer Tools -> Developer Tools Hub`.
+  - 5 functional tabs: Hash Tools (11 cryptographic hashes & HMAC), MIME Tools (Base64, Quoted-Printable, URL, HTML entities), Converter Tools (Radix 2–16, Hex <-> ASCII, Title/Invert/Sentence Case), Encryption Tools (HTML Protection via JS unescape, Base64, or AES-256-GCM with zxcvbn password evaluation), and Developer Tools (Format/Minify JSON, XML, HTML, CSS, JS; JWT Decoder; UUIDv4; Epoch).
+  - Compact typography, zero clipped buttons across all display scales, 100% empty initial input, and 100% localized tooltips.
+- **Theme-Aware Seamless Markdown Code Blocks & Mermaid Containers**:
+  - Re-engineered fenced code blocks and Mermaid diagram containers as contiguous HTML tables with theme-aware background colors (`#f6f8fa` light mode / `#161b22` dark mode), eliminating Qt rich-text block background horizontal striping / black bars completely.
+  - One-click copy buttons copy clean, sanitized terminal commands with pure Unix LF, no smart quotes, no NBSP, and no broken IFS.
+- **Zero-Lag Proportional Lockstep Scroll Synchronization**:
+  - Replaced timer-based throttling with synchronous recursion guards and proportional ratio tracking, guaranteeing 60fps real-time scroll alignment across hundreds of thousands of lines without lag or desync.
+- **Editor Context Menu Ergonomics**:
+  - Inserted mandatory visual separator line between `Select All` and `UPPER CASE` / `lowercase` across all menu configurations and dynamic settings.
+- **Complete i18n Localization Parity**:
+  - Synchronized 2,376 UI strings with 100% completion (0 unfinished) across `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts`, compiled to binary `.qm` packages.
+- **macOS Release Packaging Standard (30MB–40MB Standard)**:
+  - Pruned unneeded Qt plugins and stripped local symbols (`strip -x`), producing a verified 39MB release DMG via native `hdiutil` with custom background presentation preserved.
 
 ---
 
-## 2. Archive Summary: Release v1.4.7
+# SparkNotePad Release DocNote — v1.4.7
 
-SparkNotePad **v1.4.7** introduces major architectural advancements across the core editing engines, portable workspace mobility, POSIX file permissions and script analysis, robust character encoding detection, enhanced navigation dialogs, and comprehensive 2025–2026 CVE security hardening:
-
-1. **Scintilla 5.6.9 & Lexilla 5.5.5 Upgrades**: Upgrades the core text engine with Unicode 17 character categories, 40-byte lexeme cache, line-start layout bypass, change history undo crash fix, restored XPM image colors, and 12 upstream Lexilla memory safety and OOB fixes.
-2. **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**: Enables seamless export and import of user preferences, themes, macros, sessions, and scripts via `.sparkbundle` archives with Zip-Slip defense and in-memory HMAC validation.
-3. **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**: Real-time shebang dialect detection, octal and symbolic permission formatters, status bar executable bit toggle badge (`FieldPosixPerms`), and precision file touch utility.
-4. **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**: 3-point sampling across header, midpoint, and tail for robust encoding detection, UTF-32 LE/BE BOM support, and atomic saving via private sibling temporary files (`0600` permissions).
-5. **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**: Direct navigation by Line:Col, Character Offset, or Document Byte Offset, alongside interactive folder/file rename with dry-run collision detection.
-6. **Comprehensive 2025–2026 CVE Security Hardening**: Automated test verification against CVE-2026-42214, CVE-2026-48778, CVE-2026-52885, CVE-2026-52886, CVE-2026-57233, CVE-2026-54758, and CVE-2026-77605.
-7. **About Dialog Credits & Markdown Preview Color Polish**: Resolved `%2` placeholder index bug in `AboutDialog` Credits tab and removed hardcoded `#0550ae` on inline/block math equations to naturally inherit active theme text color.
-8. **14-Pillar Code Quality & SonarLint/Clang-Tidy Remediation**: Cleaned clang-tidy braces around statements, virtual override visibility, and move semantics across `EditorInfoStatusBar`, `QuickFindWidget`, `StatusLabel`, and `FocusWatcher`.
-9. **macOS Lightweight DMG Packaging Standard**: Verified canonical ~38.8 MB DMG ceiling (< 40MB) with pre-baked `.DS_Store` and custom background presentation assets.
+```text
+================================================================================
+Release Version     : 1.4.7 (Core Engine Upgrade [Scintilla 5.6.9, Lexilla 5.5.5, Patched Lua 5.5.1],
+                      System Transfer [.sparkbundle], POSIX File Inspector, 3-Point Encoding Detection,
+                      Multi-Mode Goto Dialog & 2025–2026 CVE Security Hardening)
+Release Date        : 2026-11-14
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/SparkNotePad
+Core Editing Engine : Scintilla 5.6.9 (Vendored) & Lexilla 5.5.5 (Vendored)
+Embedded Lua Core   : Sandboxed Lua 5.5.1 (Official Patched Source 1-4)
+Scripting Runtime   : Python 3.13+ Engine Bridge
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0–26.0 (Apple Silicon & Intel), Linux (Ubuntu, Debian, Fedora, RHEL, openSUSE), FreeBSD 13–15
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
+Architecture        : 100% Additive Safe Enhancements Inspired by Nextpad++, Notepad--, Notepad3 & Notepad++
+CI/CD Status        : 100% Passing across all release matrices, MegaLinter & CodeQL
+================================================================================
+```
 
 ---
 
-## 2. Archive Summary: Release v1.4.6
+## 1. Executive Summary: Changes from v1.4.6 to v1.4.7
 
-SparkNotePad **v1.4.6** delivers major enhancements across visual customization, editor context menu ergonomics, general preferences options, WCAG 2.1 contrast mathematical safety for syntax highlighting, and canonical 30MB–40MB macOS DMG packaging over version 1.4.5:
+SparkNotePad **v1.4.7** delivers major enhancements across core text editing engines, cross-platform configuration mobility, system-level file permissions and scripting ergonomics, robust multi-point character encoding detection, and comprehensive security hardening against 2025–2026 CVE vulnerabilities:
+
+- **Core Engine Upgrade to Scintilla 5.6.9, Lexilla 5.5.5 & Patched Lua 5.5.1**:
+  - Upgraded Scintilla to **v5.6.9**: Incorporates Unicode 17 character categories and case conversion tables, expands maximum cached lexeme size to 40 bytes, bypasses redundant line layout calculations at line starts for major rendering speedups, fixes a critical change history undo crash, and restores XPM marker/autocompletion colors.
+  - Upgraded Lexilla to **v5.5.5**: Adds YAML/TOML/JSON front-matter styling in Markdown (#59), supports HTML/JS nested template literals (#290), regex slash within character classes (#377), JavaScript identifier expansions (#371), PHP `$$variable` styling (#2208), SQL `q-string` performance improvements (#378), and resolves 12 upstream memory safety and OOB issues (#388).
+  - Applied official Lua 5.5.1 bug-fix patches: Patches 1 through 4 guarding against negative parameter left-shift, NaN `for` loop limits, negative zero constant folding, and error unwinding preservation during `coroutine.close`.
+- **System Transfer & Portable Workspace Bundle (`SparkTransferManager`)**:
+  - Cross-platform configuration backup and migration system allowing users to export and import preferences, themes, macros, sessions, and user scripts as `.sparkbundle` packages.
+  - Built-in Zip-Slip defense (`CVE-2026-57233`), path traversal rejection (`CVE-2026-52886`), in-memory SHA-256 HMAC integrity verification (`CVE-2026-52885`), and optional AES-256-CBC encryption.
+- **POSIX Shell Inspector & Touch Utility (`PosixFileInspector`)**:
+  - Real-time shebang dialect detection for Bash, Zsh, Dash, Ksh, POSIX sh, Python, Lua, and FreeBSD `rc.d` scripts.
+  - Interactive status bar permission badge (`FieldPosixPerms`) with one-click executable bit toggling (`chmod +x`).
+  - Menu actions for toggling executable permissions and enforcing owner-only private mode (`chmod 0600`).
+  - Precision file touch utility leveraging POSIX `utimes`.
+- **Stateless 3-Point `EncodingDetector` & Atomic Large-File Save Guard**:
+  - Tri-point sampling across header (16KB), midpoint (16KB), and tail (16KB) for accurate character set detection in large files.
+  - Explicit BOM detection for UTF-32 LE and BE.
+  - Atomic saving in `ScintillaNext::writeToDisk` using private sibling temporary files (`.filename.sparktmp`), `0600` permissions, `fsync()`, original permission preservation, and atomic POSIX `rename()`.
+- **Multi-Mode `GotoDialog` & Project Tree Safe Rename Preview**:
+  - Multi-mode navigation dialog supporting Visual Line:Col, Character Offset (`Line:-Col`), and Document Byte Offset with live target calculation.
+  - Interactive folder and file safe rename in `FolderAsWorkspaceDock` with path traversal validation, name collision checks, and dry-run preview.
+- **Comprehensive 2025–2026 CVE Security Hardening**:
+  - Full immunity and automated regression test coverage against `CVE-2026-42214`, `CVE-2026-48778`, `CVE-2026-52885`, `CVE-2026-52886`, `CVE-2026-57233`, `CVE-2026-54758`, `CVE-2026-77605`, `CVE-2025-14575`, and `CVE-2026-20841`.
+  - Added `tests/test_v147_features.h` with 9 automated unit tests verifying all new security and architectural invariants.
+- **Localization Synchronization**:
+  - 100% translation coverage across English (`SparkNotePad_en.ts`) and Indonesian (`SparkNotePad_id.ts`) with 2,247 strings, 0 unfinished entries, and strict EYD V / PASTI compliance.
 
 - **41 New Modern Toolbar Icon Packs (69 Total Built-in Suites)**: Multiplied the icon library from 28 packs in v1.4.5 to 69 complete built-in suites across all 6 resolutions (16x16, 20x20, 24x24, 32x32, 48x48, 64x64):
   - 11 Thematic Suites: `royal_blue`, `notepad_pro`, `pastel`, `fluent_modern`, `macos_bigsur_modern`, `dark_neon_pro`, `macos_glass`, `modern_flat_colorful`, `glossy_3d_skeuomorphic`, `retro_8bit_pixel`, `sketchy_doodle`.

@@ -78,7 +78,8 @@ private:
     QPushButton *m_btnCopyHtml{nullptr};
     QPushButton *m_btnExportHtml{nullptr};
     bool m_isUpdatingTheme{false};
-    bool m_syncingScroll{false};
+    bool m_syncingFromEditor{false};
+    bool m_syncingFromBrowser{false};
 };
 
 #endif  // PREVIEWTABWIDGET_H

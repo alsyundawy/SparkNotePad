@@ -4684,6 +4684,12 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
         }
     }
 
+    // Ensure there is always a separator ("") between SelectAll and UpperCase in actionNames
+    const qsizetype idxSelectAll = actionNames.indexOf(QStringLiteral("SelectAll"));
+    if (idxSelectAll >= 0 && (idxSelectAll + 1 >= actionNames.size() || !actionNames.at(idxSelectAll + 1).isEmpty())) {
+        actionNames.insert(idxSelectAll + 1, QString());
+    }
+
     // If the cursor is at a URL, prepend the actions
     if (const auto *urlFinder = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
         urlFinder && urlFinder->isEnabled() && urlFinder->isURL(contextMenuPos)) {
@@ -4699,9 +4705,22 @@ void MainWindow::showEditorContextMenu(ScintillaNext *editor, const QPoint &pos)
     const auto selectAllIt = std::ranges::find(actions, ui->actionSelectAll);
     const auto upperCaseIt = std::ranges::find(actions, ui->actionUpperCase);
     if (selectAllIt != actions.end() && upperCaseIt != actions.end()) {
-        // If UpperCase is directly adjacent to SelectAll without a separator, insert one
-        if (std::next(selectAllIt) == upperCaseIt) {
-            menu->insertSeparator(ui->actionUpperCase);
+        bool hasSep = false;
+        for (auto it = std::next(selectAllIt); it != upperCaseIt && it != actions.end(); ++it) {
+            if ((*it)->isSeparator()) {
+                hasSep = true;
+                break;
+            }
+        }
+        if (!hasSep) {
+            menu->insertSeparator(*upperCaseIt);
+        }
+        const auto lowerCaseIt = std::ranges::find(actions, ui->actionLowerCase);
+        if (lowerCaseIt != actions.end()) {
+            const auto nextAfterLower = std::next(lowerCaseIt);
+            if (nextAfterLower != actions.end() && !(*nextAfterLower)->isSeparator()) {
+                menu->insertSeparator(*nextAfterLower);
+            }
         }
     } else if (selectAllIt != actions.end() && upperCaseIt == actions.end()) {
         // UpperCase not in custom menu - insert separator then UpperCase and LowerCase
