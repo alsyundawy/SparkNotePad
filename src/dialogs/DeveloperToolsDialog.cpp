@@ -70,8 +70,8 @@ void DeveloperToolsDialog::setupUi() {
 
     setStyleSheet(QStringLiteral(
         "QDialog { font-size: 10px; }"
-        "QTabBar::tab { font-weight: 600; font-size: 10px; min-height: 22px; padding: 2px 8px; }"
-        "QPushButton { font-size: 10px; font-weight: 500; padding: 2px 6px; min-height: 22px; border-radius: 4px; }"
+        "QTabBar::tab { font-weight: 600; font-size: 10px; min-height: 24px; min-width: 90px; padding: 2px 14px; }"
+        "QPushButton { font-size: 9.5px; font-weight: 500; padding: 2px 6px; min-height: 22px; border-radius: 4px; }"
         "QComboBox { font-size: 10px; padding: 2px 8px 2px 6px; min-height: 22px; }"
         "QLineEdit { font-size: 10px; padding: 2px 6px; min-height: 22px; }"
         "QLabel { font-size: 10px; }"
@@ -86,6 +86,12 @@ void DeveloperToolsDialog::setupUi() {
 
     // Tab Widget with modern styling, compact padding, and descriptive tooltips
     m_tabWidget = new QTabWidget(this);
+    m_tabWidget->setElideMode(Qt::ElideNone);
+    m_tabWidget->setUsesScrollButtons(false);
+    if (m_tabWidget->tabBar()) {
+        m_tabWidget->tabBar()->setElideMode(Qt::ElideNone);
+        m_tabWidget->tabBar()->setExpanding(false);
+    }
     m_tabWidget->addTab(createHashTab(), tr("Hash Tools"));
     m_tabWidget->setTabToolTip(0, tr("Compute cryptographic hashes (MD5, SHA-1, SHA-256, SHA-512, Keccak) and verify file checksums"));
     m_tabWidget->addTab(createMimeTab(), tr("MIME Tools"));

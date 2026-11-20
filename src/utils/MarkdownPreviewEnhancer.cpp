@@ -501,6 +501,14 @@ QString MarkdownPreviewEnhancer::processTableOfContents(const QString &content) 
         offset += token.length() - length;
     }
 
+    static const QRegularExpression tocTagRegex(
+        QStringLiteral(R"((?:^|\n)[ \t]*(?:\[(?:TOC)\]|\{:toc\})[ \t]*(?:\r?\n|$))"),
+        QRegularExpression::CaseInsensitiveOption);
+
+    if (!masked.contains(tocTagRegex)) {
+        return content;
+    }
+
     static const QRegularExpression headingLineRegex(QStringLiteral(R"((?:^|\n)(#{1,6})\s+([^\n]+))"));
     auto headingIt = headingLineRegex.globalMatch(masked);
 
@@ -529,18 +537,17 @@ QString MarkdownPreviewEnhancer::processTableOfContents(const QString &content) 
     }
     tocHtml += QStringLiteral("</ul>\n</div>\n\n");
 
+    if (count == 0) {
+        return content;
+    }
+
+    masked.replace(tocTagRegex, QStringLiteral("\n\n") + tocHtml + QStringLiteral("\n\n"));
+
     for (std::size_t i = 0; i < codeSnippets.size(); ++i) {
         const QString token = QStringLiteral("\x1DCODE_%1\x1D").arg(i);
         masked.replace(token, codeSnippets[i]);
     }
 
-    if (count == 0) {
-        return content;
-    }
-
-    static const QRegularExpression tocTagRegex(QStringLiteral(R"(\[(?:TOC)\]|\{:toc\})"),
-                                                QRegularExpression::CaseInsensitiveOption);
-    masked.replace(tocTagRegex, tocHtml);
     return masked;
 }
 
@@ -1137,32 +1144,40 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         }
 
         const QString diagramSource = sanitizeForPreview(cleanDiagram);
-        const QString blockHtml = QStringLiteral(
+        QString blockHtml = QStringLiteral(
             "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
-            "<table width=\"100%\" class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"%4\" style=\"width: 100%; margin: 14px 0; border: 1px solid %5; border-radius: 8px; border-collapse: separate;\">\n"
+            "<table width=\"100%\" class=\"code-block-container mermaid-diagram\" id=\"diagram_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"@@BG@@\" style=\"width: 100%; margin: 14px 0; border: 1px solid @@BORDER@@; border-radius: 8px; border-collapse: separate;\">\n"
             "<tr>\n"
-            "<td bgcolor=\"%6\" style=\"padding: 6px 12px; background-color: %6; border-bottom: 1px solid %5;\">\n"
+            "<td bgcolor=\"@@HDRBG@@\" style=\"padding: 6px 12px; background-color: @@HDRBG@@; border-bottom: 1px solid @@BORDER@@;\">\n"
             "<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
             "<tr>\n"
             "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
-            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: %7; color: %8; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid %5;\">📊 Mermaid Diagram</span>\n"
+            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: @@PILLBG@@; color: @@PILLTEXT@@; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid @@BORDER@@;\">📊 Mermaid Diagram</span>\n"
             "</td>\n"
             "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
-            "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: %9; cursor: pointer; padding: 2px 8px; border: 1px solid %5; border-radius: 6px; background-color: %10;\" title=\"Copy clean diagram source\">📋 Copy</a>\n"
+            "<a href=\"copy-code:%2\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: @@BTNTEXT@@; cursor: pointer; padding: 2px 8px; border: 1px solid @@BORDER@@; border-radius: 6px; background-color: @@BTNBG@@;\" title=\"Copy clean diagram source\">📋 Copy</a>\n"
             "</td>\n"
             "</tr>\n"
             "</table>\n"
             "</td>\n"
             "</tr>\n"
             "<tr>\n"
-            "<td bgcolor=\"%4\" style=\"padding: 12px 16px; background-color: %4;\">\n"
-            "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: %11; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
+            "<td bgcolor=\"@@BG@@\" style=\"padding: 12px 16px; background-color: @@BG@@;\">\n"
+            "<pre class=\"mermaid-code\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: @@TEXTCOL@@; white-space: pre !important; tab-size: 4;\">%3</pre>\n"
             "</td>\n"
             "</tr>\n"
             "</table>")
-            .arg(QString::number(startLine), QString::number(snippetId), diagramSource,
-                 codeContainerBg, codeBorderCol, codeHeaderBg, codePillBg, codePillText,
-                 codeBtnText, codeBtnBg, codeTextColor);
+            .arg(QString::number(startLine), QString::number(snippetId), diagramSource);
+
+        blockHtml.replace(QStringLiteral("@@BG@@"), codeContainerBg);
+        blockHtml.replace(QStringLiteral("@@BORDER@@"), codeBorderCol);
+        blockHtml.replace(QStringLiteral("@@HDRBG@@"), codeHeaderBg);
+        blockHtml.replace(QStringLiteral("@@PILLBG@@"), codePillBg);
+        blockHtml.replace(QStringLiteral("@@PILLTEXT@@"), codePillText);
+        blockHtml.replace(QStringLiteral("@@BTNBG@@"), codeBtnBg);
+        blockHtml.replace(QStringLiteral("@@BTNTEXT@@"), codeBtnText);
+        blockHtml.replace(QStringLiteral("@@TEXTCOL@@"), codeTextColor);
+
         mermaidBlocks.push_back(blockHtml);
         const QString token = QStringLiteral("\n\nSPARKMERMAIDBLOCK%1XYZ\n\n").arg(mermaidBlocks.size() - 1);
         working.replace(m.capturedStart() + offset, m.capturedLength(), token);
@@ -1321,32 +1336,39 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
 
         const QString escapedCode = sanitizeForPreview(cleanCode);
 
-        const QString blockHtml = QStringLiteral(
+        QString blockHtml = QStringLiteral(
             "<a name=\"line_%1\" id=\"line_%1\"></a>\n"
-            "<table width=\"100%\" class=\"code-block-container\" id=\"line_box_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"%5\" style=\"width: 100%; margin: 14px 0; border: 1px solid %6; border-radius: 8px; border-collapse: separate;\">\n"
+            "<table width=\"100%\" class=\"code-block-container\" id=\"line_box_%1\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"@@BG@@\" style=\"width: 100%; margin: 14px 0; border: 1px solid @@BORDER@@; border-radius: 8px; border-collapse: separate;\">\n"
             "<tr>\n"
-            "<td bgcolor=\"%7\" class=\"code-block-header\" style=\"padding: 6px 12px; background-color: %7; border-bottom: 1px solid %6;\">\n"
+            "<td bgcolor=\"@@HDRBG@@\" class=\"code-block-header\" style=\"padding: 6px 12px; background-color: @@HDRBG@@; border-bottom: 1px solid @@BORDER@@;\">\n"
             "<table width=\"100%\" class=\"code-block-header\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; border: none;\">\n"
             "<tr>\n"
             "<td align=\"left\" style=\"border: none; padding: 0; vertical-align: middle;\">\n"
-            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: %8; color: %9; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid %6;\">%2</span>\n"
+            "<span class=\"code-block-pill\" style=\"display: inline-block; background-color: @@PILLBG@@; color: @@PILLTEXT@@; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; border: 1px solid @@BORDER@@;\">%2</span>\n"
             "</td>\n"
             "<td align=\"right\" style=\"border: none; padding: 0; text-align: right; vertical-align: middle;\">\n"
-            "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: %10; cursor: pointer; padding: 2px 8px; border: 1px solid %6; border-radius: 6px; background-color: %11;\" title=\"Copy clean terminal code\">📋 Copy</a>\n"
+            "<a href=\"copy-code:%3\" class=\"code-copy-btn\" style=\"text-decoration: none; font-size: 11px; font-weight: 600; color: @@BTNTEXT@@; cursor: pointer; padding: 2px 8px; border: 1px solid @@BORDER@@; border-radius: 6px; background-color: @@BTNBG@@;\" title=\"Copy clean terminal code\">📋 Copy</a>\n"
             "</td>\n"
             "</tr>\n"
             "</table>\n"
             "</td>\n"
             "</tr>\n"
             "<tr>\n"
-            "<td bgcolor=\"%5\" style=\"padding: 12px 16px; background-color: %5;\">\n"
-            "<pre class=\"code-block-content\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: %12; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
+            "<td bgcolor=\"@@BG@@\" style=\"padding: 12px 16px; background-color: @@BG@@;\">\n"
+            "<pre class=\"code-block-content\" style=\"margin: 0; padding: 0; border: none; font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace; font-size: 12px; line-height: 1.5; color: @@TEXTCOL@@; white-space: pre !important; tab-size: 4;\">%4</pre>\n"
             "</td>\n"
             "</tr>\n"
             "</table>")
-            .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode,
-                 codeContainerBg, codeBorderCol, codeHeaderBg, codePillBg, codePillText,
-                 codeBtnText, codeBtnBg, codeTextColor);
+            .arg(QString::number(startLine), title.toHtmlEscaped(), QString::number(snippetId), escapedCode);
+
+        blockHtml.replace(QStringLiteral("@@BG@@"), codeContainerBg);
+        blockHtml.replace(QStringLiteral("@@BORDER@@"), codeBorderCol);
+        blockHtml.replace(QStringLiteral("@@HDRBG@@"), codeHeaderBg);
+        blockHtml.replace(QStringLiteral("@@PILLBG@@"), codePillBg);
+        blockHtml.replace(QStringLiteral("@@PILLTEXT@@"), codePillText);
+        blockHtml.replace(QStringLiteral("@@BTNBG@@"), codeBtnBg);
+        blockHtml.replace(QStringLiteral("@@BTNTEXT@@"), codeBtnText);
+        blockHtml.replace(QStringLiteral("@@TEXTCOL@@"), codeTextColor);
 
         codeBlocks.push_back(blockHtml);
         const QString token = QStringLiteral("\n\nSPARKCODEBLOCK%1XYZ\n\n").arg(codeBlocks.size() - 1);
@@ -1566,7 +1588,7 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
     QString finalHtml = calloutsEnhanced;
 
     std::vector<QRegularExpressionMatch> tableMatches;
-    static const QRegularExpression tableTagRegex(QStringLiteral(R"(<table\b[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression tableTagRegex(QStringLiteral(R"(<table\b(?![^>]*\b(?:code-block-container|code-block-header)\b)[^>]*>)"), QRegularExpression::CaseInsensitiveOption);
     auto tblMatchIt = tableTagRegex.globalMatch(finalHtml);
     while (tblMatchIt.hasNext()) {
         tableMatches.push_back(tblMatchIt.next());
@@ -1599,7 +1621,7 @@ QString MarkdownPreviewEnhancer::renderMarkdownToHtml(const QString &rawMd, bool
         if (static_cast<std::size_t>(i) < listLines.size()) {
             const int lLine = listLines[static_cast<std::size_t>(i)];
             const QString anchorTag = QStringLiteral("<a name=\"line_%1\" id=\"line_%1\"></a>").arg(lLine);
-            finalHtml.insert(listMatches[static_cast<std::size_t>(i)].capturedStart(), anchorTag);
+            finalHtml.insert(listMatches[static_cast<std::size_t>(i)].capturedEnd(), anchorTag);
         }
     }
 
